@@ -1,0 +1,59 @@
+# Memory Inventory
+
+## Register Files
+name,type,width_bits,depth,ports,description,source
+int_rf,RegisterFile,64,52,4R2W,Integer Physical Register File,core.config:76-79
+fp_rf,RegisterFile,64,48,3R2W,Floating-point Physical Register File,core.config:50-54
+
+## Rename Structures
+name,type,width_bits,depth,ports,description,source
+int_map_table,MapTable,6,32,1R1W,Integer Rename Map Table,FIRRTL:233104
+int_br_snapshots,MapTable,6x8,32,1R1W,Branch Snapshots for RMT,FIRRTL:233105
+fp_map_table,MapTable,6,32,1R1W,FP Rename Map Table,FIRRTL:235287
+fp_br_snapshots,MapTable,6x8,32,1R1W,FP Branch Snapshots,FIRRTL:235288
+int_free_list,FreeList,6,52,1R1W,Integer Free List,FIRRTL:233426
+int_busy_table,BusyTable,1,52,1R1W,Integer Busy Table,FIRRTL:233891
+fp_free_list,FreeList,6,48,1R1W,FP Free List,FIRRTL:235648
+fp_busy_table,BusyTable,1,48,1R1W,FP Busy Table,FIRRTL:236093
+
+## ROB
+name,type,width_bits,depth,ports,description,source
+rob_entries,ROB,~400,32,1R1W,Reorder Buffer entries,FIRRTL:259475
+
+## Issue Queues
+name,type,width_bits,depth,ports,description,source
+mem_issue_queue,IssueSlot,~400,8,2R2W,Memory Issue Queue,FIRRTL:224348
+alu_issue_queue,IssueSlot,~400,8,2R2W,ALU Issue Queue,FIRRTL:243797
+fpu_issue_queue,IssueSlot,~400,8,2R2W,FPU Issue Queue,FIRRTL:252796
+
+## Load/Store Queues
+name,type,width_bits,depth,ports,description,source
+ldq,LoadQueue,TBD,8,1R1W,Load Queue,core.config:72
+stq,StoreQueue,TBD,8,1R1W,Store Queue,core.config:72
+
+## Caches
+name,type,width_bits,depth,ports,description,source
+icache_tag,L1-ICache Tag,88,64x4,1R1W,L1 ICache Tag Array,mems.conf:3
+icache_data,L1-ICache Data,64,512x4,1R2W,L1 ICache Data Array,mems.conf:4
+dcache_tag,L1-DCache Tag,80,64x4,1R1W,L1 DCache Tag Array,mems.conf:5
+dcache_data,L1-DCache Data,64,512x4,1R1W,L1 DCache Data Array,mems.conf:6
+l2_dir,L2 Directory,136,1024,1R1W,L2 Cache Directory,mems.conf:1
+l2_bank,L2 Data Bank,64,16384,1R1W,L2 Cache Data Bank,mems.conf:2
+
+## Branch Predictor
+name,type,width_bits,depth,ports,description,source
+tage_l2,TAGE Level 2,44,128,1R1W,TAGE predictor table L2,mems.conf:8
+tage_l4,TAGE Level 4,44,128,1R1W,TAGE predictor table L4,mems.conf:8
+tage_l8,TAGE Level 8,48,256,1R1W,TAGE predictor table L8,mems.conf:10
+tage_l16,TAGE Level 16,48,256,1R1W,TAGE predictor table L16,mems.conf:10
+tage_l32,TAGE Level 32,52,128,1R1W,TAGE predictor table L32,mems.conf:11
+tage_l64,TAGE Level 64,52,128,1R1W,TAGE predictor table L64,mems.conf:11
+btb_meta_way0,BTB Meta,124,128,1R1W,BTB metadata way 0,mems.conf:12
+btb_data_way0,BTB Data,56,128,1R1W,BTB target way 0,mems.conf:13
+btb_meta_way1,BTB Meta,124,128,1R1W,BTB metadata way 1,mems.conf:12
+btb_data_way1,BTB Data,56,128,1R1W,BTB target way 1,mems.conf:13
+ebtb,Extended BTB,40,128,1R1W,Extended BTB,mems.conf:14
+bim,BIM Table,8,2048,1R1W,Bimodal predictor table,mems.conf:15
+meta,BP Meta,120,16,1R1W,BP metadata,mems.conf:16
+ghist,Global History,72,16,1R1W,Global history,mems.conf:17
+ras,RAS,?,?,1R1W,Return Address Stack,FIRRTL:174507

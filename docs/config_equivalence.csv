@@ -1,0 +1,37 @@
+# BOOM-HLS Configuration Equivalence Audit
+# Generated: 2026-07-24
+
+Parameter,BOOM Value,HLS Value,BOOM Source,FIRRTL Line,HLS Source,Match,Impact
+ISA,"rv64imafdc","rv64imafdc",DTS:32+core.config:96-98,"ISA is implicit in decode",boom_config.hpp:10,MATCH,- 
+MMU,Sv39,Sv39,core.config:98+DTS:29,"Sv39 MMU implicit",boom_config.hpp:11,MATCH,Not yet implemented in HLS
+Fetch Width,4,4,core.config:67,top.v fb_uop_ram 8 entries,boom_config.hpp:14,MATCH,-
+Decode Width,1,1,core.config:68,"DecodeUnit width=1",boom_config.hpp:15,MATCH,-
+Dispatch Width,1 (implied),1,core.config:68 (same as decode),FIRRTL BasicDispatcher,boom_config.hpp:16,MATCH,-
+Issue Width,3,3,core.config:69,"IssueUnitCollapsing x3",boom_config.hpp:17,MATCH,HLS only implements 1 IQ (ALU)
+Commit Width,1,1,core.config:59-60,Rob commit width=1,boom_config.hpp:18,MATCH,-
+ROB Depth,32,32,core.config:60+70,Rob debug_entry[32] FIRRTL:259475,boom_config.hpp:20,MATCH,-
+Int Phys Regs,52,52,core.config:73,RenameFreeList 52 entries FIRRTL:233426,boom_config.hpp:22,MATCH,-
+FP Phys Regs,48,48,core.config:74,"FP FreeList 48, FIRRTL:235648",boom_config.hpp:23,MATCH,Stub only
+IQ Mem Depth,8,8,core.config:71-72,"IssueUnitCollapsing width=8",boom_config.hpp:25,MATCH,Mem IQ not implemented in HLS
+IQ ALU Depth,8,8,core.config:71,"IssueUnitCollapsing width=8",boom_config.hpp:26,MATCH,-
+IQ FPU Depth,8,8,core.config:71,"IssueUnitCollapsing width=8",boom_config.hpp:27,MATCH,FPU IQ not implemented
+LDQ Depth,8,8,core.config:72,"ldq_idx:3b FIRRTL",boom_config.hpp:30,MATCH,Not implemented
+STQ Depth,8,8,core.config:72,"stq_idx:3b FIRRTL",boom_config.hpp:31,MATCH,Not implemented
+Max Branch Count,8,8,core.config:75,"br_mask:8b br_tag:3b FIRRTL",boom_config.hpp:34,MATCH,Branch prediction stub
+FTQ Depth,16,16,FIRRTL ftq_idx:4b,top.v FTQ,boom_config.hpp:37,MATCH,Not implemented
+Fetch Buffer Depth,8,8,top.v fb_uop_ram_0-7,"top.v line ~211773",boom_config.hpp:40,MATCH,Frontend stub
+ICache Sets,64,64,core.config:6+90,mems.conf tag_array depth=64,boom_config.hpp:42,MATCH,Not implemented
+ICache Ways,4,4,core.config:6+89,DTS:25-26,boom_config.hpp:43,MATCH,Not implemented
+ICache Block Bytes,64,64,core.config:7+DTS:24,mems.conf,boom_config.hpp:44,MATCH,Not implemented
+DCache Sets,64,64,core.config:87,mems.conf tag_array_0 depth=64,boom_config.hpp:48,MATCH,Not implemented
+DCache Ways,4,4,core.config:86,DTS:18,boom_config.hpp:49,MATCH,Not implemented
+DCache Block Bytes,64,64,core.config:7,DTS:17,boom_config.hpp:50,MATCH,Not implemented
+L2 Sets,1024,1024,DTS:64,l2.json,boom_config.hpp:58,MATCH,Not implemented
+L2 Ways,8,8,DTS:65,l2.json,boom_config.hpp:57,MATCH,Not implemented
+Physical Addr Bits,32,32,core.config:93,PADDR_BITS FIRRTL,boom_config.hpp:61,MATCH,-
+Virtual Addr Bits,39,39,core.config:94,VADDR_BITS FIRRTL,boom_config.hpp:62,MATCH,-
+Reset Vector,0x10040,0x10040,dromajo_params.h:4,DROMAJO_RESET_VECTOR,boom_config.hpp:64,MATCH,Verified
+Clock,100MHz,100MHz,freq-summary,"buildTopClockGenerator",boom_config.hpp:66-67,MATCH,Csynth Fmax=92MHz violates
+Main Memory,256MB@0x80000000,256MB@0x80000000,DTS:48-50,memmap.json,boom_config.hpp:70-71,MATCH,Ideal memory model
+CLINT,0x02000000,0x02000000,DTS:75,dromajo_params.h:10,boom_config.hpp:73,MATCH,Stub
+PLIC,0x0C000000,0x0C000000,DTS:93,dromajo_params.h:8,boom_config.hpp:75,MATCH,Stub

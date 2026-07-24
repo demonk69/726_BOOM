@@ -1,0 +1,5 @@
+dependency_class,observable_in_boom,observable_in_hls,status,reason
+RAW,partial,partial,INSUFFICIENT_SIGNAL,register value at commit is comparable but wakeup/select/bypass timing is not exposed
+WAR,partial,partial,INSUFFICIENT_SIGNAL,architectural commit order is comparable but rename-source capture timing is not exposed
+WAW,partial,partial,INSUFFICIENT_SIGNAL,architectural final value and commit order are comparable but physical-map transition timing is not exposed
+store_to_tohost,yes,yes,ARCHITECTURAL_MATCH,Gate 3.1C compares retired SD commit and committed DmemRequest to tohost through native HLS and Vitis csim traces

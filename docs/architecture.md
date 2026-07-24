@@ -1,0 +1,82 @@
+# BOOM HLS Architecture
+
+## Overview
+
+This project implements a Vitis HLS 2022.2 synthesizable C++ model of the
+BOOM (Berkeley Out-of-Order Machine) RISC-V processor, configured as
+**SmallBoomConfig** within the Chipyard SoC framework.
+
+## Configuration
+
+| Parameter | Value | Source |
+|---|---|---|
+| ISA | RV64IMAFDC | core.config:96-98, DTS:32 |
+| MMU | Sv39 | core.config:98, DTS:29 |
+| Fetch Width | 4 | core.config:67 |
+| Decode Width | 1 | core.config:68 |
+| Issue Width | 3 | core.config:69 |
+| Commit Width | 1 | core.config:59-60 |
+| ROB Depth | 32 | core.config:60, FIRRTL Rob:259475 |
+| Int Phys Regs | 52 | core.config:73, FIRRTL FreeList |
+| FP Phys Regs | 48 | core.config:74 |
+| IQ Mem/ALU/FPU | 8/8/8 | core.config:71 |
+| LDQ/STQ | 8/8 | core.config:72, FIRRTL ldq_idx:3b |
+| Max Branch Count | 8 | core.config:75, FIRRTL br_mask:8b |
+| FTQ Depth | 16 | FIRRTL ftq_idx:4b |
+| Fetch Buffer | 8 | top.v fb_uop_ram_0-7 |
+| Branch Pred | TAGE 14KB | core.config:17-31 |
+| ICache | 16KB 4-way | core.config:6-14, DTS:25-26 |
+| DCache | 16KB 4-way | core.config:86-87, DTS:17-19 |
+| L2 Cache | 512KB 8-way | DTS:62-65, l2.json |
+| Phys Addr Bits | 32 | core.config:93 |
+| Virt Addr Bits | 39 | core.config:94 |
+| Reset Vector | 0x10040 | dromajo_params.h:4 |
+| Clock | 100MHz | freq-summary files |
+| Main Memory | 256MB @ 0x80000000 | DTS:48-50, memmap.json |
+
+## Pipeline Structure
+
+```
+Cycle N:
+  Frontend -> Decode -> Rename -> Dispatch -> Issue -> RegRead -> Execute -> Writeback -> Commit
+                                    ^                                      |
+                                    |----------- Wakeup ------------------+
+                                    |
+                                    +----------- Branch Resolution ------+
+```
+
+### State Machine
+- All pipeline state is held in BoomCoreState
+- Each cycle: read current_state, compute next_state for each stage, commit at cycle end
+- Flushes propagate through br_mask mechanism
+
+## Module Hierarchy
+
+```
+boom_core_top (ap_ctrl_none, CORE_CYCLE loop)
+  boom_core_step (one cycle)
+    ├── frontend (ICache + FetchBuffer + BranchPredictor stub)
+    ├── decode  (DecodeUnit + BranchMaskGeneration)
+    ├── rename  (RenameMapTable + FreeList + BusyTable)
+    ├── issue   (IssueUnitCollapsing ×3 + Dispatch)
+    ├── execute (ALUExeUnit + FPUExeUnit stub)
+    ├── branch  (Branch resolution + brupdate generation)
+    ├── lsu     (Load/Store Queue stub)
+    ├── commit  (ROB commit + Writeback)
+    └── csr     (CSR File minimal)
+```
+
+## Memory Model
+
+- Ideal instruction memory: 1-cycle response, valid/ready interface
+- Ideal data memory: 1-cycle response, valid/ready interface
+- Backpressure configurable for testing
+
+## Verification
+
+- Commit trace differential comparison vs Verilator reference model
+- Format: cycle,pc,inst,rd,rd_val,exception per committed instruction
+
+## Current Implementation Status
+
+See docs/implementation_status.md

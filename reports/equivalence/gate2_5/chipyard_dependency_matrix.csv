@@ -1,0 +1,19 @@
+dependency,required_version,detected_version,detected_path,status,required_by,recovery_command
+CHIPYARD_ROOT,matching generated SmallBoomConfig source tree,,,MISSING,official simulator rebuild,restore original Chipyard checkout and set CHIPYARD_ROOT
+RISCV toolchain,riscv64-unknown-elf-*,,,MISSING,reference ELF build,install or expose matching riscv64-unknown-elf toolchain
+riscv64-unknown-elf-objdump,matching toolchain,,,MISSING,ELF disassembly,install or expose matching riscv64-unknown-elf-objdump
+riscv64-unknown-elf-readelf,matching toolchain,,,MISSING,ELF manifest,install or expose matching riscv64-unknown-elf-readelf
+riscv64-unknown-elf-nm,matching toolchain,,,MISSING,tohost/fromhost symbol check,install or expose matching riscv64-unknown-elf-nm
+libfesvr,matching Chipyard riscv-tools,,,MISSING,HTIF/FESVR link,set RISCV to prefix containing lib/libfesvr.a
+DRAMSim2 libdramsim,matching Chipyard DRAMSim2,,,MISSING,SimDRAM link,set DRAMSIM_HOME to directory containing libdramsim.a
+Java,project-compatible,,/usr/bin/java,FOUND,Chipyard generators/build,install Java required by the original Chipyard checkout
+sbt,project-compatible,,,MISSING,Chipyard generators/build,install sbt only if required by original checkout
+mill,project-compatible,,,MISSING,Chipyard generators/build,install mill only if required by original checkout
+Verilator,compatible with generated model,,/usr/local/bin/verilator,FOUND,Verilator model build,install compatible Verilator or set VERILATOR_ROOT
+Spike,optional matching ISA simulator,,,MISSING,cross-check,install only if required for reference comparison
+conda,optional project environment,,/home/lab_726/anaconda3/condabin/conda,FOUND,environment restoration,activate original Chipyard conda environment if available
+env.sh,project setup script,,/home/lab_726/verification_release_20260707/env.sh,FOUND,environment restoration,source original env.sh if available
+build-setup.sh,project setup script,,,MISSING,environment restoration,run only from original Chipyard checkout if needed
+setup-paths.sh,project setup script,,,MISSING,environment restoration,source original setup-paths.sh if available
+generated-src,SmallBoomConfig generated files,,/home/lab_726/boom/chipyard.TestHarness.SmallBoomConfig,FOUND,standalone/generated model,already present in this workspace
+simulator Makefile,VTestHarness.mk,,/home/lab_726/boom/chipyard.TestHarness.SmallBoomConfig/chipyard.TestHarness.SmallBoomConfig/VTestHarness.mk,FOUND,official simulator rebuild,already present but hardcodes original paths

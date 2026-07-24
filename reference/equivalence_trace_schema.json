@@ -1,0 +1,31 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "BOOM/HLS Provisional Normalized Equivalence Trace Schema",
+  "description": "Applies to normalized traces under reports/equivalence/provisional_gate3/normalized, not raw BOOM or HLS source traces.",
+  "type": "object",
+  "required": ["event", "trace_schema_version"],
+  "properties": {
+    "event": {
+      "enum": ["metadata", "commit", "branch", "unsupported_boundary"]
+    },
+    "trace_schema_version": {"type": "integer", "const": 1},
+    "source": {"enum": ["boom", "hls_cpp", "hls_csim"]},
+    "program": {"type": "string"},
+    "scope": {"const": "loaded_program_prefix_before_unsupported_tohost_store"},
+    "cycle": {"type": "integer"},
+    "normalized_cycle": {"type": "integer"},
+    "pc": {"type": ["string", "null"], "pattern": "^0x[0-9a-f]{16}$"},
+    "instruction": {"type": ["string", "null"], "pattern": "^0x[0-9a-f]{8}$"},
+    "mnemonic": {"type": "string"},
+    "rd_valid": {"type": "boolean"},
+    "rd": {"type": ["integer", "null"]},
+    "rd_value": {"type": ["string", "null"]},
+    "exception": {"type": "boolean"},
+    "exception_cause": {"type": ["integer", "null"]},
+    "taken": {"type": ["boolean", "null"]},
+    "branch_mispredict": {"type": ["boolean", "null"]},
+    "target": {"type": ["string", "null"]},
+    "reason": {"type": "string"},
+    "unavailable_fields_are_null": {"type": "boolean"}
+  }
+}

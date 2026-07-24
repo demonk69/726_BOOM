@@ -1,0 +1,91 @@
+program,source,dynamic_uop_id,pc,instruction,commit_ordinal,rob_idx,rob_generation,allocate_cycle,commit_cycle,branch_resolve_cycle,branch_tag,branch_mask,squashed,exception,identity_status,notes
+independent_alu,boom,independent_alu:commit:0,0x0000000080000000,0x00500093,0,31,1,1150,1157,,,,FALSE,FALSE,MATCH,
+independent_alu,boom,independent_alu:commit:1,0x0000000080000004,0x00700113,1,0,2,1151,1158,,,,FALSE,FALSE,MATCH,
+independent_alu,boom,independent_alu:commit:2,0x0000000080000008,0x002081b3,2,1,2,1152,1159,,,,FALSE,FALSE,MATCH,
+independent_alu,boom,independent_alu:commit:3,0x000000008000000c,0x00c00393,3,2,2,1153,1160,,,,FALSE,FALSE,MATCH,
+independent_alu,boom,independent_alu:commit:4,0x0000000080000010,0x00719c63,4,3,2,1154,1161,1158,0,0,FALSE,FALSE,MATCH,
+independent_alu,boom,independent_alu:commit:5,0x0000000080000014,0x00000297,5,4,2,1155,1162,,,,FALSE,FALSE,MATCH,
+independent_alu,boom,independent_alu:commit:6,0x0000000080000018,0x06c28293,6,5,2,1156,1168,,,,FALSE,FALSE,MATCH,
+independent_alu,boom,independent_alu:commit:7,0x000000008000001c,0x00100313,7,6,2,1157,1169,,,,FALSE,FALSE,MATCH,
+independent_alu,hls_csim,independent_alu:commit:0,0x0000000080000000,0x00500093,0,,,,2,,,,FALSE,FALSE,MATCH,HLS trace has no ROB index/allocation signal
+independent_alu,hls_csim,independent_alu:commit:1,0x0000000080000004,0x00700113,1,,,,4,,,,FALSE,FALSE,MATCH,HLS trace has no ROB index/allocation signal
+independent_alu,hls_csim,independent_alu:commit:2,0x0000000080000008,0x002081b3,2,,,,6,,,,FALSE,FALSE,MATCH,HLS trace has no ROB index/allocation signal
+independent_alu,hls_csim,independent_alu:commit:3,0x000000008000000c,0x00c00393,3,,,,8,,,,FALSE,FALSE,MATCH,HLS trace has no ROB index/allocation signal
+independent_alu,hls_csim,independent_alu:commit:4,0x0000000080000010,0x00719c63,4,,,,10,10,,,FALSE,FALSE,MATCH,HLS trace has no ROB index/allocation signal
+independent_alu,hls_csim,independent_alu:commit:5,0x0000000080000014,0x00000297,5,,,,12,,,,FALSE,FALSE,MATCH,HLS trace has no ROB index/allocation signal
+independent_alu,hls_csim,independent_alu:commit:6,0x0000000080000018,0x06c28293,6,,,,14,,,,FALSE,FALSE,MATCH,HLS trace has no ROB index/allocation signal
+independent_alu,hls_csim,independent_alu:commit:7,0x000000008000001c,0x00100313,7,,,,16,,,,FALSE,FALSE,MATCH,HLS trace has no ROB index/allocation signal
+raw_chain,boom,raw_chain:commit:0,0x0000000080000000,0x00500093,0,31,1,1150,1157,,,,FALSE,FALSE,MATCH,
+raw_chain,boom,raw_chain:commit:1,0x0000000080000004,0x00208113,1,0,2,1151,1158,,,,FALSE,FALSE,MATCH,
+raw_chain,boom,raw_chain:commit:2,0x0000000080000008,0x00410193,2,1,2,1152,1159,,,,FALSE,FALSE,MATCH,
+raw_chain,boom,raw_chain:commit:3,0x000000008000000c,0x00b00393,3,2,2,1153,1160,,,,FALSE,FALSE,MATCH,
+raw_chain,boom,raw_chain:commit:4,0x0000000080000010,0x00719c63,4,3,2,1154,1161,1158,0,0,FALSE,FALSE,MATCH,
+raw_chain,boom,raw_chain:commit:5,0x0000000080000014,0x00000297,5,4,2,1155,1162,,,,FALSE,FALSE,MATCH,
+raw_chain,boom,raw_chain:commit:6,0x0000000080000018,0x06c28293,6,5,2,1156,1168,,,,FALSE,FALSE,MATCH,
+raw_chain,boom,raw_chain:commit:7,0x000000008000001c,0x00100313,7,6,2,1157,1169,,,,FALSE,FALSE,MATCH,
+raw_chain,hls_csim,raw_chain:commit:0,0x0000000080000000,0x00500093,0,,,,2,,,,FALSE,FALSE,MATCH,HLS trace has no ROB index/allocation signal
+raw_chain,hls_csim,raw_chain:commit:1,0x0000000080000004,0x00208113,1,,,,4,,,,FALSE,FALSE,MATCH,HLS trace has no ROB index/allocation signal
+raw_chain,hls_csim,raw_chain:commit:2,0x0000000080000008,0x00410193,2,,,,6,,,,FALSE,FALSE,MATCH,HLS trace has no ROB index/allocation signal
+raw_chain,hls_csim,raw_chain:commit:3,0x000000008000000c,0x00b00393,3,,,,8,,,,FALSE,FALSE,MATCH,HLS trace has no ROB index/allocation signal
+raw_chain,hls_csim,raw_chain:commit:4,0x0000000080000010,0x00719c63,4,,,,10,10,,,FALSE,FALSE,MATCH,HLS trace has no ROB index/allocation signal
+raw_chain,hls_csim,raw_chain:commit:5,0x0000000080000014,0x00000297,5,,,,12,,,,FALSE,FALSE,MATCH,HLS trace has no ROB index/allocation signal
+raw_chain,hls_csim,raw_chain:commit:6,0x0000000080000018,0x06c28293,6,,,,14,,,,FALSE,FALSE,MATCH,HLS trace has no ROB index/allocation signal
+raw_chain,hls_csim,raw_chain:commit:7,0x000000008000001c,0x00100313,7,,,,16,,,,FALSE,FALSE,MATCH,HLS trace has no ROB index/allocation signal
+branch_taken,boom,branch_taken:commit:0,0x0000000080000000,0x00500093,0,31,1,1150,1157,,,,FALSE,FALSE,MATCH,
+branch_taken,boom,branch_taken:commit:1,0x0000000080000004,0x00500113,1,0,2,1151,1158,,,,FALSE,FALSE,MATCH,
+branch_taken,boom,branch_taken:commit:2,0x0000000080000008,0x00208463,2,1,2,1152,1159,1156,0,0,FALSE,FALSE,MATCH,
+branch_taken,boom,branch_taken:commit:3,0x0000000080000010,0x00a00193,3,2,3,1163,1170,,,,FALSE,FALSE,MATCH,
+branch_taken,boom,branch_taken:commit:4,0x0000000080000014,0x00a00393,4,3,3,1164,1171,,,,FALSE,FALSE,MATCH,
+branch_taken,boom,branch_taken:commit:5,0x0000000080000018,0x00719c63,5,4,3,1165,1172,1169,0,0,FALSE,FALSE,MATCH,
+branch_taken,boom,branch_taken:commit:6,0x000000008000001c,0x00000297,6,5,3,1166,1173,,,,FALSE,FALSE,MATCH,
+branch_taken,boom,branch_taken:commit:7,0x0000000080000020,0x06428293,7,6,3,1167,1179,,,,FALSE,FALSE,MATCH,
+branch_taken,boom,branch_taken:commit:8,0x0000000080000024,0x00100313,8,7,3,1168,1180,,,,FALSE,FALSE,MATCH,
+branch_taken,hls_csim,branch_taken:commit:0,0x0000000080000000,0x00500093,0,,,,2,,,,FALSE,FALSE,MATCH,HLS trace has no ROB index/allocation signal
+branch_taken,hls_csim,branch_taken:commit:1,0x0000000080000004,0x00500113,1,,,,4,,,,FALSE,FALSE,MATCH,HLS trace has no ROB index/allocation signal
+branch_taken,hls_csim,branch_taken:commit:2,0x0000000080000008,0x00208463,2,,,,6,6,,,FALSE,FALSE,MATCH,HLS trace has no ROB index/allocation signal
+branch_taken,hls_csim,branch_taken:commit:3,0x0000000080000010,0x00a00193,3,,,,8,,,,FALSE,FALSE,MATCH,HLS trace has no ROB index/allocation signal
+branch_taken,hls_csim,branch_taken:commit:4,0x0000000080000014,0x00a00393,4,,,,10,,,,FALSE,FALSE,MATCH,HLS trace has no ROB index/allocation signal
+branch_taken,hls_csim,branch_taken:commit:5,0x0000000080000018,0x00719c63,5,,,,12,12,,,FALSE,FALSE,MATCH,HLS trace has no ROB index/allocation signal
+branch_taken,hls_csim,branch_taken:commit:6,0x000000008000001c,0x00000297,6,,,,14,,,,FALSE,FALSE,MATCH,HLS trace has no ROB index/allocation signal
+branch_taken,hls_csim,branch_taken:commit:7,0x0000000080000020,0x06428293,7,,,,16,,,,FALSE,FALSE,MATCH,HLS trace has no ROB index/allocation signal
+branch_taken,hls_csim,branch_taken:commit:8,0x0000000080000024,0x00100313,8,,,,18,,,,FALSE,FALSE,MATCH,HLS trace has no ROB index/allocation signal
+branch_not_taken,boom,branch_not_taken:commit:0,0x0000000080000000,0x00300093,0,31,1,1150,1157,,,,FALSE,FALSE,MATCH,
+branch_not_taken,boom,branch_not_taken:commit:1,0x0000000080000004,0x00700113,1,0,2,1151,1158,,,,FALSE,FALSE,MATCH,
+branch_not_taken,boom,branch_not_taken:commit:2,0x0000000080000008,0x00208463,2,1,2,1152,1159,1156,0,0,FALSE,FALSE,MATCH,
+branch_not_taken,boom,branch_not_taken:commit:3,0x000000008000000c,0x06300193,3,2,2,1153,1160,,,,FALSE,FALSE,MATCH,
+branch_not_taken,boom,branch_not_taken:commit:4,0x0000000080000010,0x00a00193,4,3,2,1154,1161,,,,FALSE,FALSE,MATCH,
+branch_not_taken,boom,branch_not_taken:commit:5,0x0000000080000014,0x00a00393,5,4,2,1155,1162,,,,FALSE,FALSE,MATCH,
+branch_not_taken,boom,branch_not_taken:commit:6,0x0000000080000018,0x00719c63,6,5,2,1156,1163,1160,1,0,FALSE,FALSE,MATCH,
+branch_not_taken,boom,branch_not_taken:commit:7,0x000000008000001c,0x00000297,7,6,2,1157,1164,,,,FALSE,FALSE,MATCH,
+branch_not_taken,boom,branch_not_taken:commit:8,0x0000000080000020,0x06428293,8,7,2,1158,1170,,,,FALSE,FALSE,MATCH,
+branch_not_taken,boom,branch_not_taken:commit:9,0x0000000080000024,0x00100313,9,8,2,1159,1171,,,,FALSE,FALSE,MATCH,
+branch_not_taken,hls_csim,branch_not_taken:commit:0,0x0000000080000000,0x00300093,0,,,,2,,,,FALSE,FALSE,MATCH,HLS trace has no ROB index/allocation signal
+branch_not_taken,hls_csim,branch_not_taken:commit:1,0x0000000080000004,0x00700113,1,,,,4,,,,FALSE,FALSE,MATCH,HLS trace has no ROB index/allocation signal
+branch_not_taken,hls_csim,branch_not_taken:commit:2,0x0000000080000008,0x00208463,2,,,,6,6,,,FALSE,FALSE,MATCH,HLS trace has no ROB index/allocation signal
+branch_not_taken,hls_csim,branch_not_taken:commit:3,0x000000008000000c,0x06300193,3,,,,8,,,,FALSE,FALSE,MATCH,HLS trace has no ROB index/allocation signal
+branch_not_taken,hls_csim,branch_not_taken:commit:4,0x0000000080000010,0x00a00193,4,,,,10,,,,FALSE,FALSE,MATCH,HLS trace has no ROB index/allocation signal
+branch_not_taken,hls_csim,branch_not_taken:commit:5,0x0000000080000014,0x00a00393,5,,,,12,,,,FALSE,FALSE,MATCH,HLS trace has no ROB index/allocation signal
+branch_not_taken,hls_csim,branch_not_taken:commit:6,0x0000000080000018,0x00719c63,6,,,,14,14,,,FALSE,FALSE,MATCH,HLS trace has no ROB index/allocation signal
+branch_not_taken,hls_csim,branch_not_taken:commit:7,0x000000008000001c,0x00000297,7,,,,16,,,,FALSE,FALSE,MATCH,HLS trace has no ROB index/allocation signal
+branch_not_taken,hls_csim,branch_not_taken:commit:8,0x0000000080000020,0x06428293,8,,,,18,,,,FALSE,FALSE,MATCH,HLS trace has no ROB index/allocation signal
+branch_not_taken,hls_csim,branch_not_taken:commit:9,0x0000000080000024,0x00100313,9,,,,20,,,,FALSE,FALSE,MATCH,HLS trace has no ROB index/allocation signal
+nested_branch,boom,nested_branch:commit:0,0x0000000080000000,0x00100093,0,31,1,1150,1157,,,,FALSE,FALSE,MATCH,
+nested_branch,boom,nested_branch:commit:1,0x0000000080000004,0x00100113,1,0,2,1151,1158,,,,FALSE,FALSE,MATCH,
+nested_branch,boom,nested_branch:commit:2,0x0000000080000008,0x00208463,2,1,2,1152,1159,1156,0,0,FALSE,FALSE,MATCH,
+nested_branch,boom,nested_branch:commit:3,0x0000000080000010,0x00208463,3,2,3,1165,1172,1169,0,0,FALSE,FALSE,MATCH,
+nested_branch,boom,nested_branch:commit:4,0x0000000080000018,0x02100193,4,3,4,1176,1183,,,,FALSE,FALSE,MATCH,
+nested_branch,boom,nested_branch:commit:5,0x000000008000001c,0x02100393,5,4,4,1177,1184,,,,FALSE,FALSE,MATCH,
+nested_branch,boom,nested_branch:commit:6,0x0000000080000020,0x00719c63,6,5,4,1178,1185,1182,0,0,FALSE,FALSE,MATCH,
+nested_branch,boom,nested_branch:commit:7,0x0000000080000024,0x00000297,7,6,4,1179,1186,,,,FALSE,FALSE,MATCH,
+nested_branch,boom,nested_branch:commit:8,0x0000000080000028,0x05c28293,8,7,4,1180,1192,,,,FALSE,FALSE,MATCH,
+nested_branch,boom,nested_branch:commit:9,0x000000008000002c,0x00100313,9,8,4,1181,1193,,,,FALSE,FALSE,MATCH,
+nested_branch,hls_csim,nested_branch:commit:0,0x0000000080000000,0x00100093,0,,,,2,,,,FALSE,FALSE,MATCH,HLS trace has no ROB index/allocation signal
+nested_branch,hls_csim,nested_branch:commit:1,0x0000000080000004,0x00100113,1,,,,4,,,,FALSE,FALSE,MATCH,HLS trace has no ROB index/allocation signal
+nested_branch,hls_csim,nested_branch:commit:2,0x0000000080000008,0x00208463,2,,,,6,6,,,FALSE,FALSE,MATCH,HLS trace has no ROB index/allocation signal
+nested_branch,hls_csim,nested_branch:commit:3,0x0000000080000010,0x00208463,3,,,,8,8,,,FALSE,FALSE,MATCH,HLS trace has no ROB index/allocation signal
+nested_branch,hls_csim,nested_branch:commit:4,0x0000000080000018,0x02100193,4,,,,10,,,,FALSE,FALSE,MATCH,HLS trace has no ROB index/allocation signal
+nested_branch,hls_csim,nested_branch:commit:5,0x000000008000001c,0x02100393,5,,,,12,,,,FALSE,FALSE,MATCH,HLS trace has no ROB index/allocation signal
+nested_branch,hls_csim,nested_branch:commit:6,0x0000000080000020,0x00719c63,6,,,,14,14,,,FALSE,FALSE,MATCH,HLS trace has no ROB index/allocation signal
+nested_branch,hls_csim,nested_branch:commit:7,0x0000000080000024,0x00000297,7,,,,16,,,,FALSE,FALSE,MATCH,HLS trace has no ROB index/allocation signal
+nested_branch,hls_csim,nested_branch:commit:8,0x0000000080000028,0x05c28293,8,,,,18,,,,FALSE,FALSE,MATCH,HLS trace has no ROB index/allocation signal
+nested_branch,hls_csim,nested_branch:commit:9,0x000000008000002c,0x00100313,9,,,,20,,,,FALSE,FALSE,MATCH,HLS trace has no ROB index/allocation signal

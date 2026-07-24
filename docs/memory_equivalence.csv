@@ -1,0 +1,33 @@
+# BOOM-HLS Memory/State Structure Equivalence
+
+Structure,BOOM Depth,BOOM Width(bits),BOOM Ports,HLS Depth,HLS Width,HLS Ports,Vitis Mapping,Match,Notes
+Int PRF,52,64,4R2W,52,64,1R1W (seq),57 BRAM total,MATCH,Multi-port emulated via array partitioning
+FP PRF,48,64,3R2W,48,64,1R1W (seq),0 BRAM (unused),MATCH,Stub; no DSP
+ROB Entries,32,~400,1R1W,32,MicroOp struct,1R1W,"4-8 BRAM (cloned for wide data)",MATCH,RobEntry ~120 bytes
+Int IQ,8,~450,1R1W,8,IssueSlotEntry,1R1W,"2-4 BRAM (cloned)",MATCH,IssueSlotEntry ~140 bytes
+Mem IQ,8,-,1R1W,NOT IMPL,-,-,-,NOT_IMPLEMENTED,Stub
+FPU IQ,8,-,1R1W,NOT IMPL,-,-,-,NOT_IMPLEMENTED,Stub
+LDQ,8,-,1R1W,NOT IMPL,-,-,-,NOT_IMPLEMENTED,Stub
+STQ,8,-,1R1W,NOT IMPL,-,-,-,NOT_IMPLEMENTED,Stub
+Rename MapTable,32,6,1R1W,32,8(uint8_t),1R seq,~1 BRAM,MATCH,6b logical→physical mapping
+Committed MapTable,32,6,1R,32,8(uint8_t),1R seq,~1 BRAM,MATCH,Separate committed state
+Free List,52,6,1R1W,52,8(uint8_t),1R seq,~1 BRAM,MATCH,Queue + head/tail
+Busy Table,52,1,1R1W,52,1(bool),1R seq,~1 BRAM,MATCH,Bitmap
+Branch Snapshots,32×8,6 per snapshot,1R1W,32×8,8(uint8_t),1 seq,"2-4 BRAM",MISMATCH,Exists in struct but never saved/restored in HLS
+FTQ,16,-,1R1W,NOT IMPL,-,-,-,NOT_IMPLEMENTED,Stub
+Fetch Buffer,8,-,1R1W,NOT IMPL,-,-,-,NOT_IMPLEMENTED,Stub
+CSR mstatus,1,64,1R1W,1,64,1R seq,Register,MATCH,Default value 0x0a00000000
+CSR misa,1,64,1R,1,64,1R seq,Register,MATCH,0x800000000014112d
+CSR mie/mtvec/mepc/mcause,1 each,64,1R1W,1 each,64,1R seq,Register,MATCH,Stored in CsrState
+CSR cycle,1,64,1R,1,"64","1W per cycle",Register,MATCH,Auto-incremented
+CSR instret,1,64,1R1W,1,64,1W per commit,Register,MATCH,Incremented on commit
+TAGE tables,6,~44-52,-,NOT IMPL,-,-,-,NOT_IMPLEMENTED,Not implemented
+BTB,2 ways,-,-,NOT IMPL,-,-,-,NOT_IMPLEMENTED,Not implemented
+BIM,2048,8,-,NOT IMPL,-,-,-,NOT_IMPLEMENTED,Not implemented
+RAS,-,-,-,NOT IMPL,-,-,-,NOT_IMPLEMENTED,Not implemented
+L2 Directory,1024,136,mrw,NOT IMPL,-,-,-,NOT_IMPLEMENTED,Not implemented
+L2 Data Bank,16384,64,rw,NOT IMPL,-,-,-,NOT_IMPLEMENTED,Not implemented
+ICache Tag,64,88,mrw,NOT IMPL,-,-,-,NOT_IMPLEMENTED,Not implemented
+ICache Data,512,64,mwrite+read,NOT IMPL,-,-,-,NOT_IMPLEMENTED,Not implemented
+DCache Tag,64,80,mrw,NOT IMPL,-,-,-,NOT_IMPLEMENTED,Not implemented
+DCache Data,512,64,rw,NOT IMPL,-,-,-,NOT_IMPLEMENTED,Not implemented

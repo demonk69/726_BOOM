@@ -1,0 +1,85 @@
+version: 1
+scope: provisional_gate3_1_out_of_order_event_equivalence
+principle: >
+  Out-of-order event streams must not be compared as one global total order.
+  Dynamic uops are matched first, then only per-uop causality and true
+  cross-uop architectural/dependency constraints are checked.
+
+dynamic_uop_identity:
+  preferred_fields:
+    - fetch_generation
+    - pc
+    - instruction
+    - rob_idx
+    - rob_wrap_generation
+    - allocation_cycle
+    - commit_ordinal
+    - branch_mask
+    - occurrence_index
+  forbidden_as_sole_identity:
+    - pc
+    - instruction
+    - rob_idx
+  unresolved_identity_status: INSUFFICIENT_IDENTITY
+
+per_uop_order:
+  integer_uop:
+    - decode
+    - rename
+    - rob_allocate
+    - iq_insert
+    - iq_select
+    - execute
+    - writeback
+    - rob_complete
+    - commit
+  branch_uop:
+    - decode
+    - rename
+    - rob_allocate
+    - iq_insert
+    - iq_select
+    - branch_resolve
+    - commit
+  same_cycle_policy: allowed_if_trace_order_is_not_inverted
+  branch_policy: branch_resolve_may_precede_older_uop_commit
+
+cross_uop_constraints:
+  commit_order:
+    rule: commits_must_follow_program_order
+    violations:
+      - skipped_older_rob_entry
+      - duplicate_commit
+      - squashed_uop_commit
+  raw:
+    rule: producer_writeback_or_wakeup_must_not_follow_consumer_issue
+    same_cycle_wakeup_select: allowed_only_when_source_rtl_supports_it
+    missing_issue_or_wakeup_status: INSUFFICIENT_SIGNAL
+  waw:
+    rule: younger_writer_must_receive_distinct_pdst_and_eventually_own_arch_map
+    missing_physical_register_status: INSUFFICIENT_SIGNAL
+  war:
+    rule: older_consumer_sources_are_rename_captured_physical_registers
+    missing_rename_source_status: INSUFFICIENT_SIGNAL
+  branch_squash:
+    rule: younger_uops_squashed_by_mispredict_must_not_commit
+    correct_path_refetch: redirect_must_precede_correct_path_fetch
+  rob:
+    allocate: program_order
+    complete: may_be_out_of_order
+    commit: program_order
+  issue_queue:
+    issue: may_be_out_of_order_when_ready_and_ports_available
+    duplicate_grant: forbidden
+    overissue: forbidden
+  store:
+    rule: architectural_store_side_effect_only_after_architecturally_safe_commit
+    wrong_path_tohost_store: forbidden
+
+statuses:
+  - MATCH
+  - LEGAL_REORDER
+  - PARTIAL_MATCH
+  - MISMATCH
+  - INSUFFICIENT_SIGNAL
+  - INSUFFICIENT_IDENTITY

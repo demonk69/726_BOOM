@@ -1,0 +1,29 @@
+# BOOM-HLS Timing Equivalence Analysis
+
+Timestamp,2026-07-24 Gate 1 update
+Target_Clock,10.00 ns (100 MHz)
+Latest_csynth_clock,10.854 ns (92.13 MHz previous evidence)
+Gate1_Timing_Action,No timing optimization performed
+Gate1_Build_Checks,"merged C++ compile PASS; Vitis HLS csim PASS 5/5"
+Gate2_Trace_Status,"PARTIAL PASS: corrected standalone generated-model loadmem traces exist; official simulator and strict cycle timing remain blocked"
+
+## Per-Module Timing Status
+
+Module,Boom Cycles,HLS Status,Match,Gate1 Note
+frontend_module,1,not re-synthesized,MISMATCH,"fetch_id fix is functional; no ICache/FTQ timing model"
+decode_module,1,inlined in prior synthesis,MISMATCH,"no change"
+rename_module,1,serialized in prior synthesis,MISMATCH,"source lookup semantics fixed; directives deferred"
+rob_allocate,1,inlined in prior synthesis,MISMATCH,"full backpressure verified functionally"
+issue_module,1,serialized loop in prior synthesis,MISMATCH,"grant cap fixed; IssueWidth=3 still structurally partial"
+execute_module,1,critical path in prior synthesis,MISMATCH,"no timing change intended"
+rob_commit_module,1,serialized in prior synthesis,MISMATCH,"no timing change intended"
+CORE_CYCLE,1 per cycle,not pipelined in prior synthesis,MISMATCH,"no PIPELINE directive applied"
+
+## Gate 1 Timing Rule Compliance
+
+- No additional pipeline stage was inserted.
+- No queue depth or data width was reduced.
+- No timing directive was applied before trace evidence.
+- The issue grant cap prevents functional uop loss on the currently implemented single ALU execute lane; it does not claim full BOOM IssueWidth=3 structural equivalence.
+
+The 92.13 MHz timing conclusion remains unchanged. Gate 2.5 produced corrected standalone generated-model traces, but official simulator evidence and HLS-vs-BOOM cycle comparison are still missing, so strict Gate 3 timing optimization must not start from this evidence.

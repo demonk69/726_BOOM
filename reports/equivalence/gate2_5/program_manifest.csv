@@ -1,0 +1,6 @@
+program,source,elf,entry_point,text_start,reset_vector,tohost_address,termination_method,static_instruction_count,expected_dynamic_commit_min,expected_dynamic_commit_max,actual_commit_count,status
+independent_alu,independent_alu.S; independent_alu.hex,MISSING,0x80000000 (loadmem fallback; ELF unavailable),0x80000000 (loadmem fallback),0x10040,0x80000080,tohost via retired_store,15,35,60,40,PASS_LOADMEM_ELF_BLOCKED
+raw_chain,raw_chain.S; raw_chain.hex,MISSING,0x80000000 (loadmem fallback; ELF unavailable),0x80000000 (loadmem fallback),0x10040,0x80000080,tohost via retired_store,15,35,60,40,PASS_LOADMEM_ELF_BLOCKED
+branch_taken,branch_taken.S; branch_taken.hex,MISSING,0x80000000 (loadmem fallback; ELF unavailable),0x80000000 (loadmem fallback),0x10040,0x80000080,tohost via retired_store,17,35,60,41,PASS_LOADMEM_ELF_BLOCKED
+branch_not_taken,branch_not_taken.S; branch_not_taken.hex,MISSING,0x80000000 (loadmem fallback; ELF unavailable),0x80000000 (loadmem fallback),0x10040,0x80000080,tohost via retired_store,17,35,60,42,PASS_LOADMEM_ELF_BLOCKED
+nested_branch,nested_branch.S; nested_branch.hex,MISSING,0x80000000 (loadmem fallback; ELF unavailable),0x80000000 (loadmem fallback),0x10040,0x80000080,tohost via retired_store,19,35,60,42,PASS_LOADMEM_ELF_BLOCKED

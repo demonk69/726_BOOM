@@ -1,0 +1,54 @@
+# PPA Parameters
+
+parameter,value,unit,note
+
+## Clock and Target
+clock_frequency,100,MHz,From freq-summary
+clock_period,10,ns,From freq-summary
+target_fpga_part,TBD,,From env FPGA_PART
+
+## Pipeline Dimensions
+fetch_width,4,instructions/cycle,
+decode_width,1,instructions/cycle,
+dispatch_width,1,uops/cycle,
+issue_width,3,uops/cycle,
+commit_width,1,instructions/cycle,
+
+## Buffer Depths
+rob_depth,32,entries,
+mem_iq_depth,8,entries,
+alu_iq_depth,8,entries,
+fpu_iq_depth,8,entries,
+ldq_depth,8,entries,
+stq_depth,8,entries,
+ftq_depth,16,entries,
+fetch_buffer_depth,8,entries,
+
+## Register File Sizing
+int_arch_regs,32,logical,
+int_phys_regs,52,physical,
+fp_phys_regs,48,physical,
+int_rf_read_ports,4,
+int_rf_write_ports,2,
+fp_rf_read_ports,3,
+fp_rf_write_ports,2,
+
+## Branch Prediction
+max_branch_count,8,
+bp_total_storage_kb,14,KB,
+br_mask_width,8,bits,
+br_tag_width,3,bits,
+
+## Cache Sizing
+icache_sets,64,
+icache_ways,4,
+icache_block_bytes,64,
+icache_size_bytes,16384,
+dcache_sets,64,
+dcache_ways,4,
+dcache_block_bytes,64,
+dcache_size_bytes,16384,
+l2_sets,1024,
+l2_ways,8,
+l2_block_bytes,64,
+l2_size_bytes,524288,

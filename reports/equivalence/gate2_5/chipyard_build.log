@@ -1,0 +1,13 @@
+Official Chipyard simulator build attempt
+2026-07-24T10:54:17Z
+GEN_ROOT=/home/lab_726/boom/chipyard.TestHarness.SmallBoomConfig
+OBJ_DIR=/home/lab_726/boom/chipyard.TestHarness.SmallBoomConfig/chipyard.TestHarness.SmallBoomConfig
+MAKEFILE=/home/lab_726/boom/chipyard.TestHarness.SmallBoomConfig/chipyard.TestHarness.SmallBoomConfig/VTestHarness.mk
+TARGET=/root/chipyard/sims/verilator/simulator-chipyard-SmallBoomConfig
+FIRST_BLOCKER: generated makefile target directory does not exist: /root/chipyard/sims/verilator
+Running make from generated object directory.
+make: Entering directory '/home/lab_726/boom/chipyard.TestHarness.SmallBoomConfig/chipyard.TestHarness.SmallBoomConfig'
+make: stat: /root/chipyard/sims/verilator/simulator-chipyard-SmallBoomConfig: Permission denied
+make: stat: /root/chipyard/sims/verilator/generated-src/chipyard.TestHarness.SmallBoomConfig/SimDRAM.cc: Permission denied
+make: *** No rule to make target '/root/chipyard/sims/verilator/generated-src/chipyard.TestHarness.SmallBoomConfig/SimDRAM.cc', needed by 'SimDRAM.o'.  Stop.
+make: Leaving directory '/home/lab_726/boom/chipyard.TestHarness.SmallBoomConfig/chipyard.TestHarness.SmallBoomConfig'

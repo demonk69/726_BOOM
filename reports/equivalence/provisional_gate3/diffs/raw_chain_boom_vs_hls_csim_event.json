@@ -1,0 +1,69 @@
+{
+  "compared_events": 9,
+  "dut": "/home/lab_726/boom/hls_boom/reports/equivalence/provisional_gate3/normalized/raw_chain_hls_csim.jsonl",
+  "dut_events": 9,
+  "first_mismatch": {
+    "dut_event": {
+      "arch_valid": true,
+      "branch_mispredict": null,
+      "commit_index": 1,
+      "cycle": 4,
+      "event": "commit",
+      "exception": false,
+      "exception_cause": null,
+      "instruction": "0x00208113",
+      "mnemonic": "ADDI",
+      "normalized_cycle": 2,
+      "pc": "0x0000000080000004",
+      "program": "raw_chain",
+      "rd": 2,
+      "rd_valid": true,
+      "rd_value": "0x0000000000000007",
+      "slot": 0,
+      "source": "hls_csim",
+      "trace_schema_version": 1,
+      "trace_sequence_id": 2
+    },
+    "dut_signature": [
+      "commit",
+      "0x0000000080000004",
+      "0x00208113",
+      true,
+      2,
+      "0x0000000000000007",
+      false,
+      null
+    ],
+    "reason": "signature_mismatch",
+    "ref_event": {
+      "branch_index": 0,
+      "branch_mispredict": false,
+      "cycle": 1158,
+      "event": "branch",
+      "instruction": "0x00719c63",
+      "mnemonic": "BNE",
+      "normalized_cycle": 1,
+      "pc": "0x0000000080000010",
+      "program": "raw_chain",
+      "slot": 0,
+      "source": "boom",
+      "taken": false,
+      "target": null,
+      "trace_schema_version": 1,
+      "trace_sequence_id": 92
+    },
+    "ref_signature": [
+      "branch",
+      "0x0000000080000010",
+      "0x00719c63",
+      false,
+      false
+    ]
+  },
+  "first_mismatch_index": 1,
+  "kind": "event",
+  "program": "raw_chain",
+  "ref": "/home/lab_726/boom/hls_boom/reports/equivalence/provisional_gate3/normalized/raw_chain_boom.jsonl",
+  "ref_events": 9,
+  "status": "FAIL"
+}

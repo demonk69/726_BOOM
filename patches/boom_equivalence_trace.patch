@@ -1,0 +1,105 @@
+--- chipyard.TestHarness.SmallBoomConfig/emulator.cc
++++ chipyard.TestHarness.SmallBoomConfig/emulator.cc
+@@ -20,6 +20,58 @@
+ #include <stdlib.h>
+ #include <unistd.h>
+ #include <getopt.h>
++#ifdef BOOM_EQUIV_TRACE
++#include <fstream>
++#include <iomanip>
++#define BOOM_CORE_SIG(tile, name) ((tile)->TestHarness__DOT__chiptop__DOT__system__DOT__tile_prci_domain__DOT__tile_reset_domain__DOT__boom_tile__DOT__core__DOT__##name)
++static void boom_equiv_emit_trace(TEST_HARNESS* tile, uint64_t cycle, std::ofstream& out)
++{
++  if (!out.good()) return;
++  if (BOOM_CORE_SIG(tile, rob_io_enq_valids_0)) {
++    out << "{\"cycle\":" << cycle << ",\"event\":\"rob_allocate\",\"slot\":0"
++        << ",\"rob_idx\":" << (uint32_t)BOOM_CORE_SIG(tile, rob_io_enq_uops_0_rob_idx)
++        << ",\"physical_rd\":" << (uint32_t)BOOM_CORE_SIG(tile, rob_io_enq_uops_0_pdst)
++        << ",\"stale_physical_rd\":" << (uint32_t)BOOM_CORE_SIG(tile, rob_io_enq_uops_0_stale_pdst)
++        << "}\n";
++  }
++  if (BOOM_CORE_SIG(tile, csr_exe_unit__DOT__alu_io_req_valid)) {
++    out << "{\"cycle\":" << cycle << ",\"event\":\"iq_select\",\"slot\":0,\"rob_idx\":null}\n";
++    out << "{\"cycle\":" << cycle << ",\"event\":\"execute\",\"slot\":0,\"rob_idx\":null}\n";
++  }
++  if (BOOM_CORE_SIG(tile, csr_exe_unit__DOT__alu_io_resp_valid)) {
++    out << "{\"cycle\":" << cycle << ",\"event\":\"writeback\",\"slot\":0"
++        << ",\"physical_rd\":" << (uint32_t)BOOM_CORE_SIG(tile, csr_exe_unit__DOT__alu__DOT__r_uops_0_pdst)
++        << ",\"rob_idx\":" << (uint32_t)BOOM_CORE_SIG(tile, csr_exe_unit__DOT__alu__DOT__r_uops_0_rob_idx)
++        << "}\n";
++  }
++  if (BOOM_CORE_SIG(tile, rob_io_wb_resps_0_valid)) {
++    out << "{\"cycle\":" << cycle << ",\"event\":\"rob_complete\",\"slot\":0}\n";
++  }
++  if (BOOM_CORE_SIG(tile, brinfos_0_valid)) {
++    out << "{\"cycle\":" << cycle << ",\"event\":\"branch_resolve\",\"slot\":0"
++        << ",\"taken\":" << (BOOM_CORE_SIG(tile, brinfos_0_taken) ? "true" : "false")
++        << ",\"branch_mispredict\":" << (BOOM_CORE_SIG(tile, brinfos_0_mispredict) ? "true" : "false")
++        << ",\"branch_tag\":" << (uint32_t)BOOM_CORE_SIG(tile, brinfos_0_uop_br_tag)
++        << ",\"branch_mask\":" << (uint32_t)BOOM_CORE_SIG(tile, brinfos_0_uop_br_mask)
++        << "}\n";
++  }
++  if (BOOM_CORE_SIG(tile, rob_io_flush_valid)) {
++    out << "{\"cycle\":" << cycle << ",\"event\":\"flush\"}\n";
++  }
++  if (BOOM_CORE_SIG(tile, b2_mispredict)) {
++    out << "{\"cycle\":" << cycle << ",\"event\":\"redirect\",\"target\":\"0x"
++        << std::hex << (uint64_t)BOOM_CORE_SIG(tile, io_ifu_redirect_pc_REG) << std::dec << "\"}\n";
++  }
++  if (BOOM_CORE_SIG(tile, rob_io_commit_arch_valids_0)) {
++    bool rd_valid = BOOM_CORE_SIG(tile, rob_io_commit_uops_0_ldst_val) && BOOM_CORE_SIG(tile, rob_io_commit_uops_0_dst_rtype) == 0;
++    out << "{\"cycle\":" << cycle << ",\"event\":\"commit\",\"slot\":0,\"pc\":\"0x"
++        << std::hex << (uint64_t)BOOM_CORE_SIG(tile, csr_io_pc) << std::dec << "\",\"instruction\":null"
++        << ",\"rd_valid\":" << (rd_valid ? "true" : "false")
++        << ",\"rd\":" << (uint32_t)BOOM_CORE_SIG(tile, rob_io_commit_uops_0_ldst)
++        << ",\"rd_value\":null,\"exception\":false,\"exception_cause\":null,\"privilege\":null}\n";
++  }
++}
++#endif
+ 
+ // For option parsing, which is split across this file, Verilog, and
+ // FESVR's HTIF, a few external files must be pulled in. The list of
+@@ -119,4 +171,7 @@ int main(int argc, char** argv)
+   uint16_t rbb_port = 0;
++#ifdef BOOM_EQUIV_TRACE
++  const char* boom_equiv_trace_name = getenv("BOOM_EQUIV_TRACE_FILE");
++#endif
+ #if VM_TRACE
+   const char* vcdfile_name = NULL;
+   FILE * vcdfile = NULL;
+@@ -199,7 +254,13 @@ int main(int argc, char** argv)
+           c = 'x';
+           optarg = optarg+12;
+         }
+ #endif
++#ifdef BOOM_EQUIV_TRACE
++        else if (arg.substr(0, 18) == "+boom_equiv_trace=") {
++          boom_equiv_trace_name = optarg + 18;
++          break;
++        }
++#endif
+         else if (arg.substr(0, 12) == "+cycle-count")
+           c = 'c';
+         else if (arg == "+permissive")
+@@ -284,5 +345,11 @@ int main(int argc, char** argv)
+   Verilated::commandArgs(verilated_argc, verilated_argv);
+   TEST_HARNESS *tile = new TEST_HARNESS;
++#ifdef BOOM_EQUIV_TRACE
++  std::ofstream boom_equiv_trace;
++  if (boom_equiv_trace_name && boom_equiv_trace_name[0]) {
++    boom_equiv_trace.open(boom_equiv_trace_name, std::ios::out | std::ios::trunc);
++  }
++#endif
+ 
+ #if VM_TRACE
+   Verilated::traceEverOn(true); // Verilator must compute traced signals
+@@ -346,6 +413,9 @@ int main(int argc, char** argv)
+       tfp->dump(static_cast<vluint64_t>(trace_count * 2 + 1));
+ #endif
+     trace_count++;
++#ifdef BOOM_EQUIV_TRACE
++    boom_equiv_emit_trace(tile, trace_count, boom_equiv_trace);
++#endif
+   }
+   // for verilator multithreading. need to do 1 loop before checking if
+   // tsi exists, since tsi is created by verilated thread on the first

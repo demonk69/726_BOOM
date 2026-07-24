@@ -1,0 +1,51 @@
+program,dynamic_index,pc,instruction,mnemonic,category,rd_valid,rd,rd_value,hls_decode,hls_execute,hls_lsu_required,compared_in_prefix,reason
+independent_alu,0,0x0000000080000000,0x00500093,ADDI,ALU_IMM,TRUE,1,0x0000000000000005,TRUE,TRUE,FALSE,TRUE,included in BOOM/HLS comparable loaded-program prefix
+independent_alu,1,0x0000000080000004,0x00700113,ADDI,ALU_IMM,TRUE,2,0x0000000000000007,TRUE,TRUE,FALSE,TRUE,included in BOOM/HLS comparable loaded-program prefix
+independent_alu,2,0x0000000080000008,0x002081b3,ADD,ALU_REG,TRUE,3,0x000000000000000c,TRUE,TRUE,FALSE,TRUE,included in BOOM/HLS comparable loaded-program prefix
+independent_alu,3,0x000000008000000c,0x00c00393,ADDI,ALU_IMM,TRUE,7,0x000000000000000c,TRUE,TRUE,FALSE,TRUE,included in BOOM/HLS comparable loaded-program prefix
+independent_alu,4,0x0000000080000010,0x00719c63,BNE,CONTROL,FALSE,,,TRUE,TRUE,FALSE,TRUE,included in BOOM/HLS comparable loaded-program prefix
+independent_alu,5,0x0000000080000014,0x00000297,AUIPC,ALU_IMM,TRUE,5,0x0000000080000014,TRUE,TRUE,FALSE,TRUE,included in BOOM/HLS comparable loaded-program prefix
+independent_alu,6,0x0000000080000018,0x06c28293,ADDI,ALU_IMM,TRUE,5,0x0000000080000080,TRUE,TRUE,FALSE,TRUE,included in BOOM/HLS comparable loaded-program prefix
+independent_alu,7,0x000000008000001c,0x00100313,ADDI,ALU_IMM,TRUE,6,0x0000000000000001,TRUE,TRUE,FALSE,TRUE,included in BOOM/HLS comparable loaded-program prefix
+independent_alu,8,0x0000000080000020,0x0062b023,SD,STORE,FALSE,,,TRUE,FALSE,TRUE,FALSE,HLS lsu_module is a no-op; retired store-to-tohost is the prefix stop boundary
+raw_chain,0,0x0000000080000000,0x00500093,ADDI,ALU_IMM,TRUE,1,0x0000000000000005,TRUE,TRUE,FALSE,TRUE,included in BOOM/HLS comparable loaded-program prefix
+raw_chain,1,0x0000000080000004,0x00208113,ADDI,ALU_IMM,TRUE,2,0x0000000000000007,TRUE,TRUE,FALSE,TRUE,included in BOOM/HLS comparable loaded-program prefix
+raw_chain,2,0x0000000080000008,0x00410193,ADDI,ALU_IMM,TRUE,3,0x000000000000000b,TRUE,TRUE,FALSE,TRUE,included in BOOM/HLS comparable loaded-program prefix
+raw_chain,3,0x000000008000000c,0x00b00393,ADDI,ALU_IMM,TRUE,7,0x000000000000000b,TRUE,TRUE,FALSE,TRUE,included in BOOM/HLS comparable loaded-program prefix
+raw_chain,4,0x0000000080000010,0x00719c63,BNE,CONTROL,FALSE,,,TRUE,TRUE,FALSE,TRUE,included in BOOM/HLS comparable loaded-program prefix
+raw_chain,5,0x0000000080000014,0x00000297,AUIPC,ALU_IMM,TRUE,5,0x0000000080000014,TRUE,TRUE,FALSE,TRUE,included in BOOM/HLS comparable loaded-program prefix
+raw_chain,6,0x0000000080000018,0x06c28293,ADDI,ALU_IMM,TRUE,5,0x0000000080000080,TRUE,TRUE,FALSE,TRUE,included in BOOM/HLS comparable loaded-program prefix
+raw_chain,7,0x000000008000001c,0x00100313,ADDI,ALU_IMM,TRUE,6,0x0000000000000001,TRUE,TRUE,FALSE,TRUE,included in BOOM/HLS comparable loaded-program prefix
+raw_chain,8,0x0000000080000020,0x0062b023,SD,STORE,FALSE,,,TRUE,FALSE,TRUE,FALSE,HLS lsu_module is a no-op; retired store-to-tohost is the prefix stop boundary
+branch_taken,0,0x0000000080000000,0x00500093,ADDI,ALU_IMM,TRUE,1,0x0000000000000005,TRUE,TRUE,FALSE,TRUE,included in BOOM/HLS comparable loaded-program prefix
+branch_taken,1,0x0000000080000004,0x00500113,ADDI,ALU_IMM,TRUE,2,0x0000000000000005,TRUE,TRUE,FALSE,TRUE,included in BOOM/HLS comparable loaded-program prefix
+branch_taken,2,0x0000000080000008,0x00208463,BEQ,CONTROL,FALSE,,,TRUE,TRUE,FALSE,TRUE,included in BOOM/HLS comparable loaded-program prefix
+branch_taken,3,0x0000000080000010,0x00a00193,ADDI,ALU_IMM,TRUE,3,0x000000000000000a,TRUE,TRUE,FALSE,TRUE,included in BOOM/HLS comparable loaded-program prefix
+branch_taken,4,0x0000000080000014,0x00a00393,ADDI,ALU_IMM,TRUE,7,0x000000000000000a,TRUE,TRUE,FALSE,TRUE,included in BOOM/HLS comparable loaded-program prefix
+branch_taken,5,0x0000000080000018,0x00719c63,BNE,CONTROL,FALSE,,,TRUE,TRUE,FALSE,TRUE,included in BOOM/HLS comparable loaded-program prefix
+branch_taken,6,0x000000008000001c,0x00000297,AUIPC,ALU_IMM,TRUE,5,0x000000008000001c,TRUE,TRUE,FALSE,TRUE,included in BOOM/HLS comparable loaded-program prefix
+branch_taken,7,0x0000000080000020,0x06428293,ADDI,ALU_IMM,TRUE,5,0x0000000080000080,TRUE,TRUE,FALSE,TRUE,included in BOOM/HLS comparable loaded-program prefix
+branch_taken,8,0x0000000080000024,0x00100313,ADDI,ALU_IMM,TRUE,6,0x0000000000000001,TRUE,TRUE,FALSE,TRUE,included in BOOM/HLS comparable loaded-program prefix
+branch_taken,9,0x0000000080000028,0x0062b023,SD,STORE,FALSE,,,TRUE,FALSE,TRUE,FALSE,HLS lsu_module is a no-op; retired store-to-tohost is the prefix stop boundary
+branch_not_taken,0,0x0000000080000000,0x00300093,ADDI,ALU_IMM,TRUE,1,0x0000000000000003,TRUE,TRUE,FALSE,TRUE,included in BOOM/HLS comparable loaded-program prefix
+branch_not_taken,1,0x0000000080000004,0x00700113,ADDI,ALU_IMM,TRUE,2,0x0000000000000007,TRUE,TRUE,FALSE,TRUE,included in BOOM/HLS comparable loaded-program prefix
+branch_not_taken,2,0x0000000080000008,0x00208463,BEQ,CONTROL,FALSE,,,TRUE,TRUE,FALSE,TRUE,included in BOOM/HLS comparable loaded-program prefix
+branch_not_taken,3,0x000000008000000c,0x06300193,ADDI,ALU_IMM,TRUE,3,0x0000000000000063,TRUE,TRUE,FALSE,TRUE,included in BOOM/HLS comparable loaded-program prefix
+branch_not_taken,4,0x0000000080000010,0x00a00193,ADDI,ALU_IMM,TRUE,3,0x000000000000000a,TRUE,TRUE,FALSE,TRUE,included in BOOM/HLS comparable loaded-program prefix
+branch_not_taken,5,0x0000000080000014,0x00a00393,ADDI,ALU_IMM,TRUE,7,0x000000000000000a,TRUE,TRUE,FALSE,TRUE,included in BOOM/HLS comparable loaded-program prefix
+branch_not_taken,6,0x0000000080000018,0x00719c63,BNE,CONTROL,FALSE,,,TRUE,TRUE,FALSE,TRUE,included in BOOM/HLS comparable loaded-program prefix
+branch_not_taken,7,0x000000008000001c,0x00000297,AUIPC,ALU_IMM,TRUE,5,0x000000008000001c,TRUE,TRUE,FALSE,TRUE,included in BOOM/HLS comparable loaded-program prefix
+branch_not_taken,8,0x0000000080000020,0x06428293,ADDI,ALU_IMM,TRUE,5,0x0000000080000080,TRUE,TRUE,FALSE,TRUE,included in BOOM/HLS comparable loaded-program prefix
+branch_not_taken,9,0x0000000080000024,0x00100313,ADDI,ALU_IMM,TRUE,6,0x0000000000000001,TRUE,TRUE,FALSE,TRUE,included in BOOM/HLS comparable loaded-program prefix
+branch_not_taken,10,0x0000000080000028,0x0062b023,SD,STORE,FALSE,,,TRUE,FALSE,TRUE,FALSE,HLS lsu_module is a no-op; retired store-to-tohost is the prefix stop boundary
+nested_branch,0,0x0000000080000000,0x00100093,ADDI,ALU_IMM,TRUE,1,0x0000000000000001,TRUE,TRUE,FALSE,TRUE,included in BOOM/HLS comparable loaded-program prefix
+nested_branch,1,0x0000000080000004,0x00100113,ADDI,ALU_IMM,TRUE,2,0x0000000000000001,TRUE,TRUE,FALSE,TRUE,included in BOOM/HLS comparable loaded-program prefix
+nested_branch,2,0x0000000080000008,0x00208463,BEQ,CONTROL,FALSE,,,TRUE,TRUE,FALSE,TRUE,included in BOOM/HLS comparable loaded-program prefix
+nested_branch,3,0x0000000080000010,0x00208463,BEQ,CONTROL,FALSE,,,TRUE,TRUE,FALSE,TRUE,included in BOOM/HLS comparable loaded-program prefix
+nested_branch,4,0x0000000080000018,0x02100193,ADDI,ALU_IMM,TRUE,3,0x0000000000000021,TRUE,TRUE,FALSE,TRUE,included in BOOM/HLS comparable loaded-program prefix
+nested_branch,5,0x000000008000001c,0x02100393,ADDI,ALU_IMM,TRUE,7,0x0000000000000021,TRUE,TRUE,FALSE,TRUE,included in BOOM/HLS comparable loaded-program prefix
+nested_branch,6,0x0000000080000020,0x00719c63,BNE,CONTROL,FALSE,,,TRUE,TRUE,FALSE,TRUE,included in BOOM/HLS comparable loaded-program prefix
+nested_branch,7,0x0000000080000024,0x00000297,AUIPC,ALU_IMM,TRUE,5,0x0000000080000024,TRUE,TRUE,FALSE,TRUE,included in BOOM/HLS comparable loaded-program prefix
+nested_branch,8,0x0000000080000028,0x05c28293,ADDI,ALU_IMM,TRUE,5,0x0000000080000080,TRUE,TRUE,FALSE,TRUE,included in BOOM/HLS comparable loaded-program prefix
+nested_branch,9,0x000000008000002c,0x00100313,ADDI,ALU_IMM,TRUE,6,0x0000000000000001,TRUE,TRUE,FALSE,TRUE,included in BOOM/HLS comparable loaded-program prefix
+nested_branch,10,0x0000000080000030,0x0062b023,SD,STORE,FALSE,,,TRUE,FALSE,TRUE,FALSE,HLS lsu_module is a no-op; retired store-to-tohost is the prefix stop boundary
