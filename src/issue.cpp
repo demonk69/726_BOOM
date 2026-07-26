@@ -4,6 +4,25 @@
 
 namespace boom {
 
+static bool killed_by_branch(const MicroOp& uop, uint8_t mask) {
+    return (uop.branch.br_mask & mask) != 0;
+}
+
+static bool preg_busy(const BoomCoreState& state, uint8_t preg) {
+    return preg != 0 && preg < INT_PHYS_REGS && state.rename.int_free_list.busy_table[preg];
+}
+
+static void compact_iq(IssueQueueState& iq) {
+    IssueSlotEntry temp[ISSUE_QUEUE_ALU_DEPTH];
+    int w=0;
+    for (int i=0; i<ISSUE_QUEUE_ALU_DEPTH; i++) {
+        if (iq.entries[i].valid && !iq.entries[i].granted) temp[w++]=iq.entries[i];
+    }
+    for (int i=w; i<ISSUE_QUEUE_ALU_DEPTH; i++) temp[i]=IssueSlotEntry();
+    for (int i=0; i<ISSUE_QUEUE_ALU_DEPTH; i++) iq.entries[i]=temp[i];
+    iq.head=0; iq.tail=(uint8_t)(w%ISSUE_QUEUE_ALU_DEPTH); iq.count=(uint8_t)w;
+}
+
 void issue_module(BoomCoreState& state) {
     IssueState& iss = state.issue;
     const RenameState& ren = state.rename;
@@ -14,6 +33,20 @@ void issue_module(BoomCoreState& state) {
         for (int j=0; j<ISSUE_QUEUE_ALU_DEPTH; j++) iss.alu_iq.entries[j].valid=false;
         iss.alu_iq.count=0; iss.alu_iq.head=0; iss.alu_iq.tail=0; return;
     }
+
+    for (int j=0; j<ISSUE_QUEUE_ALU_DEPTH; j++) {
+        IssueSlotEntry& s = iss.alu_iq.entries[j];
+        if (!s.valid) continue;
+        if (state.brupdate.valid && state.brupdate.mispredict && killed_by_branch(s.uop, state.brupdate.mispredict_mask)) {
+            s.valid = false;
+            s.killed = true;
+            continue;
+        }
+        if (state.brupdate.valid) s.uop.branch.br_mask &= (uint8_t)~state.brupdate.resolve_mask;
+        if (s.uop.rename.prs1 != 0) s.prs1_busy = preg_busy(state, s.uop.rename.prs1);
+        if (s.uop.rename.prs2 != 0) s.prs2_busy = preg_busy(state, s.uop.rename.prs2);
+    }
+    compact_iq(iss.alu_iq);
 
     for (int i=0; i<DISPATCH_WIDTH; i++) {
         if (!ren.renamed_valids[i]) continue;
@@ -37,15 +70,7 @@ void issue_module(BoomCoreState& state) {
         }
     }
 
-    IssueSlotEntry temp[ISSUE_QUEUE_ALU_DEPTH];
-    int w=0;
-    for (int i=0; i<ISSUE_QUEUE_ALU_DEPTH; i++) {
-        if (iss.alu_iq.entries[i].valid && !iss.alu_iq.entries[i].granted)
-            temp[w++]=iss.alu_iq.entries[i];
-    }
-    for (int i=w; i<ISSUE_QUEUE_ALU_DEPTH; i++) temp[i].valid=false;
-    for (int i=0; i<ISSUE_QUEUE_ALU_DEPTH; i++) iss.alu_iq.entries[i]=temp[i];
-    iss.alu_iq.tail=w%ISSUE_QUEUE_ALU_DEPTH; iss.alu_iq.count=w;
+    compact_iq(iss.alu_iq);
 }
 
 }

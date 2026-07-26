@@ -80,10 +80,12 @@ def store_commit(commits: Sequence[dict]) -> Optional[dict]:
     return None
 
 
-def compare_program(root: Path, program_info: Dict[str, object], hls_source: str) -> Dict[str, object]:
+def compare_program(root: Path, program_info: Dict[str, object], hls_source: str,
+                    hls_trace_dir: Optional[Path] = None) -> Dict[str, object]:
     program = str(program_info["name"])
     boom_path = root / "reference" / "boom_traces" / str(program_info["boom_trace"])
-    hls_path = root / "reference" / "hls_traces" / f"{program}_{hls_source}_full.jsonl"
+    hls_base = hls_trace_dir or root / "reference" / "hls_traces"
+    hls_path = hls_base / f"{program}_{hls_source}_full.jsonl"
     row: Dict[str, object] = {
         "program": program,
         "hls_source": hls_source,
@@ -201,6 +203,8 @@ def main() -> int:
     parser.add_argument("--root", default=Path(__file__).resolve().parents[1], type=Path)
     parser.add_argument("--hls-source", action="append", choices=("hls_cpp", "hls_csim"),
                         help="HLS trace source to compare. May be passed more than once. Defaults to hls_cpp.")
+    parser.add_argument("--hls-trace-dir", default=None, type=Path,
+                        help="Override HLS trace directory. Defaults to reference/hls_traces.")
     parser.add_argument("--csv-output", default=None, type=Path)
     parser.add_argument("--md-output", default=None, type=Path)
     args = parser.parse_args()
@@ -212,7 +216,8 @@ def main() -> int:
     csv_output.parent.mkdir(parents=True, exist_ok=True)
 
     hls_sources = args.hls_source or ["hls_cpp"]
-    rows = [compare_program(root, program_info, hls_source)
+    hls_trace_dir = args.hls_trace_dir.resolve() if args.hls_trace_dir else None
+    rows = [compare_program(root, program_info, hls_source, hls_trace_dir)
             for hls_source in hls_sources for program_info in PROGRAMS]
     with csv_output.open("w", encoding="utf-8", newline="") as handle:
         writer = csv.DictWriter(handle, fieldnames=list(rows[0].keys()))

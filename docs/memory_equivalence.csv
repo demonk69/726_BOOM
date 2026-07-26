@@ -1,19 +1,20 @@
-# BOOM-HLS Memory/State Structure Equivalence
+# BOOM-HLS Memory/State Structure Equivalence, Gate 3.4 Update 2026-07-26
 
 Structure,BOOM Depth,BOOM Width(bits),BOOM Ports,HLS Depth,HLS Width,HLS Ports,Vitis Mapping,Match,Notes
-Int PRF,52,64,4R2W,52,64,1R1W (seq),57 BRAM total,MATCH,Multi-port emulated via array partitioning
-FP PRF,48,64,3R2W,48,64,1R1W (seq),0 BRAM (unused),MATCH,Stub; no DSP
-ROB Entries,32,~400,1R1W,32,MicroOp struct,1R1W,"4-8 BRAM (cloned for wide data)",MATCH,RobEntry ~120 bytes
-Int IQ,8,~450,1R1W,8,IssueSlotEntry,1R1W,"2-4 BRAM (cloned)",MATCH,IssueSlotEntry ~140 bytes
+Int PRF,52,64,4R2W,52,64,1R1W seq,baseline total 16 BRAM_18K,MATCH,"Functional state size matches; BOOM multi-port RF structure is not modeled"
+FP PRF,48,64,3R2W,48,64,1R1W seq,baseline total 16 BRAM_18K,MATCH,"Storage exists but FPU path absent"
+ROB Entries,32,~400,1R1W,32,RobEntry struct,1R1W seq,baseline total 16 BRAM_18K,MATCH,"Functional depth matches; PNR/full exception timing absent"
+Int IQ,8,~450,1R1W,8,IssueSlotEntry,1R1W seq,baseline total 16 BRAM_18K,MATCH,"Functional depth matches; only one implemented ALU execute lane"
 Mem IQ,8,-,1R1W,NOT IMPL,-,-,-,NOT_IMPLEMENTED,Stub
 FPU IQ,8,-,1R1W,NOT IMPL,-,-,-,NOT_IMPLEMENTED,Stub
-LDQ,8,-,1R1W,NOT IMPL,-,-,-,NOT_IMPLEMENTED,Stub
-STQ,8,-,1R1W,NOT IMPL,-,-,-,NOT_IMPLEMENTED,Stub
-Rename MapTable,32,6,1R1W,32,8(uint8_t),1R seq,~1 BRAM,MATCH,6b logical→physical mapping
+LDQ,8,-,1R1W,8,LoadQueueEntry,1R1W seq,baseline total 16 BRAM_18K,PARTIAL,"Minimal load queue for integer load requests/responses; no DCache/TLB/replay/miss model"
+STQ,8,-,1R1W,8,StoreQueueEntry,1R1W seq,baseline total 16 BRAM_18K,PARTIAL,"Minimal store queue and committed store request path; no store buffer/cache protocol/full forwarding"
+Rename MapTable,32,6,1R1W,32,8(uint8_t),1R seq,baseline total 16 BRAM_18K,MATCH,"6b logical-to-physical mapping stored in uint8_t"
 Committed MapTable,32,6,1R,32,8(uint8_t),1R seq,~1 BRAM,MATCH,Separate committed state
-Free List,52,6,1R1W,52,8(uint8_t),1R seq,~1 BRAM,MATCH,Queue + head/tail
-Busy Table,52,1,1R1W,52,1(bool),1R seq,~1 BRAM,MATCH,Bitmap
-Branch Snapshots,32×8,6 per snapshot,1R1W,32×8,8(uint8_t),1 seq,"2-4 BRAM",MISMATCH,Exists in struct but never saved/restored in HLS
+Free List,52,6,1R1W,52,8(uint8_t),1R seq,baseline total 16 BRAM_18K,MATCH,"Queue + head/tail; Gate 3.3 duplicate-safe rollback insertion"
+Busy Table,52,1,1R1W,52,1(bool),1R seq,baseline total 16 BRAM_18K,MATCH,"Bitmap; Gate 3.3 recovery rebuild is functional substitute, not cycle proof"
+Branch Snapshots,32x8,6 per snapshot,1R1W,32x8,8(uint8_t),1 seq RAM_AUTO_1R1W,baseline total 16 BRAM_18K,MATCH,"Gate 3.4 RTL inventory confirms 256x8 reg-array RAM; no complete partition"
+Branch Alloc Lists,8x52,1 per phys reg,1R1W,8x52,1(bool),1 seq RAM_AUTO_1R1W,baseline total 16 BRAM_18K,MATCH,"Gate 3.4 RTL inventory confirms 416x1 reg-array RAM; no complete partition"
 FTQ,16,-,1R1W,NOT IMPL,-,-,-,NOT_IMPLEMENTED,Stub
 Fetch Buffer,8,-,1R1W,NOT IMPL,-,-,-,NOT_IMPLEMENTED,Stub
 CSR mstatus,1,64,1R1W,1,64,1R seq,Register,MATCH,Default value 0x0a00000000

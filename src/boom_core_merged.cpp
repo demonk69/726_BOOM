@@ -206,6 +206,9 @@ void decode_module(BoomCoreState& state) {
     uint32_t inst = state.frontend.fetch_uop.inst;
 
     MicroOp uop;
+    uop.ctrl = DecodeControl();
+    uop.branch = BranchInfo();
+    uop.mem = MemoryInfo();
     uop.inst = inst;
     uop.debug_pc = pc;
     uop.rename.lrs1 = (inst>>15)&0x1F;
@@ -244,14 +247,24 @@ void decode_module(BoomCoreState& state) {
             case 7:uop.uopc=UOPC_BGEU;uop.ctrl.br_type=BR_GEU;break;
             default:uop.uopc=UOPC_ILLEGAL;uop.exception=true;uop.exc_cause=2;break;} break;
         case 0x03: uop.iq_type=IQ_MEM; uop.fu_code= FU_MEM;
-            uop.ctrl.op1_sel=OP1_RS1; uop.ctrl.op2_sel=OP2_IMM; uop.ctrl.is_load=true;
+            uop.ctrl.op1_sel=OP1_RS1; uop.ctrl.op2_sel=OP2_IMM; uop.ctrl.is_load=true; uop.ctrl.is_sta=false;
             uop.imm_packed=extract_imm_i(inst); uop.rename.dst_rtype=DST_INT;
-            switch(f3) { case 3:uop.uopc=UOPC_LD;uop.mem.mem_size=3;break;
+            uop.mem.mem_signed=true; uop.mem.uses_ldq=true;
+            switch(f3) { case 0:uop.uopc=UOPC_LB;uop.mem.mem_size=0;break;
+            case 1:uop.uopc=UOPC_LH;uop.mem.mem_size=1;break;
+            case 2:uop.uopc=UOPC_LW;uop.mem.mem_size=2;break;
+            case 3:uop.uopc=UOPC_LD;uop.mem.mem_size=3;break;
+            case 4:uop.uopc=UOPC_LBU;uop.mem.mem_size=0;uop.mem.mem_signed=false;break;
+            case 5:uop.uopc=UOPC_LHU;uop.mem.mem_size=1;uop.mem.mem_signed=false;break;
+            case 6:uop.uopc=UOPC_LWU;uop.mem.mem_size=2;uop.mem.mem_signed=false;break;
             default:uop.uopc=UOPC_ILLEGAL;uop.exception=true;uop.exc_cause=2;break;} break;
         case 0x23: uop.iq_type=IQ_MEM; uop.fu_code= FU_MEM;
-            uop.ctrl.op1_sel=OP1_RS1; uop.ctrl.op2_sel=OP2_RS2; uop.ctrl.is_sta=true;
+            uop.ctrl.op1_sel=OP1_RS1; uop.ctrl.op2_sel=OP2_RS2; uop.ctrl.is_load=false; uop.ctrl.is_sta=true;
             uop.imm_packed=extract_imm_s(inst); uop.mem.uses_stq=true; uop.rename.dst_rtype=DST_N;
-            switch(f3) { case 3:uop.uopc=UOPC_SD;uop.mem.mem_size=3;break;
+            switch(f3) { case 0:uop.uopc=UOPC_SB;uop.mem.mem_size=0;break;
+            case 1:uop.uopc=UOPC_SH;uop.mem.mem_size=1;break;
+            case 2:uop.uopc=UOPC_SW;uop.mem.mem_size=2;break;
+            case 3:uop.uopc=UOPC_SD;uop.mem.mem_size=3;break;
             default:uop.uopc=UOPC_ILLEGAL;uop.exception=true;uop.exc_cause=2;break;} break;
         case 0x13: uop.iq_type=IQ_ALU; uop.fu_code= FU_ALU;
             uop.ctrl.op1_sel=OP1_RS1; uop.ctrl.op2_sel=OP2_IMM; uop.imm_packed=extract_imm_i(inst);
@@ -318,43 +331,116 @@ void decode_module(BoomCoreState& state) {
 
 namespace boom {
 
+static uint8_t tag_bit(uint8_t tag) {
+    return (tag < MAX_BRANCH_COUNT) ? (uint8_t)(1u << tag) : 0;
+}
+
+static bool is_control_uop(const MicroOp& uop) {
+    return uop.branch.is_br || uop.branch.is_jal || uop.branch.is_jalr;
+}
+
+static bool allocate_branch_tag(BranchRecoveryState& br, uint8_t& tag) {
+    if (br.active_mask == ((1u << MAX_BRANCH_COUNT) - 1u)) return false;
+    for (int i=0; i<MAX_BRANCH_COUNT; i++) {
+        if ((br.active_mask & tag_bit((uint8_t)i)) == 0) {
+            tag = (uint8_t)i;
+            return true;
+        }
+    }
+    return false;
+}
+
+static bool allocate_preg(RenameFreeListState& fl, uint8_t& pdst) {
+    if (fl.count == 0) return false;
+    for (int i=0; i<INT_PHYS_REGS; i++) {
+        if (fl.count == 0) return false;
+        uint8_t candidate = fl.free_list[fl.head];
+        fl.head = (uint8_t)((fl.head + 1) % INT_PHYS_REGS);
+        fl.count--;
+        if (candidate != 0 && candidate < INT_PHYS_REGS) {
+            pdst = candidate;
+            return true;
+        }
+    }
+    return false;
+}
+
+static void clear_branch_alloc_list(BranchRecoveryState& br, uint8_t tag) {
+    if (tag >= MAX_BRANCH_COUNT) return;
+    for (int p=0; p<INT_PHYS_REGS; p++) br.br_alloc_lists[tag][p] = false;
+}
+
+static void record_pdst_for_active_branches(BranchRecoveryState& br, uint8_t active_mask, uint8_t pdst) {
+    if (pdst == 0 || pdst >= INT_PHYS_REGS) return;
+    for (int t=0; t<MAX_BRANCH_COUNT; t++) {
+        if ((active_mask & tag_bit((uint8_t)t)) != 0 && br.tag_valid[t]) br.br_alloc_lists[t][pdst] = true;
+    }
+}
+
+static void save_map_snapshot(RenameMapTableState& mt, BranchRecoveryState& br, uint8_t tag) {
+    if (tag >= MAX_BRANCH_COUNT) return;
+    for (int i=0; i<LOGICAL_REG_COUNT; i++) mt.br_snapshots[i][tag] = mt.map_table[i];
+    mt.br_snapshots[0][tag] = 0;
+    br.snapshot_valid[tag] = true;
+}
+
 void rename_module(BoomCoreState& state) {
     RenameState& ren = state.rename;
     RenameMapTableState& mt = ren.int_map_table;
     RenameFreeListState& fl = ren.int_free_list;
+    BranchRecoveryState& br = state.branch_state;
 
     for (int i=0; i<DISPATCH_WIDTH; i++) {
         ren.renamed_valids[i]=false; ren.renamed_uops[i]=MicroOp();
     }
     if (state.global_flush) return;
-
-    if (state.brupdate.valid && state.brupdate.mispredict) {
-        for (int i=0; i<LOGICAL_REG_COUNT; i++) {
-            mt.map_table[i] = mt.committed_map_table[i];
-            for (int j=0; j<MAX_BRANCH_COUNT; j++) mt.br_snapshots[i][j]=mt.committed_map_table[i];
-        }
-    }
+    mt.map_table[0] = 0;
 
     for (int i=0; i<DISPATCH_WIDTH; i++) {
         if (!state.decode.dec_valids[i]) continue;
         MicroOp uop = state.decode.dec_uops[i];
+        bool is_branch = is_control_uop(uop);
+        bool allocates_dst = (uop.rename.dst_rtype == DST_INT && uop.rename.ldst != 0);
+        uint8_t active_before = br.active_mask;
+        uint8_t new_tag = 0;
+        bool got_tag = false;
+
+        if (is_branch) {
+            if (!allocate_branch_tag(br, new_tag)) {
+                ren.renamed_valids[i] = false;
+                break;
+            }
+            got_tag = true;
+            uop.branch.br_tag = new_tag;
+        }
+        uop.branch.br_mask = active_before;
 
         uop.rename.prs1 = mt.map_table[uop.rename.lrs1];
         uop.rename.prs2 = mt.map_table[uop.rename.lrs2];
         uop.rename.stale_pdst = mt.map_table[uop.rename.ldst];
 
-        uop.rename.prs1_busy = false;
-        uop.rename.prs2_busy = false;
+        uop.rename.prs1_busy = (uop.rename.prs1 != 0) && fl.busy_table[uop.rename.prs1];
+        uop.rename.prs2_busy = (uop.rename.prs2 != 0) && fl.busy_table[uop.rename.prs2];
 
-        if (uop.rename.dst_rtype == DST_INT && uop.rename.ldst != 0) {
-            if (fl.count > 0) {
-                uint8_t pdst = fl.free_list[fl.head];
-                fl.head = (fl.head+1)%INT_PHYS_REGS; fl.count--;
-                fl.busy_table[pdst] = true;
-                uop.rename.pdst = pdst;
-                mt.map_table[uop.rename.ldst] = pdst;
+        if (allocates_dst) {
+            uint8_t pdst = 0;
+            if (!allocate_preg(fl, pdst)) {
+                ren.renamed_valids[i] = false;
+                break;
             }
+            fl.busy_table[pdst] = true;
+            uop.rename.pdst = pdst;
+            mt.map_table[uop.rename.ldst] = pdst;
+            record_pdst_for_active_branches(br, active_before, pdst);
         } else { uop.rename.pdst = 0; uop.rename.ldst = 0; }
+
+        if (got_tag) {
+            clear_branch_alloc_list(br, new_tag);
+            save_map_snapshot(mt, br, new_tag);
+            br.tag_valid[new_tag] = true;
+            br.active_mask |= tag_bit(new_tag);
+            br.allocations++;
+        }
 
         ren.renamed_uops[i] = uop;
         ren.renamed_valids[i] = true;
@@ -363,9 +449,81 @@ void rename_module(BoomCoreState& state) {
 
 }
 
+// ==== rob.cpp ====
+namespace boom {
+
+void rob_flush(BoomCoreState& state) {
+    RobInternalState& rob = state.rob;
+ROB_FLUSH_ENTRIES:
+    for (int i=0; i<ROB_DEPTH; i++) {
+        if (rob.entries[i].valid) { rob.entries[i].valid=false; rob.entries[i].busy=false; }
+    }
+    rob.head=0; rob.tail=0; rob.maybe_full=false; rob.state=ROB_NORMAL;
+}
+
+bool rob_branch_kill(BoomCoreState& state) {
+    (void)state;
+    return false;
+}
+
+void rob_complete(BoomCoreState& state) {
+ROB_COMPLETE_LANES:
+    for (int i=0; i<DISPATCH_WIDTH; i++) {
+        if (!state.execute.alu_results[i].valid) continue;
+        const ExecuteState::AluResult& r = state.execute.alu_results[i];
+        if (r.memory_valid || r.is_load || r.is_store || r.uop.ctrl.is_load || r.uop.ctrl.is_sta) continue;
+        uint8_t ridx = r.uop.queue.rob_idx;
+        if (ridx<ROB_DEPTH && state.rob.entries[ridx].valid) {
+            state.rob.entries[ridx].busy=false;
+            if (r.exception) state.rob.entries[ridx].exception=true;
+        }
+    }
+}
+
+void rob_allocate(BoomCoreState& state) {
+    RobInternalState& rob = state.rob;
+    if (rob.state == ROB_INIT) rob.state = ROB_NORMAL;
+    if (state.global_flush) return;
+ROB_ALLOCATE_LANES:
+    for (int i=0; i<DISPATCH_WIDTH; i++) {
+        if (!state.rename.renamed_valids[i]) continue;
+        bool is_full = (rob.head==rob.tail) && rob.maybe_full;
+        if (is_full) { state.rename.renamed_valids[i]=false; break; }
+        MicroOp uop = state.rename.renamed_uops[i];
+        if (uop.uopc == 0) continue;
+        RobEntry& entry = rob.entries[rob.tail];
+        entry = RobEntry();
+        entry.valid=true; entry.busy=true; entry.exception=uop.exception;
+        uop.queue.rob_idx = rob.tail; entry.uop = uop;
+        state.rename.renamed_uops[i].queue.rob_idx = rob.tail;
+        rob.tail=(rob.tail+1)%ROB_DEPTH;
+        if (rob.tail==rob.head) rob.maybe_full=true;
+    }
+}
+}
+
 // ==== issue.cpp ====
 
 namespace boom {
+
+static bool killed_by_branch(const MicroOp& uop, uint8_t mask) {
+    return (uop.branch.br_mask & mask) != 0;
+}
+
+static bool preg_busy(const BoomCoreState& state, uint8_t preg) {
+    return preg != 0 && preg < INT_PHYS_REGS && state.rename.int_free_list.busy_table[preg];
+}
+
+static void compact_iq(IssueQueueState& iq) {
+    IssueSlotEntry temp[ISSUE_QUEUE_ALU_DEPTH];
+    int w=0;
+    for (int i=0; i<ISSUE_QUEUE_ALU_DEPTH; i++) {
+        if (iq.entries[i].valid && !iq.entries[i].granted) temp[w++]=iq.entries[i];
+    }
+    for (int i=w; i<ISSUE_QUEUE_ALU_DEPTH; i++) temp[i]=IssueSlotEntry();
+    for (int i=0; i<ISSUE_QUEUE_ALU_DEPTH; i++) iq.entries[i]=temp[i];
+    iq.head=0; iq.tail=(uint8_t)(w%ISSUE_QUEUE_ALU_DEPTH); iq.count=(uint8_t)w;
+}
 
 void issue_module(BoomCoreState& state) {
     IssueState& iss = state.issue;
@@ -378,11 +536,25 @@ void issue_module(BoomCoreState& state) {
         iss.alu_iq.count=0; iss.alu_iq.head=0; iss.alu_iq.tail=0; return;
     }
 
+    for (int j=0; j<ISSUE_QUEUE_ALU_DEPTH; j++) {
+        IssueSlotEntry& s = iss.alu_iq.entries[j];
+        if (!s.valid) continue;
+        if (state.brupdate.valid && state.brupdate.mispredict && killed_by_branch(s.uop, state.brupdate.mispredict_mask)) {
+            s.valid = false;
+            s.killed = true;
+            continue;
+        }
+        if (state.brupdate.valid) s.uop.branch.br_mask &= (uint8_t)~state.brupdate.resolve_mask;
+        if (s.uop.rename.prs1 != 0) s.prs1_busy = preg_busy(state, s.uop.rename.prs1);
+        if (s.uop.rename.prs2 != 0) s.prs2_busy = preg_busy(state, s.uop.rename.prs2);
+    }
+    compact_iq(iss.alu_iq);
+
     for (int i=0; i<DISPATCH_WIDTH; i++) {
         if (!ren.renamed_valids[i]) continue;
         if (iss.alu_iq.count >= ISSUE_QUEUE_ALU_DEPTH) break;
         const MicroOp& uop = ren.renamed_uops[i];
-        if (uop.iq_type != IQ_ALU) continue;
+        if (uop.iq_type != IQ_ALU && uop.iq_type != IQ_MEM) continue;
         IssueSlotEntry& slot = iss.alu_iq.entries[iss.alu_iq.tail];
         slot.valid=true; slot.request=true; slot.granted=false; slot.killed=false;
         slot.uop=uop; slot.prs1_busy=uop.rename.prs1_busy;
@@ -400,15 +572,7 @@ void issue_module(BoomCoreState& state) {
         }
     }
 
-    IssueSlotEntry temp[ISSUE_QUEUE_ALU_DEPTH];
-    int w=0;
-    for (int i=0; i<ISSUE_QUEUE_ALU_DEPTH; i++) {
-        if (iss.alu_iq.entries[i].valid && !iss.alu_iq.entries[i].granted)
-            temp[w++]=iss.alu_iq.entries[i];
-    }
-    for (int i=w; i<ISSUE_QUEUE_ALU_DEPTH; i++) temp[i].valid=false;
-    for (int i=0; i<ISSUE_QUEUE_ALU_DEPTH; i++) iss.alu_iq.entries[i]=temp[i];
-    iss.alu_iq.tail=w%ISSUE_QUEUE_ALU_DEPTH; iss.alu_iq.count=w;
+    compact_iq(iss.alu_iq);
 }
 
 }
@@ -418,17 +582,20 @@ void issue_module(BoomCoreState& state) {
 namespace boom {
 
 static uint64_t sext32(int64_t v) { return (uint64_t)((int32_t)(v&0xFFFFFFFF)); }
+static uint8_t mask_for_size(uint8_t size) { return (uint8_t)((size>=3) ? 0xFF : ((1u << (1u << size)) - 1u)); }
 
 void execute_module(BoomCoreState& state) {
     ExecuteState& exe = state.execute;
     const IssueState& iss = state.issue;
 
-    for (int i=0; i<DISPATCH_WIDTH; i++) exe.alu_results[i].valid=false;
+    for (int i=0; i<DISPATCH_WIDTH; i++) exe.alu_results[i]=ExecuteState::AluResult();
 
     int ri=0;
     for (int i=0; i<ISSUE_WIDTH && ri<DISPATCH_WIDTH; i++) {
         if (!iss.issued_valids[i]) continue;
         const MicroOp& uop = iss.issued_uops[i];
+        if (state.brupdate.valid && state.brupdate.mispredict &&
+            ((uop.branch.br_mask & state.brupdate.mispredict_mask) != 0)) continue;
 
         uint64_t rs1 = (uop.rename.prs1!=0) ? state.int_rf[uop.rename.prs1] : 0;
         uint64_t rs2 = (uop.rename.prs2!=0) ? state.int_rf[uop.rename.prs2] : 0;
@@ -440,6 +607,7 @@ void execute_module(BoomCoreState& state) {
         if (uop.ctrl.op2_sel==OP2_IMU) op2=(int64_t)uop.imm_packed;
 
         ExecuteState::AluResult& r = exe.alu_results[ri];
+        r = ExecuteState::AluResult();
         r.valid=true; r.uop=uop; r.exception=false; r.mispredict=false; r.result=0;
 
         switch (uop.uopc) {
@@ -468,14 +636,23 @@ void execute_module(BoomCoreState& state) {
             case 36: r.mispredict=(rs1>=rs2); r.redirect_pc=pc+(int64_t)(int32_t)uop.imm_packed; break;
             case 37: r.result=uop.imm_packed; break;
             case 38: r.result=pc+uop.imm_packed; break;
+            case 39: case 40: case 41: case 42: case 43: case 44: case 45:
+                r.memory_valid=true; r.is_load=true; r.signed_load=uop.mem.mem_signed;
+                r.memory_size=uop.mem.mem_size; r.memory_address=rs1+(int64_t)(int32_t)uop.imm_packed;
+                r.memory_mask=mask_for_size(uop.mem.mem_size); r.result=r.memory_address; break;
+            case 46: case 47: case 48: case 49:
+                r.memory_valid=true; r.is_store=true; r.memory_size=uop.mem.mem_size;
+                r.memory_address=rs1+(int64_t)(int32_t)uop.imm_packed; r.store_data=rs2;
+                r.memory_mask=mask_for_size(uop.mem.mem_size); r.result=r.memory_address; break;
             case 67: case 68: case 69: case 70: case 71: case 72: r.result=0; break;
             default: r.result=0; break;
         }
 
         if (uop.exception) { r.exception=true; r.exc_cause=uop.exc_cause; }
 
-        if (r.valid && uop.rename.dst_rtype==DST_INT && uop.rename.pdst!=0) {
+        if (r.valid && !r.is_load && uop.rename.dst_rtype==DST_INT && uop.rename.pdst!=0) {
             state.int_rf[uop.rename.pdst] = r.result;
+            state.rename.int_free_list.busy_table[uop.rename.pdst] = false;
         }
         ri++;
     }
@@ -487,15 +664,275 @@ void execute_module(BoomCoreState& state) {
 
 namespace boom {
 
+static uint8_t branch_tag_bit(uint8_t tag) {
+    return (tag < MAX_BRANCH_COUNT) ? (uint8_t)(1u << tag) : 0;
+}
+
+static bool branch_is_control_uop(const MicroOp& uop) {
+    return uop.branch.is_br || uop.branch.is_jal || uop.branch.is_jalr;
+}
+
+static bool killed_by_mask(const MicroOp& uop, uint8_t mask) {
+    return (uop.branch.br_mask & mask) != 0;
+}
+
+static void clear_resolved_mask(MicroOp& uop, uint8_t resolve_mask) {
+    uop.branch.br_mask &= (uint8_t)~resolve_mask;
+}
+
+static bool branch_free_list_contains(const RenameFreeListState& fl, uint8_t preg) {
+    uint8_t idx = fl.head;
+    for (int i=0; i<fl.count && i<INT_PHYS_REGS; i++) {
+        if (fl.free_list[idx] == preg) return true;
+        idx = (uint8_t)((idx + 1) % INT_PHYS_REGS);
+    }
+    return false;
+}
+
+static bool preg_in_map(const RenameMapTableState& mt, uint8_t preg) {
+    if (preg == 0) return true;
+    for (int i=0; i<LOGICAL_REG_COUNT; i++) if (mt.map_table[i] == preg) return true;
+    return false;
+}
+
+static void branch_free_preg_unique(RenameFreeListState& fl, uint8_t preg) {
+    if (preg == 0 || preg >= INT_PHYS_REGS) return;
+    if (branch_free_list_contains(fl, preg)) return;
+    if (fl.count >= INT_PHYS_REGS) return;
+    fl.free_list[fl.tail] = preg;
+    fl.tail = (uint8_t)((fl.tail + 1) % INT_PHYS_REGS);
+    fl.count++;
+}
+
+static void branch_clear_alloc_list(BranchRecoveryState& br, uint8_t tag) {
+    if (tag >= MAX_BRANCH_COUNT) return;
+    for (int p=0; p<INT_PHYS_REGS; p++) br.br_alloc_lists[tag][p] = false;
+}
+
+static void release_tag(BoomCoreState& state, uint8_t tag) {
+    if (tag >= MAX_BRANCH_COUNT) return;
+    uint8_t bit = branch_tag_bit(tag);
+    state.branch_state.active_mask &= (uint8_t)~bit;
+    state.branch_state.tag_valid[tag] = false;
+    state.branch_state.snapshot_valid[tag] = false;
+    branch_clear_alloc_list(state.branch_state, tag);
+    state.branch_state.releases++;
+}
+
+static void clear_resolved_masks_in_state(BoomCoreState& state, uint8_t resolve_mask) {
+    if (resolve_mask == 0) return;
+    for (int i=0; i<DISPATCH_WIDTH; i++) {
+        clear_resolved_mask(state.decode.dec_uops[i], resolve_mask);
+        clear_resolved_mask(state.rename.renamed_uops[i], resolve_mask);
+        clear_resolved_mask(state.execute.alu_results[i].uop, resolve_mask);
+    }
+    for (int i=0; i<ISSUE_WIDTH; i++) clear_resolved_mask(state.issue.issued_uops[i], resolve_mask);
+    for (int i=0; i<ISSUE_QUEUE_ALU_DEPTH; i++) clear_resolved_mask(state.issue.alu_iq.entries[i].uop, resolve_mask);
+    for (int i=0; i<ROB_DEPTH; i++) clear_resolved_mask(state.rob.entries[i].uop, resolve_mask);
+    for (int i=0; i<LDQ_DEPTH; i++) state.lsu.ldq[i].branch_mask &= (uint8_t)~resolve_mask;
+    for (int i=0; i<STQ_DEPTH; i++) state.lsu.stq[i].branch_mask &= (uint8_t)~resolve_mask;
+}
+
+static void compact_issue_queue(IssueQueueState& iq) {
+    IssueSlotEntry temp[ISSUE_QUEUE_ALU_DEPTH];
+    int w = 0;
+    for (int i=0; i<ISSUE_QUEUE_ALU_DEPTH; i++) {
+        if (iq.entries[i].valid && !iq.entries[i].killed) temp[w++] = iq.entries[i];
+    }
+    for (int i=w; i<ISSUE_QUEUE_ALU_DEPTH; i++) temp[i] = IssueSlotEntry();
+    for (int i=0; i<ISSUE_QUEUE_ALU_DEPTH; i++) iq.entries[i] = temp[i];
+    iq.head = 0;
+    iq.tail = (uint8_t)(w % ISSUE_QUEUE_ALU_DEPTH);
+    iq.count = (uint8_t)w;
+}
+
+static void kill_issue_state(BoomCoreState& state, uint8_t mispredict_mask) {
+    for (int i=0; i<ISSUE_QUEUE_ALU_DEPTH; i++) {
+        IssueSlotEntry& slot = state.issue.alu_iq.entries[i];
+        if (slot.valid && killed_by_mask(slot.uop, mispredict_mask)) {
+            slot.valid = false;
+            slot.killed = true;
+        }
+    }
+    compact_issue_queue(state.issue.alu_iq);
+    for (int i=0; i<ISSUE_WIDTH; i++) {
+        if (state.issue.issued_valids[i] && killed_by_mask(state.issue.issued_uops[i], mispredict_mask)) {
+            state.issue.issued_valids[i] = false;
+            state.issue.issued_uops[i] = MicroOp();
+        }
+    }
+}
+
+static void kill_execute_state(BoomCoreState& state, uint8_t mispredict_mask) {
+    for (int i=0; i<DISPATCH_WIDTH; i++) {
+        if (state.execute.alu_results[i].valid && killed_by_mask(state.execute.alu_results[i].uop, mispredict_mask)) {
+            state.execute.alu_results[i] = ExecuteState::AluResult();
+        }
+    }
+}
+
+static void kill_lsu_state(BoomCoreState& state, uint8_t mispredict_mask) {
+    LsuState& lsu = state.lsu;
+    LoadQueueEntry new_ldq[LDQ_DEPTH];
+    StoreQueueEntry new_stq[STQ_DEPTH];
+    int lw = 0;
+    int sw = 0;
+
+    for (int i=0; i<LDQ_DEPTH; i++) {
+        LoadQueueEntry& e = lsu.ldq[i];
+        if (e.valid && (e.branch_mask & mispredict_mask) != 0) {
+            if (lsu.load_response_pending && lsu.pending_load_rob_idx == e.rob_idx) {
+                lsu.load_response_pending = false;
+                lsu.pending_load_transaction_id = 0;
+                lsu.pending_load_rob_idx = 0;
+            }
+            e = LoadQueueEntry();
+        } else if (e.valid) {
+            new_ldq[lw++] = e;
+        }
+    }
+    for (int i=0; i<STQ_DEPTH; i++) {
+        StoreQueueEntry& e = lsu.stq[i];
+        if (e.valid && (e.branch_mask & mispredict_mask) != 0) {
+            e = StoreQueueEntry();
+        } else if (e.valid) {
+            new_stq[sw++] = e;
+        }
+    }
+    for (int i=lw; i<LDQ_DEPTH; i++) new_ldq[i] = LoadQueueEntry();
+    for (int i=sw; i<STQ_DEPTH; i++) new_stq[i] = StoreQueueEntry();
+    for (int i=0; i<LDQ_DEPTH; i++) lsu.ldq[i] = new_ldq[i];
+    for (int i=0; i<STQ_DEPTH; i++) lsu.stq[i] = new_stq[i];
+    lsu.ldq_head = 0;
+    lsu.ldq_tail = (uint8_t)(lw % LDQ_DEPTH);
+    lsu.ldq_count = (uint8_t)lw;
+    lsu.stq_head = 0;
+    lsu.stq_tail = (uint8_t)(sw % STQ_DEPTH);
+    lsu.stq_count = (uint8_t)sw;
+}
+
+static void kill_rob_younger_than(BoomCoreState& state, uint8_t branch_rob_idx, uint8_t mispredict_mask) {
+    RobInternalState& rob = state.rob;
+    bool found_branch = false;
+    uint8_t idx = rob.head;
+    for (int i=0; i<ROB_DEPTH; i++) {
+        RobEntry& entry = rob.entries[idx];
+        if (entry.valid && idx == branch_rob_idx) {
+            found_branch = true;
+        } else if (found_branch && entry.valid) {
+            entry = RobEntry();
+        } else if (!found_branch && entry.valid && killed_by_mask(entry.uop, mispredict_mask)) {
+            entry = RobEntry();
+        }
+        idx = (uint8_t)((idx + 1) % ROB_DEPTH);
+    }
+    if (found_branch) rob.tail = (uint8_t)((branch_rob_idx + 1) % ROB_DEPTH);
+    rob.maybe_full = false;
+}
+
+static void rebuild_busy_after_recovery(BoomCoreState& state) {
+    RenameFreeListState& fl = state.rename.int_free_list;
+    for (int p=0; p<INT_PHYS_REGS; p++) fl.busy_table[p] = false;
+    for (int i=0; i<ROB_DEPTH; i++) {
+        const RobEntry& entry = state.rob.entries[i];
+        uint8_t pdst = entry.uop.rename.pdst;
+        if (entry.valid && entry.busy && pdst != 0 && pdst < INT_PHYS_REGS) fl.busy_table[pdst] = true;
+    }
+}
+
+static void restore_map_snapshot(BoomCoreState& state, uint8_t tag) {
+    RenameMapTableState& mt = state.rename.int_map_table;
+    if (tag < MAX_BRANCH_COUNT && state.branch_state.snapshot_valid[tag]) {
+        for (int i=0; i<LOGICAL_REG_COUNT; i++) mt.map_table[i] = mt.br_snapshots[i][tag];
+    } else {
+        for (int i=0; i<LOGICAL_REG_COUNT; i++) mt.map_table[i] = mt.committed_map_table[i];
+    }
+    mt.map_table[0] = 0;
+}
+
+static void rollback_free_list(BoomCoreState& state, uint8_t tag) {
+    if (tag >= MAX_BRANCH_COUNT) return;
+    RenameFreeListState& fl = state.rename.int_free_list;
+    BranchRecoveryState& br = state.branch_state;
+
+    for (int p=1; p<INT_PHYS_REGS; p++) {
+        if (br.br_alloc_lists[tag][p] && !preg_in_map(state.rename.int_map_table, (uint8_t)p)) {
+            fl.busy_table[p] = false;
+            branch_free_preg_unique(fl, (uint8_t)p);
+        }
+    }
+    for (int t=0; t<MAX_BRANCH_COUNT; t++) {
+        if (!br.tag_valid[t]) continue;
+        for (int p=1; p<INT_PHYS_REGS; p++) {
+            if (br.br_alloc_lists[tag][p]) br.br_alloc_lists[t][p] = false;
+        }
+    }
+}
+
+static void prune_recovered_tags(BoomCoreState& state, uint8_t keep_mask, uint8_t resolved_tag) {
+    BranchRecoveryState& br = state.branch_state;
+    for (int t=0; t<MAX_BRANCH_COUNT; t++) {
+        bool keep = (keep_mask & branch_tag_bit((uint8_t)t)) != 0;
+        if (!keep || t == resolved_tag) {
+            br.tag_valid[t] = false;
+            br.snapshot_valid[t] = false;
+            branch_clear_alloc_list(br, (uint8_t)t);
+        }
+    }
+    br.active_mask = keep_mask;
+}
+
+static void recover_mispredict(BoomCoreState& state, const BranchUpdate& update) {
+    uint8_t tag = update.br_tag;
+    uint8_t mispredict_mask = update.mispredict_mask;
+    uint8_t keep_mask = update.uop.branch.br_mask;
+
+    state.branch_state.mispredicts++;
+    state.branch_state.rollbacks++;
+    kill_issue_state(state, mispredict_mask);
+    kill_execute_state(state, mispredict_mask);
+    kill_lsu_state(state, mispredict_mask);
+    kill_rob_younger_than(state, update.uop.queue.rob_idx, mispredict_mask);
+    state.decode.dec_valids[0] = false;
+    state.decode.dec_uops[0] = MicroOp();
+    state.rename.renamed_valids[0] = false;
+    state.rename.renamed_uops[0] = MicroOp();
+    state.frontend.fetch_packet_valid = false;
+    state.frontend.response_received = false;
+    state.frontend.request_sent = false;
+    state.frontend.flush = false;
+    state.frontend.pc = update.jalr_target & ~0x3ULL;
+
+    restore_map_snapshot(state, tag);
+    rollback_free_list(state, tag);
+    prune_recovered_tags(state, keep_mask, tag);
+    clear_resolved_masks_in_state(state, mispredict_mask);
+    rebuild_busy_after_recovery(state);
+}
+
+static void release_resolved_branch(BoomCoreState& state, uint8_t tag, uint8_t resolve_mask) {
+    release_tag(state, tag);
+    clear_resolved_masks_in_state(state, resolve_mask);
+}
+
 void branch_module(BoomCoreState& state) {
     for (int i=0; i<DISPATCH_WIDTH; i++) {
         if (!state.execute.alu_results[i].valid) continue;
         const ExecuteState::AluResult& r = state.execute.alu_results[i];
-        if (r.mispredict && (r.uop.branch.is_br || r.uop.branch.is_jal || r.uop.branch.is_jalr)) {
+        if (branch_is_control_uop(r.uop)) {
+            uint8_t tag = r.uop.branch.br_tag;
+            uint8_t resolve_mask = branch_tag_bit(tag);
             state.brupdate.valid = true;
-            state.brupdate.mispredict = true;
+            state.brupdate.mispredict = r.mispredict;
             state.brupdate.jalr_target = r.redirect_pc;
-            state.brupdate.mispredict_mask = 1;
+            state.brupdate.resolve_mask = resolve_mask;
+            state.brupdate.mispredict_mask = r.mispredict ? resolve_mask : 0;
+            state.brupdate.br_tag = tag;
+            state.brupdate.uop = r.uop;
+            state.brupdate.taken = r.mispredict;
+            if (r.mispredict) recover_mispredict(state, state.brupdate);
+            else release_resolved_branch(state, tag, resolve_mask);
+            return;
         }
     }
 }
@@ -505,11 +942,284 @@ void branch_module(BoomCoreState& state) {
 // ==== lsu.cpp ====
 
 namespace boom {
-void lsu_module(BoomCoreState& state) { (void)state; }
+
+static uint8_t bytes_for_size(uint8_t size) { return (uint8_t)(1u << (size & 0x3)); }
+
+static uint64_t sign_extend(uint64_t value, uint8_t bits) {
+    if (bits >= 64) return value;
+    uint64_t mask = 1ULL << (bits - 1);
+    return (value ^ mask) - mask;
 }
 
-namespace boom {
+static uint64_t load_value(uint64_t data, uint64_t address, uint8_t size, bool signed_load) {
+    uint8_t shift = (uint8_t)((address & 0x7) * 8);
+    uint8_t bits = (uint8_t)(bytes_for_size(size) * 8);
+    uint64_t mask = (bits >= 64) ? ~0ULL : ((1ULL << bits) - 1ULL);
+    uint64_t value = (data >> shift) & mask;
+    return signed_load ? sign_extend(value, bits) : value;
+}
+
+static bool older_store_in_rob(const BoomCoreState& state, uint8_t rob_idx) {
+    const RobInternalState& rob = state.rob;
+    uint8_t idx = rob.head;
+OLDER_STORE_SCAN:
+    for (int i = 0; i < ROB_DEPTH; i++) {
+        if (idx == rob_idx) return false;
+        const RobEntry& entry = rob.entries[idx];
+        if (entry.valid && entry.uop.ctrl.is_sta) return true;
+        idx = (idx + 1) % ROB_DEPTH;
+    }
+    return false;
+}
+
+static void clear_lsu_queues(LsuState& lsu) {
+    lsu.ldq_head = lsu.ldq_tail = lsu.ldq_count = 0;
+    lsu.stq_head = lsu.stq_tail = lsu.stq_count = 0;
+    lsu.load_response_pending = false;
+    lsu.pending_load_transaction_id = 0;
+    lsu.pending_load_rob_idx = 0;
+CLEAR_LDQ:
+    for (int i = 0; i < LDQ_DEPTH; i++) lsu.ldq[i] = LoadQueueEntry();
+CLEAR_STQ:
+    for (int i = 0; i < STQ_DEPTH; i++) lsu.stq[i] = StoreQueueEntry();
+}
+
+static bool try_issue_load(BoomCoreState& state, PipeSignals& pipe, uint8_t rob_idx) {
+    RobEntry& entry = state.rob.entries[rob_idx];
+    if (!entry.valid || !entry.is_load || !entry.memory_valid || entry.memory_request_sent) return false;
+    if (state.lsu.load_response_pending || older_store_in_rob(state, rob_idx) || pipe.dmem_req.full()) return false;
+
+    uint32_t tx = state.lsu.next_transaction_id++;
+    DmemRequest req;
+    req.transaction_id = tx;
+    req.rob_idx = rob_idx;
+    req.command = DMEM_LOAD;
+    req.is_store = false;
+    req.address = entry.memory_address;
+    req.size = entry.memory_size;
+    req.mask = entry.memory_mask;
+    req.signed_load = entry.signed_load;
+    req.branch_mask = entry.uop.branch.br_mask;
+    pipe.dmem_req.write(req);
+
+    entry.memory_request_sent = true;
+    entry.memory_transaction_id = tx;
+    state.lsu.load_response_pending = true;
+    state.lsu.pending_load_transaction_id = tx;
+    state.lsu.pending_load_rob_idx = rob_idx;
+    return true;
+}
+
+static void enqueue_store(BoomCoreState& state, const ExecuteState::AluResult& result, RobEntry& entry) {
+    entry.memory_valid = true;
+    entry.is_store = true;
+    entry.is_load = false;
+    entry.memory_completed = true;
+    entry.memory_address = result.memory_address;
+    entry.memory_data = result.store_data;
+    entry.memory_mask = result.memory_mask;
+    entry.memory_size = result.memory_size;
+    entry.busy = false;
+
+    LsuState& lsu = state.lsu;
+    if (lsu.stq_count < STQ_DEPTH) {
+        StoreQueueEntry& stq = lsu.stq[lsu.stq_tail];
+        stq.valid = true;
+        stq.rob_idx = result.uop.queue.rob_idx;
+        stq.address_valid = true;
+        stq.address = result.memory_address;
+        stq.data_valid = true;
+        stq.data = result.store_data;
+        stq.mask = result.memory_mask;
+        stq.size = result.memory_size;
+        stq.branch_mask = result.uop.branch.br_mask;
+        lsu.stq_tail = (lsu.stq_tail + 1) % STQ_DEPTH;
+        lsu.stq_count++;
+    }
+}
+
+static void enqueue_load(BoomCoreState& state, const ExecuteState::AluResult& result, RobEntry& entry) {
+    entry.memory_valid = true;
+    entry.is_load = true;
+    entry.is_store = false;
+    entry.signed_load = result.signed_load;
+    entry.memory_address = result.memory_address;
+    entry.memory_mask = result.memory_mask;
+    entry.memory_size = result.memory_size;
+
+    LsuState& lsu = state.lsu;
+    if (lsu.ldq_count < LDQ_DEPTH) {
+        LoadQueueEntry& ldq = lsu.ldq[lsu.ldq_tail];
+        ldq.valid = true;
+        ldq.rob_idx = result.uop.queue.rob_idx;
+        ldq.address = result.memory_address;
+        ldq.size = result.memory_size;
+        ldq.signed_load = result.signed_load;
+        ldq.branch_mask = result.uop.branch.br_mask;
+        lsu.ldq_tail = (lsu.ldq_tail + 1) % LDQ_DEPTH;
+        lsu.ldq_count++;
+    }
+}
+
+void lsu_module(BoomCoreState& state, PipeSignals& pipe) {
+    if (state.global_flush) {
+        clear_lsu_queues(state.lsu);
+        return;
+    }
+
+    if (!pipe.dmem_resp.empty()) {
+        DmemResponse resp = pipe.dmem_resp.read();
+        uint32_t resp_tx = resp.transaction_id;
+        if (state.lsu.load_response_pending && resp_tx == state.lsu.pending_load_transaction_id) {
+            uint8_t rob_idx = state.lsu.pending_load_rob_idx;
+            RobEntry& entry = state.rob.entries[rob_idx];
+            if (entry.valid && entry.is_load && entry.memory_request_sent) {
+                if (resp.exception) {
+                    entry.exception = true;
+                    entry.uop.exception = true;
+                    entry.uop.exc_cause = resp.exception_cause ? resp.exception_cause : resp.exc_cause;
+                } else {
+                    uint64_t data = resp.read_data ? resp.read_data : resp.data;
+                    uint64_t value = load_value(data, entry.memory_address, entry.memory_size, entry.signed_load);
+                    if (entry.uop.rename.pdst != 0) {
+                        state.int_rf[entry.uop.rename.pdst] = value;
+                        state.rename.int_free_list.busy_table[entry.uop.rename.pdst] = false;
+                    }
+                    entry.memory_data = value;
+                }
+                entry.memory_completed = true;
+                entry.busy = false;
+            }
+            state.lsu.load_response_pending = false;
+            state.lsu.pending_load_transaction_id = 0;
+        }
+    }
+
+LSU_EXECUTE_RESULTS:
+    for (int i = 0; i < DISPATCH_WIDTH; i++) {
+        const ExecuteState::AluResult& result = state.execute.alu_results[i];
+        if (!result.valid || !result.memory_valid) continue;
+        if (state.brupdate.valid && state.brupdate.mispredict &&
+            ((result.uop.branch.br_mask & state.brupdate.mispredict_mask) != 0)) continue;
+        uint8_t rob_idx = result.uop.queue.rob_idx;
+        if (rob_idx >= ROB_DEPTH || !state.rob.entries[rob_idx].valid) continue;
+        RobEntry& entry = state.rob.entries[rob_idx];
+        if (result.is_store) enqueue_store(state, result, entry);
+        else if (result.is_load) enqueue_load(state, result, entry);
+    }
+
+LSU_LOAD_ISSUE_SCAN:
+    for (int i = 0; i < ROB_DEPTH; i++) {
+        uint8_t idx = (state.rob.head + i) % ROB_DEPTH;
+        try_issue_load(state, pipe, idx);
+        if (state.lsu.load_response_pending) break;
+    }
+}
+
 void commit_module(BoomCoreState& state) { (void)state; }
+
+}
+
+// ==== commit.cpp ====
+
+namespace boom {
+
+extern bool rob_branch_kill(BoomCoreState& state);
+extern void rob_complete(BoomCoreState& state);
+
+static bool free_list_contains(const RenameFreeListState& fl, uint8_t preg) {
+    uint8_t idx = fl.head;
+    for (int i=0; i<fl.count && i<INT_PHYS_REGS; i++) {
+        if (fl.free_list[idx] == preg) return true;
+        idx = (uint8_t)((idx + 1) % INT_PHYS_REGS);
+    }
+    return false;
+}
+
+static void free_preg_unique(RenameFreeListState& fl, uint8_t preg) {
+    if (preg == 0 || preg >= INT_PHYS_REGS) return;
+    if (free_list_contains(fl, preg)) return;
+    if (fl.count >= INT_PHYS_REGS) return;
+    fl.busy_table[preg] = false;
+    fl.free_list[fl.tail] = preg;
+    fl.tail = (uint8_t)((fl.tail + 1) % INT_PHYS_REGS);
+    fl.count++;
+}
+
+void rob_commit_module(BoomCoreState& state, PipeSignals& pipe) {
+    RobInternalState& rob = state.rob;
+    rob.commit_valid = false;
+
+    if (rob_branch_kill(state)) return;
+    rob_complete(state);
+
+    bool is_empty = (rob.head==rob.tail) && !rob.maybe_full;
+    if (!is_empty && rob.entries[rob.head].valid && !rob.entries[rob.head].busy) {
+        RobEntry& he = rob.entries[rob.head];
+        MicroOp& uop = he.uop;
+        if (he.exception) {
+            if (uop.uopc == 65) {
+                uint8_t a0_pdst = state.rename.int_map_table.map_table[10];
+                uint64_t a0_val = (a0_pdst!=0) ? state.int_rf[a0_pdst] : 0;
+                if (a0_val==0) state.io_success = true;
+                else state.io_trap = true;
+                he.valid=false; rob.head=(rob.head+1)%ROB_DEPTH; rob.maybe_full=false;
+            } else { rob.state = ROB_EXCEPTION; state.io_trap = true; }
+        } else {
+            if ((uop.ctrl.is_load || he.is_load) && !he.memory_completed) return;
+            if (uop.ctrl.is_sta || he.is_store) {
+                if (!he.memory_valid) return;
+                if (!he.memory_request_sent) {
+                    if (pipe.dmem_req.full()) return;
+                    DmemRequest req;
+                    req.transaction_id = state.lsu.next_transaction_id++;
+                    req.rob_idx = uop.queue.rob_idx;
+                    req.command = DMEM_STORE;
+                    req.is_store = true;
+                    req.committed = true;
+                    req.address = he.memory_address;
+                    req.data = he.memory_data;
+                    req.write_data = he.memory_data;
+                    req.size = he.memory_size;
+                    req.mask = he.memory_mask;
+                    req.write_mask = he.memory_mask;
+                    req.branch_mask = uop.branch.br_mask;
+                    pipe.dmem_req.write(req);
+                    he.memory_request_sent = true;
+                    he.memory_completed = true;
+                    state.tohost = he.memory_data;
+                }
+            }
+            state.csr.instret++;
+            CommitEntry ce;
+            ce.valid=true; ce.pc=uop.debug_pc; ce.inst=uop.inst;
+            ce.rd_valid=(uop.rename.dst_rtype==DST_INT && uop.rename.pdst!=0);
+            ce.rd=uop.rename.ldst; ce.priv=state.csr.priv;
+            ce.exception=false; ce.branch_mispredict=false;
+            ce.rd_value=ce.rd_valid ? state.int_rf[uop.rename.pdst] : 0;
+            ce.memory_valid = he.memory_valid;
+            ce.is_store = he.is_store;
+            ce.memory_address = he.memory_address;
+            ce.memory_data = he.memory_data;
+            ce.memory_mask = he.memory_mask;
+            ce.store_addr = he.memory_address;
+            ce.store_data = he.memory_data;
+            ce.store_mask = he.memory_mask;
+            if (uop.rename.pdst!=0) {
+                state.rename.int_map_table.committed_map_table[uop.rename.ldst]=uop.rename.pdst;
+                if (uop.rename.stale_pdst!=0 && uop.rename.stale_pdst<INT_PHYS_REGS) {
+                    RenameFreeListState& fl=state.rename.int_free_list;
+                    free_preg_unique(fl, uop.rename.stale_pdst);
+                }
+            }
+            if (!pipe.commit_trace.full()) pipe.commit_trace.write(ce);
+            rob.last_commit=ce; rob.commit_valid=true;
+            he.valid=false; rob.head=(rob.head+1)%ROB_DEPTH; rob.maybe_full=false;
+        }
+    }
+}
+
+void commit_module_stub(BoomCoreState& state) { (void)state; }
 }
 
 // ==== csr.cpp ====
@@ -531,116 +1241,73 @@ extern void rename_module(BoomCoreState& state);
 extern void issue_module(BoomCoreState& state);
 extern void execute_module(BoomCoreState& state);
 extern void branch_module(BoomCoreState& state);
-extern void lsu_module(BoomCoreState& state);
+extern void lsu_module(BoomCoreState& state, PipeSignals& pipe);
 extern void csr_module(BoomCoreState& state);
-static void rob_allocate(BoomCoreState& state);
+extern void rob_allocate(BoomCoreState& state);
 void rob_commit_module(BoomCoreState& state, PipeSignals& pipe);
-
-static void rob_allocate(BoomCoreState& state) {
-    RobInternalState& rob = state.rob;
-    if (rob.state == ROB_INIT) rob.state = ROB_NORMAL;
-    if (state.global_flush) return;
-    for (int i=0; i<DISPATCH_WIDTH; i++) {
-        if (!state.rename.renamed_valids[i]) continue;
-        bool is_full = (rob.head==rob.tail) && rob.maybe_full;
-        if (is_full) { state.rename.renamed_valids[i]=false; break; }
-        MicroOp uop = state.rename.renamed_uops[i];
-        if (uop.uopc == 0) continue;
-        RobEntry& entry = rob.entries[rob.tail];
-        entry.valid=true; entry.busy=true; entry.exception=uop.exception;
-        uop.queue.rob_idx = rob.tail; entry.uop = uop;
-        state.rename.renamed_uops[i].queue.rob_idx = rob.tail;
-        rob.tail=(rob.tail+1)%ROB_DEPTH;
-        if (rob.tail==rob.head) rob.maybe_full=true;
-    }
-}
-
-void rob_commit_module(BoomCoreState& state, PipeSignals& pipe) {
-    RobInternalState& rob = state.rob;
-    rob.commit_valid = false;
-
-    if (state.brupdate.valid && state.brupdate.mispredict) {
-        for (int i=0; i<ROB_DEPTH; i++) {
-            if (rob.entries[i].valid) { rob.entries[i].valid=false; rob.entries[i].busy=false; }
-        }
-        rob.head=0; rob.tail=0; rob.maybe_full=false; rob.state=ROB_NORMAL;
-        state.global_flush = true; return;
-    }
-    for (int i=0; i<DISPATCH_WIDTH; i++) {
-        if (!state.execute.alu_results[i].valid) continue;
-        const ExecuteState::AluResult& r = state.execute.alu_results[i];
-        uint8_t ridx = r.uop.queue.rob_idx;
-        if (ridx<ROB_DEPTH && rob.entries[ridx].valid) {
-            rob.entries[ridx].busy=false;
-            if (r.exception) rob.entries[ridx].exception=true;
-        }
-    }
-    bool is_empty = (rob.head==rob.tail) && !rob.maybe_full;
-    if (!is_empty && rob.entries[rob.head].valid && !rob.entries[rob.head].busy) {
-        RobEntry& he = rob.entries[rob.head];
-        MicroOp& uop = he.uop;
-        if (he.exception) {
-            if (uop.uopc == 65) {
-                uint8_t a0_pdst = state.rename.int_map_table.map_table[10];
-                uint64_t a0_val = (a0_pdst!=0) ? state.int_rf[a0_pdst] : 0;
-                if (a0_val==0) state.io_success = true;
-                else state.io_trap = true;
-                he.valid=false; rob.head=(rob.head+1)%ROB_DEPTH; rob.maybe_full=false;
-            } else { rob.state = ROB_EXCEPTION; state.io_trap = true; }
-        } else {
-            state.csr.instret++;
-            CommitEntry ce;
-            ce.valid=true; ce.pc=uop.debug_pc; ce.inst=uop.inst;
-            ce.rd_valid=(uop.rename.dst_rtype==DST_INT && uop.rename.pdst!=0);
-            ce.rd=uop.rename.ldst; ce.priv=state.csr.priv;
-            ce.exception=false; ce.branch_mispredict=false;
-            ce.rd_value=ce.rd_valid ? state.int_rf[uop.rename.pdst] : 0;
-            if (uop.rename.pdst!=0) {
-                state.rename.int_map_table.committed_map_table[uop.rename.ldst]=uop.rename.pdst;
-                if (uop.rename.stale_pdst!=0 && uop.rename.stale_pdst<INT_PHYS_REGS) {
-                RenameFreeListState& fl=state.rename.int_free_list;
-                if (fl.count<INT_PHYS_REGS) {
-                    fl.busy_table[uop.rename.stale_pdst]=false;
-                    fl.free_list[fl.tail]=uop.rename.stale_pdst;
-                    fl.tail=(fl.tail+1)%INT_PHYS_REGS; fl.count++;
-                }
-            }
-            }
-            if (!pipe.commit_trace.full()) pipe.commit_trace.write(ce);
-            rob.last_commit=ce; rob.commit_valid=true;
-            he.valid=false; rob.head=(rob.head+1)%ROB_DEPTH; rob.maybe_full=false;
-        }
-    }
-}
 
 }
 
 void boom_core_step(BoomCoreState& state, PipeSignals& pipe) {
-    BoomCoreState next_state = state;
-    next_state.global_flush = false;
-    next_state.io_success = next_state.io_trap = false;
-    next_state.brupdate.valid = next_state.brupdate.mispredict = false;
+    state.global_flush = false;
+    state.io_success = state.io_trap = false;
+    state.brupdate.valid = state.brupdate.mispredict = false;
 
-    boom::csr_module(next_state);
-    boom::branch_module(next_state);
-    boom::lsu_module(next_state);
-    boom::frontend_module(next_state, pipe);
-    boom::decode_module(next_state);
-    boom::rename_module(next_state);
-    boom::rob_allocate(next_state);
-    boom::issue_module(next_state);
-    boom::execute_module(next_state);
-    boom::rob_commit_module(next_state, pipe);
-
-    state = next_state;
+    boom::csr_module(state);
+    boom::branch_module(state);
+    boom::lsu_module(state, pipe);
+    boom::frontend_module(state, pipe);
+    boom::decode_module(state);
+    boom::rename_module(state);
+    boom::rob_allocate(state);
+    boom::issue_module(state);
+    boom::execute_module(state);
+    boom::rob_commit_module(state, pipe);
 }
 
 // ==== boom_core_top.cpp ====
 
 extern void boom_core_step(BoomCoreState& state, PipeSignals& pipe);
 
+static void boom_core_cycle_io(BoomCoreState& state,
+                               PipeSignals& pipe,
+                               hls::stream<ImemRequest>&  imem_req_out,
+                               hls::stream<ImemResponse>& imem_resp_in,
+                               hls::stream<DmemRequest>&  dmem_req_out,
+                               hls::stream<DmemResponse>& dmem_resp_in,
+                               hls::stream<CommitEntry>&  commit_trace_out,
+                               bool& io_success,
+                               bool& io_halted,
+                               bool& io_trap,
+                               bool& io_cycle_valid,
+                               uint64_t& io_cycle,
+                               uint64_t& io_instret) {
+    if (!imem_resp_in.empty() && !pipe.imem_resp.full())
+        pipe.imem_resp.write(imem_resp_in.read());
+    if (!dmem_resp_in.empty() && !pipe.dmem_resp.full())
+        pipe.dmem_resp.write(dmem_resp_in.read());
+
+    boom_core_step(state, pipe);
+
+    if (!pipe.imem_req.empty())
+        imem_req_out.write(pipe.imem_req.read());
+    if (!pipe.dmem_req.empty())
+        dmem_req_out.write(pipe.dmem_req.read());
+    if (!pipe.commit_trace.empty())
+        commit_trace_out.write(pipe.commit_trace.read());
+
+    io_success = state.io_success;
+    io_halted = state.io_halted;
+    io_trap = state.io_trap;
+    io_cycle_valid = true;
+    io_cycle = state.csr.cycle;
+    io_instret = state.csr.instret;
+}
+
 void boom_core_top(hls::stream<ImemRequest>&  imem_req_out,
                    hls::stream<ImemResponse>& imem_resp_in,
+                   hls::stream<DmemRequest>&  dmem_req_out,
+                   hls::stream<DmemResponse>& dmem_resp_in,
                    hls::stream<CommitEntry>&  commit_trace_out,
                    bool& io_success,
                    bool& io_halted,
@@ -651,6 +1318,8 @@ void boom_core_top(hls::stream<ImemRequest>&  imem_req_out,
 #pragma HLS INTERFACE ap_ctrl_none port=return
 #pragma HLS INTERFACE axis port=imem_req_out
 #pragma HLS INTERFACE axis port=imem_resp_in
+#pragma HLS INTERFACE axis port=dmem_req_out
+#pragma HLS INTERFACE axis port=dmem_resp_in
 #pragma HLS INTERFACE axis port=commit_trace_out
 #pragma HLS INTERFACE ap_none port=io_success
 #pragma HLS INTERFACE ap_none port=io_halted
@@ -666,23 +1335,346 @@ void boom_core_top(hls::stream<ImemRequest>&  imem_req_out,
 
 CORE_CYCLE:
     while (true) {
+#ifdef BOOM_HLS_ENABLE_CORE_PIPELINE
 #pragma HLS PIPELINE II=1
-
-        if (!imem_resp_in.empty() && !pipe.imem_resp.full())
-            pipe.imem_resp.write(imem_resp_in.read());
-
-        boom_core_step(state, pipe);
-
-        if (!pipe.imem_req.empty())
-            imem_req_out.write(pipe.imem_req.read());
-        if (!pipe.commit_trace.empty())
-            commit_trace_out.write(pipe.commit_trace.read());
-
-        io_success = state.io_success;
-        io_halted = state.io_halted;
-        io_trap = state.io_trap;
-        io_cycle_valid = true;
-        io_cycle = state.csr.cycle;
-        io_instret = state.csr.instret;
+#endif
+        boom_core_cycle_io(state, pipe, imem_req_out, imem_resp_in,
+                           dmem_req_out, dmem_resp_in, commit_trace_out,
+                           io_success, io_halted, io_trap,
+                           io_cycle_valid, io_cycle, io_instret);
     }
+}
+
+void boom_core_step_top(hls::stream<ImemRequest>&  imem_req_out,
+                        hls::stream<ImemResponse>& imem_resp_in,
+                        hls::stream<DmemRequest>&  dmem_req_out,
+                        hls::stream<DmemResponse>& dmem_resp_in,
+                        hls::stream<CommitEntry>&  commit_trace_out,
+                        bool& io_success,
+                        bool& io_halted,
+                        bool& io_trap,
+                        bool& io_cycle_valid,
+                        uint64_t& io_cycle,
+                        uint64_t& io_instret) {
+#pragma HLS INTERFACE ap_ctrl_none port=return
+#pragma HLS INTERFACE axis port=imem_req_out
+#pragma HLS INTERFACE axis port=imem_resp_in
+#pragma HLS INTERFACE axis port=dmem_req_out
+#pragma HLS INTERFACE axis port=dmem_resp_in
+#pragma HLS INTERFACE axis port=commit_trace_out
+#pragma HLS INTERFACE ap_none port=io_success
+#pragma HLS INTERFACE ap_none port=io_halted
+#pragma HLS INTERFACE ap_none port=io_trap
+#pragma HLS INTERFACE ap_none port=io_cycle_valid
+#pragma HLS INTERFACE ap_none port=io_cycle
+#pragma HLS INTERFACE ap_none port=io_instret
+
+    static BoomCoreState state;
+#pragma HLS RESET variable=state
+
+    PipeSignals pipe;
+    boom_core_cycle_io(state, pipe, imem_req_out, imem_resp_in,
+                       dmem_req_out, dmem_resp_in, commit_trace_out,
+                       io_success, io_halted, io_trap,
+                       io_cycle_valid, io_cycle, io_instret);
+}
+
+// ==== synth_module_tops.cpp ====
+
+extern void boom_core_step(BoomCoreState& state, PipeSignals& pipe);
+
+namespace boom {
+extern void frontend_module(BoomCoreState& state, PipeSignals& pipe);
+extern void decode_module(BoomCoreState& state);
+extern void rename_module(BoomCoreState& state);
+extern void rob_allocate(BoomCoreState& state);
+extern void rob_complete(BoomCoreState& state);
+extern void issue_module(BoomCoreState& state);
+extern void execute_module(BoomCoreState& state);
+extern void branch_module(BoomCoreState& state);
+extern void lsu_module(BoomCoreState& state, PipeSignals& pipe);
+extern void rob_commit_module(BoomCoreState& state, PipeSignals& pipe);
+}
+
+void synth_frontend_top(hls::stream<ImemRequest>& imem_req_out,
+                        hls::stream<ImemResponse>& imem_resp_in,
+                        uint64_t seed,
+                        uint64_t& observable) {
+    static BoomCoreState state;
+    if ((seed & 1ULL) != 0) state.frontend.pc = seed & ~0x3ULL;
+    PipeSignals pipe;
+    if (!imem_resp_in.empty()) pipe.imem_resp.write(imem_resp_in.read());
+    boom::frontend_module(state, pipe);
+    if (!pipe.imem_req.empty()) imem_req_out.write(pipe.imem_req.read());
+    observable = state.frontend.pc;
+}
+
+void synth_decode_top(uint32_t seed_inst, uint64_t seed_pc, uint64_t& observable) {
+    static BoomCoreState state;
+    state.frontend.fetch_packet_valid = true;
+    state.frontend.fetch_uop.inst = seed_inst;
+    state.frontend.fetch_uop.debug_pc = seed_pc;
+    boom::decode_module(state);
+    observable = state.decode.dec_valids[0] ? state.decode.dec_uops[0].debug_pc : 0;
+}
+
+void synth_rename_top(uint32_t seed_inst, uint64_t seed_pc, uint64_t& observable) {
+    static BoomCoreState state;
+    state.decode.dec_valids[0] = true;
+    state.decode.dec_uops[0].inst = seed_inst;
+    state.decode.dec_uops[0].debug_pc = seed_pc;
+    state.decode.dec_uops[0].uopc = 50;
+    state.decode.dec_uops[0].rename.lrs1 = static_cast<uint8_t>((seed_inst >> 15) & 0x1f);
+    state.decode.dec_uops[0].rename.lrs2 = static_cast<uint8_t>((seed_inst >> 20) & 0x1f);
+    state.decode.dec_uops[0].rename.ldst = static_cast<uint8_t>((seed_inst >> 7) & 0x1f);
+    state.decode.dec_uops[0].rename.dst_rtype = DST_INT;
+    boom::rename_module(state);
+    observable = state.rename.renamed_valids[0] ? state.rename.renamed_uops[0].debug_pc : 0;
+}
+
+void synth_rob_top(uint32_t seed_inst, uint64_t seed_pc, uint64_t& observable) {
+    static BoomCoreState state;
+    state.rename.renamed_valids[0] = true;
+    state.rename.renamed_uops[0].inst = seed_inst;
+    state.rename.renamed_uops[0].debug_pc = seed_pc;
+    state.rename.renamed_uops[0].uopc = 50;
+    boom::rob_allocate(state);
+    boom::rob_complete(state);
+    observable = state.rob.head;
+}
+
+void synth_issue_top(uint32_t seed_inst, uint64_t seed_pc, uint64_t& observable) {
+    static BoomCoreState state;
+    state.rename.renamed_valids[0] = true;
+    state.rename.renamed_uops[0].inst = seed_inst;
+    state.rename.renamed_uops[0].debug_pc = seed_pc;
+    state.rename.renamed_uops[0].uopc = 50;
+    state.rename.renamed_uops[0].iq_type = IQ_ALU;
+    state.rename.renamed_uops[0].fu_code = FU_ALU;
+    boom::issue_module(state);
+    observable = state.issue.alu_iq.count;
+}
+
+void synth_execute_top(uint8_t seed_uopc, uint64_t seed_rs1, uint64_t seed_rs2, uint64_t& observable) {
+    static BoomCoreState state;
+    state.issue.issued_valids[0] = true;
+    state.issue.issued_uops[0].uopc = seed_uopc;
+    state.issue.issued_uops[0].rename.prs1 = 1;
+    state.issue.issued_uops[0].rename.prs2 = 2;
+    state.issue.issued_uops[0].rename.pdst = 3;
+    state.issue.issued_uops[0].rename.dst_rtype = DST_INT;
+    state.int_rf[1] = seed_rs1;
+    state.int_rf[2] = seed_rs2;
+    boom::execute_module(state);
+    observable = state.execute.alu_results[0].result;
+}
+
+void synth_lsu_top(hls::stream<DmemRequest>& dmem_req_out,
+                   hls::stream<DmemResponse>& dmem_resp_in,
+                   uint64_t seed_addr,
+                   uint64_t& observable) {
+    static BoomCoreState state;
+    state.execute.alu_results[0].valid = true;
+    state.execute.alu_results[0].memory_valid = true;
+    state.execute.alu_results[0].is_load = true;
+    state.execute.alu_results[0].memory_address = seed_addr;
+    state.execute.alu_results[0].memory_size = 3;
+    state.execute.alu_results[0].memory_mask = 0xff;
+    state.execute.alu_results[0].uop.queue.rob_idx = 0;
+    state.rob.entries[0].valid = true;
+    PipeSignals pipe;
+    if (!dmem_resp_in.empty()) pipe.dmem_resp.write(dmem_resp_in.read());
+    boom::lsu_module(state, pipe);
+    if (!pipe.dmem_req.empty()) dmem_req_out.write(pipe.dmem_req.read());
+    observable = state.lsu.next_transaction_id;
+}
+
+void synth_commit_top(hls::stream<DmemRequest>& dmem_req_out,
+                       hls::stream<CommitEntry>& commit_trace_out,
+                       uint64_t seed_pc,
+                       uint64_t& observable) {
+    static BoomCoreState state;
+    state.rob.entries[state.rob.head].valid = true;
+    state.rob.entries[state.rob.head].busy = false;
+    state.rob.entries[state.rob.head].uop.uopc = 50;
+    state.rob.entries[state.rob.head].uop.debug_pc = seed_pc;
+    state.rob.entries[state.rob.head].uop.inst = 0x00100093u;
+    PipeSignals pipe;
+    boom::rob_commit_module(state, pipe);
+    if (!pipe.dmem_req.empty()) dmem_req_out.write(pipe.dmem_req.read());
+    if (!pipe.commit_trace.empty()) commit_trace_out.write(pipe.commit_trace.read());
+    observable = state.csr.instret;
+}
+
+void synth_branch_tag_top(uint32_t seed_inst, uint64_t seed_pc, uint64_t& observable) {
+    static BoomCoreState state;
+    state.decode.dec_uops[0] = MicroOp();
+    state.decode.dec_valids[0] = true;
+    state.decode.dec_uops[0].inst = seed_inst;
+    state.decode.dec_uops[0].debug_pc = seed_pc;
+    state.decode.dec_uops[0].uopc = 50;
+    state.decode.dec_uops[0].branch.is_br = true;
+    state.decode.dec_uops[0].rename.lrs1 = static_cast<uint8_t>((seed_inst >> 15) & 0x1f);
+    state.decode.dec_uops[0].rename.lrs2 = static_cast<uint8_t>((seed_inst >> 20) & 0x1f);
+    state.decode.dec_uops[0].rename.ldst = static_cast<uint8_t>((seed_inst >> 7) & 0x1f);
+    state.decode.dec_uops[0].rename.dst_rtype = DST_INT;
+    boom::rename_module(state);
+    observable = state.branch_state.active_mask;
+    observable |= static_cast<uint64_t>(state.branch_state.allocations) << 8;
+}
+
+void synth_branch_mask_top(uint8_t seed_mask, uint64_t seed_pc, uint64_t& observable) {
+    static BoomCoreState state;
+    uint8_t tag = static_cast<uint8_t>(seed_mask & 0x7);
+    uint8_t tag_mask = static_cast<uint8_t>(1u << tag);
+    state.branch_state.active_mask |= tag_mask;
+    state.branch_state.tag_valid[tag] = true;
+    state.branch_state.snapshot_valid[tag] = true;
+    state.execute.alu_results[0] = ExecuteState::AluResult();
+    state.execute.alu_results[0].valid = true;
+    state.execute.alu_results[0].mispredict = (seed_mask & 0x80) != 0;
+    state.execute.alu_results[0].redirect_pc = seed_pc;
+    state.execute.alu_results[0].uop.branch.is_br = true;
+    state.execute.alu_results[0].uop.branch.br_tag = tag;
+    state.execute.alu_results[0].uop.branch.br_mask = static_cast<uint8_t>(seed_mask & ~tag_mask);
+    state.execute.alu_results[0].uop.queue.rob_idx = state.rob.head;
+    boom::branch_module(state);
+    observable = state.branch_state.active_mask;
+    observable |= static_cast<uint64_t>(state.brupdate.mispredict_mask) << 8;
+}
+
+void synth_map_snapshot_top(uint8_t tag_seed, uint64_t seed_pc, uint64_t& observable) {
+    static BoomCoreState state;
+    uint8_t tag = static_cast<uint8_t>(tag_seed & 0x7);
+    uint8_t tag_mask = static_cast<uint8_t>(1u << tag);
+    for (int i=0; i<LOGICAL_REG_COUNT; i++) {
+        state.rename.int_map_table.map_table[i] = static_cast<uint8_t>(i % INT_PHYS_REGS);
+        state.rename.int_map_table.committed_map_table[i] = static_cast<uint8_t>(i % INT_PHYS_REGS);
+        state.rename.int_map_table.br_snapshots[i][tag] = static_cast<uint8_t>((i + tag_seed) % INT_PHYS_REGS);
+    }
+    state.rename.int_map_table.br_snapshots[0][tag] = 0;
+    state.branch_state.active_mask |= tag_mask;
+    state.branch_state.tag_valid[tag] = true;
+    state.branch_state.snapshot_valid[tag] = true;
+    state.rob.entries[state.rob.head].valid = true;
+    state.execute.alu_results[0] = ExecuteState::AluResult();
+    state.execute.alu_results[0].valid = true;
+    state.execute.alu_results[0].mispredict = true;
+    state.execute.alu_results[0].redirect_pc = seed_pc;
+    state.execute.alu_results[0].uop.branch.is_br = true;
+    state.execute.alu_results[0].uop.branch.br_tag = tag;
+    state.execute.alu_results[0].uop.branch.br_mask = static_cast<uint8_t>(tag_mask >> 1);
+    state.execute.alu_results[0].uop.queue.rob_idx = state.rob.head;
+    boom::branch_module(state);
+    observable = state.rename.int_map_table.map_table[1];
+    observable |= static_cast<uint64_t>(state.rename.int_map_table.map_table[31]) << 8;
+}
+
+void synth_free_list_rollback_top(uint8_t tag_seed, uint64_t seed_pc, uint64_t& observable) {
+    static BoomCoreState state;
+    uint8_t tag = static_cast<uint8_t>(tag_seed & 0x7);
+    uint8_t tag_mask = static_cast<uint8_t>(1u << tag);
+    for (int i=0; i<LOGICAL_REG_COUNT; i++) {
+        state.rename.int_map_table.map_table[i] = static_cast<uint8_t>(i % INT_PHYS_REGS);
+        state.rename.int_map_table.br_snapshots[i][tag] = state.rename.int_map_table.map_table[i];
+    }
+    state.rename.int_map_table.map_table[0] = 0;
+    state.rename.int_map_table.br_snapshots[0][tag] = 0;
+    for (int p=1; p<INT_PHYS_REGS; p++) {
+        state.branch_state.br_alloc_lists[tag][p] = ((p + tag_seed) & 3) == 0;
+        state.rename.int_free_list.busy_table[p] = state.branch_state.br_alloc_lists[tag][p];
+    }
+    state.branch_state.active_mask |= tag_mask;
+    state.branch_state.tag_valid[tag] = true;
+    state.branch_state.snapshot_valid[tag] = true;
+    state.rob.entries[state.rob.head].valid = true;
+    state.execute.alu_results[0] = ExecuteState::AluResult();
+    state.execute.alu_results[0].valid = true;
+    state.execute.alu_results[0].mispredict = true;
+    state.execute.alu_results[0].redirect_pc = seed_pc;
+    state.execute.alu_results[0].uop.branch.is_br = true;
+    state.execute.alu_results[0].uop.branch.br_tag = tag;
+    state.execute.alu_results[0].uop.queue.rob_idx = state.rob.head;
+    boom::branch_module(state);
+    observable = state.rename.int_free_list.count;
+    observable |= static_cast<uint64_t>(state.branch_state.rollbacks) << 8;
+}
+
+void synth_busy_recovery_top(uint8_t tag_seed, uint64_t seed_pc, uint64_t& observable) {
+    static BoomCoreState state;
+    uint8_t tag = static_cast<uint8_t>(tag_seed & 0x7);
+    uint8_t tag_mask = static_cast<uint8_t>(1u << tag);
+    for (int i=0; i<ROB_DEPTH; i++) {
+        state.rob.entries[i].valid = (i & 1) == 0;
+        state.rob.entries[i].busy = (i & 3) == 0;
+        state.rob.entries[i].uop.rename.pdst = static_cast<uint8_t>((i + 1) % INT_PHYS_REGS);
+    }
+    for (int i=0; i<LOGICAL_REG_COUNT; i++) state.rename.int_map_table.br_snapshots[i][tag] = static_cast<uint8_t>(i % INT_PHYS_REGS);
+    state.branch_state.active_mask |= tag_mask;
+    state.branch_state.tag_valid[tag] = true;
+    state.branch_state.snapshot_valid[tag] = true;
+    state.execute.alu_results[0] = ExecuteState::AluResult();
+    state.execute.alu_results[0].valid = true;
+    state.execute.alu_results[0].mispredict = true;
+    state.execute.alu_results[0].redirect_pc = seed_pc;
+    state.execute.alu_results[0].uop.branch.is_br = true;
+    state.execute.alu_results[0].uop.branch.br_tag = tag;
+    state.execute.alu_results[0].uop.queue.rob_idx = state.rob.head;
+    boom::branch_module(state);
+    observable = 0;
+    for (int p=0; p<INT_PHYS_REGS; p++) if (state.rename.int_free_list.busy_table[p]) observable++;
+}
+
+void synth_branch_kill_top(uint8_t seed_mask, uint64_t seed_pc, uint64_t& observable) {
+    static BoomCoreState state;
+    uint8_t tag = static_cast<uint8_t>(seed_mask & 0x7);
+    uint8_t tag_mask = static_cast<uint8_t>(1u << tag);
+    for (int i=0; i<ISSUE_QUEUE_ALU_DEPTH; i++) {
+        state.issue.alu_iq.entries[i].valid = true;
+        state.issue.alu_iq.entries[i].uop.branch.br_mask = (i & 1) ? tag_mask : 0;
+    }
+    state.issue.alu_iq.count = ISSUE_QUEUE_ALU_DEPTH;
+    for (int i=0; i<LDQ_DEPTH; i++) {
+        state.lsu.ldq[i].valid = true;
+        state.lsu.ldq[i].branch_mask = (i & 1) ? tag_mask : 0;
+    }
+    for (int i=0; i<STQ_DEPTH; i++) {
+        state.lsu.stq[i].valid = true;
+        state.lsu.stq[i].branch_mask = (i & 1) ? tag_mask : 0;
+    }
+    for (int i=0; i<LOGICAL_REG_COUNT; i++) state.rename.int_map_table.br_snapshots[i][tag] = static_cast<uint8_t>(i % INT_PHYS_REGS);
+    state.branch_state.active_mask |= tag_mask;
+    state.branch_state.tag_valid[tag] = true;
+    state.branch_state.snapshot_valid[tag] = true;
+    state.rob.entries[state.rob.head].valid = true;
+    state.execute.alu_results[0] = ExecuteState::AluResult();
+    state.execute.alu_results[0].valid = true;
+    state.execute.alu_results[0].mispredict = true;
+    state.execute.alu_results[0].redirect_pc = seed_pc;
+    state.execute.alu_results[0].uop.branch.is_br = true;
+    state.execute.alu_results[0].uop.branch.br_tag = tag;
+    state.execute.alu_results[0].uop.queue.rob_idx = state.rob.head;
+    boom::branch_module(state);
+    observable = state.issue.alu_iq.count;
+    observable |= static_cast<uint64_t>(state.lsu.ldq_count) << 8;
+    observable |= static_cast<uint64_t>(state.lsu.stq_count) << 16;
+}
+
+void synth_core_step_top(hls::stream<ImemRequest>& imem_req_out,
+                          hls::stream<ImemResponse>& imem_resp_in,
+                         hls::stream<DmemRequest>& dmem_req_out,
+                         hls::stream<DmemResponse>& dmem_resp_in,
+                         hls::stream<CommitEntry>& commit_trace_out,
+                         uint64_t seed_pc,
+                         uint64_t& observable) {
+    static BoomCoreState state;
+    if ((seed_pc & 1ULL) != 0) state.frontend.pc = seed_pc & ~0x3ULL;
+    PipeSignals pipe;
+    if (!imem_resp_in.empty()) pipe.imem_resp.write(imem_resp_in.read());
+    if (!dmem_resp_in.empty()) pipe.dmem_resp.write(dmem_resp_in.read());
+    boom_core_step(state, pipe);
+    if (!pipe.imem_req.empty()) imem_req_out.write(pipe.imem_req.read());
+    if (!pipe.dmem_req.empty()) dmem_req_out.write(pipe.dmem_req.read());
+    if (!pipe.commit_trace.empty()) commit_trace_out.write(pipe.commit_trace.read());
+    observable = state.csr.cycle;
 }

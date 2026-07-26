@@ -1,0 +1,9 @@
+function,status,LUT,FF,BRAM_18K,DSP,estimated_period,report_path,notes
+branch_module,PASS,15506,3678,0,0,2.763 ns,boom_hls_gate3_3_boom_core_step_top/solution_top/syn/report/branch_module_csynth.rpt,Branch update selection plus correct-resolution release and mispredict recovery dispatch.
+recover_mispredict,PASS,11724,3529,0,0,2.763 ns,boom_hls_gate3_3_boom_core_step_top/solution_top/syn/report/recover_mispredict_csynth.rpt,Map restore free-list rollback tag pruning mask clear busy rebuild and frontend/decode/rename cleanup.
+kill_issue_state,PASS,5799,2018,0,0,2.203 ns,boom_hls_gate3_3_boom_core_step_top/solution_top/syn/report/kill_issue_state_csynth.rpt,Issue-queue and issued-uop younger kill plus compaction.
+kill_execute_state,PASS,39,4,0,0,2.203 ns,boom_hls_gate3_3_boom_core_step_top/solution_top/syn/report/kill_execute_state_csynth.rpt,Execute result younger kill.
+kill_lsu_state,PASS,2269,1060,0,0,2.203 ns,boom_hls_gate3_3_boom_core_step_top/solution_top/syn/report/kill_lsu_state_csynth.rpt,LDQ/STQ younger kill and compaction.
+kill_rob_younger_than,PASS,1501,46,0,0,2.763 ns,boom_hls_gate3_3_boom_core_step_top/solution_top/syn/report/kill_rob_younger_than_csynth.rpt,ROB younger kill after resolved branch index.
+clear_resolved_masks_in_state,PASS,366,57,0,0,1.689 ns,boom_hls_gate3_3_boom_core_step_top/solution_top/syn/report/clear_resolved_masks_in_state_csynth.rpt,Global clear of resolved branch-mask bit from HLS-visible in-flight state.
+compact_issue_queue,PASS,5473,1982,0,0,1.689 ns,boom_hls_gate3_3_boom_core_step_top/solution_top/syn/report/compact_issue_queue_csynth.rpt,Issue queue compaction after branch kill.

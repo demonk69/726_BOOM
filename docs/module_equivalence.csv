@@ -1,22 +1,23 @@
-# BOOM-HLS Module Equivalence Mapping, Gate 1 Update 2026-07-24
-BOOM Module,FIRRTL Module,HLS Function,HLS File,Status,Functional,Cycle,Missing Behavior,Gate1 Evidence
+# BOOM-HLS Module Equivalence Mapping, Gate 3.4 Update 2026-07-26
+BOOM Module,FIRRTL Module,HLS Function,HLS File,Status,Functional,Cycle,Missing Behavior,Evidence
 BoomFrontend,BoomFrontend,frontend_module,frontend.cpp,PARTIAL,PARTIALLY_VERIFIED,MISMATCH,"No ICache/BP/TLB/fetch buffer; one outstanding request; fetch_id wrap not tested","M006 closed; stale response regression PASS"
 DecodeUnit,DecodeUnit,decode_module,decode.cpp,IMPLEMENTED,PARTIALLY_VERIFIED,MISMATCH,"No RVC decompressor; partial decode table","directed decode/illegal tests PASS"
-RenameStage_Int,RenameStage,rename_module,rename.cpp,PARTIAL,PARTIALLY_VERIFIED,MISMATCH,"No br_tag allocation; no branch-mask propagation; single dispatch lane only","WAR/WAW/RAW/stale-pdst regressions PASS; Gate2 no BOOM trace"
-RenameMapTable,RenameMapTable,int_map_table,boom_state.hpp+rename.cpp,PARTIAL,PARTIALLY_VERIFIED,MISMATCH,"br_snapshots exist but save/restore unused; see branch_snapshot_status.md","source reads restored to speculative map_table"
-RenameFreeList,RenameFreeList,int_free_list,boom_state.hpp+rename.cpp,PARTIAL,PARTIALLY_VERIFIED,MISMATCH,"No per-branch allocation-list recovery; M004 does not close this","stale-pdst recycle regression PASS"
-RenameBusyTable,RenameBusyTable,busy_table,boom_state.hpp+rename.cpp,PARTIAL,PARTIALLY_VERIFIED,MISMATCH,"Busy bits simplified; no full wakeup network","RAW chain passes in serialized model"
-Rob,Rob,rob_allocate+rob_commit_module,boom_core_step.cpp,PARTIAL,PARTIALLY_VERIFIED,MISMATCH,"No PNR tracking; exception handling simplified; branch flush is coarse","ROB full and wrap tests PASS"
+RenameStage_Int,RenameStage,rename_module,rename.cpp,PARTIAL,PARTIALLY_VERIFIED,MISMATCH,"Single dispatch lane only; strict BOOM cycle timing not verified; original Chisel source absent","WAR/WAW/RAW/stale-pdst regressions PASS; Gate 3.3 branch tag/mask allocation tests PASS"
+RenameMapTable,RenameMapTable,int_map_table,boom_state.hpp+rename.cpp,PARTIAL,PARTIALLY_VERIFIED,INSUFFICIENT_EVIDENCE,"Snapshot/restore implemented for supported subset; no strict BOOM cycle proof","Gate 3.3 map snapshot/restore tests PASS; branch_state_inventory.csv"
+RenameFreeList,RenameFreeList,int_free_list,boom_state.hpp+rename.cpp,PARTIAL,PARTIALLY_VERIFIED,INSUFFICIENT_EVIDENCE,"Per-branch allocation rollback implemented for supported subset; full BOOM lane timing not proven","stale-pdst recycle regression PASS; Gate 3.3 free-list rollback tests PASS"
+RenameBusyTable,RenameBusyTable,busy_table,boom_state.hpp+rename.cpp,PARTIAL,PARTIALLY_VERIFIED,MISMATCH,"Busy recovery rebuild is functional HLS substitute; no full wakeup/bypass network","RAW chain passes; Gate 3.3 busy recovery tests PASS"
+Rob,Rob,rob_allocate+rob_commit_module,rob.cpp+commit.cpp,PARTIAL,PARTIALLY_VERIFIED,MISMATCH,"No PNR tracking; exception handling simplified; branch recovery kills younger entries only in supported subset","ROB full and wrap tests PASS; Gate 3.3 diagnostic csynth PASS"
 BasicDispatcher,BasicDispatcher,issue_module dispatch,issue.cpp,PARTIAL,PARTIALLY_VERIFIED,MISMATCH,"Only ALU IQ dispatches; Mem/FPU IQ absent","dispatch/issue same-cycle regression PASS"
-IssueUnitCollapsing_Int,IssueUnitCollapsing_2,issue_module select+compress,issue.cpp,PARTIAL,PARTIALLY_VERIFIED,MISMATCH,"Implemented ALU execute lane count is 1; no poison/kill/br_mask","IQ port conflict, oldest-ready, flush regressions PASS"
+IssueUnitCollapsing_Int,IssueUnitCollapsing_2,issue_module select+compress,issue.cpp,PARTIAL,PARTIALLY_VERIFIED,MISMATCH,"Implemented ALU execute lane count is 1; no poison model; strict cycle timing not verified","IQ port conflict, oldest-ready, flush regressions PASS; Gate 3.3 branch kill/clear/compact tests PASS"
 IssueUnitCollapsing_Mem,IssueUnitCollapsing_1,NOT IMPLEMENTED,-,STUB,NOT_IMPLEMENTED,NOT_IMPLEMENTED,"No Mem IQ",-
 IssueUnitCollapsing_FPU,IssueUnitCollapsing,NOT IMPLEMENTED,-,STUB,NOT_IMPLEMENTED,NOT_IMPLEMENTED,"No FPU IQ",-
 RegisterRead,RegisterReadDecode,execute_module,execute.cpp,PARTIAL,PARTIALLY_VERIFIED,MISMATCH,"No bypass network; reads int_rf directly","RAW tests PASS under current serialized timing"
 Int RegisterFile,RegisterFileSynthesizable_1,int_rf,boom_state.hpp,IMPLEMENTED,PARTIALLY_VERIFIED,MISMATCH,"HLS array does not implement BOOM multiport RF structure","ALU tests PASS"
-ALUExeUnit_Int,ALUExeUnit,execute_module,execute.cpp,PARTIAL,PARTIALLY_VERIFIED,MISMATCH,"No div/mul latency model; branch prediction simplified; no BOOM cycle trace","ALU/branch/JAL/JALR tests PASS"
+ALUExeUnit_Int,ALUExeUnit,execute_module,execute.cpp,PARTIAL,PARTIALLY_VERIFIED,MISMATCH,"No div/mul latency model; branch prediction simplified; no BOOM cycle trace","ALU/branch/JAL/JALR tests PASS; Gate 3.3 killed writeback suppression tests PASS"
 CSRFile,CSRFile,csr_module,csr.cpp,PARTIAL,PARTIALLY_VERIFIED,PARTIAL,"Only cycle/instret and ECALL handling subset",CSR tests PASS
-BranchDecode,BranchDecode,decode_module branch cases,decode.cpp,PARTIAL,PARTIALLY_VERIFIED,MISMATCH,"No predictor metadata or branch masks","taken/not-taken regressions PASS"
-LSU,LSU,lsu_module,lsu.cpp,STUB,NOT_IMPLEMENTED,NOT_IMPLEMENTED,"No LDQ/STQ/load/store execution",-
+BranchDecode,BranchDecode,decode_module branch cases,decode.cpp,PARTIAL,PARTIALLY_VERIFIED,MISMATCH,"No predictor metadata; branch masks are handled by rename/recovery, not full BOOM predictor flow","taken/not-taken regressions PASS; Gate 3.3 branch mask tests PASS"
+BranchRecovery,BranchMaskGenerationLogic+BrUpdate,branch_module+recover_mispredict,branch.cpp+rename.cpp,PARTIAL,PARTIALLY_VERIFIED,INSUFFICIENT_EVIDENCE,"Strict BOOM event/cycle trace unavailable; full memory/predictor interactions absent","Gate 3.3 branch snapshot directed 30/30 PASS; random 2/2 PASS; Gate 3.4 attribution/module csynth PASS"
+LSU,LSU,lsu_module,lsu.cpp,PARTIAL,PARTIALLY_VERIFIED,MISMATCH,"Minimal LB/LBU/LH/LHU/LW/LWU/LD and SB/SH/SW/SD only; no DCache, TLB/PTW, miss/replay, misaligned split, AMO/LRSC, or full forwarding","LSU tests 14/14 PASS; full loaded-program diff 10/10 PASS; Gate 3.3 diagnostic csynth PASS; branch kill tests PASS"
 FPU,FPU+FPUFMAPipe+FMA,NOT IMPLEMENTED,-,STUB,NOT_IMPLEMENTED,NOT_IMPLEMENTED,"No FPU",-
 Branch Predictor,BranchPredictor+ComposedBP,NOT IMPLEMENTED,-,STUB,NOT_IMPLEMENTED,NOT_IMPLEMENTED,"Always not-taken/no predictor structures",-
 ICache,ICache,NOT IMPLEMENTED,-,STUB,NOT_IMPLEMENTED,NOT_IMPLEMENTED,"Ideal imem request/response only",-

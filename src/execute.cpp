@@ -17,6 +17,8 @@ void execute_module(BoomCoreState& state) {
     for (int i=0; i<ISSUE_WIDTH && ri<DISPATCH_WIDTH; i++) {
         if (!iss.issued_valids[i]) continue;
         const MicroOp& uop = iss.issued_uops[i];
+        if (state.brupdate.valid && state.brupdate.mispredict &&
+            ((uop.branch.br_mask & state.brupdate.mispredict_mask) != 0)) continue;
 
         uint64_t rs1 = (uop.rename.prs1!=0) ? state.int_rf[uop.rename.prs1] : 0;
         uint64_t rs2 = (uop.rename.prs2!=0) ? state.int_rf[uop.rename.prs2] : 0;
@@ -73,6 +75,7 @@ void execute_module(BoomCoreState& state) {
 
         if (r.valid && !r.is_load && uop.rename.dst_rtype==DST_INT && uop.rename.pdst!=0) {
             state.int_rf[uop.rename.pdst] = r.result;
+            state.rename.int_free_list.busy_table[uop.rename.pdst] = false;
         }
         ri++;
     }

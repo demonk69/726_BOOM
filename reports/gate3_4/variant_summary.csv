@@ -1,0 +1,6 @@
+variant,status,runtime_seconds,peak_memory_kb,estimated_period_ns,lut,ff,bram_18k,dsp,latency,interval,regression_status,trace_status,architectural_diff_status,partial_order_status,accepted,notes
+GATE3_3_ACCEPTED_BASELINE,PASS,71.69,1520472,5.898,83286,16611,16,3,?,? ,PASS,5/5 HLS C++ and 5/5 csim byte-identical,10/10 PASS,"8 legal reorders; 0 real violations",true,Accepted conservative no-pipeline baseline from Gate 3.3.
+GATE3_4_ATTRIBUTION_BASELINE,PASS,69.33,1521180,5.898,83286,16611,16,3,?..?,?..?,PASS,5/5 HLS C++ and 5/5 csim byte-identical,10/10 PASS,"8 legal reorders; 0 real violations",false,"Resource attribution/module-baseline phase only; no LUT reduction candidate was applied."
+COMBO_AREA,NOT_RUN,,,,,,,,,,,,,,false,Deferred until single-variable structure experiments produce passing candidates.
+COMBO_BALANCED,NOT_RUN,,,,,,,,,,,,,,false,Deferred until single-variable structure experiments produce passing candidates.
+COMBO_STRUCTURE,NOT_RUN,,,,,,,,,,,,,,false,Deferred until single-variable structure experiments produce passing candidates.

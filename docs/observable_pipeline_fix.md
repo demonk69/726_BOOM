@@ -1,5 +1,7 @@
 # Observable Pipeline Fix Report
 
+This is a historical report for the earlier observable-pipeline fix. Gate 3.2 supersedes the state-update and synthesis-status portions of this document; see `docs/state_update_architecture.md` and `docs/synthesis_architecture.md`.
+
 ## Problem
 
 Vitis HLS 2021.2 csynth eliminated the entire BOOM core pipeline (86 LUT, 6 FF) because no internal computation affected any top-level output.
@@ -41,7 +43,7 @@ csr cycle → io_cycle
 Moved `rob_allocate` BEFORE `issue/execute` so rob_idx propagates through the pipeline correctly for writeback matching.
 
 ### State Update
-All modules use `next_state` copy, only committed at end of `boom_core_step`. Same-cycle events handled via sequential call order within `next_state`.
+Historical status: modules used a `next_state` copy committed at the end of `boom_core_step`. Gate 3.2 removed the whole-state copy and now updates the persistent `BoomCoreState` in serialized module order while preserving frozen traces.
 
 ### ECALL Success Detection
 ECALL reaching ROB head with a0=0 sets `io_success=true`. a0!=0 sets `io_trap=true`.
@@ -71,6 +73,8 @@ ECALL reaching ROB head with a0=0 sets `io_success=true`. a0!=0 sets `io_trap=tr
 | rob_commit_module | II=32 | 1,814 | 1,288 |
 
 ## Remaining Issues
+
+Historical timing issues below are from the older observable-pipeline synthesis point. Gate 3.2 now has a conservative baseline `boom_core_top` csynth PASS at 5.898 ns, while the separate `CORE_CYCLE` pipeline experiment still times out.
 
 - Timing violation (-3.55ns slack, Fmax 92 MHz vs target 10ns/100MHz)
 - CORE_CYCLE not pipelined (single-cycle latency too large for II=1)

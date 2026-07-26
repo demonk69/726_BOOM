@@ -2,7 +2,7 @@
 
 ## Overview
 
-This project implements a Vitis HLS 2022.2 synthesizable C++ model of the
+This project implements a Vitis HLS synthesizable C++ model of the
 BOOM (Berkeley Out-of-Order Machine) RISC-V processor, configured as
 **SmallBoomConfig** within the Chipyard SoC framework.
 
@@ -47,8 +47,8 @@ Cycle N:
 
 ### State Machine
 - All pipeline state is held in BoomCoreState
-- Each cycle: read current_state, compute next_state for each stage, commit at cycle end
-- Flushes propagate through br_mask mechanism
+- Each cycle updates the persistent BoomCoreState in serialized module order; the Gate 3.2 baseline no longer copies the whole state into a `next_state` temporary
+- Flushes are coarse and partial; full br_mask/snapshot recovery is not implemented
 
 ## Module Hierarchy
 
@@ -61,7 +61,7 @@ boom_core_top (ap_ctrl_none, CORE_CYCLE loop)
     ├── issue   (IssueUnitCollapsing ×3 + Dispatch)
     ├── execute (ALUExeUnit + FPUExeUnit stub)
     ├── branch  (Branch resolution + brupdate generation)
-    ├── lsu     (Load/Store Queue stub)
+    ├── lsu     (minimal integer Load/Store Queue subset)
     ├── commit  (ROB commit + Writeback)
     └── csr     (CSR File minimal)
 ```
@@ -76,6 +76,7 @@ boom_core_top (ap_ctrl_none, CORE_CYCLE loop)
 
 - Commit trace differential comparison vs Verilator reference model
 - Format: cycle,pc,inst,rd,rd_val,exception per committed instruction
+- Gate 3.2 conservative baseline Vitis HLS csynth passes for `boom_core_top`; strict cycle equivalence remains insufficient-evidence
 
 ## Current Implementation Status
 

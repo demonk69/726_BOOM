@@ -1,26 +1,2 @@
-# run_csynth.tcl - current-source baseline synthesis script
-open_project -reset boom_hls_csynth
-set_top boom_core_top
-
-add_files -cflags "-std=c++11 -I../include" ../src/boom_core_top.cpp
-add_files -cflags "-std=c++11 -I../include" ../src/boom_core_step.cpp
-add_files -cflags "-std=c++11 -I../include" ../src/frontend.cpp
-add_files -cflags "-std=c++11 -I../include" ../src/decode.cpp
-add_files -cflags "-std=c++11 -I../include" ../src/rename.cpp
-add_files -cflags "-std=c++11 -I../include" ../src/rob.cpp
-add_files -cflags "-std=c++11 -I../include" ../src/issue.cpp
-add_files -cflags "-std=c++11 -I../include" ../src/execute.cpp
-add_files -cflags "-std=c++11 -I../include" ../src/branch.cpp
-add_files -cflags "-std=c++11 -I../include" ../src/lsu.cpp
-add_files -cflags "-std=c++11 -I../include" ../src/commit.cpp
-add_files -cflags "-std=c++11 -I../include" ../src/csr.cpp
-
-open_solution -reset "solution_csynth"
-set_part [expr {$::env(FPGA_PART)}]
-create_clock -period [expr {$::env(CLOCK_PERIOD)}] -name default
-
-config_compile -pipeline_loops 0
-csynth_design
-
-close_project
-exit
+# Compatibility wrapper for the Gate 3.2 baseline flow.
+source [file join [file dirname [info script]] run_baseline_csynth.tcl]

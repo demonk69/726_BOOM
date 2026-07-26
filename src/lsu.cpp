@@ -24,6 +24,7 @@ static uint64_t load_value(uint64_t data, uint64_t address, uint8_t size, bool s
 static bool older_store_in_rob(const BoomCoreState& state, uint8_t rob_idx) {
     const RobInternalState& rob = state.rob;
     uint8_t idx = rob.head;
+OLDER_STORE_SCAN:
     for (int i = 0; i < ROB_DEPTH; i++) {
         if (idx == rob_idx) return false;
         const RobEntry& entry = rob.entries[idx];
@@ -39,7 +40,9 @@ static void clear_lsu_queues(LsuState& lsu) {
     lsu.load_response_pending = false;
     lsu.pending_load_transaction_id = 0;
     lsu.pending_load_rob_idx = 0;
+CLEAR_LDQ:
     for (int i = 0; i < LDQ_DEPTH; i++) lsu.ldq[i] = LoadQueueEntry();
+CLEAR_STQ:
     for (int i = 0; i < STQ_DEPTH; i++) lsu.stq[i] = StoreQueueEntry();
 }
 
@@ -140,7 +143,10 @@ void lsu_module(BoomCoreState& state, PipeSignals& pipe) {
                 } else {
                     uint64_t data = resp.read_data ? resp.read_data : resp.data;
                     uint64_t value = load_value(data, entry.memory_address, entry.memory_size, entry.signed_load);
-                    if (entry.uop.rename.pdst != 0) state.int_rf[entry.uop.rename.pdst] = value;
+                    if (entry.uop.rename.pdst != 0) {
+                        state.int_rf[entry.uop.rename.pdst] = value;
+                        state.rename.int_free_list.busy_table[entry.uop.rename.pdst] = false;
+                    }
                     entry.memory_data = value;
                 }
                 entry.memory_completed = true;
@@ -151,9 +157,12 @@ void lsu_module(BoomCoreState& state, PipeSignals& pipe) {
         }
     }
 
+LSU_EXECUTE_RESULTS:
     for (int i = 0; i < DISPATCH_WIDTH; i++) {
         const ExecuteState::AluResult& result = state.execute.alu_results[i];
         if (!result.valid || !result.memory_valid) continue;
+        if (state.brupdate.valid && state.brupdate.mispredict &&
+            ((result.uop.branch.br_mask & state.brupdate.mispredict_mask) != 0)) continue;
         uint8_t rob_idx = result.uop.queue.rob_idx;
         if (rob_idx >= ROB_DEPTH || !state.rob.entries[rob_idx].valid) continue;
         RobEntry& entry = state.rob.entries[rob_idx];
@@ -161,6 +170,7 @@ void lsu_module(BoomCoreState& state, PipeSignals& pipe) {
         else if (result.is_load) enqueue_load(state, result, entry);
     }
 
+LSU_LOAD_ISSUE_SCAN:
     for (int i = 0; i < ROB_DEPTH; i++) {
         uint8_t idx = (state.rob.head + i) % ROB_DEPTH;
         try_issue_load(state, pipe, idx);

@@ -1,0 +1,11 @@
+parameter,BOOM_value,BOOM_evidence,HLS_value,HLS_evidence,status,notes
+MAX_BRANCH_COUNT,8,"FIRRTL branch_mask UInt<8> and br_tag UInt<3> at chipyard.TestHarness.SmallBoomConfig.fir:232969-233061",8,"include/boom_config.hpp:36",MATCH,"Eight branch-mask bits imply eight concurrent branch tags."
+BR_MASK_BITS,8,"br_mask : UInt<8> and resolve/mispredict masks UInt<8> at chipyard.TestHarness.SmallBoomConfig.fir:232972",8,"include/boom_config.hpp:37",MATCH,"Used by uop branch masks and branch update masks."
+BR_TAG_BITS,3,"br_tag : UInt<3>[1] at chipyard.TestHarness.SmallBoomConfig.fir:232972",3,"include/boom_config.hpp:38",MATCH,"Three bits encode tags 0..7."
+LOGICAL_REG_COUNT,32,"RenameMapTable snapshots/restores entries [0..31] at chipyard.TestHarness.SmallBoomConfig.fir:233237-233304",32,"include/boom_config.hpp:24",MATCH,"Integer map-table snapshot width."
+INT_PHYS_REGS,52,"free-list and busy-table masks are UInt<52> at chipyard.TestHarness.SmallBoomConfig.fir:233546-233556 and 233899",52,"include/boom_config.hpp:21",MATCH,"Integer physical register tracking width."
+DISPATCH_WIDTH,1,"branch-mask, rename-map, free-list, and busy-table IO arrays use [1] at chipyard.TestHarness.SmallBoomConfig.fir:232972, 233066, 233894",1,"include/boom_config.hpp:13",MATCH,"Current HLS target is the SmallBoom single-dispatch configuration."
+ISSUE_WIDTH,3,"RenameBusyTable has three writeback ports at chipyard.TestHarness.SmallBoomConfig.fir:233894-233913",3,"include/boom_config.hpp:14",MATCH,"HLS has three issue slots/results in the supported subset."
+ROB_DEPTH,32,"uop rob_idx is UInt<5> in generated uop bundles at chipyard.TestHarness.SmallBoomConfig.fir:232972",32,"include/boom_config.hpp:18-19",MATCH,"Five-bit ROB index encodes 32 entries."
+LDQ_DEPTH,8,"Generated uop ldq_idx is UInt<3> and LSU has eight LDQ kill cases at chipyard.TestHarness.SmallBoomConfig.fir:293537-293549",8,"include/boom_config.hpp:31-33",MATCH,"HLS minimal LSU uses eight load-queue entries."
+STQ_DEPTH,8,"Generated LSU has eight STQ branch-kill cases at chipyard.TestHarness.SmallBoomConfig.fir:293328-293536",8,"include/boom_config.hpp:32-34",MATCH,"HLS minimal LSU uses eight store-queue entries."

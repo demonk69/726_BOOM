@@ -45,9 +45,25 @@ struct RenameFreeListState {
     uint8_t free_list[INT_PHYS_REGS];
     uint8_t head, tail, count;
     bool    busy_table[INT_PHYS_REGS];
-    RenameFreeListState() : head(1), tail(INT_PHYS_REGS-1), count(INT_PHYS_REGS-1) {
+    RenameFreeListState() : head(1), tail(0), count(INT_PHYS_REGS-1) {
         for (int i=0; i<INT_PHYS_REGS; i++) { free_list[i]=i; busy_table[i]=false; }
-        free_list[0]=0; busy_table[0]=true; }
+        free_list[0]=0; busy_table[0]=false; }
+};
+
+struct BranchRecoveryState {
+    uint8_t active_mask;
+    bool    tag_valid[MAX_BRANCH_COUNT];
+    bool    snapshot_valid[MAX_BRANCH_COUNT];
+    bool    br_alloc_lists[MAX_BRANCH_COUNT][INT_PHYS_REGS];
+    uint32_t allocations, releases, mispredicts, rollbacks;
+
+    BranchRecoveryState() : active_mask(0), allocations(0), releases(0),
+        mispredicts(0), rollbacks(0) {
+        for (int i=0; i<MAX_BRANCH_COUNT; i++) {
+            tag_valid[i]=false; snapshot_valid[i]=false;
+            for (int p=0; p<INT_PHYS_REGS; p++) br_alloc_lists[i][p]=false;
+        }
+    }
 };
 
 struct RenameState {
@@ -155,6 +171,7 @@ struct BoomCoreState {
     RobInternalState rob;
     CsrState        csr;
     LsuState        lsu;
+    BranchRecoveryState branch_state;
     uint64_t        int_rf[INT_PHYS_REGS];
     uint64_t        fp_rf[FP_PHYS_REGS];
     BranchUpdate    brupdate;

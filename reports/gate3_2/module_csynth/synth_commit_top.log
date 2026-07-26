@@ -1,0 +1,142 @@
+
+****** Vitis HLS - High-Level Synthesis from C, C++ and OpenCL v2021.2 (64-bit)
+  **** SW Build 3367213 on Tue Oct 19 02:47:39 MDT 2021
+  **** IP Build 3369179 on Thu Oct 21 08:25:16 MDT 2021
+    ** Copyright 1986-2021 Xilinx, Inc. All Rights Reserved.
+
+source /home/lab_726/Xilinx/Vitis_HLS/2021.2/scripts/vitis_hls/hls.tcl -notrace
+INFO: [HLS 200-10] Running '/home/lab_726/Xilinx/Vitis_HLS/2021.2/bin/unwrapped/lnx64.o/vitis_hls'
+INFO: [HLS 200-10] For user 'lab_726' on host '726' (Linux_x86_64 version 6.8.0-124-generic) on Sat Jul 25 20:57:05 CST 2026
+INFO: [HLS 200-10] On os Ubuntu 22.04.5 LTS
+INFO: [HLS 200-10] In directory '/home/lab_726/boom/hls_boom'
+Sourcing Tcl script '/home/lab_726/boom/hls_boom/scripts/module_csynth.tcl'
+INFO: [HLS 200-1510] Running: open_project -reset boom_hls_gate3_2_synth_commit_top
+INFO: [HLS 200-10] Opening and resetting project '/home/lab_726/boom/hls_boom/boom_hls_gate3_2_synth_commit_top'.
+WARNING: [HLS 200-40] No /home/lab_726/boom/hls_boom/boom_hls_gate3_2_synth_commit_top/solution_module/solution_module.aps file found.
+INFO: [HLS 200-1510] Running: set_top synth_commit_top
+INFO: [HLS 200-1510] Running: add_files -cflags -std=c++11 -I/home/lab_726/boom/hls_boom/include  /home/lab_726/boom/hls_boom/src/boom_core_merged.cpp
+INFO: [HLS 200-10] Adding design file '/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp' to the project
+INFO: [HLS 200-1510] Running: open_solution -reset solution_module
+INFO: [HLS 200-10] Creating and opening solution '/home/lab_726/boom/hls_boom/boom_hls_gate3_2_synth_commit_top/solution_module'.
+INFO: [HLS 200-10] Cleaning up the solution database.
+WARNING: [HLS 200-40] No /home/lab_726/boom/hls_boom/boom_hls_gate3_2_synth_commit_top/solution_module/solution_module.aps file found.
+INFO: [HLS 200-1505] Using default flow_target 'vivado'
+Resolution: For help on HLS 200-1505 see www.xilinx.com/cgi-bin/docs/rdoc?v=2021.2;t=hls+guidance;d=200-1505.html
+INFO: [HLS 200-1510] Running: set_part xczu7ev-ffvc1156-2-e
+INFO: [HLS 200-1611] Setting target device to 'xczu7ev-ffvc1156-2-e'
+INFO: [HLS 200-1510] Running: create_clock -period 10 -name default
+INFO: [SYN 201-201] Setting up clock 'default' with a period of 10ns.
+INFO: [HLS 200-1510] Running: config_compile -pipeline_loops 0
+INFO: [XFORM 203-1171] Pipeline the innermost loop with trip count more than 0 or its parent loop when its trip count is less than or equal 0.
+INFO: [HLS 200-1510] Running: csynth_design
+INFO: [HLS 200-111] Finished File checks and directory preparation: CPU user time: 0.01 seconds. CPU system time: 0 seconds. Elapsed time: 0 seconds; current allocated memory: 1.321 GB.
+INFO: [HLS 200-10] Analyzing design file '/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp' ...
+INFO: [HLS 200-111] Finished Source Code Analysis and Preprocessing: CPU user time: 0.6 seconds. CPU system time: 0.23 seconds. Elapsed time: 0.42 seconds; current allocated memory: 1.323 GB.
+INFO: [HLS 200-777] Using interface defaults for 'Vivado' flow target.
+INFO: [HLS 214-284] Auto array partition mode is set into default.
+INFO: [HLS 214-178] Inlining function 'MicroOp::MicroOp()' into 'FrontendState::FrontendState()' (/home/lab_726/boom/hls_boom/include/boom_state.hpp:26:0)
+INFO: [HLS 214-178] Inlining function 'MicroOp::MicroOp()' into 'DecodeState::DecodeState()' (/home/lab_726/boom/hls_boom/include/boom_state.hpp:32:0)
+INFO: [HLS 214-178] Inlining function 'RenameMapTableState::RenameMapTableState()' into 'RenameState::RenameState()' (/home/lab_726/boom/hls_boom/include/boom_state.hpp:58:0)
+INFO: [HLS 214-178] Inlining function 'RenameFreeListState::RenameFreeListState()' into 'RenameState::RenameState()' (/home/lab_726/boom/hls_boom/include/boom_state.hpp:58:0)
+INFO: [HLS 214-178] Inlining function 'MicroOp::MicroOp()' into 'RenameState::RenameState()' (/home/lab_726/boom/hls_boom/include/boom_state.hpp:58:0)
+INFO: [HLS 214-178] Inlining function 'MicroOp::MicroOp()' into 'IssueSlotEntry::IssueSlotEntry()' (/home/lab_726/boom/hls_boom/include/boom_types.hpp:88:0)
+INFO: [HLS 214-178] Inlining function 'IssueSlotEntry::IssueSlotEntry()' into 'IssueQueueState::IssueQueueState()' (/home/lab_726/boom/hls_boom/include/boom_state.hpp:65:0)
+INFO: [HLS 214-178] Inlining function 'MicroOp::MicroOp()' into 'IssueState::IssueState()' (/home/lab_726/boom/hls_boom/include/boom_state.hpp:73:0)
+INFO: [HLS 214-178] Inlining function 'MicroOp::MicroOp()' into 'ExecuteState::AluResult::AluResult()' (/home/lab_726/boom/hls_boom/include/boom_state.hpp:88:0)
+INFO: [HLS 214-178] Inlining function 'ExecuteState::AluResult::AluResult()' into 'ExecuteState::ExecuteState()' (/home/lab_726/boom/hls_boom/include/boom_state.hpp:91:0)
+INFO: [HLS 214-178] Inlining function 'MicroOp::MicroOp()' into 'RobEntry::RobEntry()' (/home/lab_726/boom/hls_boom/include/boom_types.hpp:79:0)
+INFO: [HLS 214-178] Inlining function 'RobEntry::RobEntry()' into 'RobInternalState::RobInternalState()' (/home/lab_726/boom/hls_boom/include/boom_state.hpp:104:0)
+INFO: [HLS 214-178] Inlining function 'CommitEntry::CommitEntry()' into 'RobInternalState::RobInternalState()' (/home/lab_726/boom/hls_boom/include/boom_state.hpp:104:0)
+INFO: [HLS 214-178] Inlining function 'StoreQueueEntry::StoreQueueEntry()' into 'LsuState::LsuState()' (/home/lab_726/boom/hls_boom/include/boom_state.hpp:145:0)
+INFO: [HLS 214-178] Inlining function 'LoadQueueEntry::LoadQueueEntry()' into 'LsuState::LsuState()' (/home/lab_726/boom/hls_boom/include/boom_state.hpp:145:0)
+INFO: [HLS 214-178] Inlining function 'MicroOp::MicroOp()' into 'BranchUpdate::BranchUpdate()' (/home/lab_726/boom/hls_boom/include/boom_types.hpp:97:0)
+INFO: [HLS 214-178] Inlining function 'FrontendState::FrontendState()' into 'BoomCoreState::BoomCoreState()' (/home/lab_726/boom/hls_boom/include/boom_state.hpp:168:0)
+INFO: [HLS 214-178] Inlining function 'CsrState::CsrState()' into 'BoomCoreState::BoomCoreState()' (/home/lab_726/boom/hls_boom/include/boom_state.hpp:168:0)
+INFO: [HLS 214-178] Inlining function 'LsuState::LsuState()' into 'BoomCoreState::BoomCoreState()' (/home/lab_726/boom/hls_boom/include/boom_state.hpp:168:0)
+INFO: [HLS 214-178] Inlining function 'BranchUpdate::BranchUpdate()' into 'BoomCoreState::BoomCoreState()' (/home/lab_726/boom/hls_boom/include/boom_state.hpp:168:0)
+INFO: [HLS 214-178] Inlining function 'boom::rob_flush(BoomCoreState&)' into 'boom::rob_branch_kill(BoomCoreState&)' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:391:0)
+INFO: [HLS 214-178] Inlining function 'boom::rob_branch_kill(BoomCoreState&)' into 'boom::rob_commit_module(BoomCoreState&, PipeSignals&)' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:766:0)
+INFO: [HLS 214-178] Inlining function 'boom::rob_complete(BoomCoreState&)' into 'boom::rob_commit_module(BoomCoreState&, PipeSignals&)' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:766:0)
+INFO: [HLS 214-178] Inlining function 'DmemRequest::DmemRequest()' into 'boom::rob_commit_module(BoomCoreState&, PipeSignals&)' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:766:0)
+INFO: [HLS 214-178] Inlining function 'CommitEntry::CommitEntry()' into 'boom::rob_commit_module(BoomCoreState&, PipeSignals&)' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:766:0)
+INFO: [HLS 214-178] Inlining function 'DmemRequest::DmemRequest()' into 'synth_commit_top(hls::stream<DmemRequest, 0>&, hls::stream<CommitEntry, 0>&, unsigned long, unsigned long&)' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:1116:0)
+INFO: [HLS 214-178] Inlining function 'CommitEntry::CommitEntry()' into 'synth_commit_top(hls::stream<DmemRequest, 0>&, hls::stream<CommitEntry, 0>&, unsigned long, unsigned long&)' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:1116:0)
+INFO: [HLS 214-241] Aggregating fifo (hls::stream) variable 'pipe.4' with compact=bit mode in 518-bits (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:1123:17)
+INFO: [HLS 214-241] Aggregating fifo (hls::stream) variable 'pipe.2' with compact=bit mode in 283-bits (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:1123:17)
+INFO: [HLS 214-241] Aggregating fifo (hls::stream) variable 'commit_trace_out' with compact=bit mode in 518-bits (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:1116:0)
+INFO: [HLS 214-241] Aggregating fifo (hls::stream) variable 'dmem_req_out' with compact=bit mode in 283-bits (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:1116:0)
+INFO: [HLS 214-270] Starting automatic array partition analysis...
+INFO: [HLS 214-131] Inlining function '_llvm.fpga.pack.none.i320.s_struct.DmemRequests' into 'boom::rob_commit_module(BoomCoreState&, PipeSignals&) (.1)' (/home/lab_726/Xilinx/Vitis_HLS/2021.2/common/technology/autopilot/hls_stream_39.h:173:9)
+INFO: [HLS 214-131] Inlining function '_llvm.fpga.pack.bits.i518.s_struct.CommitEntrys.1' into 'boom::rob_commit_module(BoomCoreState&, PipeSignals&) (.1)' (/home/lab_726/Xilinx/Vitis_HLS/2021.2/common/technology/autopilot/hls_stream_39.h:173:9)
+INFO: [HLS 214-131] Inlining function '_llvm.fpga.pack.none.i768.s_struct.CommitEntrys' into 'boom::rob_commit_module(BoomCoreState&, PipeSignals&) (.1)' (/home/lab_726/Xilinx/Vitis_HLS/2021.2/common/technology/autopilot/hls_stream_39.h:173:9)
+INFO: [HLS 214-131] Inlining function '_llvm.fpga.pack.bits.i283.s_struct.DmemRequests.1' into 'boom::rob_commit_module(BoomCoreState&, PipeSignals&) (.1)' (/home/lab_726/Xilinx/Vitis_HLS/2021.2/common/technology/autopilot/hls_stream_39.h:173:9)
+INFO: [HLS 200-111] Finished Compiling Optimization and Transform: CPU user time: 13.29 seconds. CPU system time: 0.3 seconds. Elapsed time: 13.5 seconds; current allocated memory: 425.695 MB.
+INFO: [HLS 200-111] Finished Checking Pragmas: CPU user time: 0 seconds. CPU system time: 0 seconds. Elapsed time: 0 seconds; current allocated memory: 425.695 MB.
+INFO: [HLS 200-10] Starting code transformations ...
+INFO: [HLS 200-111] Finished Standard Transforms: CPU user time: 0.06 seconds. CPU system time: 0 seconds. Elapsed time: 0.05 seconds; current allocated memory: 431.109 MB.
+INFO: [HLS 200-10] Checking synthesizability ...
+INFO: [HLS 200-111] Finished Checking Synthesizability: CPU user time: 0.01 seconds. CPU system time: 0 seconds. Elapsed time: 0.02 seconds; current allocated memory: 431.371 MB.
+WARNING: [XFORM 203-731] Internal stream variable 'pipe.2' is invalid: it has no data producer
+WARNING: [HLS 200-805] An internal stream 'pipe.4' with default size can result in deadlock. Please consider resizing the stream using the directive 'set_directive_stream' or the 'HLS stream' pragma.
+INFO: [HLS 200-111] Finished Loop, function and other optimizations: CPU user time: 0.03 seconds. CPU system time: 0.01 seconds. Elapsed time: 0.04 seconds; current allocated memory: 454.305 MB.
+INFO: [HLS 200-472] Inferring partial write operation for 'state.rob.entries.valid' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:1118:45)
+INFO: [HLS 200-472] Inferring partial write operation for 'state.rob.entries.busy' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:1119:44)
+INFO: [HLS 200-472] Inferring partial write operation for 'state.rob.entries.uop.debug_pc' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:1121:52)
+INFO: [HLS 200-472] Inferring partial write operation for 'state.rob.entries.uop.inst' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:1122:48)
+INFO: [HLS 200-472] Inferring partial write operation for 'state.rob.entries.valid' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:838:21)
+INFO: [HLS 200-111] Finished Architecture Synthesis: CPU user time: 0.02 seconds. CPU system time: 0 seconds. Elapsed time: 0.02 seconds; current allocated memory: 454.805 MB.
+INFO: [HLS 200-10] Starting hardware synthesis ...
+INFO: [HLS 200-10] Synthesizing 'synth_commit_top' ...
+INFO: [HLS 200-10] ----------------------------------------------------------------
+INFO: [HLS 200-42] -- Implementing module 'rob_commit_module'
+INFO: [HLS 200-10] ----------------------------------------------------------------
+INFO: [SCHED 204-11] Starting scheduling ...
+INFO: [SCHED 204-11] Finished scheduling.
+INFO: [HLS 200-111] Finished Scheduling: CPU user time: 0.03 seconds. CPU system time: 0 seconds. Elapsed time: 0.03 seconds; current allocated memory: 455.840 MB.
+INFO: [BIND 205-100] Starting micro-architecture generation ...
+INFO: [BIND 205-101] Performing variable lifetime analysis.
+INFO: [BIND 205-101] Exploring resource sharing.
+INFO: [BIND 205-101] Binding ...
+INFO: [BIND 205-100] Finished micro-architecture generation.
+INFO: [HLS 200-111] Finished Binding: CPU user time: 0.01 seconds. CPU system time: 0.01 seconds. Elapsed time: 0.01 seconds; current allocated memory: 455.840 MB.
+INFO: [HLS 200-10] ----------------------------------------------------------------
+INFO: [HLS 200-42] -- Implementing module 'synth_commit_top'
+INFO: [HLS 200-10] ----------------------------------------------------------------
+INFO: [SCHED 204-11] Starting scheduling ...
+INFO: [SCHED 204-11] Finished scheduling.
+INFO: [HLS 200-111] Finished Scheduling: CPU user time: 0.02 seconds. CPU system time: 0 seconds. Elapsed time: 0.02 seconds; current allocated memory: 456.121 MB.
+INFO: [BIND 205-100] Starting micro-architecture generation ...
+INFO: [BIND 205-101] Performing variable lifetime analysis.
+INFO: [BIND 205-101] Exploring resource sharing.
+INFO: [BIND 205-101] Binding ...
+INFO: [BIND 205-100] Finished micro-architecture generation.
+INFO: [HLS 200-111] Finished Binding: CPU user time: 0.01 seconds. CPU system time: 0 seconds. Elapsed time: 0.01 seconds; current allocated memory: 456.121 MB.
+INFO: [HLS 200-10] ----------------------------------------------------------------
+INFO: [HLS 200-10] -- Generating RTL for module 'rob_commit_module'
+INFO: [HLS 200-10] ----------------------------------------------------------------
+INFO: [RTGEN 206-100] Finished creating RTL model for 'rob_commit_module'.
+INFO: [HLS 200-111] Finished Creating RTL model: CPU user time: 0.02 seconds. CPU system time: 0 seconds. Elapsed time: 0.01 seconds; current allocated memory: 456.121 MB.
+INFO: [HLS 200-10] ----------------------------------------------------------------
+INFO: [HLS 200-10] -- Generating RTL for module 'synth_commit_top'
+INFO: [HLS 200-10] ----------------------------------------------------------------
+INFO: [RTGEN 206-500] Setting interface mode on port 'synth_commit_top/dmem_req_out' to 'ap_fifo'.
+INFO: [RTGEN 206-500] Setting interface mode on port 'synth_commit_top/commit_trace_out' to 'ap_fifo'.
+INFO: [RTGEN 206-500] Setting interface mode on port 'synth_commit_top/seed_pc' to 'ap_none'.
+INFO: [RTGEN 206-500] Setting interface mode on port 'synth_commit_top/observable' to 'ap_vld'.
+INFO: [RTGEN 206-500] Setting interface mode on function 'synth_commit_top' to 'ap_ctrl_hs'.
+WARNING: [RTGEN 206-101] Register 'state_rob_head' is power-on initialization.
+WARNING: [RTGEN 206-101] Register 'state_csr_instret' is power-on initialization.
+INFO: [RTGEN 206-100] Finished creating RTL model for 'synth_commit_top'.
+INFO: [HLS 200-111] Finished Creating RTL model: CPU user time: 0.03 seconds. CPU system time: 0 seconds. Elapsed time: 0.04 seconds; current allocated memory: 456.746 MB.
+INFO: [RTMG 210-278] Implementing memory 'synth_commit_top_state_rob_entries_valid_RAM_AUTO_1R1W_ram (RAM)' using auto RAMs with power-on initialization.
+INFO: [RTMG 210-278] Implementing memory 'synth_commit_top_state_rob_entries_uop_debug_pc_RAM_AUTO_1R1W_ram (RAM)' using auto RAMs with power-on initialization.
+INFO: [RTMG 210-278] Implementing memory 'synth_commit_top_state_rob_entries_uop_inst_RAM_AUTO_1R1W_ram (RAM)' using auto RAMs with power-on initialization.
+INFO: [RTMG 210-285] Implementing FIFO 'pipe_4_U(synth_commit_top_fifo_w518_d2_S)' using Shift Registers.
+INFO: [HLS 200-111] Finished Generating all RTL models: CPU user time: 0.15 seconds. CPU system time: 0.01 seconds. Elapsed time: 0.15 seconds; current allocated memory: 460.766 MB.
+INFO: [HLS 200-111] Finished Updating report files: CPU user time: 0.12 seconds. CPU system time: 0 seconds. Elapsed time: 0.13 seconds; current allocated memory: 460.766 MB.
+INFO: [VHDL 208-304] Generating VHDL RTL for synth_commit_top.
+INFO: [VLOG 209-307] Generating Verilog RTL for synth_commit_top.
+INFO: [HLS 200-789] **** Estimated Fmax: 287.85 MHz
+INFO: [HLS 200-111] Finished Command csynth_design CPU user time: 14.42 seconds. CPU system time: 0.56 seconds. Elapsed time: 14.45 seconds; current allocated memory: -891.891 MB.
+INFO: [HLS 200-112] Total CPU user time: 15.77 seconds. Total CPU system time: 0.96 seconds. Total elapsed time: 15.54 seconds; peak allocated memory: 1.323 GB.
+INFO: [Common 17-206] Exiting vitis_hls at Sat Jul 25 20:57:20 2026...

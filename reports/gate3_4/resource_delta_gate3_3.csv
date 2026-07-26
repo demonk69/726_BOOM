@@ -1,0 +1,32 @@
+scope,metric,gate3_2,gate3_3,delta,percent_delta,gate3_2_report,gate3_3_report,notes
+boom_core_step_top,LUT,40696,83353,42657,104.82%,reports/gate3_3/top_csynth_modes_gate3_2.csv,reports/gate3_3/top_csynth_modes_gate3_3.csv,Finite real step top.
+boom_core_step_top,FF,16182,16808,626,3.87%,reports/gate3_3/top_csynth_modes_gate3_2.csv,reports/gate3_3/top_csynth_modes_gate3_3.csv,Finite real step top.
+boom_core_step_top,BRAM_18K,16,16,0,0.00%,reports/gate3_3/top_csynth_modes_gate3_2.csv,reports/gate3_3/top_csynth_modes_gate3_3.csv,Finite real step top.
+boom_core_step_top,DSP,3,3,0,0.00%,reports/gate3_3/top_csynth_modes_gate3_2.csv,reports/gate3_3/top_csynth_modes_gate3_3.csv,Finite real step top.
+boom_core_step_top,estimated_period_ns,5.898,5.898,0.000,0.00%,reports/gate3_3/top_csynth_modes_gate3_2.csv,reports/gate3_3/top_csynth_modes_gate3_3.csv,Finite real step top.
+boom_core_top,LUT,40625,83286,42661,105.01%,reports/gate3_3/baseline_csynth_gate3_2.md,reports/gate3_3/baseline_csynth_summary.md,Accepted no-pipeline baseline top.
+boom_core_top,FF,15985,16611,626,3.92%,reports/gate3_3/baseline_csynth_gate3_2.md,reports/gate3_3/baseline_csynth_summary.md,Accepted no-pipeline baseline top.
+boom_core_top,BRAM_18K,16,16,0,0.00%,reports/gate3_3/baseline_csynth_gate3_2.md,reports/gate3_3/baseline_csynth_summary.md,Accepted no-pipeline baseline top.
+boom_core_top,DSP,3,3,0,0.00%,reports/gate3_3/baseline_csynth_gate3_2.md,reports/gate3_3/baseline_csynth_summary.md,Accepted no-pipeline baseline top.
+boom_core_top,estimated_period_ns,5.898,5.898,0.000,0.00%,reports/gate3_3/baseline_csynth_gate3_2.md,reports/gate3_3/baseline_csynth_summary.md,Accepted no-pipeline baseline top.
+synth_frontend_top,LUT,730,730,0,0.00%,reports/gate3_2/module_csynth_summary.csv,reports/gate3_3/module_csynth_summary.csv,Module wrapper.
+synth_frontend_top,FF,398,398,0,0.00%,reports/gate3_2/module_csynth_summary.csv,reports/gate3_3/module_csynth_summary.csv,Module wrapper.
+synth_decode_top,LUT,98,98,0,0.00%,reports/gate3_2/module_csynth_summary.csv,reports/gate3_3/module_csynth_summary.csv,Module wrapper.
+synth_decode_top,FF,165,165,0,0.00%,reports/gate3_2/module_csynth_summary.csv,reports/gate3_3/module_csynth_summary.csv,Module wrapper.
+synth_rename_top,LUT,77,268,191,248.05%,reports/gate3_2/module_csynth_summary.csv,reports/gate3_3/module_csynth_summary.csv,Branch tag allocation snapshot and allocation-list tracking.
+synth_rename_top,FF,15,229,214,1426.67%,reports/gate3_2/module_csynth_summary.csv,reports/gate3_3/module_csynth_summary.csv,Branch recovery state visibility through wrapper.
+synth_rob_top,LUT,71,71,0,0.00%,reports/gate3_2/module_csynth_summary.csv,reports/gate3_3/module_csynth_summary.csv,Module wrapper.
+synth_rob_top,FF,13,13,0,0.00%,reports/gate3_2/module_csynth_summary.csv,reports/gate3_3/module_csynth_summary.csv,Module wrapper.
+synth_issue_top,LUT,7178,11147,3969,55.29%,reports/gate3_2/module_csynth_summary.csv,reports/gate3_3/module_csynth_summary.csv,Branch kill/clear and issue-queue compaction.
+synth_issue_top,FF,4125,4147,22,0.53%,reports/gate3_2/module_csynth_summary.csv,reports/gate3_3/module_csynth_summary.csv,Branch kill/clear and busy refresh.
+synth_issue_top,estimated_period_ns,1.847,2.203,0.356,19.27%,reports/gate3_2/module_csynth_summary.csv,reports/gate3_3/module_csynth_summary.csv,Module wrapper timing estimate.
+synth_execute_top,LUT,1685,1685,0,0.00%,reports/gate3_2/module_csynth_summary.csv,reports/gate3_3/module_csynth_summary.csv,Module wrapper.
+synth_execute_top,FF,247,247,0,0.00%,reports/gate3_2/module_csynth_summary.csv,reports/gate3_3/module_csynth_summary.csv,Module wrapper.
+synth_lsu_top,LUT,712,712,0,0.00%,reports/gate3_2/module_csynth_summary.csv,reports/gate3_3/module_csynth_summary.csv,Module wrapper.
+synth_lsu_top,FF,415,415,0,0.00%,reports/gate3_2/module_csynth_summary.csv,reports/gate3_3/module_csynth_summary.csv,Module wrapper.
+synth_commit_top,LUT,530,530,0,0.00%,reports/gate3_2/module_csynth_summary.csv,reports/gate3_3/module_csynth_summary.csv,Module wrapper.
+synth_commit_top,FF,236,236,0,0.00%,reports/gate3_2/module_csynth_summary.csv,reports/gate3_3/module_csynth_summary.csv,Module wrapper.
+synth_core_step_top,LUT,20151,45350,25199,125.05%,reports/gate3_2/module_csynth_summary.csv,reports/gate3_3/module_csynth_summary.csv,Synthetic module wrapper with limited observability; real step top is larger.
+synth_core_step_top,FF,7338,12111,4773,65.04%,reports/gate3_2/module_csynth_summary.csv,reports/gate3_3/module_csynth_summary.csv,Synthetic module wrapper with limited observability.
+synth_core_step_top,BRAM_18K,11,12,1,9.09%,reports/gate3_2/module_csynth_summary.csv,reports/gate3_3/module_csynth_summary.csv,Synthetic module wrapper with limited observability.
+synth_core_step_top,estimated_period_ns,7.112,5.898,-1.214,-17.07%,reports/gate3_2/module_csynth_summary.csv,reports/gate3_3/module_csynth_summary.csv,Synthetic module wrapper timing estimate improved after changed cone of logic.

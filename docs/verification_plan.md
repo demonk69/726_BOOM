@@ -7,6 +7,17 @@
 3. **Random instruction tests**: Random sequences, compare architectural state
 4. **RISC-V ISA tests**: Standard compliance tests (rv64ui, rv64um, etc.)
 
+## Current Gate Status
+
+| Gate | Status | Evidence |
+|---|---|---|
+| Gate 1 integer/control subset | PASS | directed `25/25`, Gate 1 regressions `13/13` |
+| Gate 2.5 standalone BOOM traces | PARTIAL PASS | finite loadmem-backed traces; official simulator path blocked |
+| Gate 3.1C minimal LSU architectural diff | PASS for supported subset | LSU `14/14`, full loaded-program diff `10/10` |
+| Gate 3.2 conservative baseline csynth | PASS | `boom_core_top` csynth 45.56s, 5.898 ns estimated period |
+| Gate 3.2 performance pipeline csynth | BLOCKED | `BOOM_HLS_ENABLE_CORE_PIPELINE=1` timed out after 15 minutes |
+| Official Gate 3 | BLOCKED | original Chipyard/FESVR/DRAMSim path unavailable |
+
 ## Trace Format
 
 CSV format, one entry per committed instruction:
