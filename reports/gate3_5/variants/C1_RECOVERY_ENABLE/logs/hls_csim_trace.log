@@ -1,0 +1,77 @@
+
+****** Vitis HLS - High-Level Synthesis from C, C++ and OpenCL v2021.2 (64-bit)
+  **** SW Build 3367213 on Tue Oct 19 02:47:39 MDT 2021
+  **** IP Build 3369179 on Thu Oct 21 08:25:16 MDT 2021
+    ** Copyright 1986-2021 Xilinx, Inc. All Rights Reserved.
+
+source /home/lab_726/Xilinx/Vitis_HLS/2021.2/scripts/vitis_hls/hls.tcl -notrace
+INFO: [HLS 200-10] Running '/home/lab_726/Xilinx/Vitis_HLS/2021.2/bin/unwrapped/lnx64.o/vitis_hls'
+INFO: [HLS 200-10] For user 'lab_726' on host '726' (Linux_x86_64 version 6.8.0-124-generic) on Sun Jul 26 22:38:33 CST 2026
+INFO: [HLS 200-10] On os Ubuntu 22.04.5 LTS
+INFO: [HLS 200-10] In directory '/home/lab_726/boom/hls_boom'
+Sourcing Tcl script '/home/lab_726/boom/hls_boom/scripts/run_hls_prefix_trace_csim.tcl'
+INFO: [HLS 200-1510] Running: open_project -reset boom_hls_prefix_trace_csim
+INFO: [HLS 200-10] Opening and resetting project '/home/lab_726/boom/hls_boom/boom_hls_prefix_trace_csim'.
+WARNING: [HLS 200-40] No /home/lab_726/boom/hls_boom/boom_hls_prefix_trace_csim/solution_prefix_trace/solution_prefix_trace.aps file found.
+INFO: [HLS 200-1510] Running: set_top boom_core_top
+INFO: [HLS 200-1510] Running: add_files -cflags -std=c++11 -I/home/lab_726/boom/hls_boom/include /home/lab_726/boom/hls_boom/src/boom_core_top.cpp
+INFO: [HLS 200-10] Adding design file '/home/lab_726/boom/hls_boom/src/boom_core_top.cpp' to the project
+INFO: [HLS 200-1510] Running: add_files -cflags -std=c++11 -I/home/lab_726/boom/hls_boom/include /home/lab_726/boom/hls_boom/src/boom_core_step.cpp
+INFO: [HLS 200-10] Adding design file '/home/lab_726/boom/hls_boom/src/boom_core_step.cpp' to the project
+INFO: [HLS 200-1510] Running: add_files -cflags -std=c++11 -I/home/lab_726/boom/hls_boom/include /home/lab_726/boom/hls_boom/src/frontend.cpp
+INFO: [HLS 200-10] Adding design file '/home/lab_726/boom/hls_boom/src/frontend.cpp' to the project
+INFO: [HLS 200-1510] Running: add_files -cflags -std=c++11 -I/home/lab_726/boom/hls_boom/include /home/lab_726/boom/hls_boom/src/decode.cpp
+INFO: [HLS 200-10] Adding design file '/home/lab_726/boom/hls_boom/src/decode.cpp' to the project
+INFO: [HLS 200-1510] Running: add_files -cflags -std=c++11 -I/home/lab_726/boom/hls_boom/include /home/lab_726/boom/hls_boom/src/rename.cpp
+INFO: [HLS 200-10] Adding design file '/home/lab_726/boom/hls_boom/src/rename.cpp' to the project
+INFO: [HLS 200-1510] Running: add_files -cflags -std=c++11 -I/home/lab_726/boom/hls_boom/include /home/lab_726/boom/hls_boom/src/rob.cpp
+INFO: [HLS 200-10] Adding design file '/home/lab_726/boom/hls_boom/src/rob.cpp' to the project
+INFO: [HLS 200-1510] Running: add_files -cflags -std=c++11 -I/home/lab_726/boom/hls_boom/include /home/lab_726/boom/hls_boom/src/issue.cpp
+INFO: [HLS 200-10] Adding design file '/home/lab_726/boom/hls_boom/src/issue.cpp' to the project
+INFO: [HLS 200-1510] Running: add_files -cflags -std=c++11 -I/home/lab_726/boom/hls_boom/include /home/lab_726/boom/hls_boom/src/execute.cpp
+INFO: [HLS 200-10] Adding design file '/home/lab_726/boom/hls_boom/src/execute.cpp' to the project
+INFO: [HLS 200-1510] Running: add_files -cflags -std=c++11 -I/home/lab_726/boom/hls_boom/include /home/lab_726/boom/hls_boom/src/branch.cpp
+INFO: [HLS 200-10] Adding design file '/home/lab_726/boom/hls_boom/src/branch.cpp' to the project
+INFO: [HLS 200-1510] Running: add_files -cflags -std=c++11 -I/home/lab_726/boom/hls_boom/include /home/lab_726/boom/hls_boom/src/lsu.cpp
+INFO: [HLS 200-10] Adding design file '/home/lab_726/boom/hls_boom/src/lsu.cpp' to the project
+INFO: [HLS 200-1510] Running: add_files -cflags -std=c++11 -I/home/lab_726/boom/hls_boom/include /home/lab_726/boom/hls_boom/src/commit.cpp
+INFO: [HLS 200-10] Adding design file '/home/lab_726/boom/hls_boom/src/commit.cpp' to the project
+INFO: [HLS 200-1510] Running: add_files -cflags -std=c++11 -I/home/lab_726/boom/hls_boom/include /home/lab_726/boom/hls_boom/src/csr.cpp
+INFO: [HLS 200-10] Adding design file '/home/lab_726/boom/hls_boom/src/csr.cpp' to the project
+INFO: [HLS 200-1510] Running: add_files -tb -cflags -std=c++11 -I/home/lab_726/boom/hls_boom/include /home/lab_726/boom/hls_boom/tb/differential/hls_prefix_trace_tb.cpp
+INFO: [HLS 200-10] Adding test bench file '/home/lab_726/boom/hls_boom/tb/differential/hls_prefix_trace_tb.cpp' to the project
+INFO: [HLS 200-1510] Running: open_solution solution_prefix_trace
+INFO: [HLS 200-10] Creating and opening solution '/home/lab_726/boom/hls_boom/boom_hls_prefix_trace_csim/solution_prefix_trace'.
+INFO: [HLS 200-1505] Using default flow_target 'vivado'
+Resolution: For help on HLS 200-1505 see www.xilinx.com/cgi-bin/docs/rdoc?v=2021.2;t=hls+guidance;d=200-1505.html
+INFO: [HLS 200-1510] Running: set_part xczu7ev-ffvc1156-2-e
+INFO: [HLS 200-1611] Setting target device to 'xczu7ev-ffvc1156-2-e'
+INFO: [HLS 200-1510] Running: create_clock -period 10 -name default
+INFO: [SYN 201-201] Setting up clock 'default' with a period of 10ns.
+INFO: [HLS 200-1510] Running: csim_design
+INFO: [SIM 211-2] *************** CSIM start ***************
+INFO: [SIM 211-4] CSIM will launch GCC as the compiler.
+   Compiling ../../../../tb/differential/hls_prefix_trace_tb.cpp in debug mode
+   Compiling ../../../../src/csr.cpp in debug mode
+   Compiling ../../../../src/commit.cpp in debug mode
+   Compiling ../../../../src/lsu.cpp in debug mode
+   Compiling ../../../../src/branch.cpp in debug mode
+   Compiling ../../../../src/execute.cpp in debug mode
+   Compiling ../../../../src/issue.cpp in debug mode
+   Compiling ../../../../src/rob.cpp in debug mode
+   Compiling ../../../../src/rename.cpp in debug mode
+   Compiling ../../../../src/decode.cpp in debug mode
+   Compiling ../../../../src/frontend.cpp in debug mode
+   Compiling ../../../../src/boom_core_step.cpp in debug mode
+   Compiling ../../../../src/boom_core_top.cpp in debug mode
+   Generating csim.exe
+independent_alu: PASS commits=9 target=9 trace=/home/lab_726/boom/hls_boom/reports/gate3_5/variants/C1_RECOVERY_ENABLE/hls_traces/independent_alu_hls_csim_full.jsonl
+raw_chain: PASS commits=9 target=9 trace=/home/lab_726/boom/hls_boom/reports/gate3_5/variants/C1_RECOVERY_ENABLE/hls_traces/raw_chain_hls_csim_full.jsonl
+branch_taken: PASS commits=10 target=10 trace=/home/lab_726/boom/hls_boom/reports/gate3_5/variants/C1_RECOVERY_ENABLE/hls_traces/branch_taken_hls_csim_full.jsonl
+branch_not_taken: PASS commits=11 target=11 trace=/home/lab_726/boom/hls_boom/reports/gate3_5/variants/C1_RECOVERY_ENABLE/hls_traces/branch_not_taken_hls_csim_full.jsonl
+nested_branch: PASS commits=11 target=11 trace=/home/lab_726/boom/hls_boom/reports/gate3_5/variants/C1_RECOVERY_ENABLE/hls_traces/nested_branch_hls_csim_full.jsonl
+INFO: [SIM 211-1] CSim done with 0 errors.
+INFO: [SIM 211-3] *************** CSIM finish ***************
+INFO: [HLS 200-111] Finished Command csim_design CPU user time: 2.64 seconds. CPU system time: 0.48 seconds. Elapsed time: 2.58 seconds; current allocated memory: -937.109 MB.
+INFO: [HLS 200-112] Total CPU user time: 3.95 seconds. Total CPU system time: 0.86 seconds. Total elapsed time: 3.6 seconds; peak allocated memory: 415.797 MB.
+INFO: [Common 17-206] Exiting vitis_hls at Sun Jul 26 22:38:37 2026...

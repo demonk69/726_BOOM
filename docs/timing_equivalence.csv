@@ -1,18 +1,18 @@
 # BOOM-HLS Timing Equivalence Analysis
 
-Timestamp,2026-07-26 Gate 3.4 update
+Timestamp,2026-07-26 Gate 3.5 update
 Target_Clock,10.00 ns (100 MHz)
-Latest_csynth_clock,5.898 ns Gate 3.4 attribution baseline evidence
-Latest_csynth_status,"baseline_core PASS: boom_core_top, 69.33s, 1521180 KB, 83286 LUT, 16611 FF, 16 BRAM_18K, 3 DSP"
+Latest_csynth_clock,5.898 ns Gate 3.5 best unaccepted and accepted baseline evidence
+Latest_csynth_status,"accepted baseline remains boom_core_top 83286 LUT, 16611 FF, 16 BRAM_18K, 3 DSP; best Gate 3.5 unaccepted D4 is 82789 LUT, 17041 FF, 16 BRAM_18K, 3 DSP"
 Finite_step_top_status,"PASS: boom_core_step_top, 69.78s, 1521136 KB, 83353 LUT, 16808 FF, 16 BRAM_18K, 3 DSP, 5.898 ns"
-Performance_pipeline_status,"NOT_RUN_GATE3_4; CORE_CYCLE pipeline remains disabled"
-Trace_preservation,"PASS: HLS C++ and Vitis csim complete traces are byte-identical to frozen Gate 3.3 baseline"
+Performance_pipeline_status,"NOT_RUN_GATE3_5; CORE_CYCLE pipeline remains disabled"
+Trace_preservation,"PASS: all Gate 3.5 variants have HLS C++ and Vitis csim complete traces byte-identical to frozen Gate 3.3 baseline"
 Strict_cycle_equivalence,INSUFFICIENT_EVIDENCE
 Official_Gate3_Status,"BLOCKED: original Chipyard/FESVR/DRAMSim path unavailable"
 
 ## Per-Module Timing Status
 
-Module,Boom Cycles,HLS Status,Match,Gate3_4 Note
+Module,Boom Cycles,HLS Status,Match,Gate3_5 Note
 frontend_module,1,"module csynth PASS, 3.474 ns",MISMATCH,"No ICache/FTQ/predictor timing model; one outstanding request"
 decode_module,1,"module csynth PASS, 1.526 ns",MISMATCH,"Partial decode table; no RVC decompressor"
 rename_module,1,"module csynth PASS, 1.950 ns",MISMATCH,"Source lookup and Gate 3.3 branch tag/snapshot allocation verified for supported subset; lane parallelism still partial"
@@ -24,9 +24,9 @@ rob_commit_module,1,"module csynth PASS, 3.474 ns",MISMATCH,"Commit/store-to-dme
 branch_module,1,"diagnostic csynth PASS, 2.763 ns",INSUFFICIENT_EVIDENCE,"Branch update selection, release, and mispredict recovery dispatch synthesized; strict BOOM cycle trace unavailable"
 recover_mispredict,1,"diagnostic csynth PASS, 2.763 ns",INSUFFICIENT_EVIDENCE,"Map restore, free-list rollback, tag pruning, mask clear, busy rebuild, and frontend/decode/rename cleanup synthesized"
 CORE_CYCLE,1 per cycle,"baseline csynth PASS, 5.898 ns with pipeline disabled",INSUFFICIENT_EVIDENCE,"Conservative Gate 3.3 synthesis baseline closed; strict cycle equivalence not claimed"
-CORE_CYCLE_PIPELINE,1 per cycle,"performance csynth NOT_RUN_GATE3_4",NOT_VERIFIED,"BOOM_HLS_ENABLE_CORE_PIPELINE=1 remains deferred after prior Gate 3.2 timeout"
+CORE_CYCLE_PIPELINE,1 per cycle,"performance csynth NOT_RUN_GATE3_5",NOT_VERIFIED,"BOOM_HLS_ENABLE_CORE_PIPELINE=1 remains deferred after prior Gate 3.2 timeout"
 
-## Gate 3.4 Timing Rule Compliance
+## Gate 3.5 Timing Rule Compliance
 
 - No queue depth or data width was reduced.
 - No aggressive array partition, loop unroll, or PPA directive was added to the accepted baseline.

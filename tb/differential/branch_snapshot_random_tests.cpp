@@ -11,14 +11,14 @@ void rob_allocate(BoomCoreState& state);
 void branch_module(BoomCoreState& state);
 }
 
-static const uint32_t RANDOM_SEED = 0x3A33B007u;
+static const uint32_t DEFAULT_RANDOM_SEED = 0x3A33B007u;
 static int tests_passed=0, tests_failed=0;
 #define TEST(n) printf("  [BR-RAND] %-58s ... ", n)
 #define PASS() do { printf("PASS\n"); tests_passed++; } while(0)
 #define FAIL(m) do { printf("FAIL: %s\n", m); tests_failed++; } while(0)
 #define CHECK(c,m) do { if(!(c)) { FAIL(m); return; } } while(0)
 
-static uint32_t rng_state = RANDOM_SEED;
+static uint32_t rng_state = DEFAULT_RANDOM_SEED;
 static uint32_t rnd() {
     rng_state = rng_state * 1664525u + 1013904223u;
     return rng_state;
@@ -140,9 +140,12 @@ void random_rollback_pressure() { TEST("random rollback restores free-list witho
     }
     PASS(); }
 
-int main() {
+int main(int argc, char** argv) {
+    uint32_t seed = DEFAULT_RANDOM_SEED;
+    if (argc > 1 && argv[1][0] != 'd') seed = (uint32_t)strtoul(argv[1], 0, 0);
+    rng_state = seed;
     printf("=== BOOM-HLS Gate 3.3 Branch Snapshot Random Tests ===\n");
-    printf("Seed: 0x%08x\n\n", RANDOM_SEED);
+    printf("Seed: 0x%08x\n\n", seed);
     random_tag_mask_pressure();
     random_rollback_pressure();
     printf("\n=== %d passed, %d failed ===\n", tests_passed, tests_failed);

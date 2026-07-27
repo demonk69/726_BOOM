@@ -1,4 +1,4 @@
-# BOOM-HLS Memory/State Structure Equivalence, Gate 3.4 Update 2026-07-26
+# BOOM-HLS Memory/State Structure Equivalence, Gate 3.5 Update 2026-07-26
 
 Structure,BOOM Depth,BOOM Width(bits),BOOM Ports,HLS Depth,HLS Width,HLS Ports,Vitis Mapping,Match,Notes
 Int PRF,52,64,4R2W,52,64,1R1W seq,baseline total 16 BRAM_18K,MATCH,"Functional state size matches; BOOM multi-port RF structure is not modeled"
@@ -14,7 +14,7 @@ Committed MapTable,32,6,1R,32,8(uint8_t),1R seq,~1 BRAM,MATCH,Separate committed
 Free List,52,6,1R1W,52,8(uint8_t),1R seq,baseline total 16 BRAM_18K,MATCH,"Queue + head/tail; Gate 3.3 duplicate-safe rollback insertion"
 Busy Table,52,1,1R1W,52,1(bool),1R seq,baseline total 16 BRAM_18K,MATCH,"Bitmap; Gate 3.3 recovery rebuild is functional substitute, not cycle proof"
 Branch Snapshots,32x8,6 per snapshot,1R1W,32x8,8(uint8_t),1 seq RAM_AUTO_1R1W,baseline total 16 BRAM_18K,MATCH,"Gate 3.4 RTL inventory confirms 256x8 reg-array RAM; no complete partition"
-Branch Alloc Lists,8x52,1 per phys reg,1R1W,8x52,1(bool),1 seq RAM_AUTO_1R1W,baseline total 16 BRAM_18K,MATCH,"Gate 3.4 RTL inventory confirms 416x1 reg-array RAM; no complete partition"
+Branch Alloc Lists,8x52,1 per phys reg,1R1W,8x52,1(bool),1 seq RAM_AUTO_1R1W,baseline total 16 BRAM_18K,MATCH,"Accepted mapping remains 416x1 reg-array RAM; Gate 3.5 B1 packed 8x52 RAM_AUTO_1R1W was rejected by PPA"
 FTQ,16,-,1R1W,NOT IMPL,-,-,-,NOT_IMPLEMENTED,Stub
 Fetch Buffer,8,-,1R1W,NOT IMPL,-,-,-,NOT_IMPLEMENTED,Stub
 CSR mstatus,1,64,1R1W,1,64,1R seq,Register,MATCH,Default value 0x0a00000000

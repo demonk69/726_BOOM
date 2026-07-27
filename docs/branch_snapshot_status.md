@@ -2,7 +2,7 @@
 
 Date: 2026-07-26
 
-Gate 3.4 update: resource attribution confirms snapshots are generated as 256x8 `RAM_AUTO_1R1W` storage and `br_alloc_lists` as 416x1 `RAM_AUTO_1R1W` storage. No branch recovery behavior was changed, and M009 remains `PARTIALLY_VERIFIED`.
+Gate 3.5 update: six branch recovery structural optimization variants were tested. No variant was accepted. Resource attribution still confirms snapshots as 256x8 `RAM_AUTO_1R1W` storage and accepted `br_alloc_lists` as 416x1 `RAM_AUTO_1R1W` storage. M009 remains `PARTIALLY_VERIFIED`.
 
 ## Conclusion
 
@@ -14,7 +14,7 @@ M004 and branch snapshots describe different issues. M004 remains the Gate 1 JAL
 | Are BOOM branch snapshots implemented in HLS? | Yes for the supported HLS subset. Gate 3.3 allocates `br_tag`, propagates `br_mask`, snapshots the integer rename map, tracks per-branch physical allocations, restores on mispredict, and prunes/clears resolved masks. |
 | What BOOM source was used? | The original Chisel checkout is absent. The extraction is based on generated SmallBoomConfig FIRRTL and Verilog only; see `docs/branch_recovery_source_mapping.md`. |
 | Does HLS still use a functional substitute? | Partially. Busy recovery is rebuilt from still-valid busy ROB entries after rollback. This is functionally covered for the subset but is not proven cycle-identical to BOOM `RenameBusyTable`. |
-| Architectural impact | PARTIALLY_VERIFIED. Directed tests pass 25/25, Gate 1 regressions pass 13/13, minimal LSU tests pass 14/14, branch snapshot tests pass 30/30, branch snapshot random tests pass 2/2, and full-program architectural diff remains 10/10 PASS. |
+| Architectural impact | PARTIALLY_VERIFIED. Gate 3.5 variants each preserved directed 25/25, Gate 1 13/13, minimal LSU 14/14, branch snapshot directed 30/30, expanded branch snapshot random 42/42, and full-program architectural diff 10/10 PASS. |
 | Microarchitectural impact | PARTIALLY_VERIFIED. The prior structural absence of branch tags, masks, map snapshots, allocation-list recovery, and selective younger-uop kill is closed for the supported HLS subset. Full BOOM lane parallelism, memory system, predictor, and cycle timing remain outside this claim. |
 | Cycle impact | INSUFFICIENT_EVIDENCE. No official BOOM Verilator event trace exists yet, and HLS branch recovery timing is not proven cycle-equivalent. |
 | Should M004 be downgraded? | No. M004 remains VERIFIED as a specific JALR redirect mismatch. Branch snapshot recovery remains separately tracked as M009. |
@@ -22,4 +22,4 @@ M004 and branch snapshots describe different issues. M004 remains the Gate 1 JAL
 
 ## Required Reporting Rule
 
-Do not close M009 based on M004. Gate 3.3 closure for M009 must cite the dedicated branch snapshot tests, source mapping, and csynth evidence, not the M004 JALR test.
+Do not close M009 based on M004 or Gate 3.5 PPA experiments. M009 remains partially verified for the supported subset and must cite dedicated branch snapshot tests, source mapping, and csynth evidence, not the M004 JALR test.

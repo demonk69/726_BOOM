@@ -1,0 +1,13 @@
+=== BOOM-HLS Gate 3.5 IQ Compaction Tests ===
+  [IQ-COMPACT] kill none preserves all busy survivors                     ... PASS
+  [IQ-COMPACT] kill all removes all entries                               ... PASS
+  [IQ-COMPACT] kill alternating keeps stable survivor order               ... PASS
+  [IQ-COMPACT] issue one plus kill younger                                ... PASS
+  [IQ-COMPACT] issue one after killing older entry                        ... PASS
+  [IQ-COMPACT] dispatch plus issue plus kill same cycle                   ... PASS
+  [IQ-COMPACT] IQ full compacts killed entries                            ... PASS
+  [IQ-COMPACT] IQ wrap state resets after stable compact                  ... PASS
+  [IQ-COMPACT] nested branch mask clears resolved bit only                ... PASS
+  [IQ-COMPACT] oldest ready selection preserved                           ... PASS
+
+=== 10 passed, 0 failed ===

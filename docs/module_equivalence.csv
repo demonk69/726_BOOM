@@ -1,4 +1,4 @@
-# BOOM-HLS Module Equivalence Mapping, Gate 3.4 Update 2026-07-26
+# BOOM-HLS Module Equivalence Mapping, Gate 3.5 Update 2026-07-26
 BOOM Module,FIRRTL Module,HLS Function,HLS File,Status,Functional,Cycle,Missing Behavior,Evidence
 BoomFrontend,BoomFrontend,frontend_module,frontend.cpp,PARTIAL,PARTIALLY_VERIFIED,MISMATCH,"No ICache/BP/TLB/fetch buffer; one outstanding request; fetch_id wrap not tested","M006 closed; stale response regression PASS"
 DecodeUnit,DecodeUnit,decode_module,decode.cpp,IMPLEMENTED,PARTIALLY_VERIFIED,MISMATCH,"No RVC decompressor; partial decode table","directed decode/illegal tests PASS"
@@ -16,7 +16,7 @@ Int RegisterFile,RegisterFileSynthesizable_1,int_rf,boom_state.hpp,IMPLEMENTED,P
 ALUExeUnit_Int,ALUExeUnit,execute_module,execute.cpp,PARTIAL,PARTIALLY_VERIFIED,MISMATCH,"No div/mul latency model; branch prediction simplified; no BOOM cycle trace","ALU/branch/JAL/JALR tests PASS; Gate 3.3 killed writeback suppression tests PASS"
 CSRFile,CSRFile,csr_module,csr.cpp,PARTIAL,PARTIALLY_VERIFIED,PARTIAL,"Only cycle/instret and ECALL handling subset",CSR tests PASS
 BranchDecode,BranchDecode,decode_module branch cases,decode.cpp,PARTIAL,PARTIALLY_VERIFIED,MISMATCH,"No predictor metadata; branch masks are handled by rename/recovery, not full BOOM predictor flow","taken/not-taken regressions PASS; Gate 3.3 branch mask tests PASS"
-BranchRecovery,BranchMaskGenerationLogic+BrUpdate,branch_module+recover_mispredict,branch.cpp+rename.cpp,PARTIAL,PARTIALLY_VERIFIED,INSUFFICIENT_EVIDENCE,"Strict BOOM event/cycle trace unavailable; full memory/predictor interactions absent","Gate 3.3 branch snapshot directed 30/30 PASS; random 2/2 PASS; Gate 3.4 attribution/module csynth PASS"
+BranchRecovery,BranchMaskGenerationLogic+BrUpdate,branch_module+recover_mispredict,branch.cpp+rename.cpp,PARTIAL,PARTIALLY_VERIFIED,INSUFFICIENT_EVIDENCE,"Strict BOOM event/cycle trace unavailable; full memory/predictor interactions absent","Gate 3.5 variants preserve branch snapshot directed 30/30 PASS; expanded random 42/42 PASS; no accepted PPA optimization"
 LSU,LSU,lsu_module,lsu.cpp,PARTIAL,PARTIALLY_VERIFIED,MISMATCH,"Minimal LB/LBU/LH/LHU/LW/LWU/LD and SB/SH/SW/SD only; no DCache, TLB/PTW, miss/replay, misaligned split, AMO/LRSC, or full forwarding","LSU tests 14/14 PASS; full loaded-program diff 10/10 PASS; Gate 3.3 diagnostic csynth PASS; branch kill tests PASS"
 FPU,FPU+FPUFMAPipe+FMA,NOT IMPLEMENTED,-,STUB,NOT_IMPLEMENTED,NOT_IMPLEMENTED,"No FPU",-
 Branch Predictor,BranchPredictor+ComposedBP,NOT IMPLEMENTED,-,STUB,NOT_IMPLEMENTED,NOT_IMPLEMENTED,"Always not-taken/no predictor structures",-

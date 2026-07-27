@@ -1,6 +1,6 @@
 # Critical Path Analysis
 
-Gate 3.4 preserves conservative baseline synthesis while adding resource attribution and module-baseline handles. This is an analysis result, not an accepted LUT optimization and not a strict BOOM cycle-equivalence claim.
+Gate 3.5 preserves the conservative accepted baseline while testing single-variable branch recovery structural optimizations. This is not an accepted LUT optimization and not a strict BOOM cycle-equivalence claim.
 
 ## Current Status
 
@@ -9,8 +9,9 @@ Gate 3.4 preserves conservative baseline synthesis while adding resource attribu
 - Latest accepted baseline status: PASS for `boom_core_top`
 - Latest accepted baseline resources: 83286 LUT, 16611 FF, 16 BRAM_18K, 3 DSP
 - Gate 3.4 attribution baseline runtime: 69.33 seconds, 1521180 KB peak memory
+- Gate 3.5 best unaccepted variant: D4_LOCAL_KILL_BITMAP, 82789 LUT, 17041 FF, 16 BRAM_18K, 3 DSP, 5.898 ns; rejected because reduction is only 0.60%
 - Finite step-top status: PASS for `boom_core_step_top`, 69.78 seconds, 1521136 KB peak memory, 83353 LUT, 16808 FF, 16 BRAM_18K, 3 DSP
-- Performance pipeline experiment: NOT_RUN_GATE3_4; prior Gate 3.2 timeout with `BOOM_HLS_ENABLE_CORE_PIPELINE=1` remains deferred
+- Performance pipeline experiment: NOT_RUN_GATE3_5; prior Gate 3.2 timeout with `BOOM_HLS_ENABLE_CORE_PIPELINE=1` remains deferred
 
 ## Known Critical Areas
 
@@ -34,4 +35,4 @@ Do not apply these until strict trace evidence exists for the target behavior:
 - Tree priority encoder for IQ selection.
 - `PIPELINE II=1` on `CORE_CYCLE` only after state dependencies are proven safe; the Gate 3.3 accepted baseline keeps this disabled and the prior Gate 3.2 performance experiment timed out.
 
-Cycle equivalence remains INSUFFICIENT_EVIDENCE. Gate 3.4 claims resource attribution and module-baseline completion only; Gate 3.3 remains the accepted PPA configuration.
+Cycle equivalence remains INSUFFICIENT_EVIDENCE. Gate 3.5 claims single-variable structural experiment completion only; Gate 3.3 remains the accepted PPA configuration.

@@ -153,6 +153,19 @@ See `reports/gate3_3/gate3_3_results.md`, `reports/gate3_3/branch_snapshot_test_
 
 See `reports/gate3_4/gate3_4_results.md` and `reports/gate3_4/resource_attribution.md`.
 
+## Gate 3.5 Result
+
+| Check | Result |
+|---|---|
+| Single-variable experiments | COMPLETE: B1, B4, C1, D1, D4, and D4-IQ all run independently from the accepted baseline |
+| Functional regressions | PASS for all six variants: directed 25/25, Gate 1 13/13, LSU 14/14, branch directed 30/30, branch random 42/42 |
+| Trace preservation | PASS for all six variants: HLS C++ and Vitis csim traces 10/10 byte-identical to frozen baseline |
+| Full-program architectural diff | PASS for all six variants: 10/10 |
+| Best single-variable LUT | D4_LOCAL_KILL_BITMAP, 82789 LUT, -497 versus baseline |
+| Accepted optimization | NONE; best reduction is 0.60%, below the 10% threshold |
+
+See `reports/gate3_5/gate3_5_results.md`.
+
 ## Timing Status
 
-The latest accepted PPA configuration remains Gate 3.3. Gate 3.4 re-synthesizes the conservative baseline at the same 5.898 ns period and identical resources, but no LUT-reducing optimization is accepted.
+The latest accepted PPA configuration remains Gate 3.3. Gate 3.5 found one small LUT-reducing candidate but did not accept it because it missed the 10% threshold.

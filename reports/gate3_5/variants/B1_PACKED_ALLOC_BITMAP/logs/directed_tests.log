@@ -1,0 +1,29 @@
+=== BOOM-HLS Equivalence Audit Test Suite ===
+
+  [TEST] ADDI x1,x0,5 → x1=5 basic ALU                         ... PASS
+  [TEST] RAW: ADDI x1,3; ADDI x2,x1,2; x2=5                      ... PASS
+  [TEST] WAW: x1=3 then x1=7; final x1=7                         ... PASS
+  [TEST] WAR: x1=3; x2=x1; x1=7; x2=3 not 7                      ... PASS
+  [TEST] x0 write: ADDI x0,x0,99; x0 stays 0                     ... PASS
+  [TEST] ROB fill: 33 instructions should stall                  ... PASS
+  [TEST] ROB wrap-around: commit all 32+1 entries                ... PASS
+  [TEST] IQ backpressure: fill ALU IQ to 8, stall rename         ... PASS
+  [TEST] BEQ taken: skip middle instruction                      ... PASS
+  [TEST] BEQ not-taken: execute fall-through                     ... PASS
+  [TEST] JAL skip: jump over instruction                         ... PASS
+  [TEST] JALR: indirect jump via register                        ... PASS
+  [TEST] Branch flush: wrong-path instructions not committed     ... PASS
+  [TEST] Illegal instruction: 0x00000000 → io_trap             ... PASS
+  [TEST] ECALL: io_success set                                   ... PASS
+  [TEST] Commit trace: trace entries match commits               ... PASS
+  [TEST] IMEM backpressure: delayed response still works         ... PASS
+  [TEST] Reset mid-pipeline: state cleared                       ... PASS
+  [TEST] CSR cycle counts cycles                                 ... PASS
+  [TEST] CSR instret counts commits                              ... PASS
+  [TEST] SLTI signed: -2 < 5 → 1                               ... PASS
+  [TEST] SLLI boundary: x1<<63 = 1<<63 = 0x8000...               ... PASS
+  [TEST] MUL: 6*7=42                                             ... PASS
+  [TEST] ADDW sign-extension: 0xFFFFFFFF+1 → 0x00000000        ... PASS
+  [TEST] Younger ready first but cannot commit before older      ... PASS
+
+=== 25 passed, 0 failed ===
