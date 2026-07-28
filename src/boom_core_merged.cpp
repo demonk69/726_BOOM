@@ -1379,6 +1379,48 @@ void boom_core_step_top(hls::stream<ImemRequest>&  imem_req_out,
                        io_cycle_valid, io_cycle, io_instret);
 }
 
+#define BOOM_NCYCLE_INTERFACES() \
+    _Pragma("HLS INTERFACE ap_ctrl_none port=return") \
+    _Pragma("HLS INTERFACE axis port=imem_req_out") \
+    _Pragma("HLS INTERFACE axis port=imem_resp_in") \
+    _Pragma("HLS INTERFACE axis port=dmem_req_out") \
+    _Pragma("HLS INTERFACE axis port=dmem_resp_in") \
+    _Pragma("HLS INTERFACE axis port=commit_trace_out") \
+    _Pragma("HLS INTERFACE ap_none port=io_success") \
+    _Pragma("HLS INTERFACE ap_none port=io_halted") \
+    _Pragma("HLS INTERFACE ap_none port=io_trap") \
+    _Pragma("HLS INTERFACE ap_none port=io_cycle_valid") \
+    _Pragma("HLS INTERFACE ap_none port=io_cycle") \
+    _Pragma("HLS INTERFACE ap_none port=io_instret")
+
+#define DEFINE_BOOM_NCYCLE_TOP(NAME, CYCLES) \
+void NAME(hls::stream<ImemRequest>& imem_req_out, \
+          hls::stream<ImemResponse>& imem_resp_in, \
+          hls::stream<DmemRequest>& dmem_req_out, \
+          hls::stream<DmemResponse>& dmem_resp_in, \
+          hls::stream<CommitEntry>& commit_trace_out, \
+          bool& io_success, bool& io_halted, bool& io_trap, \
+          bool& io_cycle_valid, uint64_t& io_cycle, uint64_t& io_instret) { \
+    BOOM_NCYCLE_INTERFACES(); \
+    static BoomCoreState state; \
+    _Pragma("HLS RESET variable=state") \
+    PipeSignals pipe; \
+    for (int cycle = 0; cycle < CYCLES; cycle++) { \
+        boom_core_cycle_io(state, pipe, imem_req_out, imem_resp_in, \
+                           dmem_req_out, dmem_resp_in, commit_trace_out, \
+                           io_success, io_halted, io_trap, \
+                           io_cycle_valid, io_cycle, io_instret); \
+    } \
+}
+
+DEFINE_BOOM_NCYCLE_TOP(boom_core_ncycle_n1_top, 1)
+DEFINE_BOOM_NCYCLE_TOP(boom_core_ncycle_n2_top, 2)
+DEFINE_BOOM_NCYCLE_TOP(boom_core_ncycle_n4_top, 4)
+DEFINE_BOOM_NCYCLE_TOP(boom_core_ncycle_n8_top, 8)
+
+#undef DEFINE_BOOM_NCYCLE_TOP
+#undef BOOM_NCYCLE_INTERFACES
+
 // ==== synth_module_tops.cpp ====
 
 extern void boom_core_step(BoomCoreState& state, PipeSignals& pipe);

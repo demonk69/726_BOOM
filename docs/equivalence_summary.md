@@ -14,11 +14,15 @@ Gate 3.3 status: BRANCH_RECOVERY_SUBSET_PASS and BASELINE_CSYNTH_PASS. Branch ta
 
 Gate 3.4 status: ANALYSIS_AND_MODULE_BASELINE_COMPLETE_NO_ACCEPTED_OPTIMIZATION. Resource attribution and targeted module csynth baselines are complete. No optimization candidate was applied or accepted; Gate 3.3 remains the accepted PPA configuration.
 
+Gate 3.5 status: SINGLE_VARIABLE_EXPERIMENTS_COMPLETE_NO_ACCEPTED_OPTIMIZATION. Six branch-recovery structural variants preserve functional and trace evidence, but none reaches the 10% LUT-reduction threshold.
+
+Gate 3.6 status: TOP_LEVEL_DELTA_EXPLAINED_NO_ACCEPTED_OPTIMIZATION. The 37936-LUT direct-diagnostic/product-top difference is reset-triggered HLS state elaboration, not duplicated logic or loop replication. Removing reset is rejected; the accepted product and equivalence scope are unchanged.
+
 ## Current Verdicts
 
 | Dimension | Verdict | Evidence |
 |---|---|---|
-| Architectural Equivalence | PARTIALLY_VERIFIED | Original directed suite passes 25/25; Gate 1 regressions pass 13/13; minimal LSU tests pass 14/14; branch snapshot directed/random tests pass 30/30 and 2/2; Vitis HLS complete trace csim passes 5/5; Provisional Gate 3 BOOM-vs-HLS loaded-program prefixes pass 45/45 compared commits; BOOM-vs-HLS full loaded-program architectural diff passes 10/10 for HLS C++ and csim. Gate 3.3 preserves frozen complete traces byte-identically. Scope still excludes full BOOM LSU/cache/MMU/FPU/TLB/predictor/TileLink/L2. |
+| Architectural Equivalence | PARTIALLY_VERIFIED | Original directed suite passes 25/25; Gate 1 regressions pass 13/13; minimal LSU tests pass 14/14; branch snapshot directed/random tests pass 30/30 and 42/42; Vitis HLS complete trace csim passes 5/5; Provisional Gate 3 BOOM-vs-HLS loaded-program prefixes pass 45/45 compared commits; BOOM-vs-HLS full loaded-program architectural diff passes 10/10 for HLS C++ and csim. Gate 3.6 final restored source preserves HLS C++/csim traces 10/10 byte-identically. Scope still excludes full BOOM LSU/cache/MMU/FPU/TLB/predictor/TileLink/L2. |
 | Microarchitectural Equivalence | PARTIALLY_VERIFIED | Rename/ROB/IQ/frontend/minimal-LSU subset has directed coverage. Gate 3.3 implements branch tags, masks, snapshots, allocation-list rollback, and selective younger-state kill for the supported subset. Multi-lane issue/execute, strict busy-table cycle timing, and full BOOM memory/FPU queues remain absent or partial. |
 | Cycle Equivalence | INSUFFICIENT_EVIDENCE | Gate 3.1A shows the old global event-order failure was a validator false positive, but normalized-cycle equivalence is still not verified. Gate 3.3 synthesis closure is not a strict cycle-equivalence claim. The full official emulator path remains blocked and HLS still serializes operations that BOOM performs in parallel. |
 | Structural Correspondence | PARTIALLY_VERIFIED | SmallBoom parameters and main integer state sizes match; Gate 3.3 branch parameter/state inventories match generated FIRRTL for the implemented subset; Gate 3.4 confirms snapshot and allocation-list RTL structures and module baselines. Multiple full BOOM modules remain NOT_IMPLEMENTED. |
@@ -166,6 +170,23 @@ See `reports/gate3_4/gate3_4_results.md` and `reports/gate3_4/resource_attributi
 
 See `reports/gate3_5/gate3_5_results.md`.
 
+## Gate 3.6 Result
+
+| Check | Result |
+|---|---|
+| Direct/product top semantics | NOT_IDENTICAL: diagnostic control/interface/reset differ; same in-place core transition |
+| Recursive LUT delta | CLOSED: +27681 mux, +9765 helper instances, +472 memory, +18 expression, 0 FIFO = +37936 |
+| Free-running/N-cycle scaling | NO_REPLICATION: N1/N2/N4/N8 = 83353/83379/83381/83383 LUT; while = 83286 LUT |
+| Loop unroll | NONE: finite loops are `Pipelined=no`, one wrapper, flat area |
+| State/core duplication | NONE: one static state, reference passing, one helper each, zero clone records |
+| T3 function boundary | `REJECTED_PPA`: 87388 LUT and zero partitions after inline |
+| T4 reset attribution | `REJECTED_RESET_SEMANTICS`: 45602 LUT and 342 partitions after removing only required reset |
+| Restored regressions | directed 25/25, Gate 1 13/13, LSU 14/14, branch 30/30+42/42, IQ 10/10, trace 10/10, BOOM diff 10/10, partial-order 8 legal/0 real |
+| Accepted optimization | NONE; Gate 3.3 remains accepted PPA configuration |
+| M009 | `PARTIALLY_VERIFIED` |
+
+See `reports/gate3_6/gate3_6_results.md` and `docs/gate3_6_top_level_architecture.md`.
+
 ## Timing Status
 
-The latest accepted PPA configuration remains Gate 3.3. Gate 3.5 found one small LUT-reducing candidate but did not accept it because it missed the 10% threshold.
+The latest accepted PPA configuration remains Gate 3.3. Gate 3.6 explains the top-level resource delta but rejects the no-reset diagnostic because hardware reset semantics are required. Strict BOOM cycle equivalence remains `INSUFFICIENT_EVIDENCE`.

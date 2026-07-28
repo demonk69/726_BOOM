@@ -1,6 +1,6 @@
 # Critical Path Analysis
 
-Gate 3.5 preserves the conservative accepted baseline while testing single-variable branch recovery structural optimizations. This is not an accepted LUT optimization and not a strict BOOM cycle-equivalence claim.
+Gate 3.6 preserves the conservative accepted baseline while explaining the top-level resource gap. This is not an accepted LUT optimization and not a strict BOOM cycle-equivalence claim.
 
 ## Current Status
 
@@ -11,7 +11,10 @@ Gate 3.5 preserves the conservative accepted baseline while testing single-varia
 - Gate 3.4 attribution baseline runtime: 69.33 seconds, 1521180 KB peak memory
 - Gate 3.5 best unaccepted variant: D4_LOCAL_KILL_BITMAP, 82789 LUT, 17041 FF, 16 BRAM_18K, 3 DSP, 5.898 ns; rejected because reduction is only 0.60%
 - Finite step-top status: PASS for `boom_core_step_top`, 69.78 seconds, 1521136 KB peak memory, 83353 LUT, 16808 FF, 16 BRAM_18K, 3 DSP
-- Performance pipeline experiment: NOT_RUN_GATE3_5; prior Gate 3.2 timeout with `BOOM_HLS_ENABLE_CORE_PIPELINE=1` remains deferred
+- Gate 3.6 direct diagnostic: `synth_core_step_top`, 45350 LUT, 12111 FF, 12 BRAM_18K, 3 DSP, 5.898 ns, 342 automatic partitions
+- Gate 3.6 T3 inline: 87388 LUT, 22117 FF, zero automatic partitions; rejected by PPA
+- Gate 3.6 T4 no-reset attribution: 45602 LUT, 12119 FF, 12 BRAM_18K, 342 automatic partitions; rejected because required hardware reset is lost
+- Performance pipeline experiment: NOT_RUN_GATE3_6; prior Gate 3.2 timeout remains historical evidence. Gate 3.6 permits a new separately gated experiment because the accepted top is stable and duplicate core logic has been ruled out
 
 ## Known Critical Areas
 
@@ -25,6 +28,8 @@ Gate 3.5 preserves the conservative accepted baseline while testing single-varia
 | `branch_module` | Branch update selection, branch-tag release, mispredict dispatch | Branch recovery diagnostic csynth PASS at 2.763 ns |
 | `recover_mispredict` | Map restore, free-list rollback, branch tag pruning, branch-mask clear, busy rebuild, younger-state kill | Branch recovery diagnostic csynth PASS at 2.763 ns |
 | `boom_core_step` | Serialized module calls over persistent state | Whole-state copy removed; Gate 3.3 finite step-top csynth PASS |
+| resettable `BoomCoreState` elaboration | Whole-state HLS reset suppresses 342 automatic partitions and expands helper-port/state mux cones | 37684 LUT isolated by T4; reset is required and retained |
+| `boom_core_cycle_io` boundary | Retained in accepted/N-cycle tops | T3 force-inline increases LUT and leaves partition count at zero; boundary alone is not causal |
 
 ## Deferred Safe Optimizations
 
@@ -35,4 +40,4 @@ Do not apply these until strict trace evidence exists for the target behavior:
 - Tree priority encoder for IQ selection.
 - `PIPELINE II=1` on `CORE_CYCLE` only after state dependencies are proven safe; the Gate 3.3 accepted baseline keeps this disabled and the prior Gate 3.2 performance experiment timed out.
 
-Cycle equivalence remains INSUFFICIENT_EVIDENCE. Gate 3.5 claims single-variable structural experiment completion only; Gate 3.3 remains the accepted PPA configuration.
+Cycle equivalence remains INSUFFICIENT_EVIDENCE. Gate 3.6 status is `TOP_LEVEL_DELTA_EXPLAINED_NO_ACCEPTED_OPTIMIZATION`; Gate 3.3 remains the accepted PPA configuration.

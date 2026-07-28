@@ -1,0 +1,6 @@
+top,control_protocol,stream_protocol,scalar_protocol,state_ownership,pipe_lifetime,reset,loop,cycle_calls_per_activation,status_outputs,semantic_class
+boom_core_top,ap_ctrl_none,axis,ap_none,function-local static BoomCoreState,persistent across free-running loop,HLS RESET on state,while true CORE_CYCLE,unbounded,"io_success;io_halted;io_trap;io_cycle_valid;io_cycle;io_instret",product_free_running
+boom_core_step_top,ap_ctrl_none,axis,ap_none,independent function-local static BoomCoreState,one local bundle per C++ call,HLS RESET on state,none,1,"io_success;io_halted;io_trap;io_cycle_valid;io_cycle;io_instret",product_interface_one_call_control
+synth_core_step_top,ap_ctrl_hs,ap_fifo,ap_vld,independent function-local static BoomCoreState,one local bundle per C++ call,no explicit reset,none,1,observable_cycle,diagnostic_direct_step
+boom_core_cycle_io,caller-controlled,internal stream arguments,reference scalar outputs,caller-owned referenced state,caller-owned referenced pipe,caller-controlled,none,1,"io_success;io_halted;io_trap;io_cycle_valid;io_cycle;io_instret",retained_product_cycle_wrapper
+boom_core_step,caller-controlled,internal PipeSignals,none,caller-owned referenced state,caller-owned referenced pipe,caller-controlled,none,1,none,core_state_transition

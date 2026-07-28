@@ -23,6 +23,8 @@ Gate 3.2 separates synthesis project creation from directives and uses one gener
 | `scripts/run_top_csynth.tcl` | Generic top-level csynth driver for diagnostics |
 | `scripts/module_csynth.tcl` | Module diagnostic csynth Tcl |
 | `scripts/run_module_csynth.sh` | Runs all module diagnostic tops and creates module logs |
+| `scripts/gate3_6/run_ncycle_csynth.sh` | Runs attribution-only N1/N2/N4/N8 and free-running top controls |
+| `scripts/gate3_6/run_variant_csynth.sh` | Runs isolated Gate 3.6 source variants and records runtime/resources/partition counts |
 
 ## Directives
 
@@ -45,3 +47,20 @@ The legacy `directives/baseline.tcl`, `directives/performance.tcl`, `directives/
 Baseline report: `boom_hls_gate3_2_baseline/solution_baseline/syn/report/boom_core_top_csynth.rpt`.
 
 The accepted baseline does not enable `CORE_CYCLE` pipeline and does not use aggressive PPA directives.
+
+## Gate 3.6 Top-Level Findings
+
+| Top/Variant | LUT | FF | BRAM_18K | DSP | Period | Automatic Partitions | Decision |
+|---|---:|---:|---:|---:|---:|---:|---|
+| direct `synth_core_step_top` | 45350 | 12111 | 12 | 3 | 5.898 ns | 342 | diagnostic only |
+| product N1 | 83353 | 16808 | 16 | 3 | 5.898 ns | 0 | attribution only |
+| product N8 | 83383 | 16812 | 16 | 3 | 5.898 ns | 0 | attribution only |
+| accepted free-running product | 83286 | 16611 | 16 | 3 | 5.898 ns | 0 | accepted |
+| T3 inline product | 87388 | 22117 | 16 | 3 | 5.898 ns | 0 | rejected PPA |
+| T4 no-reset product | 45602 | 12119 | 12 | 3 | 5.898 ns | 342 | rejected reset semantics |
+
+N1 through N8 and the free-running top retain one core transition implementation and remain flat in area. No N-cycle loop is pipelined or unrolled. The product outer interface shell is 469 LUT above the retained cycle wrapper in both accepted and no-reset runs.
+
+The same-top accepted-to-no-reset delta is 37684 LUT: +9741 helper-instance LUT, +472 memory LUT, and +27471 multiplexer LUT in the resettable form. This directly attributes the dominant elaboration difference to required whole-state reset. There is no function-clone or duplicate-state evidence.
+
+T4 is not an alternative synthesis mode. The product requires hardware reset of persistent state, so the reset pragma remains in `boom_core_top` and the merged source is regenerated from the conservative accepted source.

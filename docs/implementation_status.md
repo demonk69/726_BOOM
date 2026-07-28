@@ -16,6 +16,10 @@ Gate 3.3 update: branch recovery is implemented for the supported single-lane in
 
 Gate 3.4 update: resource attribution and module csynth baselines are complete. Gate 3.4 adds analysis scripts and attribution-only synthesis tops, not architectural behavior. `boom_core_top` still synthesizes with 83286 LUT, 16611 FF, 16 BRAM_18K, 3 DSP, and 5.898 ns estimated period. No LUT-reducing optimization candidate is accepted.
 
+Gate 3.5 update: six branch-recovery structural experiments completed with full functional, trace, architectural-diff, partial-order, and product csynth gates. No variant reached the 10% LUT-reduction threshold, so Gate 3.3 remains accepted.
+
+Gate 3.6 update: the 37936-LUT direct-diagnostic/product-top gap is explained. N1/N2/N4/N8 and free-running resources are flat, no loop unroll or state/core duplication exists, and FIFO LUT delta is zero. Removing only whole-state HLS reset reduces the same product top by 37684 LUT and exposes 342 automatic partitions, but violates required hardware reset semantics. T3 inlining increases LUT. Status is `TOP_LEVEL_DELTA_EXPLAINED_NO_ACCEPTED_OPTIMIZATION`; the accepted configuration is unchanged.
+
 ## Implemented And Tested
 
 - Frontend request/response FSM with monotonic fetch IDs and stale response drop.
@@ -75,4 +79,9 @@ Gate 3.4 update: resource attribution and module csynth baselines are complete. 
 - Gate 3.4 optimization status: no accepted optimization; Gate 3.3 remains accepted PPA configuration.
 - Gate 3.5 single-variable structural optimization status: B1, B4, C1, D1, D4, and D4-IQ completed full functional/trace/csynth gates. Only D4 reduced LUT, from 83286 to 82789, but this is below the 10% acceptance threshold. No Gate 3.5 optimization accepted.
 - Gate 3.5 regressions: every variant preserved directed 25/25 PASS, Gate 1 13/13 PASS, minimal LSU 14/14 PASS, branch snapshot directed 30/30 PASS, expanded branch snapshot random 42/42 PASS, HLS C++/Vitis csim byte-identical traces, full-program architectural diff 10/10 PASS, and partial-order 8 legal reorders with 0 real violations.
+- Gate 3.6 top audit: direct `synth_core_step_top` is 45350 LUT; product N1/N2/N4/N8 are 83353/83379/83381/83383 LUT; free-running `boom_core_top` is 83286 LUT. Fixed and infinite loops retain one cycle wrapper, report no unroll, and do not scale resources.
+- Gate 3.6 T3: force-inlined cycle boundary passes all regressions but synthesizes at 87388 LUT, 22117 FF, 16 BRAM_18K, 3 DSP, and 5.898 ns with zero automatic partitions; `REJECTED_PPA`.
+- Gate 3.6 T4 attribution: removing only product state reset synthesizes at 45602 LUT, 12119 FF, 12 BRAM_18K, 3 DSP, and 5.898 ns with 342 automatic partitions; `REJECTED_RESET_SEMANTICS`.
+- Gate 3.6 restored baseline regressions: directed 25/25, Gate 1 13/13, LSU 14/14, branch directed 30/30, branch random 42/42, IQ 10/10, HLS trace 10/10 byte-identical, BOOM diff 10/10, partial-order 8 legal/0 real.
+- Gate 3.6 readiness: `READY_FOR_WIDE_ISSUE_IMPLEMENTATION=false`, `READY_FOR_CORE_PIPELINE_EXPERIMENT=true` for a separate gated experiment only, and `READY_FOR_OFFICIAL_GATE_3=false`.
 - Official Chipyard/FESVR/DRAMSim trace: BLOCKED by missing original `/root/chipyard` generated-source path, `libfesvr`, `libdramsim`, and RISC-V ELF/binutils tools.

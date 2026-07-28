@@ -1,0 +1,6 @@
+variant,status,functional_status,trace_status,arch_diff_status,partial_order_status,csynth_status,lut,ff,bram_18k,dsp,estimated_period_ns,lut_delta,lut_reduction_pct,accepted,rejection_reason
+T1_STATE_OWNERSHIP,NOT_RUN_NO_STRUCTURAL_DEFECT,INHERITED,INHERITED,INHERITED,INHERITED,NOT_RUN,,,,,,,,false,"Accepted source already has one static state owner and reference-only state passing"
+T2_OUTPUT_CONSOLIDATION,NOT_RUN_NO_STRUCTURAL_DEFECT,INHERITED,INHERITED,INHERITED,INHERITED,NOT_RUN,,,,,,,,false,"Outputs already have one scalar write point and event-gated stream writes; FIFO LUT delta is zero"
+T3_FUNCTION_BOUNDARIES,REJECTED_PPA,PASS,PASS_BYTE_IDENTICAL,PASS_10_10,PASS_8_LEGAL_0_REAL,PASS,87388,22117,16,3,5.898,4102,-4.93,false,"Inlining removed the cycle-wrapper instance but retained the same helper and mux cones while increasing direct state-memory LUT to 5011"
+T4_RESET_CONSOLIDATION,REJECTED_RESET_SEMANTICS,PASS_CSIM_ONLY,PASS_BYTE_IDENTICAL,PASS_10_10,PASS_8_LEGAL_0_REAL,PASS,45602,12119,12,3,5.898,-37684,45.25,false,"Removing whole-state hardware reset exposes 342 automatic partitions and explains the top delta, but required mid-run reset semantics are lost"
+T5_STREAM_ADAPTER,NOT_RUN_NO_DELTA_TO_TARGET,INHERITED,INHERITED,INHERITED,INHERITED,NOT_RUN,,,,,,,,false,"Direct step and product top both report 335 FIFO LUT and 495 FIFO FF"

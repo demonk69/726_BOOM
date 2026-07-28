@@ -2,8 +2,9 @@
 
 | Module | File | Status | HLS Status | Notes |
 |---|---|---|---|---|
-| boom_core_top | src/boom_core_top.cpp | PARTIAL | PASS_BASELINE_CSYNTH | Gate 3.3 conservative unpipelined CORE_CYCLE loop passes csynth; performance pipeline macro remains deferred after prior timeout |
+| boom_core_top | src/boom_core_top.cpp | PARTIAL | PASS_BASELINE_CSYNTH | Gate 3.6 confirms conservative unpipelined CORE_CYCLE loop at 83286 LUT; required whole-state reset retained; no duplicated core/state logic |
 | boom_core_step | src/boom_core_step.cpp | PARTIAL | PASS_STEP_TOP_CSYNTH | Gate 3.3 per-cycle orchestration passes csynth; whole-state copy removed in Gate 3.2 |
+| boom_core_ncycle_n1/n2/n4/n8_top | src/boom_core_top.cpp | ANALYSIS_ONLY | PASS_ATTRIBUTION_CSYNTH | Gate 3.6 fixed-trip controls; one retained cycle wrapper, no pipeline/unroll, flat resources; not product replacements |
 | frontend | src/frontend.cpp | PARTIAL | PASS_MODULE_CSYNTH | Ideal imem request/response subset; no ICache/FetchBuffer/BP |
 | decode | src/decode.cpp | PARTIAL | PASS_MODULE_CSYNTH | DecodeUnit subset; no full decode/RVC coverage |
 | rename | src/rename.cpp | PARTIAL | PASS_MODULE_CSYNTH | Integer RenameMapTable + FreeList subset; Gate 3.3 branch tag allocation, masks, snapshots, and allocation-list tracking implemented for supported subset |
