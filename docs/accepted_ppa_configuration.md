@@ -24,3 +24,9 @@ Gate 3.6 explains the prior 37936-LUT direct-diagnostic/product-top difference w
 Gate 3.6 status: `TOP_LEVEL_DELTA_EXPLAINED_NO_ACCEPTED_OPTIMIZATION`.
 
 The accepted configuration therefore still retains the whole-state reset, keeps `CORE_CYCLE` pipeline disabled, and uses the Gate 3.3 resource point above.
+
+Gate 3.7 independently reruns the conservative top and reproduces the accepted result exactly in 71.40 seconds. `P1_PIPELINE_NO_II` times out after 900 seconds during Presyn 2 transformations before scheduling, achieved-II calculation, or resource reporting. P2-P6 are not run because the required P1 report gate is not met.
+
+Gate 3.7 status: `CORE_CYCLE_PIPELINE_TRANSFORMATION_TIMEOUT_NO_SYNTHESIS_CANDIDATE`.
+
+No pipelined configuration is accepted. `READY_FOR_ACCEPT_PIPELINED_CONFIG=false` and the table at the top of this document remains authoritative.

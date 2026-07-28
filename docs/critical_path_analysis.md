@@ -1,6 +1,6 @@
 # Critical Path Analysis
 
-Gate 3.6 preserves the conservative accepted baseline while explaining the top-level resource gap. This is not an accepted LUT optimization and not a strict BOOM cycle-equivalence claim.
+Gate 3.7 preserves the conservative accepted baseline while characterizing the outer `CORE_CYCLE` pipeline transformation. This is not an accepted pipeline configuration and not a strict BOOM cycle-equivalence claim.
 
 ## Current Status
 
@@ -14,7 +14,8 @@ Gate 3.6 preserves the conservative accepted baseline while explaining the top-l
 - Gate 3.6 direct diagnostic: `synth_core_step_top`, 45350 LUT, 12111 FF, 12 BRAM_18K, 3 DSP, 5.898 ns, 342 automatic partitions
 - Gate 3.6 T3 inline: 87388 LUT, 22117 FF, zero automatic partitions; rejected by PPA
 - Gate 3.6 T4 no-reset attribution: 45602 LUT, 12119 FF, 12 BRAM_18K, 342 automatic partitions; rejected because required hardware reset is lost
-- Performance pipeline experiment: NOT_RUN_GATE3_6; prior Gate 3.2 timeout remains historical evidence. Gate 3.6 permits a new separately gated experiment because the accepted top is stable and duplicate core logic has been ruled out
+- Gate 3.7 P0: exact accepted result reproduced in 71.40 seconds, 1520716 KB peak memory
+- Gate 3.7 P1 no-II pipeline: TIMEOUT at 900 seconds in Presyn 2; 65 implied unrolls, no schedule/II/resource report
 
 ## Known Critical Areas
 
@@ -30,6 +31,8 @@ Gate 3.6 preserves the conservative accepted baseline while explaining the top-l
 | `boom_core_step` | Serialized module calls over persistent state | Whole-state copy removed; Gate 3.3 finite step-top csynth PASS |
 | resettable `BoomCoreState` elaboration | Whole-state HLS reset suppresses 342 automatic partitions and expands helper-port/state mux cones | 37684 LUT isolated by T4; reset is required and retained |
 | `boom_core_cycle_io` boundary | Retained in accepted/N-cycle tops | T3 force-inline increases LUT and leaves partition count at zero; boundary alone is not causal |
+| `CORE_CYCLE` pipeline transformation | Outer pipeline propagates complete-unroll requirements into nested ROB/IQ/LSU/branch loops | P1 no-II times out before scheduling; minimum II cannot be determined |
+| loop-carried state recurrence | Execute->branch/LSU, PC/request, maps/free/busy, ROB/IQ/LSU, CSR/RF and FIFO feedback | Real dependencies; no false-dependence directive allowed |
 
 ## Deferred Safe Optimizations
 
@@ -38,6 +41,6 @@ Do not apply these until strict trace evidence exists for the target behavior:
 - `ARRAY_PARTITION` or `ARRAY_RESHAPE` for map tables, busy table, PRF, ROB, and IQ arrays.
 - `UNROLL` for real lane-parallel fixed loops.
 - Tree priority encoder for IQ selection.
-- `PIPELINE II=1` on `CORE_CYCLE` only after state dependencies are proven safe; the Gate 3.3 accepted baseline keeps this disabled and the prior Gate 3.2 performance experiment timed out.
+- Additional full `CORE_CYCLE` pipeline II experiments remain closed after P1 no-II timed out before scheduling. Do not bypass the report gate with II=1 or false-dependence directives.
 
-Cycle equivalence remains INSUFFICIENT_EVIDENCE. Gate 3.6 status is `TOP_LEVEL_DELTA_EXPLAINED_NO_ACCEPTED_OPTIMIZATION`; Gate 3.3 remains the accepted PPA configuration.
+Cycle equivalence remains INSUFFICIENT_EVIDENCE. Gate 3.7 status is `CORE_CYCLE_PIPELINE_TRANSFORMATION_TIMEOUT_NO_SYNTHESIS_CANDIDATE`; Gate 3.3 remains the accepted PPA configuration.

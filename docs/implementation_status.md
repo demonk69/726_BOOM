@@ -20,6 +20,8 @@ Gate 3.5 update: six branch-recovery structural experiments completed with full 
 
 Gate 3.6 update: the 37936-LUT direct-diagnostic/product-top gap is explained. N1/N2/N4/N8 and free-running resources are flat, no loop unroll or state/core duplication exists, and FIFO LUT delta is zero. Removing only whole-state HLS reset reduces the same product top by 37684 LUT and exposes 342 automatic partitions, but violates required hardware reset semantics. T3 inlining increases LUT. Status is `TOP_LEVEL_DELTA_EXPLAINED_NO_ACCEPTED_OPTIMIZATION`; the accepted configuration is unchanged.
 
+Gate 3.7 update: `CORE_CYCLE` has real loop-carried state, control, memory-port, and stream dependencies. P0 exactly reproduces the accepted baseline. P1 applies outer-loop pipeline without an II target and times out at 900 seconds during Presyn 2 transformations, before scheduling, achieved-II calculation, RTL, or resource reporting. P2-P6 and local pipeline experiments are not run because their prerequisite report gates are unmet. Status is `CORE_CYCLE_PIPELINE_TRANSFORMATION_TIMEOUT_NO_SYNTHESIS_CANDIDATE`.
+
 ## Implemented And Tested
 
 - Frontend request/response FSM with monotonic fetch IDs and stale response drop.
@@ -42,7 +44,8 @@ Gate 3.6 update: the 37936-LUT direct-diagnostic/product-top gap is explained. N
 - Busy-table wakeup is simplified and not equivalent to BOOM's full bypass/wakeup network; Gate 3.3 recovery rebuilds busy state functionally from still-valid busy ROB entries.
 - Exception and flush handling are coarse compared with BOOM.
 - Cycle timing is not verified against BOOM.
-- Conservative no-pipeline csynth scalability remains resolved after Gate 3.3; `BOOM_HLS_ENABLE_CORE_PIPELINE=1` remains unresolved and was not rerun for Gate 3.3 after the prior timeout.
+- Conservative no-pipeline csynth remains stable. Gate 3.7 confirms the full-cycle pipeline transformation still fails to close even without an II target; no pipelined schedule or minimum II is available.
+- Mid-run generated-RTL reset and pin-level AXIS backpressure are not verified. Native reset-by-assignment and delayed-response tests do not close these RTL behaviors.
 
 ## Not Implemented
 
@@ -84,4 +87,9 @@ Gate 3.6 update: the 37936-LUT direct-diagnostic/product-top gap is explained. N
 - Gate 3.6 T4 attribution: removing only product state reset synthesizes at 45602 LUT, 12119 FF, 12 BRAM_18K, 3 DSP, and 5.898 ns with 342 automatic partitions; `REJECTED_RESET_SEMANTICS`.
 - Gate 3.6 restored baseline regressions: directed 25/25, Gate 1 13/13, LSU 14/14, branch directed 30/30, branch random 42/42, IQ 10/10, HLS trace 10/10 byte-identical, BOOM diff 10/10, partial-order 8 legal/0 real.
 - Gate 3.6 readiness: `READY_FOR_WIDE_ISSUE_IMPLEMENTATION=false`, `READY_FOR_CORE_PIPELINE_EXPERIMENT=true` for a separate gated experiment only, and `READY_FOR_OFFICIAL_GATE_3=false`.
+- Gate 3.7 P0 baseline: PASS in 71.40s, 1520716 KB peak memory, 83286 LUT, 16611 FF, 16 BRAM_18K, 3 DSP, 5.898 ns.
+- Gate 3.7 P1 no-II pipeline: TIMEOUT after 900.00s in Presyn 2; 65 implied complete-unroll markings, 57 completed unroll records, 8 variable-bound failures, 0 automatic partitions, no achieved II/report.
+- Gate 3.7 P2-P6: NOT_RUN by required P1/P1-P5 report gates. No `SYNTHESIS_CANDIDATE` or `FUNCTIONALLY_VERIFIED_CANDIDATE` exists.
+- Gate 3.7 final regressions: directed 25/25, Gate 1 13/13, LSU 14/14, branch 30/30+42/42, IQ 10/10, trace 10/10 byte-identical, BOOM diff 10/10, partial-order 8 legal/0 real.
+- Gate 3.7 readiness: `READY_FOR_WIDE_ISSUE_IMPLEMENTATION=false`, `READY_FOR_LOCAL_PIPELINE_OPTIMIZATION=false`, `READY_FOR_ACCEPT_PIPELINED_CONFIG=false`, `READY_FOR_OFFICIAL_GATE_3=false`.
 - Official Chipyard/FESVR/DRAMSim trace: BLOCKED by missing original `/root/chipyard` generated-source path, `libfesvr`, `libdramsim`, and RISC-V ELF/binutils tools.

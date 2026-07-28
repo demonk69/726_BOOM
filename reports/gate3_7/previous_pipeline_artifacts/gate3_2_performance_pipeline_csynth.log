@@ -1,0 +1,185 @@
+
+****** Vitis HLS - High-Level Synthesis from C, C++ and OpenCL v2021.2 (64-bit)
+  **** SW Build 3367213 on Tue Oct 19 02:47:39 MDT 2021
+  **** IP Build 3369179 on Thu Oct 21 08:25:16 MDT 2021
+    ** Copyright 1986-2021 Xilinx, Inc. All Rights Reserved.
+
+source /home/lab_726/Xilinx/Vitis_HLS/2021.2/scripts/vitis_hls/hls.tcl -notrace
+INFO: [HLS 200-10] Running '/home/lab_726/Xilinx/Vitis_HLS/2021.2/bin/unwrapped/lnx64.o/vitis_hls'
+INFO: [HLS 200-10] For user 'lab_726' on host '726' (Linux_x86_64 version 6.8.0-124-generic) on Sat Jul 25 21:01:08 CST 2026
+INFO: [HLS 200-10] On os Ubuntu 22.04.5 LTS
+INFO: [HLS 200-10] In directory '/home/lab_726/boom/hls_boom'
+Sourcing Tcl script 'scripts/run_performance_csynth.tcl'
+INFO: [HLS 200-1510] Running: open_project -reset boom_hls_gate3_2_performance
+INFO: [HLS 200-10] Creating and opening project '/home/lab_726/boom/hls_boom/boom_hls_gate3_2_performance'.
+INFO: [HLS 200-1510] Running: set_top boom_core_top
+INFO: [HLS 200-1510] Running: add_files -cflags -std=c++11 -I/home/lab_726/boom/hls_boom/include -DBOOM_HLS_ENABLE_CORE_PIPELINE=1 /home/lab_726/boom/hls_boom/src/boom_core_merged.cpp
+INFO: [HLS 200-10] Adding design file '/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp' to the project
+INFO: [HLS 200-1510] Running: open_solution -reset solution_performance
+INFO: [HLS 200-10] Creating and opening solution '/home/lab_726/boom/hls_boom/boom_hls_gate3_2_performance/solution_performance'.
+INFO: [HLS 200-10] Cleaning up the solution database.
+WARNING: [HLS 200-40] No /home/lab_726/boom/hls_boom/boom_hls_gate3_2_performance/solution_performance/solution_performance.aps file found.
+INFO: [HLS 200-1505] Using default flow_target 'vivado'
+Resolution: For help on HLS 200-1505 see www.xilinx.com/cgi-bin/docs/rdoc?v=2021.2;t=hls+guidance;d=200-1505.html
+INFO: [HLS 200-1510] Running: set_part xczu7ev-ffvc1156-2-e
+INFO: [HLS 200-1611] Setting target device to 'xczu7ev-ffvc1156-2-e'
+INFO: [HLS 200-1510] Running: create_clock -period 10 -name default
+INFO: [SYN 201-201] Setting up clock 'default' with a period of 10ns.
+INFO: [HLS 200-1510] Running: config_compile -pipeline_loops 0
+INFO: [XFORM 203-1171] Pipeline the innermost loop with trip count more than 0 or its parent loop when its trip count is less than or equal 0.
+INFO: [HLS 200-1510] Running: csynth_design
+INFO: [HLS 200-111] Finished File checks and directory preparation: CPU user time: 0 seconds. CPU system time: 0 seconds. Elapsed time: 0.01 seconds; current allocated memory: 1.321 GB.
+INFO: [HLS 200-10] Analyzing design file '/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp' ...
+INFO: [HLS 200-111] Finished Source Code Analysis and Preprocessing: CPU user time: 0.6 seconds. CPU system time: 0.21 seconds. Elapsed time: 0.4 seconds; current allocated memory: 1.323 GB.
+INFO: [HLS 200-777] Using interface defaults for 'Vivado' flow target.
+INFO: [HLS 214-284] Auto array partition mode is set into default.
+INFO: [HLS 214-291] Loop 'ROB_COMPLETE_LANES' is marked as complete unroll implied by the pipeline pragma (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:400:5)
+INFO: [HLS 214-291] Loop 'ROB_FLUSH_ENTRIES' is marked as complete unroll implied by the pipeline pragma (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:385:5)
+INFO: [HLS 214-291] Loop 'VITIS_LOOP_498_2' is marked as complete unroll implied by the pipeline pragma (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:498:23)
+INFO: [HLS 214-291] Loop 'VITIS_LOOP_495_1' is marked as complete unroll implied by the pipeline pragma (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:495:23)
+INFO: [HLS 214-291] Loop 'VITIS_LOOP_445_2' is marked as complete unroll implied by the pipeline pragma (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:445:27)
+INFO: [HLS 214-291] Loop 'VITIS_LOOP_478_7' is marked as complete unroll implied by the pipeline pragma (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:478:23)
+INFO: [HLS 214-291] Loop 'VITIS_LOOP_477_6' is marked as complete unroll implied by the pipeline pragma (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:477:23)
+INFO: [HLS 214-291] Loop 'VITIS_LOOP_473_5' is marked as complete unroll implied by the pipeline pragma (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:473:23)
+INFO: [HLS 214-291] Loop 'anonymous' is marked as complete unroll implied by the pipeline pragma (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:471:20)
+INFO: [HLS 214-291] Loop 'VITIS_LOOP_463_4' is marked as complete unroll implied by the pipeline pragma (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:463:23)
+INFO: [HLS 214-291] Loop 'VITIS_LOOP_449_3' is marked as complete unroll implied by the pipeline pragma (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:449:23)
+INFO: [HLS 214-291] Loop 'VITIS_LOOP_442_1' is marked as complete unroll implied by the pipeline pragma (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:442:23)
+INFO: [HLS 214-291] Loop 'ROB_ALLOCATE_LANES' is marked as complete unroll implied by the pipeline pragma (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:417:5)
+INFO: [HLS 214-291] Loop 'VITIS_LOOP_351_4' is marked as complete unroll implied by the pipeline pragma (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:351:23)
+INFO: [HLS 214-291] Loop 'VITIS_LOOP_345_2' is marked as complete unroll implied by the pipeline pragma (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:345:27)
+INFO: [HLS 214-291] Loop 'VITIS_LOOP_347_3' is marked as complete unroll implied by the pipeline pragma (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:347:31)
+INFO: [HLS 214-291] Loop 'VITIS_LOOP_339_1' is marked as complete unroll implied by the pipeline pragma (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:339:23)
+INFO: [HLS 214-291] Loop 'anonymous' is marked as complete unroll implied by the pipeline pragma (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:211:15)
+INFO: [HLS 214-291] Loop 'anonymous' is marked as complete unroll implied by the pipeline pragma (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:210:18)
+INFO: [HLS 214-291] Loop 'anonymous' is marked as complete unroll implied by the pipeline pragma (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:209:16)
+INFO: [HLS 214-291] Loop 'LSU_LOAD_ISSUE_SCAN' is marked as complete unroll implied by the pipeline pragma (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:748:5)
+INFO: [HLS 214-291] Loop 'LSU_EXECUTE_RESULTS' is marked as complete unroll implied by the pipeline pragma (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:737:5)
+INFO: [HLS 214-291] Loop 'OLDER_STORE_SCAN' is marked as complete unroll implied by the pipeline pragma (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:607:5)
+INFO: [HLS 214-291] Loop 'CLEAR_STQ' is marked as complete unroll implied by the pipeline pragma (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:625:5)
+INFO: [HLS 214-291] Loop 'CLEAR_LDQ' is marked as complete unroll implied by the pipeline pragma (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:623:5)
+INFO: [HLS 214-291] Loop 'VITIS_LOOP_569_1' is marked as complete unroll implied by the pipeline pragma (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:569:23)
+INFO: [HLS 214-291] Loop 'anonymous' is marked as complete unroll implied by the pipeline pragma (/home/lab_726/boom/hls_boom/include/boom_types.hpp:65:60)
+INFO: [HLS 214-291] Loop 'anonymous' is marked as complete unroll implied by the pipeline pragma (/home/lab_726/boom/hls_boom/include/boom_types.hpp:64:26)
+INFO: [HLS 214-186] Unrolling loop 'ROB_COMPLETE_LANES' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:400:5) in function 'boom::rob_complete' completely with a factor of 1 (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:398:0)
+INFO: [HLS 214-186] Unrolling loop 'ROB_FLUSH_ENTRIES' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:385:5) in function 'boom::rob_flush' completely with a factor of 32 (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:382:0)
+INFO: [HLS 214-186] Unrolling loop 'VITIS_LOOP_495_1' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:495:23) in function 'boom::execute_module' completely with a factor of 1 (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:491:0)
+INFO: [HLS 214-186] Unrolling loop 'VITIS_LOOP_445_2' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:445:27) in function 'boom::issue_module' completely with a factor of 8 (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:438:0)
+INFO: [HLS 214-186] Unrolling loop 'VITIS_LOOP_478_7' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:478:23) in function 'boom::issue_module' completely with a factor of 8 (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:438:0)
+INFO: [HLS 214-186] Unrolling loop 'VITIS_LOOP_473_5' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:473:23) in function 'boom::issue_module' completely with a factor of 8 (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:438:0)
+INFO: [HLS 214-186] Unrolling loop 'anonymous' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:471:20) in function 'boom::issue_module' completely with a factor of 8 (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:438:0)
+INFO: [HLS 214-186] Unrolling loop 'VITIS_LOOP_449_3' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:449:23) in function 'boom::issue_module' completely with a factor of 1 (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:438:0)
+INFO: [HLS 214-186] Unrolling loop 'VITIS_LOOP_442_1' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:442:23) in function 'boom::issue_module' completely with a factor of 3 (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:438:0)
+INFO: [HLS 214-186] Unrolling loop 'ROB_ALLOCATE_LANES' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:417:5) in function 'boom::rob_allocate' completely with a factor of 1 (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:412:0)
+INFO: [HLS 214-186] Unrolling loop 'VITIS_LOOP_351_4' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:351:23) in function 'boom::rename_module' completely with a factor of 1 (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:334:0)
+INFO: [HLS 214-186] Unrolling loop 'VITIS_LOOP_345_2' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:345:27) in function 'boom::rename_module' completely with a factor of 32 (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:334:0)
+INFO: [HLS 214-186] Unrolling loop 'VITIS_LOOP_347_3' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:347:31) in function 'boom::rename_module' completely with a factor of 8 (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:334:0)
+INFO: [HLS 214-186] Unrolling loop 'VITIS_LOOP_339_1' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:339:23) in function 'boom::rename_module' completely with a factor of 1 (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:334:0)
+INFO: [HLS 214-186] Unrolling loop 'anonymous' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:211:15) in function 'boom::decode_module' completely with a factor of 1 (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:198:0)
+INFO: [HLS 214-186] Unrolling loop 'anonymous' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:210:18) in function 'boom::decode_module' completely with a factor of 1 (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:198:0)
+INFO: [HLS 214-186] Unrolling loop 'anonymous' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:209:16) in function 'boom::decode_module' completely with a factor of 1 (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:198:0)
+INFO: [HLS 214-186] Unrolling loop 'LSU_LOAD_ISSUE_SCAN' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:748:5) in function 'boom::lsu_module' completely with a factor of 32 (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:705:0)
+INFO: [HLS 214-186] Unrolling loop 'LSU_EXECUTE_RESULTS' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:737:5) in function 'boom::lsu_module' completely with a factor of 1 (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:705:0)
+INFO: [HLS 214-186] Unrolling loop 'OLDER_STORE_SCAN' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:607:5) in function 'boom::older_store_in_rob' completely with a factor of 32 (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:603:0)
+INFO: [HLS 214-186] Unrolling loop 'CLEAR_STQ' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:625:5) in function 'boom::clear_lsu_queues' completely with a factor of 8 (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:616:0)
+INFO: [HLS 214-186] Unrolling loop 'CLEAR_LDQ' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:623:5) in function 'boom::clear_lsu_queues' completely with a factor of 8 (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:616:0)
+INFO: [HLS 214-186] Unrolling loop 'VITIS_LOOP_569_1' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:569:23) in function 'boom::branch_module' completely with a factor of 1 (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:568:0)
+INFO: [HLS 214-186] Unrolling loop 'anonymous' (/home/lab_726/boom/hls_boom/include/boom_types.hpp:65:60) in function 'MicroOp::MicroOp' completely with a factor of 1 (/home/lab_726/boom/hls_boom/include/boom_types.hpp:62:0)
+INFO: [HLS 214-186] Unrolling loop 'anonymous' (/home/lab_726/boom/hls_boom/include/boom_types.hpp:64:26) in function 'MicroOp::MicroOp' completely with a factor of 1 (/home/lab_726/boom/hls_boom/include/boom_types.hpp:62:0)
+INFO: [HLS 214-178] Inlining function 'MicroOp::MicroOp() (.19.22)' into 'FrontendState::FrontendState()' (/home/lab_726/boom/hls_boom/include/boom_state.hpp:26:0)
+INFO: [HLS 214-178] Inlining function 'MicroOp::MicroOp() (.19.22)' into 'DecodeState::DecodeState()' (/home/lab_726/boom/hls_boom/include/boom_state.hpp:32:0)
+INFO: [HLS 214-178] Inlining function 'RenameMapTableState::RenameMapTableState()' into 'RenameState::RenameState()' (/home/lab_726/boom/hls_boom/include/boom_state.hpp:58:0)
+INFO: [HLS 214-178] Inlining function 'RenameFreeListState::RenameFreeListState()' into 'RenameState::RenameState()' (/home/lab_726/boom/hls_boom/include/boom_state.hpp:58:0)
+INFO: [HLS 214-178] Inlining function 'MicroOp::MicroOp() (.19.22)' into 'RenameState::RenameState()' (/home/lab_726/boom/hls_boom/include/boom_state.hpp:58:0)
+INFO: [HLS 214-178] Inlining function 'MicroOp::MicroOp() (.19.22)' into 'IssueSlotEntry::IssueSlotEntry()' (/home/lab_726/boom/hls_boom/include/boom_types.hpp:88:0)
+INFO: [HLS 214-178] Inlining function 'IssueSlotEntry::IssueSlotEntry()' into 'IssueQueueState::IssueQueueState()' (/home/lab_726/boom/hls_boom/include/boom_state.hpp:65:0)
+INFO: [HLS 214-178] Inlining function 'MicroOp::MicroOp() (.19.22)' into 'IssueState::IssueState()' (/home/lab_726/boom/hls_boom/include/boom_state.hpp:73:0)
+INFO: [HLS 214-178] Inlining function 'MicroOp::MicroOp() (.19.22)' into 'ExecuteState::AluResult::AluResult()' (/home/lab_726/boom/hls_boom/include/boom_state.hpp:88:0)
+INFO: [HLS 214-178] Inlining function 'ExecuteState::AluResult::AluResult()' into 'ExecuteState::ExecuteState()' (/home/lab_726/boom/hls_boom/include/boom_state.hpp:91:0)
+INFO: [HLS 214-178] Inlining function 'MicroOp::MicroOp() (.19.22)' into 'RobEntry::RobEntry()' (/home/lab_726/boom/hls_boom/include/boom_types.hpp:79:0)
+INFO: [HLS 214-178] Inlining function 'RobEntry::RobEntry()' into 'RobInternalState::RobInternalState()' (/home/lab_726/boom/hls_boom/include/boom_state.hpp:104:0)
+INFO: [HLS 214-178] Inlining function 'CommitEntry::CommitEntry()' into 'RobInternalState::RobInternalState()' (/home/lab_726/boom/hls_boom/include/boom_state.hpp:104:0)
+INFO: [HLS 214-178] Inlining function 'StoreQueueEntry::StoreQueueEntry()' into 'LsuState::LsuState()' (/home/lab_726/boom/hls_boom/include/boom_state.hpp:145:0)
+INFO: [HLS 214-178] Inlining function 'LoadQueueEntry::LoadQueueEntry()' into 'LsuState::LsuState()' (/home/lab_726/boom/hls_boom/include/boom_state.hpp:145:0)
+INFO: [HLS 214-178] Inlining function 'MicroOp::MicroOp() (.19.22)' into 'BranchUpdate::BranchUpdate()' (/home/lab_726/boom/hls_boom/include/boom_types.hpp:97:0)
+INFO: [HLS 214-178] Inlining function 'FrontendState::FrontendState()' into 'BoomCoreState::BoomCoreState()' (/home/lab_726/boom/hls_boom/include/boom_state.hpp:168:0)
+INFO: [HLS 214-178] Inlining function 'CsrState::CsrState()' into 'BoomCoreState::BoomCoreState()' (/home/lab_726/boom/hls_boom/include/boom_state.hpp:168:0)
+INFO: [HLS 214-178] Inlining function 'LsuState::LsuState()' into 'BoomCoreState::BoomCoreState()' (/home/lab_726/boom/hls_boom/include/boom_state.hpp:168:0)
+INFO: [HLS 214-178] Inlining function 'BranchUpdate::BranchUpdate()' into 'BoomCoreState::BoomCoreState()' (/home/lab_726/boom/hls_boom/include/boom_state.hpp:168:0)
+INFO: [HLS 214-178] Inlining function 'boom::bytes_for_size(unsigned char)' into 'boom::load_value(unsigned long, unsigned long, unsigned char, bool)' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:595:0)
+INFO: [HLS 214-178] Inlining function 'boom::sign_extend(unsigned long, unsigned char)' into 'boom::load_value(unsigned long, unsigned long, unsigned char, bool)' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:595:0)
+INFO: [HLS 214-178] Inlining function 'DmemRequest::DmemRequest()' into 'boom::try_issue_load(BoomCoreState&, PipeSignals&, unsigned char)' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:628:0)
+INFO: [HLS 214-178] Inlining function 'DmemResponse::DmemResponse()' into 'boom::lsu_module(BoomCoreState&, PipeSignals&)' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:705:0)
+INFO: [HLS 214-178] Inlining function 'boom::load_value(unsigned long, unsigned long, unsigned char, bool)' into 'boom::lsu_module(BoomCoreState&, PipeSignals&)' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:705:0)
+INFO: [HLS 214-178] Inlining function 'boom::enqueue_store(BoomCoreState&, ExecuteState::AluResult const&, RobEntry&)' into 'boom::lsu_module(BoomCoreState&, PipeSignals&)' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:705:0)
+INFO: [HLS 214-178] Inlining function 'boom::enqueue_load(BoomCoreState&, ExecuteState::AluResult const&, RobEntry&)' into 'boom::lsu_module(BoomCoreState&, PipeSignals&)' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:705:0)
+INFO: [HLS 214-178] Inlining function 'ImemRequest::ImemRequest()' into 'boom::frontend_module(BoomCoreState&, PipeSignals&)' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:19:0)
+INFO: [HLS 214-178] Inlining function 'ImemResponse::ImemResponse()' into 'boom::frontend_module(BoomCoreState&, PipeSignals&)' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:19:0)
+INFO: [HLS 214-178] Inlining function 'MicroOp::MicroOp() (.19.22)' into 'boom::frontend_module(BoomCoreState&, PipeSignals&)' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:19:0)
+INFO: [HLS 214-178] Inlining function 'MicroOp::MicroOp() (.19.22)' into 'boom::decode_module(BoomCoreState&)' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:198:0)
+INFO: [HLS 214-178] Inlining function 'boom::extract_imm_u(unsigned int)' into 'boom::decode_module(BoomCoreState&)' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:198:0)
+INFO: [HLS 214-178] Inlining function 'boom::extract_imm_j(unsigned int)' into 'boom::decode_module(BoomCoreState&)' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:198:0)
+INFO: [HLS 214-178] Inlining function 'boom::extract_imm_i(unsigned int)' into 'boom::decode_module(BoomCoreState&)' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:198:0)
+INFO: [HLS 214-178] Inlining function 'boom::extract_imm_b(unsigned int)' into 'boom::decode_module(BoomCoreState&)' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:198:0)
+INFO: [HLS 214-178] Inlining function 'boom::extract_imm_s(unsigned int)' into 'boom::decode_module(BoomCoreState&)' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:198:0)
+INFO: [HLS 214-178] Inlining function 'boom::sext32(long)' into 'boom::execute_module(BoomCoreState&)' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:491:0)
+INFO: [HLS 214-178] Inlining function 'boom::mask_for_size(unsigned char)' into 'boom::execute_module(BoomCoreState&)' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:491:0)
+INFO: [HLS 214-178] Inlining function 'boom::rob_branch_kill(BoomCoreState&)' into 'boom::rob_commit_module(BoomCoreState&, PipeSignals&)' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:766:0)
+INFO: [HLS 214-178] Inlining function 'boom::rob_complete(BoomCoreState&)' into 'boom::rob_commit_module(BoomCoreState&, PipeSignals&)' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:766:0)
+INFO: [HLS 214-178] Inlining function 'DmemRequest::DmemRequest()' into 'boom::rob_commit_module(BoomCoreState&, PipeSignals&)' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:766:0)
+INFO: [HLS 214-178] Inlining function 'CommitEntry::CommitEntry()' into 'boom::rob_commit_module(BoomCoreState&, PipeSignals&)' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:766:0)
+INFO: [HLS 214-178] Inlining function 'boom::csr_module(BoomCoreState&)' into 'boom_core_step(BoomCoreState&, PipeSignals&)' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:872:0)
+INFO: [HLS 214-178] Inlining function 'boom::branch_module(BoomCoreState&)' into 'boom_core_step(BoomCoreState&, PipeSignals&)' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:872:0)
+INFO: [HLS 214-178] Inlining function 'ImemResponse::ImemResponse()' into 'boom_core_cycle_io(BoomCoreState&, PipeSignals&, hls::stream<ImemRequest, 0>&, hls::stream<ImemResponse, 0>&, hls::stream<DmemRequest, 0>&, hls::stream<DmemResponse, 0>&, hls::stream<CommitEntry, 0>&, bool&, bool&, bool&, bool&, unsigned long&, unsigned long&)' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:905:0)
+INFO: [HLS 214-178] Inlining function 'DmemResponse::DmemResponse()' into 'boom_core_cycle_io(BoomCoreState&, PipeSignals&, hls::stream<ImemRequest, 0>&, hls::stream<ImemResponse, 0>&, hls::stream<DmemRequest, 0>&, hls::stream<DmemResponse, 0>&, hls::stream<CommitEntry, 0>&, bool&, bool&, bool&, bool&, unsigned long&, unsigned long&)' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:905:0)
+INFO: [HLS 214-178] Inlining function 'boom_core_step(BoomCoreState&, PipeSignals&)' into 'boom_core_cycle_io(BoomCoreState&, PipeSignals&, hls::stream<ImemRequest, 0>&, hls::stream<ImemResponse, 0>&, hls::stream<DmemRequest, 0>&, hls::stream<DmemResponse, 0>&, hls::stream<CommitEntry, 0>&, bool&, bool&, bool&, bool&, unsigned long&, unsigned long&)' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:905:0)
+INFO: [HLS 214-178] Inlining function 'ImemRequest::ImemRequest()' into 'boom_core_cycle_io(BoomCoreState&, PipeSignals&, hls::stream<ImemRequest, 0>&, hls::stream<ImemResponse, 0>&, hls::stream<DmemRequest, 0>&, hls::stream<DmemResponse, 0>&, hls::stream<CommitEntry, 0>&, bool&, bool&, bool&, bool&, unsigned long&, unsigned long&)' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:905:0)
+INFO: [HLS 214-178] Inlining function 'DmemRequest::DmemRequest()' into 'boom_core_cycle_io(BoomCoreState&, PipeSignals&, hls::stream<ImemRequest, 0>&, hls::stream<ImemResponse, 0>&, hls::stream<DmemRequest, 0>&, hls::stream<DmemResponse, 0>&, hls::stream<CommitEntry, 0>&, bool&, bool&, bool&, bool&, unsigned long&, unsigned long&)' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:905:0)
+INFO: [HLS 214-178] Inlining function 'CommitEntry::CommitEntry()' into 'boom_core_cycle_io(BoomCoreState&, PipeSignals&, hls::stream<ImemRequest, 0>&, hls::stream<ImemResponse, 0>&, hls::stream<DmemRequest, 0>&, hls::stream<DmemResponse, 0>&, hls::stream<CommitEntry, 0>&, bool&, bool&, bool&, bool&, unsigned long&, unsigned long&)' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:905:0)
+INFO: [HLS 214-241] Aggregating fifo (hls::stream) variable 'pipe.4' with compact=bit mode in 518-bits (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:955:14)
+INFO: [HLS 214-241] Aggregating fifo (hls::stream) variable 'pipe.2' with compact=bit mode in 283-bits (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:955:14)
+INFO: [HLS 214-241] Aggregating fifo (hls::stream) variable 'pipe.0' with compact=bit mode in 97-bits (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:955:14)
+INFO: [HLS 214-241] Aggregating fifo (hls::stream) variable 'pipe.3' with compact=bit mode in 289-bits (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:955:14)
+INFO: [HLS 214-241] Aggregating fifo (hls::stream) variable 'pipe.1' with compact=bit mode in 193-bits (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:955:14)
+INFO: [HLS 214-270] Starting automatic array partition analysis...
+INFO: [HLS 214-131] Inlining function '_llvm.fpga.pack.none.i384.sl_i32i64i64i1i64i64s' into '_llvm.fpga.unpack.bits.s_struct.DmemResponses.i289.1'
+INFO: [HLS 214-131] Inlining function '_llvm.fpga.pack.none.i320.s_struct.DmemRequests' into 'boom::try_issue_load(BoomCoreState&, PipeSignals&, unsigned char) (.1)' (/home/lab_726/Xilinx/Vitis_HLS/2021.2/common/technology/autopilot/hls_stream_39.h:173:9)
+INFO: [HLS 214-131] Inlining function '_llvm.fpga.pack.bits.i283.s_struct.DmemRequests.1' into 'boom::try_issue_load(BoomCoreState&, PipeSignals&, unsigned char) (.1)' (/home/lab_726/Xilinx/Vitis_HLS/2021.2/common/technology/autopilot/hls_stream_39.h:173:9)
+INFO: [HLS 214-131] Inlining function '_llvm.fpga.unpack.bits.s_struct.DmemResponses.i289.1' into 'boom::lsu_module(BoomCoreState&, PipeSignals&) (.1)' (/home/lab_726/Xilinx/Vitis_HLS/2021.2/common/technology/autopilot/hls_stream_39.h:144:9)
+INFO: [HLS 214-131] Inlining function '_llvm.fpga.pack.none.i256.sl_i64i32i32i1i64s' into '_llvm.fpga.unpack.bits.s_struct.ImemResponses.i193.1'
+INFO: [HLS 214-131] Inlining function '_llvm.fpga.pack.none.i128.s_struct.ImemRequests' into 'boom::frontend_module(BoomCoreState&, PipeSignals&) (.1)' (/home/lab_726/Xilinx/Vitis_HLS/2021.2/common/technology/autopilot/hls_stream_39.h:173:9)
+INFO: [HLS 214-131] Inlining function '_llvm.fpga.unpack.bits.s_struct.ImemResponses.i193.1' into 'boom::frontend_module(BoomCoreState&, PipeSignals&) (.1)' (/home/lab_726/Xilinx/Vitis_HLS/2021.2/common/technology/autopilot/hls_stream_39.h:144:9)
+INFO: [HLS 214-131] Inlining function '_llvm.fpga.pack.bits.i97.s_struct.ImemRequests.1' into 'boom::frontend_module(BoomCoreState&, PipeSignals&) (.1)' (/home/lab_726/Xilinx/Vitis_HLS/2021.2/common/technology/autopilot/hls_stream_39.h:173:9)
+INFO: [HLS 214-131] Inlining function '_llvm.fpga.pack.none.i320.s_struct.DmemRequests' into 'boom::rob_commit_module(BoomCoreState&, PipeSignals&) (.1)' (/home/lab_726/Xilinx/Vitis_HLS/2021.2/common/technology/autopilot/hls_stream_39.h:173:9)
+INFO: [HLS 214-131] Inlining function '_llvm.fpga.pack.bits.i518.s_struct.CommitEntrys.1' into 'boom::rob_commit_module(BoomCoreState&, PipeSignals&) (.1)' (/home/lab_726/Xilinx/Vitis_HLS/2021.2/common/technology/autopilot/hls_stream_39.h:173:9)
+INFO: [HLS 214-131] Inlining function '_llvm.fpga.pack.none.i768.s_struct.CommitEntrys' into 'boom::rob_commit_module(BoomCoreState&, PipeSignals&) (.1)' (/home/lab_726/Xilinx/Vitis_HLS/2021.2/common/technology/autopilot/hls_stream_39.h:173:9)
+INFO: [HLS 214-131] Inlining function '_llvm.fpga.pack.bits.i283.s_struct.DmemRequests.1' into 'boom::rob_commit_module(BoomCoreState&, PipeSignals&) (.1)' (/home/lab_726/Xilinx/Vitis_HLS/2021.2/common/technology/autopilot/hls_stream_39.h:173:9)
+INFO: [HLS 214-131] Inlining function '_llvm.fpga.pack.none.i128.sl_i64i32i1s' into '_llvm.fpga.unpack.bits.s_struct.ImemRequests.i97.1'
+INFO: [HLS 214-131] Inlining function '_llvm.fpga.pack.none.i320.sl_i32i8i8i8i8i8i8i8i1i1i1i64i64i64s' into '_llvm.fpga.unpack.bits.s_struct.DmemRequests.i283.1'
+INFO: [HLS 214-131] Inlining function '_llvm.fpga.pack.none.i768.sl_i1i64i32i8i8i64i1i1i64i1i1i1i64i64i64i64i8i8s' into '_llvm.fpga.unpack.bits.s_struct.CommitEntrys.i518.1'
+INFO: [HLS 214-131] Inlining function '_llvm.fpga.pack.bits.i193.s_struct.ImemResponses.1' into 'boom_core_cycle_io(BoomCoreState&, PipeSignals&, hls::stream<ImemRequest, 0>&, hls::stream<ImemResponse, 0>&, hls::stream<DmemRequest, 0>&, hls::stream<DmemResponse, 0>&, hls::stream<CommitEntry, 0>&, bool&, bool&, bool&, bool&, unsigned long&, unsigned long&) (.1)' (/home/lab_726/Xilinx/Vitis_HLS/2021.2/common/technology/autopilot/hls_stream_39.h:173:9)
+INFO: [HLS 214-131] Inlining function '_llvm.fpga.pack.none.i768.s_struct.CommitEntrys' into 'boom_core_cycle_io(BoomCoreState&, PipeSignals&, hls::stream<ImemRequest, 0>&, hls::stream<ImemResponse, 0>&, hls::stream<DmemRequest, 0>&, hls::stream<DmemResponse, 0>&, hls::stream<CommitEntry, 0>&, bool&, bool&, bool&, bool&, unsigned long&, unsigned long&) (.1)' (/home/lab_726/Xilinx/Vitis_HLS/2021.2/common/technology/autopilot/hls_stream_39.h:173:9)
+INFO: [HLS 214-131] Inlining function '_llvm.fpga.unpack.bits.s_struct.CommitEntrys.i518.1' into 'boom_core_cycle_io(BoomCoreState&, PipeSignals&, hls::stream<ImemRequest, 0>&, hls::stream<ImemResponse, 0>&, hls::stream<DmemRequest, 0>&, hls::stream<DmemResponse, 0>&, hls::stream<CommitEntry, 0>&, bool&, bool&, bool&, bool&, unsigned long&, unsigned long&) (.1)' (/home/lab_726/Xilinx/Vitis_HLS/2021.2/common/technology/autopilot/hls_stream_39.h:144:9)
+INFO: [HLS 214-131] Inlining function '_llvm.fpga.pack.none.i320.s_struct.DmemRequests' into 'boom_core_cycle_io(BoomCoreState&, PipeSignals&, hls::stream<ImemRequest, 0>&, hls::stream<ImemResponse, 0>&, hls::stream<DmemRequest, 0>&, hls::stream<DmemResponse, 0>&, hls::stream<CommitEntry, 0>&, bool&, bool&, bool&, bool&, unsigned long&, unsigned long&) (.1)' (/home/lab_726/Xilinx/Vitis_HLS/2021.2/common/technology/autopilot/hls_stream_39.h:173:9)
+INFO: [HLS 214-131] Inlining function '_llvm.fpga.unpack.bits.s_struct.DmemRequests.i283.1' into 'boom_core_cycle_io(BoomCoreState&, PipeSignals&, hls::stream<ImemRequest, 0>&, hls::stream<ImemResponse, 0>&, hls::stream<DmemRequest, 0>&, hls::stream<DmemResponse, 0>&, hls::stream<CommitEntry, 0>&, bool&, bool&, bool&, bool&, unsigned long&, unsigned long&) (.1)' (/home/lab_726/Xilinx/Vitis_HLS/2021.2/common/technology/autopilot/hls_stream_39.h:144:9)
+INFO: [HLS 214-131] Inlining function '_llvm.fpga.pack.none.i128.s_struct.ImemRequests' into 'boom_core_cycle_io(BoomCoreState&, PipeSignals&, hls::stream<ImemRequest, 0>&, hls::stream<ImemResponse, 0>&, hls::stream<DmemRequest, 0>&, hls::stream<DmemResponse, 0>&, hls::stream<CommitEntry, 0>&, bool&, bool&, bool&, bool&, unsigned long&, unsigned long&) (.1)' (/home/lab_726/Xilinx/Vitis_HLS/2021.2/common/technology/autopilot/hls_stream_39.h:173:9)
+INFO: [HLS 214-131] Inlining function '_llvm.fpga.unpack.bits.s_struct.ImemRequests.i97.1' into 'boom_core_cycle_io(BoomCoreState&, PipeSignals&, hls::stream<ImemRequest, 0>&, hls::stream<ImemResponse, 0>&, hls::stream<DmemRequest, 0>&, hls::stream<DmemResponse, 0>&, hls::stream<CommitEntry, 0>&, bool&, bool&, bool&, bool&, unsigned long&, unsigned long&) (.1)' (/home/lab_726/Xilinx/Vitis_HLS/2021.2/common/technology/autopilot/hls_stream_39.h:144:9)
+INFO: [HLS 214-131] Inlining function '_llvm.fpga.pack.bits.i289.s_struct.DmemResponses.1' into 'boom_core_cycle_io(BoomCoreState&, PipeSignals&, hls::stream<ImemRequest, 0>&, hls::stream<ImemResponse, 0>&, hls::stream<DmemRequest, 0>&, hls::stream<DmemResponse, 0>&, hls::stream<CommitEntry, 0>&, bool&, bool&, bool&, bool&, unsigned long&, unsigned long&) (.1)' (/home/lab_726/Xilinx/Vitis_HLS/2021.2/common/technology/autopilot/hls_stream_39.h:173:9)
+INFO: [HLS 200-111] Finished Compiling Optimization and Transform: CPU user time: 36.18 seconds. CPU system time: 0.44 seconds. Elapsed time: 36.51 seconds; current allocated memory: 464.461 MB.
+INFO: [HLS 200-111] Finished Checking Pragmas: CPU user time: 0.01 seconds. CPU system time: 0 seconds. Elapsed time: 0.01 seconds; current allocated memory: 464.461 MB.
+INFO: [HLS 200-10] Starting code transformations ...
+INFO: [HLS 200-111] Finished Standard Transforms: CPU user time: 1.64 seconds. CPU system time: 0.02 seconds. Elapsed time: 1.67 seconds; current allocated memory: 497.691 MB.
+INFO: [HLS 200-10] Checking synthesizability ...
+INFO: [HLS 200-111] Finished Checking Synthesizability: CPU user time: 1.44 seconds. CPU system time: 0.01 seconds. Elapsed time: 1.45 seconds; current allocated memory: 500.129 MB.
+INFO: [XFORM 203-502] Unrolling all loops for pipelining in function 'boom::issue_module' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:62:43).
+INFO: [XFORM 203-502] Unrolling all loops for pipelining in function 'boom::execute_module' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:488:9).
+WARNING: [HLS 200-932] Cannot unroll loop 'VITIS_LOOP_463_4' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:461) in function 'boom::issue_module' completely: variable loop bound.
+WARNING: [HLS 200-932] Cannot unroll loop 'VITIS_LOOP_477_6' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:477) in function 'boom::issue_module' completely: variable loop bound.
+WARNING: [HLS 200-932] Cannot unroll loop 'VITIS_LOOP_498_2' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:497) in function 'boom::execute_module' completely: variable loop bound.
+WARNING: [HLS 200-805] An internal stream 'pipe.0' with default size can result in deadlock. Please consider resizing the stream using the directive 'set_directive_stream' or the 'HLS stream' pragma.
+WARNING: [HLS 200-805] An internal stream 'pipe.1' with default size can result in deadlock. Please consider resizing the stream using the directive 'set_directive_stream' or the 'HLS stream' pragma.
+WARNING: [HLS 200-805] An internal stream 'pipe.2' with default size can result in deadlock. Please consider resizing the stream using the directive 'set_directive_stream' or the 'HLS stream' pragma.
+WARNING: [HLS 200-805] An internal stream 'pipe.3' with default size can result in deadlock. Please consider resizing the stream using the directive 'set_directive_stream' or the 'HLS stream' pragma.
+WARNING: [HLS 200-805] An internal stream 'pipe.4' with default size can result in deadlock. Please consider resizing the stream using the directive 'set_directive_stream' or the 'HLS stream' pragma.
+INFO: [XFORM 203-401] Performing if-conversion on hyperblock from (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:810:30) to (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:825:17) in function 'boom::rob_commit_module'... converting 3 basic blocks.
+INFO: [XFORM 203-401] Performing if-conversion on hyperblock to (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:614:1) in function 'boom::older_store_in_rob'... converting 100 basic blocks.

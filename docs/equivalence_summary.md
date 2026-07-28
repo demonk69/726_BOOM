@@ -18,6 +18,8 @@ Gate 3.5 status: SINGLE_VARIABLE_EXPERIMENTS_COMPLETE_NO_ACCEPTED_OPTIMIZATION. 
 
 Gate 3.6 status: TOP_LEVEL_DELTA_EXPLAINED_NO_ACCEPTED_OPTIMIZATION. The 37936-LUT direct-diagnostic/product-top difference is reset-triggered HLS state elaboration, not duplicated logic or loop replication. Removing reset is rejected; the accepted product and equivalence scope are unchanged.
 
+Gate 3.7 status: CORE_CYCLE_PIPELINE_TRANSFORMATION_TIMEOUT_NO_SYNTHESIS_CANDIDATE. Real cross-iteration dependencies are inventoried, P0 reproduces the accepted baseline, and P1 no-II pipeline times out before scheduling. No pipeline RTL or new equivalence claim exists.
+
 ## Current Verdicts
 
 | Dimension | Verdict | Evidence |
@@ -187,6 +189,24 @@ See `reports/gate3_5/gate3_5_results.md`.
 
 See `reports/gate3_6/gate3_6_results.md` and `docs/gate3_6_top_level_architecture.md`.
 
+## Gate 3.7 Result
+
+| Check | Result |
+|---|---|
+| Loop-carried dependencies | REAL: execute/branch/LSU, frontend, rename, ROB, IQ, branch recovery, CSR, RF, streams, and output backpressure |
+| P0 conservative synthesis | PASS, 71.40s, 83286 LUT, 16611 FF, 16 BRAM_18K, 3 DSP, 5.898 ns |
+| P1 pipeline no II | TIMEOUT at 900s during Presyn 2; no achieved II, schedule, RTL, or resource report |
+| P2-P6 | NOT_RUN because required earlier reports are absent |
+| False-dependence directives | NONE |
+| C/RTL cosim | NOT_RUN: XSim available but no pipeline RTL candidate and current infinite-top TB is unsuitable |
+| Mid-run RTL reset/backpressure | NOT_VERIFIED |
+| Final C++/csim traces | 10/10 byte-identical |
+| BOOM architectural diff | 10/10 PASS |
+| Partial order | 8 legal reorders, 0 real violations |
+| Accepted pipeline configuration | NONE; Gate 3.3 remains accepted |
+
+See `reports/gate3_7/gate3_7_results.md` and `docs/gate3_7_pipeline_experiment.md`.
+
 ## Timing Status
 
-The latest accepted PPA configuration remains Gate 3.3. Gate 3.6 explains the top-level resource delta but rejects the no-reset diagnostic because hardware reset semantics are required. Strict BOOM cycle equivalence remains `INSUFFICIENT_EVIDENCE`.
+The latest accepted PPA configuration remains Gate 3.3. Gate 3.7 produces no pipeline RTL and does not alter architecture, timing, reset, or cycle-equivalence status. Strict BOOM cycle equivalence remains `INSUFFICIENT_EVIDENCE`.

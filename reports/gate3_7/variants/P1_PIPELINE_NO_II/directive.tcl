@@ -1,0 +1,1 @@
+set_directive_pipeline "boom_core_top/CORE_CYCLE"

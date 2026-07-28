@@ -1,0 +1,181 @@
+
+
+================================================================
+== Vitis HLS Report for 'boom_core_top'
+================================================================
+* Date:           Tue Jul 28 17:07:18 2026
+
+* Version:        2021.2 (Build 3367213 on Tue Oct 19 02:47:39 MDT 2021)
+* Project:        P0_BASELINE
+* Solution:       solution_pipeline (Vivado IP Flow Target)
+* Product family: zynquplus
+* Target device:  xczu7ev-ffvc1156-2-e
+
+
+================================================================
+== Performance Estimates
+================================================================
++ Timing:
+    * Summary:
+    +--------+----------+----------+------------+
+    |  Clock |  Target  | Estimated| Uncertainty|
+    +--------+----------+----------+------------+
+    |ap_clk  |  10.00 ns|  5.898 ns|     2.70 ns|
+    +--------+----------+----------+------------+
+
++ Latency:
+    * Summary:
+    +---------+---------+----------+----------+-----+-----+---------+
+    |  Latency (cycles) |  Latency (absolute) |  Interval | Pipeline|
+    |   min   |   max   |    min   |    max   | min | max |   Type  |
+    +---------+---------+----------+----------+-----+-----+---------+
+    |        ?|        ?|         ?|         ?|    ?|    ?|       no|
+    +---------+---------+----------+----------+-----+-----+---------+
+
+    + Detail:
+        * Instance:
+        +--------------------------------+--------------------+---------+---------+----------+----------+-----+-----+---------+
+        |                                |                    |  Latency (cycles) |  Latency (absolute) |  Interval | Pipeline|
+        |            Instance            |       Module       |   min   |   max   |    min   |    max   | min | max |   Type  |
+        +--------------------------------+--------------------+---------+---------+----------+----------+-----+-----+---------+
+        |grp_boom_core_cycle_io_fu_1764  |boom_core_cycle_io  |        ?|        ?|         ?|         ?|    ?|    ?|       no|
+        +--------------------------------+--------------------+---------+---------+----------+----------+-----+-----+---------+
+
+        * Loop:
+        +--------------+---------+---------+----------+-----------+-----------+------+----------+
+        |              |  Latency (cycles) | Iteration|  Initiation Interval  | Trip |          |
+        |   Loop Name  |   min   |   max   |  Latency |  achieved |   target  | Count| Pipelined|
+        +--------------+---------+---------+----------+-----------+-----------+------+----------+
+        |- CORE_CYCLE  |        ?|        ?|         ?|          -|          -|   inf|        no|
+        +--------------+---------+---------+----------+-----------+-----------+------+----------+
+
+
+
+================================================================
+== Utilization Estimates
+================================================================
+* Summary:
++-----------------+---------+------+--------+--------+-----+
+|       Name      | BRAM_18K|  DSP |   FF   |   LUT  | URAM|
++-----------------+---------+------+--------+--------+-----+
+|DSP              |        -|     -|       -|       -|    -|
+|Expression       |        -|     -|       0|       6|    -|
+|FIFO             |        -|     -|     495|     335|    -|
+|Instance         |       16|     3|   16112|   82817|    0|
+|Memory           |        -|     -|       -|       -|    -|
+|Multiplexer      |        -|     -|       -|     128|    -|
+|Register         |        -|     -|       4|       -|    -|
++-----------------+---------+------+--------+--------+-----+
+|Total            |       16|     3|   16611|   83286|    0|
++-----------------+---------+------+--------+--------+-----+
+|Available        |      624|  1728|  460800|  230400|   96|
++-----------------+---------+------+--------+--------+-----+
+|Utilization (%)  |        2|    ~0|       3|      36|    0|
++-----------------+---------+------+--------+--------+-----+
+
++ Detail:
+    * Instance:
+    +--------------------------------+--------------------+---------+----+-------+-------+-----+
+    |            Instance            |       Module       | BRAM_18K| DSP|   FF  |  LUT  | URAM|
+    +--------------------------------+--------------------+---------+----+-------+-------+-----+
+    |grp_boom_core_cycle_io_fu_1764  |boom_core_cycle_io  |       16|   3|  16112|  82817|    0|
+    +--------------------------------+--------------------+---------+----+-------+-------+-----+
+    |Total                           |                    |       16|   3|  16112|  82817|    0|
+    +--------------------------------+--------------------+---------+----+-------+-------+-----+
+
+    * DSP:
+    N/A
+
+    * Memory:
+    N/A
+
+    * FIFO:
+    +---------------+---------+----+----+-----+------+-----+---------+
+    |      Name     | BRAM_18K| FF | LUT| URAM| Depth| Bits| Size:D*B|
+    +---------------+---------+----+----+-----+------+-----+---------+
+    |pipe_0_fifo_U  |        0|  99|   0|    -|     2|   97|      194|
+    |pipe_1_fifo_U  |        0|  99|   0|    -|     2|  193|      386|
+    |pipe_2_fifo_U  |        0|  99|   0|    -|     2|  283|      566|
+    |pipe_3_fifo_U  |        0|  99|   0|    -|     2|  289|      578|
+    |pipe_4_fifo_U  |        0|  99|   0|    -|     2|  518|     1036|
+    +---------------+---------+----+----+-----+------+-----+---------+
+    |Total          |        0| 495|   0|    0|    10| 1380|     2760|
+    +---------------+---------+----+----+-----+------+-----+---------+
+
+    * Expression:
+    +--------------------------------------------------------+----------+----+---+----+------------+------------+
+    |                      Variable Name                     | Operation| DSP| FF| LUT| Bitwidth P0| Bitwidth P1|
+    +--------------------------------------------------------+----------+----+---+----+------------+------------+
+    |grp_boom_core_cycle_io_fu_1764_commit_trace_out_TREADY  |       and|   0|  0|   2|           1|           1|
+    |grp_boom_core_cycle_io_fu_1764_dmem_req_out_TREADY      |       and|   0|  0|   2|           1|           1|
+    |grp_boom_core_cycle_io_fu_1764_imem_req_out_TREADY      |       and|   0|  0|   2|           1|           1|
+    +--------------------------------------------------------+----------+----+---+----+------------+------------+
+    |Total                                                   |          |   0|  0|   6|           3|           3|
+    +--------------------------------------------------------+----------+----+---+----+------------+------------+
+
+    * Multiplexer:
+    +----------------------------------+----+-----------+-----+-----------+
+    |               Name               | LUT| Input Size| Bits| Total Bits|
+    +----------------------------------+----+-----------+-----+-----------+
+    |ap_NS_fsm                         |  20|          4|    1|          4|
+    |dmem_resp_in_TREADY_int_regslice  |   9|          2|    1|          2|
+    |imem_resp_in_TREADY_int_regslice  |   9|          2|    1|          2|
+    |pipe_0_read                       |   9|          2|    1|          2|
+    |pipe_0_write                      |   9|          2|    1|          2|
+    |pipe_1_read                       |   9|          2|    1|          2|
+    |pipe_1_write                      |   9|          2|    1|          2|
+    |pipe_2_read                       |   9|          2|    1|          2|
+    |pipe_2_write                      |   9|          2|    1|          2|
+    |pipe_3_read                       |   9|          2|    1|          2|
+    |pipe_3_write                      |   9|          2|    1|          2|
+    |pipe_4_read                       |   9|          2|    1|          2|
+    |pipe_4_write                      |   9|          2|    1|          2|
+    +----------------------------------+----+-----------+-----+-----------+
+    |Total                             | 128|         28|   13|         28|
+    +----------------------------------+----+-----------+-----+-----------+
+
+    * Register:
+    +---------------------------------------------+---+----+-----+-----------+
+    |                     Name                    | FF| LUT| Bits| Const Bits|
+    +---------------------------------------------+---+----+-----+-----------+
+    |ap_CS_fsm                                    |  3|   0|    3|          0|
+    |grp_boom_core_cycle_io_fu_1764_ap_start_reg  |  1|   0|    1|          0|
+    +---------------------------------------------+---+----+-----+-----------+
+    |Total                                        |  4|   0|    4|          0|
+    +---------------------------------------------+---+----+-----+-----------+
+
+
+
+================================================================
+== Interface
+================================================================
+* Summary:
++-------------------------+-----+-----+--------------+------------------+--------------+
+|        RTL Ports        | Dir | Bits|   Protocol   |   Source Object  |    C Type    |
++-------------------------+-----+-----+--------------+------------------+--------------+
+|ap_local_block           |  out|    1|  ap_ctrl_none|     boom_core_top|  return value|
+|ap_local_deadlock        |  out|    1|  ap_ctrl_none|     boom_core_top|  return value|
+|ap_clk                   |   in|    1|  ap_ctrl_none|     boom_core_top|  return value|
+|ap_rst_n                 |   in|    1|  ap_ctrl_none|     boom_core_top|  return value|
+|imem_req_out_TDATA       |  out|  128|          axis|      imem_req_out|       pointer|
+|imem_req_out_TVALID      |  out|    1|          axis|      imem_req_out|       pointer|
+|imem_req_out_TREADY      |   in|    1|          axis|      imem_req_out|       pointer|
+|imem_resp_in_TDATA       |   in|  256|          axis|      imem_resp_in|       pointer|
+|imem_resp_in_TVALID      |   in|    1|          axis|      imem_resp_in|       pointer|
+|imem_resp_in_TREADY      |  out|    1|          axis|      imem_resp_in|       pointer|
+|dmem_req_out_TDATA       |  out|  320|          axis|      dmem_req_out|       pointer|
+|dmem_req_out_TVALID      |  out|    1|          axis|      dmem_req_out|       pointer|
+|dmem_req_out_TREADY      |   in|    1|          axis|      dmem_req_out|       pointer|
+|dmem_resp_in_TDATA       |   in|  384|          axis|      dmem_resp_in|       pointer|
+|dmem_resp_in_TVALID      |   in|    1|          axis|      dmem_resp_in|       pointer|
+|dmem_resp_in_TREADY      |  out|    1|          axis|      dmem_resp_in|       pointer|
+|commit_trace_out_TDATA   |  out|  768|          axis|  commit_trace_out|       pointer|
+|commit_trace_out_TVALID  |  out|    1|          axis|  commit_trace_out|       pointer|
+|commit_trace_out_TREADY  |   in|    1|          axis|  commit_trace_out|       pointer|
+|io_success               |   in|    1|       ap_none|        io_success|       pointer|
+|io_halted                |   in|    1|       ap_none|         io_halted|       pointer|
+|io_trap                  |   in|    1|       ap_none|           io_trap|       pointer|
+|io_cycle_valid           |   in|    1|       ap_none|    io_cycle_valid|       pointer|
+|io_cycle                 |   in|   64|       ap_none|          io_cycle|       pointer|
+|io_instret               |   in|   64|       ap_none|        io_instret|       pointer|
++-------------------------+-----+-----+--------------+------------------+--------------+

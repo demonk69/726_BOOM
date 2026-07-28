@@ -25,6 +25,9 @@ Gate 3.2 separates synthesis project creation from directives and uses one gener
 | `scripts/run_module_csynth.sh` | Runs all module diagnostic tops and creates module logs |
 | `scripts/gate3_6/run_ncycle_csynth.sh` | Runs attribution-only N1/N2/N4/N8 and free-running top controls |
 | `scripts/gate3_6/run_variant_csynth.sh` | Runs isolated Gate 3.6 source variants and records runtime/resources/partition counts |
+| `scripts/gate3_7/run_pipeline_variant.sh` | Runs one isolated pipeline solution with timeout, time, raw logs, and report extraction |
+| `scripts/gate3_7/run_pipeline_matrix.sh` | Enforces P0/P1 then conditional II=16/8/4/2/1 ordering |
+| `scripts/gate3_7/analyze_pipeline_log.py` | Extracts stage, II, unroll, partition, runtime, resource, and decision evidence |
 
 ## Directives
 
@@ -64,3 +67,21 @@ N1 through N8 and the free-running top retain one core transition implementation
 The same-top accepted-to-no-reset delta is 37684 LUT: +9741 helper-instance LUT, +472 memory LUT, and +27471 multiplexer LUT in the resettable form. This directly attributes the dominant elaboration difference to required whole-state reset. There is no function-clone or duplicate-state evidence.
 
 T4 is not an alternative synthesis mode. The product requires hardware reset of persistent state, so the reset pragma remains in `boom_core_top` and the merged source is regenerated from the conservative accepted source.
+
+## Gate 3.7 Pipeline Flow
+
+Gate 3.7 does not use `BOOM_HLS_ENABLE_CORE_PIPELINE`. It compiles the accepted unpipelined source and applies a solution-local directive to `boom_core_top/CORE_CYCLE`. Every variant has an independent project under `build/gate3_7/hls_projects/` and evidence under `reports/gate3_7/variants/`.
+
+| Variant | Directive | Result |
+|---|---|---|
+| P0 | none | PASS, exact 83286/16611/16/3 and 5.898 ns reproduction |
+| P1 | `PIPELINE`, no II | TIMEOUT at 900 s in Presyn 2; no schedule/report |
+| P2 | `PIPELINE II=16` | not run; P1 report gate unmet |
+| P3 | `PIPELINE II=8` | not run; P1 report gate unmet |
+| P4 | `PIPELINE II=4` | not run; P1 report gate unmet |
+| P5 | `PIPELINE II=2` | not run; P1 report gate unmet |
+| P6 | `PIPELINE II=1` | not run; required P1-P5 reports absent |
+
+P1 records 65 implied complete-unroll markings, 57 completed unrolls, 7 function-wide unroll requests, 8 incomplete variable-bound unrolls, 104 inline records, and zero automatic partitions. It does not reach dependency scheduling, memory-port analysis, achieved-II calculation, binding, RTL, or report generation.
+
+No `DEPENDENCE false`, reset removal, state replication, width/capacity change, or stream-check removal is used. The accepted source remains unpipelined.

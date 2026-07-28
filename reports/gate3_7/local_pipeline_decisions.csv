@@ -1,0 +1,5 @@
+variant,status,reason
+L1_CYCLE_WRAPPER_PIPELINE,NOT_RUN_FULL_CYCLE_SCHEDULE_GATE_UNMET,"P1 timed out before schedule/II/dependency report; wrapper pipeline could not be isolated against a characterized outer-loop schedule"
+L2_FRONTEND_DECODE_LOCAL,NOT_RUN_NO_PROVEN_FEEDBACK_FREE_LOOP,"No local fixed loop was proven both feedback-free and cycle-trace invariant in this gate"
+L3_BRANCH_KILL_LOCAL,NOT_RUN_LATENCY_SEMANTICS_UNPROVEN,"Branch kill/recovery loops must complete in the existing logical cycle; no RTL timing evidence permits added latency"
+L4_BUSY_REBUILD_LOCAL,NOT_RUN_LATENCY_SEMANTICS_UNPROVEN,"Busy rebuild is part of same-cycle rollback and has dynamic shared-state dependencies"

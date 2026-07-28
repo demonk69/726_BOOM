@@ -1,0 +1,64 @@
+# P0_BASELINE Schedule Analysis
+
+- Requested II: `none`
+- Achieved II: `-`
+- Target II in report: `-`
+- CORE_CYCLE pipelined: `no`
+- Last completed pass: `Command csynth_design`
+- Stage classification: `NOT_CLASSIFIED`
+- Last observable operation: `INFO: [Common 17-206] Exiting vitis_hls at Tue Jul 28 17:07:22 2026...`
+- Warning count: 60
+- Automatic partition count: 0
+- Inlining records: 110
+- Memory-promotion records: 0
+- Loops marked implied complete-unroll: 0
+- Completed loop-unroll records: 0
+- Functions marked unroll-all for pipelining: 0
+- Incomplete variable-bound unrolls: 0
+- Maximum reported HLS current allocation: 1354.752 MB
+- Memory-port conflict records: 0
+- Dependency-message records: 0
+- II-violation records: 0
+
+## Relevant Messages
+
+- `WARNING: [HLS 200-40] No /home/lab_726/boom/hls_boom/build/gate3_7/hls_projects/P0_BASELINE/solution_pipeline/solution_pipeline.aps file found.`
+- `WARNING: [HLS 200-805] An internal stream 'pipe.0' with default size can result in deadlock. Please consider resizing the stream using the directive 'set_directive_stream' or the 'HLS stream' pragma.`
+- `WARNING: [HLS 200-805] An internal stream 'pipe.1' with default size can result in deadlock. Please consider resizing the stream using the directive 'set_directive_stream' or the 'HLS stream' pragma.`
+- `WARNING: [HLS 200-805] An internal stream 'pipe.2' with default size can result in deadlock. Please consider resizing the stream using the directive 'set_directive_stream' or the 'HLS stream' pragma.`
+- `WARNING: [HLS 200-805] An internal stream 'pipe.3' with default size can result in deadlock. Please consider resizing the stream using the directive 'set_directive_stream' or the 'HLS stream' pragma.`
+- `WARNING: [HLS 200-805] An internal stream 'pipe.4' with default size can result in deadlock. Please consider resizing the stream using the directive 'set_directive_stream' or the 'HLS stream' pragma.`
+- `WARNING: [XFORM 203-561] 'CORE_CYCLE' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:1341:9) in function 'boom_core_top' is an infinite loop.`
+- `WARNING: [RTGEN 206-101] Register 'state_branch_state_mispredicts' is power-on initialization.`
+- `WARNING: [RTGEN 206-101] Register 'state_branch_state_rollbacks' is power-on initialization.`
+- `WARNING: [RTGEN 206-101] Register 'state_brupdate_br_tag' is power-on initialization.`
+- `WARNING: [RTGEN 206-101] Register 'state_brupdate_uop_branch_br_mask' is power-on initialization.`
+- `WARNING: [RTGEN 206-101] Register 'state_brupdate_uop_queue_rob_idx' is power-on initialization.`
+- `WARNING: [RTGEN 206-101] Register 'state_branch_state_releases' is power-on initialization.`
+- `WARNING: [RTGEN 206-101] Register 'state_frontend_reset_done' is power-on initialization.`
+- `WARNING: [RTGEN 206-101] Register 'state_frontend_fetch_id' is power-on initialization.`
+- `WARNING: [RTGEN 206-101] Register 'state_frontend_pending_fetch_id' is power-on initialization.`
+- `WARNING: [RTGEN 206-101] Register 'state_frontend_resp_address' is power-on initialization.`
+- `WARNING: [RTGEN 206-101] Register 'state_frontend_resp_instruction' is power-on initialization.`
+- `WARNING: [RTGEN 206-101] Register 'state_branch_state_allocations' is power-on initialization.`
+- `WARNING: [RTGEN 206-101] Register 'state_csr_instret' is power-on initialization.`
+- `WARNING: [RTGEN 206-101] Register 'state_csr_priv' is power-on initialization.`
+- `WARNING: [RTGEN 206-101] Register 'state_global_flush' is power-on initialization.`
+- `WARNING: [RTGEN 206-101] Register 'state_brupdate_mispredict' is power-on initialization.`
+- `WARNING: [RTGEN 206-101] Register 'state_brupdate_valid' is power-on initialization.`
+- `WARNING: [RTGEN 206-101] Register 'state_csr_cycle' is power-on initialization.`
+- `WARNING: [RTGEN 206-101] Register 'state_brupdate_jalr_target' is power-on initialization.`
+- `WARNING: [RTGEN 206-101] Register 'state_brupdate_resolve_mask' is power-on initialization.`
+- `WARNING: [RTGEN 206-101] Register 'state_brupdate_mispredict_mask' is power-on initialization.`
+- `WARNING: [RTGEN 206-101] Register 'state_issue_alu_iq_tail' is power-on initialization.`
+- `WARNING: [RTGEN 206-101] Register 'state_issue_alu_iq_count' is power-on initialization.`
+- `WARNING: [RTGEN 206-101] Register 'state_lsu_load_response_pending' is power-on initialization.`
+- `WARNING: [RTGEN 206-101] Register 'state_lsu_pending_load_rob_idx' is power-on initialization.`
+- `WARNING: [RTGEN 206-101] Register 'state_lsu_pending_load_transaction_id' is power-on initialization.`
+- `WARNING: [RTGEN 206-101] Register 'state_lsu_ldq_tail' is power-on initialization.`
+- `WARNING: [RTGEN 206-101] Register 'state_lsu_ldq_count' is power-on initialization.`
+- `WARNING: [RTGEN 206-101] Register 'state_lsu_stq_tail' is power-on initialization.`
+- `WARNING: [RTGEN 206-101] Register 'state_lsu_stq_count' is power-on initialization.`
+- `WARNING: [RTGEN 206-101] Register 'state_rob_head' is power-on initialization.`
+- `WARNING: [RTGEN 206-101] Register 'state_rob_tail' is power-on initialization.`
+- `WARNING: [RTGEN 206-101] Register 'state_rob_maybe_full' is power-on initialization.`

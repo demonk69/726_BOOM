@@ -2,7 +2,7 @@
 
 | Module | File | Status | HLS Status | Notes |
 |---|---|---|---|---|
-| boom_core_top | src/boom_core_top.cpp | PARTIAL | PASS_BASELINE_CSYNTH | Gate 3.6 confirms conservative unpipelined CORE_CYCLE loop at 83286 LUT; required whole-state reset retained; no duplicated core/state logic |
+| boom_core_top | src/boom_core_top.cpp | PARTIAL | PASS_BASELINE_CSYNTH | Gate 3.7 P0 reproduces unpipelined 83286-LUT baseline; P1 no-II outer pipeline times out before scheduling; reset directive retained |
 | boom_core_step | src/boom_core_step.cpp | PARTIAL | PASS_STEP_TOP_CSYNTH | Gate 3.3 per-cycle orchestration passes csynth; whole-state copy removed in Gate 3.2 |
 | boom_core_ncycle_n1/n2/n4/n8_top | src/boom_core_top.cpp | ANALYSIS_ONLY | PASS_ATTRIBUTION_CSYNTH | Gate 3.6 fixed-trip controls; one retained cycle wrapper, no pipeline/unroll, flat resources; not product replacements |
 | frontend | src/frontend.cpp | PARTIAL | PASS_MODULE_CSYNTH | Ideal imem request/response subset; no ICache/FetchBuffer/BP |
@@ -16,6 +16,7 @@
 | commit | src/commit.cpp | PARTIAL | PASS_MODULE_CSYNTH | ROB commit and committed store request subset |
 | csr | src/csr.cpp | PARTIAL | COVERED_BY_STEP_TOP_CSYNTH | CSRFile minimal subset |
 | gate3_4_attribution_tops | src/synth_module_tops.cpp | ANALYSIS_ONLY | PASS_MODULE_CSYNTH | Gate 3.4 branch tag/mask/snapshot/rollback/busy/kill attribution tops; not architectural behavior |
+| gate3_7_pipeline_solutions | scripts/gate3_7/ | ANALYSIS_ONLY | P0_PASS_P1_TIMEOUT | Independent solution-local pipeline directives; no product source directive and no accepted pipeline RTL |
 
 ## Source: FIRRTL Module Line Numbers
 
