@@ -15,6 +15,9 @@ module boom_core_rtl_tb;
     reg first_fetch_error;
     reg mid_reset_done;
     reg trigger_required;
+    integer required_reset_count;
+    integer post_reset_commit_baseline;
+    integer post_reset_dmem_baseline;
     string scenario;
     string program_name;
 
@@ -90,6 +93,10 @@ module boom_core_rtl_tb;
             else if (name == "P5_COMMIT_AND_TRACE_BACKPRESSURE") scenario_number = 8'd45;
             else if (name == "P6_COMMIT_AND_STORE_BACKPRESSURE") scenario_number = 8'd46;
             else if (name == "P7_REDIRECT_AND_IMEM_RESPONSE") scenario_number = 8'd47;
+            else if (name == "R8_DOUBLE_RUNTIME_RESET") scenario_number = 8'd48;
+            else if (name == "R9_RESET_DURING_RESET_INITIALIZATION") scenario_number = 8'd49;
+            else if (name == "R10_RESET_IMMEDIATELY_AFTER_RELEASE") scenario_number = 8'd50;
+            else if (name == "R11_RESET_AFTER_TOHOST_CLEAR_AND_RESTART") scenario_number = 8'd51;
             else scenario_number = 8'd0;
         end
     endfunction
@@ -97,8 +104,19 @@ module boom_core_rtl_tb;
     function automatic is_mid_reset(input [7:0] code);
         begin
             is_mid_reset = (code >= 8'd1 && code <= 8'd7) ||
-                           code == 8'd26 || code == 8'd37 ||
-                           (code >= 8'd40 && code <= 8'd42);
+                            code == 8'd26 || code == 8'd37 ||
+                            (code >= 8'd40 && code <= 8'd42) ||
+                            (code >= 8'd48 && code <= 8'd51);
+        end
+    endfunction
+
+    function automatic completion_reached;
+        begin
+            completion_reached = tohost_seen && tohost_value != 0 && tohost_commit_seen &&
+                (!trigger_required ||
+                 (mid_reset_done && first_fetch_after_mid_reset_seen &&
+                  commit_count > post_reset_commit_baseline &&
+                  dmem_transfers > post_reset_dmem_baseline));
         end
     endfunction
 
@@ -152,6 +170,9 @@ module boom_core_rtl_tb;
         first_fetch_error = 1'b0;
         mid_reset_done = 1'b0;
         trigger_required = is_mid_reset(scenario_code);
+        required_reset_count = scenario_code == 8'd48 ? 3 : (trigger_required ? 2 : 1);
+        post_reset_commit_baseline = 0;
+        post_reset_dmem_baseline = 0;
 
         $display("GATE3_8_START scenario=%s code=%0d program=%s max_cycles=%0d",
                  scenario, scenario_code, program_name, max_cycles);
@@ -159,7 +180,48 @@ module boom_core_rtl_tb;
         rst_n = 1'b1;
         reset_release_count = 1;
 
-        if (trigger_required) begin
+        if (scenario_code == 8'd48) begin
+            fork
+                begin
+                    wait (commit_count >= 2);
+                    post_reset_commit_baseline = commit_count;
+                    post_reset_dmem_baseline = dmem_transfers;
+                    pulse_mid_reset();
+                    mid_reset_done = 1'b0;
+                    first_fetch_after_mid_reset_seen = 1'b0;
+                    wait (first_fetch_after_mid_reset_seen && commit_count > post_reset_commit_baseline);
+                    post_reset_commit_baseline = commit_count;
+                    post_reset_dmem_baseline = dmem_transfers;
+                    pulse_mid_reset();
+                end
+            join_none
+        end else if (scenario_code == 8'd49) begin
+            fork
+                begin
+                    repeat (20) @(posedge clk);
+                    post_reset_commit_baseline = commit_count;
+                    post_reset_dmem_baseline = dmem_transfers;
+                    pulse_mid_reset();
+                end
+            join_none
+        end else if (scenario_code == 8'd50) begin
+            fork
+                begin
+                    post_reset_commit_baseline = commit_count;
+                    post_reset_dmem_baseline = dmem_transfers;
+                    pulse_mid_reset();
+                end
+            join_none
+        end else if (scenario_code == 8'd51) begin
+            fork
+                begin
+                    wait (tohost_seen && tohost_commit_seen);
+                    post_reset_commit_baseline = commit_count;
+                    post_reset_dmem_baseline = dmem_transfers;
+                    pulse_mid_reset();
+                end
+            join_none
+        end else if (trigger_required) begin
             fork
                 begin
                     wait ((scenario_code == 8'd1 && imem_pending) ||
@@ -174,12 +236,14 @@ module boom_core_rtl_tb;
                           (scenario_code == 8'd40 && branch_recovery_visible) ||
                           (scenario_code == 8'd41 && dmem_pending) ||
                           (scenario_code == 8'd42 && dmem_stalled));
+                    post_reset_commit_baseline = commit_count;
+                    post_reset_dmem_baseline = dmem_transfers;
                     pulse_mid_reset();
                 end
             join_none
         end
 
-        while (cycles < max_cycles && !(tohost_seen && tohost_value != 0 && tohost_commit_seen)) begin
+        while (cycles < max_cycles && !completion_reached()) begin
             @(posedge clk);
             cycles = cycles + 1;
         end
@@ -193,6 +257,11 @@ module boom_core_rtl_tb;
         if (trigger_required && !mid_reset_done) begin
             harness.trace_monitor.finish_trace("reset_trigger_not_reached");
             $fatal(1, "GATE3_8_RESET_TRIGGER_NOT_REACHED scenario=%s", scenario);
+        end
+        if (reset_count != required_reset_count) begin
+            harness.trace_monitor.finish_trace("reset_count_mismatch");
+            $fatal(1, "GATE3_8_RESET_COUNT_MISMATCH scenario=%s actual=%0d expected=%0d",
+                   scenario, reset_count, required_reset_count);
         end
         if (tohost_value != 64'd1 || protocol_error || first_fetch_error) begin
             harness.trace_monitor.finish_trace("failed");

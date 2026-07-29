@@ -1,0 +1,22 @@
+#-----------------------------------------------------------
+# xsim v2021.2 (64-bit)
+# SW Build 3367213 on Tue Oct 19 02:47:39 MDT 2021
+# IP Build 3369179 on Thu Oct 21 08:25:16 MDT 2021
+# Start of session at: Wed Jul 29 09:50:16 2026
+# Process ID: 10524
+# Current directory: /home/lab_726/boom/hls_boom/build/gate3_9/xsim
+# Command line: xsim -log /home/lab_726/boom/hls_boom/reports/gate3_9/logs/independent_alu_R8_DOUBLE_RUNTIME_RESET.log -mode tcl -source {xsim.dir/gate3_9_snapshot/xsim_script.tcl}
+# Log file: /home/lab_726/boom/hls_boom/reports/gate3_9/logs/independent_alu_R8_DOUBLE_RUNTIME_RESET.log
+# Journal file: /home/lab_726/boom/hls_boom/build/gate3_9/xsim/xsim.jou
+# Running On: 726, OS: Linux, CPU Frequency: 2369.589 MHz, CPU Physical cores: 14, Host memory: 67149 MB
+#-----------------------------------------------------------
+source xsim.dir/gate3_9_snapshot/xsim_script.tcl
+# xsim {gate3_9_snapshot} -testplusarg PROGRAM=/home/lab_726/boom/hls_boom/build/gate3_9/xsim/independent_alu.readmemh -testplusarg PROGRAM_NAME=independent_alu -testplusarg SCENARIO=R8_DOUBLE_RUNTIME_RESET -testplusarg MAX_CYCLES=50000 -testplusarg TRACE=/home/lab_726/boom/hls_boom/reports/gate3_9/rtl_traces/independent_alu_R8_DOUBLE_RUNTIME_RESET.jsonl -autoloadwcfg -runall -onerror quit
+Time resolution is 1 ps
+run -all
+GATE3_8_IMEM program=/home/lab_726/boom/hls_boom/build/gate3_9/xsim/independent_alu.readmemh
+GATE3_8_START scenario=R8_DOUBLE_RUNTIME_RESET code=48 program=independent_alu max_cycles=50000
+GATE3_8_PASS scenario=R8_DOUBLE_RUNTIME_RESET cycles=15502 commits=15 resets=3 imem=16 dmem=1 loads=0 stores=1 tohost=0000000000000001
+$finish called at time : 155065 ns : File "/home/lab_726/boom/hls_boom/rtl_tb/boom_core_rtl_tb.sv" Line 282
+exit
+INFO: [Common 17-206] Exiting xsim at Wed Jul 29 09:50:21 2026...

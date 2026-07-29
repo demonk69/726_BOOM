@@ -14,6 +14,7 @@ cat > "$OUT" << 'HEAD'
 #include "boom_types.hpp"
 #include "boom_state.hpp"
 #include "boom_interfaces.hpp"
+#include "reset.hpp"
 #include <cstdint>
 
 #define UOPC_MERGED_NOP 0
@@ -55,6 +56,9 @@ grep -v '#include' "$BASE/src/csr.cpp" >> "$OUT"
 echo "" >> "$OUT"
 echo "// ==== boom_core_step.cpp ====" >> "$OUT"
 grep -v '#include' "$BASE/src/boom_core_step.cpp" >> "$OUT"
+echo "" >> "$OUT"
+echo "// ==== reset.cpp ====" >> "$OUT"
+grep -v '#include' "$BASE/src/reset.cpp" >> "$OUT"
 echo "" >> "$OUT"
 echo "// ==== boom_core_top.cpp ====" >> "$OUT"
 grep -v '#include' "$BASE/src/boom_core_top.cpp" >> "$OUT"

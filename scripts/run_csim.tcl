@@ -4,6 +4,7 @@ set_top boom_core_top
 
 add_files -cflags "-std=c++11 -I../include" ../src/boom_core_top.cpp
 add_files -cflags "-std=c++11 -I../include" ../src/boom_core_step.cpp
+add_files -cflags "-std=c++11 -I../include" ../src/reset.cpp
 add_files -cflags "-std=c++11 -I../include" ../src/frontend.cpp
 add_files -cflags "-std=c++11 -I../include" ../src/decode.cpp
 add_files -cflags "-std=c++11 -I../include" ../src/rename.cpp

@@ -5,6 +5,7 @@
 #include "boom_types.hpp"
 #include "boom_state.hpp"
 #include "boom_interfaces.hpp"
+#include "reset.hpp"
 #include <cstdint>
 
 #define UOPC_MERGED_NOP 0
@@ -1265,9 +1266,231 @@ void boom_core_step(BoomCoreState& state, PipeSignals& pipe) {
     boom::rob_commit_module(state, pipe);
 }
 
+// ==== reset.cpp ====
+
+static void advance_reset(ResetControllerState& reset_ctrl, ResetPhase next) {
+    reset_ctrl.phase = (uint8_t)next;
+    reset_ctrl.index = 0;
+}
+
+void boom_core_reset_step(BoomCoreState& state, ResetControllerState& reset_ctrl) {
+    uint8_t index = reset_ctrl.index;
+
+    switch ((ResetPhase)reset_ctrl.phase) {
+    case RESET_CONTROL:
+        state.cycle_count = 0;
+        state.global_flush = false;
+        state.io_success = false;
+        state.io_halted = false;
+        state.io_trap = false;
+        state.tohost = 0;
+        state.brupdate.valid = false;
+        state.brupdate.mispredict = false;
+        state.decode.dec_valids[0] = false;
+        state.rename.renamed_valids[0] = false;
+        state.issue.issued_valids[0] = false;
+        state.issue.issued_valids[1] = false;
+        state.issue.issued_valids[2] = false;
+        state.rob.commit_valid = false;
+        advance_reset(reset_ctrl, RESET_FRONTEND);
+        break;
+
+    case RESET_FRONTEND:
+        state.frontend.pc = RESET_VECTOR;
+        state.frontend.reset_done = false;
+        state.frontend.request_sent = false;
+        state.frontend.fetch_id = 0;
+        state.frontend.pending_fetch_id = 0;
+        state.frontend.response_received = false;
+        state.frontend.resp_address = 0;
+        state.frontend.resp_instruction = 0;
+        state.frontend.resp_exception = false;
+        state.frontend.resp_exc_cause = 0;
+        state.frontend.stalled = false;
+        state.frontend.flush = false;
+        state.frontend.fetch_packet_valid = false;
+        advance_reset(reset_ctrl, RESET_RENAME_MAP);
+        break;
+
+    case RESET_RENAME_MAP:
+        state.rename.int_map_table.map_table[index] = 0;
+        state.rename.int_map_table.committed_map_table[index] = 0;
+        state.rename.fp_map_table.map_table[index] = 0;
+        state.rename.fp_map_table.committed_map_table[index] = 0;
+        if (index + 1 == LOGICAL_REG_COUNT) {
+            advance_reset(reset_ctrl, RESET_FREE_BUSY);
+        } else {
+            reset_ctrl.index = index + 1;
+        }
+        break;
+
+    case RESET_FREE_BUSY:
+        if (index == 0) {
+            state.rename.int_free_list.head = 1;
+            state.rename.int_free_list.tail = 0;
+            state.rename.int_free_list.count = INT_PHYS_REGS - 1;
+            state.rename.fp_free_list.head = 1;
+            state.rename.fp_free_list.tail = 0;
+            state.rename.fp_free_list.count = INT_PHYS_REGS - 1;
+        }
+        state.rename.int_free_list.free_list[index] = index;
+        state.rename.int_free_list.busy_table[index] = false;
+        state.rename.fp_free_list.free_list[index] = index;
+        state.rename.fp_free_list.busy_table[index] = false;
+        if (index + 1 == INT_PHYS_REGS) {
+            advance_reset(reset_ctrl, RESET_ROB);
+        } else {
+            reset_ctrl.index = index + 1;
+        }
+        break;
+
+    case RESET_ROB:
+        if (index == 0) {
+            state.rob.head = 0;
+            state.rob.tail = 0;
+            state.rob.maybe_full = false;
+            state.rob.state = ROB_INIT;
+            state.rob.commit_count = 0;
+            state.rob.commit_valid = false;
+        }
+        state.rob.entries[index].valid = false;
+        state.rob.entries[index].busy = false;
+        if (index + 1 == ROB_DEPTH) {
+            advance_reset(reset_ctrl, RESET_IQ);
+        } else {
+            reset_ctrl.index = index + 1;
+        }
+        break;
+
+    case RESET_IQ:
+        if (index == 0) {
+            state.issue.alu_iq.head = 0;
+            state.issue.alu_iq.tail = 0;
+            state.issue.alu_iq.count = 0;
+        }
+        state.issue.alu_iq.entries[index].valid = false;
+        state.issue.alu_iq.entries[index].request = false;
+        state.issue.alu_iq.entries[index].granted = false;
+        if (index + 1 == ISSUE_QUEUE_ALU_DEPTH) {
+            advance_reset(reset_ctrl, RESET_BRANCH);
+        } else {
+            reset_ctrl.index = index + 1;
+        }
+        break;
+
+    case RESET_BRANCH:
+        if (index == 0) {
+            state.branch_state.active_mask = 0;
+            state.branch_state.allocations = 0;
+            state.branch_state.releases = 0;
+            state.branch_state.mispredicts = 0;
+            state.branch_state.rollbacks = 0;
+        }
+        state.branch_state.tag_valid[index] = false;
+        state.branch_state.snapshot_valid[index] = false;
+        if (index + 1 == MAX_BRANCH_COUNT) {
+            advance_reset(reset_ctrl, RESET_EXECUTE);
+        } else {
+            reset_ctrl.index = index + 1;
+        }
+        break;
+
+    case RESET_EXECUTE:
+        state.execute.alu_results[0].valid = false;
+        state.execute.alu_results[0].mispredict = false;
+        state.execute.alu_results[0].memory_valid = false;
+        advance_reset(reset_ctrl, RESET_LSU);
+        break;
+
+    case RESET_LSU:
+        if (index == 0) {
+            state.lsu.ldq_head = 0;
+            state.lsu.ldq_tail = 0;
+            state.lsu.ldq_count = 0;
+            state.lsu.stq_head = 0;
+            state.lsu.stq_tail = 0;
+            state.lsu.stq_count = 0;
+            state.lsu.next_transaction_id = 1;
+            state.lsu.load_response_pending = false;
+            state.lsu.pending_load_transaction_id = 0;
+            state.lsu.pending_load_rob_idx = 0;
+        }
+        state.lsu.ldq[index].valid = false;
+        state.lsu.ldq[index].response_pending = false;
+        state.lsu.stq[index].valid = false;
+        state.lsu.stq[index].committed = false;
+        state.lsu.stq[index].issued_to_memory = false;
+        if (index + 1 == LDQ_DEPTH) {
+            advance_reset(reset_ctrl, RESET_CSR);
+        } else {
+            reset_ctrl.index = index + 1;
+        }
+        break;
+
+    case RESET_CSR:
+        state.csr.mstatus = 0x0000000a00000000ull;
+        state.csr.misa = 0x800000000014112dull;
+        state.csr.mie = 0;
+        state.csr.mtvec = 0;
+        state.csr.mscratch = 0;
+        state.csr.mepc = 0;
+        state.csr.mcause = 0;
+        state.csr.mtval = 0;
+        state.csr.mip = 0;
+        state.csr.cycle = 0;
+        state.csr.instret = 0;
+        state.csr.satp = 0;
+        state.csr.priv = PRV_M;
+        advance_reset(reset_ctrl, RESET_OUTPUTS);
+        break;
+
+    case RESET_OUTPUTS:
+        state.int_rf[0] = 0;
+        state.fp_rf[0] = 0;
+        reset_ctrl.phase = RESET_DONE;
+        reset_ctrl.index = 0;
+        reset_ctrl.completed = true;
+        break;
+
+    case RESET_DONE:
+    default:
+        reset_ctrl.completed = true;
+        break;
+    }
+}
+
 // ==== boom_core_top.cpp ====
 
 extern void boom_core_step(BoomCoreState& state, PipeSignals& pipe);
+
+static void drive_reset_outputs(bool& io_success,
+                                bool& io_halted,
+                                bool& io_trap,
+                                bool& io_cycle_valid,
+                                uint64_t& io_cycle,
+                                uint64_t& io_instret) {
+    io_success = false;
+    io_halted = false;
+    io_trap = false;
+    io_cycle_valid = false;
+    io_cycle = 0;
+    io_instret = 0;
+}
+
+static void boom_core_cycle_or_reset(BoomCoreState& state,
+                                     ResetControllerState& reset_ctrl,
+                                     PipeSignals& pipe,
+                                     hls::stream<ImemRequest>& imem_req_out,
+                                     hls::stream<ImemResponse>& imem_resp_in,
+                                     hls::stream<DmemRequest>& dmem_req_out,
+                                     hls::stream<DmemResponse>& dmem_resp_in,
+                                     hls::stream<CommitEntry>& commit_trace_out,
+                                     bool& io_success,
+                                     bool& io_halted,
+                                     bool& io_trap,
+                                     bool& io_cycle_valid,
+                                     uint64_t& io_cycle,
+                                     uint64_t& io_instret);
 
 static void boom_core_cycle_io(BoomCoreState& state,
                                PipeSignals& pipe,
@@ -1304,6 +1527,32 @@ static void boom_core_cycle_io(BoomCoreState& state,
     io_instret = state.csr.instret;
 }
 
+static void boom_core_cycle_or_reset(BoomCoreState& state,
+                                     ResetControllerState& reset_ctrl,
+                                     PipeSignals& pipe,
+                                     hls::stream<ImemRequest>& imem_req_out,
+                                     hls::stream<ImemResponse>& imem_resp_in,
+                                     hls::stream<DmemRequest>& dmem_req_out,
+                                     hls::stream<DmemResponse>& dmem_resp_in,
+                                     hls::stream<CommitEntry>& commit_trace_out,
+                                     bool& io_success,
+                                     bool& io_halted,
+                                     bool& io_trap,
+                                     bool& io_cycle_valid,
+                                     uint64_t& io_cycle,
+                                     uint64_t& io_instret) {
+    if (!reset_ctrl.completed) {
+        boom_core_reset_step(state, reset_ctrl);
+        drive_reset_outputs(io_success, io_halted, io_trap,
+                            io_cycle_valid, io_cycle, io_instret);
+        return;
+    }
+    boom_core_cycle_io(state, pipe, imem_req_out, imem_resp_in,
+                       dmem_req_out, dmem_resp_in, commit_trace_out,
+                       io_success, io_halted, io_trap,
+                       io_cycle_valid, io_cycle, io_instret);
+}
+
 void boom_core_top(hls::stream<ImemRequest>&  imem_req_out,
                    hls::stream<ImemResponse>& imem_resp_in,
                    hls::stream<DmemRequest>&  dmem_req_out,
@@ -1329,7 +1578,8 @@ void boom_core_top(hls::stream<ImemRequest>&  imem_req_out,
 #pragma HLS INTERFACE ap_none port=io_instret
 
     static BoomCoreState state;
-#pragma HLS RESET variable=state
+    static ResetControllerState reset_ctrl;
+#pragma HLS RESET variable=reset_ctrl
 
     PipeSignals pipe;
 
@@ -1338,10 +1588,11 @@ CORE_CYCLE:
 #ifdef BOOM_HLS_ENABLE_CORE_PIPELINE
 #pragma HLS PIPELINE II=1
 #endif
-        boom_core_cycle_io(state, pipe, imem_req_out, imem_resp_in,
-                           dmem_req_out, dmem_resp_in, commit_trace_out,
-                           io_success, io_halted, io_trap,
-                           io_cycle_valid, io_cycle, io_instret);
+        boom_core_cycle_or_reset(state, reset_ctrl, pipe,
+                                 imem_req_out, imem_resp_in,
+                                 dmem_req_out, dmem_resp_in, commit_trace_out,
+                                 io_success, io_halted, io_trap,
+                                 io_cycle_valid, io_cycle, io_instret);
     }
 }
 
@@ -1370,13 +1621,15 @@ void boom_core_step_top(hls::stream<ImemRequest>&  imem_req_out,
 #pragma HLS INTERFACE ap_none port=io_instret
 
     static BoomCoreState state;
-#pragma HLS RESET variable=state
+    static ResetControllerState reset_ctrl;
+#pragma HLS RESET variable=reset_ctrl
 
     PipeSignals pipe;
-    boom_core_cycle_io(state, pipe, imem_req_out, imem_resp_in,
-                       dmem_req_out, dmem_resp_in, commit_trace_out,
-                       io_success, io_halted, io_trap,
-                       io_cycle_valid, io_cycle, io_instret);
+    boom_core_cycle_or_reset(state, reset_ctrl, pipe,
+                             imem_req_out, imem_resp_in,
+                             dmem_req_out, dmem_resp_in, commit_trace_out,
+                             io_success, io_halted, io_trap,
+                             io_cycle_valid, io_cycle, io_instret);
 }
 
 #define BOOM_NCYCLE_INTERFACES() \
@@ -1403,13 +1656,15 @@ void NAME(hls::stream<ImemRequest>& imem_req_out, \
           bool& io_cycle_valid, uint64_t& io_cycle, uint64_t& io_instret) { \
     BOOM_NCYCLE_INTERFACES(); \
     static BoomCoreState state; \
-    _Pragma("HLS RESET variable=state") \
+    static ResetControllerState reset_ctrl; \
+    _Pragma("HLS RESET variable=reset_ctrl") \
     PipeSignals pipe; \
     for (int cycle = 0; cycle < CYCLES; cycle++) { \
-        boom_core_cycle_io(state, pipe, imem_req_out, imem_resp_in, \
-                           dmem_req_out, dmem_resp_in, commit_trace_out, \
-                           io_success, io_halted, io_trap, \
-                           io_cycle_valid, io_cycle, io_instret); \
+        boom_core_cycle_or_reset(state, reset_ctrl, pipe, \
+                                 imem_req_out, imem_resp_in, \
+                                 dmem_req_out, dmem_resp_in, commit_trace_out, \
+                                 io_success, io_halted, io_trap, \
+                                 io_cycle_valid, io_cycle, io_instret); \
     } \
 }
 

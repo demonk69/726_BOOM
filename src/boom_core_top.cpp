@@ -2,8 +2,38 @@
 #include "boom_types.hpp"
 #include "boom_state.hpp"
 #include "boom_interfaces.hpp"
+#include "reset.hpp"
 
 extern void boom_core_step(BoomCoreState& state, PipeSignals& pipe);
+
+static void drive_reset_outputs(bool& io_success,
+                                bool& io_halted,
+                                bool& io_trap,
+                                bool& io_cycle_valid,
+                                uint64_t& io_cycle,
+                                uint64_t& io_instret) {
+    io_success = false;
+    io_halted = false;
+    io_trap = false;
+    io_cycle_valid = false;
+    io_cycle = 0;
+    io_instret = 0;
+}
+
+static void boom_core_cycle_or_reset(BoomCoreState& state,
+                                     ResetControllerState& reset_ctrl,
+                                     PipeSignals& pipe,
+                                     hls::stream<ImemRequest>& imem_req_out,
+                                     hls::stream<ImemResponse>& imem_resp_in,
+                                     hls::stream<DmemRequest>& dmem_req_out,
+                                     hls::stream<DmemResponse>& dmem_resp_in,
+                                     hls::stream<CommitEntry>& commit_trace_out,
+                                     bool& io_success,
+                                     bool& io_halted,
+                                     bool& io_trap,
+                                     bool& io_cycle_valid,
+                                     uint64_t& io_cycle,
+                                     uint64_t& io_instret);
 
 static void boom_core_cycle_io(BoomCoreState& state,
                                PipeSignals& pipe,
@@ -40,6 +70,32 @@ static void boom_core_cycle_io(BoomCoreState& state,
     io_instret = state.csr.instret;
 }
 
+static void boom_core_cycle_or_reset(BoomCoreState& state,
+                                     ResetControllerState& reset_ctrl,
+                                     PipeSignals& pipe,
+                                     hls::stream<ImemRequest>& imem_req_out,
+                                     hls::stream<ImemResponse>& imem_resp_in,
+                                     hls::stream<DmemRequest>& dmem_req_out,
+                                     hls::stream<DmemResponse>& dmem_resp_in,
+                                     hls::stream<CommitEntry>& commit_trace_out,
+                                     bool& io_success,
+                                     bool& io_halted,
+                                     bool& io_trap,
+                                     bool& io_cycle_valid,
+                                     uint64_t& io_cycle,
+                                     uint64_t& io_instret) {
+    if (!reset_ctrl.completed) {
+        boom_core_reset_step(state, reset_ctrl);
+        drive_reset_outputs(io_success, io_halted, io_trap,
+                            io_cycle_valid, io_cycle, io_instret);
+        return;
+    }
+    boom_core_cycle_io(state, pipe, imem_req_out, imem_resp_in,
+                       dmem_req_out, dmem_resp_in, commit_trace_out,
+                       io_success, io_halted, io_trap,
+                       io_cycle_valid, io_cycle, io_instret);
+}
+
 void boom_core_top(hls::stream<ImemRequest>&  imem_req_out,
                    hls::stream<ImemResponse>& imem_resp_in,
                    hls::stream<DmemRequest>&  dmem_req_out,
@@ -65,7 +121,8 @@ void boom_core_top(hls::stream<ImemRequest>&  imem_req_out,
 #pragma HLS INTERFACE ap_none port=io_instret
 
     static BoomCoreState state;
-#pragma HLS RESET variable=state
+    static ResetControllerState reset_ctrl;
+#pragma HLS RESET variable=reset_ctrl
 
     PipeSignals pipe;
 
@@ -74,10 +131,11 @@ CORE_CYCLE:
 #ifdef BOOM_HLS_ENABLE_CORE_PIPELINE
 #pragma HLS PIPELINE II=1
 #endif
-        boom_core_cycle_io(state, pipe, imem_req_out, imem_resp_in,
-                           dmem_req_out, dmem_resp_in, commit_trace_out,
-                           io_success, io_halted, io_trap,
-                           io_cycle_valid, io_cycle, io_instret);
+        boom_core_cycle_or_reset(state, reset_ctrl, pipe,
+                                 imem_req_out, imem_resp_in,
+                                 dmem_req_out, dmem_resp_in, commit_trace_out,
+                                 io_success, io_halted, io_trap,
+                                 io_cycle_valid, io_cycle, io_instret);
     }
 }
 
@@ -106,13 +164,15 @@ void boom_core_step_top(hls::stream<ImemRequest>&  imem_req_out,
 #pragma HLS INTERFACE ap_none port=io_instret
 
     static BoomCoreState state;
-#pragma HLS RESET variable=state
+    static ResetControllerState reset_ctrl;
+#pragma HLS RESET variable=reset_ctrl
 
     PipeSignals pipe;
-    boom_core_cycle_io(state, pipe, imem_req_out, imem_resp_in,
-                       dmem_req_out, dmem_resp_in, commit_trace_out,
-                       io_success, io_halted, io_trap,
-                       io_cycle_valid, io_cycle, io_instret);
+    boom_core_cycle_or_reset(state, reset_ctrl, pipe,
+                             imem_req_out, imem_resp_in,
+                             dmem_req_out, dmem_resp_in, commit_trace_out,
+                             io_success, io_halted, io_trap,
+                             io_cycle_valid, io_cycle, io_instret);
 }
 
 #define BOOM_NCYCLE_INTERFACES() \
@@ -139,13 +199,15 @@ void NAME(hls::stream<ImemRequest>& imem_req_out, \
           bool& io_cycle_valid, uint64_t& io_cycle, uint64_t& io_instret) { \
     BOOM_NCYCLE_INTERFACES(); \
     static BoomCoreState state; \
-    _Pragma("HLS RESET variable=state") \
+    static ResetControllerState reset_ctrl; \
+    _Pragma("HLS RESET variable=reset_ctrl") \
     PipeSignals pipe; \
     for (int cycle = 0; cycle < CYCLES; cycle++) { \
-        boom_core_cycle_io(state, pipe, imem_req_out, imem_resp_in, \
-                           dmem_req_out, dmem_resp_in, commit_trace_out, \
-                           io_success, io_halted, io_trap, \
-                           io_cycle_valid, io_cycle, io_instret); \
+        boom_core_cycle_or_reset(state, reset_ctrl, pipe, \
+                                 imem_req_out, imem_resp_in, \
+                                 dmem_req_out, dmem_resp_in, commit_trace_out, \
+                                 io_success, io_halted, io_trap, \
+                                 io_cycle_valid, io_cycle, io_instret); \
     } \
 }
 
