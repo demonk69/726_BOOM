@@ -22,6 +22,8 @@ Gate 3.6 update: the 37936-LUT direct-diagnostic/product-top gap is explained. N
 
 Gate 3.7 update: `CORE_CYCLE` has real loop-carried state, control, memory-port, and stream dependencies. P0 exactly reproduces the accepted baseline. P1 applies outer-loop pipeline without an II target and times out at 900 seconds during Presyn 2 transformations, before scheduling, achieved-II calculation, RTL, or resource reporting. P2-P6 and local pipeline experiments are not run because their prerequisite report gates are unmet. Status is `CORE_CYCLE_PIPELINE_TRANSFORMATION_TIMEOUT_NO_SYNTHESIS_CANDIDATE`.
 
+Gate 3.8 update: accepted conservative RTL passes 42/45 XSim scenarios, including all tested AXIS backpressure cases and seven normal-program C++/csim/RTL architectural comparisons. `R2_RESET_ROB_NONEMPTY`, `R6_RESET_BRANCH_RECOVERY`, and `P0_RESET_AND_BRANCH_MISPREDICT` fail because runtime reset restarts generated control but retains most architectural state, including the frontend PC and ROB/rename/IQ storage. Status is `RTL_RESET_MISMATCH`.
+
 ## Implemented And Tested
 
 - Frontend request/response FSM with monotonic fetch IDs and stale response drop.
@@ -45,7 +47,7 @@ Gate 3.7 update: `CORE_CYCLE` has real loop-carried state, control, memory-port,
 - Exception and flush handling are coarse compared with BOOM.
 - Cycle timing is not verified against BOOM.
 - Conservative no-pipeline csynth remains stable. Gate 3.7 confirms the full-cycle pipeline transformation still fails to close even without an II target; no pipelined schedule or minimum II is available.
-- Mid-run generated-RTL reset and pin-level AXIS backpressure are not verified. Native reset-by-assignment and delayed-response tests do not close these RTL behaviors.
+- Pin-level AXIS backpressure passes the Gate 3.8 scenarios. Generated-RTL runtime reset fails: architectural state is predominantly elaboration-initialized rather than reset by `ap_rst_n`.
 
 ## Not Implemented
 
@@ -92,4 +94,9 @@ Gate 3.7 update: `CORE_CYCLE` has real loop-carried state, control, memory-port,
 - Gate 3.7 P2-P6: NOT_RUN by required P1/P1-P5 report gates. No `SYNTHESIS_CANDIDATE` or `FUNCTIONALLY_VERIFIED_CANDIDATE` exists.
 - Gate 3.7 final regressions: directed 25/25, Gate 1 13/13, LSU 14/14, branch 30/30+42/42, IQ 10/10, trace 10/10 byte-identical, BOOM diff 10/10, partial-order 8 legal/0 real.
 - Gate 3.7 readiness: `READY_FOR_WIDE_ISSUE_IMPLEMENTATION=false`, `READY_FOR_LOCAL_PIPELINE_OPTIMIZATION=false`, `READY_FOR_ACCEPT_PIPELINED_CONFIG=false`, `READY_FOR_OFFICIAL_GATE_3=false`.
+- Gate 3.8 XSim matrix: 42/45 PASS. All 6 trace-backpressure, 7 IMEM, 9 DMEM, and 7 normal-program scenarios pass; reset cases R2/R6 and priority case P0 fail.
+- Gate 3.8 normal traces: seven programs pass C++ versus Vitis csim versus generated RTL commit and `tohost` comparison.
+- Gate 3.8 reset audit: frontend PC/validity, ROB, IQ, issued state, rename maps/free/busy state, branch snapshots, RF, execute results, and LSU queues are `RESET_INITIAL_ONLY`; status `RTL_RESET_MISMATCH`.
+- Gate 3.8 conservative csynth: PASS with 83286 LUT, 16611 FF, 16 BRAM_18K, 3 DSP, and 5.898 ns; accepted configuration remains unchanged.
+- Gate 3.8 readiness: `READY_FOR_WIDE_ISSUE_IMPLEMENTATION=false`, `READY_FOR_LOCAL_PIPELINE_OPTIMIZATION=false`, `READY_FOR_OFFICIAL_GATE_3=false`.
 - Official Chipyard/FESVR/DRAMSim trace: BLOCKED by missing original `/root/chipyard` generated-source path, `libfesvr`, `libdramsim`, and RISC-V ELF/binutils tools.

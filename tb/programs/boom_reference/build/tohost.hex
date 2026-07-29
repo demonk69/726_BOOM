@@ -1,0 +1,7 @@
+# hand-encoded RV64I, direct store-to-tohost smoke test
+# addi x1,x0,1 ; auipc x5,0
+0000029700100093
+# addi x5,x5,0x7c ; sd x1,0(x5)
+0012b02307c28293
+# jal x0,0 ; padding
+000000000000006f

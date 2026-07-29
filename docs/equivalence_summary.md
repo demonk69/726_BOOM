@@ -20,6 +20,8 @@ Gate 3.6 status: TOP_LEVEL_DELTA_EXPLAINED_NO_ACCEPTED_OPTIMIZATION. The 37936-L
 
 Gate 3.7 status: CORE_CYCLE_PIPELINE_TRANSFORMATION_TIMEOUT_NO_SYNTHESIS_CANDIDATE. Real cross-iteration dependencies are inventoried, P0 reproduces the accepted baseline, and P1 no-II pipeline times out before scheduling. No pipeline RTL or new equivalence claim exists.
 
+Gate 3.8 status: RTL_RESET_MISMATCH. Accepted generated RTL passes all tested AXIS backpressure scenarios and seven normal-program C++/csim/RTL architectural comparisons, but fails three targeted mid-run reset cases because generated control resets while most architectural state is retained.
+
 ## Current Verdicts
 
 | Dimension | Verdict | Evidence |
@@ -28,6 +30,8 @@ Gate 3.7 status: CORE_CYCLE_PIPELINE_TRANSFORMATION_TIMEOUT_NO_SYNTHESIS_CANDIDA
 | Microarchitectural Equivalence | PARTIALLY_VERIFIED | Rename/ROB/IQ/frontend/minimal-LSU subset has directed coverage. Gate 3.3 implements branch tags, masks, snapshots, allocation-list rollback, and selective younger-state kill for the supported subset. Multi-lane issue/execute, strict busy-table cycle timing, and full BOOM memory/FPU queues remain absent or partial. |
 | Cycle Equivalence | INSUFFICIENT_EVIDENCE | Gate 3.1A shows the old global event-order failure was a validator false positive, but normalized-cycle equivalence is still not verified. Gate 3.3 synthesis closure is not a strict cycle-equivalence claim. The full official emulator path remains blocked and HLS still serializes operations that BOOM performs in parallel. |
 | Structural Correspondence | PARTIALLY_VERIFIED | SmallBoom parameters and main integer state sizes match; Gate 3.3 branch parameter/state inventories match generated FIRRTL for the implemented subset; Gate 3.4 confirms snapshot and allocation-list RTL structures and module baselines. Multiple full BOOM modules remain NOT_IMPLEMENTED. |
+| Generated RTL Runtime Reset | MISMATCH | Gate 3.8 XSim fails R2, R6, and P0. Frontend PC/validity and most ROB/IQ/rename/branch/execute/LSU RAM state are initialized at elaboration but not reset by `ap_rst_n`. |
+| Generated RTL AXIS Backpressure | VERIFIED_FOR_TESTED_SCENARIOS | Gate 3.8 passes all commit-trace, IMEM, DMEM, stale-response, and tested priority/backpressure cases outside the reset failures. |
 
 ## Gate 1 Results
 
@@ -207,6 +211,22 @@ See `reports/gate3_6/gate3_6_results.md` and `docs/gate3_6_top_level_architectur
 
 See `reports/gate3_7/gate3_7_results.md` and `docs/gate3_7_pipeline_experiment.md`.
 
+## Gate 3.8 Result
+
+| Check | Result |
+|---|---|
+| XSim RTL matrix | 42/45 PASS; overall FAIL |
+| Runtime reset | FAIL: R2 timeout with zero commits; R6/P0 retain `0x80000000` instead of reset vector `0x10040` |
+| Commit-trace AXIS backpressure | 6/6 PASS |
+| IMEM scenarios | 7/7 PASS |
+| DMEM scenarios | 9/9 PASS |
+| Normal-program RTL scenarios | 7/7 PASS |
+| C++/csim/RTL architectural comparison | 7/7 PASS |
+| Conservative csynth | 83286 LUT, 16611 FF, 16 BRAM_18K, 3 DSP, 5.898 ns |
+| Final status | `RTL_RESET_MISMATCH` |
+
+See `reports/gate3_8/gate3_8_results.md` and `docs/gate3_8_rtl_verification.md`.
+
 ## Timing Status
 
-The latest accepted PPA configuration remains Gate 3.3. Gate 3.7 produces no pipeline RTL and does not alter architecture, timing, reset, or cycle-equivalence status. Strict BOOM cycle equivalence remains `INSUFFICIENT_EVIDENCE`.
+The latest accepted PPA configuration remains Gate 3.3. Gate 3.8 reproduces its synthesis metrics and adds normal-operation/backpressure RTL evidence, but demonstrates that its runtime reset semantics are not acceptable. Strict BOOM cycle equivalence remains `INSUFFICIENT_EVIDENCE`.

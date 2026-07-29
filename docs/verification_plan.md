@@ -16,6 +16,7 @@
 | Gate 3.1C minimal LSU architectural diff | PASS for supported subset | LSU `14/14`, full loaded-program diff `10/10` |
 | Gate 3.2 conservative baseline csynth | PASS | `boom_core_top` csynth 45.56s, 5.898 ns estimated period |
 | Gate 3.2 performance pipeline csynth | BLOCKED | `BOOM_HLS_ENABLE_CORE_PIPELINE=1` timed out after 15 minutes |
+| Gate 3.8 generated RTL | FAIL: `RTL_RESET_MISMATCH` | XSim 42/45; all tested AXIS backpressure passes, three mid-run reset interactions fail |
 | Official Gate 3 | BLOCKED | original Chipyard/FESVR/DRAMSim path unavailable |
 
 ## Trace Format
@@ -64,6 +65,16 @@ For each commit event from reference:
 - CSR read/write test
 
 ## Quality Gates
+
+### Gate 3.8 RTL
+- [x] Build accepted conservative generated RTL with XSim
+- [x] Compare seven normal-program C++/csim/RTL architectural traces
+- [x] Exercise commit, IMEM, and DMEM AXIS backpressure
+- [x] Exercise power-on and targeted mid-run reset scenarios
+- [ ] Restore the reset vector after every mid-run reset
+- [ ] Empty or coherently invalidate all in-flight architectural state on runtime reset
+
+Gate 3.8 remains failed until the last two requirements pass. See `reports/gate3_8/gate3_8_results.md`.
 
 ### Gate M0
 - [ ] boom_core_step compiles with g++

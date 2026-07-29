@@ -30,3 +30,7 @@ Gate 3.7 independently reruns the conservative top and reproduces the accepted r
 Gate 3.7 status: `CORE_CYCLE_PIPELINE_TRANSFORMATION_TIMEOUT_NO_SYNTHESIS_CANDIDATE`.
 
 No pipelined configuration is accepted. `READY_FOR_ACCEPT_PIPELINED_CONFIG=false` and the table at the top of this document remains authoritative.
+
+Gate 3.8 independently regenerates the unchanged conservative top and again reports 83286 LUT, 16611 FF, 16 BRAM_18K, 3 DSP, and 5.898 ns. This confirms the PPA point but does not validate the generated implementation for acceptance: targeted XSim testing finds `RTL_RESET_MISMATCH` because most architectural state is not reset by runtime `ap_rst_n`.
+
+The whole-state source reset directive remains retained; Gate 3.8 shows that retaining the directive is necessary but not sufficient to produce coherent runtime-reset RTL. No PPA configuration change is accepted, and the reset mismatch must be closed before implementation acceptance.

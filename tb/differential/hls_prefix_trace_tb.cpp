@@ -30,6 +30,8 @@ const ProgramSpec kPrograms[] = {
     {"branch_taken", "branch_taken.hex", 9, 0x80000028ull, 0x0062b023u},
     {"branch_not_taken", "branch_not_taken.hex", 10, 0x80000028ull, 0x0062b023u},
     {"nested_branch", "nested_branch.hex", 10, 0x80000030ull, 0x0062b023u},
+    {"load_store", "load_store.hex", 9, 0x80000024ull, 0x00733023u},
+    {"tohost", "tohost.hex", 3, 0x8000000cull, 0x0012b023u},
 };
 
 const uint64_t kEntryPc = 0x80000000ull;
