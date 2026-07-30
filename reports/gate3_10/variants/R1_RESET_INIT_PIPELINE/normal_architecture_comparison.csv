@@ -1,0 +1,8 @@
+test,program,architectural_status,event_count,commit_count,cycle_exact,baseline_first_commit,actual_first_commit,baseline_last_commit,actual_last_commit
+N0_NORMAL_INDEPENDENT_ALU,independent_alu,PASS,27,12,NO,1110,1309,12371,12593
+N1_NORMAL_RAW_CHAIN,raw_chain,PASS,27,12,NO,1110,1309,12371,12593
+N2_NORMAL_BRANCH_TAKEN,branch_taken,PASS,29,13,NO,1110,1309,14545,14769
+N3_NORMAL_BRANCH_NOT_TAKEN,branch_not_taken,PASS,31,14,NO,1110,1309,14365,14591
+N4_NORMAL_NESTED_BRANCH,nested_branch,PASS,31,14,NO,1110,1309,16719,16945
+N5_NORMAL_LOAD_STORE,load_store,FAIL,31,13,NO,1110,1309,12929,13327
+N6_NORMAL_TOHOST,tohost,PASS,17,7,NO,1110,1309,8037,8249

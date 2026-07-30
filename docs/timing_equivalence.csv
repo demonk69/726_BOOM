@@ -1,11 +1,13 @@
 # BOOM-HLS Timing Equivalence Analysis
 
-Timestamp,2026-07-28 Gate 3.7 update
+Timestamp,2026-07-30 Gate 3.10 update
 Target_Clock,10.00 ns (100 MHz)
-Latest_csynth_clock,5.898 ns Gate 3.7 P0 exact baseline reproduction
-Latest_csynth_status,"P0 PASS in 71.40s: boom_core_top 83286 LUT, 16611 FF, 16 BRAM_18K, 3 DSP; P1 no-II pipeline timed out before report"
+Latest_csynth_clock,5.898 ns Gate 3.9 accepted F1 reset baseline
+Latest_csynth_status,"Gate 3.9 accepted: 47999 LUT, 12134 FF, 12 BRAM_18K, 3 DSP; Gate 3.10 no accepted candidate"
 Finite_step_top_status,"PASS: boom_core_step_top, 69.78s, 1521136 KB, 83353 LUT, 16808 FF, 16 BRAM_18K, 3 DSP, 5.898 ns"
 Performance_pipeline_status,"P1 TIMEOUT_900S_PRESYN2_NO_REPORT; P2-P6 NOT_RUN_BY_SEQUENCE_GATE; CORE_CYCLE pipeline remains disabled"
+Local_pipeline_status,"R1 RESET_ROB_INIT requested II=1 achieved II=1; rejected reset latency +198 and normal cycles 0/7 exact"
+Clock_sweep_status,"requested 4.5 ns estimated 3.255 ns; P0 normal architecture 7/7 but normalized cycles 0/7 exact; characterization only"
 Trace_preservation,"PASS: Gate 3.7 final accepted source has HLS C++ and Vitis csim complete traces 10/10 byte-identical to frozen baseline"
 Strict_cycle_equivalence,INSUFFICIENT_EVIDENCE
 Official_Gate3_Status,"BLOCKED: original Chipyard/FESVR/DRAMSim path unavailable"

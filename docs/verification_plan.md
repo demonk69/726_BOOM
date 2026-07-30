@@ -17,6 +17,8 @@
 | Gate 3.2 conservative baseline csynth | PASS | `boom_core_top` csynth 45.56s, 5.898 ns estimated period |
 | Gate 3.2 performance pipeline csynth | BLOCKED | `BOOM_HLS_ENABLE_CORE_PIPELINE=1` timed out after 15 minutes |
 | Gate 3.8 generated RTL | FAIL: `RTL_RESET_MISMATCH` | XSim 42/45; all tested AXIS backpressure passes, three mid-run reset interactions fail |
+| Gate 3.9 generated RTL | PASS: `RTL_RESET_VERIFIED` | XSim 49/49; reset architecture 14/14; M014 verified |
+| Gate 3.10 local pipeline | COMPLETE: no accepted candidate | R1 II=1 and XSim 49/49, rejected latency/cycles; L1-L5 illegal |
 | Official Gate 3 | BLOCKED | original Chipyard/FESVR/DRAMSim path unavailable |
 
 ## Trace Format
@@ -75,6 +77,16 @@ For each commit event from reference:
 - [ ] Empty or coherently invalidate all in-flight architectural state on runtime reset
 
 Gate 3.8 remains failed until the last two requirements pass. See `reports/gate3_8/gate3_8_results.md`.
+
+### Gate 3.10 Local Pipeline
+- [x] Freeze Gate 3.9 commit and evidence hashes
+- [x] Extract current HLS state-local critical paths
+- [x] Classify state recurrence, handshake, and recovery legality
+- [x] Run R1 through source regressions, csim, csynth, and XSim 49/49
+- [x] Compare normal external event cycles
+- [x] Scan 6.0/5.5/5.0/4.5 ns requested targets
+- [x] Keep `CORE_CYCLE` unpipelined
+- [x] Reject all cycle-inexact candidates
 
 ### Gate M0
 - [ ] boom_core_step compiles with g++

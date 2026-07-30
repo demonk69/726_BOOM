@@ -1,0 +1,311 @@
+
+
+================================================================
+== Vitis HLS Report for 'boom_core_reset_step'
+================================================================
+* Date:           Thu Jul 30 09:03:24 2026
+
+* Version:        2021.2 (Build 3367213 on Tue Oct 19 02:47:39 MDT 2021)
+* Project:        hls_project
+* Solution:       solution_local (Vivado IP Flow Target)
+* Product family: zynquplus
+* Target device:  xczu7ev-ffvc1156-2-e
+
+
+================================================================
+== Performance Estimates
+================================================================
++ Timing: 
+    * Summary: 
+    +--------+----------+----------+------------+
+    |  Clock |  Target  | Estimated| Uncertainty|
+    +--------+----------+----------+------------+
+    |ap_clk  |  10.00 ns|  1.875 ns|     2.70 ns|
+    +--------+----------+----------+------------+
+
++ Latency: 
+    * Summary: 
+    +---------+---------+-----------+----------+-----+-----+---------+
+    |  Latency (cycles) |  Latency (absolute)  |  Interval | Pipeline|
+    |   min   |   max   |    min    |    max   | min | max |   Type  |
+    +---------+---------+-----------+----------+-----+-----+---------+
+    |        1|       35|  10.000 ns|  0.350 us|    1|   35|       no|
+    +---------+---------+-----------+----------+-----+-----+---------+
+
+    + Detail: 
+        * Instance: 
+        +---------------------------------------------------------+----------------------------------------------+---------+---------+----------+----------+-----+-----+---------+
+        |                                                         |                                              |  Latency (cycles) |  Latency (absolute) |  Interval | Pipeline|
+        |                         Instance                        |                    Module                    |   min   |   max   |    min   |    max   | min | max |   Type  |
+        +---------------------------------------------------------+----------------------------------------------+---------+---------+----------+----------+-----+-----+---------+
+        |grp_boom_core_reset_step_Pipeline_RESET_ROB_INIT_fu_445  |boom_core_reset_step_Pipeline_RESET_ROB_INIT  |       34|       34|  0.340 us|  0.340 us|   34|   34|       no|
+        +---------------------------------------------------------+----------------------------------------------+---------+---------+----------+----------+-----+-----+---------+
+
+        * Loop: 
+        N/A
+
+
+
+================================================================
+== Utilization Estimates
+================================================================
+* Summary: 
++-----------------+---------+------+--------+--------+-----+
+|       Name      | BRAM_18K|  DSP |   FF   |   LUT  | URAM|
++-----------------+---------+------+--------+--------+-----+
+|DSP              |        -|     -|       -|       -|    -|
+|Expression       |        -|     -|       0|      71|    -|
+|FIFO             |        -|     -|       -|       -|    -|
+|Instance         |        -|     -|       8|      50|    -|
+|Memory           |        -|     -|       -|       -|    -|
+|Multiplexer      |        -|     -|       -|     149|    -|
+|Register         |        -|     -|      59|       -|    -|
++-----------------+---------+------+--------+--------+-----+
+|Total            |        0|     0|      67|     270|    0|
++-----------------+---------+------+--------+--------+-----+
+|Available        |      624|  1728|  460800|  230400|   96|
++-----------------+---------+------+--------+--------+-----+
+|Utilization (%)  |        0|     0|      ~0|      ~0|    0|
++-----------------+---------+------+--------+--------+-----+
+
++ Detail: 
+    * Instance: 
+    +---------------------------------------------------------+----------------------------------------------+---------+----+---+----+-----+
+    |                         Instance                        |                    Module                    | BRAM_18K| DSP| FF| LUT| URAM|
+    +---------------------------------------------------------+----------------------------------------------+---------+----+---+----+-----+
+    |grp_boom_core_reset_step_Pipeline_RESET_ROB_INIT_fu_445  |boom_core_reset_step_Pipeline_RESET_ROB_INIT  |        0|   0|  8|  50|    0|
+    +---------------------------------------------------------+----------------------------------------------+---------+----+---+----+-----+
+    |Total                                                    |                                              |        0|   0|  8|  50|    0|
+    +---------------------------------------------------------+----------------------------------------------+---------+----+---+----+-----+
+
+    * DSP: 
+    N/A
+
+    * Memory: 
+    N/A
+
+    * FIFO: 
+    N/A
+
+    * Expression: 
+    +---------------------------------+----------+----+---+----+------------+------------+
+    |          Variable Name          | Operation| DSP| FF| LUT| Bitwidth P0| Bitwidth P1|
+    +---------------------------------+----------+----+---+----+------------+------------+
+    |grp_fu_458_p2                    |         +|   0|  0|  15|           8|           1|
+    |ap_block_state2_on_subcall_done  |       and|   0|  0|   2|           1|           1|
+    |ap_condition_430                 |       and|   0|  0|   2|           1|           1|
+    |ap_condition_431                 |       and|   0|  0|   2|           1|           1|
+    |ap_condition_432                 |       and|   0|  0|   2|           1|           1|
+    |ap_condition_433                 |       and|   0|  0|   2|           1|           1|
+    |ap_condition_434                 |       and|   0|  0|   2|           1|           1|
+    |grp_fu_453_p2                    |      icmp|   0|  0|  11|           8|           3|
+    |icmp_ln1320_fu_733_p2            |      icmp|   0|  0|  11|           8|           5|
+    |icmp_ln1328_fu_483_p2            |      icmp|   0|  0|  11|           8|           1|
+    |icmp_ln1340_fu_715_p2            |      icmp|   0|  0|  11|           8|           6|
+    +---------------------------------+----------+----+---+----+------------+------------+
+    |Total                            |          |   0|  0|  71|          46|          22|
+    +---------------------------------+----------+----+---+----+------------+------------+
+
+    * Multiplexer: 
+    +---------------------+----+-----------+-----+-----------+
+    |         Name        | LUT| Input Size| Bits| Total Bits|
+    +---------------------+----+-----------+-----+-----------+
+    |ap_NS_fsm            |  14|          3|    1|          3|
+    |reset_ctrl_index     |  31|          6|    8|         48|
+    |reset_ctrl_phase     |  59|         11|    4|         44|
+    |storemerge1_reg_401  |   9|          2|    8|         16|
+    |storemerge2_reg_412  |   9|          2|    8|         16|
+    |storemerge3_reg_423  |   9|          2|    8|         16|
+    |storemerge4_reg_434  |   9|          2|    8|         16|
+    |storemerge_reg_390   |   9|          2|    8|         16|
+    +---------------------+----+-----------+-----+-----------+
+    |Total                | 149|         30|   53|        175|
+    +---------------------+----+-----------+-----+-----------+
+
+    * Register: 
+    +----------------------------------------------------------------------+---+----+-----+-----------+
+    |                                 Name                                 | FF| LUT| Bits| Const Bits|
+    +----------------------------------------------------------------------+---+----+-----+-----------+
+    |ap_CS_fsm                                                             |  2|   0|    2|          0|
+    |grp_boom_core_reset_step_Pipeline_RESET_ROB_INIT_fu_445_ap_start_reg  |  1|   0|    1|          0|
+    |reset_ctrl_index                                                      |  8|   0|    8|          0|
+    |reset_ctrl_phase                                                      |  4|   0|    4|          0|
+    |reset_ctrl_phase_load_reg_925                                         |  4|   0|    4|          0|
+    |storemerge1_reg_401                                                   |  8|   0|    8|          0|
+    |storemerge2_reg_412                                                   |  8|   0|    8|          0|
+    |storemerge3_reg_423                                                   |  8|   0|    8|          0|
+    |storemerge4_reg_434                                                   |  8|   0|    8|          0|
+    |storemerge_reg_390                                                    |  8|   0|    8|          0|
+    +----------------------------------------------------------------------+---+----+-----+-----------+
+    |Total                                                                 | 59|   0|   59|          0|
+    +----------------------------------------------------------------------+---+----+-----+-----------+
+
+
+
+================================================================
+== Interface
+================================================================
+* Summary: 
++---------------------------------------------------------+-----+-----+------------+------------------------------------------------+--------------+
+|                        RTL Ports                        | Dir | Bits|  Protocol  |                  Source Object                 |    C Type    |
++---------------------------------------------------------+-----+-----+------------+------------------------------------------------+--------------+
+|ap_clk                                                   |   in|    1|  ap_ctrl_hs|                            boom_core_reset_step|  return value|
+|ap_rst                                                   |   in|    1|  ap_ctrl_hs|                            boom_core_reset_step|  return value|
+|ap_start                                                 |   in|    1|  ap_ctrl_hs|                            boom_core_reset_step|  return value|
+|ap_done                                                  |  out|    1|  ap_ctrl_hs|                            boom_core_reset_step|  return value|
+|ap_idle                                                  |  out|    1|  ap_ctrl_hs|                            boom_core_reset_step|  return value|
+|ap_ready                                                 |  out|    1|  ap_ctrl_hs|                            boom_core_reset_step|  return value|
+|state_brupdate_valid                                     |  out|    1|      ap_vld|                            state_brupdate_valid|       pointer|
+|state_brupdate_valid_ap_vld                              |  out|    1|      ap_vld|                            state_brupdate_valid|       pointer|
+|state_brupdate_mispredict                                |  out|    1|      ap_vld|                       state_brupdate_mispredict|       pointer|
+|state_brupdate_mispredict_ap_vld                         |  out|    1|      ap_vld|                       state_brupdate_mispredict|       pointer|
+|state_decode_dec_valids_0                                |  out|    1|      ap_vld|                       state_decode_dec_valids_0|       pointer|
+|state_decode_dec_valids_0_ap_vld                         |  out|    1|      ap_vld|                       state_decode_dec_valids_0|       pointer|
+|state_rename_renamed_valids_0                            |  out|    1|      ap_vld|                   state_rename_renamed_valids_0|       pointer|
+|state_rename_renamed_valids_0_ap_vld                     |  out|    1|      ap_vld|                   state_rename_renamed_valids_0|       pointer|
+|state_issue_issued_valids_0                              |  out|    1|      ap_vld|                     state_issue_issued_valids_0|       pointer|
+|state_issue_issued_valids_0_ap_vld                       |  out|    1|      ap_vld|                     state_issue_issued_valids_0|       pointer|
+|state_frontend_pc                                        |  out|   64|      ap_vld|                               state_frontend_pc|       pointer|
+|state_frontend_pc_ap_vld                                 |  out|    1|      ap_vld|                               state_frontend_pc|       pointer|
+|state_frontend_reset_done                                |  out|    1|      ap_vld|                       state_frontend_reset_done|       pointer|
+|state_frontend_reset_done_ap_vld                         |  out|    1|      ap_vld|                       state_frontend_reset_done|       pointer|
+|state_frontend_request_sent                              |  out|    1|      ap_vld|                     state_frontend_request_sent|       pointer|
+|state_frontend_request_sent_ap_vld                       |  out|    1|      ap_vld|                     state_frontend_request_sent|       pointer|
+|state_frontend_fetch_id                                  |  out|   32|      ap_vld|                         state_frontend_fetch_id|       pointer|
+|state_frontend_fetch_id_ap_vld                           |  out|    1|      ap_vld|                         state_frontend_fetch_id|       pointer|
+|state_frontend_pending_fetch_id                          |  out|   32|      ap_vld|                 state_frontend_pending_fetch_id|       pointer|
+|state_frontend_pending_fetch_id_ap_vld                   |  out|    1|      ap_vld|                 state_frontend_pending_fetch_id|       pointer|
+|state_frontend_response_received                         |  out|    1|      ap_vld|                state_frontend_response_received|       pointer|
+|state_frontend_response_received_ap_vld                  |  out|    1|      ap_vld|                state_frontend_response_received|       pointer|
+|state_frontend_resp_address                              |  out|   64|      ap_vld|                     state_frontend_resp_address|       pointer|
+|state_frontend_resp_address_ap_vld                       |  out|    1|      ap_vld|                     state_frontend_resp_address|       pointer|
+|state_frontend_resp_instruction                          |  out|   32|      ap_vld|                 state_frontend_resp_instruction|       pointer|
+|state_frontend_resp_instruction_ap_vld                   |  out|    1|      ap_vld|                 state_frontend_resp_instruction|       pointer|
+|state_frontend_fetch_packet_valid                        |  out|    1|      ap_vld|               state_frontend_fetch_packet_valid|       pointer|
+|state_frontend_fetch_packet_valid_ap_vld                 |  out|    1|      ap_vld|               state_frontend_fetch_packet_valid|       pointer|
+|state_rename_int_map_table_map_table_address0            |  out|    5|   ap_memory|            state_rename_int_map_table_map_table|         array|
+|state_rename_int_map_table_map_table_ce0                 |  out|    1|   ap_memory|            state_rename_int_map_table_map_table|         array|
+|state_rename_int_map_table_map_table_we0                 |  out|    1|   ap_memory|            state_rename_int_map_table_map_table|         array|
+|state_rename_int_map_table_map_table_d0                  |  out|    8|   ap_memory|            state_rename_int_map_table_map_table|         array|
+|state_rename_int_map_table_committed_map_table_address0  |  out|    5|   ap_memory|  state_rename_int_map_table_committed_map_table|         array|
+|state_rename_int_map_table_committed_map_table_ce0       |  out|    1|   ap_memory|  state_rename_int_map_table_committed_map_table|         array|
+|state_rename_int_map_table_committed_map_table_we0       |  out|    1|   ap_memory|  state_rename_int_map_table_committed_map_table|         array|
+|state_rename_int_map_table_committed_map_table_d0        |  out|    8|   ap_memory|  state_rename_int_map_table_committed_map_table|         array|
+|state_rename_int_free_list_head                          |  out|    6|      ap_vld|                 state_rename_int_free_list_head|       pointer|
+|state_rename_int_free_list_head_ap_vld                   |  out|    1|      ap_vld|                 state_rename_int_free_list_head|       pointer|
+|state_rename_int_free_list_tail                          |  out|    6|      ap_vld|                 state_rename_int_free_list_tail|       pointer|
+|state_rename_int_free_list_tail_ap_vld                   |  out|    1|      ap_vld|                 state_rename_int_free_list_tail|       pointer|
+|state_rename_int_free_list_count                         |  out|    8|      ap_vld|                state_rename_int_free_list_count|       pointer|
+|state_rename_int_free_list_count_ap_vld                  |  out|    1|      ap_vld|                state_rename_int_free_list_count|       pointer|
+|state_rename_int_free_list_free_list_address0            |  out|    6|   ap_memory|            state_rename_int_free_list_free_list|         array|
+|state_rename_int_free_list_free_list_ce0                 |  out|    1|   ap_memory|            state_rename_int_free_list_free_list|         array|
+|state_rename_int_free_list_free_list_we0                 |  out|    1|   ap_memory|            state_rename_int_free_list_free_list|         array|
+|state_rename_int_free_list_free_list_d0                  |  out|    8|   ap_memory|            state_rename_int_free_list_free_list|         array|
+|state_rename_int_free_list_busy_table_address0           |  out|    6|   ap_memory|           state_rename_int_free_list_busy_table|         array|
+|state_rename_int_free_list_busy_table_ce0                |  out|    1|   ap_memory|           state_rename_int_free_list_busy_table|         array|
+|state_rename_int_free_list_busy_table_we0                |  out|    1|   ap_memory|           state_rename_int_free_list_busy_table|         array|
+|state_rename_int_free_list_busy_table_d0                 |  out|    1|   ap_memory|           state_rename_int_free_list_busy_table|         array|
+|state_rob_head                                           |  out|    5|      ap_vld|                                  state_rob_head|       pointer|
+|state_rob_head_ap_vld                                    |  out|    1|      ap_vld|                                  state_rob_head|       pointer|
+|state_rob_tail                                           |  out|    5|      ap_vld|                                  state_rob_tail|       pointer|
+|state_rob_tail_ap_vld                                    |  out|    1|      ap_vld|                                  state_rob_tail|       pointer|
+|state_rob_maybe_full                                     |  out|    1|      ap_vld|                            state_rob_maybe_full|       pointer|
+|state_rob_maybe_full_ap_vld                              |  out|    1|      ap_vld|                            state_rob_maybe_full|       pointer|
+|state_rob_state                                          |  out|    2|      ap_vld|                                 state_rob_state|       pointer|
+|state_rob_state_ap_vld                                   |  out|    1|      ap_vld|                                 state_rob_state|       pointer|
+|state_rob_entries_valid_address0                         |  out|    5|   ap_memory|                         state_rob_entries_valid|         array|
+|state_rob_entries_valid_ce0                              |  out|    1|   ap_memory|                         state_rob_entries_valid|         array|
+|state_rob_entries_valid_we0                              |  out|    1|   ap_memory|                         state_rob_entries_valid|         array|
+|state_rob_entries_valid_d0                               |  out|    1|   ap_memory|                         state_rob_entries_valid|         array|
+|state_rob_entries_busy_address0                          |  out|    5|   ap_memory|                          state_rob_entries_busy|         array|
+|state_rob_entries_busy_ce0                               |  out|    1|   ap_memory|                          state_rob_entries_busy|         array|
+|state_rob_entries_busy_we0                               |  out|    1|   ap_memory|                          state_rob_entries_busy|         array|
+|state_rob_entries_busy_d0                                |  out|    1|   ap_memory|                          state_rob_entries_busy|         array|
+|state_issue_alu_iq_tail                                  |  out|    3|      ap_vld|                         state_issue_alu_iq_tail|       pointer|
+|state_issue_alu_iq_tail_ap_vld                           |  out|    1|      ap_vld|                         state_issue_alu_iq_tail|       pointer|
+|state_issue_alu_iq_count                                 |  out|    8|      ap_vld|                        state_issue_alu_iq_count|       pointer|
+|state_issue_alu_iq_count_ap_vld                          |  out|    1|      ap_vld|                        state_issue_alu_iq_count|       pointer|
+|state_issue_alu_iq_entries_valid_address0                |  out|    3|   ap_memory|                state_issue_alu_iq_entries_valid|         array|
+|state_issue_alu_iq_entries_valid_ce0                     |  out|    1|   ap_memory|                state_issue_alu_iq_entries_valid|         array|
+|state_issue_alu_iq_entries_valid_we0                     |  out|    1|   ap_memory|                state_issue_alu_iq_entries_valid|         array|
+|state_issue_alu_iq_entries_valid_d0                      |  out|    1|   ap_memory|                state_issue_alu_iq_entries_valid|         array|
+|state_issue_alu_iq_entries_request_address0              |  out|    3|   ap_memory|              state_issue_alu_iq_entries_request|         array|
+|state_issue_alu_iq_entries_request_ce0                   |  out|    1|   ap_memory|              state_issue_alu_iq_entries_request|         array|
+|state_issue_alu_iq_entries_request_we0                   |  out|    1|   ap_memory|              state_issue_alu_iq_entries_request|         array|
+|state_issue_alu_iq_entries_request_d0                    |  out|    1|   ap_memory|              state_issue_alu_iq_entries_request|         array|
+|state_issue_alu_iq_entries_granted_address0              |  out|    3|   ap_memory|              state_issue_alu_iq_entries_granted|         array|
+|state_issue_alu_iq_entries_granted_ce0                   |  out|    1|   ap_memory|              state_issue_alu_iq_entries_granted|         array|
+|state_issue_alu_iq_entries_granted_we0                   |  out|    1|   ap_memory|              state_issue_alu_iq_entries_granted|         array|
+|state_issue_alu_iq_entries_granted_d0                    |  out|    1|   ap_memory|              state_issue_alu_iq_entries_granted|         array|
+|state_branch_state_active_mask                           |  out|    8|      ap_vld|                  state_branch_state_active_mask|       pointer|
+|state_branch_state_active_mask_ap_vld                    |  out|    1|      ap_vld|                  state_branch_state_active_mask|       pointer|
+|state_branch_state_allocations                           |  out|   32|      ap_vld|                  state_branch_state_allocations|       pointer|
+|state_branch_state_allocations_ap_vld                    |  out|    1|      ap_vld|                  state_branch_state_allocations|       pointer|
+|state_branch_state_releases                              |  out|   32|      ap_vld|                     state_branch_state_releases|       pointer|
+|state_branch_state_releases_ap_vld                       |  out|    1|      ap_vld|                     state_branch_state_releases|       pointer|
+|state_branch_state_mispredicts                           |  out|   32|      ap_vld|                  state_branch_state_mispredicts|       pointer|
+|state_branch_state_mispredicts_ap_vld                    |  out|    1|      ap_vld|                  state_branch_state_mispredicts|       pointer|
+|state_branch_state_rollbacks                             |  out|   32|      ap_vld|                    state_branch_state_rollbacks|       pointer|
+|state_branch_state_rollbacks_ap_vld                      |  out|    1|      ap_vld|                    state_branch_state_rollbacks|       pointer|
+|state_branch_state_tag_valid_address0                    |  out|    3|   ap_memory|                    state_branch_state_tag_valid|         array|
+|state_branch_state_tag_valid_ce0                         |  out|    1|   ap_memory|                    state_branch_state_tag_valid|         array|
+|state_branch_state_tag_valid_we0                         |  out|    1|   ap_memory|                    state_branch_state_tag_valid|         array|
+|state_branch_state_tag_valid_d0                          |  out|    1|   ap_memory|                    state_branch_state_tag_valid|         array|
+|state_branch_state_snapshot_valid_address0               |  out|    3|   ap_memory|               state_branch_state_snapshot_valid|         array|
+|state_branch_state_snapshot_valid_ce0                    |  out|    1|   ap_memory|               state_branch_state_snapshot_valid|         array|
+|state_branch_state_snapshot_valid_we0                    |  out|    1|   ap_memory|               state_branch_state_snapshot_valid|         array|
+|state_branch_state_snapshot_valid_d0                     |  out|    1|   ap_memory|               state_branch_state_snapshot_valid|         array|
+|state_execute_alu_results_valid_0                        |  out|    1|      ap_vld|               state_execute_alu_results_valid_0|       pointer|
+|state_execute_alu_results_valid_0_ap_vld                 |  out|    1|      ap_vld|               state_execute_alu_results_valid_0|       pointer|
+|state_execute_alu_results_mispredict_0                   |  out|    1|      ap_vld|          state_execute_alu_results_mispredict_0|       pointer|
+|state_execute_alu_results_mispredict_0_ap_vld            |  out|    1|      ap_vld|          state_execute_alu_results_mispredict_0|       pointer|
+|state_execute_alu_results_memory_valid_0                 |  out|    1|      ap_vld|        state_execute_alu_results_memory_valid_0|       pointer|
+|state_execute_alu_results_memory_valid_0_ap_vld          |  out|    1|      ap_vld|        state_execute_alu_results_memory_valid_0|       pointer|
+|state_lsu_ldq_tail                                       |  out|    3|      ap_vld|                              state_lsu_ldq_tail|       pointer|
+|state_lsu_ldq_tail_ap_vld                                |  out|    1|      ap_vld|                              state_lsu_ldq_tail|       pointer|
+|state_lsu_ldq_count                                      |  out|    8|      ap_vld|                             state_lsu_ldq_count|       pointer|
+|state_lsu_ldq_count_ap_vld                               |  out|    1|      ap_vld|                             state_lsu_ldq_count|       pointer|
+|state_lsu_stq_tail                                       |  out|    3|      ap_vld|                              state_lsu_stq_tail|       pointer|
+|state_lsu_stq_tail_ap_vld                                |  out|    1|      ap_vld|                              state_lsu_stq_tail|       pointer|
+|state_lsu_stq_count                                      |  out|    8|      ap_vld|                             state_lsu_stq_count|       pointer|
+|state_lsu_stq_count_ap_vld                               |  out|    1|      ap_vld|                             state_lsu_stq_count|       pointer|
+|state_lsu_next_transaction_id                            |  out|   32|      ap_vld|                   state_lsu_next_transaction_id|       pointer|
+|state_lsu_next_transaction_id_ap_vld                     |  out|    1|      ap_vld|                   state_lsu_next_transaction_id|       pointer|
+|state_lsu_load_response_pending                          |  out|    1|      ap_vld|                 state_lsu_load_response_pending|       pointer|
+|state_lsu_load_response_pending_ap_vld                   |  out|    1|      ap_vld|                 state_lsu_load_response_pending|       pointer|
+|state_lsu_pending_load_transaction_id                    |  out|   32|      ap_vld|           state_lsu_pending_load_transaction_id|       pointer|
+|state_lsu_pending_load_transaction_id_ap_vld             |  out|    1|      ap_vld|           state_lsu_pending_load_transaction_id|       pointer|
+|state_lsu_pending_load_rob_idx                           |  out|    5|      ap_vld|                  state_lsu_pending_load_rob_idx|       pointer|
+|state_lsu_pending_load_rob_idx_ap_vld                    |  out|    1|      ap_vld|                  state_lsu_pending_load_rob_idx|       pointer|
+|state_lsu_ldq_valid_address0                             |  out|    3|   ap_memory|                             state_lsu_ldq_valid|         array|
+|state_lsu_ldq_valid_ce0                                  |  out|    1|   ap_memory|                             state_lsu_ldq_valid|         array|
+|state_lsu_ldq_valid_we0                                  |  out|    1|   ap_memory|                             state_lsu_ldq_valid|         array|
+|state_lsu_ldq_valid_d0                                   |  out|    1|   ap_memory|                             state_lsu_ldq_valid|         array|
+|state_lsu_ldq_response_pending_address0                  |  out|    3|   ap_memory|                  state_lsu_ldq_response_pending|         array|
+|state_lsu_ldq_response_pending_ce0                       |  out|    1|   ap_memory|                  state_lsu_ldq_response_pending|         array|
+|state_lsu_ldq_response_pending_we0                       |  out|    1|   ap_memory|                  state_lsu_ldq_response_pending|         array|
+|state_lsu_ldq_response_pending_d0                        |  out|    1|   ap_memory|                  state_lsu_ldq_response_pending|         array|
+|state_lsu_stq_valid_address0                             |  out|    3|   ap_memory|                             state_lsu_stq_valid|         array|
+|state_lsu_stq_valid_ce0                                  |  out|    1|   ap_memory|                             state_lsu_stq_valid|         array|
+|state_lsu_stq_valid_we0                                  |  out|    1|   ap_memory|                             state_lsu_stq_valid|         array|
+|state_lsu_stq_valid_d0                                   |  out|    1|   ap_memory|                             state_lsu_stq_valid|         array|
+|state_lsu_stq_committed_address0                         |  out|    3|   ap_memory|                         state_lsu_stq_committed|         array|
+|state_lsu_stq_committed_ce0                              |  out|    1|   ap_memory|                         state_lsu_stq_committed|         array|
+|state_lsu_stq_committed_we0                              |  out|    1|   ap_memory|                         state_lsu_stq_committed|         array|
+|state_lsu_stq_committed_d0                               |  out|    1|   ap_memory|                         state_lsu_stq_committed|         array|
+|state_lsu_stq_issued_to_memory_address0                  |  out|    3|   ap_memory|                  state_lsu_stq_issued_to_memory|         array|
+|state_lsu_stq_issued_to_memory_ce0                       |  out|    1|   ap_memory|                  state_lsu_stq_issued_to_memory|         array|
+|state_lsu_stq_issued_to_memory_we0                       |  out|    1|   ap_memory|                  state_lsu_stq_issued_to_memory|         array|
+|state_lsu_stq_issued_to_memory_d0                        |  out|    1|   ap_memory|                  state_lsu_stq_issued_to_memory|         array|
+|state_csr_cycle                                          |  out|   64|      ap_vld|                                 state_csr_cycle|       pointer|
+|state_csr_cycle_ap_vld                                   |  out|    1|      ap_vld|                                 state_csr_cycle|       pointer|
+|state_csr_instret                                        |  out|   64|      ap_vld|                               state_csr_instret|       pointer|
+|state_csr_instret_ap_vld                                 |  out|    1|      ap_vld|                               state_csr_instret|       pointer|
+|reset_ctrl_completed                                     |  out|    1|      ap_vld|                            reset_ctrl_completed|       pointer|
+|reset_ctrl_completed_ap_vld                              |  out|    1|      ap_vld|                            reset_ctrl_completed|       pointer|
+|state_int_rf_address0                                    |  out|    6|   ap_memory|                                    state_int_rf|         array|
+|state_int_rf_ce0                                         |  out|    1|   ap_memory|                                    state_int_rf|         array|
+|state_int_rf_we0                                         |  out|    1|   ap_memory|                                    state_int_rf|         array|
+|state_int_rf_d0                                          |  out|   64|   ap_memory|                                    state_int_rf|         array|
++---------------------------------------------------------+-----+-----+------------+------------------------------------------------+--------------+
+

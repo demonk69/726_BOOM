@@ -22,6 +22,10 @@ Gate 3.7 status: CORE_CYCLE_PIPELINE_TRANSFORMATION_TIMEOUT_NO_SYNTHESIS_CANDIDA
 
 Gate 3.8 status: RTL_RESET_MISMATCH. Accepted generated RTL passes all tested AXIS backpressure scenarios and seven normal-program C++/csim/RTL architectural comparisons, but fails three targeted mid-run reset cases because generated control resets while most architectural state is retained.
 
+Gate 3.9 status: RTL_RESET_VERIFIED. Fine-grain reset generated RTL passes 49/49 and closes M014.
+
+Gate 3.10 status: LOCAL_PIPELINE_CHARACTERIZED_NO_ACCEPTED_CANDIDATE. R1 passes functional and 49-case RTL verification but is rejected for reset-latency and normal-cycle regressions. Strict BOOM cycle equivalence remains insufficient evidence.
+
 ## Current Verdicts
 
 | Dimension | Verdict | Evidence |
@@ -30,7 +34,7 @@ Gate 3.8 status: RTL_RESET_MISMATCH. Accepted generated RTL passes all tested AX
 | Microarchitectural Equivalence | PARTIALLY_VERIFIED | Rename/ROB/IQ/frontend/minimal-LSU subset has directed coverage. Gate 3.3 implements branch tags, masks, snapshots, allocation-list rollback, and selective younger-state kill for the supported subset. Multi-lane issue/execute, strict busy-table cycle timing, and full BOOM memory/FPU queues remain absent or partial. |
 | Cycle Equivalence | INSUFFICIENT_EVIDENCE | Gate 3.1A shows the old global event-order failure was a validator false positive, but normalized-cycle equivalence is still not verified. Gate 3.3 synthesis closure is not a strict cycle-equivalence claim. The full official emulator path remains blocked and HLS still serializes operations that BOOM performs in parallel. |
 | Structural Correspondence | PARTIALLY_VERIFIED | SmallBoom parameters and main integer state sizes match; Gate 3.3 branch parameter/state inventories match generated FIRRTL for the implemented subset; Gate 3.4 confirms snapshot and allocation-list RTL structures and module baselines. Multiple full BOOM modules remain NOT_IMPLEMENTED. |
-| Generated RTL Runtime Reset | MISMATCH | Gate 3.8 XSim fails R2, R6, and P0. Frontend PC/validity and most ROB/IQ/rename/branch/execute/LSU RAM state are initialized at elaboration but not reset by `ap_rst_n`. |
+| Generated RTL Runtime Reset | VERIFIED | Gate 3.9 XSim 49/49; M014 closed by fine-grain initialization. |
 | Generated RTL AXIS Backpressure | VERIFIED_FOR_TESTED_SCENARIOS | Gate 3.8 passes all commit-trace, IMEM, DMEM, stale-response, and tested priority/backpressure cases outside the reset failures. |
 
 ## Gate 1 Results

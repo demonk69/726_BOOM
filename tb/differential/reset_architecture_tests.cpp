@@ -7,6 +7,12 @@ extern void boom_core_step(BoomCoreState& state, PipeSignals& pipe);
 static int tests_passed = 0;
 static int tests_failed = 0;
 
+#ifdef BOOM_HLS_GATE3_10_R1_RESET_ROB_PIPELINE
+static const int EXPECTED_RESET_STEPS = 114;
+#else
+static const int EXPECTED_RESET_STEPS = 145;
+#endif
+
 #define TEST(name) std::printf("  [RESET] %-58s ... ", name)
 #define PASS() do { std::printf("PASS\n"); tests_passed++; } while (0)
 #define FAIL(message) do { std::printf("FAIL: %s\n", message); tests_failed++; return; } while (0)
@@ -71,7 +77,7 @@ static void t_empty_reset() {
     TEST("empty core reset completes in the specified steps");
     BoomCoreState state;
     ResetControllerState ctrl;
-    CHECK(run_reset(state, ctrl) == 145, "unexpected initialization length");
+    CHECK(run_reset(state, ctrl) == EXPECTED_RESET_STEPS, "unexpected initialization length");
     CHECK(ctrl.completed, "reset did not complete");
     CHECK(state.frontend.pc == RESET_VECTOR, "wrong reset vector");
     PASS();
@@ -153,10 +159,10 @@ static void t_double_runtime_reset() {
     BoomCoreState state;
     dirty_state(state);
     ResetControllerState first;
-    CHECK(run_reset(state, first) == 145, "first reset length mismatch");
+    CHECK(run_reset(state, first) == EXPECTED_RESET_STEPS, "first reset length mismatch");
     dirty_state(state);
     ResetControllerState second;
-    CHECK(run_reset(state, second) == 145, "second reset length mismatch");
+    CHECK(run_reset(state, second) == EXPECTED_RESET_STEPS, "second reset length mismatch");
     CHECK(state.frontend.pc == RESET_VECTOR && state.rob.head == state.rob.tail, "second reset failed");
     PASS();
 }

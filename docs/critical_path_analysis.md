@@ -1,5 +1,11 @@
 # Critical Path Analysis
 
+## Gate 3.10 Current Result
+
+Gate 3.9 verbose schedules identify `lsu_module` load extraction as the longest state-local path at 5.90 ns, followed by execute multiply at 5.87 ns. The former includes ROB address RAM read, variable shift/mask/sign extension, and ROB data RAM write. This is current HLS schedule evidence, not post-route STA.
+
+The named normal-path loops are not legal pipeline targets: free-list and issue/LSU scans carry state recurrence, ROB commit carries ordered external handshakes, and branch-mask recovery is same-cycle. R1 reset-only reaches II=1 but is rejected by RTL latency/cycle evidence. See `reports/gate3_10/critical_path_inventory.csv`.
+
 Gate 3.7 preserves the conservative accepted baseline while characterizing the outer `CORE_CYCLE` pipeline transformation. This is not an accepted pipeline configuration and not a strict BOOM cycle-equivalence claim.
 
 ## Current Status

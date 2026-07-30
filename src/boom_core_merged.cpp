@@ -1345,6 +1345,21 @@ void boom_core_reset_step(BoomCoreState& state, ResetControllerState& reset_ctrl
         break;
 
     case RESET_ROB:
+#ifdef BOOM_HLS_GATE3_10_R1_RESET_ROB_PIPELINE
+        state.rob.head = 0;
+        state.rob.tail = 0;
+        state.rob.maybe_full = false;
+        state.rob.state = ROB_INIT;
+        state.rob.commit_count = 0;
+        state.rob.commit_valid = false;
+RESET_ROB_INIT:
+        for (int i = 0; i < ROB_DEPTH; i++) {
+#pragma HLS PIPELINE II=1
+            state.rob.entries[i].valid = false;
+            state.rob.entries[i].busy = false;
+        }
+        advance_reset(reset_ctrl, RESET_IQ);
+#else
         if (index == 0) {
             state.rob.head = 0;
             state.rob.tail = 0;
@@ -1360,6 +1375,7 @@ void boom_core_reset_step(BoomCoreState& state, ResetControllerState& reset_ctrl
         } else {
             reset_ctrl.index = index + 1;
         }
+#endif
         break;
 
     case RESET_IQ:

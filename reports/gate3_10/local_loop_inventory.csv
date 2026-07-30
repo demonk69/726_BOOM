@@ -1,0 +1,8 @@
+loop,function,trip_count,pipeline_status,classification,candidate,reason
+RESET_ROB_INIT,boom_core_reset_step,32,no,RESET_ONLY,yes,R1 experiment
+FREE_LIST_SELECT,rename_module,52,no,TRUE_STATE_RECURRENCE,no,head/count and first-match recurrence
+ISSUE_SELECT,issue_module,8,no,TRUE_STATE_RECURRENCE,no,oldest-ready and grant recurrence
+COMPACT_IQ,issue_module,8,no,TRUE_STATE_RECURRENCE,no,write-index recurrence
+CLEAR_RESOLVED_MASKS,clear_resolved_masks_in_state,8,no,SAME_CYCLE_RECOVERY,no,same-cycle recovery
+ROB_COMMIT,rob_commit_module,3,no,EXTERNAL_HANDSHAKE,no,ordered commit and trace backpressure
+LSU_LOAD_ISSUE_SCAN,lsu_module,32,no,TRUE_STATE_RECURRENCE,no,pending transaction and oldest order

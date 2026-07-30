@@ -1,0 +1,272 @@
+
+
+================================================================
+== Vitis HLS Report for 'boom_core_reset_step'
+================================================================
+* Date:           Thu Jul 30 09:18:43 2026
+
+* Version:        2021.2 (Build 3367213 on Tue Oct 19 02:47:39 MDT 2021)
+* Project:        hls_project
+* Solution:       solution_local (Vivado IP Flow Target)
+* Product family: zynquplus
+* Target device:  xczu7ev-ffvc1156-2-e
+
+
+================================================================
+== Performance Estimates
+================================================================
++ Timing: 
+    * Summary: 
+    +--------+---------+----------+------------+
+    |  Clock |  Target | Estimated| Uncertainty|
+    +--------+---------+----------+------------+
+    |ap_clk  |  4.50 ns|  1.875 ns|     1.22 ns|
+    +--------+---------+----------+------------+
+
++ Latency: 
+    * Summary: 
+    +---------+---------+----------+----------+-----+-----+---------+
+    |  Latency (cycles) |  Latency (absolute) |  Interval | Pipeline|
+    |   min   |   max   |    min   |    max   | min | max |   Type  |
+    +---------+---------+----------+----------+-----+-----+---------+
+    |        1|       35|  4.500 ns|  0.158 us|    1|   35|       no|
+    +---------+---------+----------+----------+-----+-----+---------+
+
+    + Detail: 
+        * Instance: 
+        N/A
+
+        * Loop: 
+        N/A
+
+============================================================
++ Verbose Summary: Synthesis Manager
+============================================================
+InlineROM: 1
+ExposeGlobal: 0
+============================================================
++ Verbose Summary: CDFG Model
+============================================================
+IsTopModel: 0
+ResetActiveHigh: 1
+IsCombinational: 0
+IsDatapathOnly: 0
+HasWiredReturn: 1
+HasMFsm: 0
+HasVarLatency: 1
+IsPipeline: 0
+IsRtlPipelined: 0
+IsInstanceOverlapped: 0
+IsDontTouch: 0
+HasImplIP: 0
+IsGatedGlobalClock: 0
+
+
+============================================================
++ Verbose Summary: Schedule
+============================================================
+* Number of FSM states : 2
+* Pipeline : 0
+* Dataflow Pipeline: 0
+
+* FSM state transitions: 
+1 --> 2 
+2 --> 
+
+* FSM state operations: 
+
+State 1 <SV = 0> <Delay = 1.87>
+ST_1 : Operation 3 [1/1] (0.00ns)   --->   "%specreset_ln1597 = specreset void @_ssdm_op_SpecReset, i1 %reset_ctrl_completed, i64 1, void @empty_11" [/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:1597]   --->   Operation 3 'specreset' 'specreset_ln1597' <Predicate = true> <Delay = 0.00>
+ST_1 : Operation 4 [1/1] (0.00ns)   --->   "%specreset_ln1597 = specreset void @_ssdm_op_SpecReset, i8 %reset_ctrl_index, i64 1, void @empty_11" [/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:1597]   --->   Operation 4 'specreset' 'specreset_ln1597' <Predicate = true> <Delay = 0.00>
+ST_1 : Operation 5 [1/1] (0.00ns)   --->   "%specreset_ln1597 = specreset void @_ssdm_op_SpecReset, i4 %reset_ctrl_phase, i64 1, void @empty_11" [/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:1597]   --->   Operation 5 'specreset' 'specreset_ln1597' <Predicate = true> <Delay = 0.00>
+ST_1 : Operation 6 [1/1] (0.00ns)   --->   "%index = load i8 %reset_ctrl_index" [/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:1277]   --->   Operation 6 'load' 'index' <Predicate = true> <Delay = 0.00>
+ST_1 : Operation 7 [1/1] (0.00ns)   --->   "%reset_ctrl_phase_load = load i4 %reset_ctrl_phase" [/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:1279]   --->   Operation 7 'load' 'reset_ctrl_phase_load' <Predicate = true> <Delay = 0.00>
+ST_1 : Operation 8 [1/1] (0.84ns)   --->   "%icmp_ln1328 = icmp_eq  i8 %index, i8 0" [/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:1328]   --->   Operation 8 'icmp' 'icmp_ln1328' <Predicate = true> <Delay = 0.84> <CoreInst = "Cmp">   --->   Core 9 'Cmp' <Latency = 0> <II = 1> <Delay = 0.84> <FuncUnit> <Opcode : 'icmp'> <InPorts = 2> <OutPorts = 1>
+ST_1 : Operation 9 [1/1] (0.75ns)   --->   "%switch_ln1279 = switch i4 %reset_ctrl_phase_load, void, i4 0, void, i4 1, void, i4 2, void, i4 3, void, i4 4, void %codeRepl, i4 5, void, i4 6, void, i4 7, void, i4 8, void, i4 9, void, i4 10, void" [/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:1279]   --->   Operation 9 'switch' 'switch_ln1279' <Predicate = true> <Delay = 0.75>
+ST_1 : Operation 10 [1/1] (1.23ns)   --->   "%store_ln1464 = store i64 0, i64 0" [/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:1464]   --->   Operation 10 'store' 'store_ln1464' <Predicate = (reset_ctrl_phase_load == 10)> <Delay = 1.23> <CoreInst = "RAM">   --->   Core 83 'RAM' <Latency = 1> <II = 1> <Delay = 1.23> <Storage> <Opcode : 'load' 'store'> <Ports = 2> <Width = 64> <Depth = 52> <RAM>
+ST_1 : Operation 11 [1/1] (0.73ns)   --->   "%store_ln1466 = store i4 11, i4 %reset_ctrl_phase" [/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:1466]   --->   Operation 11 'store' 'store_ln1466' <Predicate = (reset_ctrl_phase_load == 10)> <Delay = 0.73>
+ST_1 : Operation 12 [1/1] (0.62ns)   --->   "%store_ln1467 = store i8 0, i8 %reset_ctrl_index" [/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:1467]   --->   Operation 12 'store' 'store_ln1467' <Predicate = (reset_ctrl_phase_load == 10)> <Delay = 0.62>
+ST_1 : Operation 13 [1/1] (0.00ns)   --->   "%store_ln1468 = store i1 1, i1 %reset_ctrl_completed" [/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:1468]   --->   Operation 13 'store' 'store_ln1468' <Predicate = (reset_ctrl_phase_load == 10)> <Delay = 0.00>
+ST_1 : Operation 14 [1/1] (0.00ns)   --->   "%br_ln1469 = br void" [/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:1469]   --->   Operation 14 'br' 'br_ln1469' <Predicate = (reset_ctrl_phase_load == 10)> <Delay = 0.00>
+ST_1 : Operation 15 [1/1] (0.00ns)   --->   "%store_ln1456 = store i64 0, i64 %state_csr_cycle" [/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:1456]   --->   Operation 15 'store' 'store_ln1456' <Predicate = (reset_ctrl_phase_load == 9)> <Delay = 0.00>
+ST_1 : Operation 16 [1/1] (0.00ns)   --->   "%store_ln1457 = store i64 0, i64 %state_csr_instret" [/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:1457]   --->   Operation 16 'store' 'store_ln1457' <Predicate = (reset_ctrl_phase_load == 9)> <Delay = 0.00>
+ST_1 : Operation 17 [1/1] (0.73ns)   --->   "%store_ln1272 = store i4 10, i4 %reset_ctrl_phase" [/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:1272]   --->   Operation 17 'store' 'store_ln1272' <Predicate = (reset_ctrl_phase_load == 9)> <Delay = 0.73>
+ST_1 : Operation 18 [1/1] (0.62ns)   --->   "%store_ln1273 = store i8 0, i8 %reset_ctrl_index" [/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:1273]   --->   Operation 18 'store' 'store_ln1273' <Predicate = (reset_ctrl_phase_load == 9)> <Delay = 0.62>
+ST_1 : Operation 19 [1/1] (0.00ns)   --->   "%br_ln1461 = br void" [/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:1461]   --->   Operation 19 'br' 'br_ln1461' <Predicate = (reset_ctrl_phase_load == 9)> <Delay = 0.00>
+ST_1 : Operation 20 [1/1] (0.00ns)   --->   "%br_ln1422 = br i1 %icmp_ln1328, void %._crit_edge7, void" [/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:1422]   --->   Operation 20 'br' 'br_ln1422' <Predicate = (reset_ctrl_phase_load == 8)> <Delay = 0.00>
+ST_1 : Operation 21 [1/1] (0.00ns)   --->   "%store_ln1424 = store i3 0, i3 %state_lsu_ldq_tail" [/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:1424]   --->   Operation 21 'store' 'store_ln1424' <Predicate = (reset_ctrl_phase_load == 8 & icmp_ln1328)> <Delay = 0.00>
+ST_1 : Operation 22 [1/1] (0.00ns)   --->   "%store_ln1425 = store i8 0, i8 %state_lsu_ldq_count" [/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:1425]   --->   Operation 22 'store' 'store_ln1425' <Predicate = (reset_ctrl_phase_load == 8 & icmp_ln1328)> <Delay = 0.00>
+ST_1 : Operation 23 [1/1] (0.00ns)   --->   "%store_ln1427 = store i3 0, i3 %state_lsu_stq_tail" [/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:1427]   --->   Operation 23 'store' 'store_ln1427' <Predicate = (reset_ctrl_phase_load == 8 & icmp_ln1328)> <Delay = 0.00>
+ST_1 : Operation 24 [1/1] (0.00ns)   --->   "%store_ln1428 = store i8 0, i8 %state_lsu_stq_count" [/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:1428]   --->   Operation 24 'store' 'store_ln1428' <Predicate = (reset_ctrl_phase_load == 8 & icmp_ln1328)> <Delay = 0.00>
+ST_1 : Operation 25 [1/1] (0.00ns)   --->   "%store_ln1429 = store i32 1, i32 %state_lsu_next_transaction_id" [/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:1429]   --->   Operation 25 'store' 'store_ln1429' <Predicate = (reset_ctrl_phase_load == 8 & icmp_ln1328)> <Delay = 0.00>
+ST_1 : Operation 26 [1/1] (0.00ns)   --->   "%store_ln1430 = store i1 0, i1 %state_lsu_load_response_pending" [/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:1430]   --->   Operation 26 'store' 'store_ln1430' <Predicate = (reset_ctrl_phase_load == 8 & icmp_ln1328)> <Delay = 0.00>
+ST_1 : Operation 27 [1/1] (0.00ns)   --->   "%store_ln1431 = store i32 0, i32 %state_lsu_pending_load_transaction_id" [/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:1431]   --->   Operation 27 'store' 'store_ln1431' <Predicate = (reset_ctrl_phase_load == 8 & icmp_ln1328)> <Delay = 0.00>
+ST_1 : Operation 28 [1/1] (0.00ns)   --->   "%store_ln1432 = store i5 0, i5 %state_lsu_pending_load_rob_idx" [/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:1432]   --->   Operation 28 'store' 'store_ln1432' <Predicate = (reset_ctrl_phase_load == 8 & icmp_ln1328)> <Delay = 0.00>
+ST_1 : Operation 29 [1/1] (0.00ns)   --->   "%br_ln1433 = br void %._crit_edge7" [/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:1433]   --->   Operation 29 'br' 'br_ln1433' <Predicate = (reset_ctrl_phase_load == 8 & icmp_ln1328)> <Delay = 0.00>
+ST_1 : Operation 30 [1/1] (0.00ns)   --->   "%zext_ln1434 = zext i8 %index" [/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:1434]   --->   Operation 30 'zext' 'zext_ln1434' <Predicate = (reset_ctrl_phase_load == 8)> <Delay = 0.00>
+ST_1 : Operation 31 [1/1] (0.00ns)   --->   "%state_lsu_ldq_valid_addr = getelementptr i1 %state_lsu_ldq_valid, i64 0, i64 %zext_ln1434" [/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:1434]   --->   Operation 31 'getelementptr' 'state_lsu_ldq_valid_addr' <Predicate = (reset_ctrl_phase_load == 8)> <Delay = 0.00>
+ST_1 : Operation 32 [1/1] (0.67ns)   --->   "%store_ln1434 = store i1 0, i3 %state_lsu_ldq_valid_addr" [/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:1434]   --->   Operation 32 'store' 'store_ln1434' <Predicate = (reset_ctrl_phase_load == 8)> <Delay = 0.67> <CoreInst = "RAM">   --->   Core 83 'RAM' <Latency = 1> <II = 1> <Delay = 0.67> <Storage> <Opcode : 'load' 'store'> <Ports = 2> <Width = 1> <Depth = 8> <RAM>
+ST_1 : Operation 33 [1/1] (0.00ns)   --->   "%state_lsu_ldq_response_pending_addr = getelementptr i1 %state_lsu_ldq_response_pending, i64 0, i64 %zext_ln1434" [/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:1435]   --->   Operation 33 'getelementptr' 'state_lsu_ldq_response_pending_addr' <Predicate = (reset_ctrl_phase_load == 8)> <Delay = 0.00>
+ST_1 : Operation 34 [1/1] (0.67ns)   --->   "%store_ln1435 = store i1 0, i3 %state_lsu_ldq_response_pending_addr" [/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:1435]   --->   Operation 34 'store' 'store_ln1435' <Predicate = (reset_ctrl_phase_load == 8)> <Delay = 0.67> <CoreInst = "RAM">   --->   Core 83 'RAM' <Latency = 1> <II = 1> <Delay = 0.67> <Storage> <Opcode : 'load' 'store'> <Ports = 2> <Width = 1> <Depth = 8> <RAM>
+ST_1 : Operation 35 [1/1] (0.00ns)   --->   "%state_lsu_stq_valid_addr = getelementptr i1 %state_lsu_stq_valid, i64 0, i64 %zext_ln1434" [/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:1436]   --->   Operation 35 'getelementptr' 'state_lsu_stq_valid_addr' <Predicate = (reset_ctrl_phase_load == 8)> <Delay = 0.00>
+ST_1 : Operation 36 [1/1] (0.67ns)   --->   "%store_ln1436 = store i1 0, i3 %state_lsu_stq_valid_addr" [/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:1436]   --->   Operation 36 'store' 'store_ln1436' <Predicate = (reset_ctrl_phase_load == 8)> <Delay = 0.67> <CoreInst = "RAM">   --->   Core 83 'RAM' <Latency = 1> <II = 1> <Delay = 0.67> <Storage> <Opcode : 'load' 'store'> <Ports = 2> <Width = 1> <Depth = 8> <RAM>
+ST_1 : Operation 37 [1/1] (0.00ns)   --->   "%state_lsu_stq_committed_addr = getelementptr i1 %state_lsu_stq_committed, i64 0, i64 %zext_ln1434" [/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:1437]   --->   Operation 37 'getelementptr' 'state_lsu_stq_committed_addr' <Predicate = (reset_ctrl_phase_load == 8)> <Delay = 0.00>
+ST_1 : Operation 38 [1/1] (0.67ns)   --->   "%store_ln1437 = store i1 0, i3 %state_lsu_stq_committed_addr" [/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:1437]   --->   Operation 38 'store' 'store_ln1437' <Predicate = (reset_ctrl_phase_load == 8)> <Delay = 0.67> <CoreInst = "RAM">   --->   Core 83 'RAM' <Latency = 1> <II = 1> <Delay = 0.67> <Storage> <Opcode : 'load' 'store'> <Ports = 2> <Width = 1> <Depth = 8> <RAM>
+ST_1 : Operation 39 [1/1] (0.00ns)   --->   "%state_lsu_stq_issued_to_memory_addr = getelementptr i1 %state_lsu_stq_issued_to_memory, i64 0, i64 %zext_ln1434" [/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:1438]   --->   Operation 39 'getelementptr' 'state_lsu_stq_issued_to_memory_addr' <Predicate = (reset_ctrl_phase_load == 8)> <Delay = 0.00>
+ST_1 : Operation 40 [1/1] (0.67ns)   --->   "%store_ln1438 = store i1 0, i3 %state_lsu_stq_issued_to_memory_addr" [/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:1438]   --->   Operation 40 'store' 'store_ln1438' <Predicate = (reset_ctrl_phase_load == 8)> <Delay = 0.67> <CoreInst = "RAM">   --->   Core 83 'RAM' <Latency = 1> <II = 1> <Delay = 0.67> <Storage> <Opcode : 'load' 'store'> <Ports = 2> <Width = 1> <Depth = 8> <RAM>
+ST_1 : Operation 41 [1/1] (0.84ns)   --->   "%icmp_ln1439 = icmp_eq  i8 %index, i8 7" [/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:1439]   --->   Operation 41 'icmp' 'icmp_ln1439' <Predicate = (reset_ctrl_phase_load == 8)> <Delay = 0.84> <CoreInst = "Cmp">   --->   Core 9 'Cmp' <Latency = 0> <II = 1> <Delay = 0.84> <FuncUnit> <Opcode : 'icmp'> <InPorts = 2> <OutPorts = 1>
+ST_1 : Operation 42 [1/1] (0.00ns)   --->   "%br_ln1439 = br i1 %icmp_ln1439, void, void" [/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:1439]   --->   Operation 42 'br' 'br_ln1439' <Predicate = (reset_ctrl_phase_load == 8)> <Delay = 0.00>
+ST_1 : Operation 43 [1/1] (0.76ns)   --->   "%add_ln1442 = add i8 %index, i8 1" [/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:1442]   --->   Operation 43 'add' 'add_ln1442' <Predicate = (reset_ctrl_phase_load == 8 & !icmp_ln1439)> <Delay = 0.76> <CoreInst = "Adder">   --->   Core 1 'Adder' <Latency = 0> <II = 1> <Delay = 0.76> <FuncUnit> <Opcode : 'add' 'sub'> <InPorts = 2> <OutPorts = 1>
+ST_1 : Operation 44 [1/1] (0.42ns)   --->   "%br_ln0 = br void"   --->   Operation 44 'br' 'br_ln0' <Predicate = (reset_ctrl_phase_load == 8 & !icmp_ln1439)> <Delay = 0.42>
+ST_1 : Operation 45 [1/1] (0.73ns)   --->   "%store_ln1272 = store i4 9, i4 %reset_ctrl_phase" [/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:1272]   --->   Operation 45 'store' 'store_ln1272' <Predicate = (reset_ctrl_phase_load == 8 & icmp_ln1439)> <Delay = 0.73>
+ST_1 : Operation 46 [1/1] (0.42ns)   --->   "%br_ln1441 = br void" [/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:1441]   --->   Operation 46 'br' 'br_ln1441' <Predicate = (reset_ctrl_phase_load == 8 & icmp_ln1439)> <Delay = 0.42>
+ST_1 : Operation 47 [1/1] (0.00ns)   --->   "%store_ln1415 = store i1 0, i1 %state_execute_alu_results_valid_0" [/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:1415]   --->   Operation 47 'store' 'store_ln1415' <Predicate = (reset_ctrl_phase_load == 7)> <Delay = 0.00>
+ST_1 : Operation 48 [1/1] (0.00ns)   --->   "%store_ln1416 = store i1 0, i1 %state_execute_alu_results_mispredict_0" [/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:1416]   --->   Operation 48 'store' 'store_ln1416' <Predicate = (reset_ctrl_phase_load == 7)> <Delay = 0.00>
+ST_1 : Operation 49 [1/1] (0.00ns)   --->   "%store_ln1417 = store i1 0, i1 %state_execute_alu_results_memory_valid_0" [/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:1417]   --->   Operation 49 'store' 'store_ln1417' <Predicate = (reset_ctrl_phase_load == 7)> <Delay = 0.00>
+ST_1 : Operation 50 [1/1] (0.73ns)   --->   "%store_ln1272 = store i4 8, i4 %reset_ctrl_phase" [/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:1272]   --->   Operation 50 'store' 'store_ln1272' <Predicate = (reset_ctrl_phase_load == 7)> <Delay = 0.73>
+ST_1 : Operation 51 [1/1] (0.62ns)   --->   "%store_ln1273 = store i8 0, i8 %reset_ctrl_index" [/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:1273]   --->   Operation 51 'store' 'store_ln1273' <Predicate = (reset_ctrl_phase_load == 7)> <Delay = 0.62>
+ST_1 : Operation 52 [1/1] (0.00ns)   --->   "%br_ln1419 = br void" [/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:1419]   --->   Operation 52 'br' 'br_ln1419' <Predicate = (reset_ctrl_phase_load == 7)> <Delay = 0.00>
+ST_1 : Operation 53 [1/1] (0.00ns)   --->   "%br_ln1398 = br i1 %icmp_ln1328, void %._crit_edge6, void" [/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:1398]   --->   Operation 53 'br' 'br_ln1398' <Predicate = (reset_ctrl_phase_load == 6)> <Delay = 0.00>
+ST_1 : Operation 54 [1/1] (0.00ns)   --->   "%store_ln1399 = store i8 0, i8 %state_branch_state_active_mask" [/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:1399]   --->   Operation 54 'store' 'store_ln1399' <Predicate = (reset_ctrl_phase_load == 6 & icmp_ln1328)> <Delay = 0.00>
+ST_1 : Operation 55 [1/1] (0.00ns)   --->   "%store_ln1400 = store i32 0, i32 %state_branch_state_allocations" [/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:1400]   --->   Operation 55 'store' 'store_ln1400' <Predicate = (reset_ctrl_phase_load == 6 & icmp_ln1328)> <Delay = 0.00>
+ST_1 : Operation 56 [1/1] (0.00ns)   --->   "%store_ln1401 = store i32 0, i32 %state_branch_state_releases" [/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:1401]   --->   Operation 56 'store' 'store_ln1401' <Predicate = (reset_ctrl_phase_load == 6 & icmp_ln1328)> <Delay = 0.00>
+ST_1 : Operation 57 [1/1] (0.00ns)   --->   "%store_ln1402 = store i32 0, i32 %state_branch_state_mispredicts" [/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:1402]   --->   Operation 57 'store' 'store_ln1402' <Predicate = (reset_ctrl_phase_load == 6 & icmp_ln1328)> <Delay = 0.00>
+ST_1 : Operation 58 [1/1] (0.00ns)   --->   "%store_ln1403 = store i32 0, i32 %state_branch_state_rollbacks" [/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:1403]   --->   Operation 58 'store' 'store_ln1403' <Predicate = (reset_ctrl_phase_load == 6 & icmp_ln1328)> <Delay = 0.00>
+ST_1 : Operation 59 [1/1] (0.00ns)   --->   "%br_ln1404 = br void %._crit_edge6" [/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:1404]   --->   Operation 59 'br' 'br_ln1404' <Predicate = (reset_ctrl_phase_load == 6 & icmp_ln1328)> <Delay = 0.00>
+ST_1 : Operation 60 [1/1] (0.00ns)   --->   "%zext_ln1405 = zext i8 %index" [/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:1405]   --->   Operation 60 'zext' 'zext_ln1405' <Predicate = (reset_ctrl_phase_load == 6)> <Delay = 0.00>
+ST_1 : Operation 61 [1/1] (0.00ns)   --->   "%state_branch_state_tag_valid_addr = getelementptr i1 %state_branch_state_tag_valid, i64 0, i64 %zext_ln1405" [/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:1405]   --->   Operation 61 'getelementptr' 'state_branch_state_tag_valid_addr' <Predicate = (reset_ctrl_phase_load == 6)> <Delay = 0.00>
+ST_1 : Operation 62 [1/1] (0.67ns)   --->   "%store_ln1405 = store i1 0, i3 %state_branch_state_tag_valid_addr" [/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:1405]   --->   Operation 62 'store' 'store_ln1405' <Predicate = (reset_ctrl_phase_load == 6)> <Delay = 0.67> <CoreInst = "RAM">   --->   Core 83 'RAM' <Latency = 1> <II = 1> <Delay = 0.67> <Storage> <Opcode : 'load' 'store'> <Ports = 2> <Width = 1> <Depth = 8> <RAM>
+ST_1 : Operation 63 [1/1] (0.00ns)   --->   "%state_branch_state_snapshot_valid_addr = getelementptr i1 %state_branch_state_snapshot_valid, i64 0, i64 %zext_ln1405" [/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:1406]   --->   Operation 63 'getelementptr' 'state_branch_state_snapshot_valid_addr' <Predicate = (reset_ctrl_phase_load == 6)> <Delay = 0.00>
+ST_1 : Operation 64 [1/1] (0.67ns)   --->   "%store_ln1406 = store i1 0, i3 %state_branch_state_snapshot_valid_addr" [/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:1406]   --->   Operation 64 'store' 'store_ln1406' <Predicate = (reset_ctrl_phase_load == 6)> <Delay = 0.67> <CoreInst = "RAM">   --->   Core 83 'RAM' <Latency = 1> <II = 1> <Delay = 0.67> <Storage> <Opcode : 'load' 'store'> <Ports = 2> <Width = 1> <Depth = 8> <RAM>
+ST_1 : Operation 65 [1/1] (0.84ns)   --->   "%icmp_ln1407 = icmp_eq  i8 %index, i8 7" [/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:1407]   --->   Operation 65 'icmp' 'icmp_ln1407' <Predicate = (reset_ctrl_phase_load == 6)> <Delay = 0.84> <CoreInst = "Cmp">   --->   Core 9 'Cmp' <Latency = 0> <II = 1> <Delay = 0.84> <FuncUnit> <Opcode : 'icmp'> <InPorts = 2> <OutPorts = 1>
+ST_1 : Operation 66 [1/1] (0.00ns)   --->   "%br_ln1407 = br i1 %icmp_ln1407, void, void" [/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:1407]   --->   Operation 66 'br' 'br_ln1407' <Predicate = (reset_ctrl_phase_load == 6)> <Delay = 0.00>
+ST_1 : Operation 67 [1/1] (0.76ns)   --->   "%add_ln1410 = add i8 %index, i8 1" [/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:1410]   --->   Operation 67 'add' 'add_ln1410' <Predicate = (reset_ctrl_phase_load == 6 & !icmp_ln1407)> <Delay = 0.76> <CoreInst = "Adder">   --->   Core 1 'Adder' <Latency = 0> <II = 1> <Delay = 0.76> <FuncUnit> <Opcode : 'add' 'sub'> <InPorts = 2> <OutPorts = 1>
+ST_1 : Operation 68 [1/1] (0.42ns)   --->   "%br_ln0 = br void"   --->   Operation 68 'br' 'br_ln0' <Predicate = (reset_ctrl_phase_load == 6 & !icmp_ln1407)> <Delay = 0.42>
+ST_1 : Operation 69 [1/1] (0.73ns)   --->   "%store_ln1272 = store i4 7, i4 %reset_ctrl_phase" [/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:1272]   --->   Operation 69 'store' 'store_ln1272' <Predicate = (reset_ctrl_phase_load == 6 & icmp_ln1407)> <Delay = 0.73>
+ST_1 : Operation 70 [1/1] (0.42ns)   --->   "%br_ln1409 = br void" [/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:1409]   --->   Operation 70 'br' 'br_ln1409' <Predicate = (reset_ctrl_phase_load == 6 & icmp_ln1407)> <Delay = 0.42>
+ST_1 : Operation 71 [1/1] (0.00ns)   --->   "%br_ln1382 = br i1 %icmp_ln1328, void %._crit_edge5, void" [/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:1382]   --->   Operation 71 'br' 'br_ln1382' <Predicate = (reset_ctrl_phase_load == 5)> <Delay = 0.00>
+ST_1 : Operation 72 [1/1] (0.00ns)   --->   "%store_ln1384 = store i3 0, i3 %state_issue_alu_iq_tail" [/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:1384]   --->   Operation 72 'store' 'store_ln1384' <Predicate = (reset_ctrl_phase_load == 5 & icmp_ln1328)> <Delay = 0.00>
+ST_1 : Operation 73 [1/1] (0.00ns)   --->   "%store_ln1385 = store i8 0, i8 %state_issue_alu_iq_count" [/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:1385]   --->   Operation 73 'store' 'store_ln1385' <Predicate = (reset_ctrl_phase_load == 5 & icmp_ln1328)> <Delay = 0.00>
+ST_1 : Operation 74 [1/1] (0.00ns)   --->   "%br_ln1386 = br void %._crit_edge5" [/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:1386]   --->   Operation 74 'br' 'br_ln1386' <Predicate = (reset_ctrl_phase_load == 5 & icmp_ln1328)> <Delay = 0.00>
+ST_1 : Operation 75 [1/1] (0.00ns)   --->   "%zext_ln1387 = zext i8 %index" [/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:1387]   --->   Operation 75 'zext' 'zext_ln1387' <Predicate = (reset_ctrl_phase_load == 5)> <Delay = 0.00>
+ST_1 : Operation 76 [1/1] (0.00ns)   --->   "%state_issue_alu_iq_entries_valid_addr = getelementptr i1 %state_issue_alu_iq_entries_valid, i64 0, i64 %zext_ln1387" [/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:1387]   --->   Operation 76 'getelementptr' 'state_issue_alu_iq_entries_valid_addr' <Predicate = (reset_ctrl_phase_load == 5)> <Delay = 0.00>
+ST_1 : Operation 77 [1/1] (0.67ns)   --->   "%store_ln1387 = store i1 0, i3 %state_issue_alu_iq_entries_valid_addr" [/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:1387]   --->   Operation 77 'store' 'store_ln1387' <Predicate = (reset_ctrl_phase_load == 5)> <Delay = 0.67> <CoreInst = "RAM">   --->   Core 83 'RAM' <Latency = 1> <II = 1> <Delay = 0.67> <Storage> <Opcode : 'load' 'store'> <Ports = 2> <Width = 1> <Depth = 8> <RAM>
+ST_1 : Operation 78 [1/1] (0.00ns)   --->   "%state_issue_alu_iq_entries_request_addr = getelementptr i1 %state_issue_alu_iq_entries_request, i64 0, i64 %zext_ln1387" [/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:1388]   --->   Operation 78 'getelementptr' 'state_issue_alu_iq_entries_request_addr' <Predicate = (reset_ctrl_phase_load == 5)> <Delay = 0.00>
+ST_1 : Operation 79 [1/1] (0.67ns)   --->   "%store_ln1388 = store i1 0, i3 %state_issue_alu_iq_entries_request_addr" [/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:1388]   --->   Operation 79 'store' 'store_ln1388' <Predicate = (reset_ctrl_phase_load == 5)> <Delay = 0.67> <CoreInst = "RAM">   --->   Core 83 'RAM' <Latency = 1> <II = 1> <Delay = 0.67> <Storage> <Opcode : 'load' 'store'> <Ports = 2> <Width = 1> <Depth = 8> <RAM>
+ST_1 : Operation 80 [1/1] (0.00ns)   --->   "%state_issue_alu_iq_entries_granted_addr = getelementptr i1 %state_issue_alu_iq_entries_granted, i64 0, i64 %zext_ln1387" [/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:1389]   --->   Operation 80 'getelementptr' 'state_issue_alu_iq_entries_granted_addr' <Predicate = (reset_ctrl_phase_load == 5)> <Delay = 0.00>
+ST_1 : Operation 81 [1/1] (0.67ns)   --->   "%store_ln1389 = store i1 0, i3 %state_issue_alu_iq_entries_granted_addr" [/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:1389]   --->   Operation 81 'store' 'store_ln1389' <Predicate = (reset_ctrl_phase_load == 5)> <Delay = 0.67> <CoreInst = "RAM">   --->   Core 83 'RAM' <Latency = 1> <II = 1> <Delay = 0.67> <Storage> <Opcode : 'load' 'store'> <Ports = 2> <Width = 1> <Depth = 8> <RAM>
+ST_1 : Operation 82 [1/1] (0.84ns)   --->   "%icmp_ln1390 = icmp_eq  i8 %index, i8 7" [/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:1390]   --->   Operation 82 'icmp' 'icmp_ln1390' <Predicate = (reset_ctrl_phase_load == 5)> <Delay = 0.84> <CoreInst = "Cmp">   --->   Core 9 'Cmp' <Latency = 0> <II = 1> <Delay = 0.84> <FuncUnit> <Opcode : 'icmp'> <InPorts = 2> <OutPorts = 1>
+ST_1 : Operation 83 [1/1] (0.00ns)   --->   "%br_ln1390 = br i1 %icmp_ln1390, void, void" [/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:1390]   --->   Operation 83 'br' 'br_ln1390' <Predicate = (reset_ctrl_phase_load == 5)> <Delay = 0.00>
+ST_1 : Operation 84 [1/1] (0.76ns)   --->   "%add_ln1393 = add i8 %index, i8 1" [/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:1393]   --->   Operation 84 'add' 'add_ln1393' <Predicate = (reset_ctrl_phase_load == 5 & !icmp_ln1390)> <Delay = 0.76> <CoreInst = "Adder">   --->   Core 1 'Adder' <Latency = 0> <II = 1> <Delay = 0.76> <FuncUnit> <Opcode : 'add' 'sub'> <InPorts = 2> <OutPorts = 1>
+ST_1 : Operation 85 [1/1] (0.42ns)   --->   "%br_ln0 = br void"   --->   Operation 85 'br' 'br_ln0' <Predicate = (reset_ctrl_phase_load == 5 & !icmp_ln1390)> <Delay = 0.42>
+ST_1 : Operation 86 [1/1] (0.73ns)   --->   "%store_ln1272 = store i4 6, i4 %reset_ctrl_phase" [/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:1272]   --->   Operation 86 'store' 'store_ln1272' <Predicate = (reset_ctrl_phase_load == 5 & icmp_ln1390)> <Delay = 0.73>
+ST_1 : Operation 87 [1/1] (0.42ns)   --->   "%br_ln1392 = br void" [/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:1392]   --->   Operation 87 'br' 'br_ln1392' <Predicate = (reset_ctrl_phase_load == 5 & icmp_ln1390)> <Delay = 0.42>
+ST_1 : Operation 88 [2/2] (0.00ns)   --->   "%call_ln0 = call void @boom_core_reset_step_Pipeline_RESET_ROB_INIT, i1 %state_rob_entries_valid, i1 %state_rob_entries_busy"   --->   Operation 88 'call' 'call_ln0' <Predicate = (reset_ctrl_phase_load == 4)> <Delay = 0.00> <CoreType = "Generic">   --->   Core 0 '' <Latency = 0> <II = 1> <Delay = 1.00> <Generic> <Opcode : >
+ST_1 : Operation 89 [1/1] (0.00ns)   --->   "%br_ln1328 = br i1 %icmp_ln1328, void %._crit_edge, void" [/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:1328]   --->   Operation 89 'br' 'br_ln1328' <Predicate = (reset_ctrl_phase_load == 3)> <Delay = 0.00>
+ST_1 : Operation 90 [1/1] (0.00ns)   --->   "%store_ln1329 = store i6 1, i6 %state_rename_int_free_list_head" [/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:1329]   --->   Operation 90 'store' 'store_ln1329' <Predicate = (reset_ctrl_phase_load == 3 & icmp_ln1328)> <Delay = 0.00>
+ST_1 : Operation 91 [1/1] (0.00ns)   --->   "%store_ln1330 = store i6 0, i6 %state_rename_int_free_list_tail" [/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:1330]   --->   Operation 91 'store' 'store_ln1330' <Predicate = (reset_ctrl_phase_load == 3 & icmp_ln1328)> <Delay = 0.00>
+ST_1 : Operation 92 [1/1] (0.00ns)   --->   "%store_ln1331 = store i8 51, i8 %state_rename_int_free_list_count" [/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:1331]   --->   Operation 92 'store' 'store_ln1331' <Predicate = (reset_ctrl_phase_load == 3 & icmp_ln1328)> <Delay = 0.00>
+ST_1 : Operation 93 [1/1] (0.00ns)   --->   "%br_ln1335 = br void %._crit_edge" [/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:1335]   --->   Operation 93 'br' 'br_ln1335' <Predicate = (reset_ctrl_phase_load == 3 & icmp_ln1328)> <Delay = 0.00>
+ST_1 : Operation 94 [1/1] (0.00ns)   --->   "%zext_ln1336 = zext i8 %index" [/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:1336]   --->   Operation 94 'zext' 'zext_ln1336' <Predicate = (reset_ctrl_phase_load == 3)> <Delay = 0.00>
+ST_1 : Operation 95 [1/1] (0.00ns)   --->   "%state_rename_int_free_list_free_list_addr = getelementptr i8 %state_rename_int_free_list_free_list, i64 0, i64 %zext_ln1336" [/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:1336]   --->   Operation 95 'getelementptr' 'state_rename_int_free_list_free_list_addr' <Predicate = (reset_ctrl_phase_load == 3)> <Delay = 0.00>
+ST_1 : Operation 96 [1/1] (0.67ns)   --->   "%store_ln1336 = store i8 %index, i6 %state_rename_int_free_list_free_list_addr" [/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:1336]   --->   Operation 96 'store' 'store_ln1336' <Predicate = (reset_ctrl_phase_load == 3)> <Delay = 0.67> <CoreInst = "RAM">   --->   Core 83 'RAM' <Latency = 1> <II = 1> <Delay = 0.67> <Storage> <Opcode : 'load' 'store'> <Ports = 2> <Width = 8> <Depth = 52> <RAM>
+ST_1 : Operation 97 [1/1] (0.00ns)   --->   "%state_rename_int_free_list_busy_table_addr = getelementptr i1 %state_rename_int_free_list_busy_table, i64 0, i64 %zext_ln1336" [/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:1337]   --->   Operation 97 'getelementptr' 'state_rename_int_free_list_busy_table_addr' <Predicate = (reset_ctrl_phase_load == 3)> <Delay = 0.00>
+ST_1 : Operation 98 [1/1] (0.67ns)   --->   "%store_ln1337 = store i1 0, i6 %state_rename_int_free_list_busy_table_addr" [/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:1337]   --->   Operation 98 'store' 'store_ln1337' <Predicate = (reset_ctrl_phase_load == 3)> <Delay = 0.67> <CoreInst = "RAM">   --->   Core 83 'RAM' <Latency = 1> <II = 1> <Delay = 0.67> <Storage> <Opcode : 'load' 'store'> <Ports = 2> <Width = 1> <Depth = 52> <RAM>
+ST_1 : Operation 99 [1/1] (0.84ns)   --->   "%icmp_ln1340 = icmp_eq  i8 %index, i8 51" [/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:1340]   --->   Operation 99 'icmp' 'icmp_ln1340' <Predicate = (reset_ctrl_phase_load == 3)> <Delay = 0.84> <CoreInst = "Cmp">   --->   Core 9 'Cmp' <Latency = 0> <II = 1> <Delay = 0.84> <FuncUnit> <Opcode : 'icmp'> <InPorts = 2> <OutPorts = 1>
+ST_1 : Operation 100 [1/1] (0.00ns)   --->   "%br_ln1340 = br i1 %icmp_ln1340, void, void" [/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:1340]   --->   Operation 100 'br' 'br_ln1340' <Predicate = (reset_ctrl_phase_load == 3)> <Delay = 0.00>
+ST_1 : Operation 101 [1/1] (0.76ns)   --->   "%add_ln1343 = add i8 %index, i8 1" [/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:1343]   --->   Operation 101 'add' 'add_ln1343' <Predicate = (reset_ctrl_phase_load == 3 & !icmp_ln1340)> <Delay = 0.76> <CoreInst = "Adder">   --->   Core 1 'Adder' <Latency = 0> <II = 1> <Delay = 0.76> <FuncUnit> <Opcode : 'add' 'sub'> <InPorts = 2> <OutPorts = 1>
+ST_1 : Operation 102 [1/1] (0.42ns)   --->   "%br_ln0 = br void"   --->   Operation 102 'br' 'br_ln0' <Predicate = (reset_ctrl_phase_load == 3 & !icmp_ln1340)> <Delay = 0.42>
+ST_1 : Operation 103 [1/1] (0.73ns)   --->   "%store_ln1272 = store i4 4, i4 %reset_ctrl_phase" [/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:1272]   --->   Operation 103 'store' 'store_ln1272' <Predicate = (reset_ctrl_phase_load == 3 & icmp_ln1340)> <Delay = 0.73>
+ST_1 : Operation 104 [1/1] (0.42ns)   --->   "%br_ln1342 = br void" [/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:1342]   --->   Operation 104 'br' 'br_ln1342' <Predicate = (reset_ctrl_phase_load == 3 & icmp_ln1340)> <Delay = 0.42>
+ST_1 : Operation 105 [1/1] (0.00ns)   --->   "%zext_ln1316 = zext i8 %index" [/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:1316]   --->   Operation 105 'zext' 'zext_ln1316' <Predicate = (reset_ctrl_phase_load == 2)> <Delay = 0.00>
+ST_1 : Operation 106 [1/1] (0.00ns)   --->   "%state_rename_int_map_table_map_table_addr = getelementptr i8 %state_rename_int_map_table_map_table, i64 0, i64 %zext_ln1316" [/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:1316]   --->   Operation 106 'getelementptr' 'state_rename_int_map_table_map_table_addr' <Predicate = (reset_ctrl_phase_load == 2)> <Delay = 0.00>
+ST_1 : Operation 107 [1/1] (0.67ns)   --->   "%store_ln1316 = store i8 0, i5 %state_rename_int_map_table_map_table_addr" [/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:1316]   --->   Operation 107 'store' 'store_ln1316' <Predicate = (reset_ctrl_phase_load == 2)> <Delay = 0.67> <CoreInst = "RAM">   --->   Core 83 'RAM' <Latency = 1> <II = 1> <Delay = 0.67> <Storage> <Opcode : 'load' 'store'> <Ports = 2> <Width = 8> <Depth = 32> <RAM>
+ST_1 : Operation 108 [1/1] (0.00ns)   --->   "%state_rename_int_map_table_committed_map_table_addr = getelementptr i8 %state_rename_int_map_table_committed_map_table, i64 0, i64 %zext_ln1316" [/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:1317]   --->   Operation 108 'getelementptr' 'state_rename_int_map_table_committed_map_table_addr' <Predicate = (reset_ctrl_phase_load == 2)> <Delay = 0.00>
+ST_1 : Operation 109 [1/1] (0.67ns)   --->   "%store_ln1317 = store i8 0, i5 %state_rename_int_map_table_committed_map_table_addr" [/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:1317]   --->   Operation 109 'store' 'store_ln1317' <Predicate = (reset_ctrl_phase_load == 2)> <Delay = 0.67> <CoreInst = "RAM">   --->   Core 83 'RAM' <Latency = 1> <II = 1> <Delay = 0.67> <Storage> <Opcode : 'load' 'store'> <Ports = 2> <Width = 8> <Depth = 32> <RAM>
+ST_1 : Operation 110 [1/1] (0.84ns)   --->   "%icmp_ln1320 = icmp_eq  i8 %index, i8 31" [/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:1320]   --->   Operation 110 'icmp' 'icmp_ln1320' <Predicate = (reset_ctrl_phase_load == 2)> <Delay = 0.84> <CoreInst = "Cmp">   --->   Core 9 'Cmp' <Latency = 0> <II = 1> <Delay = 0.84> <FuncUnit> <Opcode : 'icmp'> <InPorts = 2> <OutPorts = 1>
+ST_1 : Operation 111 [1/1] (0.00ns)   --->   "%br_ln1320 = br i1 %icmp_ln1320, void, void" [/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:1320]   --->   Operation 111 'br' 'br_ln1320' <Predicate = (reset_ctrl_phase_load == 2)> <Delay = 0.00>
+ST_1 : Operation 112 [1/1] (0.76ns)   --->   "%add_ln1323 = add i8 %index, i8 1" [/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:1323]   --->   Operation 112 'add' 'add_ln1323' <Predicate = (reset_ctrl_phase_load == 2 & !icmp_ln1320)> <Delay = 0.76> <CoreInst = "Adder">   --->   Core 1 'Adder' <Latency = 0> <II = 1> <Delay = 0.76> <FuncUnit> <Opcode : 'add' 'sub'> <InPorts = 2> <OutPorts = 1>
+ST_1 : Operation 113 [1/1] (0.42ns)   --->   "%br_ln0 = br void"   --->   Operation 113 'br' 'br_ln0' <Predicate = (reset_ctrl_phase_load == 2 & !icmp_ln1320)> <Delay = 0.42>
+ST_1 : Operation 114 [1/1] (0.73ns)   --->   "%store_ln1272 = store i4 3, i4 %reset_ctrl_phase" [/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:1272]   --->   Operation 114 'store' 'store_ln1272' <Predicate = (reset_ctrl_phase_load == 2 & icmp_ln1320)> <Delay = 0.73>
+ST_1 : Operation 115 [1/1] (0.42ns)   --->   "%br_ln1322 = br void" [/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:1322]   --->   Operation 115 'br' 'br_ln1322' <Predicate = (reset_ctrl_phase_load == 2 & icmp_ln1320)> <Delay = 0.42>
+ST_1 : Operation 116 [1/1] (0.00ns)   --->   "%store_ln1299 = store i64 65600, i64 %state_frontend_pc" [/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:1299]   --->   Operation 116 'store' 'store_ln1299' <Predicate = (reset_ctrl_phase_load == 1)> <Delay = 0.00>
+ST_1 : Operation 117 [1/1] (0.00ns)   --->   "%store_ln1300 = store i1 0, i1 %state_frontend_reset_done" [/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:1300]   --->   Operation 117 'store' 'store_ln1300' <Predicate = (reset_ctrl_phase_load == 1)> <Delay = 0.00>
+ST_1 : Operation 118 [1/1] (0.00ns)   --->   "%store_ln1301 = store i1 0, i1 %state_frontend_request_sent" [/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:1301]   --->   Operation 118 'store' 'store_ln1301' <Predicate = (reset_ctrl_phase_load == 1)> <Delay = 0.00>
+ST_1 : Operation 119 [1/1] (0.00ns)   --->   "%store_ln1302 = store i32 0, i32 %state_frontend_fetch_id" [/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:1302]   --->   Operation 119 'store' 'store_ln1302' <Predicate = (reset_ctrl_phase_load == 1)> <Delay = 0.00>
+ST_1 : Operation 120 [1/1] (0.00ns)   --->   "%store_ln1303 = store i32 0, i32 %state_frontend_pending_fetch_id" [/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:1303]   --->   Operation 120 'store' 'store_ln1303' <Predicate = (reset_ctrl_phase_load == 1)> <Delay = 0.00>
+ST_1 : Operation 121 [1/1] (0.00ns)   --->   "%store_ln1304 = store i1 0, i1 %state_frontend_response_received" [/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:1304]   --->   Operation 121 'store' 'store_ln1304' <Predicate = (reset_ctrl_phase_load == 1)> <Delay = 0.00>
+ST_1 : Operation 122 [1/1] (0.00ns)   --->   "%store_ln1305 = store i64 0, i64 %state_frontend_resp_address" [/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:1305]   --->   Operation 122 'store' 'store_ln1305' <Predicate = (reset_ctrl_phase_load == 1)> <Delay = 0.00>
+ST_1 : Operation 123 [1/1] (0.00ns)   --->   "%store_ln1306 = store i32 0, i32 %state_frontend_resp_instruction" [/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:1306]   --->   Operation 123 'store' 'store_ln1306' <Predicate = (reset_ctrl_phase_load == 1)> <Delay = 0.00>
+ST_1 : Operation 124 [1/1] (0.00ns)   --->   "%store_ln1311 = store i1 0, i1 %state_frontend_fetch_packet_valid" [/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:1311]   --->   Operation 124 'store' 'store_ln1311' <Predicate = (reset_ctrl_phase_load == 1)> <Delay = 0.00>
+ST_1 : Operation 125 [1/1] (0.73ns)   --->   "%store_ln1272 = store i4 2, i4 %reset_ctrl_phase" [/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:1272]   --->   Operation 125 'store' 'store_ln1272' <Predicate = (reset_ctrl_phase_load == 1)> <Delay = 0.73>
+ST_1 : Operation 126 [1/1] (0.62ns)   --->   "%store_ln1273 = store i8 0, i8 %reset_ctrl_index" [/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:1273]   --->   Operation 126 'store' 'store_ln1273' <Predicate = (reset_ctrl_phase_load == 1)> <Delay = 0.62>
+ST_1 : Operation 127 [1/1] (0.00ns)   --->   "%br_ln1313 = br void" [/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:1313]   --->   Operation 127 'br' 'br_ln1313' <Predicate = (reset_ctrl_phase_load == 1)> <Delay = 0.00>
+ST_1 : Operation 128 [1/1] (0.00ns)   --->   "%store_ln1287 = store i1 0, i1 %state_brupdate_valid" [/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:1287]   --->   Operation 128 'store' 'store_ln1287' <Predicate = (reset_ctrl_phase_load == 0)> <Delay = 0.00>
+ST_1 : Operation 129 [1/1] (0.00ns)   --->   "%store_ln1288 = store i1 0, i1 %state_brupdate_mispredict" [/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:1288]   --->   Operation 129 'store' 'store_ln1288' <Predicate = (reset_ctrl_phase_load == 0)> <Delay = 0.00>
+ST_1 : Operation 130 [1/1] (0.00ns)   --->   "%store_ln1289 = store i1 0, i1 %state_decode_dec_valids_0" [/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:1289]   --->   Operation 130 'store' 'store_ln1289' <Predicate = (reset_ctrl_phase_load == 0)> <Delay = 0.00>
+ST_1 : Operation 131 [1/1] (0.00ns)   --->   "%store_ln1290 = store i1 0, i1 %state_rename_renamed_valids_0" [/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:1290]   --->   Operation 131 'store' 'store_ln1290' <Predicate = (reset_ctrl_phase_load == 0)> <Delay = 0.00>
+ST_1 : Operation 132 [1/1] (0.00ns)   --->   "%store_ln1291 = store i1 0, i1 %state_issue_issued_valids_0" [/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:1291]   --->   Operation 132 'store' 'store_ln1291' <Predicate = (reset_ctrl_phase_load == 0)> <Delay = 0.00>
+ST_1 : Operation 133 [1/1] (0.73ns)   --->   "%store_ln1272 = store i4 1, i4 %reset_ctrl_phase" [/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:1272]   --->   Operation 133 'store' 'store_ln1272' <Predicate = (reset_ctrl_phase_load == 0)> <Delay = 0.73>
+ST_1 : Operation 134 [1/1] (0.62ns)   --->   "%store_ln1273 = store i8 0, i8 %reset_ctrl_index" [/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:1273]   --->   Operation 134 'store' 'store_ln1273' <Predicate = (reset_ctrl_phase_load == 0)> <Delay = 0.62>
+ST_1 : Operation 135 [1/1] (0.00ns)   --->   "%br_ln1296 = br void" [/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:1296]   --->   Operation 135 'br' 'br_ln1296' <Predicate = (reset_ctrl_phase_load == 0)> <Delay = 0.00>
+ST_1 : Operation 136 [1/1] (0.00ns)   --->   "%store_ln1473 = store i1 1, i1 %reset_ctrl_completed" [/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:1473]   --->   Operation 136 'store' 'store_ln1473' <Predicate = (reset_ctrl_phase_load == 15) | (reset_ctrl_phase_load == 14) | (reset_ctrl_phase_load == 13) | (reset_ctrl_phase_load == 12) | (reset_ctrl_phase_load == 11)> <Delay = 0.00>
+ST_1 : Operation 137 [1/1] (0.00ns)   --->   "%br_ln1474 = br void" [/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:1474]   --->   Operation 137 'br' 'br_ln1474' <Predicate = (reset_ctrl_phase_load == 15) | (reset_ctrl_phase_load == 14) | (reset_ctrl_phase_load == 13) | (reset_ctrl_phase_load == 12) | (reset_ctrl_phase_load == 11)> <Delay = 0.00>
+
+State 2 <SV = 1> <Delay = 0.73>
+ST_2 : Operation 138 [1/1] (0.00ns)   --->   "%storemerge = phi i8 %add_ln1442, void, i8 0, void" [/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:1442]   --->   Operation 138 'phi' 'storemerge' <Predicate = (reset_ctrl_phase_load == 8)> <Delay = 0.00>
+ST_2 : Operation 139 [1/1] (0.62ns)   --->   "%store_ln1273 = store i8 %storemerge, i8 %reset_ctrl_index" [/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:1273]   --->   Operation 139 'store' 'store_ln1273' <Predicate = (reset_ctrl_phase_load == 8)> <Delay = 0.62>
+ST_2 : Operation 140 [1/1] (0.00ns)   --->   "%br_ln1444 = br void" [/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:1444]   --->   Operation 140 'br' 'br_ln1444' <Predicate = (reset_ctrl_phase_load == 8)> <Delay = 0.00>
+ST_2 : Operation 141 [1/1] (0.00ns)   --->   "%storemerge1 = phi i8 %add_ln1410, void, i8 0, void" [/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:1410]   --->   Operation 141 'phi' 'storemerge1' <Predicate = (reset_ctrl_phase_load == 6)> <Delay = 0.00>
+ST_2 : Operation 142 [1/1] (0.62ns)   --->   "%store_ln1273 = store i8 %storemerge1, i8 %reset_ctrl_index" [/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:1273]   --->   Operation 142 'store' 'store_ln1273' <Predicate = (reset_ctrl_phase_load == 6)> <Delay = 0.62>
+ST_2 : Operation 143 [1/1] (0.00ns)   --->   "%br_ln1412 = br void" [/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:1412]   --->   Operation 143 'br' 'br_ln1412' <Predicate = (reset_ctrl_phase_load == 6)> <Delay = 0.00>
+ST_2 : Operation 144 [1/1] (0.00ns)   --->   "%storemerge2 = phi i8 %add_ln1393, void, i8 0, void" [/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:1393]   --->   Operation 144 'phi' 'storemerge2' <Predicate = (reset_ctrl_phase_load == 5)> <Delay = 0.00>
+ST_2 : Operation 145 [1/1] (0.62ns)   --->   "%store_ln1273 = store i8 %storemerge2, i8 %reset_ctrl_index" [/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:1273]   --->   Operation 145 'store' 'store_ln1273' <Predicate = (reset_ctrl_phase_load == 5)> <Delay = 0.62>
+ST_2 : Operation 146 [1/1] (0.00ns)   --->   "%br_ln1395 = br void" [/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:1395]   --->   Operation 146 'br' 'br_ln1395' <Predicate = (reset_ctrl_phase_load == 5)> <Delay = 0.00>
+ST_2 : Operation 147 [1/1] (0.00ns)   --->   "%store_ln1349 = store i5 0, i5 %state_rob_head" [/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:1349]   --->   Operation 147 'store' 'store_ln1349' <Predicate = (reset_ctrl_phase_load == 4)> <Delay = 0.00>
+ST_2 : Operation 148 [1/1] (0.00ns)   --->   "%store_ln1350 = store i5 0, i5 %state_rob_tail" [/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:1350]   --->   Operation 148 'store' 'store_ln1350' <Predicate = (reset_ctrl_phase_load == 4)> <Delay = 0.00>
+ST_2 : Operation 149 [1/1] (0.00ns)   --->   "%store_ln1351 = store i1 0, i1 %state_rob_maybe_full" [/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:1351]   --->   Operation 149 'store' 'store_ln1351' <Predicate = (reset_ctrl_phase_load == 4)> <Delay = 0.00>
+ST_2 : Operation 150 [1/1] (0.00ns)   --->   "%store_ln1352 = store i2 0, i2 %state_rob_state" [/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:1352]   --->   Operation 150 'store' 'store_ln1352' <Predicate = (reset_ctrl_phase_load == 4)> <Delay = 0.00>
+ST_2 : Operation 151 [1/2] (0.00ns)   --->   "%call_ln0 = call void @boom_core_reset_step_Pipeline_RESET_ROB_INIT, i1 %state_rob_entries_valid, i1 %state_rob_entries_busy"   --->   Operation 151 'call' 'call_ln0' <Predicate = (reset_ctrl_phase_load == 4)> <Delay = 0.00> <CoreType = "Generic">   --->   Core 0 '' <Latency = 0> <II = 1> <Delay = 1.00> <Generic> <Opcode : >
+ST_2 : Operation 152 [1/1] (0.73ns)   --->   "%store_ln1272 = store i4 5, i4 %reset_ctrl_phase" [/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:1272]   --->   Operation 152 'store' 'store_ln1272' <Predicate = (reset_ctrl_phase_load == 4)> <Delay = 0.73>
+ST_2 : Operation 153 [1/1] (0.62ns)   --->   "%store_ln1273 = store i8 0, i8 %reset_ctrl_index" [/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:1273]   --->   Operation 153 'store' 'store_ln1273' <Predicate = (reset_ctrl_phase_load == 4)> <Delay = 0.62>
+ST_2 : Operation 154 [1/1] (0.00ns)   --->   "%br_ln1379 = br void" [/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:1379]   --->   Operation 154 'br' 'br_ln1379' <Predicate = (reset_ctrl_phase_load == 4)> <Delay = 0.00>
+ST_2 : Operation 155 [1/1] (0.00ns)   --->   "%storemerge3 = phi i8 %add_ln1343, void, i8 0, void" [/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:1343]   --->   Operation 155 'phi' 'storemerge3' <Predicate = (reset_ctrl_phase_load == 3)> <Delay = 0.00>
+ST_2 : Operation 156 [1/1] (0.62ns)   --->   "%store_ln1273 = store i8 %storemerge3, i8 %reset_ctrl_index" [/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:1273]   --->   Operation 156 'store' 'store_ln1273' <Predicate = (reset_ctrl_phase_load == 3)> <Delay = 0.62>
+ST_2 : Operation 157 [1/1] (0.00ns)   --->   "%br_ln1345 = br void" [/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:1345]   --->   Operation 157 'br' 'br_ln1345' <Predicate = (reset_ctrl_phase_load == 3)> <Delay = 0.00>
+ST_2 : Operation 158 [1/1] (0.00ns)   --->   "%storemerge4 = phi i8 %add_ln1323, void, i8 0, void" [/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:1323]   --->   Operation 158 'phi' 'storemerge4' <Predicate = (reset_ctrl_phase_load == 2)> <Delay = 0.00>
+ST_2 : Operation 159 [1/1] (0.62ns)   --->   "%store_ln1273 = store i8 %storemerge4, i8 %reset_ctrl_index" [/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:1273]   --->   Operation 159 'store' 'store_ln1273' <Predicate = (reset_ctrl_phase_load == 2)> <Delay = 0.62>
+ST_2 : Operation 160 [1/1] (0.00ns)   --->   "%br_ln1325 = br void" [/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:1325]   --->   Operation 160 'br' 'br_ln1325' <Predicate = (reset_ctrl_phase_load == 2)> <Delay = 0.00>
+ST_2 : Operation 161 [1/1] (0.00ns)   --->   "%ret_ln1476 = ret" [/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:1476]   --->   Operation 161 'ret' 'ret_ln1476' <Predicate = true> <Delay = 0.00>
+
+
+============================================================
++ Verbose Summary: Timing violations
+============================================================
+Target clock period: 4.5ns, clock uncertainty: 1.22ns.
+
+ <State 1>: 1.87ns
+The critical path consists of the following:
+	'store' operation ('store_ln1464', /home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:1464) of constant 0 on array 'state_int_rf' [69]  (1.24 ns)
+	blocking operation 0.638 ns on control path)
+
+ <State 2>: 0.739ns
+The critical path consists of the following:
+	'store' operation ('store_ln1272', /home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:1272) of constant 5 on static variable 'reset_ctrl_phase' [182]  (0.739 ns)
+
+
+============================================================
++ Verbose Summary: Binding
+============================================================
+N/A
+* FSMD analyzer results:
+  - Output states:
+ - Input state : 
+  - Chain level:
+	State 1
+	State 2
+
+
+============================================================
++ Verbose Summary: Datapath Resource usage 
+============================================================
+N/A

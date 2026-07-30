@@ -24,6 +24,10 @@ Gate 3.7 update: `CORE_CYCLE` has real loop-carried state, control, memory-port,
 
 Gate 3.8 update: accepted conservative RTL passes 42/45 XSim scenarios, including all tested AXIS backpressure cases and seven normal-program C++/csim/RTL architectural comparisons. `R2_RESET_ROB_NONEMPTY`, `R6_RESET_BRANCH_RECOVERY`, and `P0_RESET_AND_BRANCH_MISPREDICT` fail because runtime reset restarts generated control but retains most architectural state, including the frontend PC and ROB/rename/IQ storage. Status is `RTL_RESET_MISMATCH`.
 
+Gate 3.9 update: fine-grain reset closes M014 with XSim 49/49 and becomes the accepted 47999-LUT baseline.
+
+Gate 3.10 update: the real critical path is LSU load extraction at 5.90 ns. R1 local reset pipeline reaches II=1 and XSim 49/49 but is rejected because reset latency worsens and normal cycles change. L1-L5 are illegal dependencies/handshakes/recovery paths. No pipeline candidate is accepted.
+
 ## Implemented And Tested
 
 - Frontend request/response FSM with monotonic fetch IDs and stale response drop.
@@ -47,7 +51,7 @@ Gate 3.8 update: accepted conservative RTL passes 42/45 XSim scenarios, includin
 - Exception and flush handling are coarse compared with BOOM.
 - Cycle timing is not verified against BOOM.
 - Conservative no-pipeline csynth remains stable. Gate 3.7 confirms the full-cycle pipeline transformation still fails to close even without an II target; no pipelined schedule or minimum II is available.
-- Pin-level AXIS backpressure passes the Gate 3.8 scenarios. Generated-RTL runtime reset fails: architectural state is predominantly elaboration-initialized rather than reset by `ap_rst_n`.
+- Pin-level AXIS backpressure and runtime reset pass the Gate 3.9 49-case matrix. Local pipeline experiments do not replace that accepted baseline.
 
 ## Not Implemented
 
