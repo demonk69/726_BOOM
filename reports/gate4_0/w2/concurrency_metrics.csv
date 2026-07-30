@@ -1,0 +1,16 @@
+metric,value,status,evidence
+random_seeds,64,PASS,reports/gate4_0/w2/regression/logs/w2_dual_grant_random_tests.log
+cycles_per_seed,32,PASS,reports/gate4_0/w2/regression/logs/w2_dual_grant_random_tests.log
+total_random_cycles,2048,PASS,reports/gate4_0/w2/regression/logs/w2_dual_grant_random_tests.log
+port_ready_mask_00,550,COVERED,reports/gate4_0/w2/regression/logs/w2_dual_grant_random_tests.log
+port_ready_mask_01,508,COVERED,reports/gate4_0/w2/regression/logs/w2_dual_grant_random_tests.log
+port_ready_mask_10,498,COVERED,reports/gate4_0/w2/regression/logs/w2_dual_grant_random_tests.log
+port_ready_mask_11,492,COVERED,reports/gate4_0/w2/regression/logs/w2_dual_grant_random_tests.log
+dual_grant_cycles,63,COVERED,reports/gate4_0/w2/regression/logs/w2_dual_grant_random_tests.log
+accepted_grants,382,COVERED,reports/gate4_0/w2/regression/logs/w2_dual_grant_random_tests.log
+retained_grants,424,COVERED,reports/gate4_0/w2/regression/logs/w2_dual_grant_random_tests.log
+dropped_generated_grants,0,PASS,reports/gate4_0/w2/regression/logs/w2_dual_grant_random_tests.log
+peak_generated_grants_per_cycle,2,VERIFIED,tb/differential/w2_dual_grant_tests.cpp
+peak_accepted_grants_per_cycle,1,VERIFIED,tb/differential/w2_dual_grant_tests.cpp
+peak_integer_execution_intake_per_cycle,1,UNCHANGED,src/issue.cpp
+reserved_fp_lane_valid,0,PASS,tb/differential/w2_dual_grant_tests.cpp

@@ -14,7 +14,8 @@ static int tests_passed=0, tests_failed=0;
 
 static MicroOp make_uop(uint8_t id, uint8_t br_mask=0) {
     MicroOp u;
-    u.uopc = id;
+    u.uopc = 1;
+    u.debug_inst = id;
     u.iq_type = IQ_ALU;
     u.fu_code = FU_ALU;
     u.branch.br_mask = br_mask;
@@ -58,7 +59,7 @@ void kill_none() { TEST("kill none preserves all busy survivors");
     for (int i=0; i<4; i++) seed_entry(s, i, (uint8_t)i, 0, false);
     set_count(s, 4); boom::issue_module(s);
     CHECK(s.issue.alu_iq.count == 4, "count changed");
-    for (int i=0; i<4; i++) CHECK(s.issue.alu_iq.entries[i].uop.uopc == i, "order changed"); PASS(); }
+    for (int i=0; i<4; i++) CHECK(s.issue.alu_iq.entries[i].uop.debug_inst == (uint32_t)i, "order changed"); PASS(); }
 
 void kill_all() { TEST("kill all removes all entries");
     BoomCoreState s; set_mispredict(s, 1);
@@ -71,9 +72,9 @@ void kill_alternating() { TEST("kill alternating keeps stable survivor order");
     for (int i=0; i<6; i++) seed_entry(s, i, (uint8_t)i, (i & 1) ? 0 : 1, false);
     set_count(s, 6); boom::issue_module(s);
     CHECK(s.issue.alu_iq.count == 3, "wrong survivor count");
-    CHECK(s.issue.alu_iq.entries[0].uop.uopc == 1, "survivor 0 wrong");
-    CHECK(s.issue.alu_iq.entries[1].uop.uopc == 3, "survivor 1 wrong");
-    CHECK(s.issue.alu_iq.entries[2].uop.uopc == 5, "survivor 2 wrong"); PASS(); }
+    CHECK(s.issue.alu_iq.entries[0].uop.debug_inst == 1, "survivor 0 wrong");
+    CHECK(s.issue.alu_iq.entries[1].uop.debug_inst == 3, "survivor 1 wrong");
+    CHECK(s.issue.alu_iq.entries[2].uop.debug_inst == 5, "survivor 2 wrong"); PASS(); }
 
 void issue_one_kill_younger() { TEST("issue one plus kill younger");
     BoomCoreState s; set_mispredict(s, 1);
@@ -82,7 +83,7 @@ void issue_one_kill_younger() { TEST("issue one plus kill younger");
     seed_entry(s, 2, 12, 1, true);
     set_count(s, 3); boom::issue_module(s);
     CHECK(s.issue.issued_valids[0], "nothing issued");
-    CHECK(s.issue.issued_uops[0].uopc == 10, "wrong issued uop");
+    CHECK(s.issue.issued_uops[0].debug_inst == 10, "wrong issued uop");
     CHECK(s.issue.alu_iq.count == 0, "younger killed entries survived"); PASS(); }
 
 void issue_one_kill_older() { TEST("issue one after killing older entry");
@@ -91,7 +92,7 @@ void issue_one_kill_older() { TEST("issue one after killing older entry");
     seed_entry(s, 1, 21, 0, true);
     set_count(s, 2); boom::issue_module(s);
     CHECK(s.issue.issued_valids[0], "survivor not issued");
-    CHECK(s.issue.issued_uops[0].uopc == 21, "wrong survivor issued");
+    CHECK(s.issue.issued_uops[0].debug_inst == 21, "wrong survivor issued");
     CHECK(s.issue.alu_iq.count == 0, "issued survivor not removed"); PASS(); }
 
 void dispatch_issue_kill_same_cycle() { TEST("dispatch plus issue plus kill same cycle");
@@ -102,7 +103,7 @@ void dispatch_issue_kill_same_cycle() { TEST("dispatch plus issue plus kill same
     s.rename.renamed_uops[0] = make_uop(31, 0);
     boom::issue_module(s);
     CHECK(s.issue.issued_valids[0], "dispatch survivor not issued");
-    CHECK(s.issue.issued_uops[0].uopc == 31, "wrong dispatch issued");
+    CHECK(s.issue.issued_uops[0].debug_inst == 31, "wrong dispatch issued");
     CHECK(s.issue.alu_iq.count == 0, "queue not compacted after issue"); PASS(); }
 
 void iq_full_compact() { TEST("IQ full compacts killed entries");
@@ -132,7 +133,7 @@ void oldest_ready_kept() { TEST("oldest ready selection preserved");
     for (int i=0; i<3; i++) seed_entry(s, i, (uint8_t)(70+i), 0, true);
     set_count(s, 3); boom::issue_module(s);
     CHECK(s.issue.issued_valids[0], "no issue");
-    CHECK(s.issue.issued_uops[0].uopc == 70, "oldest ready not selected");
+    CHECK(s.issue.issued_uops[0].debug_inst == 70, "oldest ready not selected");
     CHECK(s.issue.alu_iq.count == 2, "issued entry not removed"); PASS(); }
 
 int main() {

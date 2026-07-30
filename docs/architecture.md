@@ -48,7 +48,17 @@ Cycle N:
 ### State Machine
 - All pipeline state is held in BoomCoreState
 - Each cycle updates the persistent BoomCoreState in serialized module order; the Gate 3.2 baseline no longer copies the whole state into a `next_state` temporary
-- Flushes are coarse and partial; full br_mask/snapshot recovery is not implemented
+- Branch-mask snapshot recovery is implemented for the supported subset; exception/global flush behavior remains coarse
+
+### Gate 4.0 Issue Lanes
+
+| Lane | Class | W2 behavior |
+|---:|---|---|
+| 0 | MEM | Oldest ready supported integer load/store candidate |
+| 1 | INT | Oldest ready supported integer ALU/multiply candidate |
+| 2 | FP | Reserved and always invalid; FP queue/path is not implemented |
+
+The reference `IssueWidth=3` does not imply three integer lanes. W2 has an integer selection width of two but retains an acceptance and execute intake width of one. A second generated grant is held in the IQ under the conservative acceptance budget; W2 makes no dual-execution claim.
 
 ## Module Hierarchy
 
@@ -58,8 +68,8 @@ boom_core_top (ap_ctrl_none, CORE_CYCLE loop)
     ├── frontend (ICache + FetchBuffer + BranchPredictor stub)
     ├── decode  (DecodeUnit + BranchMaskGeneration)
     ├── rename  (RenameMapTable + FreeList + BusyTable)
-    ├── issue   (IssueUnitCollapsing ×3 + Dispatch)
-    ├── execute (ALUExeUnit + FPUExeUnit stub)
+    ├── issue   (shared implemented IQ, fixed MEM/INT selection lanes + reserved FP lane)
+    ├── execute (single accepted integer intake + FPU stub)
     ├── branch  (Branch resolution + brupdate generation)
     ├── lsu     (minimal integer Load/Store Queue subset)
     ├── commit  (ROB commit + Writeback)
@@ -77,6 +87,7 @@ boom_core_top (ap_ctrl_none, CORE_CYCLE loop)
 - Commit trace differential comparison vs Verilator reference model
 - Format: cycle,pc,inst,rd,rd_val,exception per committed instruction
 - Gate 3.2 conservative baseline Vitis HLS csynth passes for `boom_core_top`; strict cycle equivalence remains insufficient-evidence
+- Gate 4.0 W2 dual MEM/INT selection passes source differential tests and generated-RTL verification; accepted execution remains single-uop
 
 ## Current Implementation Status
 

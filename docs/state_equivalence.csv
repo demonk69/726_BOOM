@@ -1,5 +1,5 @@
-# BOOM-HLS State Equivalence, Gate 3.5 Update 2026-07-26
-State,BOOM Expected,HLS Location,Status,Gate3_5 Notes
+# BOOM-HLS State Equivalence, Gate 4.0 W2 Update 2026-07-30
+State,BOOM Expected,HLS Location,Status,Notes
 PC and fetch request id,"Frontend tracks PC, outstanding fetch metadata, redirects, and kills stale responses",frontend.pc/fetch_id/pending_fetch_id,PARTIALLY_VERIFIED,"Monotonic fetch_id and stale response rejection verified; no ICache/FTQ/fetch buffer"
 Fetch response packet,"ICache response feeds fetch/decode with exception metadata",frontend.fetch_uop/fetch_packet_valid,PARTIALLY_VERIFIED,"Delayed response verified; exceptions partial"
 Speculative integer map table,"Rename reads speculative map for logical sources and updates ldst mapping",rename.int_map_table.map_table,PARTIALLY_VERIFIED,"WAR/WAW/RAW pass; Gate 3.3 branch snapshot restore implemented for supported subset"
@@ -9,7 +9,7 @@ Branch map snapshots,"BOOM snapshots map table per branch tag",rename.int_map_ta
 Integer free list,"Physical destination allocation and stale destination release",rename.int_free_list,PARTIALLY_VERIFIED,"stale_pdst recycle passes; Gate 3.3 per-branch allocation-list rollback implemented"
 Busy table,"Tracks physical register readiness and wakeup",rename.int_free_list.busy_table,PARTIALLY_VERIFIED,"allocation/free bits exist; Gate 3.3 recovery rebuilds busy state functionally from valid busy ROB entries; full wakeup network incomplete"
 ROB entries,"32-entry ROB with allocate, complete, commit, exception/flush",rob.entries/head/tail/maybe_full,PARTIALLY_VERIFIED,"full/wrap/commit order pass; Gate 3.3 younger branch kill implemented; PNR/exception timing partial"
-ALU issue queue,"8-entry collapsing integer issue queue",issue.alu_iq,PARTIALLY_VERIFIED,"oldest-ready, single implemented port, same-cycle dispatch/issue, branch kill/clear/compact pass; D4-IQ directed compaction tests 10/10 PASS but variant rejected by PPA"
+ALU issue queue,"8-entry collapsing integer issue queue",issue.alu_iq,PARTIALLY_VERIFIED,"W2 independently generates oldest-ready MEM and INT grants from the shared implemented IQ; branch kill/resolve, stable compaction, ready dispatch bypass/enqueue, lane backpressure, retained generated grants, and exception removal pass; acceptance remains one; full blocked-IQ dispatch retry remains unavailable"
 Mem issue queue,"8-entry memory issue queue",not implemented,NOT_IMPLEMENTED,"No Mem IQ"
 FPU issue queue,"8-entry FPU issue queue",not implemented,NOT_IMPLEMENTED,"No FPU IQ"
 Integer PRF,"52 physical integer registers",int_rf[52],PARTIALLY_VERIFIED,"architectural integer tests pass; port structure differs"

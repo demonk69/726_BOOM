@@ -9,6 +9,9 @@ enum FuCode : uint8_t {
     FU_FPU  = 4, FU_MEM = 5, FU_I2F = 6, FU_F2I = 7, FU_FDV = 8
 };
 enum IqType : uint8_t { IQ_MEM = 0, IQ_ALU = 1, IQ_FPU = 2 };
+enum IssuePortClass : uint8_t {
+    ISSUE_PORT_INT = 0, ISSUE_PORT_MEM = 1, ISSUE_PORT_UNSUPPORTED = 2
+};
 enum BrType : uint8_t { BR_N=0, BR_NE=1, BR_EQ=2, BR_GE=3, BR_GEU=4, BR_LT=5, BR_LTU=6, BR_J=7, BR_JR=8 };
 enum Op1Sel : uint8_t { OP1_RS1=0, OP1_IMU=1, OP1_PC=2, OP1_X0=3 };
 enum Op2Sel : uint8_t { OP2_RS2=0, OP2_IMM=1, OP2_IMU=2, OP2_IMZ=3, OP2_X0=4 };
@@ -63,6 +66,14 @@ struct MicroOp {
         ctrl={}; iw_state=0; iw_p1_poisoned=iw_p2_poisoned=false; branch={}; imm_packed=0; csr_addr=0;
         queue={}; rename={}; exception=false; exc_cause=0; bypassable=false; mem={};
         is_sys_pc2epc=is_unique=flush_on_commit=false; exc={}; debug={}; }
+};
+
+struct IssueGrant {
+    bool valid, accepted, from_dispatch;
+    uint8_t entry_index, port_class;
+    MicroOp uop;
+    IssueGrant() : valid(false), accepted(false), from_dispatch(false),
+        entry_index(0xff), port_class(ISSUE_PORT_UNSUPPORTED), uop() {}
 };
 
 struct RobEntry {

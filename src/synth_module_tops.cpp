@@ -67,14 +67,48 @@ void synth_rob_top(uint32_t seed_inst, uint64_t seed_pc, uint64_t& observable) {
 
 void synth_issue_top(uint32_t seed_inst, uint64_t seed_pc, uint64_t& observable) {
     static BoomCoreState state;
-    state.rename.renamed_valids[0] = true;
-    state.rename.renamed_uops[0].inst = seed_inst;
-    state.rename.renamed_uops[0].debug_pc = seed_pc;
-    state.rename.renamed_uops[0].uopc = 50;
-    state.rename.renamed_uops[0].iq_type = IQ_ALU;
-    state.rename.renamed_uops[0].fu_code = FU_ALU;
+    for (int i=0; i<ISSUE_QUEUE_ALU_DEPTH; i++) state.issue.alu_iq.entries[i]=IssueSlotEntry();
+    state.issue.alu_iq.head=0; state.issue.alu_iq.tail=0; state.issue.alu_iq.count=0;
+    state.rename.renamed_valids[0]=false;
+    state.brupdate=BranchUpdate();
+    state.issue.port_ready[MEM_ISSUE_LANE]=(seed_inst & 4u)!=0;
+    state.issue.port_ready[INT_ISSUE_LANE]=(seed_inst & 8u)!=0;
+    state.issue.port_ready[FP_ISSUE_LANE]=false;
+    int count=0;
+    if ((seed_inst & 1u)!=0) {
+        IssueSlotEntry& mem=state.issue.alu_iq.entries[count++];
+        mem.valid=true; mem.request=true; mem.uop.uopc=39; mem.uop.iq_type=IQ_MEM;
+        mem.uop.fu_code=FU_MEM; mem.uop.queue.rob_idx=1; mem.uop.debug_pc=seed_pc;
+        if ((seed_inst & 16u)!=0) mem.uop.branch.br_mask=1;
+    }
+    if ((seed_inst & 2u)!=0) {
+        IssueSlotEntry& integer=state.issue.alu_iq.entries[count++];
+        integer.valid=true; integer.request=true; integer.uop.uopc=1; integer.uop.iq_type=IQ_ALU;
+        integer.uop.fu_code=FU_ALU; integer.uop.queue.rob_idx=2; integer.uop.debug_pc=seed_pc+4;
+    }
+    state.issue.alu_iq.count=(uint8_t)count;
+    state.issue.alu_iq.tail=(uint8_t)(count%ISSUE_QUEUE_ALU_DEPTH);
+    if ((seed_inst & 16u)!=0) {
+        state.brupdate.valid=true; state.brupdate.mispredict=true;
+        state.brupdate.resolve_mask=1; state.brupdate.mispredict_mask=1;
+    }
     boom::issue_module(state);
-    observable = state.issue.alu_iq.count;
+    observable=(uint64_t)state.issue.alu_iq.count;
+    observable|=(uint64_t)state.issue.grants_generated<<8;
+    observable|=(uint64_t)state.issue.grants_accepted<<16;
+    observable|=(uint64_t)state.issue.grants_retained<<24;
+    observable|=(uint64_t)state.issue.grants_dropped<<32;
+    observable|=(uint64_t)state.issue.grants[MEM_ISSUE_LANE].valid<<40;
+    observable|=(uint64_t)state.issue.grants[MEM_ISSUE_LANE].accepted<<41;
+    observable|=(uint64_t)state.issue.grants[INT_ISSUE_LANE].valid<<42;
+    observable|=(uint64_t)state.issue.grants[INT_ISSUE_LANE].accepted<<43;
+    observable|=(uint64_t)state.issue.grants[FP_ISSUE_LANE].valid<<44;
+    uint8_t retained_rob=state.issue.grants[MEM_ISSUE_LANE].valid &&
+        !state.issue.grants[MEM_ISSUE_LANE].accepted ? state.issue.grants[MEM_ISSUE_LANE].uop.queue.rob_idx :
+        (state.issue.grants[INT_ISSUE_LANE].valid && !state.issue.grants[INT_ISSUE_LANE].accepted ?
+         state.issue.grants[INT_ISSUE_LANE].uop.queue.rob_idx : 0);
+    observable|=(uint64_t)retained_rob<<48;
+    observable|=(uint64_t)(state.issue.issued_valids[0] ? state.issue.issued_uops[0].queue.rob_idx : 0)<<56;
 }
 
 void synth_execute_top(uint8_t seed_uopc, uint64_t seed_rs1, uint64_t seed_rs2, uint64_t& observable) {

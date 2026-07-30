@@ -28,6 +28,10 @@ Gate 3.9 update: fine-grain reset closes M014 with XSim 49/49 and becomes the ac
 
 Gate 3.10 update: the real critical path is LSU load extraction at 5.90 ns. R1 local reset pipeline reaches II=1 and XSim 49/49 but is rejected because reset latency worsens and normal cycles change. L1-L5 are illegal dependencies/handshakes/recovery paths. No pipeline candidate is accepted.
 
+Gate 4.0 W1 update: fixed three-lane issue and execute-result interfaces are verified while implemented acceptance remains one uop per cycle.
+
+Gate 4.0 W2 update: the shared implemented IQ can generate one oldest-ready MEM grant and one oldest-ready INT grant in the same cycle. Independent lane backpressure retains unaccepted grants, but conservative execute intake remains one. Status is `W2_DUAL_SELECTION_VERIFIED`, not dual execution.
+
 ## Implemented And Tested
 
 - Frontend request/response FSM with monotonic fetch IDs and stale response drop.
@@ -35,7 +39,7 @@ Gate 3.10 update: the real critical path is LSU load extraction at 5.90 ns. R1 l
 - JAL, JALR, and conditional branches with always-not-taken baseline redirect behavior.
 - Integer rename map/free-list/stale-pdst commit release for single dispatch lane.
 - ROB allocate, complete, commit, full backpressure, and wrap behavior for current tests.
-- ALU issue queue dispatch/select/compact for one implemented execute lane.
+- Shared implemented issue queue dispatch/select/compact with fixed MEM/INT selection lanes and one accepted execute intake.
 - CSR cycle/instret and ECALL success/trap subset.
 - Commit trace output for directed tests.
 - Minimal integer LSU path for LB/LBU/LH/LHU/LW/LWU/LD and SB/SH/SW/SD in the current conservative single-lane path.
@@ -46,7 +50,7 @@ Gate 3.10 update: the real critical path is LSU load extraction at 5.90 ns. R1 l
 
 - Branch recovery is implemented for the supported HLS subset, but strict BOOM event/cycle timing is not verified and the original Chisel source checkout is unavailable for direct inspection.
 - M004 JALR redirect is verified only as a concrete Gate 1 functional test; Gate 3.3 branch recovery is tracked separately under M009.
-- Full BOOM IssueWidth=3 execution is not implemented; Gate 1 caps IQ grants to one implemented ALU lane.
+- Full BOOM IssueWidth=3 execution is not implemented; W2 can generate two class-specific grants but accepts at most one, and the FP lane remains unsupported.
 - Busy-table wakeup is simplified and not equivalent to BOOM's full bypass/wakeup network; Gate 3.3 recovery rebuilds busy state functionally from still-valid busy ROB entries.
 - Exception and flush handling are coarse compared with BOOM.
 - Cycle timing is not verified against BOOM.
@@ -104,3 +108,8 @@ Gate 3.10 update: the real critical path is LSU load extraction at 5.90 ns. R1 l
 - Gate 3.8 conservative csynth: PASS with 83286 LUT, 16611 FF, 16 BRAM_18K, 3 DSP, and 5.898 ns; accepted configuration remains unchanged.
 - Gate 3.8 readiness: `READY_FOR_WIDE_ISSUE_IMPLEMENTATION=false`, `READY_FOR_LOCAL_PIPELINE_OPTIMIZATION=false`, `READY_FOR_OFFICIAL_GATE_3=false`.
 - Official Chipyard/FESVR/DRAMSim trace: BLOCKED by missing original `/root/chipyard` generated-source path, `libfesvr`, `libdramsim`, and RISC-V ELF/binutils tools.
+- Gate 4.0 W1: fixed issue/result lane interface PASS; conservative `boom_core_top` is 51558 LUT, 12802 FF, 12 BRAM_18K, 3 DSP, and 5.898 ns.
+- Gate 4.0 W2 source verification: 177/177 recorded assertions PASS plus a 64-seed, 2048-cycle random differential campaign; 63 dual-grant cycles, 382 accepted, 424 retained, and 0 dropped generated grants.
+- Gate 4.0 W2 generated RTL: dedicated issue selection 5/5 PASS and full-core XSim 49/49 PASS.
+- Gate 4.0 W2 csynth: `boom_core_top` is 61760 LUT, 15213 FF, 12 BRAM_18K, 3 DSP, and 5.898 ns; this selection checkpoint is not the accepted PPA baseline.
+- Gate 4.0 W2 readiness: `READY_FOR_DUAL_EXECUTE_ACCEPTANCE_EXPERIMENT=true`, `READY_FOR_PARTIAL_WIDE_ISSUE_MAX2=false`, and `READY_FOR_OFFICIAL_GATE_3=false`.

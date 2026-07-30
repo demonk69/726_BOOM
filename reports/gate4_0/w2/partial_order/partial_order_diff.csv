@@ -1,0 +1,6 @@
+program,status,matched_dynamic_uops,unmatched_boom_uops,unmatched_hls_uops,per_uop_order_violations,raw_violations,waw_violations,war_violations,commit_order_violations,squash_violations,branch_recovery_violations,insufficient_identity_events,insufficient_signal_constraints,raw_insufficient_signal,waw_insufficient_signal,war_insufficient_signal,first_real_violation,legal_reorder_count,old_event_order_classification
+independent_alu,LEGAL_REORDER,8,0,0,0,0,0,0,0,0,0,0,47,5,1,1,,1,VALIDATION_METHOD_FALSE_POSITIVE
+raw_chain,LEGAL_REORDER,8,0,0,0,0,0,0,0,0,0,0,47,5,1,1,,1,VALIDATION_METHOD_FALSE_POSITIVE
+branch_taken,LEGAL_REORDER,9,0,0,0,0,0,0,0,0,0,0,52,5,1,1,,2,VALIDATION_METHOD_FALSE_POSITIVE
+branch_not_taken,LEGAL_REORDER,10,0,0,0,0,0,0,0,0,0,0,58,5,2,1,,2,VALIDATION_METHOD_FALSE_POSITIVE
+nested_branch,LEGAL_REORDER,10,0,0,0,0,0,0,0,0,0,0,59,7,1,1,,2,VALIDATION_METHOD_FALSE_POSITIVE

@@ -1,0 +1,31 @@
+=== BOOM-HLS W2 Dual Grant Directed Tests ===
+  [W2] 01 dual MEM+INT grants generated with budget-one acceptance    ... PASS
+  [W2] 02 single MEM class grants on fixed MEM lane                   ... PASS
+  [W2] 03 single INT class grants on fixed INT lane                   ... PASS
+  [W2] 04 two MEM entries produce only oldest MEM grant               ... PASS
+  [W2] 05 two INT entries produce only oldest INT grant               ... PASS
+  [W2] 06 2 MEM + 1 INT mix generates one grant per class             ... PASS
+  [W2] 07 1 MEM + 2 INT mix generates one grant per class             ... PASS
+  [W2] 08 dual grants identify distinct queue entries and ROBs        ... PASS
+  [W2] 09 oldest ready MEM is selected independently of INT           ... PASS
+  [W2] 10 oldest ready INT is selected independently of MEM           ... PASS
+  [W2] 11 RAW-busy source blocks grant and preserves old entry        ... PASS
+  [W2] 12 branch mispredict kills matching entries in stable order    ... PASS
+  [W2] 13 branch kill compacts survivors then generates dual grants   ... PASS
+  [W2] 14 correct resolve clears mask while dual grants proceed       ... PASS
+  [W2] 15 full IQ dual generation frees only accepted entry slot      ... PASS
+  [W2] 16 blocked same-class dispatch inserts after old acceptance    ... PASS
+  [W2] 17 empty-lane dispatch bypass grants without IQ insertion      ... PASS
+  [W2] 18 sparse IQ compacts valid survivors in physical order        ... PASS
+  [W2] 19 wrapped metadata normalizes after stable compaction         ... PASS
+  [W2] 20 reset controller clears pending IQ and dual-grant state     ... PASS
+  [W2] 21 unsupported ALU encoding neither grants nor drops           ... PASS
+  [W2] 22 FP uop remains unsupported by W2 integer issue              ... PASS
+  [W2] 23 reserved lane 2 is cleared and remains invalid on dual issue ... PASS
+  [W2] 24 each lane's ready backpressure independently redirects acceptance ... PASS
+  [W2] 25 both busy lanes retain both generated old grants            ... PASS
+  [W2] 26 RAW-busy dispatch cannot bypass issue readiness             ... PASS
+  [W2] 27 exception uops bypass selection storage                     ... PASS
+  [W2] 28 full blocked IQ does not generate unretainable dispatch grant ... PASS
+
+=== 28 passed, 0 failed, 28 total ===

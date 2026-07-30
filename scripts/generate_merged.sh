@@ -14,6 +14,7 @@ cat > "$OUT" << 'HEAD'
 #include "boom_types.hpp"
 #include "boom_state.hpp"
 #include "boom_interfaces.hpp"
+#include "issue.hpp"
 #include "reset.hpp"
 #include <cstdint>
 

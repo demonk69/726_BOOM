@@ -1,6 +1,7 @@
 #include "boom_config.hpp"
 #include "boom_types.hpp"
 #include "boom_state.hpp"
+#include "issue.hpp"
 
 namespace boom {
 
@@ -17,6 +18,7 @@ void execute_module(BoomCoreState& state) {
     for (int i=0; i<ISSUE_WIDTH && ri<DISPATCH_WIDTH; i++) {
         if (!iss.issued_valids[i]) continue;
         const MicroOp& uop = iss.issued_uops[i];
+        if (classify_issue_port(uop)==ISSUE_PORT_UNSUPPORTED) continue;
         if (state.brupdate.valid && state.brupdate.mispredict &&
             ((uop.branch.br_mask & state.brupdate.mispredict_mask) != 0)) continue;
 

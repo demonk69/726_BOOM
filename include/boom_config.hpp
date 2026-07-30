@@ -13,6 +13,10 @@
 #define DISPATCH_WIDTH      1
 #define ISSUE_WIDTH         3
 #define EXECUTE_RESULT_LANES ISSUE_WIDTH
+#define MEM_ISSUE_LANE      0
+#define INT_ISSUE_LANE      1
+#define FP_ISSUE_LANE       2
+#define INTEGER_ISSUE_PORTS 2
 #define COMMIT_WIDTH        1
 #define MACHINE_WIDTH       1
 
@@ -111,5 +115,8 @@ static_assert((1u << STQ_IDX_BITS) >= STQ_DEPTH, "STQ_IDX_BITS insufficient for 
 static_assert(FTQ_IDX_BITS >= 4, "FTQ_IDX_BITS too small");
 static_assert((1u << FTQ_IDX_BITS) >= FTQ_DEPTH, "FTQ_IDX_BITS insufficient for FTQ_DEPTH");
 static_assert(EXECUTE_RESULT_LANES == ISSUE_WIDTH, "execute result interface must match issue lanes");
+static_assert(ISSUE_WIDTH == 3, "SmallBoom fixed issue interface must contain MEM, INT, and FP lanes");
+static_assert(MEM_ISSUE_LANE != INT_ISSUE_LANE, "MEM and INT issue lanes must be distinct");
+static_assert(FP_ISSUE_LANE < ISSUE_WIDTH, "FP reserved lane must exist");
 
 #endif

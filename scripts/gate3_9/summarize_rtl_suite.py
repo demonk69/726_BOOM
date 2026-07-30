@@ -41,8 +41,9 @@ def main():
     parser = argparse.ArgumentParser(description="Create the Gate 3.9 RTL verification matrix")
     parser.add_argument("--status", required=True, type=Path)
     parser.add_argument("--output", required=True, type=Path)
+    parser.add_argument("--root", type=Path)
     args = parser.parse_args()
-    root = args.status.resolve().parents[2]
+    root = args.root.resolve() if args.root else args.status.resolve().parents[2]
     rows = []
 
     with args.status.open(newline="") as handle:

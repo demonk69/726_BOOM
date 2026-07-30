@@ -1,0 +1,16 @@
+
+****** xsim v2021.2 (64-bit)
+  **** SW Build 3367213 on Tue Oct 19 02:47:39 MDT 2021
+  **** IP Build 3369179 on Thu Oct 21 08:25:16 MDT 2021
+    ** Copyright 1986-2021 Xilinx, Inc. All Rights Reserved.
+
+source xsim.dir/gate3_9_snapshot/xsim_script.tcl
+# xsim {gate3_9_snapshot} -testplusarg PROGRAM=/home/lab_726/boom/hls_boom/build/gate4_0/w2_core_xsim/tohost.readmemh -testplusarg PROGRAM_NAME=tohost -testplusarg SCENARIO=R11_RESET_AFTER_TOHOST_CLEAR_AND_RESTART -testplusarg MAX_CYCLES=50000 -testplusarg TRACE=/home/lab_726/boom/hls_boom/reports/gate4_0/w2/rtl_traces/tohost_R11_RESET_AFTER_TOHOST_CLEAR_AND_RESTART.jsonl -autoloadwcfg -runall -onerror quit
+Time resolution is 1 ps
+run -all
+GATE3_8_IMEM program=/home/lab_726/boom/hls_boom/build/gate4_0/w2_core_xsim/tohost.readmemh
+GATE3_8_START scenario=R11_RESET_AFTER_TOHOST_CLEAR_AND_RESTART code=51 program=tohost max_cycles=50000
+GATE3_8_PASS scenario=R11_RESET_AFTER_TOHOST_CLEAR_AND_RESTART cycles=17425 commits=14 resets=2 imem=16 dmem=2 loads=0 stores=2 tohost=0000000000000001
+$finish called at time : 174295 ns : File "/home/lab_726/boom/hls_boom/rtl_tb/boom_core_rtl_tb.sv" Line 282
+exit
+INFO: [Common 17-206] Exiting xsim at Thu Jul 30 22:20:43 2026...

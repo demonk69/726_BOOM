@@ -1,0 +1,14 @@
+
+****** xsim v2021.2 (64-bit)
+  **** SW Build 3367213 on Tue Oct 19 02:47:39 MDT 2021
+  **** IP Build 3369179 on Thu Oct 21 08:25:16 MDT 2021
+    ** Copyright 1986-2021 Xilinx, Inc. All Rights Reserved.
+
+source xsim.dir/w2_issue_snapshot/xsim_script.tcl
+# xsim {w2_issue_snapshot} -testplusarg SEED=31 -testplusarg COUNT=0 -testplusarg GENERATED=1 -testplusarg ACCEPTED=1 -testplusarg RETAINED=0 -testplusarg MEM_VALID=0 -testplusarg MEM_ACCEPTED=0 -testplusarg INT_VALID=1 -testplusarg INT_ACCEPTED=1 -testplusarg SURVIVOR_ROB=0 -testplusarg ISSUED_ROB=2 -autoloadwcfg -runall -onerror quit
+Time resolution is 1 ps
+run -all
+W2_RTL_PASS observable=02000c0000010100
+$finish called at time : 1985 ns : File "/home/lab_726/boom/hls_boom/rtl_tb/gate4_0/w2_issue_select_tb.sv" Line 58
+exit
+INFO: [Common 17-206] Exiting xsim at Thu Jul 30 22:16:14 2026...

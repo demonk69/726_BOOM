@@ -1,0 +1,16 @@
+
+****** xsim v2021.2 (64-bit)
+  **** SW Build 3367213 on Tue Oct 19 02:47:39 MDT 2021
+  **** IP Build 3369179 on Thu Oct 21 08:25:16 MDT 2021
+    ** Copyright 1986-2021 Xilinx, Inc. All Rights Reserved.
+
+source xsim.dir/gate3_9_snapshot/xsim_script.tcl
+# xsim {gate3_9_snapshot} -testplusarg PROGRAM=/home/lab_726/boom/hls_boom/build/gate4_0/w2_core_xsim/load_store.readmemh -testplusarg PROGRAM_NAME=load_store -testplusarg SCENARIO=P1_RESET_AND_LOAD_RESPONSE -testplusarg MAX_CYCLES=50000 -testplusarg TRACE=/home/lab_726/boom/hls_boom/reports/gate4_0/w2/rtl_traces/load_store_P1_RESET_AND_LOAD_RESPONSE.jsonl -autoloadwcfg -runall -onerror quit
+Time resolution is 1 ps
+run -all
+GATE3_8_IMEM program=/home/lab_726/boom/hls_boom/build/gate4_0/w2_core_xsim/load_store.readmemh
+GATE3_8_START scenario=P1_RESET_AND_LOAD_RESPONSE code=41 program=load_store max_cycles=50000
+GATE3_8_PASS scenario=P1_RESET_AND_LOAD_RESPONSE cycles=23387 commits=20 resets=2 imem=23 dmem=5 loads=2 stores=3 tohost=0000000000000001
+$finish called at time : 233915 ns : File "/home/lab_726/boom/hls_boom/rtl_tb/boom_core_rtl_tb.sv" Line 282
+exit
+INFO: [Common 17-206] Exiting xsim at Thu Jul 30 22:19:14 2026...

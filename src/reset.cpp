@@ -23,6 +23,23 @@ void boom_core_reset_step(BoomCoreState& state, ResetControllerState& reset_ctrl
         state.issue.issued_valids[0] = false;
         state.issue.issued_valids[1] = false;
         state.issue.issued_valids[2] = false;
+        for (int i = 0; i < ISSUE_WIDTH; i++) {
+            state.issue.grants[i] = IssueGrant();
+            state.issue.port_ready[i] = (i != FP_ISSUE_LANE);
+        }
+        state.issue.grants_generated = 0;
+        state.issue.grants_accepted = 0;
+        state.issue.grants_retained = 0;
+        state.issue.grants_dropped = 0;
+        state.issue.cycles_with_0_grant = 0;
+        state.issue.cycles_with_1_grant = 0;
+        state.issue.cycles_with_2_grants = 0;
+        state.issue.total_grants = 0;
+        state.issue.mem_grants = 0;
+        state.issue.int_grants = 0;
+        state.issue.grant_stalls = 0;
+        state.issue.execute_acceptance_stalls = 0;
+        state.issue.dropped_grants = 0;
         state.rob.commit_valid = false;
         advance_reset(reset_ctrl, RESET_FRONTEND);
         break;

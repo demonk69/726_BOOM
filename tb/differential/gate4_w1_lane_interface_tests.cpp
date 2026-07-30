@@ -41,9 +41,10 @@ int main() {
     state.issue.alu_iq.tail = 2;
 
     boom::issue_module(state);
-    CHECK(state.issue.issued_valids[0], "W1 did not issue lane 0");
-    for (int lane = 1; lane < ISSUE_WIDTH; lane++) {
-        CHECK(!state.issue.issued_valids[lane], "W1 activated more than one issue lane");
+    CHECK(state.issue.issued_valids[0], "single execute intake did not accept the ALU uop");
+    CHECK(!state.issue.issued_valids[1], "W2 selection activated a second execute intake");
+    CHECK(!state.issue.issued_valids[FP_ISSUE_LANE], "reserved FP lane became active");
+    for (int lane = 0; lane < ISSUE_WIDTH; lane++) {
         state.execute.alu_results[lane].valid = true;
     }
 

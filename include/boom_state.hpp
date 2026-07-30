@@ -84,10 +84,23 @@ struct IssueQueueState {
 
 struct IssueState {
     IssueQueueState alu_iq;
+    IssueGrant grants[ISSUE_WIDTH];
     MicroOp issued_uops[ISSUE_WIDTH];
     bool    issued_valids[ISSUE_WIDTH];
-    IssueState() { for (int i=0; i<ISSUE_WIDTH; i++) {
-        issued_uops[i]=MicroOp(); issued_valids[i]=false; }}
+    bool    port_ready[ISSUE_WIDTH];
+    uint8_t grants_generated, grants_accepted, grants_retained, grants_dropped;
+    uint64_t cycles_with_0_grant, cycles_with_1_grant, cycles_with_2_grants;
+    uint64_t total_grants, mem_grants, int_grants, grant_stalls;
+    uint64_t execute_acceptance_stalls, dropped_grants;
+    IssueState() : grants_generated(0), grants_accepted(0), grants_retained(0), grants_dropped(0),
+        cycles_with_0_grant(0), cycles_with_1_grant(0), cycles_with_2_grants(0),
+        total_grants(0), mem_grants(0), int_grants(0), grant_stalls(0),
+        execute_acceptance_stalls(0), dropped_grants(0) {
+        for (int i=0; i<ISSUE_WIDTH; i++) {
+            grants[i]=IssueGrant(); issued_uops[i]=MicroOp(); issued_valids[i]=false;
+            port_ready[i]=(i != FP_ISSUE_LANE);
+        }
+    }
 };
 
 struct ExecuteState {

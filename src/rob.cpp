@@ -45,7 +45,7 @@ ROB_ALLOCATE_LANES:
         if (uop.uopc == 0) continue;
         RobEntry& entry = rob.entries[rob.tail];
         entry = RobEntry();
-        entry.valid=true; entry.busy=true; entry.exception=uop.exception;
+        entry.valid=true; entry.busy=!uop.exception; entry.exception=uop.exception;
         uop.queue.rob_idx = rob.tail; entry.uop = uop;
         state.rename.renamed_uops[i].queue.rob_idx = rob.tail;
         rob.tail=(rob.tail+1)%ROB_DEPTH;

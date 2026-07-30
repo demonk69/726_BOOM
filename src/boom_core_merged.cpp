@@ -5,6 +5,7 @@
 #include "boom_types.hpp"
 #include "boom_state.hpp"
 #include "boom_interfaces.hpp"
+#include "issue.hpp"
 #include "reset.hpp"
 #include <cstdint>
 
@@ -494,7 +495,7 @@ ROB_ALLOCATE_LANES:
         if (uop.uopc == 0) continue;
         RobEntry& entry = rob.entries[rob.tail];
         entry = RobEntry();
-        entry.valid=true; entry.busy=true; entry.exception=uop.exception;
+        entry.valid=true; entry.busy=!uop.exception; entry.exception=uop.exception;
         uop.queue.rob_idx = rob.tail; entry.uop = uop;
         state.rename.renamed_uops[i].queue.rob_idx = rob.tail;
         rob.tail=(rob.tail+1)%ROB_DEPTH;
@@ -504,6 +505,20 @@ ROB_ALLOCATE_LANES:
 }
 
 // ==== issue.cpp ====
+
+IssuePortClass classify_issue_port(const MicroOp& uop) {
+    if (uop.exception) return ISSUE_PORT_UNSUPPORTED;
+    if (uop.iq_type == IQ_MEM && uop.fu_code == FU_MEM && uop.uopc >= 39 && uop.uopc <= 49)
+        return ISSUE_PORT_MEM;
+    if (uop.iq_type != IQ_ALU) return ISSUE_PORT_UNSUPPORTED;
+    if (uop.fu_code == FU_MUL) return uop.uopc == 16 ? ISSUE_PORT_INT : ISSUE_PORT_UNSUPPORTED;
+    if (uop.fu_code != FU_ALU) return ISSUE_PORT_UNSUPPORTED;
+    if ((uop.uopc >= 1 && uop.uopc <= 13) || uop.uopc == 15 ||
+        (uop.uopc >= 29 && uop.uopc <= 38) ||
+        (uop.uopc >= 50 && uop.uopc <= 60) || uop.uopc == 62)
+        return ISSUE_PORT_INT;
+    return ISSUE_PORT_UNSUPPORTED;
+}
 
 namespace boom {
 
@@ -530,7 +545,10 @@ void issue_module(BoomCoreState& state) {
     IssueState& iss = state.issue;
     const RenameState& ren = state.rename;
 
-    for (int i=0; i<ISSUE_WIDTH; i++) { iss.issued_valids[i]=false; iss.issued_uops[i]=MicroOp(); }
+    for (int i=0; i<ISSUE_WIDTH; i++) {
+        iss.grants[i]=IssueGrant(); iss.issued_valids[i]=false; iss.issued_uops[i]=MicroOp();
+    }
+    iss.grants_generated=0; iss.grants_accepted=0; iss.grants_retained=0; iss.grants_dropped=0;
 
     if (state.global_flush) {
         for (int j=0; j<ISSUE_QUEUE_ALU_DEPTH; j++) iss.alu_iq.entries[j].valid=false;
@@ -545,35 +563,96 @@ void issue_module(BoomCoreState& state) {
             s.killed = true;
             continue;
         }
+        if (s.uop.exception) {
+            s.valid = false;
+            s.killed = true;
+            continue;
+        }
         if (state.brupdate.valid) s.uop.branch.br_mask &= (uint8_t)~state.brupdate.resolve_mask;
         if (s.uop.rename.prs1 != 0) s.prs1_busy = preg_busy(state, s.uop.rename.prs1);
         if (s.uop.rename.prs2 != 0) s.prs2_busy = preg_busy(state, s.uop.rename.prs2);
     }
     compact_iq(iss.alu_iq);
 
-    for (int i=0; i<DISPATCH_WIDTH; i++) {
-        if (!ren.renamed_valids[i]) continue;
-        if (iss.alu_iq.count >= ISSUE_QUEUE_ALU_DEPTH) break;
-        const MicroOp& uop = ren.renamed_uops[i];
-        if (uop.iq_type != IQ_ALU && uop.iq_type != IQ_MEM) continue;
-        IssueSlotEntry& slot = iss.alu_iq.entries[iss.alu_iq.tail];
-        slot.valid=true; slot.request=true; slot.granted=false; slot.killed=false;
-        slot.uop=uop; slot.prs1_busy=uop.rename.prs1_busy;
-        slot.prs2_busy=uop.rename.prs2_busy; slot.pdst_busy=false;
-        iss.alu_iq.tail=(iss.alu_iq.tail+1)%ISSUE_QUEUE_ALU_DEPTH; iss.alu_iq.count++;
+    int mem_index=-1, int_index=-1;
+    for (int i=0; i<ISSUE_QUEUE_ALU_DEPTH; i++) {
+        IssueSlotEntry& s = iss.alu_iq.entries[i];
+        if (!s.valid || !s.request || s.killed || s.prs1_busy || s.prs2_busy || s.pdst_busy) continue;
+        IssuePortClass port=classify_issue_port(s.uop);
+        if (port==ISSUE_PORT_MEM && mem_index<0) mem_index=i;
+        else if (port==ISSUE_PORT_INT && int_index<0) int_index=i;
     }
 
-    int issued=0;
-    const int implemented_alu_lanes = DISPATCH_WIDTH;
-    for (int i=0; i<ISSUE_QUEUE_ALU_DEPTH && issued<ISSUE_WIDTH && issued<implemented_alu_lanes; i++) {
-        IssueSlotEntry& s = iss.alu_iq.entries[i];
-        if (s.valid && s.request && !s.killed && !s.prs1_busy && !s.prs2_busy && !s.pdst_busy) {
-            s.granted=true; s.request=false;
-            iss.issued_uops[issued]=s.uop; iss.issued_valids[issued]=true; issued++;
+    if (mem_index>=0) {
+        iss.grants[MEM_ISSUE_LANE].valid=true;
+        iss.grants[MEM_ISSUE_LANE].entry_index=(uint8_t)mem_index;
+        iss.grants[MEM_ISSUE_LANE].port_class=ISSUE_PORT_MEM;
+        iss.grants[MEM_ISSUE_LANE].uop=iss.alu_iq.entries[mem_index].uop;
+    }
+    if (int_index>=0) {
+        iss.grants[INT_ISSUE_LANE].valid=true;
+        iss.grants[INT_ISSUE_LANE].entry_index=(uint8_t)int_index;
+        iss.grants[INT_ISSUE_LANE].port_class=ISSUE_PORT_INT;
+        iss.grants[INT_ISSUE_LANE].uop=iss.alu_iq.entries[int_index].uop;
+    }
+
+    bool dispatch_pending=false;
+    MicroOp dispatch_uop;
+    if (ren.renamed_valids[0]) {
+        dispatch_uop=ren.renamed_uops[0];
+        dispatch_pending=!dispatch_uop.exception;
+        IssuePortClass port=classify_issue_port(dispatch_uop);
+        int lane=(port==ISSUE_PORT_MEM) ? MEM_ISSUE_LANE : (port==ISSUE_PORT_INT ? INT_ISSUE_LANE : -1);
+        bool dispatch_ready=!dispatch_uop.rename.prs1_busy && !dispatch_uop.rename.prs2_busy;
+        bool old_grant_can_accept=false;
+        for (int old_lane=0; old_lane<INTEGER_ISSUE_PORTS; old_lane++)
+            old_grant_can_accept |= iss.grants[old_lane].valid && iss.port_ready[old_lane];
+        bool dispatch_can_be_preserved=iss.alu_iq.count<ISSUE_QUEUE_ALU_DEPTH ||
+                                       (lane>=0 && iss.port_ready[lane]) || old_grant_can_accept;
+        if (lane>=0 && dispatch_ready && dispatch_can_be_preserved && !iss.grants[lane].valid) {
+            iss.grants[lane].valid=true; iss.grants[lane].from_dispatch=true;
+            iss.grants[lane].entry_index=0xff; iss.grants[lane].port_class=(uint8_t)port;
+            iss.grants[lane].uop=dispatch_uop;
         }
     }
 
+    for (int lane=0; lane<INTEGER_ISSUE_PORTS; lane++) {
+        if (!iss.grants[lane].valid) continue;
+        iss.grants_generated++; iss.total_grants++;
+        if (lane==MEM_ISSUE_LANE) iss.mem_grants++; else iss.int_grants++;
+    }
+    if (iss.grants_generated==0) iss.cycles_with_0_grant++;
+    else if (iss.grants_generated==1) iss.cycles_with_1_grant++;
+    else iss.cycles_with_2_grants++;
+
+    int accepted_lane=-1;
+    for (int lane=0; lane<INTEGER_ISSUE_PORTS; lane++) {
+        if (!iss.grants[lane].valid || !iss.port_ready[lane]) continue;
+        if (accepted_lane<0 || iss.grants[lane].entry_index < iss.grants[accepted_lane].entry_index)
+            accepted_lane=lane;
+    }
+    if (accepted_lane>=0) {
+        IssueGrant& grant=iss.grants[accepted_lane];
+        grant.accepted=true; iss.grants_accepted=1;
+        iss.issued_valids[0]=true; iss.issued_uops[0]=grant.uop;
+        if (grant.from_dispatch) dispatch_pending=false;
+        else {
+            IssueSlotEntry& selected=iss.alu_iq.entries[grant.entry_index];
+            selected.granted=true; selected.request=false;
+        }
+    }
+    iss.grants_retained=(uint8_t)(iss.grants_generated-iss.grants_accepted);
+    if (iss.grants_retained) { iss.grant_stalls+=iss.grants_retained; iss.execute_acceptance_stalls+=iss.grants_retained; }
+
     compact_iq(iss.alu_iq);
+
+    if (dispatch_pending && iss.alu_iq.count<ISSUE_QUEUE_ALU_DEPTH) {
+        IssueSlotEntry& slot=iss.alu_iq.entries[iss.alu_iq.tail];
+        slot.valid=true; slot.request=true; slot.granted=false; slot.killed=false;
+        slot.uop=dispatch_uop; slot.prs1_busy=dispatch_uop.rename.prs1_busy;
+        slot.prs2_busy=dispatch_uop.rename.prs2_busy; slot.pdst_busy=false;
+        iss.alu_iq.tail=(iss.alu_iq.tail+1)%ISSUE_QUEUE_ALU_DEPTH; iss.alu_iq.count++;
+    }
 }
 
 }
@@ -595,6 +674,7 @@ void execute_module(BoomCoreState& state) {
     for (int i=0; i<ISSUE_WIDTH && ri<DISPATCH_WIDTH; i++) {
         if (!iss.issued_valids[i]) continue;
         const MicroOp& uop = iss.issued_uops[i];
+        if (classify_issue_port(uop)==ISSUE_PORT_UNSUPPORTED) continue;
         if (state.brupdate.valid && state.brupdate.mispredict &&
             ((uop.branch.br_mask & state.brupdate.mispredict_mask) != 0)) continue;
 
@@ -1291,6 +1371,23 @@ void boom_core_reset_step(BoomCoreState& state, ResetControllerState& reset_ctrl
         state.issue.issued_valids[0] = false;
         state.issue.issued_valids[1] = false;
         state.issue.issued_valids[2] = false;
+        for (int i = 0; i < ISSUE_WIDTH; i++) {
+            state.issue.grants[i] = IssueGrant();
+            state.issue.port_ready[i] = (i != FP_ISSUE_LANE);
+        }
+        state.issue.grants_generated = 0;
+        state.issue.grants_accepted = 0;
+        state.issue.grants_retained = 0;
+        state.issue.grants_dropped = 0;
+        state.issue.cycles_with_0_grant = 0;
+        state.issue.cycles_with_1_grant = 0;
+        state.issue.cycles_with_2_grants = 0;
+        state.issue.total_grants = 0;
+        state.issue.mem_grants = 0;
+        state.issue.int_grants = 0;
+        state.issue.grant_stalls = 0;
+        state.issue.execute_acceptance_stalls = 0;
+        state.issue.dropped_grants = 0;
         state.rob.commit_valid = false;
         advance_reset(reset_ctrl, RESET_FRONTEND);
         break;
@@ -1760,14 +1857,48 @@ void synth_rob_top(uint32_t seed_inst, uint64_t seed_pc, uint64_t& observable) {
 
 void synth_issue_top(uint32_t seed_inst, uint64_t seed_pc, uint64_t& observable) {
     static BoomCoreState state;
-    state.rename.renamed_valids[0] = true;
-    state.rename.renamed_uops[0].inst = seed_inst;
-    state.rename.renamed_uops[0].debug_pc = seed_pc;
-    state.rename.renamed_uops[0].uopc = 50;
-    state.rename.renamed_uops[0].iq_type = IQ_ALU;
-    state.rename.renamed_uops[0].fu_code = FU_ALU;
+    for (int i=0; i<ISSUE_QUEUE_ALU_DEPTH; i++) state.issue.alu_iq.entries[i]=IssueSlotEntry();
+    state.issue.alu_iq.head=0; state.issue.alu_iq.tail=0; state.issue.alu_iq.count=0;
+    state.rename.renamed_valids[0]=false;
+    state.brupdate=BranchUpdate();
+    state.issue.port_ready[MEM_ISSUE_LANE]=(seed_inst & 4u)!=0;
+    state.issue.port_ready[INT_ISSUE_LANE]=(seed_inst & 8u)!=0;
+    state.issue.port_ready[FP_ISSUE_LANE]=false;
+    int count=0;
+    if ((seed_inst & 1u)!=0) {
+        IssueSlotEntry& mem=state.issue.alu_iq.entries[count++];
+        mem.valid=true; mem.request=true; mem.uop.uopc=39; mem.uop.iq_type=IQ_MEM;
+        mem.uop.fu_code=FU_MEM; mem.uop.queue.rob_idx=1; mem.uop.debug_pc=seed_pc;
+        if ((seed_inst & 16u)!=0) mem.uop.branch.br_mask=1;
+    }
+    if ((seed_inst & 2u)!=0) {
+        IssueSlotEntry& integer=state.issue.alu_iq.entries[count++];
+        integer.valid=true; integer.request=true; integer.uop.uopc=1; integer.uop.iq_type=IQ_ALU;
+        integer.uop.fu_code=FU_ALU; integer.uop.queue.rob_idx=2; integer.uop.debug_pc=seed_pc+4;
+    }
+    state.issue.alu_iq.count=(uint8_t)count;
+    state.issue.alu_iq.tail=(uint8_t)(count%ISSUE_QUEUE_ALU_DEPTH);
+    if ((seed_inst & 16u)!=0) {
+        state.brupdate.valid=true; state.brupdate.mispredict=true;
+        state.brupdate.resolve_mask=1; state.brupdate.mispredict_mask=1;
+    }
     boom::issue_module(state);
-    observable = state.issue.alu_iq.count;
+    observable=(uint64_t)state.issue.alu_iq.count;
+    observable|=(uint64_t)state.issue.grants_generated<<8;
+    observable|=(uint64_t)state.issue.grants_accepted<<16;
+    observable|=(uint64_t)state.issue.grants_retained<<24;
+    observable|=(uint64_t)state.issue.grants_dropped<<32;
+    observable|=(uint64_t)state.issue.grants[MEM_ISSUE_LANE].valid<<40;
+    observable|=(uint64_t)state.issue.grants[MEM_ISSUE_LANE].accepted<<41;
+    observable|=(uint64_t)state.issue.grants[INT_ISSUE_LANE].valid<<42;
+    observable|=(uint64_t)state.issue.grants[INT_ISSUE_LANE].accepted<<43;
+    observable|=(uint64_t)state.issue.grants[FP_ISSUE_LANE].valid<<44;
+    uint8_t retained_rob=state.issue.grants[MEM_ISSUE_LANE].valid &&
+        !state.issue.grants[MEM_ISSUE_LANE].accepted ? state.issue.grants[MEM_ISSUE_LANE].uop.queue.rob_idx :
+        (state.issue.grants[INT_ISSUE_LANE].valid && !state.issue.grants[INT_ISSUE_LANE].accepted ?
+         state.issue.grants[INT_ISSUE_LANE].uop.queue.rob_idx : 0);
+    observable|=(uint64_t)retained_rob<<48;
+    observable|=(uint64_t)(state.issue.issued_valids[0] ? state.issue.issued_uops[0].queue.rob_idx : 0)<<56;
 }
 
 void synth_execute_top(uint8_t seed_uopc, uint64_t seed_rs1, uint64_t seed_rs2, uint64_t& observable) {
