@@ -12,6 +12,7 @@
 #define DECODE_WIDTH        1
 #define DISPATCH_WIDTH      1
 #define ISSUE_WIDTH         3
+#define EXECUTE_RESULT_LANES ISSUE_WIDTH
 #define COMMIT_WIDTH        1
 #define MACHINE_WIDTH       1
 
@@ -109,5 +110,6 @@ static_assert(STQ_IDX_BITS >= 3, "STQ_IDX_BITS too small");
 static_assert((1u << STQ_IDX_BITS) >= STQ_DEPTH, "STQ_IDX_BITS insufficient for STQ_DEPTH");
 static_assert(FTQ_IDX_BITS >= 4, "FTQ_IDX_BITS too small");
 static_assert((1u << FTQ_IDX_BITS) >= FTQ_DEPTH, "FTQ_IDX_BITS insufficient for FTQ_DEPTH");
+static_assert(EXECUTE_RESULT_LANES == ISSUE_WIDTH, "execute result interface must match issue lanes");
 
 #endif

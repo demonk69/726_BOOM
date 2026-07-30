@@ -158,7 +158,7 @@ void lsu_module(BoomCoreState& state, PipeSignals& pipe) {
     }
 
 LSU_EXECUTE_RESULTS:
-    for (int i = 0; i < DISPATCH_WIDTH; i++) {
+    for (int i = 0; i < EXECUTE_RESULT_LANES; i++) {
         const ExecuteState::AluResult& result = state.execute.alu_results[i];
         if (!result.valid || !result.memory_valid) continue;
         if (state.brupdate.valid && state.brupdate.mispredict &&

@@ -11,7 +11,7 @@ void execute_module(BoomCoreState& state) {
     ExecuteState& exe = state.execute;
     const IssueState& iss = state.issue;
 
-    for (int i=0; i<DISPATCH_WIDTH; i++) exe.alu_results[i]=ExecuteState::AluResult();
+    for (int i=0; i<EXECUTE_RESULT_LANES; i++) exe.alu_results[i]=ExecuteState::AluResult();
 
     int ri=0;
     for (int i=0; i<ISSUE_WIDTH && ri<DISPATCH_WIDTH; i++) {

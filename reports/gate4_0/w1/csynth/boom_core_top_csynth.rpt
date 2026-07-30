@@ -1,0 +1,363 @@
+
+
+================================================================
+== Vitis HLS Report for 'boom_core_top'
+================================================================
+* Date:           Thu Jul 30 19:59:50 2026
+
+* Version:        2021.2 (Build 3367213 on Tue Oct 19 02:47:39 MDT 2021)
+* Project:        boom_hls_gate4_w1_baseline
+* Solution:       solution_baseline (Vivado IP Flow Target)
+* Product family: zynquplus
+* Target device:  xczu7ev-ffvc1156-2-e
+
+
+================================================================
+== Performance Estimates
+================================================================
++ Timing: 
+    * Summary: 
+    +--------+----------+----------+------------+
+    |  Clock |  Target  | Estimated| Uncertainty|
+    +--------+----------+----------+------------+
+    |ap_clk  |  10.00 ns|  5.898 ns|     2.70 ns|
+    +--------+----------+----------+------------+
+
++ Latency: 
+    * Summary: 
+    +---------+---------+----------+----------+-----+-----+---------+
+    |  Latency (cycles) |  Latency (absolute) |  Interval | Pipeline|
+    |   min   |   max   |    min   |    max   | min | max |   Type  |
+    +---------+---------+----------+----------+-----+-----+---------+
+    |        ?|        ?|         ?|         ?|    ?|    ?|       no|
+    +---------+---------+----------+----------+-----+-----+---------+
+
+    + Detail: 
+        * Instance: 
+        +----------------------------------+----------------------+---------+---------+-----------+-----------+-----+-----+---------+
+        |                                  |                      |  Latency (cycles) |   Latency (absolute)  |  Interval | Pipeline|
+        |             Instance             |        Module        |   min   |   max   |    min    |    max    | min | max |   Type  |
+        +----------------------------------+----------------------+---------+---------+-----------+-----------+-----+-----+---------+
+        |grp_boom_core_cycle_io_fu_846     |boom_core_cycle_io    |        ?|        ?|          ?|          ?|    ?|    ?|       no|
+        |grp_boom_core_reset_step_fu_1611  |boom_core_reset_step  |        1|        4|  10.000 ns|  40.000 ns|    1|    4|       no|
+        +----------------------------------+----------------------+---------+---------+-----------+-----------+-----+-----+---------+
+
+        * Loop: 
+        +--------------+---------+---------+----------+-----------+-----------+------+----------+
+        |              |  Latency (cycles) | Iteration|  Initiation Interval  | Trip |          |
+        |   Loop Name  |   min   |   max   |  Latency |  achieved |   target  | Count| Pipelined|
+        +--------------+---------+---------+----------+-----------+-----------+------+----------+
+        |- CORE_CYCLE  |        ?|        ?|         ?|          -|          -|   inf|        no|
+        +--------------+---------+---------+----------+-----------+-----------+------+----------+
+
+
+
+================================================================
+== Utilization Estimates
+================================================================
+* Summary: 
++-----------------+---------+------+--------+--------+-----+
+|       Name      | BRAM_18K|  DSP |   FF   |   LUT  | URAM|
++-----------------+---------+------+--------+--------+-----+
+|DSP              |        -|     -|       -|       -|    -|
+|Expression       |        -|     -|       0|       8|    -|
+|FIFO             |        -|     -|     495|     335|    -|
+|Instance         |        8|     3|   11588|   49700|    0|
+|Memory           |        4|     -|      74|      28|    0|
+|Multiplexer      |        -|     -|       -|    1487|    -|
+|Register         |        -|     -|     645|       -|    -|
++-----------------+---------+------+--------+--------+-----+
+|Total            |       12|     3|   12802|   51558|    0|
++-----------------+---------+------+--------+--------+-----+
+|Available        |      624|  1728|  460800|  230400|   96|
++-----------------+---------+------+--------+--------+-----+
+|Utilization (%)  |        1|    ~0|       2|      22|    0|
++-----------------+---------+------+--------+--------+-----+
+
++ Detail: 
+    * Instance: 
+    +----------------------------------+----------------------+---------+----+-------+-------+-----+
+    |             Instance             |        Module        | BRAM_18K| DSP|   FF  |  LUT  | URAM|
+    +----------------------------------+----------------------+---------+----+-------+-------+-----+
+    |grp_boom_core_cycle_io_fu_846     |boom_core_cycle_io    |        8|   3|  11520|  49431|    0|
+    |grp_boom_core_reset_step_fu_1611  |boom_core_reset_step  |        0|   0|     68|    269|    0|
+    +----------------------------------+----------------------+---------+----+-------+-------+-----+
+    |Total                             |                      |        8|   3|  11588|  49700|    0|
+    +----------------------------------+----------------------+---------+----+-------+-------+-----+
+
+    * DSP: 
+    N/A
+
+    * Memory: 
+    +--------------------------------------------------+--------------------------------------------------------------+---------+----+----+-----+------+-----+------+-------------+
+    |                      Memory                      |                            Module                            | BRAM_18K| FF | LUT| URAM| Words| Bits| Banks| W*Bits*Banks|
+    +--------------------------------------------------+--------------------------------------------------------------+---------+----+----+-----+------+-----+------+-------------+
+    |state_issue_alu_iq_entries_valid_U                |kill_lsu_state_state_lsu_ldq_completed_RAM_AUTO_1R1W          |        0|   2|   1|    0|     8|    1|     1|            8|
+    |state_issue_alu_iq_entries_request_U              |kill_lsu_state_state_lsu_ldq_completed_RAM_AUTO_1R1W          |        0|   2|   1|    0|     8|    1|     1|            8|
+    |state_issue_alu_iq_entries_granted_U              |kill_lsu_state_state_lsu_ldq_completed_RAM_AUTO_1R1W          |        0|   2|   1|    0|     8|    1|     1|            8|
+    |state_branch_state_tag_valid_U                    |kill_lsu_state_state_lsu_ldq_completed_RAM_AUTO_1R1W          |        0|   2|   1|    0|     8|    1|     1|            8|
+    |state_branch_state_snapshot_valid_U               |kill_lsu_state_state_lsu_ldq_completed_RAM_AUTO_1R1W          |        0|   2|   1|    0|     8|    1|     1|            8|
+    |state_lsu_ldq_valid_U                             |kill_lsu_state_state_lsu_ldq_completed_RAM_AUTO_1R1W          |        0|   2|   1|    0|     8|    1|     1|            8|
+    |state_lsu_ldq_response_pending_U                  |kill_lsu_state_state_lsu_ldq_completed_RAM_AUTO_1R1W          |        0|   2|   1|    0|     8|    1|     1|            8|
+    |state_lsu_stq_valid_U                             |kill_lsu_state_state_lsu_ldq_completed_RAM_AUTO_1R1W          |        0|   2|   1|    0|     8|    1|     1|            8|
+    |state_lsu_stq_committed_U                         |kill_lsu_state_state_lsu_ldq_completed_RAM_AUTO_1R1W          |        0|   2|   1|    0|     8|    1|     1|            8|
+    |state_lsu_stq_issued_to_memory_U                  |kill_lsu_state_state_lsu_ldq_completed_RAM_AUTO_1R1W          |        0|   2|   1|    0|     8|    1|     1|            8|
+    |state_int_rf_U                                    |state_int_rf_RAM_AUTO_1R1W                                    |        4|   0|   0|    0|    52|   64|     1|         3328|
+    |state_rename_int_free_list_busy_table_U           |state_rename_int_free_list_busy_table_RAM_AUTO_1R1W           |        0|   2|   1|    0|    52|    1|     1|           52|
+    |state_rename_int_free_list_free_list_U            |state_rename_int_free_list_free_list_RAM_AUTO_1R1W            |        0|  16|   7|    0|    52|    8|     1|          416|
+    |state_rename_int_map_table_committed_map_table_U  |state_rename_int_map_table_committed_map_table_RAM_AUTO_1R1W  |        0|  16|   4|    0|    32|    8|     1|          256|
+    |state_rename_int_map_table_map_table_U            |state_rename_int_map_table_map_table_RAM_AUTO_1R1W            |        0|  16|   4|    0|    32|    8|     1|          256|
+    |state_rob_entries_valid_U                         |state_rob_entries_valid_RAM_AUTO_1R1W                         |        0|   2|   1|    0|    32|    1|     1|           32|
+    |state_rob_entries_busy_U                          |state_rob_entries_valid_RAM_AUTO_1R1W                         |        0|   2|   1|    0|    32|    1|     1|           32|
+    +--------------------------------------------------+--------------------------------------------------------------+---------+----+----+-----+------+-----+------+-------------+
+    |Total                                             |                                                              |        4|  74|  28|    0|   364|  101|    17|         4452|
+    +--------------------------------------------------+--------------------------------------------------------------+---------+----+----+-----+------+-----+------+-------------+
+
+    * FIFO: 
+    +---------------+---------+----+----+-----+------+-----+---------+
+    |      Name     | BRAM_18K| FF | LUT| URAM| Depth| Bits| Size:D*B|
+    +---------------+---------+----+----+-----+------+-----+---------+
+    |pipe_0_fifo_U  |        0|  99|   0|    -|     2|   97|      194|
+    |pipe_1_fifo_U  |        0|  99|   0|    -|     2|  193|      386|
+    |pipe_2_fifo_U  |        0|  99|   0|    -|     2|  283|      566|
+    |pipe_3_fifo_U  |        0|  99|   0|    -|     2|  289|      578|
+    |pipe_4_fifo_U  |        0|  99|   0|    -|     2|  518|     1036|
+    +---------------+---------+----+----+-----+------+-----+---------+
+    |Total          |        0| 495|   0|    0|    10| 1380|     2760|
+    +---------------+---------+----+----+-----+------+-----+---------+
+
+    * Expression: 
+    +-------------------------------------------------------+----------+----+---+----+------------+------------+
+    |                     Variable Name                     | Operation| DSP| FF| LUT| Bitwidth P0| Bitwidth P1|
+    +-------------------------------------------------------+----------+----+---+----+------------+------------+
+    |ap_block_state4_on_subcall_done                        |       and|   0|  0|   2|           1|           1|
+    |grp_boom_core_cycle_io_fu_846_commit_trace_out_TREADY  |       and|   0|  0|   2|           1|           1|
+    |grp_boom_core_cycle_io_fu_846_dmem_req_out_TREADY      |       and|   0|  0|   2|           1|           1|
+    |grp_boom_core_cycle_io_fu_846_imem_req_out_TREADY      |       and|   0|  0|   2|           1|           1|
+    +-------------------------------------------------------+----------+----+---+----+------------+------------+
+    |Total                                                  |          |   0|  0|   8|           4|           4|
+    +-------------------------------------------------------+----------+----+---+----+------------+------------+
+
+    * Multiplexer: 
+    +---------------------------------------------------------+----+-----------+-----+-----------+
+    |                           Name                          | LUT| Input Size| Bits| Total Bits|
+    +---------------------------------------------------------+----+-----------+-----+-----------+
+    |ap_NS_fsm                                                |  31|          6|    1|          6|
+    |dmem_resp_in_TREADY_int_regslice                         |   9|          2|    1|          2|
+    |imem_resp_in_TREADY_int_regslice                         |   9|          2|    1|          2|
+    |pipe_0_read                                              |   9|          2|    1|          2|
+    |pipe_0_write                                             |   9|          2|    1|          2|
+    |pipe_1_read                                              |   9|          2|    1|          2|
+    |pipe_1_write                                             |   9|          2|    1|          2|
+    |pipe_2_read                                              |   9|          2|    1|          2|
+    |pipe_2_write                                             |   9|          2|    1|          2|
+    |pipe_3_read                                              |   9|          2|    1|          2|
+    |pipe_3_write                                             |   9|          2|    1|          2|
+    |pipe_4_read                                              |   9|          2|    1|          2|
+    |pipe_4_write                                             |   9|          2|    1|          2|
+    |state_branch_state_active_mask                           |   9|          2|    8|         16|
+    |state_branch_state_allocations                           |   9|          2|   32|         64|
+    |state_branch_state_mispredicts                           |   9|          2|   32|         64|
+    |state_branch_state_releases                              |   9|          2|   32|         64|
+    |state_branch_state_rollbacks                             |   9|          2|   32|         64|
+    |state_branch_state_snapshot_valid_address0               |  14|          3|    3|          9|
+    |state_branch_state_snapshot_valid_ce0                    |  14|          3|    1|          3|
+    |state_branch_state_snapshot_valid_d0                     |  14|          3|    1|          3|
+    |state_branch_state_snapshot_valid_we0                    |  14|          3|    1|          3|
+    |state_branch_state_tag_valid_address0                    |  14|          3|    3|          9|
+    |state_branch_state_tag_valid_ce0                         |  14|          3|    1|          3|
+    |state_branch_state_tag_valid_d0                          |  14|          3|    1|          3|
+    |state_branch_state_tag_valid_we0                         |  14|          3|    1|          3|
+    |state_brupdate_mispredict                                |   9|          2|    1|          2|
+    |state_brupdate_valid                                     |   9|          2|    1|          2|
+    |state_csr_cycle                                          |   9|          2|   64|        128|
+    |state_csr_instret                                        |   9|          2|   64|        128|
+    |state_decode_dec_valids_0                                |   9|          2|    1|          2|
+    |state_execute_alu_results_memory_valid_0                 |   9|          2|    1|          2|
+    |state_execute_alu_results_mispredict_0                   |   9|          2|    1|          2|
+    |state_execute_alu_results_valid_0                        |   9|          2|    1|          2|
+    |state_frontend_fetch_id                                  |   9|          2|   32|         64|
+    |state_frontend_fetch_packet_valid                        |   9|          2|    1|          2|
+    |state_frontend_pc                                        |   9|          2|   64|        128|
+    |state_frontend_pending_fetch_id                          |   9|          2|   32|         64|
+    |state_frontend_request_sent                              |   9|          2|    1|          2|
+    |state_frontend_reset_done                                |   9|          2|    1|          2|
+    |state_frontend_resp_address                              |   9|          2|   64|        128|
+    |state_frontend_resp_instruction                          |   9|          2|   32|         64|
+    |state_frontend_response_received                         |   9|          2|    1|          2|
+    |state_int_rf_address0                                    |  14|          3|    6|         18|
+    |state_int_rf_ce0                                         |  14|          3|    1|          3|
+    |state_int_rf_ce1                                         |   9|          2|    1|          2|
+    |state_int_rf_d0                                          |  14|          3|   64|        192|
+    |state_int_rf_we0                                         |  14|          3|    1|          3|
+    |state_issue_alu_iq_count                                 |   9|          2|    8|         16|
+    |state_issue_alu_iq_entries_granted_address0              |  14|          3|    3|          9|
+    |state_issue_alu_iq_entries_granted_ce0                   |  14|          3|    1|          3|
+    |state_issue_alu_iq_entries_granted_d0                    |  14|          3|    1|          3|
+    |state_issue_alu_iq_entries_granted_we0                   |  14|          3|    1|          3|
+    |state_issue_alu_iq_entries_request_address0              |  14|          3|    3|          9|
+    |state_issue_alu_iq_entries_request_ce0                   |  14|          3|    1|          3|
+    |state_issue_alu_iq_entries_request_d0                    |  14|          3|    1|          3|
+    |state_issue_alu_iq_entries_request_we0                   |  14|          3|    1|          3|
+    |state_issue_alu_iq_entries_valid_address0                |  14|          3|    3|          9|
+    |state_issue_alu_iq_entries_valid_ce0                     |  14|          3|    1|          3|
+    |state_issue_alu_iq_entries_valid_d0                      |  14|          3|    1|          3|
+    |state_issue_alu_iq_entries_valid_we0                     |  14|          3|    1|          3|
+    |state_issue_alu_iq_tail                                  |   9|          2|    3|          6|
+    |state_issue_issued_valids_0                              |   9|          2|    1|          2|
+    |state_lsu_ldq_count                                      |   9|          2|    8|         16|
+    |state_lsu_ldq_response_pending_address0                  |  14|          3|    3|          9|
+    |state_lsu_ldq_response_pending_ce0                       |  14|          3|    1|          3|
+    |state_lsu_ldq_response_pending_d0                        |  14|          3|    1|          3|
+    |state_lsu_ldq_response_pending_we0                       |  14|          3|    1|          3|
+    |state_lsu_ldq_tail                                       |   9|          2|    3|          6|
+    |state_lsu_ldq_valid_address0                             |  14|          3|    3|          9|
+    |state_lsu_ldq_valid_ce0                                  |  14|          3|    1|          3|
+    |state_lsu_ldq_valid_d0                                   |  14|          3|    1|          3|
+    |state_lsu_ldq_valid_we0                                  |  14|          3|    1|          3|
+    |state_lsu_load_response_pending                          |   9|          2|    1|          2|
+    |state_lsu_next_transaction_id                            |   9|          2|   32|         64|
+    |state_lsu_pending_load_rob_idx                           |   9|          2|    5|         10|
+    |state_lsu_pending_load_transaction_id                    |   9|          2|   32|         64|
+    |state_lsu_stq_committed_address0                         |  14|          3|    3|          9|
+    |state_lsu_stq_committed_ce0                              |  14|          3|    1|          3|
+    |state_lsu_stq_committed_d0                               |  14|          3|    1|          3|
+    |state_lsu_stq_committed_we0                              |  14|          3|    1|          3|
+    |state_lsu_stq_count                                      |   9|          2|    8|         16|
+    |state_lsu_stq_issued_to_memory_address0                  |  14|          3|    3|          9|
+    |state_lsu_stq_issued_to_memory_ce0                       |  14|          3|    1|          3|
+    |state_lsu_stq_issued_to_memory_d0                        |  14|          3|    1|          3|
+    |state_lsu_stq_issued_to_memory_we0                       |  14|          3|    1|          3|
+    |state_lsu_stq_tail                                       |   9|          2|    3|          6|
+    |state_lsu_stq_valid_address0                             |  14|          3|    3|          9|
+    |state_lsu_stq_valid_ce0                                  |  14|          3|    1|          3|
+    |state_lsu_stq_valid_d0                                   |  14|          3|    1|          3|
+    |state_lsu_stq_valid_we0                                  |  14|          3|    1|          3|
+    |state_rename_int_free_list_busy_table_address0           |  14|          3|    6|         18|
+    |state_rename_int_free_list_busy_table_ce0                |  14|          3|    1|          3|
+    |state_rename_int_free_list_busy_table_ce1                |   9|          2|    1|          2|
+    |state_rename_int_free_list_busy_table_d0                 |  14|          3|    1|          3|
+    |state_rename_int_free_list_busy_table_we0                |  14|          3|    1|          3|
+    |state_rename_int_free_list_count                         |   9|          2|    8|         16|
+    |state_rename_int_free_list_free_list_address0            |  14|          3|    6|         18|
+    |state_rename_int_free_list_free_list_ce0                 |  14|          3|    1|          3|
+    |state_rename_int_free_list_free_list_d0                  |  14|          3|    8|         24|
+    |state_rename_int_free_list_free_list_we0                 |  14|          3|    1|          3|
+    |state_rename_int_free_list_head                          |   9|          2|    6|         12|
+    |state_rename_int_free_list_tail                          |   9|          2|    6|         12|
+    |state_rename_int_map_table_committed_map_table_address0  |  14|          3|    5|         15|
+    |state_rename_int_map_table_committed_map_table_ce0       |  14|          3|    1|          3|
+    |state_rename_int_map_table_committed_map_table_d0        |  14|          3|    8|         24|
+    |state_rename_int_map_table_committed_map_table_we0       |  14|          3|    1|          3|
+    |state_rename_int_map_table_map_table_address0            |  14|          3|    5|         15|
+    |state_rename_int_map_table_map_table_ce0                 |  14|          3|    1|          3|
+    |state_rename_int_map_table_map_table_ce1                 |   9|          2|    1|          2|
+    |state_rename_int_map_table_map_table_d0                  |  14|          3|    8|         24|
+    |state_rename_int_map_table_map_table_we0                 |  14|          3|    1|          3|
+    |state_rename_renamed_valids_0                            |   9|          2|    1|          2|
+    |state_rob_entries_busy_address0                          |  14|          3|    5|         15|
+    |state_rob_entries_busy_ce0                               |  14|          3|    1|          3|
+    |state_rob_entries_busy_d0                                |  14|          3|    1|          3|
+    |state_rob_entries_busy_we0                               |  14|          3|    1|          3|
+    |state_rob_entries_valid_address0                         |  14|          3|    5|         15|
+    |state_rob_entries_valid_ce0                              |  14|          3|    1|          3|
+    |state_rob_entries_valid_d0                               |  14|          3|    1|          3|
+    |state_rob_entries_valid_we0                              |  14|          3|    1|          3|
+    |state_rob_head                                           |   9|          2|    5|         10|
+    |state_rob_maybe_full                                     |   9|          2|    1|          2|
+    |state_rob_state                                          |   9|          2|    2|          4|
+    |state_rob_tail                                           |   9|          2|    5|         10|
+    +---------------------------------------------------------+----+-----------+-----+-----------+
+    |Total                                                    |1487|        322|  855|       1917|
+    +---------------------------------------------------------+----+-----------+-----+-----------+
+
+    * Register: 
+    +-----------------------------------------------+----+----+-----+-----------+
+    |                      Name                     | FF | LUT| Bits| Const Bits|
+    +-----------------------------------------------+----+----+-----+-----------+
+    |ap_CS_fsm                                      |   5|   0|    5|          0|
+    |grp_boom_core_cycle_io_fu_846_ap_start_reg     |   1|   0|    1|          0|
+    |grp_boom_core_reset_step_fu_1611_ap_start_reg  |   1|   0|    1|          0|
+    |reset_ctrl_completed                           |   1|   0|    1|          0|
+    |reset_ctrl_completed_load_reg_1766             |   1|   0|    1|          0|
+    |state_branch_state_active_mask                 |   8|   0|    8|          0|
+    |state_branch_state_allocations                 |  32|   0|   32|          0|
+    |state_branch_state_mispredicts                 |  32|   0|   32|          0|
+    |state_branch_state_releases                    |  32|   0|   32|          0|
+    |state_branch_state_rollbacks                   |  32|   0|   32|          0|
+    |state_brupdate_mispredict                      |   1|   0|    1|          0|
+    |state_brupdate_valid                           |   1|   0|    1|          0|
+    |state_csr_cycle                                |  64|   0|   64|          0|
+    |state_csr_instret                              |  64|   0|   64|          0|
+    |state_decode_dec_valids_0                      |   1|   0|    1|          0|
+    |state_execute_alu_results_memory_valid_0       |   1|   0|    1|          0|
+    |state_execute_alu_results_mispredict_0         |   1|   0|    1|          0|
+    |state_execute_alu_results_valid_0              |   1|   0|    1|          0|
+    |state_frontend_fetch_id                        |  32|   0|   32|          0|
+    |state_frontend_fetch_packet_valid              |   1|   0|    1|          0|
+    |state_frontend_pc                              |  64|   0|   64|          0|
+    |state_frontend_pending_fetch_id                |  32|   0|   32|          0|
+    |state_frontend_request_sent                    |   1|   0|    1|          0|
+    |state_frontend_reset_done                      |   1|   0|    1|          0|
+    |state_frontend_resp_address                    |  64|   0|   64|          0|
+    |state_frontend_resp_instruction                |  32|   0|   32|          0|
+    |state_frontend_response_received               |   1|   0|    1|          0|
+    |state_issue_alu_iq_count                       |   8|   0|    8|          0|
+    |state_issue_alu_iq_tail                        |   3|   0|    3|          0|
+    |state_issue_issued_valids_0                    |   1|   0|    1|          0|
+    |state_lsu_ldq_count                            |   8|   0|    8|          0|
+    |state_lsu_ldq_tail                             |   3|   0|    3|          0|
+    |state_lsu_load_response_pending                |   1|   0|    1|          0|
+    |state_lsu_next_transaction_id                  |  32|   0|   32|          0|
+    |state_lsu_pending_load_rob_idx                 |   5|   0|    5|          0|
+    |state_lsu_pending_load_transaction_id          |  32|   0|   32|          0|
+    |state_lsu_stq_count                            |   8|   0|    8|          0|
+    |state_lsu_stq_tail                             |   3|   0|    3|          0|
+    |state_rename_int_free_list_count               |   8|   0|    8|          0|
+    |state_rename_int_free_list_head                |   6|   0|    6|          0|
+    |state_rename_int_free_list_tail                |   6|   0|    6|          0|
+    |state_rename_renamed_valids_0                  |   1|   0|    1|          0|
+    |state_rob_head                                 |   5|   0|    5|          0|
+    |state_rob_maybe_full                           |   1|   0|    1|          0|
+    |state_rob_state                                |   2|   0|    2|          0|
+    |state_rob_tail                                 |   5|   0|    5|          0|
+    +-----------------------------------------------+----+----+-----+-----------+
+    |Total                                          | 645|   0|  645|          0|
+    +-----------------------------------------------+----+----+-----+-----------+
+
+
+
+================================================================
+== Interface
+================================================================
+* Summary: 
++-------------------------+-----+-----+--------------+------------------+--------------+
+|        RTL Ports        | Dir | Bits|   Protocol   |   Source Object  |    C Type    |
++-------------------------+-----+-----+--------------+------------------+--------------+
+|ap_local_block           |  out|    1|  ap_ctrl_none|     boom_core_top|  return value|
+|ap_local_deadlock        |  out|    1|  ap_ctrl_none|     boom_core_top|  return value|
+|ap_clk                   |   in|    1|  ap_ctrl_none|     boom_core_top|  return value|
+|ap_rst_n                 |   in|    1|  ap_ctrl_none|     boom_core_top|  return value|
+|imem_req_out_TDATA       |  out|  128|          axis|      imem_req_out|       pointer|
+|imem_req_out_TVALID      |  out|    1|          axis|      imem_req_out|       pointer|
+|imem_req_out_TREADY      |   in|    1|          axis|      imem_req_out|       pointer|
+|imem_resp_in_TDATA       |   in|  256|          axis|      imem_resp_in|       pointer|
+|imem_resp_in_TVALID      |   in|    1|          axis|      imem_resp_in|       pointer|
+|imem_resp_in_TREADY      |  out|    1|          axis|      imem_resp_in|       pointer|
+|dmem_req_out_TDATA       |  out|  320|          axis|      dmem_req_out|       pointer|
+|dmem_req_out_TVALID      |  out|    1|          axis|      dmem_req_out|       pointer|
+|dmem_req_out_TREADY      |   in|    1|          axis|      dmem_req_out|       pointer|
+|dmem_resp_in_TDATA       |   in|  384|          axis|      dmem_resp_in|       pointer|
+|dmem_resp_in_TVALID      |   in|    1|          axis|      dmem_resp_in|       pointer|
+|dmem_resp_in_TREADY      |  out|    1|          axis|      dmem_resp_in|       pointer|
+|commit_trace_out_TDATA   |  out|  768|          axis|  commit_trace_out|       pointer|
+|commit_trace_out_TVALID  |  out|    1|          axis|  commit_trace_out|       pointer|
+|commit_trace_out_TREADY  |   in|    1|          axis|  commit_trace_out|       pointer|
+|io_success               |   in|    1|       ap_none|        io_success|       pointer|
+|io_halted                |   in|    1|       ap_none|         io_halted|       pointer|
+|io_trap                  |   in|    1|       ap_none|           io_trap|       pointer|
+|io_cycle_valid           |   in|    1|       ap_none|    io_cycle_valid|       pointer|
+|io_cycle                 |   in|   64|       ap_none|          io_cycle|       pointer|
+|io_instret               |   in|   64|       ap_none|        io_instret|       pointer|
++-------------------------+-----+-----+--------------+------------------+--------------+
+

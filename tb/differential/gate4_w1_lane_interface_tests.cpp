@@ -1,0 +1,59 @@
+#include "boom_config.hpp"
+#include "boom_state.hpp"
+#include <cstdio>
+
+namespace boom {
+void execute_module(BoomCoreState& state);
+void issue_module(BoomCoreState& state);
+}
+
+static int failures = 0;
+
+#define CHECK(condition, message) do { \
+    if (!(condition)) { std::printf("FAIL: %s\n", message); failures++; } \
+} while (0)
+
+static MicroOp make_add(uint8_t rob_idx, uint8_t pdst) {
+    MicroOp uop;
+    uop.uopc = 1;
+    uop.iq_type = IQ_ALU;
+    uop.fu_code = FU_ALU;
+    uop.queue.rob_idx = rob_idx;
+    uop.rename.pdst = pdst;
+    uop.rename.dst_rtype = DST_INT;
+    return uop;
+}
+
+int main() {
+    BoomCoreState state;
+    CHECK(sizeof(state.issue.issued_valids) / sizeof(state.issue.issued_valids[0]) == ISSUE_WIDTH,
+          "issue valid interface width mismatch");
+    CHECK(sizeof(state.execute.alu_results) / sizeof(state.execute.alu_results[0]) == ISSUE_WIDTH,
+          "execute result interface width mismatch");
+
+    for (int i = 0; i < 2; i++) {
+        IssueSlotEntry& entry = state.issue.alu_iq.entries[i];
+        entry.valid = true;
+        entry.request = true;
+        entry.uop = make_add((uint8_t)i, (uint8_t)(i + 1));
+    }
+    state.issue.alu_iq.count = 2;
+    state.issue.alu_iq.tail = 2;
+
+    boom::issue_module(state);
+    CHECK(state.issue.issued_valids[0], "W1 did not issue lane 0");
+    for (int lane = 1; lane < ISSUE_WIDTH; lane++) {
+        CHECK(!state.issue.issued_valids[lane], "W1 activated more than one issue lane");
+        state.execute.alu_results[lane].valid = true;
+    }
+
+    boom::execute_module(state);
+    CHECK(state.execute.alu_results[0].valid, "W1 did not produce lane 0 result");
+    for (int lane = 1; lane < EXECUTE_RESULT_LANES; lane++)
+        CHECK(!state.execute.alu_results[lane].valid, "inactive execute lane was not cleared");
+    CHECK(state.issue.alu_iq.count == 1, "W1 dropped the unissued queue entry");
+
+    if (failures != 0) return 1;
+    std::printf("Gate 4.0 W1 lane interface tests: PASS\n");
+    return 0;
+}

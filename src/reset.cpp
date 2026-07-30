@@ -144,9 +144,11 @@ RESET_ROB_INIT:
         break;
 
     case RESET_EXECUTE:
-        state.execute.alu_results[0].valid = false;
-        state.execute.alu_results[0].mispredict = false;
-        state.execute.alu_results[0].memory_valid = false;
+        for (int i = 0; i < EXECUTE_RESULT_LANES; i++) {
+            state.execute.alu_results[i].valid = false;
+            state.execute.alu_results[i].mispredict = false;
+            state.execute.alu_results[i].memory_valid = false;
+        }
         advance_reset(reset_ctrl, RESET_LSU);
         break;
 

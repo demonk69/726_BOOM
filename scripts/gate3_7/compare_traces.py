@@ -14,6 +14,7 @@ def main() -> int:
     parser.add_argument("--baseline", required=True, type=Path)
     parser.add_argument("--actual", required=True, type=Path)
     parser.add_argument("--output", required=True, type=Path)
+    parser.add_argument("--title", default="Gate 3.7 Final Trace Diff")
     args = parser.parse_args()
     rows = []
     for source in SOURCES:
@@ -24,7 +25,7 @@ def main() -> int:
             status = "PASS" if expected.exists() and actual.exists() and expected.read_bytes() == actual.read_bytes() else "FAIL"
             rows.append((program, source, status, expected, actual))
     lines = [
-        "# Gate 3.7 Final Trace Diff", "",
+        f"# {args.title}", "",
         f"Result: {sum(row[2] == 'PASS' for row in rows)}/{len(rows)} byte-identical", "",
         "| Program | Source | Status |", "|---|---|---|",
     ]

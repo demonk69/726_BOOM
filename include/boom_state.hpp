@@ -103,8 +103,8 @@ struct ExecuteState {
             is_load(false), is_store(false), signed_load(false), memory_address(0),
             store_data(0), memory_mask(0), memory_size(0) {}
     };
-    AluResult alu_results[DISPATCH_WIDTH];
-    ExecuteState() { for (int i=0; i<DISPATCH_WIDTH; i++) alu_results[i]=AluResult(); }
+    AluResult alu_results[EXECUTE_RESULT_LANES];
+    ExecuteState() { for (int i=0; i<EXECUTE_RESULT_LANES; i++) alu_results[i]=AluResult(); }
 };
 
 struct RobInternalState {

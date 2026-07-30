@@ -64,8 +64,8 @@ static void clear_resolved_masks_in_state(BoomCoreState& state, uint8_t resolve_
     for (int i=0; i<DISPATCH_WIDTH; i++) {
         clear_resolved_mask(state.decode.dec_uops[i], resolve_mask);
         clear_resolved_mask(state.rename.renamed_uops[i], resolve_mask);
-        clear_resolved_mask(state.execute.alu_results[i].uop, resolve_mask);
     }
+    for (int i=0; i<EXECUTE_RESULT_LANES; i++) clear_resolved_mask(state.execute.alu_results[i].uop, resolve_mask);
     for (int i=0; i<ISSUE_WIDTH; i++) clear_resolved_mask(state.issue.issued_uops[i], resolve_mask);
     for (int i=0; i<ISSUE_QUEUE_ALU_DEPTH; i++) clear_resolved_mask(state.issue.alu_iq.entries[i].uop, resolve_mask);
     for (int i=0; i<ROB_DEPTH; i++) clear_resolved_mask(state.rob.entries[i].uop, resolve_mask);
@@ -104,7 +104,7 @@ static void kill_issue_state(BoomCoreState& state, uint8_t mispredict_mask) {
 }
 
 static void kill_execute_state(BoomCoreState& state, uint8_t mispredict_mask) {
-    for (int i=0; i<DISPATCH_WIDTH; i++) {
+    for (int i=0; i<EXECUTE_RESULT_LANES; i++) {
         if (state.execute.alu_results[i].valid && killed_by_mask(state.execute.alu_results[i].uop, mispredict_mask)) {
             state.execute.alu_results[i] = ExecuteState::AluResult();
         }
@@ -256,7 +256,7 @@ static void release_resolved_branch(BoomCoreState& state, uint8_t tag, uint8_t r
 }
 
 void branch_module(BoomCoreState& state) {
-    for (int i=0; i<DISPATCH_WIDTH; i++) {
+    for (int i=0; i<EXECUTE_RESULT_LANES; i++) {
         if (!state.execute.alu_results[i].valid) continue;
         const ExecuteState::AluResult& r = state.execute.alu_results[i];
         if (branch_is_control_uop(r.uop)) {

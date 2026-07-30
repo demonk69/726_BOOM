@@ -20,7 +20,7 @@ bool rob_branch_kill(BoomCoreState& state) {
 
 void rob_complete(BoomCoreState& state) {
 ROB_COMPLETE_LANES:
-    for (int i=0; i<DISPATCH_WIDTH; i++) {
+    for (int i=0; i<EXECUTE_RESULT_LANES; i++) {
         if (!state.execute.alu_results[i].valid) continue;
         const ExecuteState::AluResult& r = state.execute.alu_results[i];
         if (r.memory_valid || r.is_load || r.is_store || r.uop.ctrl.is_load || r.uop.ctrl.is_sta) continue;
