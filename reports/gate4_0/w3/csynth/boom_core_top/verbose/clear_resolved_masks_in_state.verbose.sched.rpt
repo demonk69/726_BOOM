@@ -1,0 +1,343 @@
+
+
+================================================================
+== Vitis HLS Report for 'clear_resolved_masks_in_state'
+================================================================
+* Date:           Fri Jul 31 19:23:20 2026
+
+* Version:        2021.2 (Build 3367213 on Tue Oct 19 02:47:39 MDT 2021)
+* Project:        boom_core_top
+* Solution:       solution_w3_csynth (Vivado IP Flow Target)
+* Product family: zynquplus
+* Target device:  xczu7ev-ffvc1156-2-e
+
+
+================================================================
+== Performance Estimates
+================================================================
++ Timing: 
+    * Summary: 
+    +--------+----------+----------+------------+
+    |  Clock |  Target  | Estimated| Uncertainty|
+    +--------+----------+----------+------------+
+    |ap_clk  |  10.00 ns|  1.689 ns|     2.70 ns|
+    +--------+----------+----------+------------+
+
++ Latency: 
+    * Summary: 
+    +---------+---------+-----------+----------+-----+-----+---------+
+    |  Latency (cycles) |  Latency (absolute)  |  Interval | Pipeline|
+    |   min   |   max   |    min    |    max   | min | max |   Type  |
+    +---------+---------+-----------+----------+-----+-----+---------+
+    |        1|      124|  10.000 ns|  1.240 us|    1|  124|       no|
+    +---------+---------+-----------+----------+-----+-----+---------+
+
+    + Detail: 
+        * Instance: 
+        N/A
+
+        * Loop: 
+        +--------------------+---------+---------+----------+-----------+-----------+------+----------+
+        |                    |  Latency (cycles) | Iteration|  Initiation Interval  | Trip |          |
+        |      Loop Name     |   min   |   max   |  Latency |  achieved |   target  | Count| Pipelined|
+        +--------------------+---------+---------+----------+-----------+-----------+------+----------+
+        |- VITIS_LOOP_871_2  |        3|        3|         1|          -|          -|     3|        no|
+        |- VITIS_LOOP_872_3  |        3|        3|         1|          -|          -|     3|        no|
+        |- VITIS_LOOP_873_4  |       16|       16|         2|          -|          -|     8|        no|
+        |- VITIS_LOOP_874_5  |       64|       64|         2|          -|          -|    32|        no|
+        |- VITIS_LOOP_875_6  |       16|       16|         2|          -|          -|     8|        no|
+        |- VITIS_LOOP_876_7  |       16|       16|         2|          -|          -|     8|        no|
+        +--------------------+---------+---------+----------+-----------+-----------+------+----------+
+
+============================================================
++ Verbose Summary: Synthesis Manager
+============================================================
+InlineROM: 1
+ExposeGlobal: 0
+============================================================
++ Verbose Summary: CDFG Model
+============================================================
+IsTopModel: 0
+ResetActiveHigh: 1
+IsCombinational: 0
+IsDatapathOnly: 0
+HasWiredReturn: 1
+HasMFsm: 0
+HasVarLatency: 1
+IsPipeline: 0
+IsRtlPipelined: 0
+IsInstanceOverlapped: 0
+IsDontTouch: 0
+HasImplIP: 0
+IsGatedGlobalClock: 0
+
+
+============================================================
++ Verbose Summary: Schedule
+============================================================
+* Number of FSM states : 11
+* Pipeline : 0
+* Dataflow Pipeline: 0
+
+* FSM state transitions: 
+1 --> 10 2 
+2 --> 2 3 
+3 --> 3 4 
+4 --> 5 6 
+5 --> 4 
+6 --> 7 8 
+7 --> 6 
+8 --> 9 10 
+9 --> 8 
+10 --> 11 
+11 --> 10 
+
+* FSM state operations: 
+
+State 1 <SV = 0> <Delay = 1.27>
+ST_1 : Operation 12 [1/1] (0.00ns)   --->   "%resolve_mask_read = read i8 @_ssdm_op_Read.ap_auto.i8, i8 %resolve_mask" [/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:866]   --->   Operation 12 'read' 'resolve_mask_read' <Predicate = true> <Delay = 0.00>
+ST_1 : Operation 13 [1/1] (0.84ns)   --->   "%icmp_ln866 = icmp_eq  i8 %resolve_mask_read, i8 0" [/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:866]   --->   Operation 13 'icmp' 'icmp_ln866' <Predicate = true> <Delay = 0.84> <CoreInst = "Cmp">   --->   Core 9 'Cmp' <Latency = 0> <II = 1> <Delay = 0.72> <FuncUnit> <Opcode : 'icmp'> <InPorts = 2> <OutPorts = 1>
+ST_1 : Operation 14 [1/1] (0.00ns)   --->   "%br_ln866 = br i1 %icmp_ln866, void, void %.loopexit" [/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:866]   --->   Operation 14 'br' 'br_ln866' <Predicate = true> <Delay = 0.00>
+ST_1 : Operation 15 [1/1] (0.00ns)   --->   "%i = alloca i32 1"   --->   Operation 15 'alloca' 'i' <Predicate = (!icmp_ln866)> <Delay = 0.00>
+ST_1 : Operation 16 [1/1] (0.33ns)   --->   "%xor_ln823 = xor i8 %resolve_mask_read, i8 255" [/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:823]   --->   Operation 16 'xor' 'xor_ln823' <Predicate = (!icmp_ln866)> <Delay = 0.33> <CoreInst = "LogicGate">   --->   Core 74 'LogicGate' <Latency = 0> <II = 1> <Delay = 0.33> <FuncUnit> <Opcode : 'and' 'or' 'xor'> <InPorts = 2> <OutPorts = 1>
+ST_1 : Operation 17 [1/1] (0.00ns)   --->   "%state_decode_dec_uops_branch_br_mask_0_load = load i8 %state_decode_dec_uops_branch_br_mask_0" [/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:823]   --->   Operation 17 'load' 'state_decode_dec_uops_branch_br_mask_0_load' <Predicate = (!icmp_ln866)> <Delay = 0.00>
+ST_1 : Operation 18 [1/1] (0.33ns)   --->   "%and_ln823 = and i8 %state_decode_dec_uops_branch_br_mask_0_load, i8 %xor_ln823" [/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:823]   --->   Operation 18 'and' 'and_ln823' <Predicate = (!icmp_ln866)> <Delay = 0.33> <CoreInst = "LogicGate">   --->   Core 74 'LogicGate' <Latency = 0> <II = 1> <Delay = 0.33> <FuncUnit> <Opcode : 'and' 'or' 'xor'> <InPorts = 2> <OutPorts = 1>
+ST_1 : Operation 19 [1/1] (0.00ns)   --->   "%store_ln823 = store i8 %and_ln823, i8 %state_decode_dec_uops_branch_br_mask_0" [/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:823]   --->   Operation 19 'store' 'store_ln823' <Predicate = (!icmp_ln866)> <Delay = 0.00>
+ST_1 : Operation 20 [1/1] (0.00ns)   --->   "%state_rename_dispatch_packets_uop_branch_br_mask_0_load = load i8 %state_rename_dispatch_packets_uop_branch_br_mask_0" [/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:823]   --->   Operation 20 'load' 'state_rename_dispatch_packets_uop_branch_br_mask_0_load' <Predicate = (!icmp_ln866)> <Delay = 0.00>
+ST_1 : Operation 21 [1/1] (0.33ns)   --->   "%and_ln823_1 = and i8 %state_rename_dispatch_packets_uop_branch_br_mask_0_load, i8 %xor_ln823" [/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:823]   --->   Operation 21 'and' 'and_ln823_1' <Predicate = (!icmp_ln866)> <Delay = 0.33> <CoreInst = "LogicGate">   --->   Core 74 'LogicGate' <Latency = 0> <II = 1> <Delay = 0.33> <FuncUnit> <Opcode : 'and' 'or' 'xor'> <InPorts = 2> <OutPorts = 1>
+ST_1 : Operation 22 [1/1] (0.00ns)   --->   "%store_ln823 = store i8 %and_ln823_1, i8 %state_rename_dispatch_packets_uop_branch_br_mask_0" [/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:823]   --->   Operation 22 'store' 'store_ln823' <Predicate = (!icmp_ln866)> <Delay = 0.00>
+ST_1 : Operation 23 [1/1] (0.42ns)   --->   "%store_ln871 = store i2 0, i2 %i" [/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:871]   --->   Operation 23 'store' 'store_ln871' <Predicate = (!icmp_ln866)> <Delay = 0.42>
+ST_1 : Operation 24 [1/1] (0.00ns)   --->   "%br_ln871 = br void" [/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:871]   --->   Operation 24 'br' 'br_ln871' <Predicate = (!icmp_ln866)> <Delay = 0.00>
+
+State 2 <SV = 1> <Delay = 0.97>
+ST_2 : Operation 25 [1/1] (0.00ns)   --->   "%i_45 = load i2 %i" [/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:871]   --->   Operation 25 'load' 'i_45' <Predicate = true> <Delay = 0.00>
+ST_2 : Operation 26 [1/1] (0.44ns)   --->   "%icmp_ln871 = icmp_eq  i2 %i_45, i2 3" [/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:871]   --->   Operation 26 'icmp' 'icmp_ln871' <Predicate = true> <Delay = 0.44> <CoreInst = "Cmp">   --->   Core 9 'Cmp' <Latency = 0> <II = 1> <Delay = 0.72> <FuncUnit> <Opcode : 'icmp'> <InPorts = 2> <OutPorts = 1>
+ST_2 : Operation 27 [1/1] (0.00ns)   --->   "%empty = speclooptripcount i32 @_ssdm_op_SpecLoopTripCount, i64 3, i64 3, i64 3"   --->   Operation 27 'speclooptripcount' 'empty' <Predicate = true> <Delay = 0.00>
+ST_2 : Operation 28 [1/1] (0.54ns)   --->   "%add_ln871 = add i2 %i_45, i2 1" [/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:871]   --->   Operation 28 'add' 'add_ln871' <Predicate = true> <Delay = 0.54> <CoreInst = "Adder">   --->   Core 1 'Adder' <Latency = 0> <II = 1> <Delay = 0.79> <FuncUnit> <Opcode : 'add' 'sub'> <InPorts = 2> <OutPorts = 1>
+ST_2 : Operation 29 [1/1] (0.00ns)   --->   "%br_ln871 = br i1 %icmp_ln871, void %.split10, void %.preheader4.preheader" [/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:871]   --->   Operation 29 'br' 'br_ln871' <Predicate = true> <Delay = 0.00>
+ST_2 : Operation 30 [1/1] (0.00ns)   --->   "%specloopname_ln871 = specloopname void @_ssdm_op_SpecLoopName, void @empty_63" [/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:871]   --->   Operation 30 'specloopname' 'specloopname_ln871' <Predicate = (!icmp_ln871)> <Delay = 0.00>
+ST_2 : Operation 31 [1/1] (0.00ns)   --->   "%state_execute_alu_results_uop_branch_br_mask_0_load = load i8 %state_execute_alu_results_uop_branch_br_mask_0" [/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:823]   --->   Operation 31 'load' 'state_execute_alu_results_uop_branch_br_mask_0_load' <Predicate = (!icmp_ln871)> <Delay = 0.00>
+ST_2 : Operation 32 [1/1] (0.00ns)   --->   "%state_execute_alu_results_uop_branch_br_mask_1_load = load i8 %state_execute_alu_results_uop_branch_br_mask_1" [/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:823]   --->   Operation 32 'load' 'state_execute_alu_results_uop_branch_br_mask_1_load' <Predicate = (!icmp_ln871)> <Delay = 0.00>
+ST_2 : Operation 33 [1/1] (0.00ns)   --->   "%state_execute_alu_results_uop_branch_br_mask_2_load = load i8 %state_execute_alu_results_uop_branch_br_mask_2" [/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:823]   --->   Operation 33 'load' 'state_execute_alu_results_uop_branch_br_mask_2_load' <Predicate = (!icmp_ln871)> <Delay = 0.00>
+ST_2 : Operation 34 [1/1] (0.47ns)   --->   "%tmp = mux i8 @_ssdm_op_Mux.ap_auto.3i8.i2, i8 %state_execute_alu_results_uop_branch_br_mask_0_load, i8 %state_execute_alu_results_uop_branch_br_mask_1_load, i8 %state_execute_alu_results_uop_branch_br_mask_2_load, i2 %i_45" [/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:823]   --->   Operation 34 'mux' 'tmp' <Predicate = (!icmp_ln871)> <Delay = 0.47> <CoreInst = "Multiplexer">   --->   Core 76 'Multiplexer' <Latency = 0> <II = 1> <Delay = 0.47> <FuncUnit> <Opcode : 'mux'> <InPorts = 2> <OutPorts = 1>
+ST_2 : Operation 35 [1/1] (0.33ns)   --->   "%and_ln823_2 = and i8 %tmp, i8 %xor_ln823" [/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:823]   --->   Operation 35 'and' 'and_ln823_2' <Predicate = (!icmp_ln871)> <Delay = 0.33> <CoreInst = "LogicGate">   --->   Core 74 'LogicGate' <Latency = 0> <II = 1> <Delay = 0.33> <FuncUnit> <Opcode : 'and' 'or' 'xor'> <InPorts = 2> <OutPorts = 1>
+ST_2 : Operation 36 [1/1] (0.58ns)   --->   "%switch_ln823 = switch i2 %i_45, void %branch5, i2 0, void %branch3, i2 1, void %branch4" [/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:823]   --->   Operation 36 'switch' 'switch_ln823' <Predicate = (!icmp_ln871)> <Delay = 0.58>
+ST_2 : Operation 37 [1/1] (0.00ns)   --->   "%store_ln823 = store i8 %and_ln823_2, i8 %state_execute_alu_results_uop_branch_br_mask_1" [/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:823]   --->   Operation 37 'store' 'store_ln823' <Predicate = (!icmp_ln871 & i_45 == 1)> <Delay = 0.00>
+ST_2 : Operation 38 [1/1] (0.00ns)   --->   "%br_ln823 = br void %.split107" [/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:823]   --->   Operation 38 'br' 'br_ln823' <Predicate = (!icmp_ln871 & i_45 == 1)> <Delay = 0.00>
+ST_2 : Operation 39 [1/1] (0.00ns)   --->   "%store_ln823 = store i8 %and_ln823_2, i8 %state_execute_alu_results_uop_branch_br_mask_0" [/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:823]   --->   Operation 39 'store' 'store_ln823' <Predicate = (!icmp_ln871 & i_45 == 0)> <Delay = 0.00>
+ST_2 : Operation 40 [1/1] (0.00ns)   --->   "%br_ln823 = br void %.split107" [/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:823]   --->   Operation 40 'br' 'br_ln823' <Predicate = (!icmp_ln871 & i_45 == 0)> <Delay = 0.00>
+ST_2 : Operation 41 [1/1] (0.00ns)   --->   "%store_ln823 = store i8 %and_ln823_2, i8 %state_execute_alu_results_uop_branch_br_mask_2" [/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:823]   --->   Operation 41 'store' 'store_ln823' <Predicate = (!icmp_ln871 & i_45 != 0 & i_45 != 1)> <Delay = 0.00>
+ST_2 : Operation 42 [1/1] (0.00ns)   --->   "%br_ln823 = br void %.split107" [/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:823]   --->   Operation 42 'br' 'br_ln823' <Predicate = (!icmp_ln871 & i_45 != 0 & i_45 != 1)> <Delay = 0.00>
+ST_2 : Operation 43 [1/1] (0.42ns)   --->   "%store_ln871 = store i2 %add_ln871, i2 %i" [/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:871]   --->   Operation 43 'store' 'store_ln871' <Predicate = (!icmp_ln871)> <Delay = 0.42>
+ST_2 : Operation 44 [1/1] (0.00ns)   --->   "%br_ln0 = br void"   --->   Operation 44 'br' 'br_ln0' <Predicate = (!icmp_ln871)> <Delay = 0.00>
+ST_2 : Operation 45 [1/1] (0.00ns)   --->   "%i_38 = alloca i32 1"   --->   Operation 45 'alloca' 'i_38' <Predicate = (icmp_ln871)> <Delay = 0.00>
+ST_2 : Operation 46 [1/1] (0.42ns)   --->   "%store_ln872 = store i2 0, i2 %i_38" [/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:872]   --->   Operation 46 'store' 'store_ln872' <Predicate = (icmp_ln871)> <Delay = 0.42>
+ST_2 : Operation 47 [1/1] (0.00ns)   --->   "%br_ln872 = br void %.preheader4" [/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:872]   --->   Operation 47 'br' 'br_ln872' <Predicate = (icmp_ln871)> <Delay = 0.00>
+
+State 3 <SV = 2> <Delay = 0.97>
+ST_3 : Operation 48 [1/1] (0.00ns)   --->   "%i_46 = load i2 %i_38" [/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:872]   --->   Operation 48 'load' 'i_46' <Predicate = true> <Delay = 0.00>
+ST_3 : Operation 49 [1/1] (0.44ns)   --->   "%icmp_ln872 = icmp_eq  i2 %i_46, i2 3" [/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:872]   --->   Operation 49 'icmp' 'icmp_ln872' <Predicate = true> <Delay = 0.44> <CoreInst = "Cmp">   --->   Core 9 'Cmp' <Latency = 0> <II = 1> <Delay = 0.72> <FuncUnit> <Opcode : 'icmp'> <InPorts = 2> <OutPorts = 1>
+ST_3 : Operation 50 [1/1] (0.00ns)   --->   "%empty_126 = speclooptripcount i32 @_ssdm_op_SpecLoopTripCount, i64 3, i64 3, i64 3"   --->   Operation 50 'speclooptripcount' 'empty_126' <Predicate = true> <Delay = 0.00>
+ST_3 : Operation 51 [1/1] (0.54ns)   --->   "%add_ln872 = add i2 %i_46, i2 1" [/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:872]   --->   Operation 51 'add' 'add_ln872' <Predicate = true> <Delay = 0.54> <CoreInst = "Adder">   --->   Core 1 'Adder' <Latency = 0> <II = 1> <Delay = 0.79> <FuncUnit> <Opcode : 'add' 'sub'> <InPorts = 2> <OutPorts = 1>
+ST_3 : Operation 52 [1/1] (0.00ns)   --->   "%br_ln872 = br i1 %icmp_ln872, void %.split8, void %.preheader3.preheader" [/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:872]   --->   Operation 52 'br' 'br_ln872' <Predicate = true> <Delay = 0.00>
+ST_3 : Operation 53 [1/1] (0.00ns)   --->   "%specloopname_ln872 = specloopname void @_ssdm_op_SpecLoopName, void @empty_7" [/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:872]   --->   Operation 53 'specloopname' 'specloopname_ln872' <Predicate = (!icmp_ln872)> <Delay = 0.00>
+ST_3 : Operation 54 [1/1] (0.00ns)   --->   "%state_issue_issued_uops_branch_br_mask_0_load = load i8 %state_issue_issued_uops_branch_br_mask_0" [/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:823]   --->   Operation 54 'load' 'state_issue_issued_uops_branch_br_mask_0_load' <Predicate = (!icmp_ln872)> <Delay = 0.00>
+ST_3 : Operation 55 [1/1] (0.00ns)   --->   "%state_issue_issued_uops_branch_br_mask_1_load = load i8 %state_issue_issued_uops_branch_br_mask_1" [/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:823]   --->   Operation 55 'load' 'state_issue_issued_uops_branch_br_mask_1_load' <Predicate = (!icmp_ln872)> <Delay = 0.00>
+ST_3 : Operation 56 [1/1] (0.00ns)   --->   "%state_issue_issued_uops_branch_br_mask_2_load = load i8 %state_issue_issued_uops_branch_br_mask_2" [/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:823]   --->   Operation 56 'load' 'state_issue_issued_uops_branch_br_mask_2_load' <Predicate = (!icmp_ln872)> <Delay = 0.00>
+ST_3 : Operation 57 [1/1] (0.47ns)   --->   "%tmp_s = mux i8 @_ssdm_op_Mux.ap_auto.3i8.i2, i8 %state_issue_issued_uops_branch_br_mask_0_load, i8 %state_issue_issued_uops_branch_br_mask_1_load, i8 %state_issue_issued_uops_branch_br_mask_2_load, i2 %i_46" [/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:823]   --->   Operation 57 'mux' 'tmp_s' <Predicate = (!icmp_ln872)> <Delay = 0.47> <CoreInst = "Multiplexer">   --->   Core 76 'Multiplexer' <Latency = 0> <II = 1> <Delay = 0.47> <FuncUnit> <Opcode : 'mux'> <InPorts = 2> <OutPorts = 1>
+ST_3 : Operation 58 [1/1] (0.33ns)   --->   "%and_ln823_3 = and i8 %tmp_s, i8 %xor_ln823" [/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:823]   --->   Operation 58 'and' 'and_ln823_3' <Predicate = (!icmp_ln872)> <Delay = 0.33> <CoreInst = "LogicGate">   --->   Core 74 'LogicGate' <Latency = 0> <II = 1> <Delay = 0.33> <FuncUnit> <Opcode : 'and' 'or' 'xor'> <InPorts = 2> <OutPorts = 1>
+ST_3 : Operation 59 [1/1] (0.58ns)   --->   "%switch_ln823 = switch i2 %i_46, void %branch2, i2 0, void %branch0, i2 1, void %branch1" [/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:823]   --->   Operation 59 'switch' 'switch_ln823' <Predicate = (!icmp_ln872)> <Delay = 0.58>
+ST_3 : Operation 60 [1/1] (0.00ns)   --->   "%store_ln823 = store i8 %and_ln823_3, i8 %state_issue_issued_uops_branch_br_mask_1" [/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:823]   --->   Operation 60 'store' 'store_ln823' <Predicate = (!icmp_ln872 & i_46 == 1)> <Delay = 0.00>
+ST_3 : Operation 61 [1/1] (0.00ns)   --->   "%br_ln823 = br void %.split83" [/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:823]   --->   Operation 61 'br' 'br_ln823' <Predicate = (!icmp_ln872 & i_46 == 1)> <Delay = 0.00>
+ST_3 : Operation 62 [1/1] (0.00ns)   --->   "%store_ln823 = store i8 %and_ln823_3, i8 %state_issue_issued_uops_branch_br_mask_0" [/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:823]   --->   Operation 62 'store' 'store_ln823' <Predicate = (!icmp_ln872 & i_46 == 0)> <Delay = 0.00>
+ST_3 : Operation 63 [1/1] (0.00ns)   --->   "%br_ln823 = br void %.split83" [/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:823]   --->   Operation 63 'br' 'br_ln823' <Predicate = (!icmp_ln872 & i_46 == 0)> <Delay = 0.00>
+ST_3 : Operation 64 [1/1] (0.00ns)   --->   "%store_ln823 = store i8 %and_ln823_3, i8 %state_issue_issued_uops_branch_br_mask_2" [/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:823]   --->   Operation 64 'store' 'store_ln823' <Predicate = (!icmp_ln872 & i_46 != 0 & i_46 != 1)> <Delay = 0.00>
+ST_3 : Operation 65 [1/1] (0.00ns)   --->   "%br_ln823 = br void %.split83" [/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:823]   --->   Operation 65 'br' 'br_ln823' <Predicate = (!icmp_ln872 & i_46 != 0 & i_46 != 1)> <Delay = 0.00>
+ST_3 : Operation 66 [1/1] (0.42ns)   --->   "%store_ln872 = store i2 %add_ln872, i2 %i_38" [/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:872]   --->   Operation 66 'store' 'store_ln872' <Predicate = (!icmp_ln872)> <Delay = 0.42>
+ST_3 : Operation 67 [1/1] (0.00ns)   --->   "%br_ln0 = br void %.preheader4"   --->   Operation 67 'br' 'br_ln0' <Predicate = (!icmp_ln872)> <Delay = 0.00>
+ST_3 : Operation 68 [1/1] (0.00ns)   --->   "%i_34 = alloca i32 1"   --->   Operation 68 'alloca' 'i_34' <Predicate = (icmp_ln872)> <Delay = 0.00>
+ST_3 : Operation 69 [1/1] (0.42ns)   --->   "%store_ln873 = store i4 0, i4 %i_34" [/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:873]   --->   Operation 69 'store' 'store_ln873' <Predicate = (icmp_ln872)> <Delay = 0.42>
+ST_3 : Operation 70 [1/1] (0.00ns)   --->   "%br_ln873 = br void %.preheader3" [/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:873]   --->   Operation 70 'br' 'br_ln873' <Predicate = (icmp_ln872)> <Delay = 0.00>
+
+State 4 <SV = 3> <Delay = 1.22>
+ST_4 : Operation 71 [1/1] (0.00ns)   --->   "%i_47 = load i4 %i_34" [/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:873]   --->   Operation 71 'load' 'i_47' <Predicate = true> <Delay = 0.00>
+ST_4 : Operation 72 [1/1] (0.00ns)   --->   "%zext_ln873 = zext i4 %i_47" [/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:873]   --->   Operation 72 'zext' 'zext_ln873' <Predicate = true> <Delay = 0.00>
+ST_4 : Operation 73 [1/1] (0.72ns)   --->   "%icmp_ln873 = icmp_eq  i4 %i_47, i4 8" [/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:873]   --->   Operation 73 'icmp' 'icmp_ln873' <Predicate = true> <Delay = 0.72> <CoreInst = "Cmp">   --->   Core 9 'Cmp' <Latency = 0> <II = 1> <Delay = 0.72> <FuncUnit> <Opcode : 'icmp'> <InPorts = 2> <OutPorts = 1>
+ST_4 : Operation 74 [1/1] (0.00ns)   --->   "%empty_127 = speclooptripcount i32 @_ssdm_op_SpecLoopTripCount, i64 8, i64 8, i64 8"   --->   Operation 74 'speclooptripcount' 'empty_127' <Predicate = true> <Delay = 0.00>
+ST_4 : Operation 75 [1/1] (0.79ns)   --->   "%add_ln873 = add i4 %i_47, i4 1" [/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:873]   --->   Operation 75 'add' 'add_ln873' <Predicate = true> <Delay = 0.79> <CoreInst = "Adder">   --->   Core 1 'Adder' <Latency = 0> <II = 1> <Delay = 0.79> <FuncUnit> <Opcode : 'add' 'sub'> <InPorts = 2> <OutPorts = 1>
+ST_4 : Operation 76 [1/1] (0.00ns)   --->   "%br_ln873 = br i1 %icmp_ln873, void %.split6, void %.preheader2.preheader" [/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:873]   --->   Operation 76 'br' 'br_ln873' <Predicate = true> <Delay = 0.00>
+ST_4 : Operation 77 [1/1] (0.00ns)   --->   "%uop_branch_br_mask = getelementptr i8 %state_issue_alu_iq_entries_uop_branch_br_mask, i64 0, i64 %zext_ln873" [/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:873]   --->   Operation 77 'getelementptr' 'uop_branch_br_mask' <Predicate = (!icmp_ln873)> <Delay = 0.00>
+ST_4 : Operation 78 [2/2] (0.67ns)   --->   "%uop_branch_br_mask_load = load i3 %uop_branch_br_mask" [/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:823]   --->   Operation 78 'load' 'uop_branch_br_mask_load' <Predicate = (!icmp_ln873)> <Delay = 0.67> <CoreInst = "RAM">   --->   Core 83 'RAM' <Latency = 1> <II = 1> <Delay = 0.67> <Storage> <Opcode : 'load' 'store'> <Ports = 2> <Width = 8> <Depth = 8> <RAM>
+ST_4 : Operation 79 [1/1] (0.42ns)   --->   "%store_ln873 = store i4 %add_ln873, i4 %i_34" [/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:873]   --->   Operation 79 'store' 'store_ln873' <Predicate = (!icmp_ln873)> <Delay = 0.42>
+ST_4 : Operation 80 [1/1] (0.00ns)   --->   "%i_35 = alloca i32 1"   --->   Operation 80 'alloca' 'i_35' <Predicate = (icmp_ln873)> <Delay = 0.00>
+ST_4 : Operation 81 [1/1] (0.42ns)   --->   "%store_ln874 = store i6 0, i6 %i_35" [/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:874]   --->   Operation 81 'store' 'store_ln874' <Predicate = (icmp_ln873)> <Delay = 0.42>
+ST_4 : Operation 82 [1/1] (0.00ns)   --->   "%br_ln874 = br void %.preheader2" [/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:874]   --->   Operation 82 'br' 'br_ln874' <Predicate = (icmp_ln873)> <Delay = 0.00>
+
+State 5 <SV = 4> <Delay = 1.68>
+ST_5 : Operation 83 [1/1] (0.00ns)   --->   "%specloopname_ln873 = specloopname void @_ssdm_op_SpecLoopName, void @empty_14" [/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:873]   --->   Operation 83 'specloopname' 'specloopname_ln873' <Predicate = true> <Delay = 0.00>
+ST_5 : Operation 84 [1/2] (0.67ns)   --->   "%uop_branch_br_mask_load = load i3 %uop_branch_br_mask" [/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:823]   --->   Operation 84 'load' 'uop_branch_br_mask_load' <Predicate = true> <Delay = 0.67> <CoreInst = "RAM">   --->   Core 83 'RAM' <Latency = 1> <II = 1> <Delay = 0.67> <Storage> <Opcode : 'load' 'store'> <Ports = 2> <Width = 8> <Depth = 8> <RAM>
+ST_5 : Operation 85 [1/1] (0.33ns)   --->   "%and_ln823_4 = and i8 %uop_branch_br_mask_load, i8 %xor_ln823" [/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:823]   --->   Operation 85 'and' 'and_ln823_4' <Predicate = true> <Delay = 0.33> <CoreInst = "LogicGate">   --->   Core 74 'LogicGate' <Latency = 0> <II = 1> <Delay = 0.33> <FuncUnit> <Opcode : 'and' 'or' 'xor'> <InPorts = 2> <OutPorts = 1>
+ST_5 : Operation 86 [1/1] (0.67ns)   --->   "%store_ln823 = store i8 %and_ln823_4, i3 %uop_branch_br_mask" [/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:823]   --->   Operation 86 'store' 'store_ln823' <Predicate = true> <Delay = 0.67> <CoreInst = "RAM">   --->   Core 83 'RAM' <Latency = 1> <II = 1> <Delay = 0.67> <Storage> <Opcode : 'load' 'store'> <Ports = 2> <Width = 8> <Depth = 8> <RAM>
+ST_5 : Operation 87 [1/1] (0.00ns)   --->   "%br_ln0 = br void %.preheader3"   --->   Operation 87 'br' 'br_ln0' <Predicate = true> <Delay = 0.00>
+
+State 6 <SV = 4> <Delay = 1.21>
+ST_6 : Operation 88 [1/1] (0.00ns)   --->   "%i_48 = load i6 %i_35" [/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:874]   --->   Operation 88 'load' 'i_48' <Predicate = true> <Delay = 0.00>
+ST_6 : Operation 89 [1/1] (0.00ns)   --->   "%zext_ln874 = zext i6 %i_48" [/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:874]   --->   Operation 89 'zext' 'zext_ln874' <Predicate = true> <Delay = 0.00>
+ST_6 : Operation 90 [1/1] (0.78ns)   --->   "%icmp_ln874 = icmp_eq  i6 %i_48, i6 32" [/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:874]   --->   Operation 90 'icmp' 'icmp_ln874' <Predicate = true> <Delay = 0.78> <CoreInst = "Cmp">   --->   Core 9 'Cmp' <Latency = 0> <II = 1> <Delay = 0.72> <FuncUnit> <Opcode : 'icmp'> <InPorts = 2> <OutPorts = 1>
+ST_6 : Operation 91 [1/1] (0.00ns)   --->   "%empty_128 = speclooptripcount i32 @_ssdm_op_SpecLoopTripCount, i64 32, i64 32, i64 32"   --->   Operation 91 'speclooptripcount' 'empty_128' <Predicate = true> <Delay = 0.00>
+ST_6 : Operation 92 [1/1] (0.78ns)   --->   "%add_ln874 = add i6 %i_48, i6 1" [/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:874]   --->   Operation 92 'add' 'add_ln874' <Predicate = true> <Delay = 0.78> <CoreInst = "Adder">   --->   Core 1 'Adder' <Latency = 0> <II = 1> <Delay = 0.79> <FuncUnit> <Opcode : 'add' 'sub'> <InPorts = 2> <OutPorts = 1>
+ST_6 : Operation 93 [1/1] (0.00ns)   --->   "%br_ln874 = br i1 %icmp_ln874, void %.split4, void %.preheader1.preheader" [/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:874]   --->   Operation 93 'br' 'br_ln874' <Predicate = true> <Delay = 0.00>
+ST_6 : Operation 94 [1/1] (0.00ns)   --->   "%uop_branch_br_mask_1 = getelementptr i8 %state_rob_entries_uop_branch_br_mask, i64 0, i64 %zext_ln874" [/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:874]   --->   Operation 94 'getelementptr' 'uop_branch_br_mask_1' <Predicate = (!icmp_ln874)> <Delay = 0.00>
+ST_6 : Operation 95 [2/2] (0.67ns)   --->   "%uop_branch_br_mask_1_load = load i5 %uop_branch_br_mask_1" [/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:823]   --->   Operation 95 'load' 'uop_branch_br_mask_1_load' <Predicate = (!icmp_ln874)> <Delay = 0.67> <CoreInst = "RAM">   --->   Core 83 'RAM' <Latency = 1> <II = 1> <Delay = 0.67> <Storage> <Opcode : 'load' 'store'> <Ports = 2> <Width = 8> <Depth = 32> <RAM>
+ST_6 : Operation 96 [1/1] (0.42ns)   --->   "%store_ln874 = store i6 %add_ln874, i6 %i_35" [/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:874]   --->   Operation 96 'store' 'store_ln874' <Predicate = (!icmp_ln874)> <Delay = 0.42>
+ST_6 : Operation 97 [1/1] (0.00ns)   --->   "%i_36 = alloca i32 1"   --->   Operation 97 'alloca' 'i_36' <Predicate = (icmp_ln874)> <Delay = 0.00>
+ST_6 : Operation 98 [1/1] (0.42ns)   --->   "%store_ln875 = store i4 0, i4 %i_36" [/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:875]   --->   Operation 98 'store' 'store_ln875' <Predicate = (icmp_ln874)> <Delay = 0.42>
+ST_6 : Operation 99 [1/1] (0.00ns)   --->   "%br_ln875 = br void %.preheader1" [/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:875]   --->   Operation 99 'br' 'br_ln875' <Predicate = (icmp_ln874)> <Delay = 0.00>
+
+State 7 <SV = 5> <Delay = 1.68>
+ST_7 : Operation 100 [1/1] (0.00ns)   --->   "%specloopname_ln874 = specloopname void @_ssdm_op_SpecLoopName, void @empty_12" [/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:874]   --->   Operation 100 'specloopname' 'specloopname_ln874' <Predicate = true> <Delay = 0.00>
+ST_7 : Operation 101 [1/2] (0.67ns)   --->   "%uop_branch_br_mask_1_load = load i5 %uop_branch_br_mask_1" [/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:823]   --->   Operation 101 'load' 'uop_branch_br_mask_1_load' <Predicate = true> <Delay = 0.67> <CoreInst = "RAM">   --->   Core 83 'RAM' <Latency = 1> <II = 1> <Delay = 0.67> <Storage> <Opcode : 'load' 'store'> <Ports = 2> <Width = 8> <Depth = 32> <RAM>
+ST_7 : Operation 102 [1/1] (0.33ns)   --->   "%and_ln823_5 = and i8 %uop_branch_br_mask_1_load, i8 %xor_ln823" [/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:823]   --->   Operation 102 'and' 'and_ln823_5' <Predicate = true> <Delay = 0.33> <CoreInst = "LogicGate">   --->   Core 74 'LogicGate' <Latency = 0> <II = 1> <Delay = 0.33> <FuncUnit> <Opcode : 'and' 'or' 'xor'> <InPorts = 2> <OutPorts = 1>
+ST_7 : Operation 103 [1/1] (0.67ns)   --->   "%store_ln823 = store i8 %and_ln823_5, i5 %uop_branch_br_mask_1" [/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:823]   --->   Operation 103 'store' 'store_ln823' <Predicate = true> <Delay = 0.67> <CoreInst = "RAM">   --->   Core 83 'RAM' <Latency = 1> <II = 1> <Delay = 0.67> <Storage> <Opcode : 'load' 'store'> <Ports = 2> <Width = 8> <Depth = 32> <RAM>
+ST_7 : Operation 104 [1/1] (0.00ns)   --->   "%br_ln0 = br void %.preheader2"   --->   Operation 104 'br' 'br_ln0' <Predicate = true> <Delay = 0.00>
+
+State 8 <SV = 5> <Delay = 1.22>
+ST_8 : Operation 105 [1/1] (0.00ns)   --->   "%i_49 = load i4 %i_36" [/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:875]   --->   Operation 105 'load' 'i_49' <Predicate = true> <Delay = 0.00>
+ST_8 : Operation 106 [1/1] (0.00ns)   --->   "%zext_ln875 = zext i4 %i_49" [/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:875]   --->   Operation 106 'zext' 'zext_ln875' <Predicate = true> <Delay = 0.00>
+ST_8 : Operation 107 [1/1] (0.72ns)   --->   "%icmp_ln875 = icmp_eq  i4 %i_49, i4 8" [/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:875]   --->   Operation 107 'icmp' 'icmp_ln875' <Predicate = true> <Delay = 0.72> <CoreInst = "Cmp">   --->   Core 9 'Cmp' <Latency = 0> <II = 1> <Delay = 0.72> <FuncUnit> <Opcode : 'icmp'> <InPorts = 2> <OutPorts = 1>
+ST_8 : Operation 108 [1/1] (0.00ns)   --->   "%empty_129 = speclooptripcount i32 @_ssdm_op_SpecLoopTripCount, i64 8, i64 8, i64 8"   --->   Operation 108 'speclooptripcount' 'empty_129' <Predicate = true> <Delay = 0.00>
+ST_8 : Operation 109 [1/1] (0.79ns)   --->   "%add_ln875 = add i4 %i_49, i4 1" [/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:875]   --->   Operation 109 'add' 'add_ln875' <Predicate = true> <Delay = 0.79> <CoreInst = "Adder">   --->   Core 1 'Adder' <Latency = 0> <II = 1> <Delay = 0.79> <FuncUnit> <Opcode : 'add' 'sub'> <InPorts = 2> <OutPorts = 1>
+ST_8 : Operation 110 [1/1] (0.00ns)   --->   "%br_ln875 = br i1 %icmp_ln875, void %.split2, void %.preheader.preheader" [/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:875]   --->   Operation 110 'br' 'br_ln875' <Predicate = true> <Delay = 0.00>
+ST_8 : Operation 111 [1/1] (0.00ns)   --->   "%state_lsu_ldq_branch_mask_addr = getelementptr i8 %state_lsu_ldq_branch_mask, i64 0, i64 %zext_ln875" [/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:875]   --->   Operation 111 'getelementptr' 'state_lsu_ldq_branch_mask_addr' <Predicate = (!icmp_ln875)> <Delay = 0.00>
+ST_8 : Operation 112 [2/2] (0.67ns)   --->   "%state_lsu_ldq_branch_mask_load = load i3 %state_lsu_ldq_branch_mask_addr" [/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:875]   --->   Operation 112 'load' 'state_lsu_ldq_branch_mask_load' <Predicate = (!icmp_ln875)> <Delay = 0.67> <CoreInst = "RAM">   --->   Core 83 'RAM' <Latency = 1> <II = 1> <Delay = 0.67> <Storage> <Opcode : 'load' 'store'> <Ports = 2> <Width = 8> <Depth = 8> <RAM>
+ST_8 : Operation 113 [1/1] (0.42ns)   --->   "%store_ln875 = store i4 %add_ln875, i4 %i_36" [/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:875]   --->   Operation 113 'store' 'store_ln875' <Predicate = (!icmp_ln875)> <Delay = 0.42>
+ST_8 : Operation 114 [1/1] (0.00ns)   --->   "%i_37 = alloca i32 1"   --->   Operation 114 'alloca' 'i_37' <Predicate = (icmp_ln875)> <Delay = 0.00>
+ST_8 : Operation 115 [1/1] (0.42ns)   --->   "%store_ln876 = store i4 0, i4 %i_37" [/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:876]   --->   Operation 115 'store' 'store_ln876' <Predicate = (icmp_ln875)> <Delay = 0.42>
+ST_8 : Operation 116 [1/1] (0.00ns)   --->   "%br_ln876 = br void %.preheader" [/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:876]   --->   Operation 116 'br' 'br_ln876' <Predicate = (icmp_ln875)> <Delay = 0.00>
+
+State 9 <SV = 6> <Delay = 1.68>
+ST_9 : Operation 117 [1/1] (0.00ns)   --->   "%specloopname_ln875 = specloopname void @_ssdm_op_SpecLoopName, void @empty_4" [/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:875]   --->   Operation 117 'specloopname' 'specloopname_ln875' <Predicate = true> <Delay = 0.00>
+ST_9 : Operation 118 [1/2] (0.67ns)   --->   "%state_lsu_ldq_branch_mask_load = load i3 %state_lsu_ldq_branch_mask_addr" [/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:875]   --->   Operation 118 'load' 'state_lsu_ldq_branch_mask_load' <Predicate = true> <Delay = 0.67> <CoreInst = "RAM">   --->   Core 83 'RAM' <Latency = 1> <II = 1> <Delay = 0.67> <Storage> <Opcode : 'load' 'store'> <Ports = 2> <Width = 8> <Depth = 8> <RAM>
+ST_9 : Operation 119 [1/1] (0.33ns)   --->   "%and_ln875 = and i8 %state_lsu_ldq_branch_mask_load, i8 %xor_ln823" [/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:875]   --->   Operation 119 'and' 'and_ln875' <Predicate = true> <Delay = 0.33> <CoreInst = "LogicGate">   --->   Core 74 'LogicGate' <Latency = 0> <II = 1> <Delay = 0.33> <FuncUnit> <Opcode : 'and' 'or' 'xor'> <InPorts = 2> <OutPorts = 1>
+ST_9 : Operation 120 [1/1] (0.67ns)   --->   "%store_ln875 = store i8 %and_ln875, i3 %state_lsu_ldq_branch_mask_addr" [/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:875]   --->   Operation 120 'store' 'store_ln875' <Predicate = true> <Delay = 0.67> <CoreInst = "RAM">   --->   Core 83 'RAM' <Latency = 1> <II = 1> <Delay = 0.67> <Storage> <Opcode : 'load' 'store'> <Ports = 2> <Width = 8> <Depth = 8> <RAM>
+ST_9 : Operation 121 [1/1] (0.00ns)   --->   "%br_ln0 = br void %.preheader1"   --->   Operation 121 'br' 'br_ln0' <Predicate = true> <Delay = 0.00>
+
+State 10 <SV = 6> <Delay = 1.22>
+ST_10 : Operation 122 [1/1] (0.00ns)   --->   "%i_50 = load i4 %i_37" [/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:876]   --->   Operation 122 'load' 'i_50' <Predicate = (!icmp_ln866)> <Delay = 0.00>
+ST_10 : Operation 123 [1/1] (0.00ns)   --->   "%zext_ln876 = zext i4 %i_50" [/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:876]   --->   Operation 123 'zext' 'zext_ln876' <Predicate = (!icmp_ln866)> <Delay = 0.00>
+ST_10 : Operation 124 [1/1] (0.72ns)   --->   "%icmp_ln876 = icmp_eq  i4 %i_50, i4 8" [/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:876]   --->   Operation 124 'icmp' 'icmp_ln876' <Predicate = (!icmp_ln866)> <Delay = 0.72> <CoreInst = "Cmp">   --->   Core 9 'Cmp' <Latency = 0> <II = 1> <Delay = 0.72> <FuncUnit> <Opcode : 'icmp'> <InPorts = 2> <OutPorts = 1>
+ST_10 : Operation 125 [1/1] (0.00ns)   --->   "%empty_130 = speclooptripcount i32 @_ssdm_op_SpecLoopTripCount, i64 8, i64 8, i64 8"   --->   Operation 125 'speclooptripcount' 'empty_130' <Predicate = (!icmp_ln866)> <Delay = 0.00>
+ST_10 : Operation 126 [1/1] (0.79ns)   --->   "%add_ln876 = add i4 %i_50, i4 1" [/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:876]   --->   Operation 126 'add' 'add_ln876' <Predicate = (!icmp_ln866)> <Delay = 0.79> <CoreInst = "Adder">   --->   Core 1 'Adder' <Latency = 0> <II = 1> <Delay = 0.79> <FuncUnit> <Opcode : 'add' 'sub'> <InPorts = 2> <OutPorts = 1>
+ST_10 : Operation 127 [1/1] (0.00ns)   --->   "%br_ln876 = br i1 %icmp_ln876, void %.split, void %.loopexit.loopexit" [/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:876]   --->   Operation 127 'br' 'br_ln876' <Predicate = (!icmp_ln866)> <Delay = 0.00>
+ST_10 : Operation 128 [1/1] (0.00ns)   --->   "%state_lsu_stq_branch_mask_addr = getelementptr i8 %state_lsu_stq_branch_mask, i64 0, i64 %zext_ln876" [/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:876]   --->   Operation 128 'getelementptr' 'state_lsu_stq_branch_mask_addr' <Predicate = (!icmp_ln866 & !icmp_ln876)> <Delay = 0.00>
+ST_10 : Operation 129 [2/2] (0.67ns)   --->   "%state_lsu_stq_branch_mask_load = load i3 %state_lsu_stq_branch_mask_addr" [/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:876]   --->   Operation 129 'load' 'state_lsu_stq_branch_mask_load' <Predicate = (!icmp_ln866 & !icmp_ln876)> <Delay = 0.67> <CoreInst = "RAM">   --->   Core 83 'RAM' <Latency = 1> <II = 1> <Delay = 0.67> <Storage> <Opcode : 'load' 'store'> <Ports = 2> <Width = 8> <Depth = 8> <RAM>
+ST_10 : Operation 130 [1/1] (0.42ns)   --->   "%store_ln876 = store i4 %add_ln876, i4 %i_37" [/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:876]   --->   Operation 130 'store' 'store_ln876' <Predicate = (!icmp_ln866 & !icmp_ln876)> <Delay = 0.42>
+ST_10 : Operation 131 [1/1] (0.00ns)   --->   "%br_ln0 = br void %.loopexit"   --->   Operation 131 'br' 'br_ln0' <Predicate = (!icmp_ln866 & icmp_ln876)> <Delay = 0.00>
+ST_10 : Operation 132 [1/1] (0.00ns)   --->   "%ret_ln877 = ret" [/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:877]   --->   Operation 132 'ret' 'ret_ln877' <Predicate = (icmp_ln876) | (icmp_ln866)> <Delay = 0.00>
+
+State 11 <SV = 7> <Delay = 1.68>
+ST_11 : Operation 133 [1/1] (0.00ns)   --->   "%specloopname_ln876 = specloopname void @_ssdm_op_SpecLoopName, void @empty_36" [/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:876]   --->   Operation 133 'specloopname' 'specloopname_ln876' <Predicate = true> <Delay = 0.00>
+ST_11 : Operation 134 [1/2] (0.67ns)   --->   "%state_lsu_stq_branch_mask_load = load i3 %state_lsu_stq_branch_mask_addr" [/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:876]   --->   Operation 134 'load' 'state_lsu_stq_branch_mask_load' <Predicate = true> <Delay = 0.67> <CoreInst = "RAM">   --->   Core 83 'RAM' <Latency = 1> <II = 1> <Delay = 0.67> <Storage> <Opcode : 'load' 'store'> <Ports = 2> <Width = 8> <Depth = 8> <RAM>
+ST_11 : Operation 135 [1/1] (0.33ns)   --->   "%and_ln876 = and i8 %state_lsu_stq_branch_mask_load, i8 %xor_ln823" [/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:876]   --->   Operation 135 'and' 'and_ln876' <Predicate = true> <Delay = 0.33> <CoreInst = "LogicGate">   --->   Core 74 'LogicGate' <Latency = 0> <II = 1> <Delay = 0.33> <FuncUnit> <Opcode : 'and' 'or' 'xor'> <InPorts = 2> <OutPorts = 1>
+ST_11 : Operation 136 [1/1] (0.67ns)   --->   "%store_ln876 = store i8 %and_ln876, i3 %state_lsu_stq_branch_mask_addr" [/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:876]   --->   Operation 136 'store' 'store_ln876' <Predicate = true> <Delay = 0.67> <CoreInst = "RAM">   --->   Core 83 'RAM' <Latency = 1> <II = 1> <Delay = 0.67> <Storage> <Opcode : 'load' 'store'> <Ports = 2> <Width = 8> <Depth = 8> <RAM>
+ST_11 : Operation 137 [1/1] (0.00ns)   --->   "%br_ln0 = br void %.preheader"   --->   Operation 137 'br' 'br_ln0' <Predicate = true> <Delay = 0.00>
+
+
+============================================================
++ Verbose Summary: Timing violations
+============================================================
+Target clock period: 10ns, clock uncertainty: 2.7ns.
+
+ <State 1>: 1.28ns
+The critical path consists of the following:
+	wire read operation ('resolve_mask_read', /home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:866) on port 'resolve_mask' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:866) [14]  (0 ns)
+	'icmp' operation ('icmp_ln866', /home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:866) [15]  (0.849 ns)
+	blocking operation 0.427 ns on control path)
+
+ <State 2>: 0.975ns
+The critical path consists of the following:
+	'load' operation ('i', /home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:871) on local variable 'i' [29]  (0 ns)
+	'add' operation ('add_ln871', /home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:871) [32]  (0.548 ns)
+	'store' operation ('store_ln871', /home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:871) of variable 'add_ln871', /home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:871 on local variable 'i' [52]  (0.427 ns)
+
+ <State 3>: 0.975ns
+The critical path consists of the following:
+	'load' operation ('i', /home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:872) on local variable 'i' [59]  (0 ns)
+	'add' operation ('add_ln872', /home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:872) [62]  (0.548 ns)
+	'store' operation ('store_ln872', /home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:872) of variable 'add_ln872', /home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:872 on local variable 'i' [82]  (0.427 ns)
+
+ <State 4>: 1.22ns
+The critical path consists of the following:
+	'load' operation ('i', /home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:873) on local variable 'i' [89]  (0 ns)
+	'add' operation ('add_ln873', /home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:873) [93]  (0.797 ns)
+	'store' operation ('store_ln873', /home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:873) of variable 'add_ln873', /home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:873 on local variable 'i' [101]  (0.427 ns)
+
+ <State 5>: 1.69ns
+The critical path consists of the following:
+	'load' operation ('uop_branch_br_mask_load', /home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:823) on array 'state_issue_alu_iq_entries_uop_branch_br_mask' [98]  (0.677 ns)
+	'and' operation ('and_ln823_4', /home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:823) [99]  (0.335 ns)
+	'store' operation ('store_ln823', /home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:823) of variable 'and_ln823_4', /home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:823 on array 'state_issue_alu_iq_entries_uop_branch_br_mask' [100]  (0.677 ns)
+
+ <State 6>: 1.21ns
+The critical path consists of the following:
+	'load' operation ('i', /home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:874) on local variable 'i' [108]  (0 ns)
+	'add' operation ('add_ln874', /home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:874) [112]  (0.781 ns)
+	'store' operation ('store_ln874', /home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:874) of variable 'add_ln874', /home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:874 on local variable 'i' [120]  (0.427 ns)
+	blocking operation 0.004 ns on control path)
+
+ <State 7>: 1.69ns
+The critical path consists of the following:
+	'load' operation ('uop_branch_br_mask_1_load', /home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:823) on array 'state_rob_entries_uop_branch_br_mask' [117]  (0.677 ns)
+	'and' operation ('and_ln823_5', /home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:823) [118]  (0.335 ns)
+	'store' operation ('store_ln823', /home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:823) of variable 'and_ln823_5', /home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:823 on array 'state_rob_entries_uop_branch_br_mask' [119]  (0.677 ns)
+
+ <State 8>: 1.22ns
+The critical path consists of the following:
+	'load' operation ('i', /home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:875) on local variable 'i' [127]  (0 ns)
+	'add' operation ('add_ln875', /home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:875) [131]  (0.797 ns)
+	'store' operation ('store_ln875', /home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:875) of variable 'add_ln875', /home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:875 on local variable 'i' [139]  (0.427 ns)
+
+ <State 9>: 1.69ns
+The critical path consists of the following:
+	'load' operation ('state_lsu_ldq_branch_mask_load', /home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:875) on array 'state_lsu_ldq_branch_mask' [136]  (0.677 ns)
+	'and' operation ('and_ln875', /home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:875) [137]  (0.335 ns)
+	'store' operation ('store_ln875', /home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:875) of variable 'and_ln875', /home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:875 on array 'state_lsu_ldq_branch_mask' [138]  (0.677 ns)
+
+ <State 10>: 1.22ns
+The critical path consists of the following:
+	'load' operation ('i', /home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:876) on local variable 'i' [146]  (0 ns)
+	'add' operation ('add_ln876', /home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:876) [150]  (0.797 ns)
+	'store' operation ('store_ln876', /home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:876) of variable 'add_ln876', /home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:876 on local variable 'i' [158]  (0.427 ns)
+
+ <State 11>: 1.69ns
+The critical path consists of the following:
+	'load' operation ('state_lsu_stq_branch_mask_load', /home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:876) on array 'state_lsu_stq_branch_mask' [155]  (0.677 ns)
+	'and' operation ('and_ln876', /home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:876) [156]  (0.335 ns)
+	'store' operation ('store_ln876', /home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:876) of variable 'and_ln876', /home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:876 on array 'state_lsu_stq_branch_mask' [157]  (0.677 ns)
+
+
+============================================================
++ Verbose Summary: Binding
+============================================================
+N/A
+* FSMD analyzer results:
+  - Output states:
+ - Input state : 
+  - Chain level:
+	State 1
+	State 2
+	State 3
+	State 4
+	State 5
+	State 6
+	State 7
+	State 8
+	State 9
+	State 10
+	State 11
+
+
+============================================================
++ Verbose Summary: Datapath Resource usage 
+============================================================
+N/A

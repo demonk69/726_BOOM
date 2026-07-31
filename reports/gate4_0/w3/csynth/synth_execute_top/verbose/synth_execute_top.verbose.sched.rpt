@@ -1,0 +1,152 @@
+
+
+================================================================
+== Vitis HLS Report for 'synth_execute_top'
+================================================================
+* Date:           Fri Jul 31 19:21:10 2026
+
+* Version:        2021.2 (Build 3367213 on Tue Oct 19 02:47:39 MDT 2021)
+* Project:        synth_execute_top
+* Solution:       solution_w3_csynth (Vivado IP Flow Target)
+* Product family: zynquplus
+* Target device:  xczu7ev-ffvc1156-2-e
+
+
+================================================================
+== Performance Estimates
+================================================================
++ Timing: 
+    * Summary: 
+    +--------+----------+----------+------------+
+    |  Clock |  Target  | Estimated| Uncertainty|
+    +--------+----------+----------+------------+
+    |ap_clk  |  10.00 ns|  5.081 ns|     2.70 ns|
+    +--------+----------+----------+------------+
+
++ Latency: 
+    * Summary: 
+    +---------+---------+-----------+-----------+-----+-----+---------+
+    |  Latency (cycles) |   Latency (absolute)  |  Interval | Pipeline|
+    |   min   |   max   |    min    |    max    | min | max |   Type  |
+    +---------+---------+-----------+-----------+-----+-----+---------+
+    |        7|        7|  70.000 ns|  70.000 ns|    8|    8|       no|
+    +---------+---------+-----------+-----------+-----+-----+---------+
+
+    + Detail: 
+        * Instance: 
+        N/A
+
+        * Loop: 
+        N/A
+
+============================================================
++ Verbose Summary: Synthesis Manager
+============================================================
+InlineROM: 1
+ExposeGlobal: 0
+============================================================
++ Verbose Summary: CDFG Model
+============================================================
+IsTopModel: 1
+ResetActiveHigh: 1
+IsCombinational: 0
+IsDatapathOnly: 0
+HasWiredReturn: 1
+HasMFsm: 0
+HasVarLatency: 1
+IsPipeline: 0
+IsRtlPipelined: 0
+IsInstanceOverlapped: 0
+IsDontTouch: 0
+HasImplIP: 0
+IsGatedGlobalClock: 0
+
+
+============================================================
++ Verbose Summary: Schedule
+============================================================
+* Number of FSM states : 4
+* Pipeline : 0
+* Dataflow Pipeline: 0
+
+* FSM state transitions: 
+1 --> 2 
+2 --> 3 
+3 --> 4 
+4 --> 
+
+* FSM state operations: 
+
+State 1 <SV = 0> <Delay = 1.23>
+ST_1 : Operation 5 [1/1] (0.00ns)   --->   "%seed_rs2_read = read i64 @_ssdm_op_Read.ap_auto.i64, i64 %seed_rs2" [/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:2020]   --->   Operation 5 'read' 'seed_rs2_read' <Predicate = true> <Delay = 0.00>
+ST_1 : Operation 6 [1/1] (0.00ns)   --->   "%seed_rs1_read = read i64 @_ssdm_op_Read.ap_auto.i64, i64 %seed_rs1" [/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:2020]   --->   Operation 6 'read' 'seed_rs1_read' <Predicate = true> <Delay = 0.00>
+ST_1 : Operation 7 [1/1] (0.00ns)   --->   "%seed_uopc_read = read i8 @_ssdm_op_Read.ap_auto.i8, i8 %seed_uopc" [/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:2020]   --->   Operation 7 'read' 'seed_uopc_read' <Predicate = true> <Delay = 0.00>
+ST_1 : Operation 8 [1/1] (0.00ns)   --->   "%store_ln2022 = store i1 0, i1 %state_execute_alu_results_valid_1" [/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:2022]   --->   Operation 8 'store' 'store_ln2022' <Predicate = true> <Delay = 0.00>
+ST_1 : Operation 9 [1/1] (0.00ns)   --->   "%store_ln2022 = store i64 0, i64 %state_execute_alu_results_result_1" [/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:2022]   --->   Operation 9 'store' 'store_ln2022' <Predicate = true> <Delay = 0.00>
+ST_1 : Operation 10 [1/1] (0.00ns)   --->   "%store_ln2023 = store i1 1, i1 %state_issue_issued_valids_1" [/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:2023]   --->   Operation 10 'store' 'store_ln2023' <Predicate = true> <Delay = 0.00>
+ST_1 : Operation 11 [1/1] (0.00ns)   --->   "%store_ln2024 = store i8 %seed_uopc_read, i8 %state_issue_issued_uops_uopc_1" [/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:2024]   --->   Operation 11 'store' 'store_ln2024' <Predicate = true> <Delay = 0.00>
+ST_1 : Operation 12 [1/1] (0.00ns)   --->   "%store_ln2025 = store i1 1, i1 %state_issue_issued_uops_iq_type_1" [/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:2025]   --->   Operation 12 'store' 'store_ln2025' <Predicate = true> <Delay = 0.00>
+ST_1 : Operation 13 [1/1] (0.00ns)   --->   "%store_ln2027 = store i1 1, i1 %state_issue_issued_uops_rename_prs1_1" [/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:2027]   --->   Operation 13 'store' 'store_ln2027' <Predicate = true> <Delay = 0.00>
+ST_1 : Operation 14 [1/1] (0.00ns)   --->   "%store_ln2028 = store i2 2, i2 %state_issue_issued_uops_rename_prs2_1" [/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:2028]   --->   Operation 14 'store' 'store_ln2028' <Predicate = true> <Delay = 0.00>
+ST_1 : Operation 15 [1/1] (1.23ns)   --->   "%store_ln2031 = store i64 %seed_rs1_read, i64 1" [/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:2031]   --->   Operation 15 'store' 'store_ln2031' <Predicate = true> <Delay = 1.23> <CoreInst = "RAM">   --->   Core 83 'RAM' <Latency = 1> <II = 1> <Delay = 1.23> <Storage> <Opcode : 'load' 'store'> <Ports = 2> <Width = 64> <Depth = 52> <RAM>
+ST_1 : Operation 16 [1/1] (1.23ns)   --->   "%store_ln2032 = store i64 %seed_rs2_read, i64 2" [/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:2032]   --->   Operation 16 'store' 'store_ln2032' <Predicate = true> <Delay = 1.23> <CoreInst = "RAM">   --->   Core 83 'RAM' <Latency = 1> <II = 1> <Delay = 1.23> <Storage> <Opcode : 'load' 'store'> <Ports = 2> <Width = 64> <Depth = 52> <RAM>
+
+State 2 <SV = 1> <Delay = 0.00>
+ST_2 : Operation 17 [2/2] (0.00ns)   --->   "%call_ln2033 = call void @execute_module, i8 %state_issue_issued_uops_uopc_1, i1 %state_issue_issued_valids_1, i1 %state_issue_issued_uops_iq_type_1, i1 %state_issue_issued_uops_rename_prs1_1, i2 %state_issue_issued_uops_rename_prs2_1, i64 %state_int_rf, i1 %state_execute_alu_results_valid_1, i64 %state_execute_alu_results_result_1" [/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:2033]   --->   Operation 17 'call' 'call_ln2033' <Predicate = true> <Delay = 0.00> <CoreType = "Generic">   --->   Core 0 '' <Latency = 0> <II = 1> <Delay = 1.00> <Generic> <Opcode : >
+
+State 3 <SV = 2> <Delay = 0.00>
+ST_3 : Operation 18 [1/2] (0.00ns)   --->   "%call_ln2033 = call void @execute_module, i8 %state_issue_issued_uops_uopc_1, i1 %state_issue_issued_valids_1, i1 %state_issue_issued_uops_iq_type_1, i1 %state_issue_issued_uops_rename_prs1_1, i2 %state_issue_issued_uops_rename_prs2_1, i64 %state_int_rf, i1 %state_execute_alu_results_valid_1, i64 %state_execute_alu_results_result_1" [/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:2033]   --->   Operation 18 'call' 'call_ln2033' <Predicate = true> <Delay = 0.00> <CoreType = "Generic">   --->   Core 0 '' <Latency = 0> <II = 1> <Delay = 1.00> <Generic> <Opcode : >
+
+State 4 <SV = 3> <Delay = 0.00>
+ST_4 : Operation 19 [1/1] (0.00ns)   --->   "%spectopmodule_ln0 = spectopmodule void @_ssdm_op_SpecTopModule, void @empty_2"   --->   Operation 19 'spectopmodule' 'spectopmodule_ln0' <Predicate = true> <Delay = 0.00>
+ST_4 : Operation 20 [1/1] (0.00ns)   --->   "%specbitsmap_ln0 = specbitsmap void @_ssdm_op_SpecBitsMap, i8 %seed_uopc"   --->   Operation 20 'specbitsmap' 'specbitsmap_ln0' <Predicate = true> <Delay = 0.00>
+ST_4 : Operation 21 [1/1] (0.00ns)   --->   "%specinterface_ln0 = specinterface void @_ssdm_op_SpecInterface, i8 %seed_uopc, void @empty, i32 0, i32 0, void @empty_0, i32 0, i32 0, void @empty_0, void @empty_0, void @empty_0, i32 0, i32 0, i32 0, i32 0, void @empty_0, void @empty_0"   --->   Operation 21 'specinterface' 'specinterface_ln0' <Predicate = true> <Delay = 0.00>
+ST_4 : Operation 22 [1/1] (0.00ns)   --->   "%specbitsmap_ln0 = specbitsmap void @_ssdm_op_SpecBitsMap, i64 %seed_rs1"   --->   Operation 22 'specbitsmap' 'specbitsmap_ln0' <Predicate = true> <Delay = 0.00>
+ST_4 : Operation 23 [1/1] (0.00ns)   --->   "%specinterface_ln0 = specinterface void @_ssdm_op_SpecInterface, i64 %seed_rs1, void @empty, i32 0, i32 0, void @empty_0, i32 0, i32 0, void @empty_0, void @empty_0, void @empty_0, i32 0, i32 0, i32 0, i32 0, void @empty_0, void @empty_0"   --->   Operation 23 'specinterface' 'specinterface_ln0' <Predicate = true> <Delay = 0.00>
+ST_4 : Operation 24 [1/1] (0.00ns)   --->   "%specbitsmap_ln0 = specbitsmap void @_ssdm_op_SpecBitsMap, i64 %seed_rs2"   --->   Operation 24 'specbitsmap' 'specbitsmap_ln0' <Predicate = true> <Delay = 0.00>
+ST_4 : Operation 25 [1/1] (0.00ns)   --->   "%specinterface_ln0 = specinterface void @_ssdm_op_SpecInterface, i64 %seed_rs2, void @empty, i32 0, i32 0, void @empty_0, i32 0, i32 0, void @empty_0, void @empty_0, void @empty_0, i32 0, i32 0, i32 0, i32 0, void @empty_0, void @empty_0"   --->   Operation 25 'specinterface' 'specinterface_ln0' <Predicate = true> <Delay = 0.00>
+ST_4 : Operation 26 [1/1] (0.00ns)   --->   "%specbitsmap_ln0 = specbitsmap void @_ssdm_op_SpecBitsMap, i64 %observable"   --->   Operation 26 'specbitsmap' 'specbitsmap_ln0' <Predicate = true> <Delay = 0.00>
+ST_4 : Operation 27 [1/1] (0.00ns)   --->   "%specinterface_ln0 = specinterface void @_ssdm_op_SpecInterface, i64 %observable, void @empty, i32 0, i32 0, void @empty_0, i32 0, i32 0, void @empty_0, void @empty_0, void @empty_0, i32 0, i32 0, i32 0, i32 0, void @empty_0, void @empty_0"   --->   Operation 27 'specinterface' 'specinterface_ln0' <Predicate = true> <Delay = 0.00>
+ST_4 : Operation 28 [1/1] (0.00ns)   --->   "%state_execute_alu_results_result_1_load = load i64 %state_execute_alu_results_result_1" [/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:2034]   --->   Operation 28 'load' 'state_execute_alu_results_result_1_load' <Predicate = true> <Delay = 0.00>
+ST_4 : Operation 29 [1/1] (0.00ns)   --->   "%write_ln2034 = write void @_ssdm_op_Write.ap_auto.i64P0A, i64 %observable, i64 %state_execute_alu_results_result_1_load" [/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:2034]   --->   Operation 29 'write' 'write_ln2034' <Predicate = true> <Delay = 0.00>
+ST_4 : Operation 30 [1/1] (0.00ns)   --->   "%ret_ln2035 = ret" [/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:2035]   --->   Operation 30 'ret' 'ret_ln2035' <Predicate = true> <Delay = 0.00>
+
+
+============================================================
++ Verbose Summary: Timing violations
+============================================================
+Target clock period: 10ns, clock uncertainty: 2.7ns.
+
+ <State 1>: 1.24ns
+The critical path consists of the following:
+	wire read operation ('seed_rs1', /home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:2020) on port 'seed_rs1' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:2020) [23]  (0 ns)
+	'store' operation ('store_ln2031', /home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:2031) of variable 'seed_rs1', /home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:2020 on array 'state_int_rf' [32]  (1.24 ns)
+
+ <State 2>: 0ns
+The critical path consists of the following:
+
+ <State 3>: 0ns
+The critical path consists of the following:
+
+ <State 4>: 0ns
+The critical path consists of the following:
+
+
+============================================================
++ Verbose Summary: Binding
+============================================================
+N/A
+* FSMD analyzer results:
+  - Output states:
+ - Input state : 
+  - Chain level:
+	State 1
+	State 2
+	State 3
+	State 4
+
+
+============================================================
++ Verbose Summary: Datapath Resource usage 
+============================================================
+N/A

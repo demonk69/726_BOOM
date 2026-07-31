@@ -41,18 +41,22 @@ int main() {
     state.issue.alu_iq.tail = 2;
 
     boom::issue_module(state);
-    CHECK(state.issue.issued_valids[0], "single execute intake did not accept the ALU uop");
-    CHECK(!state.issue.issued_valids[1], "W2 selection activated a second execute intake");
+    CHECK(state.issue.issued_valids[INT_ISSUE_LANE], "fixed INT intake did not accept the ALU uop");
+    CHECK(!state.issue.issued_valids[MEM_ISSUE_LANE], "ALU uop activated MEM intake");
     CHECK(!state.issue.issued_valids[FP_ISSUE_LANE], "reserved FP lane became active");
     for (int lane = 0; lane < ISSUE_WIDTH; lane++) {
         state.execute.alu_results[lane].valid = true;
     }
+    state.execute.alu_results[MEM_ISSUE_LANE].result = 0x55;
+    state.execute.alu_results[INT_ISSUE_LANE].valid = false;
 
     boom::execute_module(state);
-    CHECK(state.execute.alu_results[0].valid, "W1 did not produce lane 0 result");
-    for (int lane = 1; lane < EXECUTE_RESULT_LANES; lane++)
-        CHECK(!state.execute.alu_results[lane].valid, "inactive execute lane was not cleared");
-    CHECK(state.issue.alu_iq.count == 1, "W1 dropped the unissued queue entry");
+    CHECK(state.execute.alu_results[INT_ISSUE_LANE].valid, "INT lane did not produce a result");
+    CHECK(state.execute.alu_results[MEM_ISSUE_LANE].valid &&
+          state.execute.alu_results[MEM_ISSUE_LANE].result == 0x55,
+          "held MEM completion was overwritten");
+    CHECK(!state.execute.alu_results[FP_ISSUE_LANE].valid, "reserved execute lane was not cleared");
+    CHECK(state.issue.alu_iq.count == 1, "same-class queue entry was dropped");
 
     if (failures != 0) return 1;
     std::printf("Gate 4.0 W1 lane interface tests: PASS\n");

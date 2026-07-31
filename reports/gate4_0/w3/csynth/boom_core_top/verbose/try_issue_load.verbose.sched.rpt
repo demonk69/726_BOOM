@@ -1,0 +1,274 @@
+
+
+================================================================
+== Vitis HLS Report for 'try_issue_load'
+================================================================
+* Date:           Fri Jul 31 19:23:23 2026
+
+* Version:        2021.2 (Build 3367213 on Tue Oct 19 02:47:39 MDT 2021)
+* Project:        boom_core_top
+* Solution:       solution_w3_csynth (Vivado IP Flow Target)
+* Product family: zynquplus
+* Target device:  xczu7ev-ffvc1156-2-e
+
+
+================================================================
+== Performance Estimates
+================================================================
++ Timing: 
+    * Summary: 
+    +--------+----------+----------+------------+
+    |  Clock |  Target  | Estimated| Uncertainty|
+    +--------+----------+----------+------------+
+    |ap_clk  |  10.00 ns|  3.075 ns|     2.70 ns|
+    +--------+----------+----------+------------+
+
++ Latency: 
+    * Summary: 
+    +---------+---------+-----------+----------+-----+-----+---------+
+    |  Latency (cycles) |  Latency (absolute)  |  Interval | Pipeline|
+    |   min   |   max   |    min    |    max   | min | max |   Type  |
+    +---------+---------+-----------+----------+-----+-----+---------+
+    |        3|      105|  30.000 ns|  1.050 us|    3|  105|       no|
+    +---------+---------+-----------+----------+-----+-----+---------+
+
+    + Detail: 
+        * Instance: 
+        N/A
+
+        * Loop: 
+        +--------------------+---------+---------+----------+-----------+-----------+--------+----------+
+        |                    |  Latency (cycles) | Iteration|  Initiation Interval  |  Trip  |          |
+        |      Loop Name     |   min   |   max   |  Latency |  achieved |   target  |  Count | Pipelined|
+        +--------------------+---------+---------+----------+-----------+-----------+--------+----------+
+        |- OLDER_STORE_SCAN  |        3|       98|         3|          -|          -|  1 ~ 32|        no|
+        +--------------------+---------+---------+----------+-----------+-----------+--------+----------+
+
+============================================================
++ Verbose Summary: Synthesis Manager
+============================================================
+InlineROM: 1
+ExposeGlobal: 0
+============================================================
++ Verbose Summary: CDFG Model
+============================================================
+IsTopModel: 0
+ResetActiveHigh: 1
+IsCombinational: 0
+IsDatapathOnly: 0
+HasWiredReturn: 1
+HasMFsm: 0
+HasVarLatency: 1
+IsPipeline: 0
+IsRtlPipelined: 0
+IsInstanceOverlapped: 0
+IsDontTouch: 0
+HasImplIP: 0
+IsGatedGlobalClock: 0
+
+
+============================================================
++ Verbose Summary: Schedule
+============================================================
+* Number of FSM states : 9
+* Pipeline : 0
+* Dataflow Pipeline: 0
+
+* FSM state transitions: 
+1 --> 2 
+2 --> 3 5 
+3 --> 4 5 
+4 --> 5 
+5 --> 8 6 
+6 --> 7 8 9 
+7 --> 8 
+8 --> 6 
+9 --> 8 
+
+* FSM state operations: 
+
+State 1 <SV = 0> <Delay = 0.67>
+ST_1 : Operation 10 [1/1] (0.00ns)   --->   "%rob_idx_read = read i5 @_ssdm_op_Read.ap_auto.i5, i5 %rob_idx"   --->   Operation 10 'read' 'rob_idx_read' <Predicate = true> <Delay = 0.00>
+ST_1 : Operation 11 [1/1] (0.00ns)   --->   "%zext_ln1143 = zext i5 %rob_idx_read" [/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:1143]   --->   Operation 11 'zext' 'zext_ln1143' <Predicate = true> <Delay = 0.00>
+ST_1 : Operation 12 [1/1] (0.00ns)   --->   "%state_rob_entries_valid_addr = getelementptr i1 %state_rob_entries_valid, i64 0, i64 %zext_ln1143" [/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:1144]   --->   Operation 12 'getelementptr' 'state_rob_entries_valid_addr' <Predicate = true> <Delay = 0.00>
+ST_1 : Operation 13 [2/2] (0.67ns)   --->   "%state_rob_entries_valid_load = load i5 %state_rob_entries_valid_addr" [/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:1144]   --->   Operation 13 'load' 'state_rob_entries_valid_load' <Predicate = true> <Delay = 0.67> <CoreInst = "RAM">   --->   Core 83 'RAM' <Latency = 1> <II = 1> <Delay = 0.67> <Storage> <Opcode : 'load' 'store'> <Ports = 2> <Width = 1> <Depth = 32> <RAM>
+
+State 2 <SV = 1> <Delay = 0.67>
+ST_2 : Operation 14 [1/1] (0.00ns)   --->   "%rob_idx_cast = zext i5 %rob_idx_read"   --->   Operation 14 'zext' 'rob_idx_cast' <Predicate = true> <Delay = 0.00>
+ST_2 : Operation 15 [1/1] (0.00ns)   --->   "%specinterface_ln0 = specinterface void @_ssdm_op_SpecInterface, i283 %pipe_2, void @empty_45, i32 0, i32 0, void @empty_9, i32 0, i32 0, void @empty_9, void @empty_9, void @empty_9, i32 0, i32 0, i32 0, i32 0, void @empty_9, void @empty_9"   --->   Operation 15 'specinterface' 'specinterface_ln0' <Predicate = true> <Delay = 0.00>
+ST_2 : Operation 16 [1/2] (0.67ns)   --->   "%state_rob_entries_valid_load = load i5 %state_rob_entries_valid_addr" [/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:1144]   --->   Operation 16 'load' 'state_rob_entries_valid_load' <Predicate = true> <Delay = 0.67> <CoreInst = "RAM">   --->   Core 83 'RAM' <Latency = 1> <II = 1> <Delay = 0.67> <Storage> <Opcode : 'load' 'store'> <Ports = 2> <Width = 1> <Depth = 32> <RAM>
+ST_2 : Operation 17 [1/1] (0.00ns)   --->   "%br_ln1144 = br i1 %state_rob_entries_valid_load, void %._crit_edge, void" [/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:1144]   --->   Operation 17 'br' 'br_ln1144' <Predicate = true> <Delay = 0.00>
+ST_2 : Operation 18 [1/1] (0.00ns)   --->   "%state_rob_entries_is_load_addr = getelementptr i1 %state_rob_entries_is_load, i64 0, i64 %zext_ln1143" [/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:1144]   --->   Operation 18 'getelementptr' 'state_rob_entries_is_load_addr' <Predicate = (state_rob_entries_valid_load)> <Delay = 0.00>
+ST_2 : Operation 19 [2/2] (0.67ns)   --->   "%state_rob_entries_is_load_load = load i5 %state_rob_entries_is_load_addr" [/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:1144]   --->   Operation 19 'load' 'state_rob_entries_is_load_load' <Predicate = (state_rob_entries_valid_load)> <Delay = 0.67> <CoreInst = "RAM">   --->   Core 83 'RAM' <Latency = 1> <II = 1> <Delay = 0.67> <Storage> <Opcode : 'load' 'store'> <Ports = 2> <Width = 1> <Depth = 32> <RAM>
+
+State 3 <SV = 2> <Delay = 0.67>
+ST_3 : Operation 20 [1/2] (0.67ns)   --->   "%state_rob_entries_is_load_load = load i5 %state_rob_entries_is_load_addr" [/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:1144]   --->   Operation 20 'load' 'state_rob_entries_is_load_load' <Predicate = true> <Delay = 0.67> <CoreInst = "RAM">   --->   Core 83 'RAM' <Latency = 1> <II = 1> <Delay = 0.67> <Storage> <Opcode : 'load' 'store'> <Ports = 2> <Width = 1> <Depth = 32> <RAM>
+ST_3 : Operation 21 [1/1] (0.00ns)   --->   "%br_ln1144 = br i1 %state_rob_entries_is_load_load, void %._crit_edge, void" [/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:1144]   --->   Operation 21 'br' 'br_ln1144' <Predicate = true> <Delay = 0.00>
+ST_3 : Operation 22 [1/1] (0.00ns)   --->   "%state_rob_entries_memory_valid_addr = getelementptr i1 %state_rob_entries_memory_valid, i64 0, i64 %zext_ln1143" [/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:1144]   --->   Operation 22 'getelementptr' 'state_rob_entries_memory_valid_addr' <Predicate = (state_rob_entries_is_load_load)> <Delay = 0.00>
+ST_3 : Operation 23 [2/2] (0.67ns)   --->   "%state_rob_entries_memory_valid_load = load i5 %state_rob_entries_memory_valid_addr" [/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:1144]   --->   Operation 23 'load' 'state_rob_entries_memory_valid_load' <Predicate = (state_rob_entries_is_load_load)> <Delay = 0.67> <CoreInst = "RAM">   --->   Core 83 'RAM' <Latency = 1> <II = 1> <Delay = 0.67> <Storage> <Opcode : 'load' 'store'> <Ports = 2> <Width = 1> <Depth = 32> <RAM>
+
+State 4 <SV = 3> <Delay = 0.67>
+ST_4 : Operation 24 [1/2] (0.67ns)   --->   "%state_rob_entries_memory_valid_load = load i5 %state_rob_entries_memory_valid_addr" [/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:1144]   --->   Operation 24 'load' 'state_rob_entries_memory_valid_load' <Predicate = true> <Delay = 0.67> <CoreInst = "RAM">   --->   Core 83 'RAM' <Latency = 1> <II = 1> <Delay = 0.67> <Storage> <Opcode : 'load' 'store'> <Ports = 2> <Width = 1> <Depth = 32> <RAM>
+ST_4 : Operation 25 [1/1] (0.00ns)   --->   "%br_ln1144 = br i1 %state_rob_entries_memory_valid_load, void %._crit_edge, void" [/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:1144]   --->   Operation 25 'br' 'br_ln1144' <Predicate = true> <Delay = 0.00>
+ST_4 : Operation 26 [1/1] (0.00ns)   --->   "%state_rob_entries_memory_request_sent_addr = getelementptr i1 %state_rob_entries_memory_request_sent, i64 0, i64 %zext_ln1143" [/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:1144]   --->   Operation 26 'getelementptr' 'state_rob_entries_memory_request_sent_addr' <Predicate = (state_rob_entries_memory_valid_load)> <Delay = 0.00>
+ST_4 : Operation 27 [2/2] (0.67ns)   --->   "%state_rob_entries_memory_request_sent_load = load i5 %state_rob_entries_memory_request_sent_addr" [/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:1144]   --->   Operation 27 'load' 'state_rob_entries_memory_request_sent_load' <Predicate = (state_rob_entries_memory_valid_load)> <Delay = 0.67> <CoreInst = "RAM">   --->   Core 83 'RAM' <Latency = 1> <II = 1> <Delay = 0.67> <Storage> <Opcode : 'load' 'store'> <Ports = 2> <Width = 1> <Depth = 32> <RAM>
+
+State 5 <SV = 4> <Delay = 1.10>
+ST_5 : Operation 28 [1/2] (0.67ns)   --->   "%state_rob_entries_memory_request_sent_load = load i5 %state_rob_entries_memory_request_sent_addr" [/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:1144]   --->   Operation 28 'load' 'state_rob_entries_memory_request_sent_load' <Predicate = (state_rob_entries_valid_load & state_rob_entries_is_load_load & state_rob_entries_memory_valid_load)> <Delay = 0.67> <CoreInst = "RAM">   --->   Core 83 'RAM' <Latency = 1> <II = 1> <Delay = 0.67> <Storage> <Opcode : 'load' 'store'> <Ports = 2> <Width = 1> <Depth = 32> <RAM>
+ST_5 : Operation 29 [1/1] (0.00ns)   --->   "%br_ln1144 = br i1 %state_rob_entries_memory_request_sent_load, void, void %._crit_edge" [/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:1144]   --->   Operation 29 'br' 'br_ln1144' <Predicate = (state_rob_entries_valid_load & state_rob_entries_is_load_load & state_rob_entries_memory_valid_load)> <Delay = 0.00>
+ST_5 : Operation 30 [1/1] (0.00ns)   --->   "%state_lsu_load = load i1 %state_lsu_load_response_pending" [/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:1145]   --->   Operation 30 'load' 'state_lsu_load' <Predicate = (state_rob_entries_valid_load & state_rob_entries_is_load_load & state_rob_entries_memory_valid_load & !state_rob_entries_memory_request_sent_load)> <Delay = 0.00>
+ST_5 : Operation 31 [1/1] (0.00ns)   --->   "%br_ln1145 = br i1 %state_lsu_load, void, void %.critedge1" [/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:1145]   --->   Operation 31 'br' 'br_ln1145' <Predicate = (state_rob_entries_valid_load & state_rob_entries_is_load_load & state_rob_entries_memory_valid_load & !state_rob_entries_memory_request_sent_load)> <Delay = 0.00>
+ST_5 : Operation 32 [1/1] (0.00ns)   --->   "%idx_1 = alloca i32 1"   --->   Operation 32 'alloca' 'idx_1' <Predicate = (state_rob_entries_valid_load & state_rob_entries_is_load_load & state_rob_entries_memory_valid_load & !state_rob_entries_memory_request_sent_load & !state_lsu_load)> <Delay = 0.00>
+ST_5 : Operation 33 [1/1] (0.00ns)   --->   "%i = alloca i32 1"   --->   Operation 33 'alloca' 'i' <Predicate = (state_rob_entries_valid_load & state_rob_entries_is_load_load & state_rob_entries_memory_valid_load & !state_rob_entries_memory_request_sent_load & !state_lsu_load)> <Delay = 0.00>
+ST_5 : Operation 34 [1/1] (0.00ns)   --->   "%idx = load i5 %state_rob_head" [/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:1118]   --->   Operation 34 'load' 'idx' <Predicate = (state_rob_entries_valid_load & state_rob_entries_is_load_load & state_rob_entries_memory_valid_load & !state_rob_entries_memory_request_sent_load & !state_lsu_load)> <Delay = 0.00>
+ST_5 : Operation 35 [1/1] (0.42ns)   --->   "%store_ln1120 = store i6 0, i6 %i" [/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:1120]   --->   Operation 35 'store' 'store_ln1120' <Predicate = (state_rob_entries_valid_load & state_rob_entries_is_load_load & state_rob_entries_memory_valid_load & !state_rob_entries_memory_request_sent_load & !state_lsu_load)> <Delay = 0.42>
+ST_5 : Operation 36 [1/1] (0.42ns)   --->   "%store_ln1120 = store i5 %idx, i5 %idx_1" [/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:1120]   --->   Operation 36 'store' 'store_ln1120' <Predicate = (state_rob_entries_valid_load & state_rob_entries_is_load_load & state_rob_entries_memory_valid_load & !state_rob_entries_memory_request_sent_load & !state_lsu_load)> <Delay = 0.42>
+ST_5 : Operation 37 [1/1] (0.00ns)   --->   "%br_ln1120 = br void" [/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:1120]   --->   Operation 37 'br' 'br_ln1120' <Predicate = (state_rob_entries_valid_load & state_rob_entries_is_load_load & state_rob_entries_memory_valid_load & !state_rob_entries_memory_request_sent_load & !state_lsu_load)> <Delay = 0.00>
+ST_5 : Operation 38 [1/1] (0.00ns)   --->   "%br_ln1144 = br void" [/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:1144]   --->   Operation 38 'br' 'br_ln1144' <Predicate = (state_rob_entries_memory_request_sent_load) | (!state_rob_entries_memory_valid_load) | (!state_rob_entries_is_load_load) | (!state_rob_entries_valid_load)> <Delay = 0.00>
+
+State 6 <SV = 5> <Delay = 2.02>
+ST_6 : Operation 39 [1/1] (0.00ns)   --->   "%i_1 = load i6 %i" [/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:1120]   --->   Operation 39 'load' 'i_1' <Predicate = true> <Delay = 0.00>
+ST_6 : Operation 40 [1/1] (0.78ns)   --->   "%icmp_ln1120 = icmp_eq  i6 %i_1, i6 32" [/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:1120]   --->   Operation 40 'icmp' 'icmp_ln1120' <Predicate = true> <Delay = 0.78> <CoreInst = "Cmp">   --->   Core 9 'Cmp' <Latency = 0> <II = 1> <Delay = 0.75> <FuncUnit> <Opcode : 'icmp'> <InPorts = 2> <OutPorts = 1>
+ST_6 : Operation 41 [1/1] (0.00ns)   --->   "%empty = speclooptripcount i32 @_ssdm_op_SpecLoopTripCount, i64 1, i64 32, i64 16"   --->   Operation 41 'speclooptripcount' 'empty' <Predicate = true> <Delay = 0.00>
+ST_6 : Operation 42 [1/1] (0.78ns)   --->   "%i_2 = add i6 %i_1, i6 1" [/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:1120]   --->   Operation 42 'add' 'i_2' <Predicate = true> <Delay = 0.78> <CoreInst = "Adder">   --->   Core 1 'Adder' <Latency = 0> <II = 1> <Delay = 1.01> <FuncUnit> <Opcode : 'add' 'sub'> <InPorts = 2> <OutPorts = 1>
+ST_6 : Operation 43 [1/1] (0.00ns)   --->   "%br_ln1120 = br i1 %icmp_ln1120, void %.split, void %_ZN4boomL18older_store_in_robERK13BoomCoreStateh.exit" [/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:1120]   --->   Operation 43 'br' 'br_ln1120' <Predicate = true> <Delay = 0.00>
+ST_6 : Operation 44 [1/1] (0.00ns)   --->   "%idx_1_load_1 = load i5 %idx_1" [/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:1121]   --->   Operation 44 'load' 'idx_1_load_1' <Predicate = (!icmp_ln1120)> <Delay = 0.00>
+ST_6 : Operation 45 [1/1] (0.00ns)   --->   "%specloopname_ln1118 = specloopname void @_ssdm_op_SpecLoopName, void @empty_35" [/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:1118]   --->   Operation 45 'specloopname' 'specloopname_ln1118' <Predicate = (!icmp_ln1120)> <Delay = 0.00>
+ST_6 : Operation 46 [1/1] (0.75ns)   --->   "%icmp_ln1121 = icmp_eq  i5 %idx_1_load_1, i5 %rob_idx_read" [/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:1121]   --->   Operation 46 'icmp' 'icmp_ln1121' <Predicate = (!icmp_ln1120)> <Delay = 0.75> <CoreInst = "Cmp">   --->   Core 9 'Cmp' <Latency = 0> <II = 1> <Delay = 0.75> <FuncUnit> <Opcode : 'icmp'> <InPorts = 2> <OutPorts = 1>
+ST_6 : Operation 47 [1/1] (0.00ns)   --->   "%br_ln1121 = br i1 %icmp_ln1121, void, void %_ZN4boomL18older_store_in_robERK13BoomCoreStateh.exit" [/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:1121]   --->   Operation 47 'br' 'br_ln1121' <Predicate = (!icmp_ln1120)> <Delay = 0.00>
+ST_6 : Operation 48 [1/1] (0.00ns)   --->   "%zext_ln1122 = zext i5 %idx_1_load_1" [/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:1122]   --->   Operation 48 'zext' 'zext_ln1122' <Predicate = (!icmp_ln1120 & !icmp_ln1121)> <Delay = 0.00>
+ST_6 : Operation 49 [1/1] (0.00ns)   --->   "%state_rob_entries_valid_addr_1 = getelementptr i1 %state_rob_entries_valid, i64 0, i64 %zext_ln1122" [/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:1123]   --->   Operation 49 'getelementptr' 'state_rob_entries_valid_addr_1' <Predicate = (!icmp_ln1120 & !icmp_ln1121)> <Delay = 0.00>
+ST_6 : Operation 50 [2/2] (0.67ns)   --->   "%state_rob_entries_valid_load_1 = load i5 %state_rob_entries_valid_addr_1" [/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:1123]   --->   Operation 50 'load' 'state_rob_entries_valid_load_1' <Predicate = (!icmp_ln1120 & !icmp_ln1121)> <Delay = 0.67> <CoreInst = "RAM">   --->   Core 83 'RAM' <Latency = 1> <II = 1> <Delay = 0.67> <Storage> <Opcode : 'load' 'store'> <Ports = 2> <Width = 1> <Depth = 32> <RAM>
+ST_6 : Operation 51 [1/1] (0.00ns)   --->   "%tmp = nbwritereq i1 @_ssdm_op_NbWriteReq.ap_fifo.i283P0A, i283 %pipe_2, i32 1" [/home/lab_726/Xilinx/Vitis_HLS/2021.2/common/technology/autopilot/hls_stream_39.h:139]   --->   Operation 51 'nbwritereq' 'tmp' <Predicate = (icmp_ln1121) | (icmp_ln1120)> <Delay = 0.00> <CoreInst = "FIFO_SRL">   --->   Core 81 'FIFO_SRL' <Latency = 0> <II = 1> <Delay = 1.83> <Storage> <Opcode : 'read' 'write' 'nbread' 'nbwrite'> <Ports = 0> <Width = 283> <Depth = 2> <FIFO>
+ST_6 : Operation 52 [1/1] (0.00ns)   --->   "%br_ln1145 = br i1 %tmp, void %.critedge1, void" [/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:1145]   --->   Operation 52 'br' 'br_ln1145' <Predicate = (icmp_ln1121) | (icmp_ln1120)> <Delay = 0.00>
+ST_6 : Operation 53 [1/1] (0.00ns)   --->   "%tx = load i32 %state_lsu_next_transaction_id" [/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:1147]   --->   Operation 53 'load' 'tx' <Predicate = (icmp_ln1121 & tmp) | (icmp_ln1120 & tmp)> <Delay = 0.00>
+ST_6 : Operation 54 [1/1] (1.01ns)   --->   "%add_ln1147 = add i32 %tx, i32 1" [/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:1147]   --->   Operation 54 'add' 'add_ln1147' <Predicate = (icmp_ln1121 & tmp) | (icmp_ln1120 & tmp)> <Delay = 1.01> <CoreInst = "Adder">   --->   Core 1 'Adder' <Latency = 0> <II = 1> <Delay = 1.01> <FuncUnit> <Opcode : 'add' 'sub'> <InPorts = 2> <OutPorts = 1>
+ST_6 : Operation 55 [1/1] (0.00ns)   --->   "%store_ln1147 = store i32 %add_ln1147, i32 %state_lsu_next_transaction_id" [/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:1147]   --->   Operation 55 'store' 'store_ln1147' <Predicate = (icmp_ln1121 & tmp) | (icmp_ln1120 & tmp)> <Delay = 0.00>
+ST_6 : Operation 56 [1/1] (0.00ns)   --->   "%state_rob_entries_memory_address_addr = getelementptr i64 %state_rob_entries_memory_address, i64 0, i64 %zext_ln1143" [/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:1153]   --->   Operation 56 'getelementptr' 'state_rob_entries_memory_address_addr' <Predicate = (icmp_ln1121 & tmp) | (icmp_ln1120 & tmp)> <Delay = 0.00>
+ST_6 : Operation 57 [2/2] (1.23ns)   --->   "%req_address = load i5 %state_rob_entries_memory_address_addr" [/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:1153]   --->   Operation 57 'load' 'req_address' <Predicate = (icmp_ln1121 & tmp) | (icmp_ln1120 & tmp)> <Delay = 1.23> <CoreInst = "RAM">   --->   Core 83 'RAM' <Latency = 1> <II = 1> <Delay = 1.23> <Storage> <Opcode : 'load' 'store'> <Ports = 2> <Width = 64> <Depth = 32> <RAM>
+ST_6 : Operation 58 [1/1] (0.00ns)   --->   "%state_rob_entries_memory_size_addr = getelementptr i8 %state_rob_entries_memory_size, i64 0, i64 %zext_ln1143" [/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:1154]   --->   Operation 58 'getelementptr' 'state_rob_entries_memory_size_addr' <Predicate = (icmp_ln1121 & tmp) | (icmp_ln1120 & tmp)> <Delay = 0.00>
+ST_6 : Operation 59 [2/2] (0.67ns)   --->   "%req_size = load i5 %state_rob_entries_memory_size_addr" [/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:1154]   --->   Operation 59 'load' 'req_size' <Predicate = (icmp_ln1121 & tmp) | (icmp_ln1120 & tmp)> <Delay = 0.67> <CoreInst = "RAM">   --->   Core 83 'RAM' <Latency = 1> <II = 1> <Delay = 0.67> <Storage> <Opcode : 'load' 'store'> <Ports = 2> <Width = 8> <Depth = 32> <RAM>
+ST_6 : Operation 60 [1/1] (0.00ns)   --->   "%state_rob_entries_memory_mask_addr = getelementptr i5 %state_rob_entries_memory_mask, i64 0, i64 %zext_ln1143" [/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:1155]   --->   Operation 60 'getelementptr' 'state_rob_entries_memory_mask_addr' <Predicate = (icmp_ln1121 & tmp) | (icmp_ln1120 & tmp)> <Delay = 0.00>
+ST_6 : Operation 61 [2/2] (0.67ns)   --->   "%req_mask = load i5 %state_rob_entries_memory_mask_addr" [/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:1155]   --->   Operation 61 'load' 'req_mask' <Predicate = (icmp_ln1121 & tmp) | (icmp_ln1120 & tmp)> <Delay = 0.67> <CoreInst = "RAM">   --->   Core 83 'RAM' <Latency = 1> <II = 1> <Delay = 0.67> <Storage> <Opcode : 'load' 'store'> <Ports = 2> <Width = 5> <Depth = 32> <RAM>
+ST_6 : Operation 62 [1/1] (0.00ns)   --->   "%state_rob_entries_signed_load_addr = getelementptr i1 %state_rob_entries_signed_load, i64 0, i64 %zext_ln1143" [/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:1156]   --->   Operation 62 'getelementptr' 'state_rob_entries_signed_load_addr' <Predicate = (icmp_ln1121 & tmp) | (icmp_ln1120 & tmp)> <Delay = 0.00>
+ST_6 : Operation 63 [2/2] (0.67ns)   --->   "%req_signed_load = load i5 %state_rob_entries_signed_load_addr" [/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:1156]   --->   Operation 63 'load' 'req_signed_load' <Predicate = (icmp_ln1121 & tmp) | (icmp_ln1120 & tmp)> <Delay = 0.67> <CoreInst = "RAM">   --->   Core 83 'RAM' <Latency = 1> <II = 1> <Delay = 0.67> <Storage> <Opcode : 'load' 'store'> <Ports = 2> <Width = 1> <Depth = 32> <RAM>
+ST_6 : Operation 64 [1/1] (0.00ns)   --->   "%state_rob_entries_uop_branch_br_mask_addr = getelementptr i8 %state_rob_entries_uop_branch_br_mask, i64 0, i64 %zext_ln1143" [/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:1157]   --->   Operation 64 'getelementptr' 'state_rob_entries_uop_branch_br_mask_addr' <Predicate = (icmp_ln1121 & tmp) | (icmp_ln1120 & tmp)> <Delay = 0.00>
+ST_6 : Operation 65 [2/2] (0.67ns)   --->   "%req_branch_mask = load i5 %state_rob_entries_uop_branch_br_mask_addr" [/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:1157]   --->   Operation 65 'load' 'req_branch_mask' <Predicate = (icmp_ln1121 & tmp) | (icmp_ln1120 & tmp)> <Delay = 0.67> <CoreInst = "RAM">   --->   Core 83 'RAM' <Latency = 1> <II = 1> <Delay = 0.67> <Storage> <Opcode : 'load' 'store'> <Ports = 2> <Width = 8> <Depth = 32> <RAM>
+ST_6 : Operation 66 [1/1] (0.67ns)   --->   "%store_ln1160 = store i1 1, i5 %state_rob_entries_memory_request_sent_addr" [/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:1160]   --->   Operation 66 'store' 'store_ln1160' <Predicate = (icmp_ln1121 & tmp) | (icmp_ln1120 & tmp)> <Delay = 0.67> <CoreInst = "RAM">   --->   Core 83 'RAM' <Latency = 1> <II = 1> <Delay = 0.67> <Storage> <Opcode : 'load' 'store'> <Ports = 2> <Width = 1> <Depth = 32> <RAM>
+ST_6 : Operation 67 [1/1] (0.00ns)   --->   "%state_rob_entries_memory_transaction_id_addr = getelementptr i32 %state_rob_entries_memory_transaction_id, i64 0, i64 %zext_ln1143" [/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:1161]   --->   Operation 67 'getelementptr' 'state_rob_entries_memory_transaction_id_addr' <Predicate = (icmp_ln1121 & tmp) | (icmp_ln1120 & tmp)> <Delay = 0.00>
+ST_6 : Operation 68 [1/1] (1.23ns)   --->   "%store_ln1161 = store i32 %tx, i5 %state_rob_entries_memory_transaction_id_addr" [/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:1161]   --->   Operation 68 'store' 'store_ln1161' <Predicate = (icmp_ln1121 & tmp) | (icmp_ln1120 & tmp)> <Delay = 1.23> <CoreInst = "RAM">   --->   Core 83 'RAM' <Latency = 1> <II = 1> <Delay = 1.23> <Storage> <Opcode : 'load' 'store'> <Ports = 2> <Width = 32> <Depth = 32> <RAM>
+ST_6 : Operation 69 [1/1] (0.00ns)   --->   "%store_ln1163 = store i32 %tx, i32 %state_lsu_pending_load_transaction_id" [/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:1163]   --->   Operation 69 'store' 'store_ln1163' <Predicate = (icmp_ln1121 & tmp) | (icmp_ln1120 & tmp)> <Delay = 0.00>
+ST_6 : Operation 70 [1/1] (0.00ns)   --->   "%store_ln1164 = store i5 %rob_idx_read, i5 %state_lsu_pending_load_rob_idx" [/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:1164]   --->   Operation 70 'store' 'store_ln1164' <Predicate = (icmp_ln1121 & tmp) | (icmp_ln1120 & tmp)> <Delay = 0.00>
+ST_6 : Operation 71 [1/1] (0.00ns)   --->   "%state_rob_entries_uop_queue_rob_allocation_id_addr = getelementptr i32 %state_rob_entries_uop_queue_rob_allocation_id, i64 0, i64 %zext_ln1143" [/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:1165]   --->   Operation 71 'getelementptr' 'state_rob_entries_uop_queue_rob_allocation_id_addr' <Predicate = (icmp_ln1121 & tmp) | (icmp_ln1120 & tmp)> <Delay = 0.00>
+ST_6 : Operation 72 [2/2] (1.23ns)   --->   "%state_rob_entries_uop_queue_rob_allocation_id_load = load i5 %state_rob_entries_uop_queue_rob_allocation_id_addr" [/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:1165]   --->   Operation 72 'load' 'state_rob_entries_uop_queue_rob_allocation_id_load' <Predicate = (icmp_ln1121 & tmp) | (icmp_ln1120 & tmp)> <Delay = 1.23> <CoreInst = "RAM">   --->   Core 83 'RAM' <Latency = 1> <II = 1> <Delay = 1.23> <Storage> <Opcode : 'load' 'store'> <Ports = 2> <Width = 32> <Depth = 32> <RAM>
+
+State 7 <SV = 6> <Delay = 0.67>
+ST_7 : Operation 73 [1/2] (0.67ns)   --->   "%state_rob_entries_valid_load_1 = load i5 %state_rob_entries_valid_addr_1" [/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:1123]   --->   Operation 73 'load' 'state_rob_entries_valid_load_1' <Predicate = true> <Delay = 0.67> <CoreInst = "RAM">   --->   Core 83 'RAM' <Latency = 1> <II = 1> <Delay = 0.67> <Storage> <Opcode : 'load' 'store'> <Ports = 2> <Width = 1> <Depth = 32> <RAM>
+ST_7 : Operation 74 [1/1] (0.00ns)   --->   "%br_ln1123 = br i1 %state_rob_entries_valid_load_1, void %._crit_edge4, void" [/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:1123]   --->   Operation 74 'br' 'br_ln1123' <Predicate = true> <Delay = 0.00>
+ST_7 : Operation 75 [1/1] (0.00ns)   --->   "%state_rob_entries_uop_ctrl_is_sta_addr = getelementptr i1 %state_rob_entries_uop_ctrl_is_sta, i64 0, i64 %zext_ln1122" [/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:1123]   --->   Operation 75 'getelementptr' 'state_rob_entries_uop_ctrl_is_sta_addr' <Predicate = (state_rob_entries_valid_load_1)> <Delay = 0.00>
+ST_7 : Operation 76 [2/2] (0.67ns)   --->   "%state_rob_entries_uop_ctrl_is_sta_load = load i5 %state_rob_entries_uop_ctrl_is_sta_addr" [/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:1123]   --->   Operation 76 'load' 'state_rob_entries_uop_ctrl_is_sta_load' <Predicate = (state_rob_entries_valid_load_1)> <Delay = 0.67> <CoreInst = "RAM">   --->   Core 83 'RAM' <Latency = 1> <II = 1> <Delay = 0.67> <Storage> <Opcode : 'load' 'store'> <Ports = 2> <Width = 1> <Depth = 32> <RAM>
+
+State 8 <SV = 7> <Delay = 1.21>
+ST_8 : Operation 77 [1/2] (0.67ns)   --->   "%state_rob_entries_uop_ctrl_is_sta_load = load i5 %state_rob_entries_uop_ctrl_is_sta_addr" [/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:1123]   --->   Operation 77 'load' 'state_rob_entries_uop_ctrl_is_sta_load' <Predicate = (state_rob_entries_valid_load & state_rob_entries_is_load_load & state_rob_entries_memory_valid_load & !state_rob_entries_memory_request_sent_load & !state_lsu_load & !icmp_ln1120 & !icmp_ln1121 & state_rob_entries_valid_load_1)> <Delay = 0.67> <CoreInst = "RAM">   --->   Core 83 'RAM' <Latency = 1> <II = 1> <Delay = 0.67> <Storage> <Opcode : 'load' 'store'> <Ports = 2> <Width = 1> <Depth = 32> <RAM>
+ST_8 : Operation 78 [1/1] (0.00ns)   --->   "%br_ln1123 = br i1 %state_rob_entries_uop_ctrl_is_sta_load, void %._crit_edge4, void %.critedge1.loopexit" [/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:1123]   --->   Operation 78 'br' 'br_ln1123' <Predicate = (state_rob_entries_valid_load & state_rob_entries_is_load_load & state_rob_entries_memory_valid_load & !state_rob_entries_memory_request_sent_load & !state_lsu_load & !icmp_ln1120 & !icmp_ln1121 & state_rob_entries_valid_load_1)> <Delay = 0.00>
+ST_8 : Operation 79 [1/1] (0.00ns)   --->   "%idx_1_load = load i5 %idx_1" [/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:1124]   --->   Operation 79 'load' 'idx_1_load' <Predicate = (state_rob_entries_valid_load & state_rob_entries_is_load_load & state_rob_entries_memory_valid_load & !state_rob_entries_memory_request_sent_load & !state_lsu_load & !icmp_ln1120 & !icmp_ln1121 & !state_rob_entries_uop_ctrl_is_sta_load) | (state_rob_entries_valid_load & state_rob_entries_is_load_load & state_rob_entries_memory_valid_load & !state_rob_entries_memory_request_sent_load & !state_lsu_load & !icmp_ln1120 & !icmp_ln1121 & !state_rob_entries_valid_load_1)> <Delay = 0.00>
+ST_8 : Operation 80 [1/1] (0.78ns)   --->   "%idx_2 = add i5 %idx_1_load, i5 1" [/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:1124]   --->   Operation 80 'add' 'idx_2' <Predicate = (state_rob_entries_valid_load & state_rob_entries_is_load_load & state_rob_entries_memory_valid_load & !state_rob_entries_memory_request_sent_load & !state_lsu_load & !icmp_ln1120 & !icmp_ln1121 & !state_rob_entries_uop_ctrl_is_sta_load) | (state_rob_entries_valid_load & state_rob_entries_is_load_load & state_rob_entries_memory_valid_load & !state_rob_entries_memory_request_sent_load & !state_lsu_load & !icmp_ln1120 & !icmp_ln1121 & !state_rob_entries_valid_load_1)> <Delay = 0.78> <CoreInst = "Adder">   --->   Core 1 'Adder' <Latency = 0> <II = 1> <Delay = 1.01> <FuncUnit> <Opcode : 'add' 'sub'> <InPorts = 2> <OutPorts = 1>
+ST_8 : Operation 81 [1/1] (0.42ns)   --->   "%store_ln1120 = store i6 %i_2, i6 %i" [/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:1120]   --->   Operation 81 'store' 'store_ln1120' <Predicate = (state_rob_entries_valid_load & state_rob_entries_is_load_load & state_rob_entries_memory_valid_load & !state_rob_entries_memory_request_sent_load & !state_lsu_load & !icmp_ln1120 & !icmp_ln1121 & !state_rob_entries_uop_ctrl_is_sta_load) | (state_rob_entries_valid_load & state_rob_entries_is_load_load & state_rob_entries_memory_valid_load & !state_rob_entries_memory_request_sent_load & !state_lsu_load & !icmp_ln1120 & !icmp_ln1121 & !state_rob_entries_valid_load_1)> <Delay = 0.42>
+ST_8 : Operation 82 [1/1] (0.42ns)   --->   "%store_ln1124 = store i5 %idx_2, i5 %idx_1" [/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:1124]   --->   Operation 82 'store' 'store_ln1124' <Predicate = (state_rob_entries_valid_load & state_rob_entries_is_load_load & state_rob_entries_memory_valid_load & !state_rob_entries_memory_request_sent_load & !state_lsu_load & !icmp_ln1120 & !icmp_ln1121 & !state_rob_entries_uop_ctrl_is_sta_load) | (state_rob_entries_valid_load & state_rob_entries_is_load_load & state_rob_entries_memory_valid_load & !state_rob_entries_memory_request_sent_load & !state_lsu_load & !icmp_ln1120 & !icmp_ln1121 & !state_rob_entries_valid_load_1)> <Delay = 0.42>
+ST_8 : Operation 83 [1/1] (0.00ns)   --->   "%br_ln0 = br void"   --->   Operation 83 'br' 'br_ln0' <Predicate = (state_rob_entries_valid_load & state_rob_entries_is_load_load & state_rob_entries_memory_valid_load & !state_rob_entries_memory_request_sent_load & !state_lsu_load & !icmp_ln1120 & !icmp_ln1121 & !state_rob_entries_uop_ctrl_is_sta_load) | (state_rob_entries_valid_load & state_rob_entries_is_load_load & state_rob_entries_memory_valid_load & !state_rob_entries_memory_request_sent_load & !state_lsu_load & !icmp_ln1120 & !icmp_ln1121 & !state_rob_entries_valid_load_1)> <Delay = 0.00>
+ST_8 : Operation 84 [1/1] (0.00ns)   --->   "%br_ln0 = br void %.critedge1"   --->   Operation 84 'br' 'br_ln0' <Predicate = (state_rob_entries_valid_load & state_rob_entries_is_load_load & state_rob_entries_memory_valid_load & !state_rob_entries_memory_request_sent_load & !state_lsu_load & !icmp_ln1120 & !icmp_ln1121 & state_rob_entries_valid_load_1 & state_rob_entries_uop_ctrl_is_sta_load)> <Delay = 0.00>
+ST_8 : Operation 85 [1/1] (0.00ns)   --->   "%br_ln1145 = br void" [/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:1145]   --->   Operation 85 'br' 'br_ln1145' <Predicate = (state_rob_entries_valid_load & state_rob_entries_is_load_load & state_rob_entries_memory_valid_load & !state_rob_entries_memory_request_sent_load & icmp_ln1121 & !tmp) | (state_rob_entries_valid_load & state_rob_entries_is_load_load & state_rob_entries_memory_valid_load & !state_rob_entries_memory_request_sent_load & icmp_ln1120 & !tmp) | (state_rob_entries_valid_load & state_rob_entries_is_load_load & state_rob_entries_memory_valid_load & !state_rob_entries_memory_request_sent_load & !icmp_ln1120 & !icmp_ln1121 & state_rob_entries_valid_load_1 & state_rob_entries_uop_ctrl_is_sta_load) | (state_rob_entries_valid_load & state_rob_entries_is_load_load & state_rob_entries_memory_valid_load & !state_rob_entries_memory_request_sent_load & state_lsu_load)> <Delay = 0.00>
+ST_8 : Operation 86 [1/1] (0.00ns)   --->   "%ret_ln0 = ret"   --->   Operation 86 'ret' 'ret_ln0' <Predicate = (state_rob_entries_valid_load_1 & state_rob_entries_uop_ctrl_is_sta_load) | (icmp_ln1121) | (icmp_ln1120) | (state_lsu_load) | (state_rob_entries_memory_request_sent_load) | (!state_rob_entries_memory_valid_load) | (!state_rob_entries_is_load_load) | (!state_rob_entries_valid_load)> <Delay = 0.00>
+
+State 9 <SV = 6> <Delay = 3.07>
+ST_9 : Operation 87 [1/2] (1.23ns)   --->   "%req_address = load i5 %state_rob_entries_memory_address_addr" [/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:1153]   --->   Operation 87 'load' 'req_address' <Predicate = true> <Delay = 1.23> <CoreInst = "RAM">   --->   Core 83 'RAM' <Latency = 1> <II = 1> <Delay = 1.23> <Storage> <Opcode : 'load' 'store'> <Ports = 2> <Width = 64> <Depth = 32> <RAM>
+ST_9 : Operation 88 [1/2] (0.67ns)   --->   "%req_size = load i5 %state_rob_entries_memory_size_addr" [/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:1154]   --->   Operation 88 'load' 'req_size' <Predicate = true> <Delay = 0.67> <CoreInst = "RAM">   --->   Core 83 'RAM' <Latency = 1> <II = 1> <Delay = 0.67> <Storage> <Opcode : 'load' 'store'> <Ports = 2> <Width = 8> <Depth = 32> <RAM>
+ST_9 : Operation 89 [1/2] (0.67ns)   --->   "%req_mask = load i5 %state_rob_entries_memory_mask_addr" [/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:1155]   --->   Operation 89 'load' 'req_mask' <Predicate = true> <Delay = 0.67> <CoreInst = "RAM">   --->   Core 83 'RAM' <Latency = 1> <II = 1> <Delay = 0.67> <Storage> <Opcode : 'load' 'store'> <Ports = 2> <Width = 5> <Depth = 32> <RAM>
+ST_9 : Operation 90 [1/2] (0.67ns)   --->   "%req_signed_load = load i5 %state_rob_entries_signed_load_addr" [/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:1156]   --->   Operation 90 'load' 'req_signed_load' <Predicate = true> <Delay = 0.67> <CoreInst = "RAM">   --->   Core 83 'RAM' <Latency = 1> <II = 1> <Delay = 0.67> <Storage> <Opcode : 'load' 'store'> <Ports = 2> <Width = 1> <Depth = 32> <RAM>
+ST_9 : Operation 91 [1/2] (0.67ns)   --->   "%req_branch_mask = load i5 %state_rob_entries_uop_branch_br_mask_addr" [/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:1157]   --->   Operation 91 'load' 'req_branch_mask' <Predicate = true> <Delay = 0.67> <CoreInst = "RAM">   --->   Core 83 'RAM' <Latency = 1> <II = 1> <Delay = 0.67> <Storage> <Opcode : 'load' 'store'> <Ports = 2> <Width = 8> <Depth = 32> <RAM>
+ST_9 : Operation 92 [1/1] (0.00ns)   --->   "%tmp_1 = bitconcatenate i61 @_ssdm_op_BitConcatenate.i61.i5.i8.i8.i8.i32, i5 %req_mask, i8 %req_size, i8 0, i8 %rob_idx_cast, i32 %tx" [/home/lab_726/Xilinx/Vitis_HLS/2021.2/common/technology/autopilot/hls_stream_39.h:173]   --->   Operation 92 'bitconcatenate' 'tmp_1' <Predicate = true> <Delay = 0.00>
+ST_9 : Operation 93 [1/1] (0.00ns)   --->   "%sext_ln173 = sext i61 %tmp_1" [/home/lab_726/Xilinx/Vitis_HLS/2021.2/common/technology/autopilot/hls_stream_39.h:173]   --->   Operation 93 'sext' 'sext_ln173' <Predicate = true> <Delay = 0.00>
+ST_9 : Operation 94 [1/1] (0.00ns)   --->   "%p_0 = bitconcatenate i283 @_ssdm_op_BitConcatenate.i283.i128.i64.i1.i1.i9.i8.i8.i64, i128 0, i64 %req_address, i1 0, i1 %req_signed_load, i9 0, i8 %req_branch_mask, i8 0, i64 %sext_ln173" [/home/lab_726/Xilinx/Vitis_HLS/2021.2/common/technology/autopilot/hls_stream_39.h:173]   --->   Operation 94 'bitconcatenate' 'p_0' <Predicate = true> <Delay = 0.00>
+ST_9 : Operation 95 [1/1] (1.83ns)   --->   "%write_ln173 = write void @_ssdm_op_Write.ap_fifo.volatile.i283P0A, i283 %pipe_2, i283 %p_0" [/home/lab_726/Xilinx/Vitis_HLS/2021.2/common/technology/autopilot/hls_stream_39.h:173]   --->   Operation 95 'write' 'write_ln173' <Predicate = true> <Delay = 1.83> <CoreInst = "FIFO_SRL">   --->   Core 81 'FIFO_SRL' <Latency = 0> <II = 1> <Delay = 1.83> <Storage> <Opcode : 'read' 'write' 'nbread' 'nbwrite'> <Ports = 0> <Width = 283> <Depth = 2> <FIFO>
+ST_9 : Operation 96 [1/1] (0.00ns)   --->   "%store_ln1162 = store i1 1, i1 %state_lsu_load_response_pending" [/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:1162]   --->   Operation 96 'store' 'store_ln1162' <Predicate = true> <Delay = 0.00>
+ST_9 : Operation 97 [1/2] (1.23ns)   --->   "%state_rob_entries_uop_queue_rob_allocation_id_load = load i5 %state_rob_entries_uop_queue_rob_allocation_id_addr" [/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:1165]   --->   Operation 97 'load' 'state_rob_entries_uop_queue_rob_allocation_id_load' <Predicate = true> <Delay = 1.23> <CoreInst = "RAM">   --->   Core 83 'RAM' <Latency = 1> <II = 1> <Delay = 1.23> <Storage> <Opcode : 'load' 'store'> <Ports = 2> <Width = 32> <Depth = 32> <RAM>
+ST_9 : Operation 98 [1/1] (0.00ns)   --->   "%store_ln1165 = store i32 %state_rob_entries_uop_queue_rob_allocation_id_load, i32 %state_lsu_pending_load_allocation_id" [/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:1165]   --->   Operation 98 'store' 'store_ln1165' <Predicate = true> <Delay = 0.00>
+ST_9 : Operation 99 [1/1] (0.00ns)   --->   "%br_ln1166 = br void" [/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:1166]   --->   Operation 99 'br' 'br_ln1166' <Predicate = true> <Delay = 0.00>
+
+
+============================================================
++ Verbose Summary: Timing violations
+============================================================
+Target clock period: 10ns, clock uncertainty: 2.7ns.
+
+ <State 1>: 0.677ns
+The critical path consists of the following:
+	wire read operation ('rob_idx_read') on port 'rob_idx' [21]  (0 ns)
+	'getelementptr' operation ('state_rob_entries_valid_addr', /home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:1144) [25]  (0 ns)
+	'load' operation ('state_rob_entries_valid_load', /home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:1144) on array 'state_rob_entries_valid' [26]  (0.677 ns)
+
+ <State 2>: 0.677ns
+The critical path consists of the following:
+	'getelementptr' operation ('state_rob_entries_is_load_addr', /home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:1144) [29]  (0 ns)
+	'load' operation ('state_rob_entries_is_load_load', /home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:1144) on array 'state_rob_entries_is_load' [30]  (0.677 ns)
+
+ <State 3>: 0.677ns
+The critical path consists of the following:
+	'load' operation ('state_rob_entries_is_load_load', /home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:1144) on array 'state_rob_entries_is_load' [30]  (0.677 ns)
+
+ <State 4>: 0.677ns
+The critical path consists of the following:
+	'getelementptr' operation ('state_rob_entries_memory_request_sent_addr', /home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:1144) [37]  (0 ns)
+	'load' operation ('state_rob_entries_memory_request_sent_load', /home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:1144) on array 'state_rob_entries_memory_request_sent' [38]  (0.677 ns)
+
+ <State 5>: 1.1ns
+The critical path consists of the following:
+	'load' operation ('state_rob_entries_memory_request_sent_load', /home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:1144) on array 'state_rob_entries_memory_request_sent' [38]  (0.677 ns)
+	blocking operation 0.427 ns on control path)
+
+ <State 6>: 2.02ns
+The critical path consists of the following:
+	'getelementptr' operation ('state_rob_entries_memory_address_addr', /home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:1153) [85]  (0 ns)
+	'load' operation ('req.address', /home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:1153) on array 'state_rob_entries_memory_address' [86]  (1.24 ns)
+	blocking operation 0.785 ns on control path)
+
+ <State 7>: 0.677ns
+The critical path consists of the following:
+	'getelementptr' operation ('state_rob_entries_uop_ctrl_is_sta_addr', /home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:1123) [67]  (0 ns)
+	'load' operation ('state_rob_entries_uop_ctrl_is_sta_load', /home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:1123) on array 'state_rob_entries_uop_ctrl_is_sta' [68]  (0.677 ns)
+
+ <State 8>: 1.22ns
+The critical path consists of the following:
+	'load' operation ('idx_1_load', /home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:1124) on local variable 'idx' [71]  (0 ns)
+	'add' operation ('idx', /home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:1124) [72]  (0.789 ns)
+	'store' operation ('store_ln1124', /home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:1124) of variable 'idx', /home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:1124 on local variable 'idx' [74]  (0.427 ns)
+
+ <State 9>: 3.08ns
+The critical path consists of the following:
+	'load' operation ('req.address', /home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:1153) on array 'state_rob_entries_memory_address' [86]  (1.24 ns)
+	fifo write operation ('write_ln173', /home/lab_726/Xilinx/Vitis_HLS/2021.2/common/technology/autopilot/hls_stream_39.h:173) on port 'pipe_2' (/home/lab_726/Xilinx/Vitis_HLS/2021.2/common/technology/autopilot/hls_stream_39.h:173) [98]  (1.84 ns)
+
+
+============================================================
++ Verbose Summary: Binding
+============================================================
+N/A
+* FSMD analyzer results:
+  - Output states:
+ - Input state : 
+  - Chain level:
+	State 1
+	State 2
+	State 3
+	State 4
+	State 5
+	State 6
+	State 7
+	State 8
+	State 9
+
+
+============================================================
++ Verbose Summary: Datapath Resource usage 
+============================================================
+N/A

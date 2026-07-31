@@ -45,6 +45,9 @@ void frontend_module(BoomCoreState& state, PipeSignals& pipe) {
         state.global_flush = false;
     }
 
+    fe.stalled = state.rename.dispatch_packets[0].valid || state.decode.dec_valids[0];
+    if (fe.stalled) return;
+
     if (!fe.request_sent && fe.fetch_packet_valid) {
         fe.response_received = false;
         fe.fetch_packet_valid = false;

@@ -1,0 +1,186 @@
+==============================================================
+Vitis HLS - High-Level Synthesis from C, C++ and OpenCL v2021.2 (64-bit)
+Copyright 1986-2021 Xilinx, Inc. All Rights Reserved.
+==============================================================
+INFO: [HLS 200-1505] Using default flow_target 'vivado'
+INFO: [HLS 200-1510] Running: set_part xczu7ev-ffvc1156-2-e 
+INFO: [HLS 200-1611] Setting target device to 'xczu7ev-ffvc1156-2-e'
+INFO: [HLS 200-1510] Running: create_clock -period 10 -name default 
+INFO: [SYN 201-201] Setting up clock 'default' with a period of 10ns.
+INFO: [HLS 200-1510] Running: config_compile -pipeline_loops 0 
+INFO: [XFORM 203-1171] Pipeline the innermost loop with trip count more than 0 or its parent loop when its trip count is less than or equal 0.
+INFO: [HLS 200-1510] Running: csynth_design 
+INFO: [HLS 200-111] Finished File checks and directory preparation: CPU user time: 0 seconds. CPU system time: 0 seconds. Elapsed time: 0 seconds; current allocated memory: 1.321 GB.
+INFO: [HLS 200-10] Analyzing design file '/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp' ... 
+INFO: [HLS 200-111] Finished Source Code Analysis and Preprocessing: CPU user time: 0.93 seconds. CPU system time: 0.25 seconds. Elapsed time: 0.61 seconds; current allocated memory: 418.258 MB.
+INFO: [HLS 200-777] Using interface defaults for 'Vivado' flow target.
+INFO: [HLS 214-284] Auto array partition mode is set into default.
+INFO: [HLS 214-131] Inlining function 'boom::complete_selected(BoomCoreState&, ExecuteState::AluResult&)' into 'boom::rob_complete(BoomCoreState&)' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:521:27)
+INFO: [HLS 214-131] Inlining function 'boom::complete_selected(BoomCoreState&, ExecuteState::AluResult&)' into 'boom::rob_complete(BoomCoreState&)' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:522:10)
+INFO: [HLS 214-178] Inlining function 'MicroOp::MicroOp() (.21.27.33.39.45.51.57.63)' into 'FrontendState::FrontendState()' (/home/lab_726/boom/hls_boom/include/boom_state.hpp:26:0)
+INFO: [HLS 214-178] Inlining function 'MicroOp::MicroOp() (.21.27.33.39.45.51.57.63)' into 'DecodeState::DecodeState()' (/home/lab_726/boom/hls_boom/include/boom_state.hpp:32:0)
+INFO: [HLS 214-178] Inlining function 'MicroOp::MicroOp() (.21.27.33.39.45.51.57.63)' into 'RenameDispatchPacket::RenameDispatchPacket()' (/home/lab_726/boom/hls_boom/include/boom_state.hpp:73:0)
+INFO: [HLS 214-178] Inlining function 'RenameMapTableState::RenameMapTableState()' into 'RenameState::RenameState()' (/home/lab_726/boom/hls_boom/include/boom_state.hpp:76:0)
+INFO: [HLS 214-178] Inlining function 'RenameFreeListState::RenameFreeListState()' into 'RenameState::RenameState()' (/home/lab_726/boom/hls_boom/include/boom_state.hpp:76:0)
+INFO: [HLS 214-178] Inlining function 'RenameDispatchPacket::RenameDispatchPacket()' into 'RenameState::RenameState()' (/home/lab_726/boom/hls_boom/include/boom_state.hpp:76:0)
+INFO: [HLS 214-178] Inlining function 'MicroOp::MicroOp() (.21.27.33.39.45.51.57.63)' into 'IssueSlotEntry::IssueSlotEntry()' (/home/lab_726/boom/hls_boom/include/boom_types.hpp:100:0)
+INFO: [HLS 214-178] Inlining function 'IssueSlotEntry::IssueSlotEntry()' into 'IssueQueueState::IssueQueueState()' (/home/lab_726/boom/hls_boom/include/boom_state.hpp:85:0)
+INFO: [HLS 214-178] Inlining function 'MicroOp::MicroOp() (.21.27.33.39.45.51.57.63)' into 'IssueGrant::IssueGrant()' (/home/lab_726/boom/hls_boom/include/boom_types.hpp:77:0)
+INFO: [HLS 214-178] Inlining function 'IssueGrant::IssueGrant()' into 'IssueState::IssueState()' (/home/lab_726/boom/hls_boom/include/boom_state.hpp:102:0)
+INFO: [HLS 214-178] Inlining function 'MicroOp::MicroOp() (.21.27.33.39.45.51.57.63)' into 'IssueState::IssueState()' (/home/lab_726/boom/hls_boom/include/boom_state.hpp:102:0)
+INFO: [HLS 214-178] Inlining function 'MicroOp::MicroOp() (.21.27.33.39.45.51.57.63)' into 'ExecuteState::AluResult::AluResult()' (/home/lab_726/boom/hls_boom/include/boom_state.hpp:121:0)
+INFO: [HLS 214-178] Inlining function 'ExecuteState::AluResult::AluResult()' into 'ExecuteState::ExecuteState()' (/home/lab_726/boom/hls_boom/include/boom_state.hpp:124:0)
+INFO: [HLS 214-178] Inlining function 'MicroOp::MicroOp() (.21.27.33.39.45.51.57.63)' into 'RobEntry::RobEntry()' (/home/lab_726/boom/hls_boom/include/boom_types.hpp:91:0)
+INFO: [HLS 214-178] Inlining function 'RobEntry::RobEntry()' into 'RobInternalState::RobInternalState()' (/home/lab_726/boom/hls_boom/include/boom_state.hpp:138:0)
+INFO: [HLS 214-178] Inlining function 'CommitEntry::CommitEntry()' into 'RobInternalState::RobInternalState()' (/home/lab_726/boom/hls_boom/include/boom_state.hpp:138:0)
+INFO: [HLS 214-178] Inlining function 'StoreQueueEntry::StoreQueueEntry()' into 'LsuState::LsuState()' (/home/lab_726/boom/hls_boom/include/boom_state.hpp:181:0)
+INFO: [HLS 214-178] Inlining function 'LoadQueueEntry::LoadQueueEntry()' into 'LsuState::LsuState()' (/home/lab_726/boom/hls_boom/include/boom_state.hpp:181:0)
+INFO: [HLS 214-178] Inlining function 'MicroOp::MicroOp() (.21.27.33.39.45.51.57.63)' into 'BranchUpdate::BranchUpdate()' (/home/lab_726/boom/hls_boom/include/boom_types.hpp:109:0)
+INFO: [HLS 214-178] Inlining function 'FrontendState::FrontendState()' into 'BoomCoreState::BoomCoreState()' (/home/lab_726/boom/hls_boom/include/boom_state.hpp:205:0)
+INFO: [HLS 214-178] Inlining function 'CsrState::CsrState()' into 'BoomCoreState::BoomCoreState()' (/home/lab_726/boom/hls_boom/include/boom_state.hpp:205:0)
+INFO: [HLS 214-178] Inlining function 'LsuState::LsuState()' into 'BoomCoreState::BoomCoreState()' (/home/lab_726/boom/hls_boom/include/boom_state.hpp:205:0)
+INFO: [HLS 214-178] Inlining function 'BranchRecoveryState::BranchRecoveryState()' into 'BoomCoreState::BoomCoreState()' (/home/lab_726/boom/hls_boom/include/boom_state.hpp:205:0)
+INFO: [HLS 214-178] Inlining function 'BranchUpdate::BranchUpdate()' into 'BoomCoreState::BoomCoreState()' (/home/lab_726/boom/hls_boom/include/boom_state.hpp:205:0)
+INFO: [HLS 214-178] Inlining function 'IssueSlotEntry::IssueSlotEntry()' into 'boom::compact_issue_queue(IssueQueueState&)' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:879:0)
+INFO: [HLS 214-178] Inlining function 'boom::killed_by_mask(MicroOp const&, unsigned char)' into 'boom::kill_issue_state(BoomCoreState&, unsigned char)' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:892:0)
+INFO: [HLS 214-178] Inlining function 'boom::killed_by_mask(MicroOp const&, unsigned char)' into 'boom::kill_execute_state(BoomCoreState&, unsigned char)' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:909:0)
+INFO: [HLS 214-178] Inlining function 'LoadQueueEntry::LoadQueueEntry()' into 'boom::kill_lsu_state(BoomCoreState&, unsigned char)' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:917:0)
+INFO: [HLS 214-178] Inlining function 'StoreQueueEntry::StoreQueueEntry()' into 'boom::kill_lsu_state(BoomCoreState&, unsigned char)' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:917:0)
+INFO: [HLS 214-178] Inlining function 'boom::killed_by_mask(MicroOp const&, unsigned char)' into 'boom::kill_rob_younger_than(BoomCoreState&, unsigned char, unsigned char)' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:959:0)
+INFO: [HLS 214-178] Inlining function 'boom::branch_free_list_contains(RenameFreeListState const&, unsigned char)' into 'boom::branch_free_preg_unique(RenameFreeListState&, unsigned char)' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:841:0)
+INFO: [HLS 214-178] Inlining function 'boom::preg_in_map(RenameMapTableState const&, unsigned char)' into 'boom::rollback_free_list(BoomCoreState&, unsigned char)' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:998:0)
+INFO: [HLS 214-178] Inlining function 'boom::branch_free_preg_unique(RenameFreeListState&, unsigned char)' into 'boom::rollback_free_list(BoomCoreState&, unsigned char)' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:998:0)
+INFO: [HLS 214-178] Inlining function 'boom::branch_tag_bit(unsigned char)' into 'boom::prune_recovered_tags(BoomCoreState&, unsigned char, unsigned char)' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:1017:0)
+INFO: [HLS 214-178] Inlining function 'boom::branch_clear_alloc_list(BranchRecoveryState&, unsigned char)' into 'boom::prune_recovered_tags(BoomCoreState&, unsigned char, unsigned char)' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:1017:0)
+INFO: [HLS 214-178] Inlining function 'boom::clear_resolved_mask(MicroOp&, unsigned char)' into 'boom::clear_resolved_masks_in_state(BoomCoreState&, unsigned char)' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:865:0)
+INFO: [HLS 214-178] Inlining function 'boom::killed_by_mask(MicroOp const&, unsigned char)' into 'boom::recover_mispredict(BoomCoreState&, BranchUpdate const&)' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:1030:0)
+INFO: [HLS 214-178] Inlining function 'boom::restore_map_snapshot(BoomCoreState&, unsigned char)' into 'boom::recover_mispredict(BoomCoreState&, BranchUpdate const&)' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:1030:0)
+INFO: [HLS 214-178] Inlining function 'boom::rollback_free_list(BoomCoreState&, unsigned char)' into 'boom::recover_mispredict(BoomCoreState&, BranchUpdate const&)' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:1030:0)
+INFO: [HLS 214-178] Inlining function 'boom::prune_recovered_tags(BoomCoreState&, unsigned char, unsigned char)' into 'boom::recover_mispredict(BoomCoreState&, BranchUpdate const&)' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:1030:0)
+INFO: [HLS 214-178] Inlining function 'boom::rebuild_busy_after_recovery(BoomCoreState&)' into 'boom::recover_mispredict(BoomCoreState&, BranchUpdate const&)' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:1030:0)
+INFO: [HLS 214-178] Inlining function 'boom::branch_tag_bit(unsigned char)' into 'boom::release_tag(BoomCoreState&, unsigned char)' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:855:0)
+INFO: [HLS 214-178] Inlining function 'boom::branch_clear_alloc_list(BranchRecoveryState&, unsigned char)' into 'boom::release_tag(BoomCoreState&, unsigned char)' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:855:0)
+INFO: [HLS 214-178] Inlining function 'boom::release_tag(BoomCoreState&, unsigned char)' into 'boom::release_resolved_branch(BoomCoreState&, unsigned char, unsigned char)' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:1059:0)
+INFO: [HLS 214-178] Inlining function 'boom::branch_tag_bit(unsigned char)' into 'boom::branch_complete(BoomCoreState&, ExecuteState::AluResult const&)' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:1064:0)
+INFO: [HLS 214-178] Inlining function 'boom::release_resolved_branch(BoomCoreState&, unsigned char, unsigned char)' into 'boom::branch_complete(BoomCoreState&, ExecuteState::AluResult const&)' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:1064:0)
+INFO: [HLS 214-178] Inlining function 'boom::enqueue_store(BoomCoreState&, ExecuteState::AluResult const&, RobEntry&) (.2239.2362.2371.2446.2455.2599.2716.2841.2974.3115.3264)' into 'boom::lsu_accept_completion(BoomCoreState&, ExecuteState::AluResult const&)' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:1198:0)
+INFO: [HLS 214-178] Inlining function 'boom::enqueue_load(BoomCoreState&, ExecuteState::AluResult const&, RobEntry&) (.2233.2359.2368.2443.2452.2596.2713.2838.2971.3112.3261)' into 'boom::lsu_accept_completion(BoomCoreState&, ExecuteState::AluResult const&)' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:1198:0)
+INFO: [HLS 214-270] Starting automatic array partition analysis...
+INFO: [HLS 200-111] Finished Compiling Optimization and Transform: CPU user time: 26.57 seconds. CPU system time: 0.48 seconds. Elapsed time: 27.04 seconds; current allocated memory: 449.859 MB.
+INFO: [HLS 200-111] Finished Checking Pragmas: CPU user time: 0 seconds. CPU system time: 0 seconds. Elapsed time: 0.01 seconds; current allocated memory: 449.859 MB.
+INFO: [HLS 200-10] Starting code transformations ...
+INFO: [HLS 200-111] Finished Standard Transforms: CPU user time: 0.24 seconds. CPU system time: 0 seconds. Elapsed time: 0.24 seconds; current allocated memory: 460.723 MB.
+INFO: [HLS 200-10] Checking synthesizability ...
+INFO: [HLS 200-111] Finished Checking Synthesizability: CPU user time: 0.14 seconds. CPU system time: 0 seconds. Elapsed time: 0.14 seconds; current allocated memory: 465.328 MB.
+INFO: [XFORM 203-102] Partitioning array 'state.rename.dispatch_packets.valid' automatically.
+INFO: [XFORM 203-102] Partitioning array 'state.rename.dispatch_packets.uop.uopc' automatically.
+INFO: [XFORM 203-102] Partitioning array 'state.rename.dispatch_packets.uop.rename.stale_pdst' automatically.
+INFO: [XFORM 203-102] Partitioning array 'state.rename.dispatch_packets.uop.rename.prs3_busy' automatically.
+INFO: [XFORM 203-102] Partitioning array 'state.rename.dispatch_packets.uop.rename.prs3' automatically.
+INFO: [XFORM 203-102] Partitioning array 'state.rename.dispatch_packets.uop.rename.prs2_busy' automatically.
+INFO: [XFORM 203-102] Partitioning array 'state.rename.dispatch_packets.uop.rename.prs2' automatically.
+INFO: [XFORM 203-102] Partitioning array 'state.rename.dispatch_packets.uop.rename.prs1_busy' automatically.
+INFO: [XFORM 203-102] Partitioning array 'state.rename.dispatch_packets.uop.rename.prs1' automatically.
+INFO: [XFORM 203-102] Partitioning array 'state.rename.dispatch_packets.uop.rename.ppred_busy' automatically.
+INFO: [XFORM 203-102] Partitioning array 'state.rename.dispatch_packets.uop.rename.ppred' automatically.
+INFO: [XFORM 203-102] Partitioning array 'state.rename.dispatch_packets.uop.rename.pdst' automatically.
+INFO: [XFORM 203-102] Partitioning array 'state.rename.dispatch_packets.uop.rename.lrs3' automatically.
+INFO: [XFORM 203-102] Partitioning array 'state.rename.dispatch_packets.uop.rename.lrs2_rtype' automatically.
+INFO: [XFORM 203-102] Partitioning array 'state.rename.dispatch_packets.uop.rename.lrs2' automatically.
+INFO: [XFORM 203-102] Partitioning array 'state.rename.dispatch_packets.uop.rename.lrs1_rtype' automatically.
+INFO: [XFORM 203-102] Partitioning array 'state.rename.dispatch_packets.uop.rename.lrs1' automatically.
+INFO: [XFORM 203-102] Partitioning array 'state.rename.dispatch_packets.uop.rename.ldst' automatically.
+INFO: [XFORM 203-102] Partitioning array 'state.rename.dispatch_packets.uop.rename.frs3_en' automatically.
+INFO: [XFORM 203-102] Partitioning array 'state.rename.dispatch_packets.uop.rename.fp_val' automatically.
+INFO: [XFORM 203-102] Partitioning array 'state.rename.dispatch_packets.uop.rename.fp_single' automatically.
+INFO: [XFORM 203-102] Partitioning array 'state.rename.dispatch_packets.uop.rename.dst_rtype' automatically.
+INFO: [XFORM 203-102] Partitioning array 'state.rename.dispatch_packets.uop.queue.stq_idx' automatically.
+INFO: [XFORM 203-102] Partitioning array 'state.rename.dispatch_packets.uop.queue.rxq_idx' automatically.
+INFO: [XFORM 203-102] Partitioning array 'state.rename.dispatch_packets.uop.queue.ldq_idx' automatically.
+INFO: [XFORM 203-102] Partitioning array 'state.rename.dispatch_packets.uop.mem.uses_stq' automatically.
+INFO: [XFORM 203-102] Partitioning array 'state.rename.dispatch_packets.uop.mem.uses_ldq' automatically.
+INFO: [XFORM 203-102] Partitioning array 'state.rename.dispatch_packets.uop.mem.mem_size' automatically.
+INFO: [XFORM 203-102] Partitioning array 'state.rename.dispatch_packets.uop.mem.mem_signed' automatically.
+INFO: [XFORM 203-102] Partitioning array 'state.rename.dispatch_packets.uop.mem.mem_cmd' automatically.
+INFO: [XFORM 203-102] Partitioning array 'state.rename.dispatch_packets.uop.mem.ldst_val' automatically.
+INFO: [XFORM 203-102] Partitioning array 'state.rename.dispatch_packets.uop.mem.ldst_is_rs1' automatically.
+INFO: [XFORM 203-102] Partitioning array 'state.rename.dispatch_packets.uop.mem.is_fencei' automatically.
+INFO: [XFORM 203-102] Partitioning array 'state.rename.dispatch_packets.uop.mem.is_fence' automatically.
+INFO: [XFORM 203-102] Partitioning array 'state.rename.dispatch_packets.uop.mem.is_amo' automatically.
+INFO: [XFORM 203-102] Partitioning array 'state.rename.dispatch_packets.uop.iw_state' automatically.
+INFO: [XFORM 203-102] Partitioning array 'state.rename.dispatch_packets.uop.iw_p2_poisoned' automatically.
+INFO: [XFORM 203-102] Partitioning array 'state.rename.dispatch_packets.uop.iw_p1_poisoned' automatically.
+INFO: [XFORM 203-102] Partitioning array 'state.rename.dispatch_packets.uop.is_unique' automatically.
+INFO: [XFORM 203-102] Partitioning array 'state.rename.dispatch_packets.uop.is_sys_pc2epc' automatically.
+INFO: [XFORM 203-102] Partitioning array 'state.rename.dispatch_packets.uop.is_rvc' automatically.
+INFO: [XFORM 203-102] Partitioning array 'state.rename.dispatch_packets.uop.iq_type' automatically.
+INFO: [XFORM 203-102] Partitioning array 'state.rename.dispatch_packets.uop.inst' automatically.
+INFO: [XFORM 203-102] Partitioning array 'state.rename.dispatch_packets.uop.imm_packed' automatically.
+INFO: [XFORM 203-102] Partitioning array 'state.rename.dispatch_packets.uop.fu_code' automatically.
+INFO: [XFORM 203-102] Partitioning array 'state.rename.dispatch_packets.uop.flush_on_commit' automatically.
+INFO: [XFORM 203-102] Partitioning array 'state.rename.dispatch_packets.uop.exception' automatically.
+INFO: [XFORM 203-102] Partitioning array 'state.rename.dispatch_packets.uop.exc_cause' automatically.
+INFO: [XFORM 203-102] Partitioning array 'state.rename.dispatch_packets.uop.exc.xcpt_pf_if' automatically.
+INFO: [XFORM 203-102] Partitioning array 'state.rename.dispatch_packets.uop.exc.xcpt_ma_if' automatically.
+INFO: [XFORM 203-102] Partitioning array 'state.rename.dispatch_packets.uop.exc.xcpt_ae_if' automatically.
+INFO: [XFORM 203-102] Partitioning array 'state.rename.dispatch_packets.uop.exc.exception' automatically.
+INFO: [XFORM 203-102] Partitioning array 'state.rename.dispatch_packets.uop.exc.exc_cause' automatically.
+INFO: [XFORM 203-102] Partitioning array 'state.rename.dispatch_packets.uop.exc.bp_xcpt_if' automatically.
+INFO: [XFORM 203-102] Partitioning array 'state.rename.dispatch_packets.uop.exc.bp_debug_if' automatically.
+INFO: [XFORM 203-102] Partitioning array 'state.rename.dispatch_packets.uop.debug_pc' automatically.
+INFO: [XFORM 203-102] Partitioning array 'state.rename.dispatch_packets.uop.debug_inst' automatically.
+INFO: [XFORM 203-102] Partitioning array 'state.rename.dispatch_packets.uop.debug.debug_tsrc' automatically.
+INFO: [XFORM 203-102] Partitioning array 'state.rename.dispatch_packets.uop.debug.debug_pc' automatically.
+INFO: [XFORM 203-102] Partitioning array 'state.rename.dispatch_packets.uop.debug.debug_inst' automatically.
+INFO: [XFORM 203-102] Partitioning array 'state.rename.dispatch_packets.uop.debug.debug_fsrc' automatically.
+INFO: [XFORM 203-102] Partitioning array 'state.rename.dispatch_packets.uop.ctrl.op_fcn' automatically.
+INFO: [XFORM 203-102] Partitioning array 'state.rename.dispatch_packets.uop.ctrl.op2_sel' automatically.
+INFO: [XFORM 203-102] Partitioning array 'state.rename.dispatch_packets.uop.ctrl.op1_sel' automatically.
+INFO: [XFORM 203-102] Partitioning array 'state.rename.dispatch_packets.uop.ctrl.is_std' automatically.
+INFO: [XFORM 203-102] Partitioning array 'state.rename.dispatch_packets.uop.ctrl.is_sta' automatically.
+INFO: [XFORM 203-102] Partitioning array 'state.rename.dispatch_packets.uop.ctrl.is_load' automatically.
+INFO: [XFORM 203-102] Partitioning array 'state.rename.dispatch_packets.uop.ctrl.imm_sel' automatically.
+INFO: [XFORM 203-102] Partitioning array 'state.rename.dispatch_packets.uop.ctrl.fcn_dw' automatically.
+INFO: [XFORM 203-102] Partitioning array 'state.rename.dispatch_packets.uop.ctrl.csr_cmd' automatically.
+INFO: [XFORM 203-102] Partitioning array 'state.rename.dispatch_packets.uop.ctrl.br_type' automatically.
+INFO: [XFORM 203-102] Partitioning array 'state.rename.dispatch_packets.uop.csr_addr' automatically.
+INFO: [XFORM 203-102] Partitioning array 'state.rename.dispatch_packets.uop.bypassable' automatically.
+INFO: [XFORM 203-102] Partitioning array 'state.rename.dispatch_packets.uop.branch.taken' automatically.
+INFO: [XFORM 203-102] Partitioning array 'state.rename.dispatch_packets.uop.branch.pc_lob' automatically.
+INFO: [XFORM 203-102] Partitioning array 'state.rename.dispatch_packets.uop.branch.is_sfb' automatically.
+INFO: [XFORM 203-102] Partitioning array 'state.rename.dispatch_packets.uop.branch.is_jalr' automatically.
+INFO: [XFORM 203-102] Partitioning array 'state.rename.dispatch_packets.uop.branch.is_jal' automatically.
+INFO: [XFORM 203-102] Partitioning array 'state.rename.dispatch_packets.uop.branch.is_br' automatically.
+INFO: [XFORM 203-102] Partitioning array 'state.rename.dispatch_packets.uop.branch.ftq_idx' automatically.
+INFO: [XFORM 203-102] Partitioning array 'state.rename.dispatch_packets.uop.branch.edge_inst' automatically.
+INFO: [XFORM 203-102] Partitioning array 'state.rename.dispatch_packets.uop.branch.br_tag' automatically.
+INFO: [XFORM 203-102] Partitioning array 'state.rename.dispatch_packets.uop.branch.br_mask' automatically.
+INFO: [XFORM 203-102] Partitioning array 'state.rename.dispatch_packets.rob_allocated' automatically.
+INFO: [XFORM 203-102] Partitioning array 'state.decode.dec_uops.branch.br_mask' automatically.
+INFO: [XFORM 203-102] Automatically partitioning small array 'state.issue.issued_valids' completely based on array size.
+INFO: [XFORM 203-102] Automatically partitioning small array 'state.issue.issued_uops.branch.br_mask' completely based on array size.
+INFO: [XFORM 203-102] Automatically partitioning small array 'state.execute.alu_results.valid' completely based on array size.
+INFO: [XFORM 203-102] Automatically partitioning small array 'state.execute.alu_results.uop.rename.pdst' completely based on array size.
+INFO: [XFORM 203-102] Automatically partitioning small array 'state.execute.alu_results.uop.rename.dst_rtype' completely based on array size.
+INFO: [XFORM 203-102] Automatically partitioning small array 'state.execute.alu_results.uop.queue.rob_idx' completely based on array size.
+INFO: [XFORM 203-102] Automatically partitioning small array 'state.execute.alu_results.uop.queue.rob_allocation_id' completely based on array size.
+INFO: [XFORM 203-102] Automatically partitioning small array 'state.execute.alu_results.uop.branch.is_jalr' completely based on array size.
+INFO: [XFORM 203-102] Automatically partitioning small array 'state.execute.alu_results.uop.branch.is_jal' completely based on array size.
+INFO: [XFORM 203-102] Automatically partitioning small array 'state.execute.alu_results.uop.branch.is_br' completely based on array size.
+INFO: [XFORM 203-102] Automatically partitioning small array 'state.execute.alu_results.uop.branch.br_tag' completely based on array size.
+INFO: [XFORM 203-102] Automatically partitioning small array 'state.execute.alu_results.uop.branch.br_mask' completely based on array size.
+INFO: [XFORM 203-102] Automatically partitioning small array 'state.execute.alu_results.store_data' completely based on array size.
+INFO: [XFORM 203-102] Automatically partitioning small array 'state.execute.alu_results.signed_load' completely based on array size.
+INFO: [XFORM 203-102] Automatically partitioning small array 'state.execute.alu_results.result' completely based on array size.
+INFO: [XFORM 203-102] Automatically partitioning small array 'state.execute.alu_results.mispredict' completely based on array size.
+INFO: [XFORM 203-102] Automatically partitioning small array 'state.execute.alu_results.memory_valid' completely based on array size.
+INFO: [XFORM 203-102] Automatically partitioning small array 'state.execute.alu_results.memory_size' completely based on array size.
+INFO: [XFORM 203-102] Automatically partitioning small array 'state.execute.alu_results.memory_mask' completely based on array size.
+INFO: [XFORM 203-102] Automatically partitioning small array 'state.execute.alu_results.memory_address' completely based on array size.
+INFO: [XFORM 203-102] Automatically partitioning small array 'state.execute.alu_results.is_store' completely based on array size.
+INFO: [XFORM 203-102] Automatically partitioning small array 'state.execute.alu_results.is_load' completely based on array size.
+INFO: [XFORM 203-102] Automatically partitioning small array 'state.execute.alu_results.exception' completely based on array size.
+INFO: [XFORM 203-102] Automatically partitioning small array 'state.execute.alu_results.exc_cause' completely based on array size.
+INFO: [XFORM 203-101] Partitioning array 'state.issue.issued_valids' in dimension 1 completely.
+INFO: [XFORM 203-101] Partitioning array 'state.issue.issued_uops.branch.br_mask' in dimension 1 completely.
+INFO: [XFORM 203-101] Partitioning array 'state.execute.alu_results.valid' in dimension 1 completely.

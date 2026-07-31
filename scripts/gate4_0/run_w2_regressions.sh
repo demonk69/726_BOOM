@@ -34,6 +34,7 @@ compile_test branch_snapshot_tests "$ROOT/tb/differential/branch_snapshot_tests.
 compile_test branch_snapshot_random_tests "$ROOT/tb/differential/branch_snapshot_random_tests.cpp"
 compile_test iq_compaction_tests "$ROOT/tb/differential/iq_compaction_tests.cpp"
 compile_test gate4_w1_lane_interface_tests "$ROOT/tb/differential/gate4_w1_lane_interface_tests.cpp"
+compile_test dispatch_retry_tests "$ROOT/tb/differential/dispatch_retry_tests.cpp"
 "$CXX_BIN" -std=c++11 -I"$ROOT/include" "${COMMON_SRCS[@]}" "$ROOT/src/reset.cpp" \
   "$ROOT/tb/differential/reset_architecture_tests.cpp" -o "$BUILD_DIR/reset_architecture_tests"
 "$CXX_BIN" -std=c++11 -I"$ROOT/include" "$ROOT/src/issue.cpp" "$ROOT/src/reset.cpp" \
@@ -43,7 +44,7 @@ compile_test gate4_w1_lane_interface_tests "$ROOT/tb/differential/gate4_w1_lane_
 
 for test in directed_tests gate1_regression_tests lsu_minimal_tests branch_snapshot_tests \
   iq_compaction_tests gate4_w1_lane_interface_tests reset_architecture_tests \
-  w2_dual_grant_tests w2_dual_grant_random_tests; do
+  w2_dual_grant_tests w2_dual_grant_random_tests dispatch_retry_tests; do
   "$BUILD_DIR/$test" > "$LOG_DIR/$test.log" 2>&1
 done
 

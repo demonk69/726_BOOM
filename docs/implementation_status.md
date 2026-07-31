@@ -32,6 +32,10 @@ Gate 4.0 W1 update: fixed three-lane issue and execute-result interfaces are ver
 
 Gate 4.0 W2 update: the shared implemented IQ can generate one oldest-ready MEM grant and one oldest-ready INT grant in the same cycle. Independent lane backpressure retains unaccepted grants, but conservative execute intake remains one. Status is `W2_DUAL_SELECTION_VERIFIED`, not dual execution.
 
+Gate 4.0 W3 update: fixed MEM/INT lanes accept and execute concurrently, retain two pending completions, and serialize completion/writeback with allocation-identity, branch-kill, reset, and blocked-dispatch safeguards. Status is `W3_DUAL_EXECUTE_ACCEPTANCE_VERIFIED`; no W4 implementation is present.
+
+Gate 4.0 W3 source scope: acceptance covers the modular `src/*.cpp` implementation plus generated `src/boom_core_merged.cpp` and public `src/boom_core_top.cpp` only. `src/boom_all.cpp` is a legacy, non-canonical, unreferenced monolithic snapshot; active build, test, RTL-generation, and csynth scripts do not consume it. It is excluded from source manifests and acceptance without deletion or rewrite. Pre-existing dirty tracked logs and backup logs are excluded non-deliverables and are not evidence.
+
 ## Implemented And Tested
 
 - Frontend request/response FSM with monotonic fetch IDs and stale response drop.
@@ -39,7 +43,8 @@ Gate 4.0 W2 update: the shared implemented IQ can generate one oldest-ready MEM 
 - JAL, JALR, and conditional branches with always-not-taken baseline redirect behavior.
 - Integer rename map/free-list/stale-pdst commit release for single dispatch lane.
 - ROB allocate, complete, commit, full backpressure, and wrap behavior for current tests.
-- Shared implemented issue queue dispatch/select/compact with fixed MEM/INT selection lanes and one accepted execute intake.
+- Shared implemented issue queue dispatch/select/compact with fixed MEM/INT selection lanes and up to two accepted execute inputs.
+- Two retained fixed-lane completion slots with oldest-first serialized completion/writeback service.
 - CSR cycle/instret and ECALL success/trap subset.
 - Commit trace output for directed tests.
 - Minimal integer LSU path for LB/LBU/LH/LHU/LW/LWU/LD and SB/SH/SW/SD in the current conservative single-lane path.
@@ -50,7 +55,7 @@ Gate 4.0 W2 update: the shared implemented IQ can generate one oldest-ready MEM 
 
 - Branch recovery is implemented for the supported HLS subset, but strict BOOM event/cycle timing is not verified and the original Chisel source checkout is unavailable for direct inspection.
 - M004 JALR redirect is verified only as a concrete Gate 1 functional test; Gate 3.3 branch recovery is tracked separately under M009.
-- Full BOOM IssueWidth=3 execution is not implemented; W2 can generate two class-specific grants but accepts at most one, and the FP lane remains unsupported.
+- Full BOOM IssueWidth=3 execution is not implemented; W3 supports fixed MEM/INT dual acceptance only, and the FP lane remains unsupported.
 - Busy-table wakeup is simplified and not equivalent to BOOM's full bypass/wakeup network; Gate 3.3 recovery rebuilds busy state functionally from still-valid busy ROB entries.
 - Exception and flush handling are coarse compared with BOOM.
 - Cycle timing is not verified against BOOM.
@@ -113,3 +118,7 @@ Gate 4.0 W2 update: the shared implemented IQ can generate one oldest-ready MEM 
 - Gate 4.0 W2 generated RTL: dedicated issue selection 5/5 PASS and full-core XSim 49/49 PASS.
 - Gate 4.0 W2 csynth: `boom_core_top` is 61760 LUT, 15213 FF, 12 BRAM_18K, 3 DSP, and 5.898 ns; this selection checkpoint is not the accepted PPA baseline.
 - Gate 4.0 W2 readiness: `READY_FOR_DUAL_EXECUTE_ACCEPTANCE_EXPERIMENT=true`, `READY_FOR_PARTIAL_WIDE_ISSUE_MAX2=false`, and `READY_FOR_OFFICIAL_GATE_3=false`.
+- Gate 4.0 W3 software: 15/15 suites, 400/400 checks, and 100x64 persistent random PASS with 0 dropped and 0 duplicate tokens.
+- Gate 4.0 W3 generated RTL: focused dual-execute RTL 11/11 PASS; full-core XSim, normalized trace, and architecture comparison 49/49 PASS.
+- Gate 4.0 W3 csynth: all five canonical targets PASS; `boom_core_top` is 68055 LUT, 16149 FF, 15 BRAM_18K, 3 DSP, and 5.898 ns. Values are HLS estimates, not post-route timing or accepted product PPA.
+- Gate 4.0 W3 readiness: `READY_FOR_W4_MULTI_WAKEUP_WRITEBACK=true`, `READY_FOR_OFFICIAL_GATE_3=false`, M009 `PARTIALLY_VERIFIED`, and M014 `VERIFIED`. No W4 implementation is present; Chipyard/FESVR/DRAMSim full-system validation remains externally blocked.

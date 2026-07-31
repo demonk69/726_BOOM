@@ -1,0 +1,58 @@
+==============================================================
+Vitis HLS - High-Level Synthesis from C, C++ and OpenCL v2021.2 (64-bit)
+Copyright 1986-2021 Xilinx, Inc. All Rights Reserved.
+==============================================================
+INFO: [HLS 200-1505] Using default flow_target 'vivado'
+INFO: [HLS 200-1510] Running: set_part xczu7ev-ffvc1156-2-e 
+INFO: [HLS 200-1611] Setting target device to 'xczu7ev-ffvc1156-2-e'
+INFO: [HLS 200-1510] Running: create_clock -period 10 -name default 
+INFO: [SYN 201-201] Setting up clock 'default' with a period of 10ns.
+INFO: [HLS 200-1510] Running: config_compile -pipeline_loops 0 
+INFO: [XFORM 203-1171] Pipeline the innermost loop with trip count more than 0 or its parent loop when its trip count is less than or equal 0.
+INFO: [HLS 200-1510] Running: csynth_design 
+INFO: [HLS 200-111] Finished File checks and directory preparation: CPU user time: 0 seconds. CPU system time: 0 seconds. Elapsed time: 0 seconds; current allocated memory: 1.321 GB.
+INFO: [HLS 200-10] Analyzing design file '/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp' ... 
+INFO: [HLS 200-111] Finished Source Code Analysis and Preprocessing: CPU user time: 0.94 seconds. CPU system time: 0.24 seconds. Elapsed time: 0.6 seconds; current allocated memory: 418.258 MB.
+INFO: [HLS 200-777] Using interface defaults for 'Vivado' flow target.
+INFO: [HLS 214-284] Auto array partition mode is set into default.
+INFO: [HLS 214-178] Inlining function 'MicroOp::MicroOp()' into 'FrontendState::FrontendState()' (/home/lab_726/boom/hls_boom/include/boom_state.hpp:26:0)
+INFO: [HLS 214-178] Inlining function 'MicroOp::MicroOp()' into 'DecodeState::DecodeState()' (/home/lab_726/boom/hls_boom/include/boom_state.hpp:32:0)
+INFO: [HLS 214-178] Inlining function 'MicroOp::MicroOp()' into 'RenameDispatchPacket::RenameDispatchPacket()' (/home/lab_726/boom/hls_boom/include/boom_state.hpp:73:0)
+INFO: [HLS 214-178] Inlining function 'RenameMapTableState::RenameMapTableState()' into 'RenameState::RenameState()' (/home/lab_726/boom/hls_boom/include/boom_state.hpp:76:0)
+INFO: [HLS 214-178] Inlining function 'RenameFreeListState::RenameFreeListState()' into 'RenameState::RenameState()' (/home/lab_726/boom/hls_boom/include/boom_state.hpp:76:0)
+INFO: [HLS 214-178] Inlining function 'RenameDispatchPacket::RenameDispatchPacket()' into 'RenameState::RenameState()' (/home/lab_726/boom/hls_boom/include/boom_state.hpp:76:0)
+INFO: [HLS 214-178] Inlining function 'MicroOp::MicroOp()' into 'IssueSlotEntry::IssueSlotEntry()' (/home/lab_726/boom/hls_boom/include/boom_types.hpp:100:0)
+INFO: [HLS 214-178] Inlining function 'IssueSlotEntry::IssueSlotEntry()' into 'IssueQueueState::IssueQueueState()' (/home/lab_726/boom/hls_boom/include/boom_state.hpp:85:0)
+INFO: [HLS 214-178] Inlining function 'MicroOp::MicroOp()' into 'IssueGrant::IssueGrant()' (/home/lab_726/boom/hls_boom/include/boom_types.hpp:77:0)
+INFO: [HLS 214-178] Inlining function 'IssueGrant::IssueGrant()' into 'IssueState::IssueState()' (/home/lab_726/boom/hls_boom/include/boom_state.hpp:102:0)
+INFO: [HLS 214-178] Inlining function 'MicroOp::MicroOp()' into 'IssueState::IssueState()' (/home/lab_726/boom/hls_boom/include/boom_state.hpp:102:0)
+INFO: [HLS 214-178] Inlining function 'MicroOp::MicroOp()' into 'ExecuteState::AluResult::AluResult()' (/home/lab_726/boom/hls_boom/include/boom_state.hpp:121:0)
+INFO: [HLS 214-178] Inlining function 'ExecuteState::AluResult::AluResult()' into 'ExecuteState::ExecuteState()' (/home/lab_726/boom/hls_boom/include/boom_state.hpp:124:0)
+INFO: [HLS 214-178] Inlining function 'MicroOp::MicroOp()' into 'RobEntry::RobEntry()' (/home/lab_726/boom/hls_boom/include/boom_types.hpp:91:0)
+INFO: [HLS 214-178] Inlining function 'RobEntry::RobEntry()' into 'RobInternalState::RobInternalState()' (/home/lab_726/boom/hls_boom/include/boom_state.hpp:138:0)
+INFO: [HLS 214-178] Inlining function 'CommitEntry::CommitEntry()' into 'RobInternalState::RobInternalState()' (/home/lab_726/boom/hls_boom/include/boom_state.hpp:138:0)
+INFO: [HLS 214-178] Inlining function 'StoreQueueEntry::StoreQueueEntry()' into 'LsuState::LsuState()' (/home/lab_726/boom/hls_boom/include/boom_state.hpp:181:0)
+INFO: [HLS 214-178] Inlining function 'LoadQueueEntry::LoadQueueEntry()' into 'LsuState::LsuState()' (/home/lab_726/boom/hls_boom/include/boom_state.hpp:181:0)
+INFO: [HLS 214-178] Inlining function 'MicroOp::MicroOp()' into 'BranchUpdate::BranchUpdate()' (/home/lab_726/boom/hls_boom/include/boom_types.hpp:109:0)
+INFO: [HLS 214-178] Inlining function 'FrontendState::FrontendState()' into 'BoomCoreState::BoomCoreState()' (/home/lab_726/boom/hls_boom/include/boom_state.hpp:205:0)
+INFO: [HLS 214-178] Inlining function 'CsrState::CsrState()' into 'BoomCoreState::BoomCoreState()' (/home/lab_726/boom/hls_boom/include/boom_state.hpp:205:0)
+INFO: [HLS 214-178] Inlining function 'LsuState::LsuState()' into 'BoomCoreState::BoomCoreState()' (/home/lab_726/boom/hls_boom/include/boom_state.hpp:205:0)
+INFO: [HLS 214-178] Inlining function 'BranchRecoveryState::BranchRecoveryState()' into 'BoomCoreState::BoomCoreState()' (/home/lab_726/boom/hls_boom/include/boom_state.hpp:205:0)
+INFO: [HLS 214-178] Inlining function 'BranchUpdate::BranchUpdate()' into 'BoomCoreState::BoomCoreState()' (/home/lab_726/boom/hls_boom/include/boom_state.hpp:205:0)
+INFO: [HLS 214-178] Inlining function 'boom::bytes_for_size(unsigned char)' into 'boom::load_value(unsigned long, unsigned long, unsigned char, bool)' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:1108:0)
+INFO: [HLS 214-178] Inlining function 'boom::sign_extend(unsigned long, unsigned char)' into 'boom::load_value(unsigned long, unsigned long, unsigned char, bool)' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:1108:0)
+INFO: [HLS 214-178] Inlining function 'LoadQueueEntry::LoadQueueEntry()' into 'boom::reclaim_ldq(BoomCoreState&, unsigned char, unsigned int)' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:1212:0)
+INFO: [HLS 214-178] Inlining function 'boom::older_store_in_rob(BoomCoreState const&, unsigned char)' into 'boom::try_issue_load(BoomCoreState&, PipeSignals&, unsigned char)' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:1142:0)
+INFO: [HLS 214-178] Inlining function 'DmemRequest::DmemRequest()' into 'boom::try_issue_load(BoomCoreState&, PipeSignals&, unsigned char)' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:1142:0)
+INFO: [HLS 214-178] Inlining function 'boom::clear_lsu_queues(LsuState&)' into 'boom::lsu_module(BoomCoreState&, PipeSignals&)' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:1258:0)
+INFO: [HLS 214-178] Inlining function 'DmemResponse::DmemResponse()' into 'boom::lsu_module(BoomCoreState&, PipeSignals&)' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:1258:0)
+INFO: [HLS 214-178] Inlining function 'boom::load_value(unsigned long, unsigned long, unsigned char, bool)' into 'boom::lsu_module(BoomCoreState&, PipeSignals&)' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:1258:0)
+INFO: [HLS 214-178] Inlining function 'DmemResponse::DmemResponse()' into 'synth_lsu_top(hls::stream<DmemRequest, 0>&, hls::stream<DmemResponse, 0>&, unsigned long, unsigned long&)' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:2040:0)
+INFO: [HLS 214-178] Inlining function 'DmemRequest::DmemRequest()' into 'synth_lsu_top(hls::stream<DmemRequest, 0>&, hls::stream<DmemResponse, 0>&, unsigned long, unsigned long&)' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:2040:0)
+INFO: [HLS 214-241] Aggregating fifo (hls::stream) variable 'pipe.2' with compact=bit mode in 283-bits (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:2050:17)
+INFO: [HLS 214-241] Aggregating fifo (hls::stream) variable 'pipe.3' with compact=bit mode in 289-bits (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:2050:17)
+INFO: [HLS 214-241] Aggregating fifo (hls::stream) variable 'dmem_resp_in' with compact=bit mode in 289-bits (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:2040:0)
+INFO: [HLS 214-241] Aggregating fifo (hls::stream) variable 'dmem_req_out' with compact=bit mode in 283-bits (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:2040:0)
+INFO: [HLS 214-270] Starting automatic array partition analysis...
+INFO: [HLS 214-131] Inlining function '_llvm.fpga.pack.none.i384.sl_i32i64i64i1i64i64s' into '_llvm.fpga.unpack.bits.s_struct.DmemResponses.i289.1'
+INFO: [HLS 214-131] Inlining function '_llvm.fpga.pack.none.i320.s_struct.DmemRequests' into 'boom::try_issue_load(BoomCoreState&, PipeSignals&, unsigned char) (.1)' (/home/lab_726/Xilinx/Vitis_HLS/2021.2/common/technology/autopilot/hls_stream_39.h:173:9)

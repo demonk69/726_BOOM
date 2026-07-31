@@ -6,6 +6,7 @@
 namespace boom {
 
 static uint8_t bytes_for_size(uint8_t size) { return (uint8_t)(1u << (size & 0x3)); }
+static void enqueue_load(BoomCoreState& state, const ExecuteState::AluResult& result, RobEntry& entry);
 
 static uint64_t sign_extend(uint64_t value, uint8_t bits) {
     if (bits >= 64) return value;
@@ -40,6 +41,7 @@ static void clear_lsu_queues(LsuState& lsu) {
     lsu.load_response_pending = false;
     lsu.pending_load_transaction_id = 0;
     lsu.pending_load_rob_idx = 0;
+    lsu.pending_load_allocation_id = 0;
 CLEAR_LDQ:
     for (int i = 0; i < LDQ_DEPTH; i++) lsu.ldq[i] = LoadQueueEntry();
 CLEAR_STQ:
@@ -69,6 +71,7 @@ static bool try_issue_load(BoomCoreState& state, PipeSignals& pipe, uint8_t rob_
     state.lsu.load_response_pending = true;
     state.lsu.pending_load_transaction_id = tx;
     state.lsu.pending_load_rob_idx = rob_idx;
+    state.lsu.pending_load_allocation_id = entry.uop.queue.rob_allocation_id;
     return true;
 }
 
@@ -88,6 +91,7 @@ static void enqueue_store(BoomCoreState& state, const ExecuteState::AluResult& r
         StoreQueueEntry& stq = lsu.stq[lsu.stq_tail];
         stq.valid = true;
         stq.rob_idx = result.uop.queue.rob_idx;
+        stq.rob_allocation_id = result.uop.queue.rob_allocation_id;
         stq.address_valid = true;
         stq.address = result.memory_address;
         stq.data_valid = true;
@@ -98,6 +102,42 @@ static void enqueue_store(BoomCoreState& state, const ExecuteState::AluResult& r
         lsu.stq_tail = (lsu.stq_tail + 1) % STQ_DEPTH;
         lsu.stq_count++;
     }
+}
+
+bool lsu_accept_completion(BoomCoreState& state, const ExecuteState::AluResult& result) {
+    uint8_t rob_idx=result.uop.queue.rob_idx;
+    if (rob_idx>=ROB_DEPTH || !state.rob.entries[rob_idx].valid ||
+        state.rob.entries[rob_idx].uop.queue.rob_allocation_id != result.uop.queue.rob_allocation_id) return true;
+    if (result.is_store) {
+        if (state.lsu.stq_count>=STQ_DEPTH) return false;
+        enqueue_store(state, result, state.rob.entries[rob_idx]);
+    } else if (result.is_load) {
+        if (state.lsu.ldq_count>=LDQ_DEPTH) return false;
+        enqueue_load(state, result, state.rob.entries[rob_idx]);
+    }
+    return true;
+}
+
+static void reclaim_ldq(BoomCoreState& state, uint8_t rob_idx, uint32_t allocation_id) {
+    LoadQueueEntry compacted[LDQ_DEPTH];
+    int count=0;
+    for (int i=0; i<LDQ_DEPTH; i++)
+        if (state.lsu.ldq[i].valid && (state.lsu.ldq[i].rob_idx!=rob_idx ||
+            state.lsu.ldq[i].rob_allocation_id!=allocation_id)) compacted[count++]=state.lsu.ldq[i];
+    for (int i=count; i<LDQ_DEPTH; i++) compacted[i]=LoadQueueEntry();
+    for (int i=0; i<LDQ_DEPTH; i++) state.lsu.ldq[i]=compacted[i];
+    state.lsu.ldq_head=0; state.lsu.ldq_tail=(uint8_t)(count%LDQ_DEPTH); state.lsu.ldq_count=(uint8_t)count;
+}
+
+void lsu_reclaim_store(BoomCoreState& state, uint8_t rob_idx, uint32_t allocation_id) {
+    StoreQueueEntry compacted[STQ_DEPTH];
+    int count=0;
+    for (int i=0; i<STQ_DEPTH; i++)
+        if (state.lsu.stq[i].valid && (state.lsu.stq[i].rob_idx!=rob_idx ||
+            state.lsu.stq[i].rob_allocation_id!=allocation_id)) compacted[count++]=state.lsu.stq[i];
+    for (int i=count; i<STQ_DEPTH; i++) compacted[i]=StoreQueueEntry();
+    for (int i=0; i<STQ_DEPTH; i++) state.lsu.stq[i]=compacted[i];
+    state.lsu.stq_head=0; state.lsu.stq_tail=(uint8_t)(count%STQ_DEPTH); state.lsu.stq_count=(uint8_t)count;
 }
 
 static void enqueue_load(BoomCoreState& state, const ExecuteState::AluResult& result, RobEntry& entry) {
@@ -114,6 +154,7 @@ static void enqueue_load(BoomCoreState& state, const ExecuteState::AluResult& re
         LoadQueueEntry& ldq = lsu.ldq[lsu.ldq_tail];
         ldq.valid = true;
         ldq.rob_idx = result.uop.queue.rob_idx;
+        ldq.rob_allocation_id = result.uop.queue.rob_allocation_id;
         ldq.address = result.memory_address;
         ldq.size = result.memory_size;
         ldq.signed_load = result.signed_load;
@@ -134,40 +175,35 @@ void lsu_module(BoomCoreState& state, PipeSignals& pipe) {
         uint32_t resp_tx = resp.transaction_id;
         if (state.lsu.load_response_pending && resp_tx == state.lsu.pending_load_transaction_id) {
             uint8_t rob_idx = state.lsu.pending_load_rob_idx;
-            RobEntry& entry = state.rob.entries[rob_idx];
-            if (entry.valid && entry.is_load && entry.memory_request_sent) {
-                if (resp.exception) {
-                    entry.exception = true;
-                    entry.uop.exception = true;
-                    entry.uop.exc_cause = resp.exception_cause ? resp.exception_cause : resp.exc_cause;
-                } else {
-                    uint64_t data = resp.read_data ? resp.read_data : resp.data;
-                    uint64_t value = load_value(data, entry.memory_address, entry.memory_size, entry.signed_load);
-                    if (entry.uop.rename.pdst != 0) {
-                        state.int_rf[entry.uop.rename.pdst] = value;
-                        state.rename.int_free_list.busy_table[entry.uop.rename.pdst] = false;
+            uint32_t allocation_id = state.lsu.pending_load_allocation_id;
+            if (rob_idx < ROB_DEPTH) {
+                RobEntry& entry = state.rob.entries[rob_idx];
+                if (entry.valid && entry.is_load && entry.memory_request_sent &&
+                    entry.uop.queue.rob_allocation_id == allocation_id &&
+                    entry.memory_transaction_id == resp_tx) {
+                    if (resp.exception) {
+                        entry.exception = true;
+                        entry.uop.exception = true;
+                        entry.uop.exc_cause = resp.exception_cause ? resp.exception_cause : resp.exc_cause;
+                    } else {
+                        uint64_t data = resp.read_data ? resp.read_data : resp.data;
+                        uint64_t value = load_value(data, entry.memory_address, entry.memory_size, entry.signed_load);
+                        if (entry.uop.rename.pdst != 0) {
+                            state.int_rf[entry.uop.rename.pdst] = value;
+                            state.rename.int_free_list.busy_table[entry.uop.rename.pdst] = false;
+                        }
+                        entry.memory_data = value;
                     }
-                    entry.memory_data = value;
+                    entry.memory_completed = true;
+                    entry.busy = false;
                 }
-                entry.memory_completed = true;
-                entry.busy = false;
             }
             state.lsu.load_response_pending = false;
             state.lsu.pending_load_transaction_id = 0;
+            state.lsu.pending_load_rob_idx = 0;
+            state.lsu.pending_load_allocation_id = 0;
+            reclaim_ldq(state, rob_idx, allocation_id);
         }
-    }
-
-LSU_EXECUTE_RESULTS:
-    for (int i = 0; i < EXECUTE_RESULT_LANES; i++) {
-        const ExecuteState::AluResult& result = state.execute.alu_results[i];
-        if (!result.valid || !result.memory_valid) continue;
-        if (state.brupdate.valid && state.brupdate.mispredict &&
-            ((result.uop.branch.br_mask & state.brupdate.mispredict_mask) != 0)) continue;
-        uint8_t rob_idx = result.uop.queue.rob_idx;
-        if (rob_idx >= ROB_DEPTH || !state.rob.entries[rob_idx].valid) continue;
-        RobEntry& entry = state.rob.entries[rob_idx];
-        if (result.is_store) enqueue_store(state, result, entry);
-        else if (result.is_load) enqueue_load(state, result, entry);
     }
 
 LSU_LOAD_ISSUE_SCAN:

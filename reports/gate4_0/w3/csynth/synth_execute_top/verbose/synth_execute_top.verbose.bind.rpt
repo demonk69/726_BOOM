@@ -1,0 +1,784 @@
+
+
+================================================================
+== Vitis HLS Report for 'synth_execute_top'
+================================================================
+* Date:           Fri Jul 31 19:21:10 2026
+
+* Version:        2021.2 (Build 3367213 on Tue Oct 19 02:47:39 MDT 2021)
+* Project:        synth_execute_top
+* Solution:       solution_w3_csynth (Vivado IP Flow Target)
+* Product family: zynquplus
+* Target device:  xczu7ev-ffvc1156-2-e
+
+
+================================================================
+== Performance Estimates
+================================================================
++ Timing: 
+    * Summary: 
+    +--------+----------+----------+------------+
+    |  Clock |  Target  | Estimated| Uncertainty|
+    +--------+----------+----------+------------+
+    |ap_clk  |  10.00 ns|  5.081 ns|     2.70 ns|
+    +--------+----------+----------+------------+
+
++ Latency: 
+    * Summary: 
+    +---------+---------+-----------+-----------+-----+-----+---------+
+    |  Latency (cycles) |   Latency (absolute)  |  Interval | Pipeline|
+    |   min   |   max   |    min    |    max    | min | max |   Type  |
+    +---------+---------+-----------+-----------+-----+-----+---------+
+    |        7|        7|  70.000 ns|  70.000 ns|    8|    8|       no|
+    +---------+---------+-----------+-----------+-----+-----+---------+
+
+    + Detail: 
+        * Instance: 
+        +--------------------------+----------------+---------+---------+-----------+-----------+-----+-----+---------+
+        |                          |                |  Latency (cycles) |   Latency (absolute)  |  Interval | Pipeline|
+        |         Instance         |     Module     |   min   |   max   |    min    |    max    | min | max |   Type  |
+        +--------------------------+----------------+---------+---------+-----------+-----------+-----+-----+---------+
+        |grp_execute_module_fu_96  |execute_module  |        4|        4|  40.000 ns|  40.000 ns|    4|    4|       no|
+        +--------------------------+----------------+---------+---------+-----------+-----------+-----+-----+---------+
+
+        * Loop: 
+        N/A
+
+============================================================
++ Verbose Summary: Synthesis Manager
+============================================================
+InlineROM: 1
+ExposeGlobal: 0
+============================================================
++ Verbose Summary: CDFG Model
+============================================================
+IsTopModel: 1
+ResetActiveHigh: 1
+IsCombinational: 0
+IsDatapathOnly: 0
+HasWiredReturn: 1
+HasMFsm: 0
+HasVarLatency: 1
+IsPipeline: 0
+IsRtlPipelined: 0
+IsInstanceOverlapped: 0
+IsDontTouch: 0
+HasImplIP: 0
+IsGatedGlobalClock: 0
+
+
+============================================================
++ Verbose Summary: Schedule
+============================================================
+* Number of FSM states : 4
+* Pipeline : 0
+* Dataflow Pipeline: 0
+
+* FSM state transitions: 
+1 --> 2 
+2 --> 3 
+3 --> 4 
+4 --> 
+
+* FSM state operations: 
+
+State 1 <SV = 0> <Delay = 1.23>
+ST_1 : Operation 5 [1/1] (0.00ns)   --->   "%seed_rs2_read = read i64 @_ssdm_op_Read.ap_auto.i64, i64 %seed_rs2" [/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:2020]   --->   Operation 5 'read' 'seed_rs2_read' <Predicate = true> <Delay = 0.00>
+ST_1 : Operation 6 [1/1] (0.00ns)   --->   "%seed_rs1_read = read i64 @_ssdm_op_Read.ap_auto.i64, i64 %seed_rs1" [/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:2020]   --->   Operation 6 'read' 'seed_rs1_read' <Predicate = true> <Delay = 0.00>
+ST_1 : Operation 7 [1/1] (0.00ns)   --->   "%seed_uopc_read = read i8 @_ssdm_op_Read.ap_auto.i8, i8 %seed_uopc" [/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:2020]   --->   Operation 7 'read' 'seed_uopc_read' <Predicate = true> <Delay = 0.00>
+ST_1 : Operation 8 [1/1] (0.00ns)   --->   "%store_ln2022 = store i1 0, i1 %state_execute_alu_results_valid_1" [/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:2022]   --->   Operation 8 'store' 'store_ln2022' <Predicate = true> <Delay = 0.00>
+ST_1 : Operation 9 [1/1] (0.00ns)   --->   "%store_ln2022 = store i64 0, i64 %state_execute_alu_results_result_1" [/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:2022]   --->   Operation 9 'store' 'store_ln2022' <Predicate = true> <Delay = 0.00>
+ST_1 : Operation 10 [1/1] (0.00ns)   --->   "%store_ln2023 = store i1 1, i1 %state_issue_issued_valids_1" [/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:2023]   --->   Operation 10 'store' 'store_ln2023' <Predicate = true> <Delay = 0.00>
+ST_1 : Operation 11 [1/1] (0.00ns)   --->   "%store_ln2024 = store i8 %seed_uopc_read, i8 %state_issue_issued_uops_uopc_1" [/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:2024]   --->   Operation 11 'store' 'store_ln2024' <Predicate = true> <Delay = 0.00>
+ST_1 : Operation 12 [1/1] (0.00ns)   --->   "%store_ln2025 = store i1 1, i1 %state_issue_issued_uops_iq_type_1" [/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:2025]   --->   Operation 12 'store' 'store_ln2025' <Predicate = true> <Delay = 0.00>
+ST_1 : Operation 13 [1/1] (0.00ns)   --->   "%store_ln2027 = store i1 1, i1 %state_issue_issued_uops_rename_prs1_1" [/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:2027]   --->   Operation 13 'store' 'store_ln2027' <Predicate = true> <Delay = 0.00>
+ST_1 : Operation 14 [1/1] (0.00ns)   --->   "%store_ln2028 = store i2 2, i2 %state_issue_issued_uops_rename_prs2_1" [/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:2028]   --->   Operation 14 'store' 'store_ln2028' <Predicate = true> <Delay = 0.00>
+ST_1 : Operation 15 [1/1] (1.23ns)   --->   "%store_ln2031 = store i64 %seed_rs1_read, i64 1" [/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:2031]   --->   Operation 15 'store' 'store_ln2031' <Predicate = true> <Delay = 1.23> <CoreInst = "RAM">   --->   Core 83 'RAM' <Latency = 1> <II = 1> <Delay = 1.23> <Storage> <Opcode : 'load' 'store'> <Ports = 2> <Width = 64> <Depth = 52> <RAM>
+ST_1 : Operation 16 [1/1] (1.23ns)   --->   "%store_ln2032 = store i64 %seed_rs2_read, i64 2" [/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:2032]   --->   Operation 16 'store' 'store_ln2032' <Predicate = true> <Delay = 1.23> <CoreInst = "RAM">   --->   Core 83 'RAM' <Latency = 1> <II = 1> <Delay = 1.23> <Storage> <Opcode : 'load' 'store'> <Ports = 2> <Width = 64> <Depth = 52> <RAM>
+
+State 2 <SV = 1> <Delay = 0.00>
+ST_2 : Operation 17 [2/2] (0.00ns)   --->   "%call_ln2033 = call void @execute_module, i8 %state_issue_issued_uops_uopc_1, i1 %state_issue_issued_valids_1, i1 %state_issue_issued_uops_iq_type_1, i1 %state_issue_issued_uops_rename_prs1_1, i2 %state_issue_issued_uops_rename_prs2_1, i64 %state_int_rf, i1 %state_execute_alu_results_valid_1, i64 %state_execute_alu_results_result_1" [/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:2033]   --->   Operation 17 'call' 'call_ln2033' <Predicate = true> <Delay = 0.00> <CoreType = "Generic">   --->   Core 0 '' <Latency = 0> <II = 1> <Delay = 1.00> <Generic> <Opcode : >
+
+State 3 <SV = 2> <Delay = 0.00>
+ST_3 : Operation 18 [1/2] (0.00ns)   --->   "%call_ln2033 = call void @execute_module, i8 %state_issue_issued_uops_uopc_1, i1 %state_issue_issued_valids_1, i1 %state_issue_issued_uops_iq_type_1, i1 %state_issue_issued_uops_rename_prs1_1, i2 %state_issue_issued_uops_rename_prs2_1, i64 %state_int_rf, i1 %state_execute_alu_results_valid_1, i64 %state_execute_alu_results_result_1" [/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:2033]   --->   Operation 18 'call' 'call_ln2033' <Predicate = true> <Delay = 0.00> <CoreType = "Generic">   --->   Core 0 '' <Latency = 0> <II = 1> <Delay = 1.00> <Generic> <Opcode : >
+
+State 4 <SV = 3> <Delay = 0.00>
+ST_4 : Operation 19 [1/1] (0.00ns)   --->   "%spectopmodule_ln0 = spectopmodule void @_ssdm_op_SpecTopModule, void @empty_2"   --->   Operation 19 'spectopmodule' 'spectopmodule_ln0' <Predicate = true> <Delay = 0.00>
+ST_4 : Operation 20 [1/1] (0.00ns)   --->   "%specbitsmap_ln0 = specbitsmap void @_ssdm_op_SpecBitsMap, i8 %seed_uopc"   --->   Operation 20 'specbitsmap' 'specbitsmap_ln0' <Predicate = true> <Delay = 0.00>
+ST_4 : Operation 21 [1/1] (0.00ns)   --->   "%specinterface_ln0 = specinterface void @_ssdm_op_SpecInterface, i8 %seed_uopc, void @empty, i32 0, i32 0, void @empty_0, i32 0, i32 0, void @empty_0, void @empty_0, void @empty_0, i32 0, i32 0, i32 0, i32 0, void @empty_0, void @empty_0"   --->   Operation 21 'specinterface' 'specinterface_ln0' <Predicate = true> <Delay = 0.00>
+ST_4 : Operation 22 [1/1] (0.00ns)   --->   "%specbitsmap_ln0 = specbitsmap void @_ssdm_op_SpecBitsMap, i64 %seed_rs1"   --->   Operation 22 'specbitsmap' 'specbitsmap_ln0' <Predicate = true> <Delay = 0.00>
+ST_4 : Operation 23 [1/1] (0.00ns)   --->   "%specinterface_ln0 = specinterface void @_ssdm_op_SpecInterface, i64 %seed_rs1, void @empty, i32 0, i32 0, void @empty_0, i32 0, i32 0, void @empty_0, void @empty_0, void @empty_0, i32 0, i32 0, i32 0, i32 0, void @empty_0, void @empty_0"   --->   Operation 23 'specinterface' 'specinterface_ln0' <Predicate = true> <Delay = 0.00>
+ST_4 : Operation 24 [1/1] (0.00ns)   --->   "%specbitsmap_ln0 = specbitsmap void @_ssdm_op_SpecBitsMap, i64 %seed_rs2"   --->   Operation 24 'specbitsmap' 'specbitsmap_ln0' <Predicate = true> <Delay = 0.00>
+ST_4 : Operation 25 [1/1] (0.00ns)   --->   "%specinterface_ln0 = specinterface void @_ssdm_op_SpecInterface, i64 %seed_rs2, void @empty, i32 0, i32 0, void @empty_0, i32 0, i32 0, void @empty_0, void @empty_0, void @empty_0, i32 0, i32 0, i32 0, i32 0, void @empty_0, void @empty_0"   --->   Operation 25 'specinterface' 'specinterface_ln0' <Predicate = true> <Delay = 0.00>
+ST_4 : Operation 26 [1/1] (0.00ns)   --->   "%specbitsmap_ln0 = specbitsmap void @_ssdm_op_SpecBitsMap, i64 %observable"   --->   Operation 26 'specbitsmap' 'specbitsmap_ln0' <Predicate = true> <Delay = 0.00>
+ST_4 : Operation 27 [1/1] (0.00ns)   --->   "%specinterface_ln0 = specinterface void @_ssdm_op_SpecInterface, i64 %observable, void @empty, i32 0, i32 0, void @empty_0, i32 0, i32 0, void @empty_0, void @empty_0, void @empty_0, i32 0, i32 0, i32 0, i32 0, void @empty_0, void @empty_0"   --->   Operation 27 'specinterface' 'specinterface_ln0' <Predicate = true> <Delay = 0.00>
+ST_4 : Operation 28 [1/1] (0.00ns)   --->   "%state_execute_alu_results_result_1_load = load i64 %state_execute_alu_results_result_1" [/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:2034]   --->   Operation 28 'load' 'state_execute_alu_results_result_1_load' <Predicate = true> <Delay = 0.00>
+ST_4 : Operation 29 [1/1] (0.00ns)   --->   "%write_ln2034 = write void @_ssdm_op_Write.ap_auto.i64P0A, i64 %observable, i64 %state_execute_alu_results_result_1_load" [/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:2034]   --->   Operation 29 'write' 'write_ln2034' <Predicate = true> <Delay = 0.00>
+ST_4 : Operation 30 [1/1] (0.00ns)   --->   "%ret_ln2035 = ret" [/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:2035]   --->   Operation 30 'ret' 'ret_ln2035' <Predicate = true> <Delay = 0.00>
+
+
+============================================================
++ Verbose Summary: Binding
+============================================================
+STG Binding: 
+---------------- STG Properties BEGIN ----------------
+- Is combinational: 0
+- Is one-state seq: 0
+- Is datapath-only: 0
+- Is pipelined: 0
+- Is top level: 1
+Port [ Return ] is wired: 1; IO mode=ap_ctrl_hs:ce=0
+Port [ seed_uopc]:  wired=1; compound=0; hidden=0; nouse=0; global=0; static=0; extern=0; dir=0; type=0; pingpong=0; private_global=0; IO mode=ap_none:ce=0
+Port [ seed_rs1]:  wired=1; compound=0; hidden=0; nouse=0; global=0; static=0; extern=0; dir=0; type=0; pingpong=0; private_global=0; IO mode=ap_none:ce=0
+Port [ seed_rs2]:  wired=1; compound=0; hidden=0; nouse=0; global=0; static=0; extern=0; dir=0; type=0; pingpong=0; private_global=0; IO mode=ap_none:ce=0
+Port [ observable]:  wired=1; compound=0; hidden=0; nouse=0; global=0; static=0; extern=0; dir=1; type=0; pingpong=0; private_global=0; IO mode=ap_vld:ce=0
+Port [ state_execute_alu_results_valid_1]:  wired=0; compound=0; hidden=1; nouse=0; global=1; static=1; extern=0; dir=2; type=0; pingpong=0; private_global=1; IO mode=ap_ovld:ce=0
+Port [ state_execute_alu_results_result_1]:  wired=0; compound=0; hidden=1; nouse=0; global=1; static=1; extern=0; dir=2; type=0; pingpong=0; private_global=1; IO mode=ap_ovld:ce=0
+Port [ state_issue_issued_valids_1]:  wired=0; compound=0; hidden=1; nouse=0; global=1; static=1; extern=0; dir=2; type=0; pingpong=0; private_global=1; IO mode=ap_ovld:ce=0
+Port [ state_issue_issued_uops_uopc_1]:  wired=0; compound=0; hidden=1; nouse=0; global=1; static=1; extern=0; dir=2; type=0; pingpong=0; private_global=1; IO mode=ap_ovld:ce=0
+Port [ state_issue_issued_uops_iq_type_1]:  wired=0; compound=0; hidden=1; nouse=0; global=1; static=1; extern=0; dir=2; type=0; pingpong=0; private_global=1; IO mode=ap_ovld:ce=0
+Port [ state_issue_issued_uops_rename_prs1_1]:  wired=0; compound=0; hidden=1; nouse=0; global=1; static=1; extern=0; dir=2; type=0; pingpong=0; private_global=1; IO mode=ap_ovld:ce=0
+Port [ state_issue_issued_uops_rename_prs2_1]:  wired=0; compound=0; hidden=1; nouse=0; global=1; static=1; extern=0; dir=2; type=0; pingpong=0; private_global=1; IO mode=ap_ovld:ce=0
+Port [ state_int_rf]:  wired=0; compound=1; hidden=1; nouse=0; global=1; static=1; extern=0; dir=2; type=1; pingpong=0; private_global=1; MemPort=[22]; IO mode=ap_memory:ce=0
+---------------- STG Properties END ------------------
+
+---------------- Datapath Model BEGIN ----------------
+
+<LifeTime>
+<method=bitvector/>
+seed_rs2_read                           (read         ) [ 00000]
+seed_rs1_read                           (read         ) [ 00000]
+seed_uopc_read                          (read         ) [ 00000]
+store_ln2022                            (store        ) [ 00000]
+store_ln2022                            (store        ) [ 00000]
+store_ln2023                            (store        ) [ 00000]
+store_ln2024                            (store        ) [ 00000]
+store_ln2025                            (store        ) [ 00000]
+store_ln2027                            (store        ) [ 00000]
+store_ln2028                            (store        ) [ 00000]
+store_ln2031                            (store        ) [ 00000]
+store_ln2032                            (store        ) [ 00000]
+call_ln2033                             (call         ) [ 00000]
+spectopmodule_ln0                       (spectopmodule) [ 00000]
+specbitsmap_ln0                         (specbitsmap  ) [ 00000]
+specinterface_ln0                       (specinterface) [ 00000]
+specbitsmap_ln0                         (specbitsmap  ) [ 00000]
+specinterface_ln0                       (specinterface) [ 00000]
+specbitsmap_ln0                         (specbitsmap  ) [ 00000]
+specinterface_ln0                       (specinterface) [ 00000]
+specbitsmap_ln0                         (specbitsmap  ) [ 00000]
+specinterface_ln0                       (specinterface) [ 00000]
+state_execute_alu_results_result_1_load (load         ) [ 00000]
+write_ln2034                            (write        ) [ 00000]
+ret_ln2035                              (ret          ) [ 00000]
+</LifeTime>
+
+<model>
+
+<comp_list>
+<comp id="0" class="1000" name="seed_uopc">
+<pin_list>
+<pin id="1" dir="1" index="0" bw="1" slack="0"/>
+</pin_list>
+<bind>
+<StgValue><ssdm name="seed_uopc"/></StgValue>
+</bind>
+</comp>
+
+<comp id="2" class="1000" name="seed_rs1">
+<pin_list>
+<pin id="3" dir="1" index="0" bw="1" slack="0"/>
+</pin_list>
+<bind>
+<StgValue><ssdm name="seed_rs1"/></StgValue>
+</bind>
+</comp>
+
+<comp id="4" class="1000" name="seed_rs2">
+<pin_list>
+<pin id="5" dir="1" index="0" bw="1" slack="0"/>
+</pin_list>
+<bind>
+<StgValue><ssdm name="seed_rs2"/></StgValue>
+</bind>
+</comp>
+
+<comp id="6" class="1000" name="observable">
+<pin_list>
+<pin id="7" dir="1" index="0" bw="1" slack="0"/>
+</pin_list>
+<bind>
+<StgValue><ssdm name="observable"/></StgValue>
+</bind>
+</comp>
+
+<comp id="8" class="1000" name="state_execute_alu_results_valid_1">
+<pin_list>
+<pin id="9" dir="1" index="0" bw="1" slack="0"/>
+</pin_list>
+<bind>
+<StgValue><ssdm name="state_execute_alu_results_valid_1"/></StgValue>
+</bind>
+</comp>
+
+<comp id="10" class="1000" name="state_execute_alu_results_result_1">
+<pin_list>
+<pin id="11" dir="1" index="0" bw="1" slack="0"/>
+</pin_list>
+<bind>
+<StgValue><ssdm name="state_execute_alu_results_result_1"/></StgValue>
+</bind>
+</comp>
+
+<comp id="12" class="1000" name="state_issue_issued_valids_1">
+<pin_list>
+<pin id="13" dir="1" index="0" bw="1" slack="0"/>
+</pin_list>
+<bind>
+<StgValue><ssdm name="state_issue_issued_valids_1"/></StgValue>
+</bind>
+</comp>
+
+<comp id="14" class="1000" name="state_issue_issued_uops_uopc_1">
+<pin_list>
+<pin id="15" dir="1" index="0" bw="1" slack="0"/>
+</pin_list>
+<bind>
+<StgValue><ssdm name="state_issue_issued_uops_uopc_1"/></StgValue>
+</bind>
+</comp>
+
+<comp id="16" class="1000" name="state_issue_issued_uops_iq_type_1">
+<pin_list>
+<pin id="17" dir="1" index="0" bw="1" slack="0"/>
+</pin_list>
+<bind>
+<StgValue><ssdm name="state_issue_issued_uops_iq_type_1"/></StgValue>
+</bind>
+</comp>
+
+<comp id="18" class="1000" name="state_issue_issued_uops_rename_prs1_1">
+<pin_list>
+<pin id="19" dir="1" index="0" bw="1" slack="0"/>
+</pin_list>
+<bind>
+<StgValue><ssdm name="state_issue_issued_uops_rename_prs1_1"/></StgValue>
+</bind>
+</comp>
+
+<comp id="20" class="1000" name="state_issue_issued_uops_rename_prs2_1">
+<pin_list>
+<pin id="21" dir="1" index="0" bw="1" slack="0"/>
+</pin_list>
+<bind>
+<StgValue><ssdm name="state_issue_issued_uops_rename_prs2_1"/></StgValue>
+</bind>
+</comp>
+
+<comp id="22" class="1000" name="state_int_rf">
+<pin_list>
+<pin id="23" dir="1" index="0" bw="1" slack="0"/>
+</pin_list>
+<bind>
+<StgValue><ssdm name="state_int_rf"/><MemPortTyVec>2 2 </MemPortTyVec>
+</StgValue>
+</bind>
+</comp>
+
+<comp id="24" class="1001" name="const_24">
+<pin_list>
+<pin id="25" dir="1" index="0" bw="1" slack="0"/>
+</pin_list>
+<bind>
+<StgValue><ssdm name="_ssdm_op_Read.ap_auto.i64"/></StgValue>
+</bind>
+</comp>
+
+<comp id="26" class="1001" name="const_26">
+<pin_list>
+<pin id="27" dir="1" index="0" bw="1" slack="0"/>
+</pin_list>
+<bind>
+<StgValue><ssdm name="_ssdm_op_Read.ap_auto.i8"/></StgValue>
+</bind>
+</comp>
+
+<comp id="28" class="1001" name="const_28">
+<pin_list>
+<pin id="29" dir="1" index="0" bw="1" slack="0"/>
+</pin_list>
+<bind>
+<StgValue><ssdm name=""/></StgValue>
+</bind>
+</comp>
+
+<comp id="30" class="1001" name="const_30">
+<pin_list>
+<pin id="31" dir="1" index="0" bw="1" slack="0"/>
+</pin_list>
+<bind>
+<StgValue><ssdm name=""/></StgValue>
+</bind>
+</comp>
+
+<comp id="32" class="1001" name="const_32">
+<pin_list>
+<pin id="33" dir="1" index="0" bw="1" slack="0"/>
+</pin_list>
+<bind>
+<StgValue><ssdm name=""/></StgValue>
+</bind>
+</comp>
+
+<comp id="34" class="1001" name="const_34">
+<pin_list>
+<pin id="35" dir="1" index="0" bw="1" slack="0"/>
+</pin_list>
+<bind>
+<StgValue><ssdm name=""/></StgValue>
+</bind>
+</comp>
+
+<comp id="36" class="1001" name="const_36">
+<pin_list>
+<pin id="37" dir="1" index="0" bw="1" slack="0"/>
+</pin_list>
+<bind>
+<StgValue><ssdm name=""/></StgValue>
+</bind>
+</comp>
+
+<comp id="38" class="1001" name="const_38">
+<pin_list>
+<pin id="39" dir="1" index="0" bw="1" slack="0"/>
+</pin_list>
+<bind>
+<StgValue><ssdm name=""/></StgValue>
+</bind>
+</comp>
+
+<comp id="40" class="1001" name="const_40">
+<pin_list>
+<pin id="41" dir="1" index="0" bw="1" slack="0"/>
+</pin_list>
+<bind>
+<StgValue><ssdm name="execute_module"/></StgValue>
+</bind>
+</comp>
+
+<comp id="42" class="1001" name="const_42">
+<pin_list>
+<pin id="43" dir="1" index="0" bw="1" slack="2147483647"/>
+</pin_list>
+<bind>
+<StgValue><ssdm name="_ssdm_op_SpecTopModule"/></StgValue>
+</bind>
+</comp>
+
+<comp id="44" class="1001" name="const_44">
+<pin_list>
+<pin id="45" dir="1" index="0" bw="1" slack="2147483647"/>
+</pin_list>
+<bind>
+<StgValue><ssdm name="empty_2"/></StgValue>
+</bind>
+</comp>
+
+<comp id="46" class="1001" name="const_46">
+<pin_list>
+<pin id="47" dir="1" index="0" bw="1" slack="2147483647"/>
+</pin_list>
+<bind>
+<StgValue><ssdm name="_ssdm_op_SpecBitsMap"/></StgValue>
+</bind>
+</comp>
+
+<comp id="48" class="1001" name="const_48">
+<pin_list>
+<pin id="49" dir="1" index="0" bw="1" slack="2147483647"/>
+</pin_list>
+<bind>
+<StgValue><ssdm name="_ssdm_op_SpecInterface"/></StgValue>
+</bind>
+</comp>
+
+<comp id="50" class="1001" name="const_50">
+<pin_list>
+<pin id="51" dir="1" index="0" bw="1" slack="2147483647"/>
+</pin_list>
+<bind>
+<StgValue><ssdm name="empty"/></StgValue>
+</bind>
+</comp>
+
+<comp id="52" class="1001" name="const_52">
+<pin_list>
+<pin id="53" dir="1" index="0" bw="1" slack="2147483647"/>
+</pin_list>
+<bind>
+<StgValue><ssdm name=""/></StgValue>
+</bind>
+</comp>
+
+<comp id="54" class="1001" name="const_54">
+<pin_list>
+<pin id="55" dir="1" index="0" bw="1" slack="2147483647"/>
+</pin_list>
+<bind>
+<StgValue><ssdm name="empty_0"/></StgValue>
+</bind>
+</comp>
+
+<comp id="56" class="1001" name="const_56">
+<pin_list>
+<pin id="57" dir="1" index="0" bw="1" slack="0"/>
+</pin_list>
+<bind>
+<StgValue><ssdm name="_ssdm_op_Write.ap_auto.i64P0A"/></StgValue>
+</bind>
+</comp>
+
+<comp id="58" class="1004" name="seed_rs2_read_read_fu_58">
+<pin_list>
+<pin id="59" dir="0" index="0" bw="64" slack="0"/>
+<pin id="60" dir="0" index="1" bw="64" slack="0"/>
+<pin id="61" dir="1" index="2" bw="64" slack="0"/>
+</pin_list>
+<bind>
+<opcode="read(1150) " fcode="read"/>
+<opset="seed_rs2_read/1 "/>
+</bind>
+</comp>
+
+<comp id="64" class="1004" name="seed_rs1_read_read_fu_64">
+<pin_list>
+<pin id="65" dir="0" index="0" bw="64" slack="0"/>
+<pin id="66" dir="0" index="1" bw="64" slack="0"/>
+<pin id="67" dir="1" index="2" bw="64" slack="0"/>
+</pin_list>
+<bind>
+<opcode="read(1150) " fcode="read"/>
+<opset="seed_rs1_read/1 "/>
+</bind>
+</comp>
+
+<comp id="70" class="1004" name="seed_uopc_read_read_fu_70">
+<pin_list>
+<pin id="71" dir="0" index="0" bw="8" slack="0"/>
+<pin id="72" dir="0" index="1" bw="8" slack="0"/>
+<pin id="73" dir="1" index="2" bw="8" slack="0"/>
+</pin_list>
+<bind>
+<opcode="read(1150) " fcode="read"/>
+<opset="seed_uopc_read/1 "/>
+</bind>
+</comp>
+
+<comp id="76" class="1004" name="write_ln2034_write_fu_76">
+<pin_list>
+<pin id="77" dir="0" index="0" bw="0" slack="0"/>
+<pin id="78" dir="0" index="1" bw="64" slack="0"/>
+<pin id="79" dir="0" index="2" bw="64" slack="0"/>
+<pin id="80" dir="1" index="3" bw="0" slack="2147483647"/>
+</pin_list>
+<bind>
+<opcode="write(1151) " fcode="write"/>
+<opset="write_ln2034/4 "/>
+</bind>
+</comp>
+
+<comp id="83" class="1004" name="grp_access_fu_83">
+<pin_list>
+<pin id="84" dir="0" index="0" bw="64" slack="0"/>
+<pin id="85" dir="0" index="1" bw="64" slack="0"/>
+<pin id="86" dir="0" index="2" bw="0" slack="0"/>
+<pin id="88" dir="0" index="4" bw="64" slack="0"/>
+<pin id="89" dir="0" index="5" bw="64" slack="2147483647"/>
+<pin id="90" dir="0" index="6" bw="0" slack="2147483647"/>
+<pin id="87" dir="1" index="3" bw="64" slack="2147483647"/>
+<pin id="91" dir="1" index="7" bw="64" slack="2147483647"/>
+</pin_list>
+<bind>
+<opcode="store(28) " fcode="store"/>
+<opset="store_ln2031/1 store_ln2032/1 "/>
+</bind>
+</comp>
+
+<comp id="96" class="1004" name="grp_execute_module_fu_96">
+<pin_list>
+<pin id="97" dir="0" index="0" bw="0" slack="0"/>
+<pin id="98" dir="0" index="1" bw="8" slack="0"/>
+<pin id="99" dir="0" index="2" bw="1" slack="0"/>
+<pin id="100" dir="0" index="3" bw="1" slack="0"/>
+<pin id="101" dir="0" index="4" bw="1" slack="0"/>
+<pin id="102" dir="0" index="5" bw="2" slack="0"/>
+<pin id="103" dir="0" index="6" bw="64" slack="0"/>
+<pin id="104" dir="0" index="7" bw="1" slack="0"/>
+<pin id="105" dir="0" index="8" bw="64" slack="0"/>
+<pin id="106" dir="1" index="9" bw="0" slack="2147483647"/>
+</pin_list>
+<bind>
+<opcode="call(48) " fcode="call"/>
+<opset="call_ln2033/2 "/>
+</bind>
+</comp>
+
+<comp id="116" class="1004" name="store_ln2022_store_fu_116">
+<pin_list>
+<pin id="117" dir="0" index="0" bw="1" slack="0"/>
+<pin id="118" dir="0" index="1" bw="1" slack="0"/>
+<pin id="119" dir="1" index="2" bw="0" slack="2147483647"/>
+</pin_list>
+<bind>
+<opcode="store(28) " fcode="store"/>
+<opset="store_ln2022/1 "/>
+</bind>
+</comp>
+
+<comp id="122" class="1004" name="store_ln2022_store_fu_122">
+<pin_list>
+<pin id="123" dir="0" index="0" bw="1" slack="0"/>
+<pin id="124" dir="0" index="1" bw="64" slack="0"/>
+<pin id="125" dir="1" index="2" bw="0" slack="2147483647"/>
+</pin_list>
+<bind>
+<opcode="store(28) " fcode="store"/>
+<opset="store_ln2022/1 "/>
+</bind>
+</comp>
+
+<comp id="128" class="1004" name="store_ln2023_store_fu_128">
+<pin_list>
+<pin id="129" dir="0" index="0" bw="1" slack="0"/>
+<pin id="130" dir="0" index="1" bw="1" slack="0"/>
+<pin id="131" dir="1" index="2" bw="0" slack="2147483647"/>
+</pin_list>
+<bind>
+<opcode="store(28) " fcode="store"/>
+<opset="store_ln2023/1 "/>
+</bind>
+</comp>
+
+<comp id="134" class="1004" name="store_ln2024_store_fu_134">
+<pin_list>
+<pin id="135" dir="0" index="0" bw="8" slack="0"/>
+<pin id="136" dir="0" index="1" bw="8" slack="0"/>
+<pin id="137" dir="1" index="2" bw="0" slack="2147483647"/>
+</pin_list>
+<bind>
+<opcode="store(28) " fcode="store"/>
+<opset="store_ln2024/1 "/>
+</bind>
+</comp>
+
+<comp id="140" class="1004" name="store_ln2025_store_fu_140">
+<pin_list>
+<pin id="141" dir="0" index="0" bw="1" slack="0"/>
+<pin id="142" dir="0" index="1" bw="1" slack="0"/>
+<pin id="143" dir="1" index="2" bw="0" slack="2147483647"/>
+</pin_list>
+<bind>
+<opcode="store(28) " fcode="store"/>
+<opset="store_ln2025/1 "/>
+</bind>
+</comp>
+
+<comp id="146" class="1004" name="store_ln2027_store_fu_146">
+<pin_list>
+<pin id="147" dir="0" index="0" bw="1" slack="0"/>
+<pin id="148" dir="0" index="1" bw="1" slack="0"/>
+<pin id="149" dir="1" index="2" bw="0" slack="2147483647"/>
+</pin_list>
+<bind>
+<opcode="store(28) " fcode="store"/>
+<opset="store_ln2027/1 "/>
+</bind>
+</comp>
+
+<comp id="152" class="1004" name="store_ln2028_store_fu_152">
+<pin_list>
+<pin id="153" dir="0" index="0" bw="2" slack="0"/>
+<pin id="154" dir="0" index="1" bw="2" slack="0"/>
+<pin id="155" dir="1" index="2" bw="0" slack="2147483647"/>
+</pin_list>
+<bind>
+<opcode="store(28) " fcode="store"/>
+<opset="store_ln2028/1 "/>
+</bind>
+</comp>
+
+<comp id="158" class="1004" name="state_execute_alu_results_result_1_load_load_fu_158">
+<pin_list>
+<pin id="159" dir="0" index="0" bw="64" slack="0"/>
+<pin id="160" dir="1" index="1" bw="64" slack="0"/>
+</pin_list>
+<bind>
+<opcode="load(27) " fcode="load"/>
+<opset="state_execute_alu_results_result_1_load/4 "/>
+</bind>
+</comp>
+
+</comp_list>
+
+<net_list>
+<net id="62"><net_src comp="24" pin="0"/><net_sink comp="58" pin=0"/></net>
+
+<net id="63"><net_src comp="4" pin="0"/><net_sink comp="58" pin=1"/></net>
+
+<net id="68"><net_src comp="24" pin="0"/><net_sink comp="64" pin=0"/></net>
+
+<net id="69"><net_src comp="2" pin="0"/><net_sink comp="64" pin=1"/></net>
+
+<net id="74"><net_src comp="26" pin="0"/><net_sink comp="70" pin=0"/></net>
+
+<net id="75"><net_src comp="0" pin="0"/><net_sink comp="70" pin=1"/></net>
+
+<net id="81"><net_src comp="56" pin="0"/><net_sink comp="76" pin=0"/></net>
+
+<net id="82"><net_src comp="6" pin="0"/><net_sink comp="76" pin=1"/></net>
+
+<net id="92"><net_src comp="64" pin="2"/><net_sink comp="83" pin=4"/></net>
+
+<net id="93"><net_src comp="36" pin="0"/><net_sink comp="83" pin=2"/></net>
+
+<net id="94"><net_src comp="58" pin="2"/><net_sink comp="83" pin=1"/></net>
+
+<net id="95"><net_src comp="38" pin="0"/><net_sink comp="83" pin=0"/></net>
+
+<net id="107"><net_src comp="40" pin="0"/><net_sink comp="96" pin=0"/></net>
+
+<net id="108"><net_src comp="14" pin="0"/><net_sink comp="96" pin=1"/></net>
+
+<net id="109"><net_src comp="12" pin="0"/><net_sink comp="96" pin=2"/></net>
+
+<net id="110"><net_src comp="16" pin="0"/><net_sink comp="96" pin=3"/></net>
+
+<net id="111"><net_src comp="18" pin="0"/><net_sink comp="96" pin=4"/></net>
+
+<net id="112"><net_src comp="20" pin="0"/><net_sink comp="96" pin=5"/></net>
+
+<net id="113"><net_src comp="22" pin="0"/><net_sink comp="96" pin=6"/></net>
+
+<net id="114"><net_src comp="8" pin="0"/><net_sink comp="96" pin=7"/></net>
+
+<net id="115"><net_src comp="10" pin="0"/><net_sink comp="96" pin=8"/></net>
+
+<net id="120"><net_src comp="28" pin="0"/><net_sink comp="116" pin=0"/></net>
+
+<net id="121"><net_src comp="8" pin="0"/><net_sink comp="116" pin=1"/></net>
+
+<net id="126"><net_src comp="30" pin="0"/><net_sink comp="122" pin=0"/></net>
+
+<net id="127"><net_src comp="10" pin="0"/><net_sink comp="122" pin=1"/></net>
+
+<net id="132"><net_src comp="32" pin="0"/><net_sink comp="128" pin=0"/></net>
+
+<net id="133"><net_src comp="12" pin="0"/><net_sink comp="128" pin=1"/></net>
+
+<net id="138"><net_src comp="70" pin="2"/><net_sink comp="134" pin=0"/></net>
+
+<net id="139"><net_src comp="14" pin="0"/><net_sink comp="134" pin=1"/></net>
+
+<net id="144"><net_src comp="32" pin="0"/><net_sink comp="140" pin=0"/></net>
+
+<net id="145"><net_src comp="16" pin="0"/><net_sink comp="140" pin=1"/></net>
+
+<net id="150"><net_src comp="32" pin="0"/><net_sink comp="146" pin=0"/></net>
+
+<net id="151"><net_src comp="18" pin="0"/><net_sink comp="146" pin=1"/></net>
+
+<net id="156"><net_src comp="34" pin="0"/><net_sink comp="152" pin=0"/></net>
+
+<net id="157"><net_src comp="20" pin="0"/><net_sink comp="152" pin=1"/></net>
+
+<net id="161"><net_src comp="10" pin="0"/><net_sink comp="158" pin=0"/></net>
+
+<net id="162"><net_src comp="158" pin="1"/><net_sink comp="76" pin=2"/></net>
+
+</net_list>
+
+</model> 
+---------------- Datapath Model END ------------------
+
+* FSMD analyzer results:
+  - Output states:
+	Port: observable | {4 }
+	Port: state_execute_alu_results_valid_1 | {1 2 3 }
+	Port: state_execute_alu_results_result_1 | {1 2 3 }
+	Port: state_issue_issued_valids_1 | {1 }
+	Port: state_issue_issued_uops_uopc_1 | {1 }
+	Port: state_issue_issued_uops_iq_type_1 | {1 }
+	Port: state_issue_issued_uops_rename_prs1_1 | {1 }
+	Port: state_issue_issued_uops_rename_prs2_1 | {1 }
+	Port: state_int_rf | {1 }
+ - Input state : 
+	Port: synth_execute_top : seed_uopc | {1 }
+	Port: synth_execute_top : seed_rs1 | {1 }
+	Port: synth_execute_top : seed_rs2 | {1 }
+	Port: synth_execute_top : state_execute_alu_results_valid_1 | {2 3 }
+	Port: synth_execute_top : state_execute_alu_results_result_1 | {4 }
+	Port: synth_execute_top : state_issue_issued_valids_1 | {2 3 }
+	Port: synth_execute_top : state_issue_issued_uops_uopc_1 | {2 3 }
+	Port: synth_execute_top : state_issue_issued_uops_iq_type_1 | {2 3 }
+	Port: synth_execute_top : state_issue_issued_uops_rename_prs1_1 | {2 3 }
+	Port: synth_execute_top : state_issue_issued_uops_rename_prs2_1 | {2 3 }
+	Port: synth_execute_top : state_int_rf | {2 3 }
+  - Chain level:
+	State 1
+	State 2
+	State 3
+	State 4
+		write_ln2034 : 1
+
+
+============================================================
++ Verbose Summary: Datapath Resource usage 
+============================================================
+
+* Functional unit list:
+|----------|---------------------------|---------|---------|---------|---------|
+| Operation|      Functional Unit      |   DSP   |  Delay  |    FF   |   LUT   |
+|----------|---------------------------|---------|---------|---------|---------|
+|   call   |  grp_execute_module_fu_96 |    3    |  0.854  |   922   |   1265  |
+|----------|---------------------------|---------|---------|---------|---------|
+|          |  seed_rs2_read_read_fu_58 |    0    |    0    |    0    |    0    |
+|   read   |  seed_rs1_read_read_fu_64 |    0    |    0    |    0    |    0    |
+|          | seed_uopc_read_read_fu_70 |    0    |    0    |    0    |    0    |
+|----------|---------------------------|---------|---------|---------|---------|
+|   write  |  write_ln2034_write_fu_76 |    0    |    0    |    0    |    0    |
+|----------|---------------------------|---------|---------|---------|---------|
+|   Total  |                           |    3    |  0.854  |   922   |   1265  |
+|----------|---------------------------|---------|---------|---------|---------|
+
+Memories:
++------------+--------+--------+--------+--------+
+|            |  BRAM  |   FF   |   LUT  |  URAM  |
++------------+--------+--------+--------+--------+
+|state_int_rf|    4   |    0   |    0   |    0   |
++------------+--------+--------+--------+--------+
+|    Total   |    4   |    0   |    0   |    0   |
++------------+--------+--------+--------+--------+
+
+* Register list:
+N/A
+
+* Multiplexer (MUX) list: 
+|--------|------|------|------|--------|
+|  Comp  |  Pin | Size |  BW  | S x BW |
+|--------|------|------|------|--------|
+|  Total |      |      |      |    0   |
+|--------|------|------|------|--------|
+
+
+
+* Summary:
++-----------+--------+--------+--------+--------+--------+--------+
+|           |  BRAM  |   DSP  |  Delay |   FF   |   LUT  |  URAM  |
++-----------+--------+--------+--------+--------+--------+--------+
+|  Function |    -   |    3   |    0   |   922  |  1265  |    -   |
+|   Memory  |    4   |    -   |    -   |    0   |    0   |    0   |
+|Multiplexer|    -   |    -   |    -   |    -   |    -   |    -   |
+|  Register |    -   |    -   |    -   |    -   |    -   |    -   |
++-----------+--------+--------+--------+--------+--------+--------+
+|   Total   |    4   |    3   |    0   |   922  |  1265  |    0   |
++-----------+--------+--------+--------+--------+--------+--------+

@@ -1,0 +1,139 @@
+
+
+================================================================
+== Vitis HLS Report for 'rob_allocate'
+================================================================
+* Date:           Fri Jul 31 19:21:41 2026
+
+* Version:        2021.2 (Build 3367213 on Tue Oct 19 02:47:39 MDT 2021)
+* Project:        synth_rob_top
+* Solution:       solution_w3_csynth (Vivado IP Flow Target)
+* Product family: zynquplus
+* Target device:  xczu7ev-ffvc1156-2-e
+
+
+================================================================
+== Performance Estimates
+================================================================
++ Timing: 
+    * Summary: 
+    +--------+----------+----------+------------+
+    |  Clock |  Target  | Estimated| Uncertainty|
+    +--------+----------+----------+------------+
+    |ap_clk  |  10.00 ns|  1.829 ns|     2.70 ns|
+    +--------+----------+----------+------------+
+
++ Latency: 
+    * Summary: 
+    +---------+---------+----------+----------+-----+-----+---------+
+    |  Latency (cycles) |  Latency (absolute) |  Interval | Pipeline|
+    |   min   |   max   |    min   |    max   | min | max |   Type  |
+    +---------+---------+----------+----------+-----+-----+---------+
+    |        0|        0|      0 ns|      0 ns|    0|    0|       no|
+    +---------+---------+----------+----------+-----+-----+---------+
+
+    + Detail: 
+        * Instance: 
+        N/A
+
+        * Loop: 
+        N/A
+
+============================================================
++ Verbose Summary: Synthesis Manager
+============================================================
+InlineROM: 1
+ExposeGlobal: 0
+============================================================
++ Verbose Summary: CDFG Model
+============================================================
+IsTopModel: 0
+ResetActiveHigh: 1
+IsCombinational: 0
+IsDatapathOnly: 0
+HasWiredReturn: 1
+HasMFsm: 0
+HasVarLatency: 0
+IsPipeline: 0
+IsRtlPipelined: 0
+IsInstanceOverlapped: 0
+IsDontTouch: 0
+HasImplIP: 0
+IsGatedGlobalClock: 0
+
+
+============================================================
++ Verbose Summary: Schedule
+============================================================
+* Number of FSM states : 1
+* Pipeline : 0
+* Dataflow Pipeline: 0
+
+* FSM state transitions: 
+1 --> 
+
+* FSM state operations: 
+
+State 1 <SV = 0> <Delay = 1.82>
+ST_1 : Operation 2 [1/1] (0.00ns)   --->   "%state_rob_state_load = load i1 %state_rob_state" [/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:527]   --->   Operation 2 'load' 'state_rob_state_load' <Predicate = true> <Delay = 0.00>
+ST_1 : Operation 3 [1/1] (0.00ns)   --->   "%br_ln527 = br i1 %state_rob_state_load, void, void %._crit_edge" [/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:527]   --->   Operation 3 'br' 'br_ln527' <Predicate = true> <Delay = 0.00>
+ST_1 : Operation 4 [1/1] (0.00ns)   --->   "%store_ln527 = store i1 1, i1 %state_rob_state" [/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:527]   --->   Operation 4 'store' 'store_ln527' <Predicate = (!state_rob_state_load)> <Delay = 0.00>
+ST_1 : Operation 5 [1/1] (0.00ns)   --->   "%br_ln527 = br void %._crit_edge" [/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:527]   --->   Operation 5 'br' 'br_ln527' <Predicate = (!state_rob_state_load)> <Delay = 0.00>
+ST_1 : Operation 6 [1/1] (0.00ns)   --->   "%state_rename_dispatch_packets_valid_0_load = load i1 %state_rename_dispatch_packets_valid_0" [/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:532]   --->   Operation 6 'load' 'state_rename_dispatch_packets_valid_0_load' <Predicate = true> <Delay = 0.00>
+ST_1 : Operation 7 [1/1] (0.00ns)   --->   "%br_ln532 = br i1 %state_rename_dispatch_packets_valid_0_load, void %._crit_edge1, void" [/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:532]   --->   Operation 7 'br' 'br_ln532' <Predicate = true> <Delay = 0.00>
+ST_1 : Operation 8 [1/1] (0.00ns)   --->   "%state_rename_dispatch_packets_rob_allocated_0_load = load i1 %state_rename_dispatch_packets_rob_allocated_0" [/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:532]   --->   Operation 8 'load' 'state_rename_dispatch_packets_rob_allocated_0_load' <Predicate = (state_rename_dispatch_packets_valid_0_load)> <Delay = 0.00>
+ST_1 : Operation 9 [1/1] (0.00ns)   --->   "%br_ln532 = br i1 %state_rename_dispatch_packets_rob_allocated_0_load, void, void %._crit_edge1" [/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:532]   --->   Operation 9 'br' 'br_ln532' <Predicate = (state_rename_dispatch_packets_valid_0_load)> <Delay = 0.00>
+ST_1 : Operation 10 [1/1] (0.00ns)   --->   "%uop_queue_rob_idx = load i5 %state_rob_tail" [/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:533]   --->   Operation 10 'load' 'uop_queue_rob_idx' <Predicate = (state_rename_dispatch_packets_valid_0_load & !state_rename_dispatch_packets_rob_allocated_0_load)> <Delay = 0.00>
+ST_1 : Operation 11 [1/1] (0.75ns)   --->   "%icmp_ln533 = icmp_eq  i5 %uop_queue_rob_idx, i5 0" [/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:533]   --->   Operation 11 'icmp' 'icmp_ln533' <Predicate = (state_rename_dispatch_packets_valid_0_load & !state_rename_dispatch_packets_rob_allocated_0_load)> <Delay = 0.75> <CoreInst = "Cmp">   --->   Core 9 'Cmp' <Latency = 0> <II = 1> <Delay = 0.75> <FuncUnit> <Opcode : 'icmp'> <InPorts = 2> <OutPorts = 1>
+ST_1 : Operation 12 [1/1] (0.00ns)   --->   "%br_ln533 = br i1 %icmp_ln533, void %.critedge, void" [/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:533]   --->   Operation 12 'br' 'br_ln533' <Predicate = (state_rename_dispatch_packets_valid_0_load & !state_rename_dispatch_packets_rob_allocated_0_load)> <Delay = 0.00>
+ST_1 : Operation 13 [1/1] (0.00ns)   --->   "%is_full = load i1 %state_rob_maybe_full" [/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:533]   --->   Operation 13 'load' 'is_full' <Predicate = (state_rename_dispatch_packets_valid_0_load & !state_rename_dispatch_packets_rob_allocated_0_load & icmp_ln533)> <Delay = 0.00>
+ST_1 : Operation 14 [1/1] (0.00ns)   --->   "%br_ln534 = br i1 %is_full, void %.critedge, void %.loopexit" [/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:534]   --->   Operation 14 'br' 'br_ln534' <Predicate = (state_rename_dispatch_packets_valid_0_load & !state_rename_dispatch_packets_rob_allocated_0_load & icmp_ln533)> <Delay = 0.00>
+ST_1 : Operation 15 [1/1] (0.00ns)   --->   "%uop_uopc = load i5 %state_rename_dispatch_packets_uop_uopc_0" [/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:535]   --->   Operation 15 'load' 'uop_uopc' <Predicate = (state_rename_dispatch_packets_valid_0_load & !state_rename_dispatch_packets_rob_allocated_0_load & !is_full) | (state_rename_dispatch_packets_valid_0_load & !state_rename_dispatch_packets_rob_allocated_0_load & !icmp_ln533)> <Delay = 0.00>
+ST_1 : Operation 16 [1/1] (0.75ns)   --->   "%icmp_ln536 = icmp_eq  i5 %uop_uopc, i5 0" [/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:536]   --->   Operation 16 'icmp' 'icmp_ln536' <Predicate = (state_rename_dispatch_packets_valid_0_load & !state_rename_dispatch_packets_rob_allocated_0_load & !is_full) | (state_rename_dispatch_packets_valid_0_load & !state_rename_dispatch_packets_rob_allocated_0_load & !icmp_ln533)> <Delay = 0.75> <CoreInst = "Cmp">   --->   Core 9 'Cmp' <Latency = 0> <II = 1> <Delay = 0.75> <FuncUnit> <Opcode : 'icmp'> <InPorts = 2> <OutPorts = 1>
+ST_1 : Operation 17 [1/1] (0.00ns)   --->   "%br_ln536 = br i1 %icmp_ln536, void, void %.critedge._crit_edge" [/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:536]   --->   Operation 17 'br' 'br_ln536' <Predicate = (state_rename_dispatch_packets_valid_0_load & !state_rename_dispatch_packets_rob_allocated_0_load & !is_full) | (state_rename_dispatch_packets_valid_0_load & !state_rename_dispatch_packets_rob_allocated_0_load & !icmp_ln533)> <Delay = 0.00>
+ST_1 : Operation 18 [1/1] (0.00ns)   --->   "%allocation_id = load i32 %state_rob_next_allocation_id" [/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:537]   --->   Operation 18 'load' 'allocation_id' <Predicate = (state_rename_dispatch_packets_valid_0_load & !state_rename_dispatch_packets_rob_allocated_0_load & !is_full & !icmp_ln536) | (state_rename_dispatch_packets_valid_0_load & !state_rename_dispatch_packets_rob_allocated_0_load & !icmp_ln533 & !icmp_ln536)> <Delay = 0.00>
+ST_1 : Operation 19 [1/1] (1.01ns)   --->   "%add_ln537 = add i32 %allocation_id, i32 1" [/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:537]   --->   Operation 19 'add' 'add_ln537' <Predicate = (state_rename_dispatch_packets_valid_0_load & !state_rename_dispatch_packets_rob_allocated_0_load & !is_full & !icmp_ln536 & !icmp_ln538) | (state_rename_dispatch_packets_valid_0_load & !state_rename_dispatch_packets_rob_allocated_0_load & !icmp_ln533 & !icmp_ln536 & !icmp_ln538)> <Delay = 1.01> <CoreInst = "Adder">   --->   Core 1 'Adder' <Latency = 0> <II = 1> <Delay = 0.78> <FuncUnit> <Opcode : 'add' 'sub'> <InPorts = 2> <OutPorts = 1>
+ST_1 : Operation 20 [1/1] (0.99ns)   --->   "%icmp_ln538 = icmp_eq  i32 %allocation_id, i32 0" [/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:538]   --->   Operation 20 'icmp' 'icmp_ln538' <Predicate = (state_rename_dispatch_packets_valid_0_load & !state_rename_dispatch_packets_rob_allocated_0_load & !is_full & !icmp_ln536) | (state_rename_dispatch_packets_valid_0_load & !state_rename_dispatch_packets_rob_allocated_0_load & !icmp_ln533 & !icmp_ln536)> <Delay = 0.99> <CoreInst = "Cmp">   --->   Core 9 'Cmp' <Latency = 0> <II = 1> <Delay = 0.75> <FuncUnit> <Opcode : 'icmp'> <InPorts = 2> <OutPorts = 1>
+ST_1 : Operation 21 [1/1] (0.44ns)   --->   "%select_ln538 = select i1 %icmp_ln538, i32 2, i32 %add_ln537" [/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:538]   --->   Operation 21 'select' 'select_ln538' <Predicate = (state_rename_dispatch_packets_valid_0_load & !state_rename_dispatch_packets_rob_allocated_0_load & !is_full & !icmp_ln536) | (state_rename_dispatch_packets_valid_0_load & !state_rename_dispatch_packets_rob_allocated_0_load & !icmp_ln533 & !icmp_ln536)> <Delay = 0.44> <CoreInst = "Sel">   --->   Core 73 'Sel' <Latency = 0> <II = 1> <Delay = 0.44> <FuncUnit> <Opcode : 'select'> <InPorts = 3> <OutPorts = 1>
+ST_1 : Operation 22 [1/1] (0.00ns)   --->   "%store_ln538 = store i32 %select_ln538, i32 %state_rob_next_allocation_id" [/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:538]   --->   Operation 22 'store' 'store_ln538' <Predicate = (state_rename_dispatch_packets_valid_0_load & !state_rename_dispatch_packets_rob_allocated_0_load & !is_full & !icmp_ln536) | (state_rename_dispatch_packets_valid_0_load & !state_rename_dispatch_packets_rob_allocated_0_load & !icmp_ln533 & !icmp_ln536)> <Delay = 0.00>
+ST_1 : Operation 23 [1/1] (0.00ns)   --->   "%store_ln547 = store i1 1, i1 %state_rename_dispatch_packets_rob_allocated_0" [/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:547]   --->   Operation 23 'store' 'store_ln547' <Predicate = (state_rename_dispatch_packets_valid_0_load & !state_rename_dispatch_packets_rob_allocated_0_load & !is_full & !icmp_ln536) | (state_rename_dispatch_packets_valid_0_load & !state_rename_dispatch_packets_rob_allocated_0_load & !icmp_ln533 & !icmp_ln536)> <Delay = 0.00>
+ST_1 : Operation 24 [1/1] (0.78ns)   --->   "%add_ln548 = add i5 %uop_queue_rob_idx, i5 1" [/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:548]   --->   Operation 24 'add' 'add_ln548' <Predicate = (state_rename_dispatch_packets_valid_0_load & !state_rename_dispatch_packets_rob_allocated_0_load & !is_full & !icmp_ln536) | (state_rename_dispatch_packets_valid_0_load & !state_rename_dispatch_packets_rob_allocated_0_load & !icmp_ln533 & !icmp_ln536)> <Delay = 0.78> <CoreInst = "Adder">   --->   Core 1 'Adder' <Latency = 0> <II = 1> <Delay = 0.78> <FuncUnit> <Opcode : 'add' 'sub'> <InPorts = 2> <OutPorts = 1>
+ST_1 : Operation 25 [1/1] (0.00ns)   --->   "%store_ln548 = store i5 %add_ln548, i5 %state_rob_tail" [/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:548]   --->   Operation 25 'store' 'store_ln548' <Predicate = (state_rename_dispatch_packets_valid_0_load & !state_rename_dispatch_packets_rob_allocated_0_load & !is_full & !icmp_ln536) | (state_rename_dispatch_packets_valid_0_load & !state_rename_dispatch_packets_rob_allocated_0_load & !icmp_ln533 & !icmp_ln536)> <Delay = 0.00>
+ST_1 : Operation 26 [1/1] (0.75ns)   --->   "%icmp_ln549 = icmp_eq  i5 %add_ln548, i5 0" [/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:549]   --->   Operation 26 'icmp' 'icmp_ln549' <Predicate = (state_rename_dispatch_packets_valid_0_load & !state_rename_dispatch_packets_rob_allocated_0_load & !is_full & !icmp_ln536) | (state_rename_dispatch_packets_valid_0_load & !state_rename_dispatch_packets_rob_allocated_0_load & !icmp_ln533 & !icmp_ln536)> <Delay = 0.75> <CoreInst = "Cmp">   --->   Core 9 'Cmp' <Latency = 0> <II = 1> <Delay = 0.75> <FuncUnit> <Opcode : 'icmp'> <InPorts = 2> <OutPorts = 1>
+ST_1 : Operation 27 [1/1] (0.00ns)   --->   "%br_ln549 = br i1 %icmp_ln549, void %._crit_edge4, void" [/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:549]   --->   Operation 27 'br' 'br_ln549' <Predicate = (state_rename_dispatch_packets_valid_0_load & !state_rename_dispatch_packets_rob_allocated_0_load & !is_full & !icmp_ln536) | (state_rename_dispatch_packets_valid_0_load & !state_rename_dispatch_packets_rob_allocated_0_load & !icmp_ln533 & !icmp_ln536)> <Delay = 0.00>
+ST_1 : Operation 28 [1/1] (0.00ns)   --->   "%store_ln549 = store i1 1, i1 %state_rob_maybe_full" [/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:549]   --->   Operation 28 'store' 'store_ln549' <Predicate = (state_rename_dispatch_packets_valid_0_load & !state_rename_dispatch_packets_rob_allocated_0_load & !is_full & !icmp_ln536 & icmp_ln549) | (state_rename_dispatch_packets_valid_0_load & !state_rename_dispatch_packets_rob_allocated_0_load & !icmp_ln533 & !icmp_ln536 & icmp_ln549)> <Delay = 0.00>
+ST_1 : Operation 29 [1/1] (0.00ns)   --->   "%br_ln549 = br void %._crit_edge4" [/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:549]   --->   Operation 29 'br' 'br_ln549' <Predicate = (state_rename_dispatch_packets_valid_0_load & !state_rename_dispatch_packets_rob_allocated_0_load & !is_full & !icmp_ln536 & icmp_ln549) | (state_rename_dispatch_packets_valid_0_load & !state_rename_dispatch_packets_rob_allocated_0_load & !icmp_ln533 & !icmp_ln536 & icmp_ln549)> <Delay = 0.00>
+ST_1 : Operation 30 [1/1] (0.00ns)   --->   "%br_ln550 = br void %.critedge._crit_edge" [/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:550]   --->   Operation 30 'br' 'br_ln550' <Predicate = (state_rename_dispatch_packets_valid_0_load & !state_rename_dispatch_packets_rob_allocated_0_load & !is_full & !icmp_ln536) | (state_rename_dispatch_packets_valid_0_load & !state_rename_dispatch_packets_rob_allocated_0_load & !icmp_ln533 & !icmp_ln536)> <Delay = 0.00>
+ST_1 : Operation 31 [1/1] (0.00ns)   --->   "%br_ln532 = br void %.critedge._crit_edge" [/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:532]   --->   Operation 31 'br' 'br_ln532' <Predicate = (state_rename_dispatch_packets_rob_allocated_0_load) | (!state_rename_dispatch_packets_valid_0_load)> <Delay = 0.00>
+ST_1 : Operation 32 [1/1] (0.00ns)   --->   "%br_ln530 = br void %.loopexit" [/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:530]   --->   Operation 32 'br' 'br_ln530' <Predicate = (!is_full) | (!icmp_ln533) | (state_rename_dispatch_packets_rob_allocated_0_load) | (!state_rename_dispatch_packets_valid_0_load)> <Delay = 0.00>
+ST_1 : Operation 33 [1/1] (0.00ns)   --->   "%ret_ln551 = ret" [/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:551]   --->   Operation 33 'ret' 'ret_ln551' <Predicate = true> <Delay = 0.00>
+
+
+============================================================
++ Verbose Summary: Timing violations
+============================================================
+Target clock period: 10ns, clock uncertainty: 2.7ns.
+
+ <State 1>: 1.83ns
+The critical path consists of the following:
+	'load' operation ('uop.queue.rob_idx', /home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:533) on static variable 'state_rob_tail' [20]  (0 ns)
+	'add' operation ('add_ln548', /home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:548) [37]  (0.789 ns)
+	'icmp' operation ('icmp_ln549', /home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:549) [39]  (0.753 ns)
+	blocking operation 0.287 ns on control path)
+
+
+============================================================
++ Verbose Summary: Binding
+============================================================
+N/A
+* FSMD analyzer results:
+  - Output states:
+ - Input state : 
+  - Chain level:
+	State 1
+
+
+============================================================
++ Verbose Summary: Datapath Resource usage 
+============================================================
+N/A

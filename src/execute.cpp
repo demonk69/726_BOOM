@@ -9,16 +9,19 @@ static uint64_t sext32(int64_t v) { return (uint64_t)((int32_t)(v&0xFFFFFFFF)); 
 static uint8_t mask_for_size(uint8_t size) { return (uint8_t)((size>=3) ? 0xFF : ((1u << (1u << size)) - 1u)); }
 
 void execute_module(BoomCoreState& state) {
+#ifdef BOOM_HLS_W3_DIAGNOSTIC
+#pragma HLS INLINE
+#endif
     ExecuteState& exe = state.execute;
     const IssueState& iss = state.issue;
 
-    for (int i=0; i<EXECUTE_RESULT_LANES; i++) exe.alu_results[i]=ExecuteState::AluResult();
+    exe.alu_results[FP_ISSUE_LANE]=ExecuteState::AluResult();
 
-    int ri=0;
-    for (int i=0; i<ISSUE_WIDTH && ri<DISPATCH_WIDTH; i++) {
+    for (int i=0; i<INTEGER_ISSUE_PORTS; i++) {
         if (!iss.issued_valids[i]) continue;
         const MicroOp& uop = iss.issued_uops[i];
         if (classify_issue_port(uop)==ISSUE_PORT_UNSUPPORTED) continue;
+        if (exe.alu_results[i].valid) continue;
         if (state.brupdate.valid && state.brupdate.mispredict &&
             ((uop.branch.br_mask & state.brupdate.mispredict_mask) != 0)) continue;
 
@@ -31,7 +34,7 @@ void execute_module(BoomCoreState& state) {
         if (uop.ctrl.op2_sel==OP2_IMM||uop.ctrl.op2_sel==OP2_IMZ) op2=(int64_t)(int32_t)uop.imm_packed;
         if (uop.ctrl.op2_sel==OP2_IMU) op2=(int64_t)uop.imm_packed;
 
-        ExecuteState::AluResult& r = exe.alu_results[ri];
+        ExecuteState::AluResult& r = exe.alu_results[i];
         r = ExecuteState::AluResult();
         r.valid=true; r.uop=uop; r.exception=false; r.mispredict=false; r.result=0;
 
@@ -75,11 +78,6 @@ void execute_module(BoomCoreState& state) {
 
         if (uop.exception) { r.exception=true; r.exc_cause=uop.exc_cause; }
 
-        if (r.valid && !r.is_load && uop.rename.dst_rtype==DST_INT && uop.rename.pdst!=0) {
-            state.int_rf[uop.rename.pdst] = r.result;
-            state.rename.int_free_list.busy_table[uop.rename.pdst] = false;
-        }
-        ri++;
     }
 }
 

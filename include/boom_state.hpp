@@ -66,13 +66,17 @@ struct BranchRecoveryState {
     }
 };
 
+struct RenameDispatchPacket {
+    bool valid;
+    MicroOp uop;
+    bool rob_allocated;
+    RenameDispatchPacket() : valid(false), uop(), rob_allocated(false) {}
+};
+
 struct RenameState {
     RenameMapTableState int_map_table, fp_map_table;
     RenameFreeListState int_free_list, fp_free_list;
-    MicroOp renamed_uops[DISPATCH_WIDTH];
-    bool    renamed_valids[DISPATCH_WIDTH];
-    RenameState() { for (int i=0; i<DISPATCH_WIDTH; i++) {
-        renamed_uops[i]=MicroOp(); renamed_valids[i]=false; }}
+    RenameDispatchPacket dispatch_packets[DISPATCH_WIDTH];
 };
 
 struct IssueQueueState {
@@ -123,13 +127,14 @@ struct ExecuteState {
 struct RobInternalState {
     RobEntry entries[ROB_DEPTH];
     uint8_t  head, tail;
+    uint32_t next_allocation_id;
     bool     maybe_full;
     RobState state;
     uint8_t  commit_count;
     CommitEntry last_commit;
     bool     commit_valid;
 
-    RobInternalState() : head(0), tail(0), maybe_full(false), state(ROB_INIT),
+    RobInternalState() : head(0), tail(0), next_allocation_id(1), maybe_full(false), state(ROB_INIT),
         commit_count(0), last_commit(), commit_valid(false) {
         for (int i=0; i<ROB_DEPTH; i++) entries[i]=RobEntry(); }
 };
@@ -145,20 +150,21 @@ struct CsrState {
 struct StoreQueueEntry {
     bool valid, address_valid, data_valid, committed, issued_to_memory, completed, killed;
     uint8_t rob_idx, mask, size, branch_mask;
+    uint32_t rob_allocation_id;
     uint64_t address, data;
     StoreQueueEntry() : valid(false), address_valid(false), data_valid(false), committed(false),
         issued_to_memory(false), completed(false), killed(false), rob_idx(0), mask(0),
-        size(0), branch_mask(0), address(0), data(0) {}
+        size(0), branch_mask(0), rob_allocation_id(0), address(0), data(0) {}
 };
 
 struct LoadQueueEntry {
     bool valid, signed_load, response_pending, completed, killed;
     uint8_t rob_idx, size, branch_mask;
-    uint32_t transaction_id;
+    uint32_t transaction_id, rob_allocation_id;
     uint64_t address, result;
     LoadQueueEntry() : valid(false), signed_load(false), response_pending(false),
         completed(false), killed(false), rob_idx(0), size(0), branch_mask(0),
-        transaction_id(0), address(0), result(0) {}
+        transaction_id(0), rob_allocation_id(0), address(0), result(0) {}
 };
 
 struct LsuState {
@@ -169,9 +175,10 @@ struct LsuState {
     bool load_response_pending;
     uint32_t pending_load_transaction_id;
     uint8_t pending_load_rob_idx;
+    uint32_t pending_load_allocation_id;
     LsuState() : ldq_head(0), ldq_tail(0), ldq_count(0), stq_head(0), stq_tail(0), stq_count(0),
         next_transaction_id(1), load_response_pending(false), pending_load_transaction_id(0),
-        pending_load_rob_idx(0) {}
+        pending_load_rob_idx(0), pending_load_allocation_id(0) {}
 };
 
 struct BoomCoreState {

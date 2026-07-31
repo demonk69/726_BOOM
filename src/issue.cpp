@@ -39,8 +39,11 @@ static void compact_iq(IssueQueueState& iq) {
 }
 
 void issue_module(BoomCoreState& state) {
+#ifdef BOOM_HLS_W3_DIAGNOSTIC
+#pragma HLS INLINE
+#endif
     IssueState& iss = state.issue;
-    const RenameState& ren = state.rename;
+    RenameState& ren = state.rename;
 
     for (int i=0; i<ISSUE_WIDTH; i++) {
         iss.grants[i]=IssueGrant(); iss.issued_valids[i]=false; iss.issued_uops[i]=MicroOp();
@@ -95,12 +98,14 @@ void issue_module(BoomCoreState& state) {
 
     bool dispatch_pending=false;
     MicroOp dispatch_uop;
-    if (ren.renamed_valids[0]) {
-        dispatch_uop=ren.renamed_uops[0];
+    RenameDispatchPacket& dispatch_packet = ren.dispatch_packets[0];
+    if (dispatch_packet.valid && dispatch_packet.rob_allocated) {
+        dispatch_uop=dispatch_packet.uop;
         dispatch_pending=!dispatch_uop.exception;
         IssuePortClass port=classify_issue_port(dispatch_uop);
         int lane=(port==ISSUE_PORT_MEM) ? MEM_ISSUE_LANE : (port==ISSUE_PORT_INT ? INT_ISSUE_LANE : -1);
-        bool dispatch_ready=!dispatch_uop.rename.prs1_busy && !dispatch_uop.rename.prs2_busy;
+        bool dispatch_ready=!preg_busy(state, dispatch_uop.rename.prs1) &&
+                            !preg_busy(state, dispatch_uop.rename.prs2);
         bool old_grant_can_accept=false;
         for (int old_lane=0; old_lane<INTEGER_ISSUE_PORTS; old_lane++)
             old_grant_can_accept |= iss.grants[old_lane].valid && iss.port_ready[old_lane];
@@ -113,6 +118,10 @@ void issue_module(BoomCoreState& state) {
         }
     }
 
+    if (dispatch_packet.valid && dispatch_packet.rob_allocated && dispatch_packet.uop.exception) {
+        dispatch_packet = RenameDispatchPacket();
+    }
+
     for (int lane=0; lane<INTEGER_ISSUE_PORTS; lane++) {
         if (!iss.grants[lane].valid) continue;
         iss.grants_generated++; iss.total_grants++;
@@ -122,17 +131,24 @@ void issue_module(BoomCoreState& state) {
     else if (iss.grants_generated==1) iss.cycles_with_1_grant++;
     else iss.cycles_with_2_grants++;
 
-    int accepted_lane=-1;
     for (int lane=0; lane<INTEGER_ISSUE_PORTS; lane++) {
-        if (!iss.grants[lane].valid || !iss.port_ready[lane]) continue;
-        if (accepted_lane<0 || iss.grants[lane].entry_index < iss.grants[accepted_lane].entry_index)
-            accepted_lane=lane;
-    }
-    if (accepted_lane>=0) {
-        IssueGrant& grant=iss.grants[accepted_lane];
-        grant.accepted=true; iss.grants_accepted=1;
-        iss.issued_valids[0]=true; iss.issued_uops[0]=grant.uop;
-        if (grant.from_dispatch) dispatch_pending=false;
+        IssueGrant& grant=iss.grants[lane];
+        bool downstream_ready=iss.port_ready[lane];
+        if (lane==MEM_ISSUE_LANE && grant.valid) {
+            bool is_load=grant.uop.ctrl.is_load || grant.uop.mem.uses_ldq ||
+                         (grant.uop.uopc>=39 && grant.uop.uopc<=45);
+            bool is_store=grant.uop.ctrl.is_sta || grant.uop.mem.uses_stq ||
+                          (grant.uop.uopc>=46 && grant.uop.uopc<=49);
+            if (is_load) downstream_ready &= state.lsu.ldq_count<LDQ_DEPTH;
+            if (is_store) downstream_ready &= state.lsu.stq_count<STQ_DEPTH;
+        }
+        if (!grant.valid || !downstream_ready) continue;
+        grant.accepted=true; iss.grants_accepted++;
+        iss.issued_valids[lane]=true; iss.issued_uops[lane]=grant.uop;
+        if (grant.from_dispatch) {
+            dispatch_pending=false;
+            dispatch_packet = RenameDispatchPacket();
+        }
         else {
             IssueSlotEntry& selected=iss.alu_iq.entries[grant.entry_index];
             selected.granted=true; selected.request=false;
@@ -146,9 +162,10 @@ void issue_module(BoomCoreState& state) {
     if (dispatch_pending && iss.alu_iq.count<ISSUE_QUEUE_ALU_DEPTH) {
         IssueSlotEntry& slot=iss.alu_iq.entries[iss.alu_iq.tail];
         slot.valid=true; slot.request=true; slot.granted=false; slot.killed=false;
-        slot.uop=dispatch_uop; slot.prs1_busy=dispatch_uop.rename.prs1_busy;
-        slot.prs2_busy=dispatch_uop.rename.prs2_busy; slot.pdst_busy=false;
+        slot.uop=dispatch_uop; slot.prs1_busy=preg_busy(state, dispatch_uop.rename.prs1);
+        slot.prs2_busy=preg_busy(state, dispatch_uop.rename.prs2); slot.pdst_busy=false;
         iss.alu_iq.tail=(iss.alu_iq.tail+1)%ISSUE_QUEUE_ALU_DEPTH; iss.alu_iq.count++;
+        dispatch_packet = RenameDispatchPacket();
     }
 }
 

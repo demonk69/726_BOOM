@@ -68,15 +68,16 @@ static bool rename_one(BoomCoreState& s, const MicroOp& in, MicroOp& out) {
     s.decode.dec_uops[0] = in;
     boom::rename_module(s);
     s.decode.dec_valids[0] = false;
-    if (!s.rename.renamed_valids[0]) return false;
-    out = s.rename.renamed_uops[0];
+    if (!s.rename.dispatch_packets[0].valid) return false;
+    out = s.rename.dispatch_packets[0].uop;
     return true;
 }
 
 static bool rename_alloc(BoomCoreState& s, const MicroOp& in, MicroOp& out) {
     if (!rename_one(s, in, out)) return false;
     boom::rob_allocate(s);
-    out = s.rename.renamed_uops[0];
+    out = s.rename.dispatch_packets[0].uop;
+    s.rename.dispatch_packets[0] = RenameDispatchPacket();
     return true;
 }
 

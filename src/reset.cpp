@@ -19,7 +19,7 @@ void boom_core_reset_step(BoomCoreState& state, ResetControllerState& reset_ctrl
         state.brupdate.valid = false;
         state.brupdate.mispredict = false;
         state.decode.dec_valids[0] = false;
-        state.rename.renamed_valids[0] = false;
+        state.rename.dispatch_packets[0] = RenameDispatchPacket();
         state.issue.issued_valids[0] = false;
         state.issue.issued_valids[1] = false;
         state.issue.issued_valids[2] = false;
@@ -41,6 +41,7 @@ void boom_core_reset_step(BoomCoreState& state, ResetControllerState& reset_ctrl
         state.issue.execute_acceptance_stalls = 0;
         state.issue.dropped_grants = 0;
         state.rob.commit_valid = false;
+        for (int i=0; i<EXECUTE_RESULT_LANES; i++) state.execute.alu_results[i]=ExecuteState::AluResult();
         advance_reset(reset_ctrl, RESET_FRONTEND);
         break;
 
@@ -177,10 +178,10 @@ RESET_ROB_INIT:
             state.lsu.stq_head = 0;
             state.lsu.stq_tail = 0;
             state.lsu.stq_count = 0;
-            state.lsu.next_transaction_id = 1;
             state.lsu.load_response_pending = false;
             state.lsu.pending_load_transaction_id = 0;
             state.lsu.pending_load_rob_idx = 0;
+            state.lsu.pending_load_allocation_id = 0;
         }
         state.lsu.ldq[index].valid = false;
         state.lsu.ldq[index].response_pending = false;

@@ -1,0 +1,878 @@
+
+
+================================================================
+== Synthesis Summary Report of 'boom_core_top'
+================================================================
++ General Information: 
+    * Date:           Fri Jul 31 19:23:42 2026
+    * Version:        2021.2 (Build 3367213 on Tue Oct 19 02:47:39 MDT 2021)
+    * Project:        boom_core_top
+    * Solution:       solution_w3_csynth (Vivado IP Flow Target)
+    * Product family: zynquplus
+    * Target device:  xczu7ev-ffvc1156-2-e
+    
+
++ Performance & Resource Estimates: 
+    
+    PS: '+' for module; 'o' for loop; '*' for dataflow
+    +---------------------------------------+------+------+---------+-----------+----------+---------+------+----------+---------+---------+------------+-------------+-----+
+    |                Modules                | Issue|      | Latency |  Latency  | Iteration|         | Trip |          |         |         |            |             |     |
+    |                & Loops                | Type | Slack| (cycles)|    (ns)   |  Latency | Interval| Count| Pipelined|  BRAM   |   DSP   |     FF     |     LUT     | URAM|
+    +---------------------------------------+------+------+---------+-----------+----------+---------+------+----------+---------+---------+------------+-------------+-----+
+    |+ boom_core_top                        |     -|  1.40|        -|          -|         -|        -|     -|        no|  15 (2%)|  3 (~0%)|  16149 (3%)|  68055 (29%)|    -|
+    | o CORE_CYCLE                          |     -|  7.30|        -|          -|         -|        -|     -|        no|        -|        -|           -|            -|    -|
+    |  + boom_core_cycle_io                 |     -|  1.40|        -|          -|         -|        -|     -|        no|  11 (1%)|  3 (~0%)|  12844 (2%)|  64500 (27%)|    -|
+    |   + rob_complete                      |     -|  3.83|        -|          -|         -|        -|     -|        no|        -|        -|  4135 (~0%)|   20762 (9%)|    -|
+    |    + branch_complete                  |     -|  4.39|        -|          -|         -|        -|     -|        no|        -|        -|  3750 (~0%)|   13037 (5%)|    -|
+    |     + clear_resolved_masks_in_state   |     -|  5.61|      124|  1.240e+03|         -|      124|     -|        no|        -|        -|    56 (~0%)|    478 (~0%)|    -|
+    |      o VITIS_LOOP_871_2               |     -|  7.30|        3|     30.000|         1|        -|     3|        no|        -|        -|           -|            -|    -|
+    |      o VITIS_LOOP_872_3               |     -|  7.30|        3|     30.000|         1|        -|     3|        no|        -|        -|           -|            -|    -|
+    |      o VITIS_LOOP_873_4               |     -|  7.30|       16|    160.000|         2|        -|     8|        no|        -|        -|           -|            -|    -|
+    |      o VITIS_LOOP_874_5               |     -|  7.30|       64|    640.000|         2|        -|    32|        no|        -|        -|           -|            -|    -|
+    |      o VITIS_LOOP_875_6               |     -|  7.30|       16|    160.000|         2|        -|     8|        no|        -|        -|           -|            -|    -|
+    |      o VITIS_LOOP_876_7               |     -|  7.30|       16|    160.000|         2|        -|     8|        no|        -|        -|           -|            -|    -|
+    |     + recover_mispredict              |     -|  4.54|        -|          -|         -|        -|     -|        no|        -|        -|  3627 (~0%)|   11354 (4%)|    -|
+    |      + kill_issue_state               |     -|  5.10|        -|          -|         -|        -|     -|        no|        -|        -|  2071 (~0%)|    5890 (2%)|    -|
+    |       + compact_issue_queue           |     -|  5.61|        -|          -|         -|        -|     -|        no|        -|        -|  2046 (~0%)|    5531 (2%)|    -|
+    |        o Loop 1                       |     -|  7.30|        8|     80.000|         1|        -|     8|        no|        -|        -|           -|            -|    -|
+    |        o VITIS_LOOP_882_1             |     -|  7.30|       32|    320.000|         4|        -|     8|        no|        -|        -|           -|            -|    -|
+    |        o VITIS_LOOP_885_2             |     -|  7.30|        -|          -|         1|        -|     -|        no|        -|        -|           -|            -|    -|
+    |        o VITIS_LOOP_886_3             |     -|  7.30|       16|    160.000|         2|        -|     8|        no|        -|        -|           -|            -|    -|
+    |       o VITIS_LOOP_893_1              |     -|  7.30|       24|    240.000|         3|        -|     8|        no|        -|        -|           -|            -|    -|
+    |       o VITIS_LOOP_901_2              |     -|  7.30|        3|     30.000|         1|        -|     3|        no|        -|        -|           -|            -|    -|
+    |      + kill_execute_state             |     -|  5.97|        4|     40.000|         -|        4|     -|        no|        -|        -|     4 (~0%)|    132 (~0%)|    -|
+    |       o VITIS_LOOP_910_1              |     -|  7.30|        3|     30.000|         1|        -|     3|        no|        -|        -|           -|            -|    -|
+    |      + kill_lsu_state                 |     -|  4.95|        -|          -|         -|        -|     -|        no|        -|        -|  1170 (~0%)|    2520 (1%)|    -|
+    |       o Loop 1                        |     -|  7.30|        8|     80.000|         1|        -|     8|        no|        -|        -|           -|            -|    -|
+    |       o Loop 2                        |     -|  7.30|        8|     80.000|         1|        -|     8|        no|        -|        -|           -|            -|    -|
+    |       o VITIS_LOOP_924_1              |     -|  7.30|       40|    400.000|         5|        -|     8|        no|        -|        -|           -|            -|    -|
+    |       o VITIS_LOOP_939_2              |     -|  7.30|       32|    320.000|         4|        -|     8|        no|        -|        -|           -|            -|    -|
+    |       o VITIS_LOOP_947_3              |     -|  7.30|        -|          -|         1|        -|     -|        no|        -|        -|           -|            -|    -|
+    |       o VITIS_LOOP_948_4              |     -|  7.30|        -|          -|         1|        -|     -|        no|        -|        -|           -|            -|    -|
+    |       o VITIS_LOOP_949_5              |     -|  7.30|       16|    160.000|         2|        -|     8|        no|        -|        -|           -|            -|    -|
+    |       o VITIS_LOOP_950_6              |     -|  7.30|       16|    160.000|         2|        -|     8|        no|        -|        -|           -|            -|    -|
+    |      + kill_rob_younger_than          |     -|  4.54|       97|    970.000|         -|       97|     -|        no|        -|        -|    46 (~0%)|    493 (~0%)|    -|
+    |       o VITIS_LOOP_963_1              |     -|  7.30|       96|    960.000|         3|        -|    32|        no|        -|        -|           -|            -|    -|
+    |      + clear_resolved_masks_in_state  |     -|  5.61|      124|  1.240e+03|         -|      124|     -|        no|        -|        -|    56 (~0%)|    478 (~0%)|    -|
+    |       o VITIS_LOOP_871_2              |     -|  7.30|        3|     30.000|         1|        -|     3|        no|        -|        -|           -|            -|    -|
+    |       o VITIS_LOOP_872_3              |     -|  7.30|        3|     30.000|         1|        -|     3|        no|        -|        -|           -|            -|    -|
+    |       o VITIS_LOOP_873_4              |     -|  7.30|       16|    160.000|         2|        -|     8|        no|        -|        -|           -|            -|    -|
+    |       o VITIS_LOOP_874_5              |     -|  7.30|       64|    640.000|         2|        -|    32|        no|        -|        -|           -|            -|    -|
+    |       o VITIS_LOOP_875_6              |     -|  7.30|       16|    160.000|         2|        -|     8|        no|        -|        -|           -|            -|    -|
+    |       o VITIS_LOOP_876_7              |     -|  7.30|       16|    160.000|         2|        -|     8|        no|        -|        -|           -|            -|    -|
+    |      o VITIS_LOOP_991_1               |     -|  7.30|       64|    640.000|         2|        -|    32|        no|        -|        -|           -|            -|    -|
+    |      o VITIS_LOOP_993_2               |     -|  7.30|       64|    640.000|         2|        -|    32|        no|        -|        -|           -|            -|    -|
+    |      o VITIS_LOOP_1003_1              |     -|  7.30|        -|          -|         -|        -|     -|        no|        -|        -|           -|            -|    -|
+    |       o VITIS_LOOP_837_1              |     -|  7.30|       65|    650.000|         2|        -|    32|        no|        -|        -|           -|            -|    -|
+    |       o VITIS_LOOP_828_1              |     -|  7.30|        -|          -|         2|        -|     -|        no|        -|        -|           -|            -|    -|
+    |      o VITIS_LOOP_1009_2              |     -|  7.30|      840|  8.400e+03|       105|        -|     8|        no|        -|        -|           -|            -|    -|
+    |       o VITIS_LOOP_1011_3             |     -|  7.30|      102|  1.020e+03|         2|        -|    51|        no|        -|        -|           -|            -|    -|
+    |      o VITIS_LOOP_1019_1              |     -|  7.30|      432|  4.320e+03|        54|        -|     8|        no|        -|        -|           -|            -|    -|
+    |       o VITIS_LOOP_852_1              |     -|  7.30|       52|    520.000|         1|        -|    52|        no|        -|        -|           -|            -|    -|
+    |      o VITIS_LOOP_980_1               |     -|  7.30|       52|    520.000|         1|        -|    52|        no|        -|        -|           -|            -|    -|
+    |      o VITIS_LOOP_981_2               |     -|  7.30|       96|    960.000|         3|        -|    32|        no|        -|        -|           -|            -|    -|
+    |     o VITIS_LOOP_852_1                |     -|  7.30|       52|    520.000|         1|        -|    52|        no|        -|        -|           -|            -|    -|
+    |    + lsu_accept_completion            |     -|  3.83|        2|     20.000|         -|        2|     -|        no|        -|        -|    22 (~0%)|    285 (~0%)|    -|
+    |   + lsu_module                        |     -|  1.40|        -|          -|         -|        -|     -|        no|        -|        -|   936 (~0%)|    2803 (1%)|    -|
+    |    + reclaim_ldq                      |     -|  4.67|        -|          -|         -|        -|     -|        no|        -|        -|   609 (~0%)|    968 (~0%)|    -|
+    |     o Loop 1                          |     -|  7.30|        8|     80.000|         1|        -|     8|        no|        -|        -|           -|            -|    -|
+    |     o VITIS_LOOP_1215_1               |     -|  7.30|       32|    320.000|         4|        -|     8|        no|        -|        -|           -|            -|    -|
+    |     o VITIS_LOOP_1218_2               |     -|  7.30|        -|          -|         1|        -|     -|        no|        -|        -|           -|            -|    -|
+    |     o VITIS_LOOP_1219_3               |     -|  7.30|       16|    160.000|         2|        -|     8|        no|        -|        -|           -|            -|    -|
+    |    o LSU_LOAD_ISSUE_SCAN              |     -|  7.30|     3458|  3.458e+04|       108|        -|    32|        no|        -|        -|           -|            -|    -|
+    |     + try_issue_load                  |     -|  4.22|      105|  1.050e+03|         -|      105|     -|        no|        -|        -|    86 (~0%)|    210 (~0%)|    -|
+    |      o OLDER_STORE_SCAN               |     -|  7.30|       98|    980.000|         3|        -|    32|        no|        -|        -|           -|            -|    -|
+    |   + rob_commit_module                 |     -|  3.94|        -|          -|         -|        -|     -|        no|        -|        -|  1056 (~0%)|    2760 (1%)|    -|
+    |    + lsu_reclaim_store                |     -|  4.67|        -|          -|         -|        -|     -|        no|        -|        -|   565 (~0%)|   1075 (~0%)|    -|
+    |     o Loop 1                          |     -|  7.30|        8|     80.000|         1|        -|     8|        no|        -|        -|           -|            -|    -|
+    |     o VITIS_LOOP_1226_1               |     -|  7.30|       32|    320.000|         4|        -|     8|        no|        -|        -|           -|            -|    -|
+    |     o VITIS_LOOP_1229_2               |     -|  7.30|        -|          -|         1|        -|     -|        no|        -|        -|           -|            -|    -|
+    |     o VITIS_LOOP_1230_3               |     -|  7.30|       16|    160.000|         2|        -|     8|        no|        -|        -|           -|            -|    -|
+    |    o VITIS_LOOP_1322_1                |     -|  7.30|        -|          -|         2|        -|     -|        no|        -|        -|           -|            -|    -|
+    |   + frontend_module                   |     -|  3.95|        0|      0.000|         -|        0|     -|        no|        -|        -|     1 (~0%)|    956 (~0%)|    -|
+    |   + decode_module                     |     -|  4.28|        0|      0.000|         -|        0|     -|        no|        -|        -|           -|   1341 (~0%)|    -|
+    |   + rename_module                     |     -|  4.81|      253|  2.530e+03|         -|      253|     -|        no|        -|        -|   172 (~0%)|    813 (~0%)|    -|
+    |    o VITIS_LOOP_350_1                 |     -|  7.30|        8|     80.000|         1|        -|     8|        no|        -|        -|           -|            -|    -|
+    |    o VITIS_LOOP_361_1                 |     -|  7.30|      105|  1.050e+03|         2|        -|    52|        no|        -|        -|           -|            -|    -|
+    |    o VITIS_LOOP_381_1                 |     -|  7.30|       16|    160.000|         2|        -|     8|        no|        -|        -|           -|            -|    -|
+    |    o VITIS_LOOP_376_1                 |     -|  7.30|       52|    520.000|         1|        -|    52|        no|        -|        -|           -|            -|    -|
+    |    o VITIS_LOOP_388_1                 |     -|  7.30|       64|    640.000|         2|        -|    32|        no|        -|        -|           -|            -|    -|
+    |   + rob_allocate                      |     -|  4.62|        0|      0.000|         -|        0|     -|        no|        -|        -|    33 (~0%)|    210 (~0%)|    -|
+    |   + issue_module                      |     -|  2.73|        -|          -|         -|        -|     -|        no|        -|        -|  2596 (~0%)|   16191 (7%)|    -|
+    |    + compact_iq                       |     -|  5.61|        -|          -|         -|        -|     -|        no|        -|        -|  2046 (~0%)|    5531 (2%)|    -|
+    |     o Loop 1                          |     -|  7.30|        8|     80.000|         1|        -|     8|        no|        -|        -|           -|            -|    -|
+    |     o VITIS_LOOP_583_1                |     -|  7.30|       32|    320.000|         4|        -|     8|        no|        -|        -|           -|            -|    -|
+    |     o VITIS_LOOP_586_2                |     -|  7.30|        -|          -|         1|        -|     -|        no|        -|        -|           -|            -|    -|
+    |     o VITIS_LOOP_587_3                |     -|  7.30|       16|    160.000|         2|        -|     8|        no|        -|        -|           -|            -|    -|
+    |    o VITIS_LOOP_598_1                 |     -|  7.30|        3|     30.000|         1|        -|     3|        no|        -|        -|           -|            -|    -|
+    |    o VITIS_LOOP_608_3                 |     -|  7.30|       72|    720.000|         9|        -|     8|        no|        -|        -|           -|            -|    -|
+    |    o VITIS_LOOP_628_4                 |     -|  7.30|       16|    160.000|         2|        -|     8|        no|        -|        -|           -|            -|    -|
+    |    o VITIS_LOOP_660_5                 |     -|  7.30|        2|     20.000|         1|        -|     2|        no|        -|        -|           -|            -|    -|
+    |    o VITIS_LOOP_675_6                 |     -|  7.30|        2|     20.000|         1|        -|     2|        no|        -|        -|           -|            -|    -|
+    |    o VITIS_LOOP_684_7                 |     -|  7.30|        2|     20.000|         1|        -|     2|        no|        -|        -|           -|            -|    -|
+    |   + execute_module                    |     -|  1.43|        7|     70.000|         -|        7|     -|        no|        -|  3 (~0%)|   117 (~0%)|    3544 (1%)|    -|
+    |    o VITIS_LOOP_740_1                 |     -|  7.30|        6|     60.000|         3|        -|     2|        no|        -|        -|           -|            -|    -|
+    |  + boom_core_reset_step               |     -|  5.43|        8|     80.000|         -|        8|     -|        no|        -|        -|    80 (~0%)|    374 (~0%)|    -|
+    |   o VITIS_LOOP_1489_1                 |     -|  7.30|        3|     30.000|         1|        -|     3|        no|        -|        -|           -|            -|    -|
+    |   o VITIS_LOOP_1507_2                 |     -|  7.30|        3|     30.000|         1|        -|     3|        no|        -|        -|           -|            -|    -|
+    |   o VITIS_LOOP_1628_3                 |     -|  7.30|        3|     30.000|         1|        -|     3|        no|        -|        -|           -|            -|    -|
+    +---------------------------------------+------+------+---------+-----------+----------+---------+------+----------+---------+---------+------------+-------------+-----+
+
+
+================================================================
+== HW Interfaces
+================================================================
+* AXIS
++------------------+---------------+-------+--------+--------+
+| Interface        | Register Mode | TDATA | TREADY | TVALID |
++------------------+---------------+-------+--------+--------+
+| commit_trace_out | both          | 768   | 1      | 1      |
+| dmem_req_out     | both          | 320   | 1      | 1      |
+| dmem_resp_in     | both          | 384   | 1      | 1      |
+| imem_req_out     | both          | 128   | 1      | 1      |
+| imem_resp_in     | both          | 256   | 1      | 1      |
++------------------+---------------+-------+--------+--------+
+
+* REGISTER
++----------------+---------+----------+
+| Interface      | Mode    | Bitwidth |
++----------------+---------+----------+
+| io_cycle       | ap_none | 64       |
+| io_cycle_valid | ap_none | 1        |
+| io_halted      | ap_none | 1        |
+| io_instret     | ap_none | 64       |
+| io_success     | ap_none | 1        |
+| io_trap        | ap_none | 1        |
++----------------+---------+----------+
+
+* TOP LEVEL CONTROL
++-----------+--------------+----------+
+| Interface | Type         | Ports    |
++-----------+--------------+----------+
+| ap_clk    | clock        | ap_clk   |
+| ap_rst_n  | reset        | ap_rst_n |
+| ap_ctrl   | ap_ctrl_none |          |
++-----------+--------------+----------+
+
+
+================================================================
+== SW I/O Information
+================================================================
+* Top Function Arguments
++------------------+-----------+--------------------------+
+| Argument         | Direction | Datatype                 |
++------------------+-----------+--------------------------+
+| imem_req_out     | out       | stream<ImemRequest, 0>&  |
+| imem_resp_in     | in        | stream<ImemResponse, 0>& |
+| dmem_req_out     | out       | stream<DmemRequest, 0>&  |
+| dmem_resp_in     | in        | stream<DmemResponse, 0>& |
+| commit_trace_out | out       | stream<CommitEntry, 0>&  |
+| io_success       | out       | bool&                    |
+| io_halted        | out       | bool&                    |
+| io_trap          | out       | bool&                    |
+| io_cycle_valid   | out       | bool&                    |
+| io_cycle         | out       | long unsigned int&       |
+| io_instret       | out       | long unsigned int&       |
++------------------+-----------+--------------------------+
+
+* SW-to-HW Mapping
++------------------+------------------+-----------+
+| Argument         | HW Interface     | HW Type   |
++------------------+------------------+-----------+
+| imem_req_out     | imem_req_out     | interface |
+| imem_resp_in     | imem_resp_in     | interface |
+| dmem_req_out     | dmem_req_out     | interface |
+| dmem_resp_in     | dmem_resp_in     | interface |
+| commit_trace_out | commit_trace_out | interface |
+| io_success       | io_success       | port      |
+| io_halted        | io_halted        | port      |
+| io_trap          | io_trap          | port      |
+| io_cycle_valid   | io_cycle_valid   | port      |
+| io_cycle         | io_cycle         | port      |
+| io_instret       | io_instret       | port      |
++------------------+------------------+-----------+
+
+
+================================================================
+== M_AXI Burst Information
+================================================================
+ Note: All burst requests might be further partitioned into multiple requests during RTL generation based on max_read_burst_length or max_write_burst_length settings.
+
+  No burst in design
+
+================================================================
+== Bind Op Report
+================================================================
++--------------------------------------+-----+--------+--------------+-----+--------+---------+
+| Name                                 | DSP | Pragma | Variable     | Op  | Impl   | Latency |
++--------------------------------------+-----+--------+--------------+-----+--------+---------+
+| + boom_core_top                      | 3   |        |              |     |        |         |
+|  + boom_core_cycle_io                | 3   |        |              |     |        |         |
+|    add_ln1421_fu_3207_p2             | -   |        | add_ln1421   | add | fabric | 0       |
+|   + rob_complete                     | 0   |        |              |     |        |         |
+|     mem_age_fu_2195_p2               | -   |        | mem_age      | sub | fabric | 0       |
+|     int_age_fu_2200_p2               | -   |        | int_age      | sub | fabric | 0       |
+|    + branch_complete                 | 0   |        |              |     |        |         |
+|      mul_8ns_7ns_9_1_1_U929          | -   |        | mul_ln852    | mul | auto   | 0       |
+|      add_ln852_2_fu_1762_p2          | -   |        | add_ln852_2  | add | fabric | 0       |
+|      add_ln852_fu_1778_p2            | -   |        | add_ln852    | add | fabric | 0       |
+|      add_ln862_fu_1793_p2            | -   |        | add_ln862    | add | fabric | 0       |
+|      + clear_resolved_masks_in_state | 0   |        |              |     |        |         |
+|        add_ln871_fu_218_p2           | -   |        | add_ln871    | add | fabric | 0       |
+|        add_ln872_fu_290_p2           | -   |        | add_ln872    | add | fabric | 0       |
+|        add_ln873_fu_367_p2           | -   |        | add_ln873    | add | fabric | 0       |
+|        add_ln874_fu_403_p2           | -   |        | add_ln874    | add | fabric | 0       |
+|        add_ln875_fu_439_p2           | -   |        | add_ln875    | add | fabric | 0       |
+|        add_ln876_fu_475_p2           | -   |        | add_ln876    | add | fabric | 0       |
+|     + recover_mispredict             | 0   |        |              |     |        |         |
+|       add_ln1035_fu_1695_p2          | -   |        | add_ln1035   | add | fabric | 0       |
+|       add_ln1036_fu_1711_p2          | -   |        | add_ln1036   | add | fabric | 0       |
+|       add_ln993_fu_2263_p2           | -   |        | add_ln993    | add | fabric | 0       |
+|       add_ln991_1_fu_2293_p2         | -   |        | add_ln991_1  | add | fabric | 0       |
+|       add_ln991_fu_2309_p2           | -   |        | add_ln991    | add | fabric | 0       |
+|       mul_8ns_7ns_9_1_1_U582         | -   |        | mul_ln1004   | mul | auto   | 0       |
+|       add_ln1004_fu_2349_p2          | -   |        | add_ln1004   | add | fabric | 0       |
+|       add_ln837_fu_2389_p2           | -   |        | add_ln837    | add | fabric | 0       |
+|       i_14_fu_2429_p2                | -   |        | i_14         | add | fabric | 0       |
+|       add_ln830_fu_2518_p2           | -   |        | add_ln830    | add | fabric | 0       |
+|       add_ln830_1_fu_2530_p2         | -   |        | add_ln830_1  | add | fabric | 0       |
+|       add_ln846_fu_2458_p2           | -   |        | add_ln846    | add | fabric | 0       |
+|       add_ln846_1_fu_2470_p2         | -   |        | add_ln846_1  | add | fabric | 0       |
+|       add_ln847_fu_2494_p2           | -   |        | add_ln847    | add | fabric | 0       |
+|       p_6_fu_2548_p2                 | -   |        | p_6          | add | fabric | 0       |
+|       add_ln1009_1_fu_2564_p2        | -   |        | add_ln1009_1 | add | fabric | 0       |
+|       add_ln1009_fu_2581_p2          | -   |        | add_ln1009   | add | fabric | 0       |
+|       add_ln1012_fu_2596_p2          | -   |        | add_ln1012   | add | fabric | 0       |
+|       add_ln1012_1_fu_2606_p2        | -   |        | add_ln1012_1 | add | fabric | 0       |
+|       add_ln1011_fu_2630_p2          | -   |        | add_ln1011   | add | fabric | 0       |
+|       t_6_fu_2655_p2                 | -   |        | t_6          | add | fabric | 0       |
+|       mul_3ns_7ns_9_1_1_U583         | -   |        | mul_ln852    | mul | auto   | 0       |
+|       add_ln852_1_fu_2721_p2         | -   |        | add_ln852_1  | add | fabric | 0       |
+|       add_ln852_fu_2737_p2           | -   |        | add_ln852    | add | fabric | 0       |
+|       add_ln980_fu_2761_p2           | -   |        | add_ln980    | add | fabric | 0       |
+|       add_ln981_fu_2792_p2           | -   |        | add_ln981    | add | fabric | 0       |
+|      + kill_issue_state              | 0   |        |              |     |        |         |
+|        add_ln893_fu_602_p2           | -   |        | add_ln893    | add | fabric | 0       |
+|        add_ln901_fu_637_p2           | -   |        | add_ln901    | add | fabric | 0       |
+|       + compact_issue_queue          | 0   |        |              |     |        |         |
+|         add_ln880_fu_6064_p2         | -   |        | add_ln880    | add | fabric | 0       |
+|         add_ln882_fu_6207_p2         | -   |        | add_ln882    | add | fabric | 0       |
+|         w_3_fu_6218_p2               | -   |        | w_3          | add | fabric | 0       |
+|         add_ln885_fu_6448_p2         | -   |        | add_ln885    | add | fabric | 0       |
+|         add_ln886_fu_6572_p2         | -   |        | add_ln886    | add | fabric | 0       |
+|      + kill_execute_state            | 0   |        |              |     |        |         |
+|        add_ln910_fu_144_p2           | -   |        | add_ln910    | add | fabric | 0       |
+|      + kill_lsu_state                | 0   |        |              |     |        |         |
+|        add_ln919_fu_1858_p2          | -   |        | add_ln919    | add | fabric | 0       |
+|        add_ln920_fu_1899_p2          | -   |        | add_ln920    | add | fabric | 0       |
+|        add_ln924_fu_1961_p2          | -   |        | add_ln924    | add | fabric | 0       |
+|        lw_3_fu_1992_p2               | -   |        | lw_3         | add | fabric | 0       |
+|        add_ln939_fu_2086_p2          | -   |        | add_ln939    | add | fabric | 0       |
+|        sw_3_fu_2107_p2               | -   |        | sw_3         | add | fabric | 0       |
+|        add_ln947_fu_2173_p2          | -   |        | add_ln947    | add | fabric | 0       |
+|        add_ln948_fu_2225_p2          | -   |        | add_ln948    | add | fabric | 0       |
+|        add_ln949_fu_2266_p2          | -   |        | add_ln949    | add | fabric | 0       |
+|        add_ln950_fu_2309_p2          | -   |        | add_ln950    | add | fabric | 0       |
+|      + kill_rob_younger_than         | 0   |        |              |     |        |         |
+|        i_24_fu_722_p2                | -   |        | i_24         | add | fabric | 0       |
+|        idx_8_fu_780_p2               | -   |        | idx_8        | add | fabric | 0       |
+|        state_rob_tail                | -   |        | add_ln974    | add | fabric | 0       |
+|      + clear_resolved_masks_in_state | 0   |        |              |     |        |         |
+|        add_ln871_fu_218_p2           | -   |        | add_ln871    | add | fabric | 0       |
+|        add_ln872_fu_290_p2           | -   |        | add_ln872    | add | fabric | 0       |
+|        add_ln873_fu_367_p2           | -   |        | add_ln873    | add | fabric | 0       |
+|        add_ln874_fu_403_p2           | -   |        | add_ln874    | add | fabric | 0       |
+|        add_ln875_fu_439_p2           | -   |        | add_ln875    | add | fabric | 0       |
+|        add_ln876_fu_475_p2           | -   |        | add_ln876    | add | fabric | 0       |
+|    + lsu_accept_completion           | 0   |        |              |     |        |         |
+|      add_ln1253_fu_702_p2            | -   |        | add_ln1253   | add | fabric | 0       |
+|      add_ln1254_fu_714_p2            | -   |        | add_ln1254   | add | fabric | 0       |
+|      add_ln1193_fu_772_p2            | -   |        | add_ln1193   | add | fabric | 0       |
+|      add_ln1194_fu_784_p2            | -   |        | add_ln1194   | add | fabric | 0       |
+|   + lsu_module                       | 0   |        |              |     |        |         |
+|     mask_fu_612_p2                   | -   |        | mask         | add | fabric | 0       |
+|     add_ln1104_fu_624_p2             | -   |        | add_ln1104   | add | fabric | 0       |
+|     sub_ln1105_fu_646_p2             | -   |        | sub_ln1105   | sub | fabric | 0       |
+|     i_22_fu_732_p2                   | -   |        | i_22         | add | fabric | 0       |
+|     idx_fu_746_p2                    | -   |        | idx          | add | fabric | 0       |
+|    + reclaim_ldq                     | 0   |        |              |     |        |         |
+|      add_ln1213_fu_858_p2            | -   |        | add_ln1213   | add | fabric | 0       |
+|      add_ln1215_fu_918_p2            | -   |        | add_ln1215   | add | fabric | 0       |
+|      count_3_fu_945_p2               | -   |        | count_3      | add | fabric | 0       |
+|      add_ln1218_fu_1000_p2           | -   |        | add_ln1218   | add | fabric | 0       |
+|      add_ln1219_fu_1041_p2           | -   |        | add_ln1219   | add | fabric | 0       |
+|    + try_issue_load                  | 0   |        |              |     |        |         |
+|      i_2_fu_324_p2                   | -   |        | i_2          | add | fabric | 0       |
+|      idx_2_fu_368_p2                 | -   |        | idx_2        | add | fabric | 0       |
+|      add_ln1147_fu_345_p2            | -   |        | add_ln1147   | add | fabric | 0       |
+|   + rob_commit_module                | 0   |        |              |     |        |         |
+|     add_ln1365_fu_746_p2             | -   |        | add_ln1365   | add | fabric | 0       |
+|     add_ln1384_fu_825_p2             | -   |        | add_ln1384   | add | fabric | 0       |
+|     i_4_fu_936_p2                    | -   |        | i_4          | add | fabric | 0       |
+|     add_ln1324_fu_1031_p2            | -   |        | add_ln1324   | add | fabric | 0       |
+|     add_ln1324_1_fu_1043_p2          | -   |        | add_ln1324_1 | add | fabric | 0       |
+|     add_ln1335_fu_972_p2             | -   |        | add_ln1335   | add | fabric | 0       |
+|     add_ln1335_1_fu_984_p2           | -   |        | add_ln1335_1 | add | fabric | 0       |
+|     add_ln1336_fu_1008_p2            | -   |        | add_ln1336   | add | fabric | 0       |
+|     grp_fu_708_p2                    | -   |        | add_ln1408   | add | fabric | 0       |
+|     grp_fu_708_p2                    | -   |        | add_ln1355   | add | fabric | 0       |
+|    + lsu_reclaim_store               | 0   |        |              |     |        |         |
+|      add_ln1224_fu_984_p2            | -   |        | add_ln1224   | add | fabric | 0       |
+|      add_ln1226_fu_1046_p2           | -   |        | add_ln1226   | add | fabric | 0       |
+|      count_5_fu_1073_p2              | -   |        | count_5      | add | fabric | 0       |
+|      add_ln1229_fu_1130_p2           | -   |        | add_ln1229   | add | fabric | 0       |
+|      add_ln1230_fu_1173_p2           | -   |        | add_ln1230   | add | fabric | 0       |
+|   + frontend_module                  | 0   |        |              |     |        |         |
+|     add_ln77_fu_736_p2               | -   |        | add_ln77     | add | fabric | 0       |
+|     add_ln102_fu_821_p2              | -   |        | add_ln102    | add | fabric | 0       |
+|   + decode_module                    | 0   |        |              |     |        |         |
+|     add_ln230_fu_4356_p2             | -   |        | add_ln230    | add | fabric | 0       |
+|   + rename_module                    | 0   |        |              |     |        |         |
+|     i_8_fu_674_p2                    | -   |        | i_8          | add | fabric | 0       |
+|     i_10_fu_768_p2                   | -   |        | i_10         | add | fabric | 0       |
+|     add_ln364_fu_787_p2              | -   |        | add_ln364    | add | fabric | 0       |
+|     add_ln364_1_fu_799_p2            | -   |        | add_ln364_1  | add | fabric | 0       |
+|     add_ln365_fu_823_p2              | -   |        | add_ln365    | add | fabric | 0       |
+|     add_ln382_1_fu_887_p2            | -   |        | add_ln382_1  | add | fabric | 0       |
+|     add_ln382_fu_893_p2              | -   |        | add_ln382    | add | fabric | 0       |
+|     t_2_fu_909_p2                    | -   |        | t_2          | add | fabric | 0       |
+|     mul_3ns_7ns_9_1_1_U1873          | -   |        | mul_ln376    | mul | auto   | 0       |
+|     add_ln376_1_fu_979_p2            | -   |        | add_ln376_1  | add | fabric | 0       |
+|     add_ln376_fu_995_p2              | -   |        | add_ln376    | add | fabric | 0       |
+|     add_ln388_fu_1038_p2             | -   |        | add_ln388    | add | fabric | 0       |
+|     add_ln445_fu_1069_p2             | -   |        | add_ln445    | add | fabric | 0       |
+|   + rob_allocate                     | 0   |        |              |     |        |         |
+|     add_ln537_fu_572_p2              | -   |        | add_ln537    | add | fabric | 0       |
+|     add_ln548_fu_662_p2              | -   |        | add_ln548    | add | fabric | 0       |
+|   + issue_module                     | 0   |        |              |     |        |         |
+|     add_ln598_fu_3408_p2             | -   |        | add_ln598    | add | fabric | 0       |
+|     add_ln608_fu_4066_p2             | -   |        | add_ln608    | add | fabric | 0       |
+|     add_ln628_fu_4177_p2             | -   |        | add_ln628    | add | fabric | 0       |
+|     add_ln660_fu_5667_p2             | -   |        | add_ln660    | add | fabric | 0       |
+|     add_ln675_fu_6361_p2             | -   |        | add_ln675    | add | fabric | 0       |
+|     add_ln677_fu_6377_p2             | -   |        | add_ln677    | add | fabric | 0       |
+|     add_ln677_1_fu_6393_p2           | -   |        | add_ln677_1  | add | fabric | 0       |
+|     add_ln678_1_fu_6415_p2           | -   |        | add_ln678_1  | add | fabric | 0       |
+|     add_ln678_fu_6431_p2             | -   |        | add_ln678    | add | fabric | 0       |
+|     add_ln681_fu_6452_p2             | -   |        | add_ln681    | add | fabric | 0       |
+|     add_ln680_fu_6468_p2             | -   |        | add_ln680    | add | fabric | 0       |
+|     add_ln682_fu_6484_p2             | -   |        | add_ln682    | add | fabric | 0       |
+|     add_ln684_fu_6833_p2             | -   |        | add_ln684    | add | fabric | 0       |
+|     add_ln696_fu_6922_p2             | -   |        | add_ln696    | add | fabric | 0       |
+|     sub_ln707_fu_7598_p2             | -   |        | sub_ln707    | sub | fabric | 0       |
+|     add_ln708_fu_7616_p2             | -   |        | add_ln708    | add | fabric | 0       |
+|     add_ln708_1_fu_7632_p2           | -   |        | add_ln708_1  | add | fabric | 0       |
+|     add_ln717_fu_7788_p2             | -   |        | add_ln717    | add | fabric | 0       |
+|     add_ln717_1_fu_7800_p2           | -   |        | add_ln717_1  | add | fabric | 0       |
+|    + compact_iq                      | 0   |        |              |     |        |         |
+|      add_ln581_fu_6064_p2            | -   |        | add_ln581    | add | fabric | 0       |
+|      add_ln583_fu_6207_p2            | -   |        | add_ln583    | add | fabric | 0       |
+|      w_5_fu_6218_p2                  | -   |        | w_5          | add | fabric | 0       |
+|      add_ln586_fu_6448_p2            | -   |        | add_ln586    | add | fabric | 0       |
+|      add_ln587_fu_6572_p2            | -   |        | add_ln587    | add | fabric | 0       |
+|   + execute_module                   | 3   |        |              |     |        |         |
+|     add_ln740_fu_606_p2              | -   |        | add_ln740    | add | fabric | 0       |
+|     grp_fu_366_p2                    | -   |        | add_ln793    | add | fabric | 0       |
+|     add_ln729_1_fu_1336_p2           | -   |        | add_ln729_1  | add | fabric | 0       |
+|     grp_fu_366_p2                    | -   |        | add_ln789    | add | fabric | 0       |
+|     add_ln729_fu_1454_p2             | -   |        | add_ln729    | add | fabric | 0       |
+|     add_ln786_fu_1492_p2             | -   |        | add_ln786    | add | fabric | 0       |
+|     grp_fu_379_p2                    | -   |        | add_ln784    | add | fabric | 0       |
+|     grp_fu_379_p2                    | -   |        | add_ln783    | add | fabric | 0       |
+|     grp_fu_379_p2                    | -   |        | add_ln782    | add | fabric | 0       |
+|     grp_fu_379_p2                    | -   |        | add_ln781    | add | fabric | 0       |
+|     grp_fu_379_p2                    | -   |        | add_ln780    | add | fabric | 0       |
+|     grp_fu_379_p2                    | -   |        | add_ln779    | add | fabric | 0       |
+|     grp_fu_387_p2                    | -   |        | add_ln778    | add | fabric | 0       |
+|     grp_fu_366_p2                    | -   |        | add_ln778_1  | add | fabric | 0       |
+|     grp_fu_387_p2                    | -   |        | add_ln777    | add | fabric | 0       |
+|     grp_fu_379_p2                    | -   |        | add_ln777_1  | add | fabric | 0       |
+|     mul_32s_32s_64_1_1_U2354         | 3   |        | mul_ln776    | mul | auto   | 0       |
+|     sub_ln773_fu_1879_p2             | -   |        | sub_ln773    | sub | fabric | 0       |
+|     add_ln772_fu_1905_p2             | -   |        | add_ln772    | add | fabric | 0       |
+|     sub_ln763_fu_2084_p2             | -   |        | sub_ln763    | sub | fabric | 0       |
+|     add_ln762_fu_2102_p2             | -   |        | add_ln762    | add | fabric | 0       |
+|  + boom_core_reset_step              | 0   |        |              |     |        |         |
+|    grp_fu_813_p2                     | -   |        | add_ln1657   | add | fabric | 0       |
+|    add_ln1628_fu_1480_p2             | -   |        | add_ln1628   | add | fabric | 0       |
+|    grp_fu_813_p2                     | -   |        | add_ln1623   | add | fabric | 0       |
+|    grp_fu_813_p2                     | -   |        | add_ln1606   | add | fabric | 0       |
+|    grp_fu_813_p2                     | -   |        | add_ln1589   | add | fabric | 0       |
+|    grp_fu_813_p2                     | -   |        | add_ln1556   | add | fabric | 0       |
+|    grp_fu_813_p2                     | -   |        | add_ln1536   | add | fabric | 0       |
+|    add_ln1489_fu_1578_p2             | -   |        | add_ln1489   | add | fabric | 0       |
+|    add_ln1507_fu_2005_p2             | -   |        | add_ln1507   | add | fabric | 0       |
++--------------------------------------+-----+--------+--------------+-----+--------+---------+
+
+
+================================================================
+== Bind Storage Report
+================================================================
++-------------------------------------------------------------+------+------+--------+--------------------------------------------------------+---------+------+---------+
+| Name                                                        | BRAM | URAM | Pragma | Variable                                               | Storage | Impl | Latency |
++-------------------------------------------------------------+------+------+--------+--------------------------------------------------------+---------+------+---------+
+| + boom_core_top                                             | 15   | 0    |        |                                                        |         |      |         |
+|   pipe_0_fifo_U                                             | -    | -    |        | pipe_0                                                 | fifo    | srl  | 0       |
+|   pipe_1_fifo_U                                             | -    | -    |        | pipe_1                                                 | fifo    | srl  | 0       |
+|   pipe_2_fifo_U                                             | -    | -    |        | pipe_2                                                 | fifo    | srl  | 0       |
+|   pipe_3_fifo_U                                             | -    | -    |        | pipe_3                                                 | fifo    | srl  | 0       |
+|   pipe_4_fifo_U                                             | -    | -    |        | pipe_4                                                 | fifo    | srl  | 0       |
+|   state_rename_int_map_table_map_table_U                    | -    | -    |        | state_rename_int_map_table_map_table                   | ram_s2p | auto | 1       |
+|   state_rename_int_map_table_committed_map_table_U          | -    | -    |        | state_rename_int_map_table_committed_map_table         | ram_1p  | auto | 1       |
+|   state_rename_int_free_list_free_list_U                    | -    | -    |        | state_rename_int_free_list_free_list                   | ram_1p  | auto | 1       |
+|   state_rename_int_free_list_busy_table_U                   | -    | -    |        | state_rename_int_free_list_busy_table                  | ram_s2p | auto | 1       |
+|   state_rob_entries_valid_U                                 | -    | -    |        | state_rob_entries_valid                                | ram_s2p | auto | 1       |
+|   state_rob_entries_busy_U                                  | -    | -    |        | state_rob_entries_busy                                 | ram_1p  | auto | 1       |
+|   state_issue_alu_iq_entries_valid_U                        | -    | -    |        | state_issue_alu_iq_entries_valid                       | ram_1p  | auto | 1       |
+|   state_issue_alu_iq_entries_request_U                      | -    | -    |        | state_issue_alu_iq_entries_request                     | ram_1p  | auto | 1       |
+|   state_issue_alu_iq_entries_granted_U                      | -    | -    |        | state_issue_alu_iq_entries_granted                     | ram_1p  | auto | 1       |
+|   state_branch_state_tag_valid_U                            | -    | -    |        | state_branch_state_tag_valid                           | ram_1p  | auto | 1       |
+|   state_branch_state_snapshot_valid_U                       | -    | -    |        | state_branch_state_snapshot_valid                      | ram_1p  | auto | 1       |
+|   state_lsu_ldq_valid_U                                     | -    | -    |        | state_lsu_ldq_valid                                    | ram_1p  | auto | 1       |
+|   state_lsu_ldq_response_pending_U                          | -    | -    |        | state_lsu_ldq_response_pending                         | ram_1p  | auto | 1       |
+|   state_lsu_stq_valid_U                                     | -    | -    |        | state_lsu_stq_valid                                    | ram_1p  | auto | 1       |
+|   state_lsu_stq_committed_U                                 | -    | -    |        | state_lsu_stq_committed                                | ram_1p  | auto | 1       |
+|   state_lsu_stq_issued_to_memory_U                          | -    | -    |        | state_lsu_stq_issued_to_memory                         | ram_1p  | auto | 1       |
+|   state_int_rf_U                                            | 4    | -    |        | state_int_rf                                           | ram_s2p | auto | 1       |
+|  + boom_core_cycle_io                                       | 11   | 0    |        |                                                        |         |      |         |
+|    state_rob_entries_uop_queue_rob_allocation_id_U          | 1    | -    |        | state_rob_entries_uop_queue_rob_allocation_id          | ram_s2p | auto | 1       |
+|    state_issue_alu_iq_entries_uop_branch_br_mask_U          | -    | -    |        | state_issue_alu_iq_entries_uop_branch_br_mask          | ram_1p  | auto | 1       |
+|    state_issue_alu_iq_entries_killed_U                      | -    | -    |        | state_issue_alu_iq_entries_killed                      | ram_1p  | auto | 1       |
+|    state_issue_alu_iq_entries_pdst_busy_U                   | -    | -    |        | state_issue_alu_iq_entries_pdst_busy                   | ram_1p  | auto | 1       |
+|    state_issue_alu_iq_entries_prs1_busy_U                   | -    | -    |        | state_issue_alu_iq_entries_prs1_busy                   | ram_1p  | auto | 1       |
+|    state_issue_alu_iq_entries_prs2_busy_U                   | -    | -    |        | state_issue_alu_iq_entries_prs2_busy                   | ram_1p  | auto | 1       |
+|    state_issue_alu_iq_entries_prs3_busy_U                   | -    | -    |        | state_issue_alu_iq_entries_prs3_busy                   | ram_1p  | auto | 1       |
+|    state_issue_alu_iq_entries_uop_uopc_U                    | -    | -    |        | state_issue_alu_iq_entries_uop_uopc                    | ram_1p  | auto | 1       |
+|    state_issue_alu_iq_entries_uop_inst_U                    | -    | -    |        | state_issue_alu_iq_entries_uop_inst                    | ram_1p  | auto | 1       |
+|    state_issue_alu_iq_entries_uop_debug_inst_U              | -    | -    |        | state_issue_alu_iq_entries_uop_debug_inst              | ram_1p  | auto | 1       |
+|    state_issue_alu_iq_entries_uop_is_rvc_U                  | -    | -    |        | state_issue_alu_iq_entries_uop_is_rvc                  | ram_1p  | auto | 1       |
+|    state_issue_alu_iq_entries_uop_debug_pc_U                | -    | -    |        | state_issue_alu_iq_entries_uop_debug_pc                | ram_1p  | auto | 1       |
+|    state_issue_alu_iq_entries_uop_iq_type_U                 | -    | -    |        | state_issue_alu_iq_entries_uop_iq_type                 | ram_1p  | auto | 1       |
+|    state_issue_alu_iq_entries_uop_fu_code_U                 | -    | -    |        | state_issue_alu_iq_entries_uop_fu_code                 | ram_1p  | auto | 1       |
+|    state_issue_alu_iq_entries_uop_ctrl_br_type_U            | -    | -    |        | state_issue_alu_iq_entries_uop_ctrl_br_type            | ram_1p  | auto | 1       |
+|    state_issue_alu_iq_entries_uop_ctrl_op1_sel_U            | -    | -    |        | state_issue_alu_iq_entries_uop_ctrl_op1_sel            | ram_1p  | auto | 1       |
+|    state_issue_alu_iq_entries_uop_ctrl_op2_sel_U            | -    | -    |        | state_issue_alu_iq_entries_uop_ctrl_op2_sel            | ram_1p  | auto | 1       |
+|    state_issue_alu_iq_entries_uop_ctrl_imm_sel_U            | -    | -    |        | state_issue_alu_iq_entries_uop_ctrl_imm_sel            | ram_1p  | auto | 1       |
+|    state_issue_alu_iq_entries_uop_ctrl_op_fcn_U             | -    | -    |        | state_issue_alu_iq_entries_uop_ctrl_op_fcn             | ram_1p  | auto | 1       |
+|    state_issue_alu_iq_entries_uop_ctrl_fcn_dw_U             | -    | -    |        | state_issue_alu_iq_entries_uop_ctrl_fcn_dw             | ram_1p  | auto | 1       |
+|    state_issue_alu_iq_entries_uop_ctrl_csr_cmd_U            | -    | -    |        | state_issue_alu_iq_entries_uop_ctrl_csr_cmd            | ram_1p  | auto | 1       |
+|    state_issue_alu_iq_entries_uop_ctrl_is_load_U            | -    | -    |        | state_issue_alu_iq_entries_uop_ctrl_is_load            | ram_1p  | auto | 1       |
+|    state_issue_alu_iq_entries_uop_ctrl_is_sta_U             | -    | -    |        | state_issue_alu_iq_entries_uop_ctrl_is_sta             | ram_1p  | auto | 1       |
+|    state_issue_alu_iq_entries_uop_ctrl_is_std_U             | -    | -    |        | state_issue_alu_iq_entries_uop_ctrl_is_std             | ram_1p  | auto | 1       |
+|    state_issue_alu_iq_entries_uop_iw_state_U                | -    | -    |        | state_issue_alu_iq_entries_uop_iw_state                | ram_1p  | auto | 1       |
+|    state_issue_alu_iq_entries_uop_iw_p1_poisoned_U          | -    | -    |        | state_issue_alu_iq_entries_uop_iw_p1_poisoned          | ram_1p  | auto | 1       |
+|    state_issue_alu_iq_entries_uop_iw_p2_poisoned_U          | -    | -    |        | state_issue_alu_iq_entries_uop_iw_p2_poisoned          | ram_1p  | auto | 1       |
+|    state_issue_alu_iq_entries_uop_branch_br_tag_U           | -    | -    |        | state_issue_alu_iq_entries_uop_branch_br_tag           | ram_1p  | auto | 1       |
+|    state_issue_alu_iq_entries_uop_branch_ftq_idx_U          | -    | -    |        | state_issue_alu_iq_entries_uop_branch_ftq_idx          | ram_1p  | auto | 1       |
+|    state_issue_alu_iq_entries_uop_branch_pc_lob_U           | -    | -    |        | state_issue_alu_iq_entries_uop_branch_pc_lob           | ram_1p  | auto | 1       |
+|    state_issue_alu_iq_entries_uop_branch_edge_inst_U        | -    | -    |        | state_issue_alu_iq_entries_uop_branch_edge_inst        | ram_1p  | auto | 1       |
+|    state_issue_alu_iq_entries_uop_branch_taken_U            | -    | -    |        | state_issue_alu_iq_entries_uop_branch_taken            | ram_1p  | auto | 1       |
+|    state_issue_alu_iq_entries_uop_branch_is_br_U            | -    | -    |        | state_issue_alu_iq_entries_uop_branch_is_br            | ram_1p  | auto | 1       |
+|    state_issue_alu_iq_entries_uop_branch_is_jalr_U          | -    | -    |        | state_issue_alu_iq_entries_uop_branch_is_jalr          | ram_1p  | auto | 1       |
+|    state_issue_alu_iq_entries_uop_branch_is_jal_U           | -    | -    |        | state_issue_alu_iq_entries_uop_branch_is_jal           | ram_1p  | auto | 1       |
+|    state_issue_alu_iq_entries_uop_branch_is_sfb_U           | -    | -    |        | state_issue_alu_iq_entries_uop_branch_is_sfb           | ram_1p  | auto | 1       |
+|    state_issue_alu_iq_entries_uop_imm_packed_U              | -    | -    |        | state_issue_alu_iq_entries_uop_imm_packed              | ram_1p  | auto | 1       |
+|    state_issue_alu_iq_entries_uop_csr_addr_U                | -    | -    |        | state_issue_alu_iq_entries_uop_csr_addr                | ram_1p  | auto | 1       |
+|    state_issue_alu_iq_entries_uop_queue_rob_idx_U           | -    | -    |        | state_issue_alu_iq_entries_uop_queue_rob_idx           | ram_1p  | auto | 1       |
+|    state_issue_alu_iq_entries_uop_queue_ldq_idx_U           | -    | -    |        | state_issue_alu_iq_entries_uop_queue_ldq_idx           | ram_1p  | auto | 1       |
+|    state_issue_alu_iq_entries_uop_queue_stq_idx_U           | -    | -    |        | state_issue_alu_iq_entries_uop_queue_stq_idx           | ram_1p  | auto | 1       |
+|    state_issue_alu_iq_entries_uop_queue_rxq_idx_U           | -    | -    |        | state_issue_alu_iq_entries_uop_queue_rxq_idx           | ram_1p  | auto | 1       |
+|    state_issue_alu_iq_entries_uop_queue_rob_allocation_id_U | -    | -    |        | state_issue_alu_iq_entries_uop_queue_rob_allocation_id | ram_1p  | auto | 1       |
+|    state_issue_alu_iq_entries_uop_rename_ldst_U             | -    | -    |        | state_issue_alu_iq_entries_uop_rename_ldst             | ram_1p  | auto | 1       |
+|    state_issue_alu_iq_entries_uop_rename_lrs1_U             | -    | -    |        | state_issue_alu_iq_entries_uop_rename_lrs1             | ram_1p  | auto | 1       |
+|    state_issue_alu_iq_entries_uop_rename_lrs2_U             | -    | -    |        | state_issue_alu_iq_entries_uop_rename_lrs2             | ram_1p  | auto | 1       |
+|    state_issue_alu_iq_entries_uop_rename_lrs3_U             | -    | -    |        | state_issue_alu_iq_entries_uop_rename_lrs3             | ram_1p  | auto | 1       |
+|    state_issue_alu_iq_entries_uop_rename_pdst_U             | -    | -    |        | state_issue_alu_iq_entries_uop_rename_pdst             | ram_1p  | auto | 1       |
+|    state_issue_alu_iq_entries_uop_rename_prs1_U             | -    | -    |        | state_issue_alu_iq_entries_uop_rename_prs1             | ram_1p  | auto | 1       |
+|    state_issue_alu_iq_entries_uop_rename_prs2_U             | -    | -    |        | state_issue_alu_iq_entries_uop_rename_prs2             | ram_1p  | auto | 1       |
+|    state_issue_alu_iq_entries_uop_rename_prs3_U             | -    | -    |        | state_issue_alu_iq_entries_uop_rename_prs3             | ram_1p  | auto | 1       |
+|    state_issue_alu_iq_entries_uop_rename_ppred_U            | -    | -    |        | state_issue_alu_iq_entries_uop_rename_ppred            | ram_1p  | auto | 1       |
+|    state_issue_alu_iq_entries_uop_rename_prs1_busy_U        | -    | -    |        | state_issue_alu_iq_entries_uop_rename_prs1_busy        | ram_1p  | auto | 1       |
+|    state_issue_alu_iq_entries_uop_rename_prs2_busy_U        | -    | -    |        | state_issue_alu_iq_entries_uop_rename_prs2_busy        | ram_1p  | auto | 1       |
+|    state_issue_alu_iq_entries_uop_rename_prs3_busy_U        | -    | -    |        | state_issue_alu_iq_entries_uop_rename_prs3_busy        | ram_1p  | auto | 1       |
+|    state_issue_alu_iq_entries_uop_rename_ppred_busy_U       | -    | -    |        | state_issue_alu_iq_entries_uop_rename_ppred_busy       | ram_1p  | auto | 1       |
+|    state_issue_alu_iq_entries_uop_rename_stale_pdst_U       | -    | -    |        | state_issue_alu_iq_entries_uop_rename_stale_pdst       | ram_1p  | auto | 1       |
+|    state_issue_alu_iq_entries_uop_rename_dst_rtype_U        | -    | -    |        | state_issue_alu_iq_entries_uop_rename_dst_rtype        | ram_1p  | auto | 1       |
+|    state_issue_alu_iq_entries_uop_rename_lrs1_rtype_U       | -    | -    |        | state_issue_alu_iq_entries_uop_rename_lrs1_rtype       | ram_1p  | auto | 1       |
+|    state_issue_alu_iq_entries_uop_rename_lrs2_rtype_U       | -    | -    |        | state_issue_alu_iq_entries_uop_rename_lrs2_rtype       | ram_1p  | auto | 1       |
+|    state_issue_alu_iq_entries_uop_rename_frs3_en_U          | -    | -    |        | state_issue_alu_iq_entries_uop_rename_frs3_en          | ram_1p  | auto | 1       |
+|    state_issue_alu_iq_entries_uop_rename_fp_val_U           | -    | -    |        | state_issue_alu_iq_entries_uop_rename_fp_val           | ram_1p  | auto | 1       |
+|    state_issue_alu_iq_entries_uop_rename_fp_single_U        | -    | -    |        | state_issue_alu_iq_entries_uop_rename_fp_single        | ram_1p  | auto | 1       |
+|    state_issue_alu_iq_entries_uop_exception_U               | -    | -    |        | state_issue_alu_iq_entries_uop_exception               | ram_1p  | auto | 1       |
+|    state_issue_alu_iq_entries_uop_exc_cause_U               | -    | -    |        | state_issue_alu_iq_entries_uop_exc_cause               | ram_1p  | auto | 1       |
+|    state_issue_alu_iq_entries_uop_bypassable_U              | -    | -    |        | state_issue_alu_iq_entries_uop_bypassable              | ram_1p  | auto | 1       |
+|    state_issue_alu_iq_entries_uop_mem_mem_cmd_U             | -    | -    |        | state_issue_alu_iq_entries_uop_mem_mem_cmd             | ram_1p  | auto | 1       |
+|    state_issue_alu_iq_entries_uop_mem_mem_size_U            | -    | -    |        | state_issue_alu_iq_entries_uop_mem_mem_size            | ram_1p  | auto | 1       |
+|    state_issue_alu_iq_entries_uop_mem_mem_signed_U          | -    | -    |        | state_issue_alu_iq_entries_uop_mem_mem_signed          | ram_1p  | auto | 1       |
+|    state_issue_alu_iq_entries_uop_mem_is_fence_U            | -    | -    |        | state_issue_alu_iq_entries_uop_mem_is_fence            | ram_1p  | auto | 1       |
+|    state_issue_alu_iq_entries_uop_mem_is_fencei_U           | -    | -    |        | state_issue_alu_iq_entries_uop_mem_is_fencei           | ram_1p  | auto | 1       |
+|    state_issue_alu_iq_entries_uop_mem_is_amo_U              | -    | -    |        | state_issue_alu_iq_entries_uop_mem_is_amo              | ram_1p  | auto | 1       |
+|    state_issue_alu_iq_entries_uop_mem_uses_ldq_U            | -    | -    |        | state_issue_alu_iq_entries_uop_mem_uses_ldq            | ram_1p  | auto | 1       |
+|    state_issue_alu_iq_entries_uop_mem_uses_stq_U            | -    | -    |        | state_issue_alu_iq_entries_uop_mem_uses_stq            | ram_1p  | auto | 1       |
+|    state_issue_alu_iq_entries_uop_mem_ldst_is_rs1_U         | -    | -    |        | state_issue_alu_iq_entries_uop_mem_ldst_is_rs1         | ram_1p  | auto | 1       |
+|    state_issue_alu_iq_entries_uop_mem_ldst_val_U            | -    | -    |        | state_issue_alu_iq_entries_uop_mem_ldst_val            | ram_1p  | auto | 1       |
+|    state_issue_alu_iq_entries_uop_is_sys_pc2epc_U           | -    | -    |        | state_issue_alu_iq_entries_uop_is_sys_pc2epc           | ram_1p  | auto | 1       |
+|    state_issue_alu_iq_entries_uop_is_unique_U               | -    | -    |        | state_issue_alu_iq_entries_uop_is_unique               | ram_1p  | auto | 1       |
+|    state_issue_alu_iq_entries_uop_flush_on_commit_U         | -    | -    |        | state_issue_alu_iq_entries_uop_flush_on_commit         | ram_1p  | auto | 1       |
+|    state_issue_alu_iq_entries_uop_exc_exception_U           | -    | -    |        | state_issue_alu_iq_entries_uop_exc_exception           | ram_1p  | auto | 1       |
+|    state_issue_alu_iq_entries_uop_exc_exc_cause_U           | -    | -    |        | state_issue_alu_iq_entries_uop_exc_exc_cause           | ram_1p  | auto | 1       |
+|    state_issue_alu_iq_entries_uop_exc_xcpt_pf_if_U          | -    | -    |        | state_issue_alu_iq_entries_uop_exc_xcpt_pf_if          | ram_1p  | auto | 1       |
+|    state_issue_alu_iq_entries_uop_exc_xcpt_ae_if_U          | -    | -    |        | state_issue_alu_iq_entries_uop_exc_xcpt_ae_if          | ram_1p  | auto | 1       |
+|    state_issue_alu_iq_entries_uop_exc_xcpt_ma_if_U          | -    | -    |        | state_issue_alu_iq_entries_uop_exc_xcpt_ma_if          | ram_1p  | auto | 1       |
+|    state_issue_alu_iq_entries_uop_exc_bp_debug_if_U         | -    | -    |        | state_issue_alu_iq_entries_uop_exc_bp_debug_if         | ram_1p  | auto | 1       |
+|    state_issue_alu_iq_entries_uop_exc_bp_xcpt_if_U          | -    | -    |        | state_issue_alu_iq_entries_uop_exc_bp_xcpt_if          | ram_1p  | auto | 1       |
+|    state_issue_alu_iq_entries_uop_debug_debug_fsrc_U        | -    | -    |        | state_issue_alu_iq_entries_uop_debug_debug_fsrc        | ram_1p  | auto | 1       |
+|    state_issue_alu_iq_entries_uop_debug_debug_tsrc_U        | -    | -    |        | state_issue_alu_iq_entries_uop_debug_debug_tsrc        | ram_1p  | auto | 1       |
+|    state_issue_alu_iq_entries_uop_debug_debug_inst_U        | -    | -    |        | state_issue_alu_iq_entries_uop_debug_debug_inst        | ram_1p  | auto | 1       |
+|    state_issue_alu_iq_entries_uop_debug_debug_pc_U          | -    | -    |        | state_issue_alu_iq_entries_uop_debug_debug_pc          | ram_1p  | auto | 1       |
+|    state_issue_alu_iq_entries_prs1_data_U                   | -    | -    |        | state_issue_alu_iq_entries_prs1_data                   | ram_1p  | auto | 1       |
+|    state_issue_alu_iq_entries_prs2_data_U                   | -    | -    |        | state_issue_alu_iq_entries_prs2_data                   | ram_1p  | auto | 1       |
+|    state_issue_alu_iq_entries_prs3_data_U                   | -    | -    |        | state_issue_alu_iq_entries_prs3_data                   | ram_1p  | auto | 1       |
+|    state_lsu_ldq_branch_mask_U                              | -    | -    |        | state_lsu_ldq_branch_mask                              | ram_1p  | auto | 1       |
+|    state_lsu_ldq_rob_idx_U                                  | -    | -    |        | state_lsu_ldq_rob_idx                                  | ram_1p  | auto | 1       |
+|    state_lsu_ldq_rob_allocation_id_U                        | -    | -    |        | state_lsu_ldq_rob_allocation_id                        | ram_1p  | auto | 1       |
+|    state_lsu_ldq_signed_load_U                              | -    | -    |        | state_lsu_ldq_signed_load                              | ram_1p  | auto | 1       |
+|    state_lsu_ldq_completed_U                                | -    | -    |        | state_lsu_ldq_completed                                | ram_1p  | auto | 1       |
+|    state_lsu_ldq_killed_U                                   | -    | -    |        | state_lsu_ldq_killed                                   | ram_1p  | auto | 1       |
+|    state_lsu_ldq_size_U                                     | -    | -    |        | state_lsu_ldq_size                                     | ram_1p  | auto | 1       |
+|    state_lsu_ldq_transaction_id_U                           | -    | -    |        | state_lsu_ldq_transaction_id                           | ram_1p  | auto | 1       |
+|    state_lsu_ldq_address_U                                  | -    | -    |        | state_lsu_ldq_address                                  | ram_1p  | auto | 1       |
+|    state_lsu_ldq_result_U                                   | -    | -    |        | state_lsu_ldq_result                                   | ram_1p  | auto | 1       |
+|    state_lsu_stq_branch_mask_U                              | -    | -    |        | state_lsu_stq_branch_mask                              | ram_1p  | auto | 1       |
+|    state_lsu_stq_address_valid_U                            | -    | -    |        | state_lsu_stq_address_valid                            | ram_1p  | auto | 1       |
+|    state_lsu_stq_data_valid_U                               | -    | -    |        | state_lsu_stq_data_valid                               | ram_1p  | auto | 1       |
+|    state_lsu_stq_completed_U                                | -    | -    |        | state_lsu_stq_completed                                | ram_1p  | auto | 1       |
+|    state_lsu_stq_killed_U                                   | -    | -    |        | state_lsu_stq_killed                                   | ram_1p  | auto | 1       |
+|    state_lsu_stq_rob_idx_U                                  | -    | -    |        | state_lsu_stq_rob_idx                                  | ram_1p  | auto | 1       |
+|    state_lsu_stq_mask_U                                     | -    | -    |        | state_lsu_stq_mask                                     | ram_1p  | auto | 1       |
+|    state_lsu_stq_size_U                                     | -    | -    |        | state_lsu_stq_size                                     | ram_1p  | auto | 1       |
+|    state_lsu_stq_rob_allocation_id_U                        | -    | -    |        | state_lsu_stq_rob_allocation_id                        | ram_1p  | auto | 1       |
+|    state_lsu_stq_address_U                                  | -    | -    |        | state_lsu_stq_address                                  | ram_1p  | auto | 1       |
+|    state_lsu_stq_data_U                                     | -    | -    |        | state_lsu_stq_data                                     | ram_1p  | auto | 1       |
+|    state_rob_entries_exception_U                            | -    | -    |        | state_rob_entries_exception                            | ram_1p  | auto | 1       |
+|    state_rob_entries_uop_uopc_U                             | -    | -    |        | state_rob_entries_uop_uopc                             | ram_1p  | auto | 1       |
+|    state_rob_entries_uop_inst_U                             | 1    | -    |        | state_rob_entries_uop_inst                             | ram_1p  | auto | 1       |
+|    state_rob_entries_uop_debug_pc_U                         | 2    | -    |        | state_rob_entries_uop_debug_pc                         | ram_1p  | auto | 1       |
+|    state_rob_entries_uop_ctrl_is_load_U                     | -    | -    |        | state_rob_entries_uop_ctrl_is_load                     | ram_1p  | auto | 1       |
+|    state_rob_entries_uop_ctrl_is_sta_U                      | -    | -    |        | state_rob_entries_uop_ctrl_is_sta                      | ram_1p  | auto | 1       |
+|    state_rob_entries_uop_branch_br_mask_U                   | -    | -    |        | state_rob_entries_uop_branch_br_mask                   | ram_1p  | auto | 1       |
+|    state_rob_entries_uop_queue_rob_idx_U                    | -    | -    |        | state_rob_entries_uop_queue_rob_idx                    | ram_1p  | auto | 1       |
+|    state_rob_entries_uop_rename_ldst_U                      | -    | -    |        | state_rob_entries_uop_rename_ldst                      | ram_1p  | auto | 1       |
+|    state_rob_entries_uop_rename_pdst_U                      | -    | -    |        | state_rob_entries_uop_rename_pdst                      | ram_1p  | auto | 1       |
+|    state_rob_entries_uop_rename_stale_pdst_U                | -    | -    |        | state_rob_entries_uop_rename_stale_pdst                | ram_1p  | auto | 1       |
+|    state_rob_entries_uop_rename_dst_rtype_U                 | -    | -    |        | state_rob_entries_uop_rename_dst_rtype                 | ram_1p  | auto | 1       |
+|    state_rob_entries_memory_valid_U                         | -    | -    |        | state_rob_entries_memory_valid                         | ram_1p  | auto | 1       |
+|    state_rob_entries_is_load_U                              | -    | -    |        | state_rob_entries_is_load                              | ram_1p  | auto | 1       |
+|    state_rob_entries_is_store_U                             | -    | -    |        | state_rob_entries_is_store                             | ram_1p  | auto | 1       |
+|    state_rob_entries_signed_load_U                          | -    | -    |        | state_rob_entries_signed_load                          | ram_1p  | auto | 1       |
+|    state_rob_entries_memory_request_sent_U                  | -    | -    |        | state_rob_entries_memory_request_sent                  | ram_1p  | auto | 1       |
+|    state_rob_entries_memory_completed_U                     | -    | -    |        | state_rob_entries_memory_completed                     | ram_1p  | auto | 1       |
+|    state_rob_entries_memory_address_U                       | 2    | -    |        | state_rob_entries_memory_address                       | ram_1p  | auto | 1       |
+|    state_rob_entries_memory_data_U                          | 2    | -    |        | state_rob_entries_memory_data                          | ram_1p  | auto | 1       |
+|    state_rob_entries_memory_mask_U                          | -    | -    |        | state_rob_entries_memory_mask                          | ram_1p  | auto | 1       |
+|    state_rob_entries_memory_size_U                          | -    | -    |        | state_rob_entries_memory_size                          | ram_1p  | auto | 1       |
+|    state_rob_entries_memory_transaction_id_U                | 1    | -    |        | state_rob_entries_memory_transaction_id                | ram_1p  | auto | 1       |
+|    state_rename_int_map_table_br_snapshots_U                | 1    | -    |        | state_rename_int_map_table_br_snapshots                | ram_1p  | auto | 1       |
+|    state_branch_state_br_alloc_lists_U                      | -    | -    |        | state_branch_state_br_alloc_lists                      | ram_1p  | auto | 1       |
+|   + rob_complete                                            | 0    | 0    |        |                                                        |         |      |         |
+|    + branch_complete                                        | 0    | 0    |        |                                                        |         |      |         |
+|     + recover_mispredict                                    | 0    | 0    |        |                                                        |         |      |         |
+|      + kill_issue_state                                     | 0    | 0    |        |                                                        |         |      |         |
+|       + compact_issue_queue                                 | 0    | 0    |        |                                                        |         |      |         |
+|         temp_valid_U                                        | -    | -    |        | temp_valid                                             | ram_1p  | auto | 1       |
+|         temp_request_U                                      | -    | -    |        | temp_request                                           | ram_1p  | auto | 1       |
+|         temp_granted_U                                      | -    | -    |        | temp_granted                                           | ram_1p  | auto | 1       |
+|         temp_killed_U                                       | -    | -    |        | temp_killed                                            | ram_1p  | auto | 1       |
+|         temp_pdst_busy_U                                    | -    | -    |        | temp_pdst_busy                                         | ram_1p  | auto | 1       |
+|         temp_prs1_busy_U                                    | -    | -    |        | temp_prs1_busy                                         | ram_1p  | auto | 1       |
+|         temp_prs2_busy_U                                    | -    | -    |        | temp_prs2_busy                                         | ram_1p  | auto | 1       |
+|         temp_prs3_busy_U                                    | -    | -    |        | temp_prs3_busy                                         | ram_1p  | auto | 1       |
+|         temp_uop_uopc_U                                     | -    | -    |        | temp_uop_uopc                                          | ram_1p  | auto | 1       |
+|         temp_uop_inst_U                                     | -    | -    |        | temp_uop_inst                                          | ram_1p  | auto | 1       |
+|         temp_uop_debug_inst_U                               | -    | -    |        | temp_uop_debug_inst                                    | ram_1p  | auto | 1       |
+|         temp_uop_is_rvc_U                                   | -    | -    |        | temp_uop_is_rvc                                        | ram_1p  | auto | 1       |
+|         temp_uop_debug_pc_U                                 | -    | -    |        | temp_uop_debug_pc                                      | ram_1p  | auto | 1       |
+|         temp_uop_iq_type_U                                  | -    | -    |        | temp_uop_iq_type                                       | ram_1p  | auto | 1       |
+|         temp_uop_fu_code_U                                  | -    | -    |        | temp_uop_fu_code                                       | ram_1p  | auto | 1       |
+|         temp_uop_ctrl_br_type_U                             | -    | -    |        | temp_uop_ctrl_br_type                                  | ram_1p  | auto | 1       |
+|         temp_uop_ctrl_op1_sel_U                             | -    | -    |        | temp_uop_ctrl_op1_sel                                  | ram_1p  | auto | 1       |
+|         temp_uop_ctrl_op2_sel_U                             | -    | -    |        | temp_uop_ctrl_op2_sel                                  | ram_1p  | auto | 1       |
+|         temp_uop_ctrl_imm_sel_U                             | -    | -    |        | temp_uop_ctrl_imm_sel                                  | ram_1p  | auto | 1       |
+|         temp_uop_ctrl_op_fcn_U                              | -    | -    |        | temp_uop_ctrl_op_fcn                                   | ram_1p  | auto | 1       |
+|         temp_uop_ctrl_fcn_dw_U                              | -    | -    |        | temp_uop_ctrl_fcn_dw                                   | ram_1p  | auto | 1       |
+|         temp_uop_ctrl_csr_cmd_U                             | -    | -    |        | temp_uop_ctrl_csr_cmd                                  | ram_1p  | auto | 1       |
+|         temp_uop_ctrl_is_load_U                             | -    | -    |        | temp_uop_ctrl_is_load                                  | ram_1p  | auto | 1       |
+|         temp_uop_ctrl_is_sta_U                              | -    | -    |        | temp_uop_ctrl_is_sta                                   | ram_1p  | auto | 1       |
+|         temp_uop_ctrl_is_std_U                              | -    | -    |        | temp_uop_ctrl_is_std                                   | ram_1p  | auto | 1       |
+|         temp_uop_iw_state_U                                 | -    | -    |        | temp_uop_iw_state                                      | ram_1p  | auto | 1       |
+|         temp_uop_iw_p1_poisoned_U                           | -    | -    |        | temp_uop_iw_p1_poisoned                                | ram_1p  | auto | 1       |
+|         temp_uop_iw_p2_poisoned_U                           | -    | -    |        | temp_uop_iw_p2_poisoned                                | ram_1p  | auto | 1       |
+|         temp_uop_branch_br_mask_U                           | -    | -    |        | temp_uop_branch_br_mask                                | ram_1p  | auto | 1       |
+|         temp_uop_branch_br_tag_U                            | -    | -    |        | temp_uop_branch_br_tag                                 | ram_1p  | auto | 1       |
+|         temp_uop_branch_ftq_idx_U                           | -    | -    |        | temp_uop_branch_ftq_idx                                | ram_1p  | auto | 1       |
+|         temp_uop_branch_pc_lob_U                            | -    | -    |        | temp_uop_branch_pc_lob                                 | ram_1p  | auto | 1       |
+|         temp_uop_branch_edge_inst_U                         | -    | -    |        | temp_uop_branch_edge_inst                              | ram_1p  | auto | 1       |
+|         temp_uop_branch_taken_U                             | -    | -    |        | temp_uop_branch_taken                                  | ram_1p  | auto | 1       |
+|         temp_uop_branch_is_br_U                             | -    | -    |        | temp_uop_branch_is_br                                  | ram_1p  | auto | 1       |
+|         temp_uop_branch_is_jalr_U                           | -    | -    |        | temp_uop_branch_is_jalr                                | ram_1p  | auto | 1       |
+|         temp_uop_branch_is_jal_U                            | -    | -    |        | temp_uop_branch_is_jal                                 | ram_1p  | auto | 1       |
+|         temp_uop_branch_is_sfb_U                            | -    | -    |        | temp_uop_branch_is_sfb                                 | ram_1p  | auto | 1       |
+|         temp_uop_imm_packed_U                               | -    | -    |        | temp_uop_imm_packed                                    | ram_1p  | auto | 1       |
+|         temp_uop_csr_addr_U                                 | -    | -    |        | temp_uop_csr_addr                                      | ram_1p  | auto | 1       |
+|         temp_uop_queue_rob_idx_U                            | -    | -    |        | temp_uop_queue_rob_idx                                 | ram_1p  | auto | 1       |
+|         temp_uop_queue_ldq_idx_U                            | -    | -    |        | temp_uop_queue_ldq_idx                                 | ram_1p  | auto | 1       |
+|         temp_uop_queue_stq_idx_U                            | -    | -    |        | temp_uop_queue_stq_idx                                 | ram_1p  | auto | 1       |
+|         temp_uop_queue_rxq_idx_U                            | -    | -    |        | temp_uop_queue_rxq_idx                                 | ram_1p  | auto | 1       |
+|         temp_uop_queue_rob_allocation_id_U                  | -    | -    |        | temp_uop_queue_rob_allocation_id                       | ram_1p  | auto | 1       |
+|         temp_uop_rename_ldst_U                              | -    | -    |        | temp_uop_rename_ldst                                   | ram_1p  | auto | 1       |
+|         temp_uop_rename_lrs1_U                              | -    | -    |        | temp_uop_rename_lrs1                                   | ram_1p  | auto | 1       |
+|         temp_uop_rename_lrs2_U                              | -    | -    |        | temp_uop_rename_lrs2                                   | ram_1p  | auto | 1       |
+|         temp_uop_rename_lrs3_U                              | -    | -    |        | temp_uop_rename_lrs3                                   | ram_1p  | auto | 1       |
+|         temp_uop_rename_pdst_U                              | -    | -    |        | temp_uop_rename_pdst                                   | ram_1p  | auto | 1       |
+|         temp_uop_rename_prs1_U                              | -    | -    |        | temp_uop_rename_prs1                                   | ram_1p  | auto | 1       |
+|         temp_uop_rename_prs2_U                              | -    | -    |        | temp_uop_rename_prs2                                   | ram_1p  | auto | 1       |
+|         temp_uop_rename_prs3_U                              | -    | -    |        | temp_uop_rename_prs3                                   | ram_1p  | auto | 1       |
+|         temp_uop_rename_ppred_U                             | -    | -    |        | temp_uop_rename_ppred                                  | ram_1p  | auto | 1       |
+|         temp_uop_rename_prs1_busy_U                         | -    | -    |        | temp_uop_rename_prs1_busy                              | ram_1p  | auto | 1       |
+|         temp_uop_rename_prs2_busy_U                         | -    | -    |        | temp_uop_rename_prs2_busy                              | ram_1p  | auto | 1       |
+|         temp_uop_rename_prs3_busy_U                         | -    | -    |        | temp_uop_rename_prs3_busy                              | ram_1p  | auto | 1       |
+|         temp_uop_rename_ppred_busy_U                        | -    | -    |        | temp_uop_rename_ppred_busy                             | ram_1p  | auto | 1       |
+|         temp_uop_rename_stale_pdst_U                        | -    | -    |        | temp_uop_rename_stale_pdst                             | ram_1p  | auto | 1       |
+|         temp_uop_rename_dst_rtype_U                         | -    | -    |        | temp_uop_rename_dst_rtype                              | ram_1p  | auto | 1       |
+|         temp_uop_rename_lrs1_rtype_U                        | -    | -    |        | temp_uop_rename_lrs1_rtype                             | ram_1p  | auto | 1       |
+|         temp_uop_rename_lrs2_rtype_U                        | -    | -    |        | temp_uop_rename_lrs2_rtype                             | ram_1p  | auto | 1       |
+|         temp_uop_rename_frs3_en_U                           | -    | -    |        | temp_uop_rename_frs3_en                                | ram_1p  | auto | 1       |
+|         temp_uop_rename_fp_val_U                            | -    | -    |        | temp_uop_rename_fp_val                                 | ram_1p  | auto | 1       |
+|         temp_uop_rename_fp_single_U                         | -    | -    |        | temp_uop_rename_fp_single                              | ram_1p  | auto | 1       |
+|         temp_uop_exception_U                                | -    | -    |        | temp_uop_exception                                     | ram_1p  | auto | 1       |
+|         temp_uop_exc_cause_U                                | -    | -    |        | temp_uop_exc_cause                                     | ram_1p  | auto | 1       |
+|         temp_uop_bypassable_U                               | -    | -    |        | temp_uop_bypassable                                    | ram_1p  | auto | 1       |
+|         temp_uop_mem_mem_cmd_U                              | -    | -    |        | temp_uop_mem_mem_cmd                                   | ram_1p  | auto | 1       |
+|         temp_uop_mem_mem_size_U                             | -    | -    |        | temp_uop_mem_mem_size                                  | ram_1p  | auto | 1       |
+|         temp_uop_mem_mem_signed_U                           | -    | -    |        | temp_uop_mem_mem_signed                                | ram_1p  | auto | 1       |
+|         temp_uop_mem_is_fence_U                             | -    | -    |        | temp_uop_mem_is_fence                                  | ram_1p  | auto | 1       |
+|         temp_uop_mem_is_fencei_U                            | -    | -    |        | temp_uop_mem_is_fencei                                 | ram_1p  | auto | 1       |
+|         temp_uop_mem_is_amo_U                               | -    | -    |        | temp_uop_mem_is_amo                                    | ram_1p  | auto | 1       |
+|         temp_uop_mem_uses_ldq_U                             | -    | -    |        | temp_uop_mem_uses_ldq                                  | ram_1p  | auto | 1       |
+|         temp_uop_mem_uses_stq_U                             | -    | -    |        | temp_uop_mem_uses_stq                                  | ram_1p  | auto | 1       |
+|         temp_uop_mem_ldst_is_rs1_U                          | -    | -    |        | temp_uop_mem_ldst_is_rs1                               | ram_1p  | auto | 1       |
+|         temp_uop_mem_ldst_val_U                             | -    | -    |        | temp_uop_mem_ldst_val                                  | ram_1p  | auto | 1       |
+|         temp_uop_is_sys_pc2epc_U                            | -    | -    |        | temp_uop_is_sys_pc2epc                                 | ram_1p  | auto | 1       |
+|         temp_uop_is_unique_U                                | -    | -    |        | temp_uop_is_unique                                     | ram_1p  | auto | 1       |
+|         temp_uop_flush_on_commit_U                          | -    | -    |        | temp_uop_flush_on_commit                               | ram_1p  | auto | 1       |
+|         temp_uop_exc_exception_U                            | -    | -    |        | temp_uop_exc_exception                                 | ram_1p  | auto | 1       |
+|         temp_uop_exc_exc_cause_U                            | -    | -    |        | temp_uop_exc_exc_cause                                 | ram_1p  | auto | 1       |
+|         temp_uop_exc_xcpt_pf_if_U                           | -    | -    |        | temp_uop_exc_xcpt_pf_if                                | ram_1p  | auto | 1       |
+|         temp_uop_exc_xcpt_ae_if_U                           | -    | -    |        | temp_uop_exc_xcpt_ae_if                                | ram_1p  | auto | 1       |
+|         temp_uop_exc_xcpt_ma_if_U                           | -    | -    |        | temp_uop_exc_xcpt_ma_if                                | ram_1p  | auto | 1       |
+|         temp_uop_exc_bp_debug_if_U                          | -    | -    |        | temp_uop_exc_bp_debug_if                               | ram_1p  | auto | 1       |
+|         temp_uop_exc_bp_xcpt_if_U                           | -    | -    |        | temp_uop_exc_bp_xcpt_if                                | ram_1p  | auto | 1       |
+|         temp_uop_debug_debug_fsrc_U                         | -    | -    |        | temp_uop_debug_debug_fsrc                              | ram_1p  | auto | 1       |
+|         temp_uop_debug_debug_tsrc_U                         | -    | -    |        | temp_uop_debug_debug_tsrc                              | ram_1p  | auto | 1       |
+|         temp_uop_debug_debug_inst_U                         | -    | -    |        | temp_uop_debug_debug_inst                              | ram_1p  | auto | 1       |
+|         temp_uop_debug_debug_pc_U                           | -    | -    |        | temp_uop_debug_debug_pc                                | ram_1p  | auto | 1       |
+|         temp_prs1_data_U                                    | -    | -    |        | temp_prs1_data                                         | ram_1p  | auto | 1       |
+|         temp_prs2_data_U                                    | -    | -    |        | temp_prs2_data                                         | ram_1p  | auto | 1       |
+|         temp_prs3_data_U                                    | -    | -    |        | temp_prs3_data                                         | ram_1p  | auto | 1       |
+|      + kill_lsu_state                                       | 0    | 0    |        |                                                        |         |      |         |
+|        new_ldq_valid_U                                      | -    | -    |        | new_ldq_valid                                          | ram_1p  | auto | 1       |
+|        new_ldq_signed_load_U                                | -    | -    |        | new_ldq_signed_load                                    | ram_1p  | auto | 1       |
+|        new_ldq_response_pending_U                           | -    | -    |        | new_ldq_response_pending                               | ram_1p  | auto | 1       |
+|        new_ldq_completed_U                                  | -    | -    |        | new_ldq_completed                                      | ram_1p  | auto | 1       |
+|        new_ldq_killed_U                                     | -    | -    |        | new_ldq_killed                                         | ram_1p  | auto | 1       |
+|        new_ldq_rob_idx_U                                    | -    | -    |        | new_ldq_rob_idx                                        | ram_1p  | auto | 1       |
+|        new_ldq_size_U                                       | -    | -    |        | new_ldq_size                                           | ram_1p  | auto | 1       |
+|        new_ldq_branch_mask_U                                | -    | -    |        | new_ldq_branch_mask                                    | ram_1p  | auto | 1       |
+|        new_ldq_transaction_id_U                             | -    | -    |        | new_ldq_transaction_id                                 | ram_1p  | auto | 1       |
+|        new_ldq_rob_allocation_id_U                          | -    | -    |        | new_ldq_rob_allocation_id                              | ram_1p  | auto | 1       |
+|        new_ldq_address_U                                    | -    | -    |        | new_ldq_address                                        | ram_1p  | auto | 1       |
+|        new_ldq_result_U                                     | -    | -    |        | new_ldq_result                                         | ram_1p  | auto | 1       |
+|        new_stq_valid_U                                      | -    | -    |        | new_stq_valid                                          | ram_1p  | auto | 1       |
+|        new_stq_address_valid_U                              | -    | -    |        | new_stq_address_valid                                  | ram_1p  | auto | 1       |
+|        new_stq_data_valid_U                                 | -    | -    |        | new_stq_data_valid                                     | ram_1p  | auto | 1       |
+|        new_stq_committed_U                                  | -    | -    |        | new_stq_committed                                      | ram_1p  | auto | 1       |
+|        new_stq_issued_to_memory_U                           | -    | -    |        | new_stq_issued_to_memory                               | ram_1p  | auto | 1       |
+|        new_stq_completed_U                                  | -    | -    |        | new_stq_completed                                      | ram_1p  | auto | 1       |
+|        new_stq_killed_U                                     | -    | -    |        | new_stq_killed                                         | ram_1p  | auto | 1       |
+|        new_stq_rob_idx_U                                    | -    | -    |        | new_stq_rob_idx                                        | ram_1p  | auto | 1       |
+|        new_stq_mask_U                                       | -    | -    |        | new_stq_mask                                           | ram_1p  | auto | 1       |
+|        new_stq_size_U                                       | -    | -    |        | new_stq_size                                           | ram_1p  | auto | 1       |
+|        new_stq_branch_mask_U                                | -    | -    |        | new_stq_branch_mask                                    | ram_1p  | auto | 1       |
+|        new_stq_rob_allocation_id_U                          | -    | -    |        | new_stq_rob_allocation_id                              | ram_1p  | auto | 1       |
+|        new_stq_address_U                                    | -    | -    |        | new_stq_address                                        | ram_1p  | auto | 1       |
+|        new_stq_data_U                                       | -    | -    |        | new_stq_data                                           | ram_1p  | auto | 1       |
+|   + lsu_module                                              | 0    | 0    |        |                                                        |         |      |         |
+|    + reclaim_ldq                                            | 0    | 0    |        |                                                        |         |      |         |
+|      compacted_valid_U                                      | -    | -    |        | compacted_valid                                        | ram_1p  | auto | 1       |
+|      compacted_signed_load_U                                | -    | -    |        | compacted_signed_load                                  | ram_1p  | auto | 1       |
+|      compacted_response_pending_U                           | -    | -    |        | compacted_response_pending                             | ram_1p  | auto | 1       |
+|      compacted_completed_U                                  | -    | -    |        | compacted_completed                                    | ram_1p  | auto | 1       |
+|      compacted_killed_U                                     | -    | -    |        | compacted_killed                                       | ram_1p  | auto | 1       |
+|      compacted_rob_idx_U                                    | -    | -    |        | compacted_rob_idx                                      | ram_1p  | auto | 1       |
+|      compacted_size_U                                       | -    | -    |        | compacted_size                                         | ram_1p  | auto | 1       |
+|      compacted_branch_mask_U                                | -    | -    |        | compacted_branch_mask                                  | ram_1p  | auto | 1       |
+|      compacted_transaction_id_U                             | -    | -    |        | compacted_transaction_id                               | ram_1p  | auto | 1       |
+|      compacted_rob_allocation_id_U                          | -    | -    |        | compacted_rob_allocation_id                            | ram_1p  | auto | 1       |
+|      compacted_address_U                                    | -    | -    |        | compacted_address                                      | ram_1p  | auto | 1       |
+|      compacted_result_U                                     | -    | -    |        | compacted_result                                       | ram_1p  | auto | 1       |
+|   + rob_commit_module                                       | 0    | 0    |        |                                                        |         |      |         |
+|    + lsu_reclaim_store                                      | 0    | 0    |        |                                                        |         |      |         |
+|      compacted_valid_U                                      | -    | -    |        | compacted_valid                                        | ram_1p  | auto | 1       |
+|      compacted_address_valid_U                              | -    | -    |        | compacted_address_valid                                | ram_1p  | auto | 1       |
+|      compacted_data_valid_U                                 | -    | -    |        | compacted_data_valid                                   | ram_1p  | auto | 1       |
+|      compacted_committed_U                                  | -    | -    |        | compacted_committed                                    | ram_1p  | auto | 1       |
+|      compacted_issued_to_memory_U                           | -    | -    |        | compacted_issued_to_memory                             | ram_1p  | auto | 1       |
+|      compacted_completed_U                                  | -    | -    |        | compacted_completed                                    | ram_1p  | auto | 1       |
+|      compacted_killed_U                                     | -    | -    |        | compacted_killed                                       | ram_1p  | auto | 1       |
+|      compacted_rob_idx_U                                    | -    | -    |        | compacted_rob_idx                                      | ram_1p  | auto | 1       |
+|      compacted_mask_U                                       | -    | -    |        | compacted_mask                                         | ram_1p  | auto | 1       |
+|      compacted_size_U                                       | -    | -    |        | compacted_size                                         | ram_1p  | auto | 1       |
+|      compacted_branch_mask_U                                | -    | -    |        | compacted_branch_mask                                  | ram_1p  | auto | 1       |
+|      compacted_rob_allocation_id_U                          | -    | -    |        | compacted_rob_allocation_id                            | ram_1p  | auto | 1       |
+|      compacted_address_U                                    | -    | -    |        | compacted_address                                      | ram_1p  | auto | 1       |
+|      compacted_data_U                                       | -    | -    |        | compacted_data                                         | ram_1p  | auto | 1       |
+|   + issue_module                                            | 0    | 0    |        |                                                        |         |      |         |
+|    + compact_iq                                             | 0    | 0    |        |                                                        |         |      |         |
+|      temp_valid_U                                           | -    | -    |        | temp_valid                                             | ram_1p  | auto | 1       |
+|      temp_request_U                                         | -    | -    |        | temp_request                                           | ram_1p  | auto | 1       |
+|      temp_granted_U                                         | -    | -    |        | temp_granted                                           | ram_1p  | auto | 1       |
+|      temp_killed_U                                          | -    | -    |        | temp_killed                                            | ram_1p  | auto | 1       |
+|      temp_pdst_busy_U                                       | -    | -    |        | temp_pdst_busy                                         | ram_1p  | auto | 1       |
+|      temp_prs1_busy_U                                       | -    | -    |        | temp_prs1_busy                                         | ram_1p  | auto | 1       |
+|      temp_prs2_busy_U                                       | -    | -    |        | temp_prs2_busy                                         | ram_1p  | auto | 1       |
+|      temp_prs3_busy_U                                       | -    | -    |        | temp_prs3_busy                                         | ram_1p  | auto | 1       |
+|      temp_uop_uopc_U                                        | -    | -    |        | temp_uop_uopc                                          | ram_1p  | auto | 1       |
+|      temp_uop_inst_U                                        | -    | -    |        | temp_uop_inst                                          | ram_1p  | auto | 1       |
+|      temp_uop_debug_inst_U                                  | -    | -    |        | temp_uop_debug_inst                                    | ram_1p  | auto | 1       |
+|      temp_uop_is_rvc_U                                      | -    | -    |        | temp_uop_is_rvc                                        | ram_1p  | auto | 1       |
+|      temp_uop_debug_pc_U                                    | -    | -    |        | temp_uop_debug_pc                                      | ram_1p  | auto | 1       |
+|      temp_uop_iq_type_U                                     | -    | -    |        | temp_uop_iq_type                                       | ram_1p  | auto | 1       |
+|      temp_uop_fu_code_U                                     | -    | -    |        | temp_uop_fu_code                                       | ram_1p  | auto | 1       |
+|      temp_uop_ctrl_br_type_U                                | -    | -    |        | temp_uop_ctrl_br_type                                  | ram_1p  | auto | 1       |
+|      temp_uop_ctrl_op1_sel_U                                | -    | -    |        | temp_uop_ctrl_op1_sel                                  | ram_1p  | auto | 1       |
+|      temp_uop_ctrl_op2_sel_U                                | -    | -    |        | temp_uop_ctrl_op2_sel                                  | ram_1p  | auto | 1       |
+|      temp_uop_ctrl_imm_sel_U                                | -    | -    |        | temp_uop_ctrl_imm_sel                                  | ram_1p  | auto | 1       |
+|      temp_uop_ctrl_op_fcn_U                                 | -    | -    |        | temp_uop_ctrl_op_fcn                                   | ram_1p  | auto | 1       |
+|      temp_uop_ctrl_fcn_dw_U                                 | -    | -    |        | temp_uop_ctrl_fcn_dw                                   | ram_1p  | auto | 1       |
+|      temp_uop_ctrl_csr_cmd_U                                | -    | -    |        | temp_uop_ctrl_csr_cmd                                  | ram_1p  | auto | 1       |
+|      temp_uop_ctrl_is_load_U                                | -    | -    |        | temp_uop_ctrl_is_load                                  | ram_1p  | auto | 1       |
+|      temp_uop_ctrl_is_sta_U                                 | -    | -    |        | temp_uop_ctrl_is_sta                                   | ram_1p  | auto | 1       |
+|      temp_uop_ctrl_is_std_U                                 | -    | -    |        | temp_uop_ctrl_is_std                                   | ram_1p  | auto | 1       |
+|      temp_uop_iw_state_U                                    | -    | -    |        | temp_uop_iw_state                                      | ram_1p  | auto | 1       |
+|      temp_uop_iw_p1_poisoned_U                              | -    | -    |        | temp_uop_iw_p1_poisoned                                | ram_1p  | auto | 1       |
+|      temp_uop_iw_p2_poisoned_U                              | -    | -    |        | temp_uop_iw_p2_poisoned                                | ram_1p  | auto | 1       |
+|      temp_uop_branch_br_mask_U                              | -    | -    |        | temp_uop_branch_br_mask                                | ram_1p  | auto | 1       |
+|      temp_uop_branch_br_tag_U                               | -    | -    |        | temp_uop_branch_br_tag                                 | ram_1p  | auto | 1       |
+|      temp_uop_branch_ftq_idx_U                              | -    | -    |        | temp_uop_branch_ftq_idx                                | ram_1p  | auto | 1       |
+|      temp_uop_branch_pc_lob_U                               | -    | -    |        | temp_uop_branch_pc_lob                                 | ram_1p  | auto | 1       |
+|      temp_uop_branch_edge_inst_U                            | -    | -    |        | temp_uop_branch_edge_inst                              | ram_1p  | auto | 1       |
+|      temp_uop_branch_taken_U                                | -    | -    |        | temp_uop_branch_taken                                  | ram_1p  | auto | 1       |
+|      temp_uop_branch_is_br_U                                | -    | -    |        | temp_uop_branch_is_br                                  | ram_1p  | auto | 1       |
+|      temp_uop_branch_is_jalr_U                              | -    | -    |        | temp_uop_branch_is_jalr                                | ram_1p  | auto | 1       |
+|      temp_uop_branch_is_jal_U                               | -    | -    |        | temp_uop_branch_is_jal                                 | ram_1p  | auto | 1       |
+|      temp_uop_branch_is_sfb_U                               | -    | -    |        | temp_uop_branch_is_sfb                                 | ram_1p  | auto | 1       |
+|      temp_uop_imm_packed_U                                  | -    | -    |        | temp_uop_imm_packed                                    | ram_1p  | auto | 1       |
+|      temp_uop_csr_addr_U                                    | -    | -    |        | temp_uop_csr_addr                                      | ram_1p  | auto | 1       |
+|      temp_uop_queue_rob_idx_U                               | -    | -    |        | temp_uop_queue_rob_idx                                 | ram_1p  | auto | 1       |
+|      temp_uop_queue_ldq_idx_U                               | -    | -    |        | temp_uop_queue_ldq_idx                                 | ram_1p  | auto | 1       |
+|      temp_uop_queue_stq_idx_U                               | -    | -    |        | temp_uop_queue_stq_idx                                 | ram_1p  | auto | 1       |
+|      temp_uop_queue_rxq_idx_U                               | -    | -    |        | temp_uop_queue_rxq_idx                                 | ram_1p  | auto | 1       |
+|      temp_uop_queue_rob_allocation_id_U                     | -    | -    |        | temp_uop_queue_rob_allocation_id                       | ram_1p  | auto | 1       |
+|      temp_uop_rename_ldst_U                                 | -    | -    |        | temp_uop_rename_ldst                                   | ram_1p  | auto | 1       |
+|      temp_uop_rename_lrs1_U                                 | -    | -    |        | temp_uop_rename_lrs1                                   | ram_1p  | auto | 1       |
+|      temp_uop_rename_lrs2_U                                 | -    | -    |        | temp_uop_rename_lrs2                                   | ram_1p  | auto | 1       |
+|      temp_uop_rename_lrs3_U                                 | -    | -    |        | temp_uop_rename_lrs3                                   | ram_1p  | auto | 1       |
+|      temp_uop_rename_pdst_U                                 | -    | -    |        | temp_uop_rename_pdst                                   | ram_1p  | auto | 1       |
+|      temp_uop_rename_prs1_U                                 | -    | -    |        | temp_uop_rename_prs1                                   | ram_1p  | auto | 1       |
+|      temp_uop_rename_prs2_U                                 | -    | -    |        | temp_uop_rename_prs2                                   | ram_1p  | auto | 1       |
+|      temp_uop_rename_prs3_U                                 | -    | -    |        | temp_uop_rename_prs3                                   | ram_1p  | auto | 1       |
+|      temp_uop_rename_ppred_U                                | -    | -    |        | temp_uop_rename_ppred                                  | ram_1p  | auto | 1       |
+|      temp_uop_rename_prs1_busy_U                            | -    | -    |        | temp_uop_rename_prs1_busy                              | ram_1p  | auto | 1       |
+|      temp_uop_rename_prs2_busy_U                            | -    | -    |        | temp_uop_rename_prs2_busy                              | ram_1p  | auto | 1       |
+|      temp_uop_rename_prs3_busy_U                            | -    | -    |        | temp_uop_rename_prs3_busy                              | ram_1p  | auto | 1       |
+|      temp_uop_rename_ppred_busy_U                           | -    | -    |        | temp_uop_rename_ppred_busy                             | ram_1p  | auto | 1       |
+|      temp_uop_rename_stale_pdst_U                           | -    | -    |        | temp_uop_rename_stale_pdst                             | ram_1p  | auto | 1       |
+|      temp_uop_rename_dst_rtype_U                            | -    | -    |        | temp_uop_rename_dst_rtype                              | ram_1p  | auto | 1       |
+|      temp_uop_rename_lrs1_rtype_U                           | -    | -    |        | temp_uop_rename_lrs1_rtype                             | ram_1p  | auto | 1       |
+|      temp_uop_rename_lrs2_rtype_U                           | -    | -    |        | temp_uop_rename_lrs2_rtype                             | ram_1p  | auto | 1       |
+|      temp_uop_rename_frs3_en_U                              | -    | -    |        | temp_uop_rename_frs3_en                                | ram_1p  | auto | 1       |
+|      temp_uop_rename_fp_val_U                               | -    | -    |        | temp_uop_rename_fp_val                                 | ram_1p  | auto | 1       |
+|      temp_uop_rename_fp_single_U                            | -    | -    |        | temp_uop_rename_fp_single                              | ram_1p  | auto | 1       |
+|      temp_uop_exception_U                                   | -    | -    |        | temp_uop_exception                                     | ram_1p  | auto | 1       |
+|      temp_uop_exc_cause_U                                   | -    | -    |        | temp_uop_exc_cause                                     | ram_1p  | auto | 1       |
+|      temp_uop_bypassable_U                                  | -    | -    |        | temp_uop_bypassable                                    | ram_1p  | auto | 1       |
+|      temp_uop_mem_mem_cmd_U                                 | -    | -    |        | temp_uop_mem_mem_cmd                                   | ram_1p  | auto | 1       |
+|      temp_uop_mem_mem_size_U                                | -    | -    |        | temp_uop_mem_mem_size                                  | ram_1p  | auto | 1       |
+|      temp_uop_mem_mem_signed_U                              | -    | -    |        | temp_uop_mem_mem_signed                                | ram_1p  | auto | 1       |
+|      temp_uop_mem_is_fence_U                                | -    | -    |        | temp_uop_mem_is_fence                                  | ram_1p  | auto | 1       |
+|      temp_uop_mem_is_fencei_U                               | -    | -    |        | temp_uop_mem_is_fencei                                 | ram_1p  | auto | 1       |
+|      temp_uop_mem_is_amo_U                                  | -    | -    |        | temp_uop_mem_is_amo                                    | ram_1p  | auto | 1       |
+|      temp_uop_mem_uses_ldq_U                                | -    | -    |        | temp_uop_mem_uses_ldq                                  | ram_1p  | auto | 1       |
+|      temp_uop_mem_uses_stq_U                                | -    | -    |        | temp_uop_mem_uses_stq                                  | ram_1p  | auto | 1       |
+|      temp_uop_mem_ldst_is_rs1_U                             | -    | -    |        | temp_uop_mem_ldst_is_rs1                               | ram_1p  | auto | 1       |
+|      temp_uop_mem_ldst_val_U                                | -    | -    |        | temp_uop_mem_ldst_val                                  | ram_1p  | auto | 1       |
+|      temp_uop_is_sys_pc2epc_U                               | -    | -    |        | temp_uop_is_sys_pc2epc                                 | ram_1p  | auto | 1       |
+|      temp_uop_is_unique_U                                   | -    | -    |        | temp_uop_is_unique                                     | ram_1p  | auto | 1       |
+|      temp_uop_flush_on_commit_U                             | -    | -    |        | temp_uop_flush_on_commit                               | ram_1p  | auto | 1       |
+|      temp_uop_exc_exception_U                               | -    | -    |        | temp_uop_exc_exception                                 | ram_1p  | auto | 1       |
+|      temp_uop_exc_exc_cause_U                               | -    | -    |        | temp_uop_exc_exc_cause                                 | ram_1p  | auto | 1       |
+|      temp_uop_exc_xcpt_pf_if_U                              | -    | -    |        | temp_uop_exc_xcpt_pf_if                                | ram_1p  | auto | 1       |
+|      temp_uop_exc_xcpt_ae_if_U                              | -    | -    |        | temp_uop_exc_xcpt_ae_if                                | ram_1p  | auto | 1       |
+|      temp_uop_exc_xcpt_ma_if_U                              | -    | -    |        | temp_uop_exc_xcpt_ma_if                                | ram_1p  | auto | 1       |
+|      temp_uop_exc_bp_debug_if_U                             | -    | -    |        | temp_uop_exc_bp_debug_if                               | ram_1p  | auto | 1       |
+|      temp_uop_exc_bp_xcpt_if_U                              | -    | -    |        | temp_uop_exc_bp_xcpt_if                                | ram_1p  | auto | 1       |
+|      temp_uop_debug_debug_fsrc_U                            | -    | -    |        | temp_uop_debug_debug_fsrc                              | ram_1p  | auto | 1       |
+|      temp_uop_debug_debug_tsrc_U                            | -    | -    |        | temp_uop_debug_debug_tsrc                              | ram_1p  | auto | 1       |
+|      temp_uop_debug_debug_inst_U                            | -    | -    |        | temp_uop_debug_debug_inst                              | ram_1p  | auto | 1       |
+|      temp_uop_debug_debug_pc_U                              | -    | -    |        | temp_uop_debug_debug_pc                                | ram_1p  | auto | 1       |
+|      temp_prs1_data_U                                       | -    | -    |        | temp_prs1_data                                         | ram_1p  | auto | 1       |
+|      temp_prs2_data_U                                       | -    | -    |        | temp_prs2_data                                         | ram_1p  | auto | 1       |
+|      temp_prs3_data_U                                       | -    | -    |        | temp_prs3_data                                         | ram_1p  | auto | 1       |
++-------------------------------------------------------------+------+------+--------+--------------------------------------------------------+---------+------+---------+
+
+
+================================================================
+== User Pragma Report
+================================================================
+* Valid Pragma Syntax
++-----------+-------------------------------------------+----------------------------------------------------------------------------------------------------------------+
+| Type      | Options                                   | Location                                                                                                       |
++-----------+-------------------------------------------+----------------------------------------------------------------------------------------------------------------+
+| inline    |                                           | /home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:464 in complete_selected                                  |
+| interface | ap_ctrl_none port=return                  | /home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:1798 in boom_core_top, return                             |
+| interface | axis port=imem_req_out                    | /home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:1799 in boom_core_top, imem_req_out                       |
+| interface | axis port=imem_resp_in                    | /home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:1800 in boom_core_top, imem_resp_in                       |
+| interface | axis port=dmem_req_out                    | /home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:1801 in boom_core_top, dmem_req_out                       |
+| interface | axis port=dmem_resp_in                    | /home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:1802 in boom_core_top, dmem_resp_in                       |
+| interface | axis port=commit_trace_out                | /home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:1803 in boom_core_top, commit_trace_out                   |
+| interface | ap_none port=io_success                   | /home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:1804 in boom_core_top, io_success                         |
+| interface | ap_none port=io_halted                    | /home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:1805 in boom_core_top, io_halted                          |
+| interface | ap_none port=io_trap                      | /home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:1806 in boom_core_top, io_trap                            |
+| interface | ap_none port=io_cycle_valid               | /home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:1807 in boom_core_top, io_cycle_valid                     |
+| interface | ap_none port=io_cycle                     | /home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:1808 in boom_core_top, io_cycle                           |
+| interface | ap_none port=io_instret                   | /home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:1809 in boom_core_top, io_instret                         |
+| reset     | variable=reset_ctrl                       | /home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:1813 in boom_core_top, reset_ctrl                         |
+| interface | ap_ctrl_none port=return                  | /home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:1841 in boom_core_step_top, return                        |
+| interface | axis port=imem_req_out                    | /home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:1842 in boom_core_step_top, imem_req_out                  |
+| interface | axis port=imem_resp_in                    | /home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:1843 in boom_core_step_top, imem_resp_in                  |
+| interface | axis port=dmem_req_out                    | /home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:1844 in boom_core_step_top, dmem_req_out                  |
+| interface | axis port=dmem_resp_in                    | /home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:1845 in boom_core_step_top, dmem_resp_in                  |
+| interface | axis port=commit_trace_out                | /home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:1846 in boom_core_step_top, commit_trace_out              |
+| interface | ap_none port=io_success                   | /home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:1847 in boom_core_step_top, io_success                    |
+| interface | ap_none port=io_halted                    | /home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:1848 in boom_core_step_top, io_halted                     |
+| interface | ap_none port=io_trap                      | /home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:1849 in boom_core_step_top, io_trap                       |
+| interface | ap_none port=io_cycle_valid               | /home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:1850 in boom_core_step_top, io_cycle_valid                |
+| interface | ap_none port=io_cycle                     | /home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:1851 in boom_core_step_top, io_cycle                      |
+| interface | ap_none port=io_instret                   | /home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:1852 in boom_core_step_top, io_instret                    |
+| reset     | variable=reset_ctrl                       | /home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:1856 in boom_core_step_top, reset_ctrl                    |
+| reset     | variable=reset_ctrl                       | /home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:1902 in boom_core_ncycle_n1_top, reset_ctrl               |
+| reset     | variable=reset_ctrl                       | /home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:1903 in boom_core_ncycle_n2_top, reset_ctrl               |
+| reset     | variable=reset_ctrl                       | /home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:1904 in boom_core_ncycle_n4_top, reset_ctrl               |
+| reset     | variable=reset_ctrl                       | /home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:1905 in boom_core_ncycle_n8_top, reset_ctrl               |
+| inline    |                                           | /home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:2248 in w3_seed_rob                                       |
+| inline    |                                           | /home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:2269 in w3_seed_issue                                     |
+| stream    | variable=commit_pipe.commit_trace depth=1 | /home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:2317 in synth_w3_diagnostic_top, commit_pipe.commit_trace |
+| stream    | variable=commit_pipe.dmem_req depth=1     | /home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:2318 in synth_w3_diagnostic_top, commit_pipe.dmem_req     |
++-----------+-------------------------------------------+----------------------------------------------------------------------------------------------------------------+
+
+

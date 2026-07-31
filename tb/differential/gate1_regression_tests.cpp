@@ -132,8 +132,8 @@ void t_iq_port_conflict() { TEST("IQ grants only implemented ALU execute port");
     for (int i=0; i<3; i++) { IssueSlotEntry& e=s.issue.alu_iq.entries[i]; e.valid=true; e.request=true; e.uop=make_iq_uop(RESET_VECTOR+4*i,i); }
     s.issue.alu_iq.count=3; s.issue.alu_iq.tail=3;
     boom::issue_module(s);
-    CHECK(s.issue.issued_valids[0],"no IQ grant");
-    CHECK(!s.issue.issued_valids[1] && !s.issue.issued_valids[2],"more than one uop granted to one execute lane");
+    CHECK(s.issue.issued_valids[INT_ISSUE_LANE],"no IQ grant");
+    CHECK(!s.issue.issued_valids[MEM_ISSUE_LANE] && !s.issue.issued_valids[FP_ISSUE_LANE],"more than one uop granted to one execute lane");
     CHECK(s.issue.alu_iq.count==2,"unissued IQ entries were dropped");
     CHECK(s.issue.alu_iq.entries[0].uop.debug_pc==RESET_VECTOR+4,"oldest remaining entry wrong"); PASS(); }
 
@@ -143,17 +143,18 @@ void t_iq_oldest_ready() { TEST("IQ selects oldest ready entry and keeps older b
     s.issue.alu_iq.entries[0].prs1_busy=true;
     s.issue.alu_iq.count=3; s.issue.alu_iq.tail=3;
     boom::issue_module(s);
-    CHECK(s.issue.issued_valids[0],"no ready grant");
-    CHECK(s.issue.issued_uops[0].debug_pc==RESET_VECTOR+4,"did not select oldest ready entry");
+    CHECK(s.issue.issued_valids[INT_ISSUE_LANE],"no ready grant");
+    CHECK(s.issue.issued_uops[INT_ISSUE_LANE].debug_pc==RESET_VECTOR+4,"did not select oldest ready entry");
     CHECK(s.issue.alu_iq.count==2,"wrong IQ count after grant");
     CHECK(s.issue.alu_iq.entries[0].uop.debug_pc==RESET_VECTOR,"older blocked entry not retained"); PASS(); }
 
 void t_iq_dispatch_issue_same_cycle() { TEST("IQ dispatch can issue in same core cycle");
     BoomCoreState s;
-    s.rename.renamed_valids[0]=true;
-    s.rename.renamed_uops[0]=make_iq_uop(RESET_VECTOR,0);
+    s.rename.dispatch_packets[0].valid=true;
+    s.rename.dispatch_packets[0].rob_allocated=true;
+    s.rename.dispatch_packets[0].uop=make_iq_uop(RESET_VECTOR,0);
     boom::issue_module(s);
-    CHECK(s.issue.issued_valids[0],"dispatched uop did not issue from empty IQ");
+    CHECK(s.issue.issued_valids[INT_ISSUE_LANE],"dispatched uop did not issue from empty IQ");
     CHECK(s.issue.alu_iq.count==0,"same-cycle issued uop left in IQ"); PASS(); }
 
 void t_iq_flush_clear() { TEST("flush clears all IQ entries");
@@ -180,7 +181,7 @@ void t_stale_imem_response() { TEST("frontend drops stale imem response fetch_id
     CHECK(!p.imem_req.empty(),"no second imem request");
     ImemRequest r1=p.imem_req.read();
     ImemResponse good1; good1.address=r1.address; good1.fetch_id=r1.fetch_id; good1.instruction=EC(); p.imem_resp.write(good1);
-    boom_core_step(s,p);
+    for (int i=0; i<4 && !s.io_success; i++) boom_core_step(s,p);
     CHECK(s.io_success,"correct response stream did not reach ECALL"); PASS(); }
 
 void t_single_lane_config() { TEST("SmallBoom HLS build is single-lane rename/dispatch");

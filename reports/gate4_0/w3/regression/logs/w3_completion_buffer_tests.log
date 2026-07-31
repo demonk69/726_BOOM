@@ -1,0 +1,20 @@
+=== W3 Conservative Completion Buffer Tests ===
+  [W3 completion] services at most one old completion            ... PASS
+  [W3 completion] ROB age wins over physical lane                ... PASS
+  [W3 completion] ROB age arbitration is wrap safe               ... PASS
+  [W3 completion] completion performs sole integer writeback     ... PASS
+  [W3 completion] full LDQ holds MEM completion stable           ... PASS
+  [W3 completion] load atomically enters LDQ                     ... PASS
+  [W3 completion] full STQ holds store completion stable         ... PASS
+  [W3 completion] store atomically enters STQ and completes ROB  ... PASS
+  [W3 completion] LDQ reclaimed after matching response          ... PASS
+  [W3 completion] STQ reclaimed after committed request          ... PASS
+  [W3 completion] branch resolves before ROB busy clear          ... PASS
+  [W3 completion] mispredict kills younger held completion       ... PASS
+  [W3 completion] reset kills both held completions              ... PASS
+  [W3 completion] trace backpressure makes commit atomic         ... PASS
+  [W3 completion] DMEM backpressure makes store commit atomic    ... PASS
+  [W3 completion] ROB identity propagates exactly once to execute ... PASS
+  [W3 completion] stale held completion cannot alias reused ROB index ... PASS
+  [W3 completion] pre-reset load response cannot alias new load  ... PASS
+W3 completion buffer: 18 passed, 0 failed

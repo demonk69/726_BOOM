@@ -38,6 +38,7 @@ struct RenameInfo {
 };
 struct QueueInfo {
     uint8_t rob_idx, ldq_idx, stq_idx, rxq_idx;
+    uint32_t rob_allocation_id;
 };
 struct MemoryInfo {
     uint8_t mem_cmd, mem_size;

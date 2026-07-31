@@ -32,8 +32,7 @@ def element_count(array: str) -> str:
         ("alu_results", "1"),
         ("dec_uops", "1"),
         ("dec_valids", "1"),
-        ("renamed_uops", "1"),
-        ("renamed_valids", "1"),
+        ("dispatch_packets", "1"),
         ("map_table", "32"),
         ("committed_map_table", "32"),
     ]
@@ -57,7 +56,7 @@ def classify(array: str, source_file: str, source_line: str) -> Tuple[str, str, 
                 "persistent module state with explicit write ports",
                 "HIGH",
             )
-        if any(key in array for key in ("issued_uops", "alu_results", "dec_uops", "renamed_uops")):
+        if any(key in array for key in ("issued_uops", "alu_results", "dec_uops", "dispatch_packets")):
             return (
                 "whole-state copy plus top-level scheduling flattened a small lane array field",
                 "small register array",

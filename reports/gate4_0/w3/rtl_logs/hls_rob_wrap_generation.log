@@ -1,0 +1,686 @@
+
+****** Vitis HLS - High-Level Synthesis from C, C++ and OpenCL v2021.2 (64-bit)
+  **** SW Build 3367213 on Tue Oct 19 02:47:39 MDT 2021
+  **** IP Build 3369179 on Thu Oct 21 08:25:16 MDT 2021
+    ** Copyright 1986-2021 Xilinx, Inc. All Rights Reserved.
+
+source /home/lab_726/Xilinx/Vitis_HLS/2021.2/scripts/vitis_hls/hls.tcl -notrace
+INFO: [HLS 200-10] Running '/home/lab_726/Xilinx/Vitis_HLS/2021.2/bin/unwrapped/lnx64.o/vitis_hls'
+INFO: [HLS 200-10] For user 'lab_726' on host '726' (Linux_x86_64 version 6.8.0-136-generic) on Fri Jul 31 19:09:01 CST 2026
+INFO: [HLS 200-10] On os Ubuntu 22.04.5 LTS
+INFO: [HLS 200-10] In directory '/home/lab_726/boom/hls_boom/reports/gate4_0/w3/focused_rtl_work'
+Sourcing Tcl script '/home/lab_726/boom/hls_boom/reports/gate4_0/w3/focused_rtl_work/run_w3_csynth.tcl'
+INFO: [HLS 200-1510] Running: open_project -reset hls_rob_wrap_project 
+INFO: [HLS 200-10] Creating and opening project '/home/lab_726/boom/hls_boom/reports/gate4_0/w3/focused_rtl_work/hls_rob_wrap_project'.
+INFO: [HLS 200-1510] Running: set_top synth_w3_rob_wrap_top 
+INFO: [HLS 200-1510] Running: add_files -cflags -std=c++11 -I/home/lab_726/boom/hls_boom/include -DBOOM_HLS_W3_DIAGNOSTIC /home/lab_726/boom/hls_boom/src/boom_core_merged.cpp 
+INFO: [HLS 200-10] Adding design file '/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp' to the project
+INFO: [HLS 200-1510] Running: open_solution -reset solution_w3_rtl 
+INFO: [HLS 200-10] Creating and opening solution '/home/lab_726/boom/hls_boom/reports/gate4_0/w3/focused_rtl_work/hls_rob_wrap_project/solution_w3_rtl'.
+INFO: [HLS 200-10] Cleaning up the solution database.
+WARNING: [HLS 200-40] No /home/lab_726/boom/hls_boom/reports/gate4_0/w3/focused_rtl_work/hls_rob_wrap_project/solution_w3_rtl/solution_w3_rtl.aps file found.
+INFO: [HLS 200-1505] Using default flow_target 'vivado'
+Resolution: For help on HLS 200-1505 see www.xilinx.com/cgi-bin/docs/rdoc?v=2021.2;t=hls+guidance;d=200-1505.html
+INFO: [HLS 200-1510] Running: set_part xczu7ev-ffvc1156-2-e 
+INFO: [HLS 200-1611] Setting target device to 'xczu7ev-ffvc1156-2-e'
+INFO: [HLS 200-1510] Running: create_clock -period 10 -name default 
+INFO: [SYN 201-201] Setting up clock 'default' with a period of 10ns.
+INFO: [HLS 200-1510] Running: add_files -tb -cflags -std=c++11 -I/home/lab_726/boom/hls_boom/include /home/lab_726/boom/hls_boom/tb/differential/w3_rtl_wrapper_tests.cpp 
+INFO: [HLS 200-10] Adding test bench file '/home/lab_726/boom/hls_boom/tb/differential/w3_rtl_wrapper_tests.cpp' to the project
+INFO: [HLS 200-1510] Running: csim_design -clean 
+INFO: [SIM 211-2] *************** CSIM start ***************
+INFO: [SIM 211-4] CSIM will launch GCC as the compiler.
+   Compiling ../../../../../../../../tb/differential/w3_rtl_wrapper_tests.cpp in debug mode
+   Compiling ../../../../../../../../src/boom_core_merged.cpp in debug mode
+   Generating csim.exe
+W3_WRAPPER_PASS case=int_blocked_mem_forward observed=001d000b00000117
+W3_WRAPPER_PASS case=dual_pending observed=0020000008d00002
+W3_WRAPPER_PASS case=rob_wrap_multiple_identity observed=0000005cf8d00001
+INFO: [SIM 211-1] CSim done with 0 errors.
+INFO: [SIM 211-3] *************** CSIM finish ***************
+INFO: [HLS 200-111] Finished Command csim_design CPU user time: 1.16 seconds. CPU system time: 0.2 seconds. Elapsed time: 0.82 seconds; current allocated memory: -937.109 MB.
+INFO: [HLS 200-1510] Running: config_compile -pipeline_loops 0 
+INFO: [XFORM 203-1171] Pipeline the innermost loop with trip count more than 0 or its parent loop when its trip count is less than or equal 0.
+INFO: [HLS 200-1510] Running: set_directive_inline boom::lsu_module 
+INFO: [HLS 200-1510] Running: set_directive_inline boom::rob_commit_module 
+INFO: [HLS 200-1510] Running: csynth_design 
+INFO: [HLS 200-111] Finished File checks and directory preparation: CPU user time: 0.01 seconds. CPU system time: 0 seconds. Elapsed time: 0 seconds; current allocated memory: 415.418 MB.
+INFO: [HLS 200-10] Analyzing design file '/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp' ... 
+INFO: [HLS 200-111] Finished Source Code Analysis and Preprocessing: CPU user time: 0.41 seconds. CPU system time: 0.13 seconds. Elapsed time: 0.56 seconds; current allocated memory: 418.746 MB.
+INFO: [HLS 200-777] Using interface defaults for 'Vivado' flow target.
+INFO: [HLS 214-284] Auto array partition mode is set into default.
+INFO: [HLS 214-131] Inlining function 'boom::complete_selected(BoomCoreState&, ExecuteState::AluResult&)' into 'boom::rob_complete(BoomCoreState&)' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:521:27)
+INFO: [HLS 214-131] Inlining function 'boom::complete_selected(BoomCoreState&, ExecuteState::AluResult&)' into 'boom::rob_complete(BoomCoreState&)' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:522:10)
+INFO: [HLS 214-131] Inlining function 'w3_seed_rob(BoomCoreState&, unsigned char, unsigned int)' into 'synth_w3_rob_wrap_top(unsigned int, unsigned long&)' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:2558:5)
+INFO: [HLS 214-131] Inlining function 'w3_seed_rob(BoomCoreState&, unsigned char, unsigned int)' into 'synth_w3_rob_wrap_top(unsigned int, unsigned long&)' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:2559:5)
+INFO: [HLS 214-131] Inlining function 'boom::rob_complete(BoomCoreState&)' into 'synth_w3_rob_wrap_top(unsigned int, unsigned long&)' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:2563:5)
+INFO: [HLS 214-178] Inlining function 'MicroOp::MicroOp() (.19.25.31.37.43.49.55.61)' into 'FrontendState::FrontendState()' (/home/lab_726/boom/hls_boom/include/boom_state.hpp:26:0)
+INFO: [HLS 214-178] Inlining function 'MicroOp::MicroOp() (.19.25.31.37.43.49.55.61)' into 'DecodeState::DecodeState()' (/home/lab_726/boom/hls_boom/include/boom_state.hpp:32:0)
+INFO: [HLS 214-178] Inlining function 'MicroOp::MicroOp() (.19.25.31.37.43.49.55.61)' into 'RenameDispatchPacket::RenameDispatchPacket()' (/home/lab_726/boom/hls_boom/include/boom_state.hpp:73:0)
+INFO: [HLS 214-178] Inlining function 'RenameMapTableState::RenameMapTableState()' into 'RenameState::RenameState()' (/home/lab_726/boom/hls_boom/include/boom_state.hpp:76:0)
+INFO: [HLS 214-178] Inlining function 'RenameFreeListState::RenameFreeListState()' into 'RenameState::RenameState()' (/home/lab_726/boom/hls_boom/include/boom_state.hpp:76:0)
+INFO: [HLS 214-178] Inlining function 'RenameDispatchPacket::RenameDispatchPacket()' into 'RenameState::RenameState()' (/home/lab_726/boom/hls_boom/include/boom_state.hpp:76:0)
+INFO: [HLS 214-178] Inlining function 'MicroOp::MicroOp() (.19.25.31.37.43.49.55.61)' into 'IssueSlotEntry::IssueSlotEntry()' (/home/lab_726/boom/hls_boom/include/boom_types.hpp:100:0)
+INFO: [HLS 214-178] Inlining function 'IssueSlotEntry::IssueSlotEntry()' into 'IssueQueueState::IssueQueueState()' (/home/lab_726/boom/hls_boom/include/boom_state.hpp:85:0)
+INFO: [HLS 214-178] Inlining function 'MicroOp::MicroOp() (.19.25.31.37.43.49.55.61)' into 'IssueGrant::IssueGrant()' (/home/lab_726/boom/hls_boom/include/boom_types.hpp:77:0)
+INFO: [HLS 214-178] Inlining function 'IssueGrant::IssueGrant()' into 'IssueState::IssueState()' (/home/lab_726/boom/hls_boom/include/boom_state.hpp:102:0)
+INFO: [HLS 214-178] Inlining function 'MicroOp::MicroOp() (.19.25.31.37.43.49.55.61)' into 'IssueState::IssueState()' (/home/lab_726/boom/hls_boom/include/boom_state.hpp:102:0)
+INFO: [HLS 214-178] Inlining function 'MicroOp::MicroOp() (.19.25.31.37.43.49.55.61)' into 'ExecuteState::AluResult::AluResult() (.73.79.85.91.97.103.109.115.121)' (/home/lab_726/boom/hls_boom/include/boom_state.hpp:121:0)
+INFO: [HLS 214-178] Inlining function 'ExecuteState::AluResult::AluResult() (.73.79.85.91.97.103.109.115.121)' into 'ExecuteState::ExecuteState()' (/home/lab_726/boom/hls_boom/include/boom_state.hpp:124:0)
+INFO: [HLS 214-178] Inlining function 'MicroOp::MicroOp() (.19.25.31.37.43.49.55.61)' into 'RobEntry::RobEntry()' (/home/lab_726/boom/hls_boom/include/boom_types.hpp:91:0)
+INFO: [HLS 214-178] Inlining function 'RobEntry::RobEntry()' into 'RobInternalState::RobInternalState()' (/home/lab_726/boom/hls_boom/include/boom_state.hpp:138:0)
+INFO: [HLS 214-178] Inlining function 'CommitEntry::CommitEntry()' into 'RobInternalState::RobInternalState()' (/home/lab_726/boom/hls_boom/include/boom_state.hpp:138:0)
+INFO: [HLS 214-178] Inlining function 'StoreQueueEntry::StoreQueueEntry()' into 'LsuState::LsuState()' (/home/lab_726/boom/hls_boom/include/boom_state.hpp:181:0)
+INFO: [HLS 214-178] Inlining function 'LoadQueueEntry::LoadQueueEntry()' into 'LsuState::LsuState()' (/home/lab_726/boom/hls_boom/include/boom_state.hpp:181:0)
+INFO: [HLS 214-178] Inlining function 'MicroOp::MicroOp() (.19.25.31.37.43.49.55.61)' into 'BranchUpdate::BranchUpdate()' (/home/lab_726/boom/hls_boom/include/boom_types.hpp:109:0)
+INFO: [HLS 214-178] Inlining function 'FrontendState::FrontendState()' into 'BoomCoreState::BoomCoreState()' (/home/lab_726/boom/hls_boom/include/boom_state.hpp:205:0)
+INFO: [HLS 214-178] Inlining function 'CsrState::CsrState()' into 'BoomCoreState::BoomCoreState()' (/home/lab_726/boom/hls_boom/include/boom_state.hpp:205:0)
+INFO: [HLS 214-178] Inlining function 'LsuState::LsuState()' into 'BoomCoreState::BoomCoreState()' (/home/lab_726/boom/hls_boom/include/boom_state.hpp:205:0)
+INFO: [HLS 214-178] Inlining function 'BranchRecoveryState::BranchRecoveryState()' into 'BoomCoreState::BoomCoreState()' (/home/lab_726/boom/hls_boom/include/boom_state.hpp:205:0)
+INFO: [HLS 214-178] Inlining function 'BranchUpdate::BranchUpdate()' into 'BoomCoreState::BoomCoreState()' (/home/lab_726/boom/hls_boom/include/boom_state.hpp:205:0)
+INFO: [HLS 214-178] Inlining function 'ExecuteState::AluResult::AluResult() (.73.79.85.91.97.103.109.115.121)' into 'w3_result(unsigned char, unsigned int)' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:2256:0)
+INFO: [HLS 214-178] Inlining function 'IssueSlotEntry::IssueSlotEntry()' into 'boom::compact_issue_queue(IssueQueueState&) (.3339.3392.3454.3508.3570.3624.3686.3740.3802.3856)' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:879:0)
+INFO: [HLS 214-178] Inlining function 'boom::killed_by_mask(MicroOp const&, unsigned char) (.1161.1250.1297.1386.1433.1522.1569.1658)' into 'boom::kill_issue_state(BoomCoreState&, unsigned char) (.169.233.277.345.389.457.501.569.613.681.728.793.834.901.942.1007.1048.1123.1170.1259.1306.1395.1442.1531.1578.1667.1708.1761.1840.1904.1974.2038.2105.2172.2239.2306.2373.2420.2479.2526.2585.2632.2691.2738.2797.2845.2904.2953.3012.3061.3120.3169.3228.3277.3336.3389.3451.3505.3567.3621.3683.3737.3799.3853.3915.3963.4022.4071.4130.4179.4238.4287.4346.4395.4454.4511.4570.4624.4683.4730.4789.4836.4895.4942.5001.5048.5107.5154.5213.5260.5319.5366.5425.5472.5531.5578)' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:892:0)
+INFO: [HLS 214-178] Inlining function 'boom::killed_by_mask(MicroOp const&, unsigned char) (.1161.1250.1297.1386.1433.1522.1569.1658)' into 'boom::kill_execute_state(BoomCoreState&, unsigned char) (.166.230.274.342.386.454.498.566.610.678.725.790.831.898.939.1004.1045.1120.1167.1256.1303.1392.1439.1528.1575.1664.1705.1758.1837.1901.1971.2035.2102.2169.2236.2303.2370.2417.2476.2523.2582.2629.2688.2735.2794.2842.2901.2950.3009.3058.3117.3166.3225.3274.3333.3386.3448.3502.3564.3618.3680.3734.3796.3850.3912.3960.4019.4068.4127.4176.4235.4284.4343.4392.4451.4508.4567.4621.4680.4727.4786.4833.4892.4939.4998.5045.5104.5151.5210.5257.5316.5363.5422.5469.5528.5575)' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:909:0)
+INFO: [HLS 214-178] Inlining function 'LoadQueueEntry::LoadQueueEntry()' into 'boom::kill_lsu_state(BoomCoreState&, unsigned char) (.163.227.271.339.383.451.495.563.607.675.722.787.828.895.936.1001.1042.1117.1164.1253.1300.1389.1436.1525.1572.1661.1702.1755.1834.1898.1968.2032.2099.2166.2233.2300.2367.2414.2473.2520.2579.2626.2685.2732.2791.2839.2898.2947.3006.3055.3114.3163.3222.3271.3330.3383.3445.3499.3561.3615.3677.3731.3793.3847.3909.3957.4016.4065.4124.4173.4232.4281.4340.4389.4448.4505.4564.4618.4677.4724.4783.4830.4889.4936.4995.5042.5101.5148.5207.5254.5313.5360.5419.5466.5525.5572)' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:917:0)
+INFO: [HLS 214-178] Inlining function 'StoreQueueEntry::StoreQueueEntry()' into 'boom::kill_lsu_state(BoomCoreState&, unsigned char) (.163.227.271.339.383.451.495.563.607.675.722.787.828.895.936.1001.1042.1117.1164.1253.1300.1389.1436.1525.1572.1661.1702.1755.1834.1898.1968.2032.2099.2166.2233.2300.2367.2414.2473.2520.2579.2626.2685.2732.2791.2839.2898.2947.3006.3055.3114.3163.3222.3271.3330.3383.3445.3499.3561.3615.3677.3731.3793.3847.3909.3957.4016.4065.4124.4173.4232.4281.4340.4389.4448.4505.4564.4618.4677.4724.4783.4830.4889.4936.4995.5042.5101.5148.5207.5254.5313.5360.5419.5466.5525.5572)' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:917:0)
+INFO: [HLS 214-178] Inlining function 'boom::killed_by_mask(MicroOp const&, unsigned char) (.1161.1250.1297.1386.1433.1522.1569.1658)' into 'boom::kill_rob_younger_than(BoomCoreState&, unsigned char, unsigned char) (.160.224.268.336.380.448.492.560.604.672.719.784.825.892.933.998.1039.1114.1158.1247.1294.1383.1430.1519.1566.1655.1699.1752.1831.1895.1965.2029.2096.2163.2230.2297.2364.2411.2470.2517.2576.2623.2682.2729.2788.2836.2895.2944.3003.3052.3111.3160.3219.3268.3327.3380.3442.3496.3558.3612.3674.3728.3790.3844.3906.3954.4013.4062.4121.4170.4229.4278.4337.4386.4445.4502.4561.4615.4674.4721.4780.4827.4886.4933.4992.5039.5098.5145.5204.5251.5310.5357.5416.5463.5522.5569)' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:959:0)
+INFO: [HLS 214-178] Inlining function 'boom::branch_free_list_contains(RenameFreeListState const&, unsigned char) (.4496)' into 'boom::branch_free_preg_unique(RenameFreeListState&, unsigned char) (.4493)' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:841:0)
+INFO: [HLS 214-178] Inlining function 'boom::preg_in_map(RenameMapTableState const&, unsigned char) (.4609)' into 'boom::rollback_free_list(BoomCoreState&, unsigned char) (.154.218.262.330.374.442.486.554.598.666.713.778.819.886.927.992.1033.1108.1152.1241.1288.1377.1424.1513.1560.1649.1693.1746.1825.1889.1959.2023.2090.2157.2224.2291.2358.2405.2464.2511.2570.2617.2676.2723.2782.2830.2889.2938.2997.3046.3105.3154.3213.3262.3321.3374.3436.3490.3552.3606.3668.3722.3784.3838.3900.3948.4007.4056.4115.4164.4223.4272.4331.4380.4439.4490.4555.4606.4668.4715.4774.4821.4880.4927.4986.5033.5092.5139.5198.5245.5304.5351.5410.5457.5516.5563)' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:998:0)
+INFO: [HLS 214-178] Inlining function 'boom::branch_free_preg_unique(RenameFreeListState&, unsigned char) (.4493)' into 'boom::rollback_free_list(BoomCoreState&, unsigned char) (.154.218.262.330.374.442.486.554.598.666.713.778.819.886.927.992.1033.1108.1152.1241.1288.1377.1424.1513.1560.1649.1693.1746.1825.1889.1959.2023.2090.2157.2224.2291.2358.2405.2464.2511.2570.2617.2676.2723.2782.2830.2889.2938.2997.3046.3105.3154.3213.3262.3321.3374.3436.3490.3552.3606.3668.3722.3784.3838.3900.3948.4007.4056.4115.4164.4223.4272.4331.4380.4439.4490.4555.4606.4668.4715.4774.4821.4880.4927.4986.5033.5092.5139.5198.5245.5304.5351.5410.5457.5516.5563)' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:998:0)
+INFO: [HLS 214-178] Inlining function 'boom::branch_tag_bit(unsigned char)' into 'boom::prune_recovered_tags(BoomCoreState&, unsigned char, unsigned char) (.151.215.259.327.371.439.483.551.595.663.710.775.816.883.924.989.1030.1105.1149.1238.1285.1374.1421.1510.1557.1646.1690.1743.1822.1886.1956.2020.2087.2154.2221.2288.2355.2402.2461.2508.2567.2614.2673.2720.2779.2827.2886.2935.2994.3043.3102.3151.3210.3259.3318.3371.3433.3487.3549.3603.3665.3719.3781.3835.3897.3945.4004.4053.4112.4161.4220.4269.4328.4377.4436.4487.4552.4603.4665.4712.4771.4818.4877.4924.4983.5030.5089.5136.5195.5242.5301.5348.5407.5454.5513.5560)' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:1017:0)
+INFO: [HLS 214-178] Inlining function 'boom::branch_clear_alloc_list(BranchRecoveryState&, unsigned char) (.701)' into 'boom::prune_recovered_tags(BoomCoreState&, unsigned char, unsigned char) (.151.215.259.327.371.439.483.551.595.663.710.775.816.883.924.989.1030.1105.1149.1238.1285.1374.1421.1510.1557.1646.1690.1743.1822.1886.1956.2020.2087.2154.2221.2288.2355.2402.2461.2508.2567.2614.2673.2720.2779.2827.2886.2935.2994.3043.3102.3151.3210.3259.3318.3371.3433.3487.3549.3603.3665.3719.3781.3835.3897.3945.4004.4053.4112.4161.4220.4269.4328.4377.4436.4487.4552.4603.4665.4712.4771.4818.4877.4924.4983.5030.5089.5136.5195.5242.5301.5348.5407.5454.5513.5560)' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:1017:0)
+INFO: [HLS 214-178] Inlining function 'boom::clear_resolved_mask(MicroOp&, unsigned char) (.1137.1226.1273.1362.1409.1498.1545.1634)' into 'boom::clear_resolved_masks_in_state(BoomCoreState&, unsigned char) (.139.203.247.315.359.427.471.539.583.651.695.763.804.871.912.977.1018.1093.1134.1223.1270.1359.1406.1495.1542.1631.1678.1731.1810.1874.1944.2008.2075.2142.2209.2276.2343.2390.2449.2496.2555.2602.2661.2708.2767.2815.2874.2923.2982.3031.3090.3139.3198.3247.3306.3359.3421.3475.3537.3591.3653.3707.3769.3823.3885.3933.3992.4041.4100.4149.4208.4257.4316.4365.4424.4475.4540.4591.4653.4700.4759.4806.4865.4912.4971.5018.5077.5124.5183.5230.5289.5336.5395.5442.5501.5548)' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:865:0)
+INFO: [HLS 214-178] Inlining function 'boom::killed_by_mask(MicroOp const&, unsigned char) (.1161.1250.1297.1386.1433.1522.1569.1658)' into 'boom::recover_mispredict(BoomCoreState&, BranchUpdate const&) (.145.209.253.321.365.433.477.545.589.657.704.769.810.877.918.983.1024.1099.1143.1232.1279.1368.1415.1504.1551.1640.1684.1737.1816.1880.1950.2014.2081.2148.2215.2282.2349.2396.2455.2502.2561.2608.2667.2714.2773.2821.2880.2929.2988.3037.3096.3145.3204.3253.3312.3365.3427.3481.3543.3597.3659.3713.3775.3829.3891.3939.3998.4047.4106.4155.4214.4263.4322.4371.4430.4481.4546.4597.4659.4706.4765.4812.4871.4918.4977.5024.5083.5130.5189.5236.5295.5342.5401.5448.5507.5554)' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:1030:0)
+INFO: [HLS 214-178] Inlining function 'boom::restore_map_snapshot(BoomCoreState&, unsigned char) (.157.221.265.333.377.445.489.557.601.669.716.781.822.889.930.995.1036.1111.1155.1244.1291.1380.1427.1516.1563.1652.1696.1749.1828.1892.1962.2026.2093.2160.2227.2294.2361.2408.2467.2514.2573.2620.2679.2726.2785.2833.2892.2941.3000.3049.3108.3157.3216.3265.3324.3377.3439.3493.3555.3609.3671.3725.3787.3841.3903.3951.4010.4059.4118.4167.4226.4275.4334.4383.4442.4499.4558.4612.4671.4718.4777.4824.4883.4930.4989.5036.5095.5142.5201.5248.5307.5354.5413.5460.5519.5566)' into 'boom::recover_mispredict(BoomCoreState&, BranchUpdate const&) (.145.209.253.321.365.433.477.545.589.657.704.769.810.877.918.983.1024.1099.1143.1232.1279.1368.1415.1504.1551.1640.1684.1737.1816.1880.1950.2014.2081.2148.2215.2282.2349.2396.2455.2502.2561.2608.2667.2714.2773.2821.2880.2929.2988.3037.3096.3145.3204.3253.3312.3365.3427.3481.3543.3597.3659.3713.3775.3829.3891.3939.3998.4047.4106.4155.4214.4263.4322.4371.4430.4481.4546.4597.4659.4706.4765.4812.4871.4918.4977.5024.5083.5130.5189.5236.5295.5342.5401.5448.5507.5554)' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:1030:0)
+INFO: [HLS 214-178] Inlining function 'boom::rollback_free_list(BoomCoreState&, unsigned char) (.154.218.262.330.374.442.486.554.598.666.713.778.819.886.927.992.1033.1108.1152.1241.1288.1377.1424.1513.1560.1649.1693.1746.1825.1889.1959.2023.2090.2157.2224.2291.2358.2405.2464.2511.2570.2617.2676.2723.2782.2830.2889.2938.2997.3046.3105.3154.3213.3262.3321.3374.3436.3490.3552.3606.3668.3722.3784.3838.3900.3948.4007.4056.4115.4164.4223.4272.4331.4380.4439.4490.4555.4606.4668.4715.4774.4821.4880.4927.4986.5033.5092.5139.5198.5245.5304.5351.5410.5457.5516.5563)' into 'boom::recover_mispredict(BoomCoreState&, BranchUpdate const&) (.145.209.253.321.365.433.477.545.589.657.704.769.810.877.918.983.1024.1099.1143.1232.1279.1368.1415.1504.1551.1640.1684.1737.1816.1880.1950.2014.2081.2148.2215.2282.2349.2396.2455.2502.2561.2608.2667.2714.2773.2821.2880.2929.2988.3037.3096.3145.3204.3253.3312.3365.3427.3481.3543.3597.3659.3713.3775.3829.3891.3939.3998.4047.4106.4155.4214.4263.4322.4371.4430.4481.4546.4597.4659.4706.4765.4812.4871.4918.4977.5024.5083.5130.5189.5236.5295.5342.5401.5448.5507.5554)' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:1030:0)
+INFO: [HLS 214-178] Inlining function 'boom::prune_recovered_tags(BoomCoreState&, unsigned char, unsigned char) (.151.215.259.327.371.439.483.551.595.663.710.775.816.883.924.989.1030.1105.1149.1238.1285.1374.1421.1510.1557.1646.1690.1743.1822.1886.1956.2020.2087.2154.2221.2288.2355.2402.2461.2508.2567.2614.2673.2720.2779.2827.2886.2935.2994.3043.3102.3151.3210.3259.3318.3371.3433.3487.3549.3603.3665.3719.3781.3835.3897.3945.4004.4053.4112.4161.4220.4269.4328.4377.4436.4487.4552.4603.4665.4712.4771.4818.4877.4924.4983.5030.5089.5136.5195.5242.5301.5348.5407.5454.5513.5560)' into 'boom::recover_mispredict(BoomCoreState&, BranchUpdate const&) (.145.209.253.321.365.433.477.545.589.657.704.769.810.877.918.983.1024.1099.1143.1232.1279.1368.1415.1504.1551.1640.1684.1737.1816.1880.1950.2014.2081.2148.2215.2282.2349.2396.2455.2502.2561.2608.2667.2714.2773.2821.2880.2929.2988.3037.3096.3145.3204.3253.3312.3365.3427.3481.3543.3597.3659.3713.3775.3829.3891.3939.3998.4047.4106.4155.4214.4263.4322.4371.4430.4481.4546.4597.4659.4706.4765.4812.4871.4918.4977.5024.5083.5130.5189.5236.5295.5342.5401.5448.5507.5554)' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:1030:0)
+INFO: [HLS 214-178] Inlining function 'boom::rebuild_busy_after_recovery(BoomCoreState&) (.148.212.256.324.368.436.480.548.592.660.707.772.813.880.921.986.1027.1102.1146.1235.1282.1371.1418.1507.1554.1643.1687.1740.1819.1883.1953.2017.2084.2151.2218.2285.2352.2399.2458.2505.2564.2611.2670.2717.2776.2824.2883.2932.2991.3040.3099.3148.3207.3256.3315.3368.3430.3484.3546.3600.3662.3716.3778.3832.3894.3942.4001.4050.4109.4158.4217.4266.4325.4374.4433.4484.4549.4600.4662.4709.4768.4815.4874.4921.4980.5027.5086.5133.5192.5239.5298.5345.5404.5451.5510.5557)' into 'boom::recover_mispredict(BoomCoreState&, BranchUpdate const&) (.145.209.253.321.365.433.477.545.589.657.704.769.810.877.918.983.1024.1099.1143.1232.1279.1368.1415.1504.1551.1640.1684.1737.1816.1880.1950.2014.2081.2148.2215.2282.2349.2396.2455.2502.2561.2608.2667.2714.2773.2821.2880.2929.2988.3037.3096.3145.3204.3253.3312.3365.3427.3481.3543.3597.3659.3713.3775.3829.3891.3939.3998.4047.4106.4155.4214.4263.4322.4371.4430.4481.4546.4597.4659.4706.4765.4812.4871.4918.4977.5024.5083.5130.5189.5236.5295.5342.5401.5448.5507.5554)' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:1030:0)
+INFO: [HLS 214-178] Inlining function 'boom::branch_tag_bit(unsigned char)' into 'boom::release_tag(BoomCoreState&, unsigned char) (.142.206.250.318.362.430.474.542.586.654.698.766.807.874.915.980.1021.1096.1140.1229.1276.1365.1412.1501.1548.1637.1681.1734.1813.1877.1947.2011.2078.2145.2212.2279.2346.2393.2452.2499.2558.2605.2664.2711.2770.2818.2877.2926.2985.3034.3093.3142.3201.3250.3309.3362.3424.3478.3540.3594.3656.3710.3772.3826.3888.3936.3995.4044.4103.4152.4211.4260.4319.4368.4427.4478.4543.4594.4656.4703.4762.4809.4868.4915.4974.5021.5080.5127.5186.5233.5292.5339.5398.5445.5504.5551)' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:855:0)
+INFO: [HLS 214-178] Inlining function 'boom::branch_clear_alloc_list(BranchRecoveryState&, unsigned char) (.701)' into 'boom::release_tag(BoomCoreState&, unsigned char) (.142.206.250.318.362.430.474.542.586.654.698.766.807.874.915.980.1021.1096.1140.1229.1276.1365.1412.1501.1548.1637.1681.1734.1813.1877.1947.2011.2078.2145.2212.2279.2346.2393.2452.2499.2558.2605.2664.2711.2770.2818.2877.2926.2985.3034.3093.3142.3201.3250.3309.3362.3424.3478.3540.3594.3656.3710.3772.3826.3888.3936.3995.4044.4103.4152.4211.4260.4319.4368.4427.4478.4543.4594.4656.4703.4762.4809.4868.4915.4974.5021.5080.5127.5186.5233.5292.5339.5398.5445.5504.5551)' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:855:0)
+INFO: [HLS 214-178] Inlining function 'boom::release_tag(BoomCoreState&, unsigned char) (.142.206.250.318.362.430.474.542.586.654.698.766.807.874.915.980.1021.1096.1140.1229.1276.1365.1412.1501.1548.1637.1681.1734.1813.1877.1947.2011.2078.2145.2212.2279.2346.2393.2452.2499.2558.2605.2664.2711.2770.2818.2877.2926.2985.3034.3093.3142.3201.3250.3309.3362.3424.3478.3540.3594.3656.3710.3772.3826.3888.3936.3995.4044.4103.4152.4211.4260.4319.4368.4427.4478.4543.4594.4656.4703.4762.4809.4868.4915.4974.5021.5080.5127.5186.5233.5292.5339.5398.5445.5504.5551)' into 'boom::release_resolved_branch(BoomCoreState&, unsigned char, unsigned char) (.136.200.244.312.356.424.468.536.580.648.692.760.801.868.909.974.1015.1090.1131.1220.1267.1356.1403.1492.1539.1628.1675.1728.1807.1871.1941.2005.2072.2139.2206.2273.2340.2387.2446.2493.2552.2599.2658.2705.2764.2812.2871.2920.2979.3028.3087.3136.3195.3244.3303.3356.3418.3472.3534.3588.3650.3704.3766.3820.3882.3930.3989.4038.4097.4146.4205.4254.4313.4362.4421.4472.4537.4588.4650.4697.4756.4803.4862.4909.4968.5015.5074.5121.5180.5227.5286.5333.5392.5439.5498.5545)' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:1059:0)
+INFO: [HLS 214-178] Inlining function 'boom::branch_tag_bit(unsigned char)' into 'boom::branch_complete(BoomCoreState&, ExecuteState::AluResult const&)' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:1064:0)
+INFO: [HLS 214-178] Inlining function 'boom::release_resolved_branch(BoomCoreState&, unsigned char, unsigned char) (.136.200.244.312.356.424.468.536.580.648.692.760.801.868.909.974.1015.1090.1131.1220.1267.1356.1403.1492.1539.1628.1675.1728.1807.1871.1941.2005.2072.2139.2206.2273.2340.2387.2446.2493.2552.2599.2658.2705.2764.2812.2871.2920.2979.3028.3087.3136.3195.3244.3303.3356.3418.3472.3534.3588.3650.3704.3766.3820.3882.3930.3989.4038.4097.4146.4205.4254.4313.4362.4421.4472.4537.4588.4650.4697.4756.4803.4862.4909.4968.5015.5074.5121.5180.5227.5286.5333.5392.5439.5498.5545)' into 'boom::branch_complete(BoomCoreState&, ExecuteState::AluResult const&)' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:1064:0)
+INFO: [HLS 214-178] Inlining function 'boom::enqueue_store(BoomCoreState&, ExecuteState::AluResult const&, RobEntry&) (.178.194.289.306.401.418.513.530.625.642.737.754.843.862.951.968.1057.1081.1182.1211.1318.1347.1454.1483.1590.1619.1717.1773.1782.1801.1852.1865.1916.1935.1988.1999.2055.2066.2122.2133.2189.2200.2256.2267.2323.2334.2429.2440.2535.2546.2641.2652.2747.2758.2854.2865.2962.2973.3070.3081.3178.3189.3286.3297.3401.3412.3517.3528.3633.3644.3749.3760.3865.3876.3972.3983.4080.4091.4188.4199.4296.4307.4404.4415.4520.4531.4633.4644.4739.4750.4845.4856.4951.4962.5057.5068.5163.5174.5269.5280.5375.5386.5481.5492.5587)' into 'boom::lsu_accept_completion(BoomCoreState&, ExecuteState::AluResult const&)' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:1198:0)
+INFO: [HLS 214-178] Inlining function 'boom::enqueue_load(BoomCoreState&, ExecuteState::AluResult const&, RobEntry&) (.175.191.286.303.398.415.510.527.622.639.734.751.840.859.948.965.1054.1075.1176.1205.1312.1341.1448.1477.1584.1613.1714.1770.1779.1798.1849.1862.1913.1932.1985.1996.2052.2063.2119.2130.2186.2197.2253.2264.2320.2331.2426.2437.2532.2543.2638.2649.2744.2755.2851.2862.2959.2970.3067.3078.3175.3186.3283.3294.3398.3409.3514.3525.3630.3641.3746.3757.3862.3873.3969.3980.4077.4088.4185.4196.4293.4304.4401.4412.4517.4528.4630.4641.4736.4747.4842.4853.4948.4959.5054.5065.5160.5171.5266.5277.5372.5383.5478.5489.5584)' into 'boom::lsu_accept_completion(BoomCoreState&, ExecuteState::AluResult const&)' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:1198:0)
+INFO: [HLS 214-178] Inlining function 'w3_pack_observable(BoomCoreState const&, unsigned char, unsigned char, bool, bool)' into 'synth_w3_rob_wrap_top(unsigned int, unsigned long&)' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:2556:0)
+INFO: [HLS 214-270] Starting automatic array partition analysis...
+INFO: [HLS 200-111] Finished Compiling Optimization and Transform: CPU user time: 24.2 seconds. CPU system time: 0.54 seconds. Elapsed time: 24.73 seconds; current allocated memory: 457.148 MB.
+INFO: [HLS 200-111] Finished Checking Pragmas: CPU user time: 0.01 seconds. CPU system time: 0 seconds. Elapsed time: 0 seconds; current allocated memory: 457.148 MB.
+INFO: [HLS 200-10] Starting code transformations ...
+INFO: [HLS 200-111] Finished Standard Transforms: CPU user time: 2.25 seconds. CPU system time: 0.01 seconds. Elapsed time: 2.28 seconds; current allocated memory: 493.406 MB.
+INFO: [HLS 200-10] Checking synthesizability ...
+INFO: [HLS 200-111] Finished Checking Synthesizability: CPU user time: 2.02 seconds. CPU system time: 0.01 seconds. Elapsed time: 2.04 seconds; current allocated memory: 514.164 MB.
+INFO: [XFORM 203-102] Partitioning array 'state.decode.dec_uops.uopc' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:2557) automatically.
+INFO: [XFORM 203-102] Partitioning array 'state.decode.dec_uops.inst' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:2557) automatically.
+INFO: [XFORM 203-102] Partitioning array 'state.decode.dec_uops.debug_inst' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:2557) automatically.
+INFO: [XFORM 203-102] Partitioning array 'state.decode.dec_uops.is_rvc' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:2557) automatically.
+INFO: [XFORM 203-102] Partitioning array 'state.decode.dec_uops.debug_pc' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:2557) automatically.
+INFO: [XFORM 203-102] Partitioning array 'state.decode.dec_uops.iq_type' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:2557) automatically.
+INFO: [XFORM 203-102] Partitioning array 'state.decode.dec_uops.fu_code' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:2557) automatically.
+INFO: [XFORM 203-102] Partitioning array 'state.decode.dec_uops.ctrl.br_type' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:2557) automatically.
+INFO: [XFORM 203-102] Partitioning array 'state.decode.dec_uops.ctrl.op1_sel' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:2557) automatically.
+INFO: [XFORM 203-102] Partitioning array 'state.decode.dec_uops.ctrl.op2_sel' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:2557) automatically.
+INFO: [XFORM 203-102] Partitioning array 'state.decode.dec_uops.ctrl.imm_sel' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:2557) automatically.
+INFO: [XFORM 203-102] Partitioning array 'state.decode.dec_uops.ctrl.op_fcn' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:2557) automatically.
+INFO: [XFORM 203-102] Partitioning array 'state.decode.dec_uops.ctrl.fcn_dw' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:2557) automatically.
+INFO: [XFORM 203-102] Partitioning array 'state.decode.dec_uops.ctrl.csr_cmd' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:2557) automatically.
+INFO: [XFORM 203-102] Partitioning array 'state.decode.dec_uops.ctrl.is_load' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:2557) automatically.
+INFO: [XFORM 203-102] Partitioning array 'state.decode.dec_uops.ctrl.is_sta' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:2557) automatically.
+INFO: [XFORM 203-102] Partitioning array 'state.decode.dec_uops.ctrl.is_std' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:2557) automatically.
+INFO: [XFORM 203-102] Partitioning array 'state.decode.dec_uops.iw_state' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:2557) automatically.
+INFO: [XFORM 203-102] Partitioning array 'state.decode.dec_uops.iw_p1_poisoned' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:2557) automatically.
+INFO: [XFORM 203-102] Partitioning array 'state.decode.dec_uops.iw_p2_poisoned' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:2557) automatically.
+INFO: [XFORM 203-102] Partitioning array 'state.decode.dec_uops.branch.br_mask' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:2557) automatically.
+INFO: [XFORM 203-102] Partitioning array 'state.decode.dec_uops.branch.br_tag' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:2557) automatically.
+INFO: [XFORM 203-102] Partitioning array 'state.decode.dec_uops.branch.ftq_idx' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:2557) automatically.
+INFO: [XFORM 203-102] Partitioning array 'state.decode.dec_uops.branch.pc_lob' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:2557) automatically.
+INFO: [XFORM 203-102] Partitioning array 'state.decode.dec_uops.branch.edge_inst' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:2557) automatically.
+INFO: [XFORM 203-102] Partitioning array 'state.decode.dec_uops.branch.taken' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:2557) automatically.
+INFO: [XFORM 203-102] Partitioning array 'state.decode.dec_uops.branch.is_br' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:2557) automatically.
+INFO: [XFORM 203-102] Partitioning array 'state.decode.dec_uops.branch.is_jalr' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:2557) automatically.
+INFO: [XFORM 203-102] Partitioning array 'state.decode.dec_uops.branch.is_jal' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:2557) automatically.
+INFO: [XFORM 203-102] Partitioning array 'state.decode.dec_uops.branch.is_sfb' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:2557) automatically.
+INFO: [XFORM 203-102] Partitioning array 'state.decode.dec_uops.imm_packed' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:2557) automatically.
+INFO: [XFORM 203-102] Partitioning array 'state.decode.dec_uops.csr_addr' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:2557) automatically.
+INFO: [XFORM 203-102] Partitioning array 'state.decode.dec_uops.queue.rob_idx' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:2557) automatically.
+INFO: [XFORM 203-102] Partitioning array 'state.decode.dec_uops.queue.ldq_idx' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:2557) automatically.
+INFO: [XFORM 203-102] Partitioning array 'state.decode.dec_uops.queue.stq_idx' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:2557) automatically.
+INFO: [XFORM 203-102] Partitioning array 'state.decode.dec_uops.queue.rxq_idx' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:2557) automatically.
+INFO: [XFORM 203-102] Partitioning array 'state.decode.dec_uops.queue.rob_allocation_id' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:2557) automatically.
+INFO: [XFORM 203-102] Partitioning array 'state.decode.dec_uops.rename.ldst' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:2557) automatically.
+INFO: [XFORM 203-102] Partitioning array 'state.decode.dec_uops.rename.lrs1' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:2557) automatically.
+INFO: [XFORM 203-102] Partitioning array 'state.decode.dec_uops.rename.lrs2' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:2557) automatically.
+INFO: [XFORM 203-102] Partitioning array 'state.decode.dec_uops.rename.lrs3' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:2557) automatically.
+INFO: [XFORM 203-102] Partitioning array 'state.decode.dec_uops.rename.pdst' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:2557) automatically.
+INFO: [XFORM 203-102] Partitioning array 'state.decode.dec_uops.rename.prs1' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:2557) automatically.
+INFO: [XFORM 203-102] Partitioning array 'state.decode.dec_uops.rename.prs2' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:2557) automatically.
+INFO: [XFORM 203-102] Partitioning array 'state.decode.dec_uops.rename.prs3' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:2557) automatically.
+INFO: [XFORM 203-102] Partitioning array 'state.decode.dec_uops.rename.ppred' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:2557) automatically.
+INFO: [XFORM 203-102] Partitioning array 'state.decode.dec_uops.rename.prs1_busy' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:2557) automatically.
+INFO: [XFORM 203-102] Partitioning array 'state.decode.dec_uops.rename.prs2_busy' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:2557) automatically.
+INFO: [XFORM 203-102] Partitioning array 'state.decode.dec_uops.rename.prs3_busy' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:2557) automatically.
+INFO: [XFORM 203-102] Partitioning array 'state.decode.dec_uops.rename.ppred_busy' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:2557) automatically.
+INFO: [XFORM 203-102] Partitioning array 'state.decode.dec_uops.rename.stale_pdst' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:2557) automatically.
+INFO: [XFORM 203-102] Partitioning array 'state.decode.dec_uops.rename.dst_rtype' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:2557) automatically.
+INFO: [XFORM 203-102] Partitioning array 'state.decode.dec_uops.rename.lrs1_rtype' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:2557) automatically.
+INFO: [XFORM 203-102] Partitioning array 'state.decode.dec_uops.rename.lrs2_rtype' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:2557) automatically.
+INFO: [XFORM 203-102] Partitioning array 'state.decode.dec_uops.rename.frs3_en' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:2557) automatically.
+INFO: [XFORM 203-102] Partitioning array 'state.decode.dec_uops.rename.fp_val' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:2557) automatically.
+INFO: [XFORM 203-102] Partitioning array 'state.decode.dec_uops.rename.fp_single' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:2557) automatically.
+INFO: [XFORM 203-102] Partitioning array 'state.decode.dec_uops.exception' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:2557) automatically.
+INFO: [XFORM 203-102] Partitioning array 'state.decode.dec_uops.exc_cause' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:2557) automatically.
+INFO: [XFORM 203-102] Partitioning array 'state.decode.dec_uops.bypassable' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:2557) automatically.
+INFO: [XFORM 203-102] Partitioning array 'state.decode.dec_uops.mem.mem_cmd' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:2557) automatically.
+INFO: [XFORM 203-102] Partitioning array 'state.decode.dec_uops.mem.mem_size' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:2557) automatically.
+INFO: [XFORM 203-102] Partitioning array 'state.decode.dec_uops.mem.mem_signed' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:2557) automatically.
+INFO: [XFORM 203-102] Partitioning array 'state.decode.dec_uops.mem.is_fence' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:2557) automatically.
+INFO: [XFORM 203-102] Partitioning array 'state.decode.dec_uops.mem.is_fencei' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:2557) automatically.
+INFO: [XFORM 203-102] Partitioning array 'state.decode.dec_uops.mem.is_amo' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:2557) automatically.
+INFO: [XFORM 203-102] Partitioning array 'state.decode.dec_uops.mem.uses_ldq' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:2557) automatically.
+INFO: [XFORM 203-102] Partitioning array 'state.decode.dec_uops.mem.uses_stq' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:2557) automatically.
+INFO: [XFORM 203-102] Partitioning array 'state.decode.dec_uops.mem.ldst_is_rs1' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:2557) automatically.
+INFO: [XFORM 203-102] Partitioning array 'state.decode.dec_uops.mem.ldst_val' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:2557) automatically.
+INFO: [XFORM 203-102] Partitioning array 'state.decode.dec_uops.is_sys_pc2epc' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:2557) automatically.
+INFO: [XFORM 203-102] Partitioning array 'state.decode.dec_uops.is_unique' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:2557) automatically.
+INFO: [XFORM 203-102] Partitioning array 'state.decode.dec_uops.flush_on_commit' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:2557) automatically.
+INFO: [XFORM 203-102] Partitioning array 'state.decode.dec_uops.exc.exception' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:2557) automatically.
+INFO: [XFORM 203-102] Partitioning array 'state.decode.dec_uops.exc.exc_cause' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:2557) automatically.
+INFO: [XFORM 203-102] Partitioning array 'state.decode.dec_uops.exc.xcpt_pf_if' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:2557) automatically.
+INFO: [XFORM 203-102] Partitioning array 'state.decode.dec_uops.exc.xcpt_ae_if' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:2557) automatically.
+INFO: [XFORM 203-102] Partitioning array 'state.decode.dec_uops.exc.xcpt_ma_if' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:2557) automatically.
+INFO: [XFORM 203-102] Partitioning array 'state.decode.dec_uops.exc.bp_debug_if' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:2557) automatically.
+INFO: [XFORM 203-102] Partitioning array 'state.decode.dec_uops.exc.bp_xcpt_if' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:2557) automatically.
+INFO: [XFORM 203-102] Partitioning array 'state.decode.dec_uops.debug.debug_fsrc' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:2557) automatically.
+INFO: [XFORM 203-102] Partitioning array 'state.decode.dec_uops.debug.debug_tsrc' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:2557) automatically.
+INFO: [XFORM 203-102] Partitioning array 'state.decode.dec_uops.debug.debug_inst' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:2557) automatically.
+INFO: [XFORM 203-102] Partitioning array 'state.decode.dec_uops.debug.debug_pc' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:2557) automatically.
+INFO: [XFORM 203-102] Partitioning array 'state.decode.dec_valids' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:2557) automatically.
+INFO: [XFORM 203-102] Partitioning array 'state.rename.dispatch_packets.valid' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:2557) automatically.
+INFO: [XFORM 203-102] Partitioning array 'state.rename.dispatch_packets.uop.uopc' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:2557) automatically.
+INFO: [XFORM 203-102] Partitioning array 'state.rename.dispatch_packets.uop.inst' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:2557) automatically.
+INFO: [XFORM 203-102] Partitioning array 'state.rename.dispatch_packets.uop.debug_inst' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:2557) automatically.
+INFO: [XFORM 203-102] Partitioning array 'state.rename.dispatch_packets.uop.is_rvc' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:2557) automatically.
+INFO: [XFORM 203-102] Partitioning array 'state.rename.dispatch_packets.uop.debug_pc' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:2557) automatically.
+INFO: [XFORM 203-102] Partitioning array 'state.rename.dispatch_packets.uop.iq_type' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:2557) automatically.
+INFO: [XFORM 203-102] Partitioning array 'state.rename.dispatch_packets.uop.fu_code' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:2557) automatically.
+INFO: [XFORM 203-102] Partitioning array 'state.rename.dispatch_packets.uop.ctrl.br_type' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:2557) automatically.
+INFO: [XFORM 203-102] Partitioning array 'state.rename.dispatch_packets.uop.ctrl.op1_sel' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:2557) automatically.
+INFO: [XFORM 203-102] Partitioning array 'state.rename.dispatch_packets.uop.ctrl.op2_sel' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:2557) automatically.
+INFO: [XFORM 203-102] Partitioning array 'state.rename.dispatch_packets.uop.ctrl.imm_sel' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:2557) automatically.
+INFO: [XFORM 203-102] Partitioning array 'state.rename.dispatch_packets.uop.ctrl.op_fcn' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:2557) automatically.
+INFO: [XFORM 203-102] Partitioning array 'state.rename.dispatch_packets.uop.ctrl.fcn_dw' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:2557) automatically.
+INFO: [XFORM 203-102] Partitioning array 'state.rename.dispatch_packets.uop.ctrl.csr_cmd' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:2557) automatically.
+INFO: [XFORM 203-102] Partitioning array 'state.rename.dispatch_packets.uop.ctrl.is_load' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:2557) automatically.
+INFO: [XFORM 203-102] Partitioning array 'state.rename.dispatch_packets.uop.ctrl.is_sta' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:2557) automatically.
+INFO: [XFORM 203-102] Partitioning array 'state.rename.dispatch_packets.uop.ctrl.is_std' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:2557) automatically.
+INFO: [XFORM 203-102] Partitioning array 'state.rename.dispatch_packets.uop.iw_state' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:2557) automatically.
+INFO: [XFORM 203-102] Partitioning array 'state.rename.dispatch_packets.uop.iw_p1_poisoned' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:2557) automatically.
+INFO: [XFORM 203-102] Partitioning array 'state.rename.dispatch_packets.uop.iw_p2_poisoned' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:2557) automatically.
+INFO: [XFORM 203-102] Partitioning array 'state.rename.dispatch_packets.uop.branch.br_mask' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:2557) automatically.
+INFO: [XFORM 203-102] Partitioning array 'state.rename.dispatch_packets.uop.branch.br_tag' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:2557) automatically.
+INFO: [XFORM 203-102] Partitioning array 'state.rename.dispatch_packets.uop.branch.ftq_idx' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:2557) automatically.
+INFO: [XFORM 203-102] Partitioning array 'state.rename.dispatch_packets.uop.branch.pc_lob' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:2557) automatically.
+INFO: [XFORM 203-102] Partitioning array 'state.rename.dispatch_packets.uop.branch.edge_inst' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:2557) automatically.
+INFO: [XFORM 203-102] Partitioning array 'state.rename.dispatch_packets.uop.branch.taken' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:2557) automatically.
+INFO: [XFORM 203-102] Partitioning array 'state.rename.dispatch_packets.uop.branch.is_br' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:2557) automatically.
+INFO: [XFORM 203-102] Partitioning array 'state.rename.dispatch_packets.uop.branch.is_jalr' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:2557) automatically.
+INFO: [XFORM 203-102] Partitioning array 'state.rename.dispatch_packets.uop.branch.is_jal' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:2557) automatically.
+INFO: [XFORM 203-102] Partitioning array 'state.rename.dispatch_packets.uop.branch.is_sfb' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:2557) automatically.
+INFO: [XFORM 203-102] Partitioning array 'state.rename.dispatch_packets.uop.imm_packed' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:2557) automatically.
+INFO: [XFORM 203-102] Partitioning array 'state.rename.dispatch_packets.uop.csr_addr' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:2557) automatically.
+INFO: [XFORM 203-102] Partitioning array 'state.rename.dispatch_packets.uop.queue.rob_idx' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:2557) automatically.
+INFO: [XFORM 203-102] Partitioning array 'state.rename.dispatch_packets.uop.queue.ldq_idx' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:2557) automatically.
+INFO: [XFORM 203-102] Partitioning array 'state.rename.dispatch_packets.uop.queue.stq_idx' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:2557) automatically.
+INFO: [XFORM 203-102] Partitioning array 'state.rename.dispatch_packets.uop.queue.rxq_idx' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:2557) automatically.
+INFO: [XFORM 203-102] Partitioning array 'state.rename.dispatch_packets.uop.queue.rob_allocation_id' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:2557) automatically.
+INFO: [XFORM 203-102] Partitioning array 'state.rename.dispatch_packets.uop.rename.ldst' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:2557) automatically.
+INFO: [XFORM 203-102] Partitioning array 'state.rename.dispatch_packets.uop.rename.lrs1' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:2557) automatically.
+INFO: [XFORM 203-102] Partitioning array 'state.rename.dispatch_packets.uop.rename.lrs2' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:2557) automatically.
+INFO: [XFORM 203-102] Partitioning array 'state.rename.dispatch_packets.uop.rename.lrs3' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:2557) automatically.
+INFO: [XFORM 203-102] Partitioning array 'state.rename.dispatch_packets.uop.rename.pdst' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:2557) automatically.
+INFO: [XFORM 203-102] Partitioning array 'state.rename.dispatch_packets.uop.rename.prs1' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:2557) automatically.
+INFO: [XFORM 203-102] Partitioning array 'state.rename.dispatch_packets.uop.rename.prs2' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:2557) automatically.
+INFO: [XFORM 203-102] Partitioning array 'state.rename.dispatch_packets.uop.rename.prs3' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:2557) automatically.
+INFO: [XFORM 203-102] Partitioning array 'state.rename.dispatch_packets.uop.rename.ppred' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:2557) automatically.
+INFO: [XFORM 203-102] Partitioning array 'state.rename.dispatch_packets.uop.rename.prs1_busy' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:2557) automatically.
+INFO: [XFORM 203-102] Partitioning array 'state.rename.dispatch_packets.uop.rename.prs2_busy' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:2557) automatically.
+INFO: [XFORM 203-102] Partitioning array 'state.rename.dispatch_packets.uop.rename.prs3_busy' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:2557) automatically.
+INFO: [XFORM 203-102] Partitioning array 'state.rename.dispatch_packets.uop.rename.ppred_busy' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:2557) automatically.
+INFO: [XFORM 203-102] Partitioning array 'state.rename.dispatch_packets.uop.rename.stale_pdst' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:2557) automatically.
+INFO: [XFORM 203-102] Partitioning array 'state.rename.dispatch_packets.uop.rename.dst_rtype' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:2557) automatically.
+INFO: [XFORM 203-102] Partitioning array 'state.rename.dispatch_packets.uop.rename.lrs1_rtype' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:2557) automatically.
+INFO: [XFORM 203-102] Partitioning array 'state.rename.dispatch_packets.uop.rename.lrs2_rtype' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:2557) automatically.
+INFO: [XFORM 203-102] Partitioning array 'state.rename.dispatch_packets.uop.rename.frs3_en' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:2557) automatically.
+INFO: [XFORM 203-102] Partitioning array 'state.rename.dispatch_packets.uop.rename.fp_val' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:2557) automatically.
+INFO: [XFORM 203-102] Partitioning array 'state.rename.dispatch_packets.uop.rename.fp_single' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:2557) automatically.
+INFO: [XFORM 203-102] Partitioning array 'state.rename.dispatch_packets.uop.exception' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:2557) automatically.
+INFO: [XFORM 203-102] Partitioning array 'state.rename.dispatch_packets.uop.exc_cause' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:2557) automatically.
+INFO: [XFORM 203-102] Partitioning array 'state.rename.dispatch_packets.uop.bypassable' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:2557) automatically.
+INFO: [XFORM 203-102] Partitioning array 'state.rename.dispatch_packets.uop.mem.mem_cmd' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:2557) automatically.
+INFO: [XFORM 203-102] Partitioning array 'state.rename.dispatch_packets.uop.mem.mem_size' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:2557) automatically.
+INFO: [XFORM 203-102] Partitioning array 'state.rename.dispatch_packets.uop.mem.mem_signed' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:2557) automatically.
+INFO: [XFORM 203-102] Partitioning array 'state.rename.dispatch_packets.uop.mem.is_fence' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:2557) automatically.
+INFO: [XFORM 203-102] Partitioning array 'state.rename.dispatch_packets.uop.mem.is_fencei' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:2557) automatically.
+INFO: [XFORM 203-102] Partitioning array 'state.rename.dispatch_packets.uop.mem.is_amo' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:2557) automatically.
+INFO: [XFORM 203-102] Partitioning array 'state.rename.dispatch_packets.uop.mem.uses_ldq' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:2557) automatically.
+INFO: [XFORM 203-102] Partitioning array 'state.rename.dispatch_packets.uop.mem.uses_stq' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:2557) automatically.
+INFO: [XFORM 203-102] Partitioning array 'state.rename.dispatch_packets.uop.mem.ldst_is_rs1' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:2557) automatically.
+INFO: [XFORM 203-102] Partitioning array 'state.rename.dispatch_packets.uop.mem.ldst_val' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:2557) automatically.
+INFO: [XFORM 203-102] Partitioning array 'state.rename.dispatch_packets.uop.is_sys_pc2epc' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:2557) automatically.
+INFO: [XFORM 203-102] Partitioning array 'state.rename.dispatch_packets.uop.is_unique' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:2557) automatically.
+INFO: [XFORM 203-102] Partitioning array 'state.rename.dispatch_packets.uop.flush_on_commit' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:2557) automatically.
+INFO: [XFORM 203-102] Partitioning array 'state.rename.dispatch_packets.uop.exc.exception' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:2557) automatically.
+INFO: [XFORM 203-102] Partitioning array 'state.rename.dispatch_packets.uop.exc.exc_cause' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:2557) automatically.
+INFO: [XFORM 203-102] Partitioning array 'state.rename.dispatch_packets.uop.exc.xcpt_pf_if' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:2557) automatically.
+INFO: [XFORM 203-102] Partitioning array 'state.rename.dispatch_packets.uop.exc.xcpt_ae_if' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:2557) automatically.
+INFO: [XFORM 203-102] Partitioning array 'state.rename.dispatch_packets.uop.exc.xcpt_ma_if' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:2557) automatically.
+INFO: [XFORM 203-102] Partitioning array 'state.rename.dispatch_packets.uop.exc.bp_debug_if' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:2557) automatically.
+INFO: [XFORM 203-102] Partitioning array 'state.rename.dispatch_packets.uop.exc.bp_xcpt_if' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:2557) automatically.
+INFO: [XFORM 203-102] Partitioning array 'state.rename.dispatch_packets.uop.debug.debug_fsrc' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:2557) automatically.
+INFO: [XFORM 203-102] Partitioning array 'state.rename.dispatch_packets.uop.debug.debug_tsrc' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:2557) automatically.
+INFO: [XFORM 203-102] Partitioning array 'state.rename.dispatch_packets.uop.debug.debug_inst' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:2557) automatically.
+INFO: [XFORM 203-102] Partitioning array 'state.rename.dispatch_packets.uop.debug.debug_pc' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:2557) automatically.
+INFO: [XFORM 203-102] Partitioning array 'state.rename.dispatch_packets.rob_allocated' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:2557) automatically.
+INFO: [XFORM 203-102] Automatically partitioning small array 'state.issue.issued_uops.uopc' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:2557) completely based on array size.
+INFO: [XFORM 203-102] Automatically partitioning small array 'state.issue.issued_uops.inst' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:2557) completely based on array size.
+INFO: [XFORM 203-102] Automatically partitioning small array 'state.issue.issued_uops.debug_inst' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:2557) completely based on array size.
+INFO: [XFORM 203-102] Automatically partitioning small array 'state.issue.issued_uops.is_rvc' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:2557) completely based on array size.
+INFO: [XFORM 203-102] Automatically partitioning small array 'state.issue.issued_uops.debug_pc' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:2557) completely based on array size.
+INFO: [XFORM 203-102] Automatically partitioning small array 'state.issue.issued_uops.iq_type' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:2557) completely based on array size.
+INFO: [XFORM 203-102] Automatically partitioning small array 'state.issue.issued_uops.fu_code' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:2557) completely based on array size.
+INFO: [XFORM 203-102] Automatically partitioning small array 'state.issue.issued_uops.ctrl.br_type' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:2557) completely based on array size.
+INFO: [XFORM 203-102] Automatically partitioning small array 'state.issue.issued_uops.ctrl.op1_sel' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:2557) completely based on array size.
+INFO: [XFORM 203-102] Automatically partitioning small array 'state.issue.issued_uops.ctrl.op2_sel' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:2557) completely based on array size.
+INFO: [XFORM 203-102] Automatically partitioning small array 'state.issue.issued_uops.ctrl.imm_sel' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:2557) completely based on array size.
+INFO: [XFORM 203-102] Automatically partitioning small array 'state.issue.issued_uops.ctrl.op_fcn' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:2557) completely based on array size.
+INFO: [XFORM 203-102] Automatically partitioning small array 'state.issue.issued_uops.ctrl.fcn_dw' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:2557) completely based on array size.
+INFO: [XFORM 203-102] Automatically partitioning small array 'state.issue.issued_uops.ctrl.csr_cmd' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:2557) completely based on array size.
+INFO: [XFORM 203-102] Automatically partitioning small array 'state.issue.issued_uops.ctrl.is_load' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:2557) completely based on array size.
+INFO: [XFORM 203-102] Automatically partitioning small array 'state.issue.issued_uops.ctrl.is_sta' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:2557) completely based on array size.
+INFO: [XFORM 203-102] Automatically partitioning small array 'state.issue.issued_uops.ctrl.is_std' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:2557) completely based on array size.
+INFO: [XFORM 203-102] Automatically partitioning small array 'state.issue.issued_uops.iw_state' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:2557) completely based on array size.
+INFO: [XFORM 203-102] Automatically partitioning small array 'state.issue.issued_uops.iw_p1_poisoned' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:2557) completely based on array size.
+INFO: [XFORM 203-102] Automatically partitioning small array 'state.issue.issued_uops.iw_p2_poisoned' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:2557) completely based on array size.
+INFO: [XFORM 203-102] Automatically partitioning small array 'state.issue.issued_uops.branch.br_mask' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:2557) completely based on array size.
+INFO: [XFORM 203-102] Automatically partitioning small array 'state.issue.issued_uops.branch.br_tag' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:2557) completely based on array size.
+INFO: [XFORM 203-102] Automatically partitioning small array 'state.issue.issued_uops.branch.ftq_idx' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:2557) completely based on array size.
+INFO: [XFORM 203-102] Automatically partitioning small array 'state.issue.issued_uops.branch.pc_lob' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:2557) completely based on array size.
+INFO: [XFORM 203-102] Automatically partitioning small array 'state.issue.issued_uops.branch.edge_inst' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:2557) completely based on array size.
+INFO: [XFORM 203-102] Automatically partitioning small array 'state.issue.issued_uops.branch.taken' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:2557) completely based on array size.
+INFO: [XFORM 203-102] Automatically partitioning small array 'state.issue.issued_uops.branch.is_br' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:2557) completely based on array size.
+INFO: [XFORM 203-102] Automatically partitioning small array 'state.issue.issued_uops.branch.is_jalr' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:2557) completely based on array size.
+INFO: [XFORM 203-102] Automatically partitioning small array 'state.issue.issued_uops.branch.is_jal' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:2557) completely based on array size.
+INFO: [XFORM 203-102] Automatically partitioning small array 'state.issue.issued_uops.branch.is_sfb' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:2557) completely based on array size.
+INFO: [XFORM 203-102] Automatically partitioning small array 'state.issue.issued_uops.imm_packed' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:2557) completely based on array size.
+INFO: [XFORM 203-102] Automatically partitioning small array 'state.issue.issued_uops.csr_addr' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:2557) completely based on array size.
+INFO: [XFORM 203-102] Automatically partitioning small array 'state.issue.issued_uops.queue.rob_idx' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:2557) completely based on array size.
+INFO: [XFORM 203-102] Automatically partitioning small array 'state.issue.issued_uops.queue.ldq_idx' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:2557) completely based on array size.
+INFO: [XFORM 203-102] Automatically partitioning small array 'state.issue.issued_uops.queue.stq_idx' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:2557) completely based on array size.
+INFO: [XFORM 203-102] Automatically partitioning small array 'state.issue.issued_uops.queue.rxq_idx' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:2557) completely based on array size.
+INFO: [XFORM 203-102] Automatically partitioning small array 'state.issue.issued_uops.queue.rob_allocation_id' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:2557) completely based on array size.
+INFO: [XFORM 203-102] Automatically partitioning small array 'state.issue.issued_uops.rename.ldst' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:2557) completely based on array size.
+INFO: [XFORM 203-102] Automatically partitioning small array 'state.issue.issued_uops.rename.lrs1' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:2557) completely based on array size.
+INFO: [XFORM 203-102] Automatically partitioning small array 'state.issue.issued_uops.rename.lrs2' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:2557) completely based on array size.
+INFO: [XFORM 203-102] Automatically partitioning small array 'state.issue.issued_uops.rename.lrs3' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:2557) completely based on array size.
+INFO: [XFORM 203-102] Automatically partitioning small array 'state.issue.issued_uops.rename.pdst' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:2557) completely based on array size.
+INFO: [XFORM 203-102] Automatically partitioning small array 'state.issue.issued_uops.rename.prs1' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:2557) completely based on array size.
+INFO: [XFORM 203-102] Automatically partitioning small array 'state.issue.issued_uops.rename.prs2' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:2557) completely based on array size.
+INFO: [XFORM 203-102] Automatically partitioning small array 'state.issue.issued_uops.rename.prs3' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:2557) completely based on array size.
+INFO: [XFORM 203-102] Automatically partitioning small array 'state.issue.issued_uops.rename.ppred' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:2557) completely based on array size.
+INFO: [XFORM 203-102] Automatically partitioning small array 'state.issue.issued_uops.rename.prs1_busy' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:2557) completely based on array size.
+INFO: [XFORM 203-102] Automatically partitioning small array 'state.issue.issued_uops.rename.prs2_busy' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:2557) completely based on array size.
+INFO: [XFORM 203-102] Automatically partitioning small array 'state.issue.issued_uops.rename.prs3_busy' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:2557) completely based on array size.
+INFO: [XFORM 203-102] Automatically partitioning small array 'state.issue.issued_uops.rename.ppred_busy' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:2557) completely based on array size.
+INFO: [XFORM 203-102] Automatically partitioning small array 'state.issue.issued_uops.rename.stale_pdst' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:2557) completely based on array size.
+INFO: [XFORM 203-102] Automatically partitioning small array 'state.issue.issued_uops.rename.dst_rtype' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:2557) completely based on array size.
+INFO: [XFORM 203-102] Automatically partitioning small array 'state.issue.issued_uops.rename.lrs1_rtype' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:2557) completely based on array size.
+INFO: [XFORM 203-102] Automatically partitioning small array 'state.issue.issued_uops.rename.lrs2_rtype' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:2557) completely based on array size.
+INFO: [XFORM 203-102] Automatically partitioning small array 'state.issue.issued_uops.rename.frs3_en' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:2557) completely based on array size.
+INFO: [XFORM 203-102] Automatically partitioning small array 'state.issue.issued_uops.rename.fp_val' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:2557) completely based on array size.
+INFO: [XFORM 203-102] Automatically partitioning small array 'state.issue.issued_uops.rename.fp_single' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:2557) completely based on array size.
+INFO: [XFORM 203-102] Automatically partitioning small array 'state.issue.issued_uops.exception' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:2557) completely based on array size.
+INFO: [XFORM 203-102] Automatically partitioning small array 'state.issue.issued_uops.exc_cause' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:2557) completely based on array size.
+INFO: [XFORM 203-102] Automatically partitioning small array 'state.issue.issued_uops.bypassable' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:2557) completely based on array size.
+INFO: [XFORM 203-102] Automatically partitioning small array 'state.issue.issued_uops.mem.mem_cmd' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:2557) completely based on array size.
+INFO: [XFORM 203-102] Automatically partitioning small array 'state.issue.issued_uops.mem.mem_size' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:2557) completely based on array size.
+INFO: [XFORM 203-102] Automatically partitioning small array 'state.issue.issued_uops.mem.mem_signed' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:2557) completely based on array size.
+INFO: [XFORM 203-102] Automatically partitioning small array 'state.issue.issued_uops.mem.is_fence' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:2557) completely based on array size.
+INFO: [XFORM 203-102] Automatically partitioning small array 'state.issue.issued_uops.mem.is_fencei' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:2557) completely based on array size.
+INFO: [XFORM 203-102] Automatically partitioning small array 'state.issue.issued_uops.mem.is_amo' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:2557) completely based on array size.
+INFO: [XFORM 203-102] Automatically partitioning small array 'state.issue.issued_uops.mem.uses_ldq' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:2557) completely based on array size.
+INFO: [XFORM 203-102] Automatically partitioning small array 'state.issue.issued_uops.mem.uses_stq' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:2557) completely based on array size.
+INFO: [XFORM 203-102] Automatically partitioning small array 'state.issue.issued_uops.mem.ldst_is_rs1' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:2557) completely based on array size.
+INFO: [XFORM 203-102] Automatically partitioning small array 'state.issue.issued_uops.mem.ldst_val' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:2557) completely based on array size.
+INFO: [XFORM 203-102] Automatically partitioning small array 'state.issue.issued_uops.is_sys_pc2epc' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:2557) completely based on array size.
+INFO: [XFORM 203-102] Automatically partitioning small array 'state.issue.issued_uops.is_unique' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:2557) completely based on array size.
+INFO: [XFORM 203-102] Automatically partitioning small array 'state.issue.issued_uops.flush_on_commit' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:2557) completely based on array size.
+INFO: [XFORM 203-102] Automatically partitioning small array 'state.issue.issued_uops.exc.exception' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:2557) completely based on array size.
+INFO: [XFORM 203-102] Automatically partitioning small array 'state.issue.issued_uops.exc.exc_cause' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:2557) completely based on array size.
+INFO: [XFORM 203-102] Automatically partitioning small array 'state.issue.issued_uops.exc.xcpt_pf_if' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:2557) completely based on array size.
+INFO: [XFORM 203-102] Automatically partitioning small array 'state.issue.issued_uops.exc.xcpt_ae_if' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:2557) completely based on array size.
+INFO: [XFORM 203-102] Automatically partitioning small array 'state.issue.issued_uops.exc.xcpt_ma_if' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:2557) completely based on array size.
+INFO: [XFORM 203-102] Automatically partitioning small array 'state.issue.issued_uops.exc.bp_debug_if' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:2557) completely based on array size.
+INFO: [XFORM 203-102] Automatically partitioning small array 'state.issue.issued_uops.exc.bp_xcpt_if' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:2557) completely based on array size.
+INFO: [XFORM 203-102] Automatically partitioning small array 'state.issue.issued_uops.debug.debug_fsrc' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:2557) completely based on array size.
+INFO: [XFORM 203-102] Automatically partitioning small array 'state.issue.issued_uops.debug.debug_tsrc' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:2557) completely based on array size.
+INFO: [XFORM 203-102] Automatically partitioning small array 'state.issue.issued_uops.debug.debug_inst' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:2557) completely based on array size.
+INFO: [XFORM 203-102] Automatically partitioning small array 'state.issue.issued_uops.debug.debug_pc' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:2557) completely based on array size.
+INFO: [XFORM 203-102] Automatically partitioning small array 'state.issue.issued_valids' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:2557) completely based on array size.
+INFO: [XFORM 203-102] Automatically partitioning small array 'state.execute.alu_results.valid' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:2557) completely based on array size.
+INFO: [XFORM 203-102] Automatically partitioning small array 'state.execute.alu_results.uop.uopc' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:2557) completely based on array size.
+INFO: [XFORM 203-102] Automatically partitioning small array 'state.execute.alu_results.uop.inst' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:2557) completely based on array size.
+INFO: [XFORM 203-102] Automatically partitioning small array 'state.execute.alu_results.uop.debug_inst' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:2557) completely based on array size.
+INFO: [XFORM 203-102] Automatically partitioning small array 'state.execute.alu_results.uop.is_rvc' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:2557) completely based on array size.
+INFO: [XFORM 203-102] Automatically partitioning small array 'state.execute.alu_results.uop.debug_pc' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:2557) completely based on array size.
+INFO: [XFORM 203-102] Automatically partitioning small array 'state.execute.alu_results.uop.iq_type' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:2557) completely based on array size.
+INFO: [XFORM 203-102] Automatically partitioning small array 'state.execute.alu_results.uop.fu_code' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:2557) completely based on array size.
+INFO: [XFORM 203-102] Automatically partitioning small array 'state.execute.alu_results.uop.ctrl.br_type' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:2557) completely based on array size.
+INFO: [XFORM 203-102] Automatically partitioning small array 'state.execute.alu_results.uop.ctrl.op1_sel' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:2557) completely based on array size.
+INFO: [XFORM 203-102] Automatically partitioning small array 'state.execute.alu_results.uop.ctrl.op2_sel' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:2557) completely based on array size.
+INFO: [XFORM 203-102] Automatically partitioning small array 'state.execute.alu_results.uop.ctrl.imm_sel' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:2557) completely based on array size.
+INFO: [XFORM 203-102] Automatically partitioning small array 'state.execute.alu_results.uop.ctrl.op_fcn' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:2557) completely based on array size.
+INFO: [XFORM 203-102] Automatically partitioning small array 'state.execute.alu_results.uop.ctrl.fcn_dw' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:2557) completely based on array size.
+INFO: [XFORM 203-102] Automatically partitioning small array 'state.execute.alu_results.uop.ctrl.csr_cmd' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:2557) completely based on array size.
+INFO: [XFORM 203-102] Automatically partitioning small array 'state.execute.alu_results.uop.ctrl.is_load' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:2557) completely based on array size.
+INFO: [XFORM 203-102] Automatically partitioning small array 'state.execute.alu_results.uop.ctrl.is_sta' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:2557) completely based on array size.
+INFO: [XFORM 203-102] Automatically partitioning small array 'state.execute.alu_results.uop.ctrl.is_std' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:2557) completely based on array size.
+INFO: [XFORM 203-102] Automatically partitioning small array 'state.execute.alu_results.uop.iw_state' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:2557) completely based on array size.
+INFO: [XFORM 203-102] Automatically partitioning small array 'state.execute.alu_results.uop.iw_p1_poisoned' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:2557) completely based on array size.
+INFO: [XFORM 203-102] Automatically partitioning small array 'state.execute.alu_results.uop.iw_p2_poisoned' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:2557) completely based on array size.
+INFO: [XFORM 203-102] Automatically partitioning small array 'state.execute.alu_results.uop.branch.br_mask' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:2557) completely based on array size.
+INFO: [XFORM 203-102] Automatically partitioning small array 'state.execute.alu_results.uop.branch.br_tag' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:2557) completely based on array size.
+INFO: [XFORM 203-102] Automatically partitioning small array 'state.execute.alu_results.uop.branch.ftq_idx' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:2557) completely based on array size.
+INFO: [XFORM 203-102] Automatically partitioning small array 'state.execute.alu_results.uop.branch.pc_lob' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:2557) completely based on array size.
+INFO: [XFORM 203-102] Automatically partitioning small array 'state.execute.alu_results.uop.branch.edge_inst' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:2557) completely based on array size.
+INFO: [XFORM 203-102] Automatically partitioning small array 'state.execute.alu_results.uop.branch.taken' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:2557) completely based on array size.
+INFO: [XFORM 203-102] Automatically partitioning small array 'state.execute.alu_results.uop.branch.is_br' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:2557) completely based on array size.
+INFO: [XFORM 203-102] Automatically partitioning small array 'state.execute.alu_results.uop.branch.is_jalr' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:2557) completely based on array size.
+INFO: [XFORM 203-102] Automatically partitioning small array 'state.execute.alu_results.uop.branch.is_jal' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:2557) completely based on array size.
+INFO: [XFORM 203-102] Automatically partitioning small array 'state.execute.alu_results.uop.branch.is_sfb' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:2557) completely based on array size.
+INFO: [XFORM 203-102] Automatically partitioning small array 'state.execute.alu_results.uop.imm_packed' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:2557) completely based on array size.
+INFO: [XFORM 203-102] Automatically partitioning small array 'state.execute.alu_results.uop.csr_addr' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:2557) completely based on array size.
+INFO: [XFORM 203-102] Automatically partitioning small array 'state.execute.alu_results.uop.queue.rob_idx' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:2557) completely based on array size.
+INFO: [XFORM 203-102] Automatically partitioning small array 'state.execute.alu_results.uop.queue.ldq_idx' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:2557) completely based on array size.
+INFO: [XFORM 203-102] Automatically partitioning small array 'state.execute.alu_results.uop.queue.stq_idx' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:2557) completely based on array size.
+INFO: [XFORM 203-102] Automatically partitioning small array 'state.execute.alu_results.uop.queue.rxq_idx' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:2557) completely based on array size.
+INFO: [XFORM 203-102] Automatically partitioning small array 'state.execute.alu_results.uop.queue.rob_allocation_id' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:2557) completely based on array size.
+INFO: [XFORM 203-102] Automatically partitioning small array 'state.execute.alu_results.uop.rename.ldst' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:2557) completely based on array size.
+INFO: [XFORM 203-102] Automatically partitioning small array 'state.execute.alu_results.uop.rename.lrs1' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:2557) completely based on array size.
+INFO: [XFORM 203-102] Automatically partitioning small array 'state.execute.alu_results.uop.rename.lrs2' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:2557) completely based on array size.
+INFO: [XFORM 203-102] Automatically partitioning small array 'state.execute.alu_results.uop.rename.lrs3' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:2557) completely based on array size.
+INFO: [XFORM 203-102] Automatically partitioning small array 'state.execute.alu_results.uop.rename.pdst' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:2557) completely based on array size.
+INFO: [XFORM 203-102] Automatically partitioning small array 'state.execute.alu_results.uop.rename.prs1' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:2557) completely based on array size.
+INFO: [XFORM 203-102] Automatically partitioning small array 'state.execute.alu_results.uop.rename.prs2' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:2557) completely based on array size.
+INFO: [XFORM 203-102] Automatically partitioning small array 'state.execute.alu_results.uop.rename.prs3' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:2557) completely based on array size.
+INFO: [XFORM 203-102] Automatically partitioning small array 'state.execute.alu_results.uop.rename.ppred' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:2557) completely based on array size.
+INFO: [XFORM 203-102] Automatically partitioning small array 'state.execute.alu_results.uop.rename.prs1_busy' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:2557) completely based on array size.
+INFO: [XFORM 203-102] Automatically partitioning small array 'state.execute.alu_results.uop.rename.prs2_busy' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:2557) completely based on array size.
+INFO: [XFORM 203-102] Automatically partitioning small array 'state.execute.alu_results.uop.rename.prs3_busy' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:2557) completely based on array size.
+INFO: [XFORM 203-102] Automatically partitioning small array 'state.execute.alu_results.uop.rename.ppred_busy' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:2557) completely based on array size.
+INFO: [XFORM 203-102] Automatically partitioning small array 'state.execute.alu_results.uop.rename.stale_pdst' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:2557) completely based on array size.
+INFO: [XFORM 203-102] Automatically partitioning small array 'state.execute.alu_results.uop.rename.dst_rtype' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:2557) completely based on array size.
+INFO: [XFORM 203-102] Automatically partitioning small array 'state.execute.alu_results.uop.rename.lrs1_rtype' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:2557) completely based on array size.
+INFO: [XFORM 203-102] Automatically partitioning small array 'state.execute.alu_results.uop.rename.lrs2_rtype' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:2557) completely based on array size.
+INFO: [XFORM 203-102] Automatically partitioning small array 'state.execute.alu_results.uop.rename.frs3_en' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:2557) completely based on array size.
+INFO: [XFORM 203-102] Automatically partitioning small array 'state.execute.alu_results.uop.rename.fp_val' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:2557) completely based on array size.
+INFO: [XFORM 203-102] Automatically partitioning small array 'state.execute.alu_results.uop.rename.fp_single' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:2557) completely based on array size.
+INFO: [XFORM 203-102] Automatically partitioning small array 'state.execute.alu_results.uop.exception' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:2557) completely based on array size.
+INFO: [XFORM 203-102] Automatically partitioning small array 'state.execute.alu_results.uop.exc_cause' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:2557) completely based on array size.
+INFO: [XFORM 203-102] Automatically partitioning small array 'state.execute.alu_results.uop.bypassable' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:2557) completely based on array size.
+INFO: [XFORM 203-102] Automatically partitioning small array 'state.execute.alu_results.uop.mem.mem_cmd' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:2557) completely based on array size.
+INFO: [XFORM 203-102] Automatically partitioning small array 'state.execute.alu_results.uop.mem.mem_size' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:2557) completely based on array size.
+INFO: [XFORM 203-102] Automatically partitioning small array 'state.execute.alu_results.uop.mem.mem_signed' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:2557) completely based on array size.
+INFO: [XFORM 203-102] Automatically partitioning small array 'state.execute.alu_results.uop.mem.is_fence' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:2557) completely based on array size.
+INFO: [XFORM 203-102] Automatically partitioning small array 'state.execute.alu_results.uop.mem.is_fencei' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:2557) completely based on array size.
+INFO: [XFORM 203-102] Automatically partitioning small array 'state.execute.alu_results.uop.mem.is_amo' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:2557) completely based on array size.
+INFO: [XFORM 203-102] Automatically partitioning small array 'state.execute.alu_results.uop.mem.uses_ldq' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:2557) completely based on array size.
+INFO: [XFORM 203-102] Automatically partitioning small array 'state.execute.alu_results.uop.mem.uses_stq' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:2557) completely based on array size.
+INFO: [XFORM 203-102] Automatically partitioning small array 'state.execute.alu_results.uop.mem.ldst_is_rs1' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:2557) completely based on array size.
+INFO: [XFORM 203-102] Automatically partitioning small array 'state.execute.alu_results.uop.mem.ldst_val' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:2557) completely based on array size.
+INFO: [XFORM 203-102] Automatically partitioning small array 'state.execute.alu_results.uop.is_sys_pc2epc' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:2557) completely based on array size.
+INFO: [XFORM 203-102] Automatically partitioning small array 'state.execute.alu_results.uop.is_unique' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:2557) completely based on array size.
+INFO: [XFORM 203-102] Automatically partitioning small array 'state.execute.alu_results.uop.flush_on_commit' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:2557) completely based on array size.
+INFO: [XFORM 203-102] Automatically partitioning small array 'state.execute.alu_results.uop.exc.exception' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:2557) completely based on array size.
+INFO: [XFORM 203-102] Automatically partitioning small array 'state.execute.alu_results.uop.exc.exc_cause' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:2557) completely based on array size.
+INFO: [XFORM 203-102] Automatically partitioning small array 'state.execute.alu_results.uop.exc.xcpt_pf_if' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:2557) completely based on array size.
+INFO: [XFORM 203-102] Automatically partitioning small array 'state.execute.alu_results.uop.exc.xcpt_ae_if' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:2557) completely based on array size.
+INFO: [XFORM 203-102] Automatically partitioning small array 'state.execute.alu_results.uop.exc.xcpt_ma_if' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:2557) completely based on array size.
+INFO: [XFORM 203-102] Automatically partitioning small array 'state.execute.alu_results.uop.exc.bp_debug_if' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:2557) completely based on array size.
+INFO: [XFORM 203-102] Automatically partitioning small array 'state.execute.alu_results.uop.exc.bp_xcpt_if' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:2557) completely based on array size.
+INFO: [XFORM 203-102] Automatically partitioning small array 'state.execute.alu_results.uop.debug.debug_fsrc' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:2557) completely based on array size.
+INFO: [XFORM 203-102] Automatically partitioning small array 'state.execute.alu_results.uop.debug.debug_tsrc' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:2557) completely based on array size.
+INFO: [XFORM 203-102] Automatically partitioning small array 'state.execute.alu_results.uop.debug.debug_inst' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:2557) completely based on array size.
+INFO: [XFORM 203-102] Automatically partitioning small array 'state.execute.alu_results.uop.debug.debug_pc' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:2557) completely based on array size.
+INFO: [XFORM 203-102] Automatically partitioning small array 'state.execute.alu_results.result' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:2557) completely based on array size.
+INFO: [XFORM 203-102] Automatically partitioning small array 'state.execute.alu_results.exception' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:2557) completely based on array size.
+INFO: [XFORM 203-102] Automatically partitioning small array 'state.execute.alu_results.exc_cause' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:2557) completely based on array size.
+INFO: [XFORM 203-102] Automatically partitioning small array 'state.execute.alu_results.mispredict' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:2557) completely based on array size.
+INFO: [XFORM 203-102] Automatically partitioning small array 'state.execute.alu_results.redirect_pc' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:2557) completely based on array size.
+INFO: [XFORM 203-102] Automatically partitioning small array 'state.execute.alu_results.memory_valid' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:2557) completely based on array size.
+INFO: [XFORM 203-102] Automatically partitioning small array 'state.execute.alu_results.is_load' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:2557) completely based on array size.
+INFO: [XFORM 203-102] Automatically partitioning small array 'state.execute.alu_results.is_store' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:2557) completely based on array size.
+INFO: [XFORM 203-102] Automatically partitioning small array 'state.execute.alu_results.signed_load' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:2557) completely based on array size.
+INFO: [XFORM 203-102] Automatically partitioning small array 'state.execute.alu_results.memory_address' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:2557) completely based on array size.
+INFO: [XFORM 203-102] Automatically partitioning small array 'state.execute.alu_results.store_data' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:2557) completely based on array size.
+INFO: [XFORM 203-102] Automatically partitioning small array 'state.execute.alu_results.memory_mask' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:2557) completely based on array size.
+INFO: [XFORM 203-102] Automatically partitioning small array 'state.execute.alu_results.memory_size' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:2557) completely based on array size.
+INFO: [XFORM 203-101] Partitioning array 'state.issue.issued_uops.uopc' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:2557) in dimension 1 completely.
+INFO: [XFORM 203-101] Partitioning array 'state.issue.issued_uops.inst' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:2557) in dimension 1 completely.
+INFO: [XFORM 203-101] Partitioning array 'state.issue.issued_uops.debug_inst' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:2557) in dimension 1 completely.
+INFO: [XFORM 203-101] Partitioning array 'state.issue.issued_uops.is_rvc' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:2557) in dimension 1 completely.
+INFO: [XFORM 203-101] Partitioning array 'state.issue.issued_uops.debug_pc' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:2557) in dimension 1 completely.
+INFO: [XFORM 203-101] Partitioning array 'state.issue.issued_uops.iq_type' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:2557) in dimension 1 completely.
+INFO: [XFORM 203-101] Partitioning array 'state.issue.issued_uops.fu_code' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:2557) in dimension 1 completely.
+INFO: [XFORM 203-101] Partitioning array 'state.issue.issued_uops.ctrl.br_type' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:2557) in dimension 1 completely.
+INFO: [XFORM 203-101] Partitioning array 'state.issue.issued_uops.ctrl.op1_sel' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:2557) in dimension 1 completely.
+INFO: [XFORM 203-101] Partitioning array 'state.issue.issued_uops.ctrl.op2_sel' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:2557) in dimension 1 completely.
+INFO: [XFORM 203-101] Partitioning array 'state.issue.issued_uops.ctrl.imm_sel' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:2557) in dimension 1 completely.
+INFO: [XFORM 203-101] Partitioning array 'state.issue.issued_uops.ctrl.op_fcn' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:2557) in dimension 1 completely.
+INFO: [XFORM 203-101] Partitioning array 'state.issue.issued_uops.ctrl.fcn_dw' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:2557) in dimension 1 completely.
+INFO: [XFORM 203-101] Partitioning array 'state.issue.issued_uops.ctrl.csr_cmd' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:2557) in dimension 1 completely.
+INFO: [XFORM 203-101] Partitioning array 'state.issue.issued_uops.ctrl.is_load' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:2557) in dimension 1 completely.
+INFO: [XFORM 203-101] Partitioning array 'state.issue.issued_uops.ctrl.is_sta' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:2557) in dimension 1 completely.
+INFO: [XFORM 203-101] Partitioning array 'state.issue.issued_uops.ctrl.is_std' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:2557) in dimension 1 completely.
+INFO: [XFORM 203-101] Partitioning array 'state.issue.issued_uops.iw_state' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:2557) in dimension 1 completely.
+INFO: [XFORM 203-101] Partitioning array 'state.issue.issued_uops.iw_p1_poisoned' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:2557) in dimension 1 completely.
+INFO: [XFORM 203-101] Partitioning array 'state.issue.issued_uops.iw_p2_poisoned' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:2557) in dimension 1 completely.
+INFO: [XFORM 203-101] Partitioning array 'state.issue.issued_uops.branch.br_mask' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:2557) in dimension 1 completely.
+INFO: [XFORM 203-101] Partitioning array 'state.issue.issued_uops.branch.br_tag' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:2557) in dimension 1 completely.
+INFO: [XFORM 203-101] Partitioning array 'state.issue.issued_uops.branch.ftq_idx' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:2557) in dimension 1 completely.
+INFO: [XFORM 203-101] Partitioning array 'state.issue.issued_uops.branch.pc_lob' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:2557) in dimension 1 completely.
+INFO: [XFORM 203-101] Partitioning array 'state.issue.issued_uops.branch.edge_inst' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:2557) in dimension 1 completely.
+INFO: [XFORM 203-101] Partitioning array 'state.issue.issued_uops.branch.taken' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:2557) in dimension 1 completely.
+INFO: [XFORM 203-101] Partitioning array 'state.issue.issued_uops.branch.is_br' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:2557) in dimension 1 completely.
+INFO: [XFORM 203-101] Partitioning array 'state.issue.issued_uops.branch.is_jalr' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:2557) in dimension 1 completely.
+INFO: [XFORM 203-101] Partitioning array 'state.issue.issued_uops.branch.is_jal' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:2557) in dimension 1 completely.
+INFO: [XFORM 203-101] Partitioning array 'state.issue.issued_uops.branch.is_sfb' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:2557) in dimension 1 completely.
+INFO: [XFORM 203-101] Partitioning array 'state.issue.issued_uops.imm_packed' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:2557) in dimension 1 completely.
+INFO: [XFORM 203-101] Partitioning array 'state.issue.issued_uops.csr_addr' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:2557) in dimension 1 completely.
+INFO: [XFORM 203-101] Partitioning array 'state.issue.issued_uops.queue.rob_idx' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:2557) in dimension 1 completely.
+INFO: [XFORM 203-101] Partitioning array 'state.issue.issued_uops.queue.ldq_idx' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:2557) in dimension 1 completely.
+INFO: [XFORM 203-101] Partitioning array 'state.issue.issued_uops.queue.stq_idx' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:2557) in dimension 1 completely.
+INFO: [XFORM 203-101] Partitioning array 'state.issue.issued_uops.queue.rxq_idx' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:2557) in dimension 1 completely.
+INFO: [XFORM 203-101] Partitioning array 'state.issue.issued_uops.queue.rob_allocation_id' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:2557) in dimension 1 completely.
+INFO: [XFORM 203-101] Partitioning array 'state.issue.issued_uops.rename.ldst' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:2557) in dimension 1 completely.
+INFO: [XFORM 203-101] Partitioning array 'state.issue.issued_uops.rename.lrs1' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:2557) in dimension 1 completely.
+INFO: [XFORM 203-101] Partitioning array 'state.issue.issued_uops.rename.lrs2' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:2557) in dimension 1 completely.
+INFO: [XFORM 203-101] Partitioning array 'state.issue.issued_uops.rename.lrs3' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:2557) in dimension 1 completely.
+INFO: [XFORM 203-101] Partitioning array 'state.issue.issued_uops.rename.pdst' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:2557) in dimension 1 completely.
+INFO: [XFORM 203-101] Partitioning array 'state.issue.issued_uops.rename.prs1' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:2557) in dimension 1 completely.
+INFO: [XFORM 203-101] Partitioning array 'state.issue.issued_uops.rename.prs2' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:2557) in dimension 1 completely.
+INFO: [XFORM 203-101] Partitioning array 'state.issue.issued_uops.rename.prs3' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:2557) in dimension 1 completely.
+INFO: [XFORM 203-101] Partitioning array 'state.issue.issued_uops.rename.ppred' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:2557) in dimension 1 completely.
+INFO: [XFORM 203-101] Partitioning array 'state.issue.issued_uops.rename.prs1_busy' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:2557) in dimension 1 completely.
+INFO: [XFORM 203-101] Partitioning array 'state.issue.issued_uops.rename.prs2_busy' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:2557) in dimension 1 completely.
+INFO: [XFORM 203-101] Partitioning array 'state.issue.issued_uops.rename.prs3_busy' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:2557) in dimension 1 completely.
+INFO: [XFORM 203-101] Partitioning array 'state.issue.issued_uops.rename.ppred_busy' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:2557) in dimension 1 completely.
+INFO: [XFORM 203-101] Partitioning array 'state.issue.issued_uops.rename.stale_pdst' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:2557) in dimension 1 completely.
+INFO: [XFORM 203-101] Partitioning array 'state.issue.issued_uops.rename.dst_rtype' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:2557) in dimension 1 completely.
+INFO: [XFORM 203-101] Partitioning array 'state.issue.issued_uops.rename.lrs1_rtype' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:2557) in dimension 1 completely.
+INFO: [XFORM 203-101] Partitioning array 'state.issue.issued_uops.rename.lrs2_rtype' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:2557) in dimension 1 completely.
+INFO: [XFORM 203-101] Partitioning array 'state.issue.issued_uops.rename.frs3_en' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:2557) in dimension 1 completely.
+INFO: [XFORM 203-101] Partitioning array 'state.issue.issued_uops.rename.fp_val' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:2557) in dimension 1 completely.
+INFO: [XFORM 203-101] Partitioning array 'state.issue.issued_uops.rename.fp_single' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:2557) in dimension 1 completely.
+INFO: [XFORM 203-101] Partitioning array 'state.issue.issued_uops.exception' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:2557) in dimension 1 completely.
+INFO: [XFORM 203-101] Partitioning array 'state.issue.issued_uops.exc_cause' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:2557) in dimension 1 completely.
+INFO: [XFORM 203-101] Partitioning array 'state.issue.issued_uops.bypassable' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:2557) in dimension 1 completely.
+INFO: [XFORM 203-101] Partitioning array 'state.issue.issued_uops.mem.mem_cmd' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:2557) in dimension 1 completely.
+INFO: [XFORM 203-101] Partitioning array 'state.issue.issued_uops.mem.mem_size' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:2557) in dimension 1 completely.
+INFO: [XFORM 203-101] Partitioning array 'state.issue.issued_uops.mem.mem_signed' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:2557) in dimension 1 completely.
+INFO: [XFORM 203-101] Partitioning array 'state.issue.issued_uops.mem.is_fence' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:2557) in dimension 1 completely.
+INFO: [XFORM 203-101] Partitioning array 'state.issue.issued_uops.mem.is_fencei' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:2557) in dimension 1 completely.
+INFO: [XFORM 203-101] Partitioning array 'state.issue.issued_uops.mem.is_amo' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:2557) in dimension 1 completely.
+INFO: [XFORM 203-101] Partitioning array 'state.issue.issued_uops.mem.uses_ldq' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:2557) in dimension 1 completely.
+INFO: [XFORM 203-101] Partitioning array 'state.issue.issued_uops.mem.uses_stq' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:2557) in dimension 1 completely.
+INFO: [XFORM 203-101] Partitioning array 'state.issue.issued_uops.mem.ldst_is_rs1' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:2557) in dimension 1 completely.
+INFO: [XFORM 203-101] Partitioning array 'state.issue.issued_uops.mem.ldst_val' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:2557) in dimension 1 completely.
+INFO: [XFORM 203-101] Partitioning array 'state.issue.issued_uops.is_sys_pc2epc' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:2557) in dimension 1 completely.
+INFO: [XFORM 203-101] Partitioning array 'state.issue.issued_uops.is_unique' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:2557) in dimension 1 completely.
+INFO: [XFORM 203-101] Partitioning array 'state.issue.issued_uops.flush_on_commit' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:2557) in dimension 1 completely.
+INFO: [XFORM 203-101] Partitioning array 'state.issue.issued_uops.exc.exception' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:2557) in dimension 1 completely.
+INFO: [XFORM 203-101] Partitioning array 'state.issue.issued_uops.exc.exc_cause' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:2557) in dimension 1 completely.
+INFO: [XFORM 203-101] Partitioning array 'state.issue.issued_uops.exc.xcpt_pf_if' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:2557) in dimension 1 completely.
+INFO: [XFORM 203-101] Partitioning array 'state.issue.issued_uops.exc.xcpt_ae_if' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:2557) in dimension 1 completely.
+INFO: [XFORM 203-101] Partitioning array 'state.issue.issued_uops.exc.xcpt_ma_if' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:2557) in dimension 1 completely.
+INFO: [XFORM 203-101] Partitioning array 'state.issue.issued_uops.exc.bp_debug_if' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:2557) in dimension 1 completely.
+INFO: [XFORM 203-101] Partitioning array 'state.issue.issued_uops.exc.bp_xcpt_if' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:2557) in dimension 1 completely.
+INFO: [XFORM 203-101] Partitioning array 'state.issue.issued_uops.debug.debug_fsrc' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:2557) in dimension 1 completely.
+INFO: [XFORM 203-101] Partitioning array 'state.issue.issued_uops.debug.debug_tsrc' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:2557) in dimension 1 completely.
+INFO: [XFORM 203-101] Partitioning array 'state.issue.issued_uops.debug.debug_inst' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:2557) in dimension 1 completely.
+INFO: [XFORM 203-101] Partitioning array 'state.issue.issued_uops.debug.debug_pc' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:2557) in dimension 1 completely.
+INFO: [XFORM 203-101] Partitioning array 'state.issue.issued_valids' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:2557) in dimension 1 completely.
+INFO: [XFORM 203-101] Partitioning array 'state.execute.alu_results.valid' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:2557) in dimension 1 completely.
+INFO: [XFORM 203-101] Partitioning array 'state.execute.alu_results.uop.uopc' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:2557) in dimension 1 completely.
+INFO: [XFORM 203-101] Partitioning array 'state.execute.alu_results.uop.inst' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:2557) in dimension 1 completely.
+INFO: [XFORM 203-101] Partitioning array 'state.execute.alu_results.uop.debug_inst' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:2557) in dimension 1 completely.
+INFO: [XFORM 203-101] Partitioning array 'state.execute.alu_results.uop.is_rvc' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:2557) in dimension 1 completely.
+INFO: [XFORM 203-101] Partitioning array 'state.execute.alu_results.uop.debug_pc' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:2557) in dimension 1 completely.
+INFO: [XFORM 203-101] Partitioning array 'state.execute.alu_results.uop.iq_type' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:2557) in dimension 1 completely.
+INFO: [XFORM 203-101] Partitioning array 'state.execute.alu_results.uop.fu_code' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:2557) in dimension 1 completely.
+INFO: [XFORM 203-101] Partitioning array 'state.execute.alu_results.uop.ctrl.br_type' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:2557) in dimension 1 completely.
+INFO: [XFORM 203-101] Partitioning array 'state.execute.alu_results.uop.ctrl.op1_sel' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:2557) in dimension 1 completely.
+INFO: [XFORM 203-101] Partitioning array 'state.execute.alu_results.uop.ctrl.op2_sel' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:2557) in dimension 1 completely.
+INFO: [XFORM 203-101] Partitioning array 'state.execute.alu_results.uop.ctrl.imm_sel' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:2557) in dimension 1 completely.
+INFO: [XFORM 203-101] Partitioning array 'state.execute.alu_results.uop.ctrl.op_fcn' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:2557) in dimension 1 completely.
+INFO: [XFORM 203-101] Partitioning array 'state.execute.alu_results.uop.ctrl.fcn_dw' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:2557) in dimension 1 completely.
+INFO: [XFORM 203-101] Partitioning array 'state.execute.alu_results.uop.ctrl.csr_cmd' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:2557) in dimension 1 completely.
+INFO: [XFORM 203-101] Partitioning array 'state.execute.alu_results.uop.ctrl.is_load' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:2557) in dimension 1 completely.
+INFO: [XFORM 203-101] Partitioning array 'state.execute.alu_results.uop.ctrl.is_sta' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:2557) in dimension 1 completely.
+INFO: [XFORM 203-101] Partitioning array 'state.execute.alu_results.uop.ctrl.is_std' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:2557) in dimension 1 completely.
+INFO: [XFORM 203-101] Partitioning array 'state.execute.alu_results.uop.iw_state' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:2557) in dimension 1 completely.
+INFO: [XFORM 203-101] Partitioning array 'state.execute.alu_results.uop.iw_p1_poisoned' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:2557) in dimension 1 completely.
+INFO: [XFORM 203-101] Partitioning array 'state.execute.alu_results.uop.iw_p2_poisoned' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:2557) in dimension 1 completely.
+INFO: [XFORM 203-101] Partitioning array 'state.execute.alu_results.uop.branch.br_mask' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:2557) in dimension 1 completely.
+INFO: [XFORM 203-101] Partitioning array 'state.execute.alu_results.uop.branch.br_tag' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:2557) in dimension 1 completely.
+INFO: [XFORM 203-101] Partitioning array 'state.execute.alu_results.uop.branch.ftq_idx' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:2557) in dimension 1 completely.
+INFO: [XFORM 203-101] Partitioning array 'state.execute.alu_results.uop.branch.pc_lob' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:2557) in dimension 1 completely.
+INFO: [XFORM 203-101] Partitioning array 'state.execute.alu_results.uop.branch.edge_inst' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:2557) in dimension 1 completely.
+INFO: [XFORM 203-101] Partitioning array 'state.execute.alu_results.uop.branch.taken' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:2557) in dimension 1 completely.
+INFO: [XFORM 203-101] Partitioning array 'state.execute.alu_results.uop.branch.is_br' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:2557) in dimension 1 completely.
+INFO: [XFORM 203-101] Partitioning array 'state.execute.alu_results.uop.branch.is_jalr' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:2557) in dimension 1 completely.
+INFO: [XFORM 203-101] Partitioning array 'state.execute.alu_results.uop.branch.is_jal' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:2557) in dimension 1 completely.
+INFO: [XFORM 203-101] Partitioning array 'state.execute.alu_results.uop.branch.is_sfb' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:2557) in dimension 1 completely.
+INFO: [XFORM 203-101] Partitioning array 'state.execute.alu_results.uop.imm_packed' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:2557) in dimension 1 completely.
+INFO: [XFORM 203-101] Partitioning array 'state.execute.alu_results.uop.csr_addr' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:2557) in dimension 1 completely.
+INFO: [XFORM 203-101] Partitioning array 'state.execute.alu_results.uop.queue.rob_idx' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:2557) in dimension 1 completely.
+INFO: [XFORM 203-101] Partitioning array 'state.execute.alu_results.uop.queue.ldq_idx' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:2557) in dimension 1 completely.
+INFO: [XFORM 203-101] Partitioning array 'state.execute.alu_results.uop.queue.stq_idx' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:2557) in dimension 1 completely.
+INFO: [XFORM 203-101] Partitioning array 'state.execute.alu_results.uop.queue.rxq_idx' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:2557) in dimension 1 completely.
+INFO: [XFORM 203-101] Partitioning array 'state.execute.alu_results.uop.queue.rob_allocation_id' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:2557) in dimension 1 completely.
+INFO: [XFORM 203-101] Partitioning array 'state.execute.alu_results.uop.rename.ldst' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:2557) in dimension 1 completely.
+INFO: [XFORM 203-101] Partitioning array 'state.execute.alu_results.uop.rename.lrs1' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:2557) in dimension 1 completely.
+INFO: [XFORM 203-101] Partitioning array 'state.execute.alu_results.uop.rename.lrs2' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:2557) in dimension 1 completely.
+INFO: [XFORM 203-101] Partitioning array 'state.execute.alu_results.uop.rename.lrs3' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:2557) in dimension 1 completely.
+INFO: [XFORM 203-101] Partitioning array 'state.execute.alu_results.uop.rename.pdst' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:2557) in dimension 1 completely.
+INFO: [XFORM 203-101] Partitioning array 'state.execute.alu_results.uop.rename.prs1' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:2557) in dimension 1 completely.
+INFO: [XFORM 203-101] Partitioning array 'state.execute.alu_results.uop.rename.prs2' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:2557) in dimension 1 completely.
+INFO: [XFORM 203-101] Partitioning array 'state.execute.alu_results.uop.rename.prs3' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:2557) in dimension 1 completely.
+INFO: [XFORM 203-101] Partitioning array 'state.execute.alu_results.uop.rename.ppred' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:2557) in dimension 1 completely.
+INFO: [XFORM 203-101] Partitioning array 'state.execute.alu_results.uop.rename.prs1_busy' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:2557) in dimension 1 completely.
+INFO: [XFORM 203-101] Partitioning array 'state.execute.alu_results.uop.rename.prs2_busy' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:2557) in dimension 1 completely.
+INFO: [XFORM 203-101] Partitioning array 'state.execute.alu_results.uop.rename.prs3_busy' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:2557) in dimension 1 completely.
+INFO: [XFORM 203-101] Partitioning array 'state.execute.alu_results.uop.rename.ppred_busy' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:2557) in dimension 1 completely.
+INFO: [XFORM 203-101] Partitioning array 'state.execute.alu_results.uop.rename.stale_pdst' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:2557) in dimension 1 completely.
+INFO: [XFORM 203-101] Partitioning array 'state.execute.alu_results.uop.rename.dst_rtype' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:2557) in dimension 1 completely.
+INFO: [XFORM 203-101] Partitioning array 'state.execute.alu_results.uop.rename.lrs1_rtype' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:2557) in dimension 1 completely.
+INFO: [XFORM 203-101] Partitioning array 'state.execute.alu_results.uop.rename.lrs2_rtype' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:2557) in dimension 1 completely.
+INFO: [XFORM 203-101] Partitioning array 'state.execute.alu_results.uop.rename.frs3_en' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:2557) in dimension 1 completely.
+INFO: [XFORM 203-101] Partitioning array 'state.execute.alu_results.uop.rename.fp_val' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:2557) in dimension 1 completely.
+INFO: [XFORM 203-101] Partitioning array 'state.execute.alu_results.uop.rename.fp_single' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:2557) in dimension 1 completely.
+INFO: [XFORM 203-101] Partitioning array 'state.execute.alu_results.uop.exception' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:2557) in dimension 1 completely.
+INFO: [XFORM 203-101] Partitioning array 'state.execute.alu_results.uop.exc_cause' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:2557) in dimension 1 completely.
+INFO: [XFORM 203-101] Partitioning array 'state.execute.alu_results.uop.bypassable' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:2557) in dimension 1 completely.
+INFO: [XFORM 203-101] Partitioning array 'state.execute.alu_results.uop.mem.mem_cmd' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:2557) in dimension 1 completely.
+INFO: [XFORM 203-101] Partitioning array 'state.execute.alu_results.uop.mem.mem_size' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:2557) in dimension 1 completely.
+INFO: [XFORM 203-101] Partitioning array 'state.execute.alu_results.uop.mem.mem_signed' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:2557) in dimension 1 completely.
+INFO: [XFORM 203-101] Partitioning array 'state.execute.alu_results.uop.mem.is_fence' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:2557) in dimension 1 completely.
+INFO: [XFORM 203-101] Partitioning array 'state.execute.alu_results.uop.mem.is_fencei' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:2557) in dimension 1 completely.
+INFO: [XFORM 203-101] Partitioning array 'state.execute.alu_results.uop.mem.is_amo' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:2557) in dimension 1 completely.
+INFO: [XFORM 203-101] Partitioning array 'state.execute.alu_results.uop.mem.uses_ldq' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:2557) in dimension 1 completely.
+INFO: [XFORM 203-101] Partitioning array 'state.execute.alu_results.uop.mem.uses_stq' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:2557) in dimension 1 completely.
+INFO: [XFORM 203-101] Partitioning array 'state.execute.alu_results.uop.mem.ldst_is_rs1' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:2557) in dimension 1 completely.
+INFO: [XFORM 203-101] Partitioning array 'state.execute.alu_results.uop.mem.ldst_val' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:2557) in dimension 1 completely.
+INFO: [XFORM 203-101] Partitioning array 'state.execute.alu_results.uop.is_sys_pc2epc' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:2557) in dimension 1 completely.
+INFO: [XFORM 203-101] Partitioning array 'state.execute.alu_results.uop.is_unique' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:2557) in dimension 1 completely.
+INFO: [XFORM 203-101] Partitioning array 'state.execute.alu_results.uop.flush_on_commit' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:2557) in dimension 1 completely.
+INFO: [XFORM 203-101] Partitioning array 'state.execute.alu_results.uop.exc.exception' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:2557) in dimension 1 completely.
+INFO: [XFORM 203-101] Partitioning array 'state.execute.alu_results.uop.exc.exc_cause' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:2557) in dimension 1 completely.
+INFO: [XFORM 203-101] Partitioning array 'state.execute.alu_results.uop.exc.xcpt_pf_if' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:2557) in dimension 1 completely.
+INFO: [XFORM 203-101] Partitioning array 'state.execute.alu_results.uop.exc.xcpt_ae_if' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:2557) in dimension 1 completely.
+INFO: [XFORM 203-101] Partitioning array 'state.execute.alu_results.uop.exc.xcpt_ma_if' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:2557) in dimension 1 completely.
+INFO: [XFORM 203-101] Partitioning array 'state.execute.alu_results.uop.exc.bp_debug_if' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:2557) in dimension 1 completely.
+INFO: [XFORM 203-101] Partitioning array 'state.execute.alu_results.uop.exc.bp_xcpt_if' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:2557) in dimension 1 completely.
+INFO: [XFORM 203-101] Partitioning array 'state.execute.alu_results.uop.debug.debug_fsrc' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:2557) in dimension 1 completely.
+INFO: [XFORM 203-101] Partitioning array 'state.execute.alu_results.uop.debug.debug_tsrc' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:2557) in dimension 1 completely.
+INFO: [XFORM 203-101] Partitioning array 'state.execute.alu_results.uop.debug.debug_inst' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:2557) in dimension 1 completely.
+INFO: [XFORM 203-101] Partitioning array 'state.execute.alu_results.uop.debug.debug_pc' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:2557) in dimension 1 completely.
+INFO: [XFORM 203-101] Partitioning array 'state.execute.alu_results.result' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:2557) in dimension 1 completely.
+INFO: [XFORM 203-101] Partitioning array 'state.execute.alu_results.exception' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:2557) in dimension 1 completely.
+INFO: [XFORM 203-101] Partitioning array 'state.execute.alu_results.exc_cause' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:2557) in dimension 1 completely.
+INFO: [XFORM 203-101] Partitioning array 'state.execute.alu_results.mispredict' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:2557) in dimension 1 completely.
+INFO: [XFORM 203-101] Partitioning array 'state.execute.alu_results.redirect_pc' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:2557) in dimension 1 completely.
+INFO: [XFORM 203-101] Partitioning array 'state.execute.alu_results.memory_valid' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:2557) in dimension 1 completely.
+INFO: [XFORM 203-101] Partitioning array 'state.execute.alu_results.is_load' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:2557) in dimension 1 completely.
+INFO: [XFORM 203-101] Partitioning array 'state.execute.alu_results.is_store' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:2557) in dimension 1 completely.
+INFO: [XFORM 203-101] Partitioning array 'state.execute.alu_results.signed_load' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:2557) in dimension 1 completely.
+INFO: [XFORM 203-101] Partitioning array 'state.execute.alu_results.memory_address' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:2557) in dimension 1 completely.
+INFO: [XFORM 203-101] Partitioning array 'state.execute.alu_results.store_data' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:2557) in dimension 1 completely.
+INFO: [XFORM 203-101] Partitioning array 'state.execute.alu_results.memory_mask' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:2557) in dimension 1 completely.
+INFO: [XFORM 203-101] Partitioning array 'state.execute.alu_results.memory_size' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:2557) in dimension 1 completely.
+INFO: [XFORM 203-401] Performing if-conversion on hyperblock to (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:514:20) in function 'synth_w3_rob_wrap_top'... converting 7 basic blocks.
+INFO: [XFORM 203-401] Performing if-conversion on hyperblock from (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:516:30) to (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:521:9) in function 'synth_w3_rob_wrap_top'... converting 3 basic blocks.
+INFO: [XFORM 203-602] Inlining function 'w3_result' into 'synth_w3_rob_wrap_top' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:2561) automatically.
+INFO: [XFORM 203-11] Balancing expressions in function 'synth_w3_rob_wrap_top' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:2556)...5 expression(s) balanced.
+INFO: [HLS 200-111] Finished Loop, function and other optimizations: CPU user time: 2.37 seconds. CPU system time: 0.07 seconds. Elapsed time: 2.44 seconds; current allocated memory: 564.672 MB.
+INFO: [HLS 200-111] Finished Architecture Synthesis: CPU user time: 0.02 seconds. CPU system time: 0 seconds. Elapsed time: 0.01 seconds; current allocated memory: 555.668 MB.
+INFO: [HLS 200-10] Starting hardware synthesis ...
+INFO: [HLS 200-10] Synthesizing 'synth_w3_rob_wrap_top' ...
+INFO: [HLS 200-10] ----------------------------------------------------------------
+INFO: [HLS 200-42] -- Implementing module 'synth_w3_rob_wrap_top' 
+INFO: [HLS 200-10] ----------------------------------------------------------------
+INFO: [SCHED 204-11] Starting scheduling ...
+INFO: [SCHED 204-11] Finished scheduling.
+INFO: [HLS 200-111] Finished Scheduling: CPU user time: 0.03 seconds. CPU system time: 0.02 seconds. Elapsed time: 0.04 seconds; current allocated memory: 555.668 MB.
+INFO: [BIND 205-100] Starting micro-architecture generation ...
+INFO: [BIND 205-101] Performing variable lifetime analysis.
+INFO: [BIND 205-101] Exploring resource sharing.
+INFO: [BIND 205-101] Binding ...
+INFO: [BIND 205-100] Finished micro-architecture generation.
+INFO: [HLS 200-111] Finished Binding: CPU user time: 0.02 seconds. CPU system time: 0 seconds. Elapsed time: 0.02 seconds; current allocated memory: 555.668 MB.
+INFO: [HLS 200-10] ----------------------------------------------------------------
+INFO: [HLS 200-10] -- Generating RTL for module 'synth_w3_rob_wrap_top' 
+INFO: [HLS 200-10] ----------------------------------------------------------------
+INFO: [RTGEN 206-500] Setting interface mode on port 'synth_w3_rob_wrap_top/allocation_base' to 'ap_none'.
+INFO: [RTGEN 206-500] Setting interface mode on port 'synth_w3_rob_wrap_top/observable' to 'ap_vld'.
+INFO: [RTGEN 206-500] Setting interface mode on function 'synth_w3_rob_wrap_top' to 'ap_ctrl_hs'.
+INFO: [RTGEN 206-100] Finished creating RTL model for 'synth_w3_rob_wrap_top'.
+INFO: [HLS 200-111] Finished Creating RTL model: CPU user time: 0.02 seconds. CPU system time: 0 seconds. Elapsed time: 0.02 seconds; current allocated memory: 555.668 MB.
+INFO: [HLS 200-111] Finished Generating all RTL models: CPU user time: 0.07 seconds. CPU system time: 0.01 seconds. Elapsed time: 0.07 seconds; current allocated memory: 557.711 MB.
+INFO: [HLS 200-111] Finished Updating report files: CPU user time: 0.17 seconds. CPU system time: 0 seconds. Elapsed time: 0.18 seconds; current allocated memory: 557.711 MB.
+INFO: [VHDL 208-304] Generating VHDL RTL for synth_w3_rob_wrap_top.
+INFO: [VLOG 209-307] Generating Verilog RTL for synth_w3_rob_wrap_top.
+INFO: [HLS 200-789] **** Estimated Fmax: 1172.33 MHz
+INFO: [HLS 200-111] Finished Command csynth_design CPU user time: 31.61 seconds. CPU system time: 0.79 seconds. Elapsed time: 32.43 seconds; current allocated memory: 142.293 MB.
+INFO: [HLS 200-112] Total CPU user time: 34.06 seconds. Total CPU system time: 1.39 seconds. Total elapsed time: 34.28 seconds; peak allocated memory: 564.672 MB.
+INFO: [Common 17-206] Exiting vitis_hls at Fri Jul 31 19:09:35 2026...

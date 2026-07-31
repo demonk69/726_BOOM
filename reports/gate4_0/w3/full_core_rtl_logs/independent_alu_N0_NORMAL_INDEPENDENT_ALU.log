@@ -1,0 +1,22 @@
+#-----------------------------------------------------------
+# xsim v2021.2 (64-bit)
+# SW Build 3367213 on Tue Oct 19 02:47:39 MDT 2021
+# IP Build 3369179 on Thu Oct 21 08:25:16 MDT 2021
+# Start of session at: Fri Jul 31 18:54:33 2026
+# Process ID: 52336
+# Current directory: /home/lab_726/boom/hls_boom/reports/gate4_0/w3/full_core_rtl/xsim
+# Command line: xsim -log /home/lab_726/boom/hls_boom/reports/gate4_0/w3/full_core_rtl_logs/independent_alu_N0_NORMAL_INDEPENDENT_ALU.log -mode tcl -source {xsim.dir/gate3_9_snapshot/xsim_script.tcl}
+# Log file: /home/lab_726/boom/hls_boom/reports/gate4_0/w3/full_core_rtl_logs/independent_alu_N0_NORMAL_INDEPENDENT_ALU.log
+# Journal file: /home/lab_726/boom/hls_boom/reports/gate4_0/w3/full_core_rtl/xsim/xsim.jou
+# Running On: 726, OS: Linux, CPU Frequency: 2412.273 MHz, CPU Physical cores: 14, Host memory: 67148 MB
+#-----------------------------------------------------------
+source xsim.dir/gate3_9_snapshot/xsim_script.tcl
+# xsim {gate3_9_snapshot} -testplusarg PROGRAM=/home/lab_726/boom/hls_boom/reports/gate4_0/w3/full_core_rtl/xsim/independent_alu.readmemh -testplusarg PROGRAM_NAME=independent_alu -testplusarg SCENARIO=N0_NORMAL_INDEPENDENT_ALU -testplusarg MAX_CYCLES=50000 -testplusarg TRACE=/home/lab_726/boom/hls_boom/reports/gate4_0/w3/rtl_traces/independent_alu_N0_NORMAL_INDEPENDENT_ALU.jsonl -autoloadwcfg -runall -onerror quit
+Time resolution is 1 ps
+run -all
+GATE3_8_IMEM program=/home/lab_726/boom/hls_boom/reports/gate4_0/w3/full_core_rtl/xsim/independent_alu.readmemh
+GATE3_8_START scenario=N0_NORMAL_INDEPENDENT_ALU code=0 program=independent_alu max_cycles=50000
+GATE3_8_PASS scenario=N0_NORMAL_INDEPENDENT_ALU cycles=13181 commits=12 resets=1 imem=13 dmem=1 loads=0 stores=1 tohost=0000000000000001
+$finish called at time : 131855 ns : File "/home/lab_726/boom/hls_boom/rtl_tb/boom_core_rtl_tb.sv" Line 282
+exit
+INFO: [Common 17-206] Exiting xsim at Fri Jul 31 18:54:38 2026...

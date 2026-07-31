@@ -1,0 +1,12 @@
+dual_accept                      PASS expected=000c000b0000030b observed=000c000b0000030b
+mem_blocked_int_forward          PASS expected=000c001300000217 observed=000c001300000217
+int_blocked_mem_forward          PASS expected=001d000b00000117 observed=001d000b00000117
+dual_pending                     PASS expected=0020000008d00002 observed=0020000008d00002
+branch_kill                      PASS expected=0000000008100400 observed=0000000008100400
+reset_clear                      PASS expected=0000000000000000 observed=0000000000000000
+load_response_int_conflict       PASS expected=003e000000d00002 observed=003e000000d00002
+trace_backpressure               PASS expected=000000000a100000 observed=000000000a100000
+dmem_backpressure                PASS expected=000000000c110000 observed=000000000c110000
+rob_wrap_multiple_identity       PASS expected=0000005cf8d00001 observed=0000005cf8d00001
+stale_completion_identity        PASS expected=0000000000300000 observed=0000000000300000
+Gate 4.0 W3 generated-RTL diagnostics: 11/11 PASS.

@@ -1,0 +1,864 @@
+<profile>
+    <ReportVersion>
+        <Version>2021.2</Version>
+    </ReportVersion>
+    <UserAssignments>
+        <unit>ns</unit>
+        <ProductFamily>zynquplus</ProductFamily>
+        <Part>xczu7ev-ffvc1156-2-e</Part>
+        <TopModelName>synth_issue_top</TopModelName>
+        <TargetClockPeriod>10.00</TargetClockPeriod>
+        <ClockUncertainty>2.70</ClockUncertainty>
+        <FlowTarget>vivado</FlowTarget>
+    </UserAssignments>
+    <PerformanceEstimates>
+        <PipelineType>no</PipelineType>
+        <SummaryOfTimingAnalysis>
+            <unit>ns</unit>
+            <EstimatedClockPeriod>4.570</EstimatedClockPeriod>
+        </SummaryOfTimingAnalysis>
+        <SummaryOfOverallLatency>
+            <unit>clock cycles</unit>
+            <Best-caseLatency>undef</Best-caseLatency>
+            <Average-caseLatency>undef</Average-caseLatency>
+            <Worst-caseLatency>undef</Worst-caseLatency>
+            <Best-caseRealTimeLatency>undef</Best-caseRealTimeLatency>
+            <Average-caseRealTimeLatency>undef</Average-caseRealTimeLatency>
+            <Worst-caseRealTimeLatency>undef</Worst-caseRealTimeLatency>
+            <Interval-min>undef</Interval-min>
+            <Interval-max>undef</Interval-max>
+        </SummaryOfOverallLatency>
+        <SummaryOfLoopLatency>
+            <VITIS_LOOP_1976_1>
+                <TripCount>8</TripCount>
+                <Latency>8</Latency>
+                <AbsoluteTimeLatency>80</AbsoluteTimeLatency>
+                <IterationLatency>1</IterationLatency>
+                <InstanceList/>
+            </VITIS_LOOP_1976_1>
+        </SummaryOfLoopLatency>
+    </PerformanceEstimates>
+    <AreaEstimates>
+        <Resources>
+            <BRAM_18K>0</BRAM_18K>
+            <FF>4699</FF>
+            <LUT>15105</LUT>
+            <URAM>0</URAM>
+            <DSP>0</DSP>
+        </Resources>
+        <AvailableResources>
+            <BRAM_18K>624</BRAM_18K>
+            <DSP>1728</DSP>
+            <FF>460800</FF>
+            <LUT>230400</LUT>
+            <URAM>96</URAM>
+        </AvailableResources>
+    </AreaEstimates>
+    <InterfaceSummary>
+        <RtlPorts>
+            <name>ap_local_block</name>
+            <Object>synth_issue_top</Object>
+            <Type>return value</Type>
+            <Scope/>
+            <IOProtocol>ap_ctrl_hs</IOProtocol>
+            <IOConfig/>
+            <Dir>out</Dir>
+            <Bits>1</Bits>
+            <Attribute>unknown</Attribute>
+        </RtlPorts>
+        <RtlPorts>
+            <name>ap_local_deadlock</name>
+            <Object>synth_issue_top</Object>
+            <Type>return value</Type>
+            <Scope/>
+            <IOProtocol>ap_ctrl_hs</IOProtocol>
+            <IOConfig/>
+            <Dir>out</Dir>
+            <Bits>1</Bits>
+            <Attribute>unknown</Attribute>
+        </RtlPorts>
+        <RtlPorts>
+            <name>ap_clk</name>
+            <Object>synth_issue_top</Object>
+            <Type>return value</Type>
+            <Scope/>
+            <IOProtocol>ap_ctrl_hs</IOProtocol>
+            <IOConfig/>
+            <Dir>in</Dir>
+            <Bits>1</Bits>
+            <Attribute>control</Attribute>
+        </RtlPorts>
+        <RtlPorts>
+            <name>ap_rst</name>
+            <Object>synth_issue_top</Object>
+            <Type>return value</Type>
+            <Scope/>
+            <IOProtocol>ap_ctrl_hs</IOProtocol>
+            <IOConfig/>
+            <Dir>in</Dir>
+            <Bits>1</Bits>
+            <Attribute>control</Attribute>
+        </RtlPorts>
+        <RtlPorts>
+            <name>ap_start</name>
+            <Object>synth_issue_top</Object>
+            <Type>return value</Type>
+            <Scope/>
+            <IOProtocol>ap_ctrl_hs</IOProtocol>
+            <IOConfig/>
+            <Dir>in</Dir>
+            <Bits>1</Bits>
+            <Attribute>control</Attribute>
+        </RtlPorts>
+        <RtlPorts>
+            <name>ap_done</name>
+            <Object>synth_issue_top</Object>
+            <Type>return value</Type>
+            <Scope/>
+            <IOProtocol>ap_ctrl_hs</IOProtocol>
+            <IOConfig/>
+            <Dir>out</Dir>
+            <Bits>1</Bits>
+            <Attribute>control</Attribute>
+        </RtlPorts>
+        <RtlPorts>
+            <name>ap_idle</name>
+            <Object>synth_issue_top</Object>
+            <Type>return value</Type>
+            <Scope/>
+            <IOProtocol>ap_ctrl_hs</IOProtocol>
+            <IOConfig/>
+            <Dir>out</Dir>
+            <Bits>1</Bits>
+            <Attribute>control</Attribute>
+        </RtlPorts>
+        <RtlPorts>
+            <name>ap_ready</name>
+            <Object>synth_issue_top</Object>
+            <Type>return value</Type>
+            <Scope/>
+            <IOProtocol>ap_ctrl_hs</IOProtocol>
+            <IOConfig/>
+            <Dir>out</Dir>
+            <Bits>1</Bits>
+            <Attribute>control</Attribute>
+        </RtlPorts>
+        <RtlPorts>
+            <name>seed_inst</name>
+            <Object>seed_inst</Object>
+            <Type>scalar</Type>
+            <Scope/>
+            <IOProtocol>ap_none</IOProtocol>
+            <IOConfig/>
+            <Dir>in</Dir>
+            <Bits>32</Bits>
+            <Attribute>data</Attribute>
+            <CType>int</CType>
+        </RtlPorts>
+        <RtlPorts>
+            <name>seed_pc</name>
+            <Object>seed_pc</Object>
+            <Type>scalar</Type>
+            <Scope/>
+            <IOProtocol>ap_none</IOProtocol>
+            <IOConfig/>
+            <Dir>in</Dir>
+            <Bits>64</Bits>
+            <Attribute>data</Attribute>
+            <CType>int</CType>
+        </RtlPorts>
+        <RtlPorts>
+            <name>observable</name>
+            <Object>observable</Object>
+            <Type>pointer</Type>
+            <Scope/>
+            <IOProtocol>ap_vld</IOProtocol>
+            <IOConfig/>
+            <Dir>out</Dir>
+            <Bits>64</Bits>
+            <Attribute>data</Attribute>
+            <CType>int</CType>
+        </RtlPorts>
+        <RtlPorts>
+            <name>observable_ap_vld</name>
+            <Object>observable</Object>
+            <Type>pointer</Type>
+            <Scope/>
+            <IOProtocol>ap_vld</IOProtocol>
+            <IOConfig/>
+            <Dir>out</Dir>
+            <Bits>1</Bits>
+            <Attribute>control</Attribute>
+            <CType>int</CType>
+        </RtlPorts>
+    </InterfaceSummary>
+    <RTLDesignHierarchy>
+        <TopModule MAX_DEPTH="4">
+            <ModuleName>synth_issue_top</ModuleName>
+            <InstancesList>
+                <Instance>
+                    <InstName>grp_issue_module_fu_1787</InstName>
+                    <ModuleName>issue_module</ModuleName>
+                    <IsCompInst>true</IsCompInst>
+                    <ID>1787</ID>
+                    <InstancesList>
+                        <Instance>
+                            <InstName>grp_compact_iq_fu_625</InstName>
+                            <ModuleName>compact_iq</ModuleName>
+                            <IsCompInst>true</IsCompInst>
+                            <ID>625</ID>
+                            <BindInstances>temp_valid_U temp_request_U temp_granted_U temp_killed_U temp_pdst_busy_U temp_prs1_busy_U temp_prs2_busy_U temp_prs3_busy_U temp_uop_uopc_U temp_uop_inst_U temp_uop_debug_inst_U temp_uop_is_rvc_U temp_uop_debug_pc_U temp_uop_iq_type_U temp_uop_fu_code_U temp_uop_ctrl_br_type_U temp_uop_ctrl_op1_sel_U temp_uop_ctrl_op2_sel_U temp_uop_ctrl_imm_sel_U temp_uop_ctrl_op_fcn_U temp_uop_ctrl_fcn_dw_U temp_uop_ctrl_csr_cmd_U temp_uop_ctrl_is_load_U temp_uop_ctrl_is_sta_U temp_uop_ctrl_is_std_U temp_uop_iw_state_U temp_uop_iw_p1_poisoned_U temp_uop_iw_p2_poisoned_U temp_uop_branch_br_mask_U temp_uop_branch_br_tag_U temp_uop_branch_ftq_idx_U temp_uop_branch_pc_lob_U temp_uop_branch_edge_inst_U temp_uop_branch_taken_U temp_uop_branch_is_br_U temp_uop_branch_is_jalr_U temp_uop_branch_is_jal_U temp_uop_branch_is_sfb_U temp_uop_imm_packed_U temp_uop_csr_addr_U temp_uop_queue_rob_idx_U temp_uop_queue_ldq_idx_U temp_uop_queue_stq_idx_U temp_uop_queue_rxq_idx_U temp_uop_queue_rob_allocation_id_U temp_uop_rename_ldst_U temp_uop_rename_lrs1_U temp_uop_rename_lrs2_U temp_uop_rename_lrs3_U temp_uop_rename_pdst_U temp_uop_rename_prs1_U temp_uop_rename_prs2_U temp_uop_rename_prs3_U temp_uop_rename_ppred_U temp_uop_rename_prs1_busy_U temp_uop_rename_prs2_busy_U temp_uop_rename_prs3_busy_U temp_uop_rename_ppred_busy_U temp_uop_rename_stale_pdst_U temp_uop_rename_dst_rtype_U temp_uop_rename_lrs1_rtype_U temp_uop_rename_lrs2_rtype_U temp_uop_rename_frs3_en_U temp_uop_rename_fp_val_U temp_uop_rename_fp_single_U temp_uop_exception_U temp_uop_exc_cause_U temp_uop_bypassable_U temp_uop_mem_mem_cmd_U temp_uop_mem_mem_size_U temp_uop_mem_mem_signed_U temp_uop_mem_is_fence_U temp_uop_mem_is_fencei_U temp_uop_mem_is_amo_U temp_uop_mem_uses_ldq_U temp_uop_mem_uses_stq_U temp_uop_mem_ldst_is_rs1_U temp_uop_mem_ldst_val_U temp_uop_is_sys_pc2epc_U temp_uop_is_unique_U temp_uop_flush_on_commit_U temp_uop_exc_exception_U temp_uop_exc_exc_cause_U temp_uop_exc_xcpt_pf_if_U temp_uop_exc_xcpt_ae_if_U temp_uop_exc_xcpt_ma_if_U temp_uop_exc_bp_debug_if_U temp_uop_exc_bp_xcpt_if_U temp_uop_debug_debug_fsrc_U temp_uop_debug_debug_tsrc_U temp_uop_debug_debug_inst_U temp_uop_debug_debug_pc_U temp_prs1_data_U temp_prs2_data_U temp_prs3_data_U add_ln581_fu_6062_p2 add_ln583_fu_6205_p2 w_3_fu_6216_p2 add_ln586_fu_6446_p2 add_ln587_fu_6570_p2</BindInstances>
+                        </Instance>
+                    </InstancesList>
+                    <BindInstances>add_ln598_fu_849_p2 add_ln608_fu_993_p2 add_ln628_fu_1068_p2 add_ln675_fu_1660_p2 add_ln677_fu_1676_p2 add_ln677_1_fu_1692_p2 add_ln678_1_fu_1714_p2 add_ln678_fu_1730_p2 add_ln681_fu_1751_p2 add_ln680_fu_1767_p2 add_ln682_fu_1783_p2 add_ln684_fu_1833_p2 add_ln696_fu_1873_p2 sub_ln707_fu_1920_p2 add_ln708_fu_1944_p2 add_ln708_1_fu_1960_p2</BindInstances>
+                </Instance>
+            </InstancesList>
+            <BindInstances>add_ln1976_fu_2154_p2 add_ln1993_fu_2253_p2 state_issue_alu_iq_entries_valid_U state_issue_alu_iq_entries_request_U state_issue_alu_iq_entries_granted_U state_issue_alu_iq_entries_killed_U state_issue_alu_iq_entries_pdst_busy_U state_issue_alu_iq_entries_prs1_busy_U state_issue_alu_iq_entries_prs2_busy_U state_issue_alu_iq_entries_prs3_busy_U state_issue_alu_iq_entries_uop_uopc_U state_issue_alu_iq_entries_uop_inst_U state_issue_alu_iq_entries_uop_debug_inst_U state_issue_alu_iq_entries_uop_is_rvc_U state_issue_alu_iq_entries_uop_debug_pc_U state_issue_alu_iq_entries_uop_iq_type_U state_issue_alu_iq_entries_uop_fu_code_U state_issue_alu_iq_entries_uop_ctrl_br_type_U state_issue_alu_iq_entries_uop_ctrl_op1_sel_U state_issue_alu_iq_entries_uop_ctrl_op2_sel_U state_issue_alu_iq_entries_uop_ctrl_imm_sel_U state_issue_alu_iq_entries_uop_ctrl_op_fcn_U state_issue_alu_iq_entries_uop_ctrl_fcn_dw_U state_issue_alu_iq_entries_uop_ctrl_csr_cmd_U state_issue_alu_iq_entries_uop_ctrl_is_load_U state_issue_alu_iq_entries_uop_ctrl_is_sta_U state_issue_alu_iq_entries_uop_ctrl_is_std_U state_issue_alu_iq_entries_uop_iw_state_U state_issue_alu_iq_entries_uop_iw_p1_poisoned_U state_issue_alu_iq_entries_uop_iw_p2_poisoned_U state_issue_alu_iq_entries_uop_branch_br_mask_U state_issue_alu_iq_entries_uop_branch_br_tag_U state_issue_alu_iq_entries_uop_branch_ftq_idx_U state_issue_alu_iq_entries_uop_branch_pc_lob_U state_issue_alu_iq_entries_uop_branch_edge_inst_U state_issue_alu_iq_entries_uop_branch_taken_U state_issue_alu_iq_entries_uop_branch_is_br_U state_issue_alu_iq_entries_uop_branch_is_jalr_U state_issue_alu_iq_entries_uop_branch_is_jal_U state_issue_alu_iq_entries_uop_branch_is_sfb_U state_issue_alu_iq_entries_uop_imm_packed_U state_issue_alu_iq_entries_uop_csr_addr_U state_issue_alu_iq_entries_uop_queue_rob_idx_U state_issue_alu_iq_entries_uop_queue_ldq_idx_U state_issue_alu_iq_entries_uop_queue_stq_idx_U state_issue_alu_iq_entries_uop_queue_rxq_idx_U state_issue_alu_iq_entries_uop_queue_rob_allocation_id_U state_issue_alu_iq_entries_uop_rename_ldst_U state_issue_alu_iq_entries_uop_rename_lrs1_U state_issue_alu_iq_entries_uop_rename_lrs2_U state_issue_alu_iq_entries_uop_rename_lrs3_U state_issue_alu_iq_entries_uop_rename_pdst_U state_issue_alu_iq_entries_uop_rename_prs1_U state_issue_alu_iq_entries_uop_rename_prs2_U state_issue_alu_iq_entries_uop_rename_prs3_U state_issue_alu_iq_entries_uop_rename_ppred_U state_issue_alu_iq_entries_uop_rename_prs1_busy_U state_issue_alu_iq_entries_uop_rename_prs2_busy_U state_issue_alu_iq_entries_uop_rename_prs3_busy_U state_issue_alu_iq_entries_uop_rename_ppred_busy_U state_issue_alu_iq_entries_uop_rename_stale_pdst_U state_issue_alu_iq_entries_uop_rename_dst_rtype_U state_issue_alu_iq_entries_uop_rename_lrs1_rtype_U state_issue_alu_iq_entries_uop_rename_lrs2_rtype_U state_issue_alu_iq_entries_uop_rename_frs3_en_U state_issue_alu_iq_entries_uop_rename_fp_val_U state_issue_alu_iq_entries_uop_rename_fp_single_U state_issue_alu_iq_entries_uop_exception_U state_issue_alu_iq_entries_uop_exc_cause_U state_issue_alu_iq_entries_uop_bypassable_U state_issue_alu_iq_entries_uop_mem_mem_cmd_U state_issue_alu_iq_entries_uop_mem_mem_size_U state_issue_alu_iq_entries_uop_mem_mem_signed_U state_issue_alu_iq_entries_uop_mem_is_fence_U state_issue_alu_iq_entries_uop_mem_is_fencei_U state_issue_alu_iq_entries_uop_mem_is_amo_U state_issue_alu_iq_entries_uop_mem_uses_ldq_U state_issue_alu_iq_entries_uop_mem_uses_stq_U state_issue_alu_iq_entries_uop_mem_ldst_is_rs1_U state_issue_alu_iq_entries_uop_mem_ldst_val_U state_issue_alu_iq_entries_uop_is_sys_pc2epc_U state_issue_alu_iq_entries_uop_is_unique_U state_issue_alu_iq_entries_uop_flush_on_commit_U state_issue_alu_iq_entries_uop_exc_exception_U state_issue_alu_iq_entries_uop_exc_exc_cause_U state_issue_alu_iq_entries_uop_exc_xcpt_pf_if_U state_issue_alu_iq_entries_uop_exc_xcpt_ae_if_U state_issue_alu_iq_entries_uop_exc_xcpt_ma_if_U state_issue_alu_iq_entries_uop_exc_bp_debug_if_U state_issue_alu_iq_entries_uop_exc_bp_xcpt_if_U state_issue_alu_iq_entries_uop_debug_debug_fsrc_U state_issue_alu_iq_entries_uop_debug_debug_tsrc_U state_issue_alu_iq_entries_uop_debug_debug_inst_U state_issue_alu_iq_entries_uop_debug_debug_pc_U state_issue_alu_iq_entries_prs1_data_U state_issue_alu_iq_entries_prs2_data_U state_issue_alu_iq_entries_prs3_data_U</BindInstances>
+        </TopModule>
+    </RTLDesignHierarchy>
+    <ModuleInformation>
+        <Module>
+            <Name>compact_iq</Name>
+            <Loops>
+                <Loop1/>
+                <VITIS_LOOP_583_1/>
+                <VITIS_LOOP_586_2/>
+                <VITIS_LOOP_587_3/>
+            </Loops>
+            <PerformanceEstimates>
+                <SummaryOfTimingAnalysis>
+                    <TargetClockPeriod>10.00</TargetClockPeriod>
+                    <ClockUncertainty>2.70</ClockUncertainty>
+                    <EstimatedClockPeriod>1.689</EstimatedClockPeriod>
+                </SummaryOfTimingAnalysis>
+                <SummaryOfOverallLatency>
+                    <Best-caseLatency>undef</Best-caseLatency>
+                    <Average-caseLatency>undef</Average-caseLatency>
+                    <Worst-caseLatency>undef</Worst-caseLatency>
+                    <Best-caseRealTimeLatency>undef</Best-caseRealTimeLatency>
+                    <Average-caseRealTimeLatency>undef</Average-caseRealTimeLatency>
+                    <Worst-caseRealTimeLatency>undef</Worst-caseRealTimeLatency>
+                    <PipelineInitiationInterval>undef</PipelineInitiationInterval>
+                    <PipelineType>no</PipelineType>
+                </SummaryOfOverallLatency>
+                <SummaryOfLoopLatency>
+                    <Loop1>
+                        <Name>Loop 1</Name>
+                        <TripCount>8</TripCount>
+                        <Latency>8</Latency>
+                        <AbsoluteTimeLatency>80.000 ns</AbsoluteTimeLatency>
+                        <IterationLatency>1</IterationLatency>
+                        <PipelineDepth>1</PipelineDepth>
+                        <PipelineType>no</PipelineType>
+                        <InstanceList/>
+                    </Loop1>
+                    <VITIS_LOOP_583_1>
+                        <Name>VITIS_LOOP_583_1</Name>
+                        <TripCount>8</TripCount>
+                        <Latency>24 ~ 32</Latency>
+                        <AbsoluteTimeLatency>0.240 us ~ 0.320 us</AbsoluteTimeLatency>
+                        <IterationLatency>
+                            <range>
+                                <min>3</min>
+                                <max>4</max>
+                            </range>
+                        </IterationLatency>
+                        <PipelineDepth>3 ~ 4</PipelineDepth>
+                        <PipelineType>no</PipelineType>
+                        <InstanceList/>
+                    </VITIS_LOOP_583_1>
+                    <VITIS_LOOP_586_2>
+                        <Name>VITIS_LOOP_586_2</Name>
+                        <TripCount>undef</TripCount>
+                        <Latency>undef</Latency>
+                        <AbsoluteTimeLatency>undef</AbsoluteTimeLatency>
+                        <IterationLatency>1</IterationLatency>
+                        <PipelineDepth>1</PipelineDepth>
+                        <PipelineType>no</PipelineType>
+                        <InstanceList/>
+                    </VITIS_LOOP_586_2>
+                    <VITIS_LOOP_587_3>
+                        <Name>VITIS_LOOP_587_3</Name>
+                        <TripCount>8</TripCount>
+                        <Latency>16</Latency>
+                        <AbsoluteTimeLatency>0.160 us</AbsoluteTimeLatency>
+                        <IterationLatency>2</IterationLatency>
+                        <PipelineDepth>2</PipelineDepth>
+                        <PipelineType>no</PipelineType>
+                        <InstanceList/>
+                    </VITIS_LOOP_587_3>
+                </SummaryOfLoopLatency>
+            </PerformanceEstimates>
+            <AreaEstimates>
+                <Resources>
+                    <BRAM_18K>0</BRAM_18K>
+                    <AVAIL_BRAM>624</AVAIL_BRAM>
+                    <UTIL_BRAM>0</UTIL_BRAM>
+                    <FF>2046</FF>
+                    <AVAIL_FF>460800</AVAIL_FF>
+                    <UTIL_FF>~0</UTIL_FF>
+                    <LUT>5531</LUT>
+                    <AVAIL_LUT>230400</AVAIL_LUT>
+                    <UTIL_LUT>2</UTIL_LUT>
+                    <URAM>0</URAM>
+                    <AVAIL_URAM>96</AVAIL_URAM>
+                    <UTIL_URAM>0</UTIL_URAM>
+                    <DSP>0</DSP>
+                    <AVAIL_DSP>1728</AVAIL_DSP>
+                    <UTIL_DSP>0</UTIL_DSP>
+                </Resources>
+            </AreaEstimates>
+            <BindNodes>
+                <BindNode BINDTYPE="storage" BRAM="0" BUNDLEDNAME="" DISPNAME="bind_storage ram_1p" DSP="0" ID="" IMPL="auto" LATENCY="1" LOOP="" OPTYPE="ram_1p" PRAGMA="" RTLNAME="temp_valid_U" SOURCE="/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:581" URAM="0" VARIABLE="temp_valid"/>
+                <BindNode BINDTYPE="storage" BRAM="0" BUNDLEDNAME="" DISPNAME="bind_storage ram_1p" DSP="0" ID="" IMPL="auto" LATENCY="1" LOOP="" OPTYPE="ram_1p" PRAGMA="" RTLNAME="temp_request_U" SOURCE="/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:581" URAM="0" VARIABLE="temp_request"/>
+                <BindNode BINDTYPE="storage" BRAM="0" BUNDLEDNAME="" DISPNAME="bind_storage ram_1p" DSP="0" ID="" IMPL="auto" LATENCY="1" LOOP="" OPTYPE="ram_1p" PRAGMA="" RTLNAME="temp_granted_U" SOURCE="/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:581" URAM="0" VARIABLE="temp_granted"/>
+                <BindNode BINDTYPE="storage" BRAM="0" BUNDLEDNAME="" DISPNAME="bind_storage ram_1p" DSP="0" ID="" IMPL="auto" LATENCY="1" LOOP="" OPTYPE="ram_1p" PRAGMA="" RTLNAME="temp_killed_U" SOURCE="/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:581" URAM="0" VARIABLE="temp_killed"/>
+                <BindNode BINDTYPE="storage" BRAM="0" BUNDLEDNAME="" DISPNAME="bind_storage ram_1p" DSP="0" ID="" IMPL="auto" LATENCY="1" LOOP="" OPTYPE="ram_1p" PRAGMA="" RTLNAME="temp_pdst_busy_U" SOURCE="/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:581" URAM="0" VARIABLE="temp_pdst_busy"/>
+                <BindNode BINDTYPE="storage" BRAM="0" BUNDLEDNAME="" DISPNAME="bind_storage ram_1p" DSP="0" ID="" IMPL="auto" LATENCY="1" LOOP="" OPTYPE="ram_1p" PRAGMA="" RTLNAME="temp_prs1_busy_U" SOURCE="/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:581" URAM="0" VARIABLE="temp_prs1_busy"/>
+                <BindNode BINDTYPE="storage" BRAM="0" BUNDLEDNAME="" DISPNAME="bind_storage ram_1p" DSP="0" ID="" IMPL="auto" LATENCY="1" LOOP="" OPTYPE="ram_1p" PRAGMA="" RTLNAME="temp_prs2_busy_U" SOURCE="/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:581" URAM="0" VARIABLE="temp_prs2_busy"/>
+                <BindNode BINDTYPE="storage" BRAM="0" BUNDLEDNAME="" DISPNAME="bind_storage ram_1p" DSP="0" ID="" IMPL="auto" LATENCY="1" LOOP="" OPTYPE="ram_1p" PRAGMA="" RTLNAME="temp_prs3_busy_U" SOURCE="/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:581" URAM="0" VARIABLE="temp_prs3_busy"/>
+                <BindNode BINDTYPE="storage" BRAM="0" BUNDLEDNAME="" DISPNAME="bind_storage ram_1p" DSP="0" ID="" IMPL="auto" LATENCY="1" LOOP="" OPTYPE="ram_1p" PRAGMA="" RTLNAME="temp_uop_uopc_U" SOURCE="/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:581" URAM="0" VARIABLE="temp_uop_uopc"/>
+                <BindNode BINDTYPE="storage" BRAM="0" BUNDLEDNAME="" DISPNAME="bind_storage ram_1p" DSP="0" ID="" IMPL="auto" LATENCY="1" LOOP="" OPTYPE="ram_1p" PRAGMA="" RTLNAME="temp_uop_inst_U" SOURCE="/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:581" URAM="0" VARIABLE="temp_uop_inst"/>
+                <BindNode BINDTYPE="storage" BRAM="0" BUNDLEDNAME="" DISPNAME="bind_storage ram_1p" DSP="0" ID="" IMPL="auto" LATENCY="1" LOOP="" OPTYPE="ram_1p" PRAGMA="" RTLNAME="temp_uop_debug_inst_U" SOURCE="/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:581" URAM="0" VARIABLE="temp_uop_debug_inst"/>
+                <BindNode BINDTYPE="storage" BRAM="0" BUNDLEDNAME="" DISPNAME="bind_storage ram_1p" DSP="0" ID="" IMPL="auto" LATENCY="1" LOOP="" OPTYPE="ram_1p" PRAGMA="" RTLNAME="temp_uop_is_rvc_U" SOURCE="/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:581" URAM="0" VARIABLE="temp_uop_is_rvc"/>
+                <BindNode BINDTYPE="storage" BRAM="0" BUNDLEDNAME="" DISPNAME="bind_storage ram_1p" DSP="0" ID="" IMPL="auto" LATENCY="1" LOOP="" OPTYPE="ram_1p" PRAGMA="" RTLNAME="temp_uop_debug_pc_U" SOURCE="/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:581" URAM="0" VARIABLE="temp_uop_debug_pc"/>
+                <BindNode BINDTYPE="storage" BRAM="0" BUNDLEDNAME="" DISPNAME="bind_storage ram_1p" DSP="0" ID="" IMPL="auto" LATENCY="1" LOOP="" OPTYPE="ram_1p" PRAGMA="" RTLNAME="temp_uop_iq_type_U" SOURCE="/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:581" URAM="0" VARIABLE="temp_uop_iq_type"/>
+                <BindNode BINDTYPE="storage" BRAM="0" BUNDLEDNAME="" DISPNAME="bind_storage ram_1p" DSP="0" ID="" IMPL="auto" LATENCY="1" LOOP="" OPTYPE="ram_1p" PRAGMA="" RTLNAME="temp_uop_fu_code_U" SOURCE="/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:581" URAM="0" VARIABLE="temp_uop_fu_code"/>
+                <BindNode BINDTYPE="storage" BRAM="0" BUNDLEDNAME="" DISPNAME="bind_storage ram_1p" DSP="0" ID="" IMPL="auto" LATENCY="1" LOOP="" OPTYPE="ram_1p" PRAGMA="" RTLNAME="temp_uop_ctrl_br_type_U" SOURCE="/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:581" URAM="0" VARIABLE="temp_uop_ctrl_br_type"/>
+                <BindNode BINDTYPE="storage" BRAM="0" BUNDLEDNAME="" DISPNAME="bind_storage ram_1p" DSP="0" ID="" IMPL="auto" LATENCY="1" LOOP="" OPTYPE="ram_1p" PRAGMA="" RTLNAME="temp_uop_ctrl_op1_sel_U" SOURCE="/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:581" URAM="0" VARIABLE="temp_uop_ctrl_op1_sel"/>
+                <BindNode BINDTYPE="storage" BRAM="0" BUNDLEDNAME="" DISPNAME="bind_storage ram_1p" DSP="0" ID="" IMPL="auto" LATENCY="1" LOOP="" OPTYPE="ram_1p" PRAGMA="" RTLNAME="temp_uop_ctrl_op2_sel_U" SOURCE="/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:581" URAM="0" VARIABLE="temp_uop_ctrl_op2_sel"/>
+                <BindNode BINDTYPE="storage" BRAM="0" BUNDLEDNAME="" DISPNAME="bind_storage ram_1p" DSP="0" ID="" IMPL="auto" LATENCY="1" LOOP="" OPTYPE="ram_1p" PRAGMA="" RTLNAME="temp_uop_ctrl_imm_sel_U" SOURCE="/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:581" URAM="0" VARIABLE="temp_uop_ctrl_imm_sel"/>
+                <BindNode BINDTYPE="storage" BRAM="0" BUNDLEDNAME="" DISPNAME="bind_storage ram_1p" DSP="0" ID="" IMPL="auto" LATENCY="1" LOOP="" OPTYPE="ram_1p" PRAGMA="" RTLNAME="temp_uop_ctrl_op_fcn_U" SOURCE="/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:581" URAM="0" VARIABLE="temp_uop_ctrl_op_fcn"/>
+                <BindNode BINDTYPE="storage" BRAM="0" BUNDLEDNAME="" DISPNAME="bind_storage ram_1p" DSP="0" ID="" IMPL="auto" LATENCY="1" LOOP="" OPTYPE="ram_1p" PRAGMA="" RTLNAME="temp_uop_ctrl_fcn_dw_U" SOURCE="/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:581" URAM="0" VARIABLE="temp_uop_ctrl_fcn_dw"/>
+                <BindNode BINDTYPE="storage" BRAM="0" BUNDLEDNAME="" DISPNAME="bind_storage ram_1p" DSP="0" ID="" IMPL="auto" LATENCY="1" LOOP="" OPTYPE="ram_1p" PRAGMA="" RTLNAME="temp_uop_ctrl_csr_cmd_U" SOURCE="/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:581" URAM="0" VARIABLE="temp_uop_ctrl_csr_cmd"/>
+                <BindNode BINDTYPE="storage" BRAM="0" BUNDLEDNAME="" DISPNAME="bind_storage ram_1p" DSP="0" ID="" IMPL="auto" LATENCY="1" LOOP="" OPTYPE="ram_1p" PRAGMA="" RTLNAME="temp_uop_ctrl_is_load_U" SOURCE="/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:581" URAM="0" VARIABLE="temp_uop_ctrl_is_load"/>
+                <BindNode BINDTYPE="storage" BRAM="0" BUNDLEDNAME="" DISPNAME="bind_storage ram_1p" DSP="0" ID="" IMPL="auto" LATENCY="1" LOOP="" OPTYPE="ram_1p" PRAGMA="" RTLNAME="temp_uop_ctrl_is_sta_U" SOURCE="/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:581" URAM="0" VARIABLE="temp_uop_ctrl_is_sta"/>
+                <BindNode BINDTYPE="storage" BRAM="0" BUNDLEDNAME="" DISPNAME="bind_storage ram_1p" DSP="0" ID="" IMPL="auto" LATENCY="1" LOOP="" OPTYPE="ram_1p" PRAGMA="" RTLNAME="temp_uop_ctrl_is_std_U" SOURCE="/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:581" URAM="0" VARIABLE="temp_uop_ctrl_is_std"/>
+                <BindNode BINDTYPE="storage" BRAM="0" BUNDLEDNAME="" DISPNAME="bind_storage ram_1p" DSP="0" ID="" IMPL="auto" LATENCY="1" LOOP="" OPTYPE="ram_1p" PRAGMA="" RTLNAME="temp_uop_iw_state_U" SOURCE="/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:581" URAM="0" VARIABLE="temp_uop_iw_state"/>
+                <BindNode BINDTYPE="storage" BRAM="0" BUNDLEDNAME="" DISPNAME="bind_storage ram_1p" DSP="0" ID="" IMPL="auto" LATENCY="1" LOOP="" OPTYPE="ram_1p" PRAGMA="" RTLNAME="temp_uop_iw_p1_poisoned_U" SOURCE="/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:581" URAM="0" VARIABLE="temp_uop_iw_p1_poisoned"/>
+                <BindNode BINDTYPE="storage" BRAM="0" BUNDLEDNAME="" DISPNAME="bind_storage ram_1p" DSP="0" ID="" IMPL="auto" LATENCY="1" LOOP="" OPTYPE="ram_1p" PRAGMA="" RTLNAME="temp_uop_iw_p2_poisoned_U" SOURCE="/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:581" URAM="0" VARIABLE="temp_uop_iw_p2_poisoned"/>
+                <BindNode BINDTYPE="storage" BRAM="0" BUNDLEDNAME="" DISPNAME="bind_storage ram_1p" DSP="0" ID="" IMPL="auto" LATENCY="1" LOOP="" OPTYPE="ram_1p" PRAGMA="" RTLNAME="temp_uop_branch_br_mask_U" SOURCE="/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:581" URAM="0" VARIABLE="temp_uop_branch_br_mask"/>
+                <BindNode BINDTYPE="storage" BRAM="0" BUNDLEDNAME="" DISPNAME="bind_storage ram_1p" DSP="0" ID="" IMPL="auto" LATENCY="1" LOOP="" OPTYPE="ram_1p" PRAGMA="" RTLNAME="temp_uop_branch_br_tag_U" SOURCE="/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:581" URAM="0" VARIABLE="temp_uop_branch_br_tag"/>
+                <BindNode BINDTYPE="storage" BRAM="0" BUNDLEDNAME="" DISPNAME="bind_storage ram_1p" DSP="0" ID="" IMPL="auto" LATENCY="1" LOOP="" OPTYPE="ram_1p" PRAGMA="" RTLNAME="temp_uop_branch_ftq_idx_U" SOURCE="/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:581" URAM="0" VARIABLE="temp_uop_branch_ftq_idx"/>
+                <BindNode BINDTYPE="storage" BRAM="0" BUNDLEDNAME="" DISPNAME="bind_storage ram_1p" DSP="0" ID="" IMPL="auto" LATENCY="1" LOOP="" OPTYPE="ram_1p" PRAGMA="" RTLNAME="temp_uop_branch_pc_lob_U" SOURCE="/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:581" URAM="0" VARIABLE="temp_uop_branch_pc_lob"/>
+                <BindNode BINDTYPE="storage" BRAM="0" BUNDLEDNAME="" DISPNAME="bind_storage ram_1p" DSP="0" ID="" IMPL="auto" LATENCY="1" LOOP="" OPTYPE="ram_1p" PRAGMA="" RTLNAME="temp_uop_branch_edge_inst_U" SOURCE="/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:581" URAM="0" VARIABLE="temp_uop_branch_edge_inst"/>
+                <BindNode BINDTYPE="storage" BRAM="0" BUNDLEDNAME="" DISPNAME="bind_storage ram_1p" DSP="0" ID="" IMPL="auto" LATENCY="1" LOOP="" OPTYPE="ram_1p" PRAGMA="" RTLNAME="temp_uop_branch_taken_U" SOURCE="/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:581" URAM="0" VARIABLE="temp_uop_branch_taken"/>
+                <BindNode BINDTYPE="storage" BRAM="0" BUNDLEDNAME="" DISPNAME="bind_storage ram_1p" DSP="0" ID="" IMPL="auto" LATENCY="1" LOOP="" OPTYPE="ram_1p" PRAGMA="" RTLNAME="temp_uop_branch_is_br_U" SOURCE="/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:581" URAM="0" VARIABLE="temp_uop_branch_is_br"/>
+                <BindNode BINDTYPE="storage" BRAM="0" BUNDLEDNAME="" DISPNAME="bind_storage ram_1p" DSP="0" ID="" IMPL="auto" LATENCY="1" LOOP="" OPTYPE="ram_1p" PRAGMA="" RTLNAME="temp_uop_branch_is_jalr_U" SOURCE="/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:581" URAM="0" VARIABLE="temp_uop_branch_is_jalr"/>
+                <BindNode BINDTYPE="storage" BRAM="0" BUNDLEDNAME="" DISPNAME="bind_storage ram_1p" DSP="0" ID="" IMPL="auto" LATENCY="1" LOOP="" OPTYPE="ram_1p" PRAGMA="" RTLNAME="temp_uop_branch_is_jal_U" SOURCE="/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:581" URAM="0" VARIABLE="temp_uop_branch_is_jal"/>
+                <BindNode BINDTYPE="storage" BRAM="0" BUNDLEDNAME="" DISPNAME="bind_storage ram_1p" DSP="0" ID="" IMPL="auto" LATENCY="1" LOOP="" OPTYPE="ram_1p" PRAGMA="" RTLNAME="temp_uop_branch_is_sfb_U" SOURCE="/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:581" URAM="0" VARIABLE="temp_uop_branch_is_sfb"/>
+                <BindNode BINDTYPE="storage" BRAM="0" BUNDLEDNAME="" DISPNAME="bind_storage ram_1p" DSP="0" ID="" IMPL="auto" LATENCY="1" LOOP="" OPTYPE="ram_1p" PRAGMA="" RTLNAME="temp_uop_imm_packed_U" SOURCE="/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:581" URAM="0" VARIABLE="temp_uop_imm_packed"/>
+                <BindNode BINDTYPE="storage" BRAM="0" BUNDLEDNAME="" DISPNAME="bind_storage ram_1p" DSP="0" ID="" IMPL="auto" LATENCY="1" LOOP="" OPTYPE="ram_1p" PRAGMA="" RTLNAME="temp_uop_csr_addr_U" SOURCE="/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:581" URAM="0" VARIABLE="temp_uop_csr_addr"/>
+                <BindNode BINDTYPE="storage" BRAM="0" BUNDLEDNAME="" DISPNAME="bind_storage ram_1p" DSP="0" ID="" IMPL="auto" LATENCY="1" LOOP="" OPTYPE="ram_1p" PRAGMA="" RTLNAME="temp_uop_queue_rob_idx_U" SOURCE="/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:581" URAM="0" VARIABLE="temp_uop_queue_rob_idx"/>
+                <BindNode BINDTYPE="storage" BRAM="0" BUNDLEDNAME="" DISPNAME="bind_storage ram_1p" DSP="0" ID="" IMPL="auto" LATENCY="1" LOOP="" OPTYPE="ram_1p" PRAGMA="" RTLNAME="temp_uop_queue_ldq_idx_U" SOURCE="/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:581" URAM="0" VARIABLE="temp_uop_queue_ldq_idx"/>
+                <BindNode BINDTYPE="storage" BRAM="0" BUNDLEDNAME="" DISPNAME="bind_storage ram_1p" DSP="0" ID="" IMPL="auto" LATENCY="1" LOOP="" OPTYPE="ram_1p" PRAGMA="" RTLNAME="temp_uop_queue_stq_idx_U" SOURCE="/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:581" URAM="0" VARIABLE="temp_uop_queue_stq_idx"/>
+                <BindNode BINDTYPE="storage" BRAM="0" BUNDLEDNAME="" DISPNAME="bind_storage ram_1p" DSP="0" ID="" IMPL="auto" LATENCY="1" LOOP="" OPTYPE="ram_1p" PRAGMA="" RTLNAME="temp_uop_queue_rxq_idx_U" SOURCE="/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:581" URAM="0" VARIABLE="temp_uop_queue_rxq_idx"/>
+                <BindNode BINDTYPE="storage" BRAM="0" BUNDLEDNAME="" DISPNAME="bind_storage ram_1p" DSP="0" ID="" IMPL="auto" LATENCY="1" LOOP="" OPTYPE="ram_1p" PRAGMA="" RTLNAME="temp_uop_queue_rob_allocation_id_U" SOURCE="/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:581" URAM="0" VARIABLE="temp_uop_queue_rob_allocation_id"/>
+                <BindNode BINDTYPE="storage" BRAM="0" BUNDLEDNAME="" DISPNAME="bind_storage ram_1p" DSP="0" ID="" IMPL="auto" LATENCY="1" LOOP="" OPTYPE="ram_1p" PRAGMA="" RTLNAME="temp_uop_rename_ldst_U" SOURCE="/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:581" URAM="0" VARIABLE="temp_uop_rename_ldst"/>
+                <BindNode BINDTYPE="storage" BRAM="0" BUNDLEDNAME="" DISPNAME="bind_storage ram_1p" DSP="0" ID="" IMPL="auto" LATENCY="1" LOOP="" OPTYPE="ram_1p" PRAGMA="" RTLNAME="temp_uop_rename_lrs1_U" SOURCE="/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:581" URAM="0" VARIABLE="temp_uop_rename_lrs1"/>
+                <BindNode BINDTYPE="storage" BRAM="0" BUNDLEDNAME="" DISPNAME="bind_storage ram_1p" DSP="0" ID="" IMPL="auto" LATENCY="1" LOOP="" OPTYPE="ram_1p" PRAGMA="" RTLNAME="temp_uop_rename_lrs2_U" SOURCE="/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:581" URAM="0" VARIABLE="temp_uop_rename_lrs2"/>
+                <BindNode BINDTYPE="storage" BRAM="0" BUNDLEDNAME="" DISPNAME="bind_storage ram_1p" DSP="0" ID="" IMPL="auto" LATENCY="1" LOOP="" OPTYPE="ram_1p" PRAGMA="" RTLNAME="temp_uop_rename_lrs3_U" SOURCE="/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:581" URAM="0" VARIABLE="temp_uop_rename_lrs3"/>
+                <BindNode BINDTYPE="storage" BRAM="0" BUNDLEDNAME="" DISPNAME="bind_storage ram_1p" DSP="0" ID="" IMPL="auto" LATENCY="1" LOOP="" OPTYPE="ram_1p" PRAGMA="" RTLNAME="temp_uop_rename_pdst_U" SOURCE="/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:581" URAM="0" VARIABLE="temp_uop_rename_pdst"/>
+                <BindNode BINDTYPE="storage" BRAM="0" BUNDLEDNAME="" DISPNAME="bind_storage ram_1p" DSP="0" ID="" IMPL="auto" LATENCY="1" LOOP="" OPTYPE="ram_1p" PRAGMA="" RTLNAME="temp_uop_rename_prs1_U" SOURCE="/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:581" URAM="0" VARIABLE="temp_uop_rename_prs1"/>
+                <BindNode BINDTYPE="storage" BRAM="0" BUNDLEDNAME="" DISPNAME="bind_storage ram_1p" DSP="0" ID="" IMPL="auto" LATENCY="1" LOOP="" OPTYPE="ram_1p" PRAGMA="" RTLNAME="temp_uop_rename_prs2_U" SOURCE="/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:581" URAM="0" VARIABLE="temp_uop_rename_prs2"/>
+                <BindNode BINDTYPE="storage" BRAM="0" BUNDLEDNAME="" DISPNAME="bind_storage ram_1p" DSP="0" ID="" IMPL="auto" LATENCY="1" LOOP="" OPTYPE="ram_1p" PRAGMA="" RTLNAME="temp_uop_rename_prs3_U" SOURCE="/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:581" URAM="0" VARIABLE="temp_uop_rename_prs3"/>
+                <BindNode BINDTYPE="storage" BRAM="0" BUNDLEDNAME="" DISPNAME="bind_storage ram_1p" DSP="0" ID="" IMPL="auto" LATENCY="1" LOOP="" OPTYPE="ram_1p" PRAGMA="" RTLNAME="temp_uop_rename_ppred_U" SOURCE="/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:581" URAM="0" VARIABLE="temp_uop_rename_ppred"/>
+                <BindNode BINDTYPE="storage" BRAM="0" BUNDLEDNAME="" DISPNAME="bind_storage ram_1p" DSP="0" ID="" IMPL="auto" LATENCY="1" LOOP="" OPTYPE="ram_1p" PRAGMA="" RTLNAME="temp_uop_rename_prs1_busy_U" SOURCE="/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:581" URAM="0" VARIABLE="temp_uop_rename_prs1_busy"/>
+                <BindNode BINDTYPE="storage" BRAM="0" BUNDLEDNAME="" DISPNAME="bind_storage ram_1p" DSP="0" ID="" IMPL="auto" LATENCY="1" LOOP="" OPTYPE="ram_1p" PRAGMA="" RTLNAME="temp_uop_rename_prs2_busy_U" SOURCE="/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:581" URAM="0" VARIABLE="temp_uop_rename_prs2_busy"/>
+                <BindNode BINDTYPE="storage" BRAM="0" BUNDLEDNAME="" DISPNAME="bind_storage ram_1p" DSP="0" ID="" IMPL="auto" LATENCY="1" LOOP="" OPTYPE="ram_1p" PRAGMA="" RTLNAME="temp_uop_rename_prs3_busy_U" SOURCE="/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:581" URAM="0" VARIABLE="temp_uop_rename_prs3_busy"/>
+                <BindNode BINDTYPE="storage" BRAM="0" BUNDLEDNAME="" DISPNAME="bind_storage ram_1p" DSP="0" ID="" IMPL="auto" LATENCY="1" LOOP="" OPTYPE="ram_1p" PRAGMA="" RTLNAME="temp_uop_rename_ppred_busy_U" SOURCE="/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:581" URAM="0" VARIABLE="temp_uop_rename_ppred_busy"/>
+                <BindNode BINDTYPE="storage" BRAM="0" BUNDLEDNAME="" DISPNAME="bind_storage ram_1p" DSP="0" ID="" IMPL="auto" LATENCY="1" LOOP="" OPTYPE="ram_1p" PRAGMA="" RTLNAME="temp_uop_rename_stale_pdst_U" SOURCE="/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:581" URAM="0" VARIABLE="temp_uop_rename_stale_pdst"/>
+                <BindNode BINDTYPE="storage" BRAM="0" BUNDLEDNAME="" DISPNAME="bind_storage ram_1p" DSP="0" ID="" IMPL="auto" LATENCY="1" LOOP="" OPTYPE="ram_1p" PRAGMA="" RTLNAME="temp_uop_rename_dst_rtype_U" SOURCE="/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:581" URAM="0" VARIABLE="temp_uop_rename_dst_rtype"/>
+                <BindNode BINDTYPE="storage" BRAM="0" BUNDLEDNAME="" DISPNAME="bind_storage ram_1p" DSP="0" ID="" IMPL="auto" LATENCY="1" LOOP="" OPTYPE="ram_1p" PRAGMA="" RTLNAME="temp_uop_rename_lrs1_rtype_U" SOURCE="/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:581" URAM="0" VARIABLE="temp_uop_rename_lrs1_rtype"/>
+                <BindNode BINDTYPE="storage" BRAM="0" BUNDLEDNAME="" DISPNAME="bind_storage ram_1p" DSP="0" ID="" IMPL="auto" LATENCY="1" LOOP="" OPTYPE="ram_1p" PRAGMA="" RTLNAME="temp_uop_rename_lrs2_rtype_U" SOURCE="/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:581" URAM="0" VARIABLE="temp_uop_rename_lrs2_rtype"/>
+                <BindNode BINDTYPE="storage" BRAM="0" BUNDLEDNAME="" DISPNAME="bind_storage ram_1p" DSP="0" ID="" IMPL="auto" LATENCY="1" LOOP="" OPTYPE="ram_1p" PRAGMA="" RTLNAME="temp_uop_rename_frs3_en_U" SOURCE="/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:581" URAM="0" VARIABLE="temp_uop_rename_frs3_en"/>
+                <BindNode BINDTYPE="storage" BRAM="0" BUNDLEDNAME="" DISPNAME="bind_storage ram_1p" DSP="0" ID="" IMPL="auto" LATENCY="1" LOOP="" OPTYPE="ram_1p" PRAGMA="" RTLNAME="temp_uop_rename_fp_val_U" SOURCE="/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:581" URAM="0" VARIABLE="temp_uop_rename_fp_val"/>
+                <BindNode BINDTYPE="storage" BRAM="0" BUNDLEDNAME="" DISPNAME="bind_storage ram_1p" DSP="0" ID="" IMPL="auto" LATENCY="1" LOOP="" OPTYPE="ram_1p" PRAGMA="" RTLNAME="temp_uop_rename_fp_single_U" SOURCE="/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:581" URAM="0" VARIABLE="temp_uop_rename_fp_single"/>
+                <BindNode BINDTYPE="storage" BRAM="0" BUNDLEDNAME="" DISPNAME="bind_storage ram_1p" DSP="0" ID="" IMPL="auto" LATENCY="1" LOOP="" OPTYPE="ram_1p" PRAGMA="" RTLNAME="temp_uop_exception_U" SOURCE="/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:581" URAM="0" VARIABLE="temp_uop_exception"/>
+                <BindNode BINDTYPE="storage" BRAM="0" BUNDLEDNAME="" DISPNAME="bind_storage ram_1p" DSP="0" ID="" IMPL="auto" LATENCY="1" LOOP="" OPTYPE="ram_1p" PRAGMA="" RTLNAME="temp_uop_exc_cause_U" SOURCE="/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:581" URAM="0" VARIABLE="temp_uop_exc_cause"/>
+                <BindNode BINDTYPE="storage" BRAM="0" BUNDLEDNAME="" DISPNAME="bind_storage ram_1p" DSP="0" ID="" IMPL="auto" LATENCY="1" LOOP="" OPTYPE="ram_1p" PRAGMA="" RTLNAME="temp_uop_bypassable_U" SOURCE="/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:581" URAM="0" VARIABLE="temp_uop_bypassable"/>
+                <BindNode BINDTYPE="storage" BRAM="0" BUNDLEDNAME="" DISPNAME="bind_storage ram_1p" DSP="0" ID="" IMPL="auto" LATENCY="1" LOOP="" OPTYPE="ram_1p" PRAGMA="" RTLNAME="temp_uop_mem_mem_cmd_U" SOURCE="/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:581" URAM="0" VARIABLE="temp_uop_mem_mem_cmd"/>
+                <BindNode BINDTYPE="storage" BRAM="0" BUNDLEDNAME="" DISPNAME="bind_storage ram_1p" DSP="0" ID="" IMPL="auto" LATENCY="1" LOOP="" OPTYPE="ram_1p" PRAGMA="" RTLNAME="temp_uop_mem_mem_size_U" SOURCE="/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:581" URAM="0" VARIABLE="temp_uop_mem_mem_size"/>
+                <BindNode BINDTYPE="storage" BRAM="0" BUNDLEDNAME="" DISPNAME="bind_storage ram_1p" DSP="0" ID="" IMPL="auto" LATENCY="1" LOOP="" OPTYPE="ram_1p" PRAGMA="" RTLNAME="temp_uop_mem_mem_signed_U" SOURCE="/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:581" URAM="0" VARIABLE="temp_uop_mem_mem_signed"/>
+                <BindNode BINDTYPE="storage" BRAM="0" BUNDLEDNAME="" DISPNAME="bind_storage ram_1p" DSP="0" ID="" IMPL="auto" LATENCY="1" LOOP="" OPTYPE="ram_1p" PRAGMA="" RTLNAME="temp_uop_mem_is_fence_U" SOURCE="/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:581" URAM="0" VARIABLE="temp_uop_mem_is_fence"/>
+                <BindNode BINDTYPE="storage" BRAM="0" BUNDLEDNAME="" DISPNAME="bind_storage ram_1p" DSP="0" ID="" IMPL="auto" LATENCY="1" LOOP="" OPTYPE="ram_1p" PRAGMA="" RTLNAME="temp_uop_mem_is_fencei_U" SOURCE="/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:581" URAM="0" VARIABLE="temp_uop_mem_is_fencei"/>
+                <BindNode BINDTYPE="storage" BRAM="0" BUNDLEDNAME="" DISPNAME="bind_storage ram_1p" DSP="0" ID="" IMPL="auto" LATENCY="1" LOOP="" OPTYPE="ram_1p" PRAGMA="" RTLNAME="temp_uop_mem_is_amo_U" SOURCE="/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:581" URAM="0" VARIABLE="temp_uop_mem_is_amo"/>
+                <BindNode BINDTYPE="storage" BRAM="0" BUNDLEDNAME="" DISPNAME="bind_storage ram_1p" DSP="0" ID="" IMPL="auto" LATENCY="1" LOOP="" OPTYPE="ram_1p" PRAGMA="" RTLNAME="temp_uop_mem_uses_ldq_U" SOURCE="/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:581" URAM="0" VARIABLE="temp_uop_mem_uses_ldq"/>
+                <BindNode BINDTYPE="storage" BRAM="0" BUNDLEDNAME="" DISPNAME="bind_storage ram_1p" DSP="0" ID="" IMPL="auto" LATENCY="1" LOOP="" OPTYPE="ram_1p" PRAGMA="" RTLNAME="temp_uop_mem_uses_stq_U" SOURCE="/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:581" URAM="0" VARIABLE="temp_uop_mem_uses_stq"/>
+                <BindNode BINDTYPE="storage" BRAM="0" BUNDLEDNAME="" DISPNAME="bind_storage ram_1p" DSP="0" ID="" IMPL="auto" LATENCY="1" LOOP="" OPTYPE="ram_1p" PRAGMA="" RTLNAME="temp_uop_mem_ldst_is_rs1_U" SOURCE="/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:581" URAM="0" VARIABLE="temp_uop_mem_ldst_is_rs1"/>
+                <BindNode BINDTYPE="storage" BRAM="0" BUNDLEDNAME="" DISPNAME="bind_storage ram_1p" DSP="0" ID="" IMPL="auto" LATENCY="1" LOOP="" OPTYPE="ram_1p" PRAGMA="" RTLNAME="temp_uop_mem_ldst_val_U" SOURCE="/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:581" URAM="0" VARIABLE="temp_uop_mem_ldst_val"/>
+                <BindNode BINDTYPE="storage" BRAM="0" BUNDLEDNAME="" DISPNAME="bind_storage ram_1p" DSP="0" ID="" IMPL="auto" LATENCY="1" LOOP="" OPTYPE="ram_1p" PRAGMA="" RTLNAME="temp_uop_is_sys_pc2epc_U" SOURCE="/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:581" URAM="0" VARIABLE="temp_uop_is_sys_pc2epc"/>
+                <BindNode BINDTYPE="storage" BRAM="0" BUNDLEDNAME="" DISPNAME="bind_storage ram_1p" DSP="0" ID="" IMPL="auto" LATENCY="1" LOOP="" OPTYPE="ram_1p" PRAGMA="" RTLNAME="temp_uop_is_unique_U" SOURCE="/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:581" URAM="0" VARIABLE="temp_uop_is_unique"/>
+                <BindNode BINDTYPE="storage" BRAM="0" BUNDLEDNAME="" DISPNAME="bind_storage ram_1p" DSP="0" ID="" IMPL="auto" LATENCY="1" LOOP="" OPTYPE="ram_1p" PRAGMA="" RTLNAME="temp_uop_flush_on_commit_U" SOURCE="/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:581" URAM="0" VARIABLE="temp_uop_flush_on_commit"/>
+                <BindNode BINDTYPE="storage" BRAM="0" BUNDLEDNAME="" DISPNAME="bind_storage ram_1p" DSP="0" ID="" IMPL="auto" LATENCY="1" LOOP="" OPTYPE="ram_1p" PRAGMA="" RTLNAME="temp_uop_exc_exception_U" SOURCE="/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:581" URAM="0" VARIABLE="temp_uop_exc_exception"/>
+                <BindNode BINDTYPE="storage" BRAM="0" BUNDLEDNAME="" DISPNAME="bind_storage ram_1p" DSP="0" ID="" IMPL="auto" LATENCY="1" LOOP="" OPTYPE="ram_1p" PRAGMA="" RTLNAME="temp_uop_exc_exc_cause_U" SOURCE="/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:581" URAM="0" VARIABLE="temp_uop_exc_exc_cause"/>
+                <BindNode BINDTYPE="storage" BRAM="0" BUNDLEDNAME="" DISPNAME="bind_storage ram_1p" DSP="0" ID="" IMPL="auto" LATENCY="1" LOOP="" OPTYPE="ram_1p" PRAGMA="" RTLNAME="temp_uop_exc_xcpt_pf_if_U" SOURCE="/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:581" URAM="0" VARIABLE="temp_uop_exc_xcpt_pf_if"/>
+                <BindNode BINDTYPE="storage" BRAM="0" BUNDLEDNAME="" DISPNAME="bind_storage ram_1p" DSP="0" ID="" IMPL="auto" LATENCY="1" LOOP="" OPTYPE="ram_1p" PRAGMA="" RTLNAME="temp_uop_exc_xcpt_ae_if_U" SOURCE="/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:581" URAM="0" VARIABLE="temp_uop_exc_xcpt_ae_if"/>
+                <BindNode BINDTYPE="storage" BRAM="0" BUNDLEDNAME="" DISPNAME="bind_storage ram_1p" DSP="0" ID="" IMPL="auto" LATENCY="1" LOOP="" OPTYPE="ram_1p" PRAGMA="" RTLNAME="temp_uop_exc_xcpt_ma_if_U" SOURCE="/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:581" URAM="0" VARIABLE="temp_uop_exc_xcpt_ma_if"/>
+                <BindNode BINDTYPE="storage" BRAM="0" BUNDLEDNAME="" DISPNAME="bind_storage ram_1p" DSP="0" ID="" IMPL="auto" LATENCY="1" LOOP="" OPTYPE="ram_1p" PRAGMA="" RTLNAME="temp_uop_exc_bp_debug_if_U" SOURCE="/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:581" URAM="0" VARIABLE="temp_uop_exc_bp_debug_if"/>
+                <BindNode BINDTYPE="storage" BRAM="0" BUNDLEDNAME="" DISPNAME="bind_storage ram_1p" DSP="0" ID="" IMPL="auto" LATENCY="1" LOOP="" OPTYPE="ram_1p" PRAGMA="" RTLNAME="temp_uop_exc_bp_xcpt_if_U" SOURCE="/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:581" URAM="0" VARIABLE="temp_uop_exc_bp_xcpt_if"/>
+                <BindNode BINDTYPE="storage" BRAM="0" BUNDLEDNAME="" DISPNAME="bind_storage ram_1p" DSP="0" ID="" IMPL="auto" LATENCY="1" LOOP="" OPTYPE="ram_1p" PRAGMA="" RTLNAME="temp_uop_debug_debug_fsrc_U" SOURCE="/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:581" URAM="0" VARIABLE="temp_uop_debug_debug_fsrc"/>
+                <BindNode BINDTYPE="storage" BRAM="0" BUNDLEDNAME="" DISPNAME="bind_storage ram_1p" DSP="0" ID="" IMPL="auto" LATENCY="1" LOOP="" OPTYPE="ram_1p" PRAGMA="" RTLNAME="temp_uop_debug_debug_tsrc_U" SOURCE="/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:581" URAM="0" VARIABLE="temp_uop_debug_debug_tsrc"/>
+                <BindNode BINDTYPE="storage" BRAM="0" BUNDLEDNAME="" DISPNAME="bind_storage ram_1p" DSP="0" ID="" IMPL="auto" LATENCY="1" LOOP="" OPTYPE="ram_1p" PRAGMA="" RTLNAME="temp_uop_debug_debug_inst_U" SOURCE="/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:581" URAM="0" VARIABLE="temp_uop_debug_debug_inst"/>
+                <BindNode BINDTYPE="storage" BRAM="0" BUNDLEDNAME="" DISPNAME="bind_storage ram_1p" DSP="0" ID="" IMPL="auto" LATENCY="1" LOOP="" OPTYPE="ram_1p" PRAGMA="" RTLNAME="temp_uop_debug_debug_pc_U" SOURCE="/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:581" URAM="0" VARIABLE="temp_uop_debug_debug_pc"/>
+                <BindNode BINDTYPE="storage" BRAM="0" BUNDLEDNAME="" DISPNAME="bind_storage ram_1p" DSP="0" ID="" IMPL="auto" LATENCY="1" LOOP="" OPTYPE="ram_1p" PRAGMA="" RTLNAME="temp_prs1_data_U" SOURCE="/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:581" URAM="0" VARIABLE="temp_prs1_data"/>
+                <BindNode BINDTYPE="storage" BRAM="0" BUNDLEDNAME="" DISPNAME="bind_storage ram_1p" DSP="0" ID="" IMPL="auto" LATENCY="1" LOOP="" OPTYPE="ram_1p" PRAGMA="" RTLNAME="temp_prs2_data_U" SOURCE="/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:581" URAM="0" VARIABLE="temp_prs2_data"/>
+                <BindNode BINDTYPE="storage" BRAM="0" BUNDLEDNAME="" DISPNAME="bind_storage ram_1p" DSP="0" ID="" IMPL="auto" LATENCY="1" LOOP="" OPTYPE="ram_1p" PRAGMA="" RTLNAME="temp_prs3_data_U" SOURCE="/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:581" URAM="0" VARIABLE="temp_prs3_data"/>
+                <BindNode BINDTYPE="op" BRAM="0" BUNDLEDNAME="" DISPNAME="bind_op add" DSP="0" ID="" IMPL="fabric" LATENCY="0" LOOP="Loop 1" OPTYPE="add" PRAGMA="" RTLNAME="add_ln581_fu_6062_p2" SOURCE="/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:581" URAM="0" VARIABLE="add_ln581"/>
+                <BindNode BINDTYPE="op" BRAM="0" BUNDLEDNAME="" DISPNAME="bind_op add" DSP="0" ID="" IMPL="fabric" LATENCY="0" LOOP="VITIS_LOOP_583_1" OPTYPE="add" PRAGMA="" RTLNAME="add_ln583_fu_6205_p2" SOURCE="/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:583" URAM="0" VARIABLE="add_ln583"/>
+                <BindNode BINDTYPE="op" BRAM="0" BUNDLEDNAME="" DISPNAME="bind_op add" DSP="0" ID="" IMPL="fabric" LATENCY="0" LOOP="VITIS_LOOP_583_1" OPTYPE="add" PRAGMA="" RTLNAME="w_3_fu_6216_p2" SOURCE="/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:584" URAM="0" VARIABLE="w_3"/>
+                <BindNode BINDTYPE="op" BRAM="0" BUNDLEDNAME="" DISPNAME="bind_op add" DSP="0" ID="" IMPL="fabric" LATENCY="0" LOOP="VITIS_LOOP_586_2" OPTYPE="add" PRAGMA="" RTLNAME="add_ln586_fu_6446_p2" SOURCE="/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:586" URAM="0" VARIABLE="add_ln586"/>
+                <BindNode BINDTYPE="op" BRAM="0" BUNDLEDNAME="" DISPNAME="bind_op add" DSP="0" ID="" IMPL="fabric" LATENCY="0" LOOP="VITIS_LOOP_587_3" OPTYPE="add" PRAGMA="" RTLNAME="add_ln587_fu_6570_p2" SOURCE="/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:587" URAM="0" VARIABLE="add_ln587"/>
+            </BindNodes>
+        </Module>
+        <Module>
+            <Name>issue_module</Name>
+            <Loops>
+                <VITIS_LOOP_598_1/>
+                <VITIS_LOOP_608_3/>
+                <VITIS_LOOP_628_4/>
+                <VITIS_LOOP_675_6/>
+                <VITIS_LOOP_684_7/>
+            </Loops>
+            <PerformanceEstimates>
+                <SummaryOfTimingAnalysis>
+                    <TargetClockPeriod>10.00</TargetClockPeriod>
+                    <ClockUncertainty>2.70</ClockUncertainty>
+                    <EstimatedClockPeriod>4.570</EstimatedClockPeriod>
+                </SummaryOfTimingAnalysis>
+                <SummaryOfOverallLatency>
+                    <Best-caseLatency>undef</Best-caseLatency>
+                    <Average-caseLatency>undef</Average-caseLatency>
+                    <Worst-caseLatency>undef</Worst-caseLatency>
+                    <Best-caseRealTimeLatency>undef</Best-caseRealTimeLatency>
+                    <Average-caseRealTimeLatency>undef</Average-caseRealTimeLatency>
+                    <Worst-caseRealTimeLatency>undef</Worst-caseRealTimeLatency>
+                    <PipelineInitiationInterval>undef</PipelineInitiationInterval>
+                    <PipelineType>no</PipelineType>
+                </SummaryOfOverallLatency>
+                <SummaryOfLoopLatency>
+                    <VITIS_LOOP_598_1>
+                        <Name>VITIS_LOOP_598_1</Name>
+                        <TripCount>3</TripCount>
+                        <Latency>3</Latency>
+                        <AbsoluteTimeLatency>30.000 ns</AbsoluteTimeLatency>
+                        <IterationLatency>1</IterationLatency>
+                        <PipelineDepth>1</PipelineDepth>
+                        <PipelineType>no</PipelineType>
+                        <InstanceList/>
+                    </VITIS_LOOP_598_1>
+                    <VITIS_LOOP_608_3>
+                        <Name>VITIS_LOOP_608_3</Name>
+                        <TripCount>8</TripCount>
+                        <Latency>24 ~ 56</Latency>
+                        <AbsoluteTimeLatency>0.240 us ~ 0.560 us</AbsoluteTimeLatency>
+                        <IterationLatency>
+                            <range>
+                                <min>3</min>
+                                <max>7</max>
+                            </range>
+                        </IterationLatency>
+                        <PipelineDepth>3 ~ 7</PipelineDepth>
+                        <PipelineType>no</PipelineType>
+                        <InstanceList/>
+                    </VITIS_LOOP_608_3>
+                    <VITIS_LOOP_628_4>
+                        <Name>VITIS_LOOP_628_4</Name>
+                        <TripCount>8</TripCount>
+                        <Latency>16</Latency>
+                        <AbsoluteTimeLatency>0.160 us</AbsoluteTimeLatency>
+                        <IterationLatency>2</IterationLatency>
+                        <PipelineDepth>2</PipelineDepth>
+                        <PipelineType>no</PipelineType>
+                        <InstanceList/>
+                    </VITIS_LOOP_628_4>
+                    <VITIS_LOOP_675_6>
+                        <Name>VITIS_LOOP_675_6</Name>
+                        <TripCount>2</TripCount>
+                        <Latency>2</Latency>
+                        <AbsoluteTimeLatency>20.000 ns</AbsoluteTimeLatency>
+                        <IterationLatency>1</IterationLatency>
+                        <PipelineDepth>1</PipelineDepth>
+                        <PipelineType>no</PipelineType>
+                        <InstanceList/>
+                    </VITIS_LOOP_675_6>
+                    <VITIS_LOOP_684_7>
+                        <Name>VITIS_LOOP_684_7</Name>
+                        <TripCount>2</TripCount>
+                        <Latency>2</Latency>
+                        <AbsoluteTimeLatency>20.000 ns</AbsoluteTimeLatency>
+                        <IterationLatency>1</IterationLatency>
+                        <PipelineDepth>1</PipelineDepth>
+                        <PipelineType>no</PipelineType>
+                        <InstanceList/>
+                    </VITIS_LOOP_684_7>
+                </SummaryOfLoopLatency>
+            </PerformanceEstimates>
+            <AreaEstimates>
+                <Resources>
+                    <BRAM_18K>0</BRAM_18K>
+                    <AVAIL_BRAM>624</AVAIL_BRAM>
+                    <UTIL_BRAM>0</UTIL_BRAM>
+                    <FF>2699</FF>
+                    <AVAIL_FF>460800</AVAIL_FF>
+                    <UTIL_FF>~0</UTIL_FF>
+                    <LUT>9255</LUT>
+                    <AVAIL_LUT>230400</AVAIL_LUT>
+                    <UTIL_LUT>4</UTIL_LUT>
+                    <URAM>0</URAM>
+                    <AVAIL_URAM>96</AVAIL_URAM>
+                    <UTIL_URAM>0</UTIL_URAM>
+                    <DSP>0</DSP>
+                    <AVAIL_DSP>1728</AVAIL_DSP>
+                    <UTIL_DSP>0</UTIL_DSP>
+                </Resources>
+            </AreaEstimates>
+            <BindNodes>
+                <BindNode BINDTYPE="op" BRAM="0" BUNDLEDNAME="" DISPNAME="bind_op add" DSP="0" ID="" IMPL="fabric" LATENCY="0" LOOP="VITIS_LOOP_598_1" OPTYPE="add" PRAGMA="" RTLNAME="add_ln598_fu_849_p2" SOURCE="/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:598" URAM="0" VARIABLE="add_ln598"/>
+                <BindNode BINDTYPE="op" BRAM="0" BUNDLEDNAME="" DISPNAME="bind_op add" DSP="0" ID="" IMPL="fabric" LATENCY="0" LOOP="VITIS_LOOP_608_3" OPTYPE="add" PRAGMA="" RTLNAME="add_ln608_fu_993_p2" SOURCE="/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:608" URAM="0" VARIABLE="add_ln608"/>
+                <BindNode BINDTYPE="op" BRAM="0" BUNDLEDNAME="" DISPNAME="bind_op add" DSP="0" ID="" IMPL="fabric" LATENCY="0" LOOP="VITIS_LOOP_628_4" OPTYPE="add" PRAGMA="" RTLNAME="add_ln628_fu_1068_p2" SOURCE="/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:628" URAM="0" VARIABLE="add_ln628"/>
+                <BindNode BINDTYPE="op" BRAM="0" BUNDLEDNAME="" DISPNAME="bind_op add" DSP="0" ID="" IMPL="fabric" LATENCY="0" LOOP="VITIS_LOOP_675_6" OPTYPE="add" PRAGMA="" RTLNAME="add_ln675_fu_1660_p2" SOURCE="/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:675" URAM="0" VARIABLE="add_ln675"/>
+                <BindNode BINDTYPE="op" BRAM="0" BUNDLEDNAME="" DISPNAME="bind_op add" DSP="0" ID="" IMPL="fabric" LATENCY="0" LOOP="VITIS_LOOP_675_6" OPTYPE="add" PRAGMA="" RTLNAME="add_ln677_fu_1676_p2" SOURCE="/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:677" URAM="0" VARIABLE="add_ln677"/>
+                <BindNode BINDTYPE="op" BRAM="0" BUNDLEDNAME="" DISPNAME="bind_op add" DSP="0" ID="" IMPL="fabric" LATENCY="0" LOOP="VITIS_LOOP_675_6" OPTYPE="add" PRAGMA="" RTLNAME="add_ln677_1_fu_1692_p2" SOURCE="/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:677" URAM="0" VARIABLE="add_ln677_1"/>
+                <BindNode BINDTYPE="op" BRAM="0" BUNDLEDNAME="" DISPNAME="bind_op add" DSP="0" ID="" IMPL="fabric" LATENCY="0" LOOP="VITIS_LOOP_675_6" OPTYPE="add" PRAGMA="" RTLNAME="add_ln678_1_fu_1714_p2" SOURCE="/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:678" URAM="0" VARIABLE="add_ln678_1"/>
+                <BindNode BINDTYPE="op" BRAM="0" BUNDLEDNAME="" DISPNAME="bind_op add" DSP="0" ID="" IMPL="fabric" LATENCY="0" LOOP="VITIS_LOOP_675_6" OPTYPE="add" PRAGMA="" RTLNAME="add_ln678_fu_1730_p2" SOURCE="/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:678" URAM="0" VARIABLE="add_ln678"/>
+                <BindNode BINDTYPE="op" BRAM="0" BUNDLEDNAME="" DISPNAME="bind_op add" DSP="0" ID="" IMPL="fabric" LATENCY="0" LOOP="" OPTYPE="add" PRAGMA="" RTLNAME="add_ln681_fu_1751_p2" SOURCE="/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:681" URAM="0" VARIABLE="add_ln681"/>
+                <BindNode BINDTYPE="op" BRAM="0" BUNDLEDNAME="" DISPNAME="bind_op add" DSP="0" ID="" IMPL="fabric" LATENCY="0" LOOP="" OPTYPE="add" PRAGMA="" RTLNAME="add_ln680_fu_1767_p2" SOURCE="/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:680" URAM="0" VARIABLE="add_ln680"/>
+                <BindNode BINDTYPE="op" BRAM="0" BUNDLEDNAME="" DISPNAME="bind_op add" DSP="0" ID="" IMPL="fabric" LATENCY="0" LOOP="" OPTYPE="add" PRAGMA="" RTLNAME="add_ln682_fu_1783_p2" SOURCE="/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:682" URAM="0" VARIABLE="add_ln682"/>
+                <BindNode BINDTYPE="op" BRAM="0" BUNDLEDNAME="" DISPNAME="bind_op add" DSP="0" ID="" IMPL="fabric" LATENCY="0" LOOP="VITIS_LOOP_684_7" OPTYPE="add" PRAGMA="" RTLNAME="add_ln684_fu_1833_p2" SOURCE="/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:684" URAM="0" VARIABLE="add_ln684"/>
+                <BindNode BINDTYPE="op" BRAM="0" BUNDLEDNAME="" DISPNAME="bind_op add" DSP="0" ID="" IMPL="fabric" LATENCY="0" LOOP="VITIS_LOOP_684_7" OPTYPE="add" PRAGMA="" RTLNAME="add_ln696_fu_1873_p2" SOURCE="/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:696" URAM="0" VARIABLE="add_ln696"/>
+                <BindNode BINDTYPE="op" BRAM="0" BUNDLEDNAME="" DISPNAME="bind_op sub" DSP="0" ID="" IMPL="fabric" LATENCY="0" LOOP="" OPTYPE="sub" PRAGMA="" RTLNAME="sub_ln707_fu_1920_p2" SOURCE="/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:707" URAM="0" VARIABLE="sub_ln707"/>
+                <BindNode BINDTYPE="op" BRAM="0" BUNDLEDNAME="" DISPNAME="bind_op add" DSP="0" ID="" IMPL="fabric" LATENCY="0" LOOP="" OPTYPE="add" PRAGMA="" RTLNAME="add_ln708_fu_1944_p2" SOURCE="/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:708" URAM="0" VARIABLE="add_ln708"/>
+                <BindNode BINDTYPE="op" BRAM="0" BUNDLEDNAME="" DISPNAME="bind_op add" DSP="0" ID="" IMPL="fabric" LATENCY="0" LOOP="" OPTYPE="add" PRAGMA="" RTLNAME="add_ln708_1_fu_1960_p2" SOURCE="/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:708" URAM="0" VARIABLE="add_ln708_1"/>
+            </BindNodes>
+        </Module>
+        <Module>
+            <Name>synth_issue_top</Name>
+            <Loops>
+                <VITIS_LOOP_1976_1/>
+            </Loops>
+            <PerformanceEstimates>
+                <SummaryOfTimingAnalysis>
+                    <TargetClockPeriod>10.00</TargetClockPeriod>
+                    <ClockUncertainty>2.70</ClockUncertainty>
+                    <EstimatedClockPeriod>4.570</EstimatedClockPeriod>
+                </SummaryOfTimingAnalysis>
+                <SummaryOfOverallLatency>
+                    <Best-caseLatency>undef</Best-caseLatency>
+                    <Average-caseLatency>undef</Average-caseLatency>
+                    <Worst-caseLatency>undef</Worst-caseLatency>
+                    <Best-caseRealTimeLatency>undef</Best-caseRealTimeLatency>
+                    <Average-caseRealTimeLatency>undef</Average-caseRealTimeLatency>
+                    <Worst-caseRealTimeLatency>undef</Worst-caseRealTimeLatency>
+                    <PipelineInitiationInterval>undef</PipelineInitiationInterval>
+                    <PipelineType>no</PipelineType>
+                </SummaryOfOverallLatency>
+                <SummaryOfLoopLatency>
+                    <VITIS_LOOP_1976_1>
+                        <Name>VITIS_LOOP_1976_1</Name>
+                        <TripCount>8</TripCount>
+                        <Latency>8</Latency>
+                        <AbsoluteTimeLatency>80.000 ns</AbsoluteTimeLatency>
+                        <IterationLatency>1</IterationLatency>
+                        <PipelineDepth>1</PipelineDepth>
+                        <PipelineType>no</PipelineType>
+                        <InstanceList/>
+                    </VITIS_LOOP_1976_1>
+                </SummaryOfLoopLatency>
+            </PerformanceEstimates>
+            <AreaEstimates>
+                <Resources>
+                    <BRAM_18K>0</BRAM_18K>
+                    <AVAIL_BRAM>624</AVAIL_BRAM>
+                    <UTIL_BRAM>0</UTIL_BRAM>
+                    <FF>4699</FF>
+                    <AVAIL_FF>460800</AVAIL_FF>
+                    <UTIL_FF>1</UTIL_FF>
+                    <LUT>15105</LUT>
+                    <AVAIL_LUT>230400</AVAIL_LUT>
+                    <UTIL_LUT>6</UTIL_LUT>
+                    <URAM>0</URAM>
+                    <AVAIL_URAM>96</AVAIL_URAM>
+                    <UTIL_URAM>0</UTIL_URAM>
+                    <DSP>0</DSP>
+                    <AVAIL_DSP>1728</AVAIL_DSP>
+                    <UTIL_DSP>0</UTIL_DSP>
+                </Resources>
+            </AreaEstimates>
+            <BindNodes>
+                <BindNode BINDTYPE="op" BRAM="0" BUNDLEDNAME="" DISPNAME="bind_op add" DSP="0" ID="" IMPL="fabric" LATENCY="0" LOOP="VITIS_LOOP_1976_1" OPTYPE="add" PRAGMA="" RTLNAME="add_ln1976_fu_2154_p2" SOURCE="/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:1976" URAM="0" VARIABLE="add_ln1976"/>
+                <BindNode BINDTYPE="op" BRAM="0" BUNDLEDNAME="" DISPNAME="bind_op add" DSP="0" ID="" IMPL="fabric" LATENCY="0" LOOP="" OPTYPE="add" PRAGMA="" RTLNAME="add_ln1993_fu_2253_p2" SOURCE="/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:1993" URAM="0" VARIABLE="add_ln1993"/>
+                <BindNode BINDTYPE="storage" BRAM="0" BUNDLEDNAME="" DISPNAME="bind_storage ram_1p" DSP="0" ID="" IMPL="auto" LATENCY="1" LOOP="" OPTYPE="ram_1p" PRAGMA="" RTLNAME="state_issue_alu_iq_entries_valid_U" SOURCE="" URAM="0" VARIABLE="state_issue_alu_iq_entries_valid"/>
+                <BindNode BINDTYPE="storage" BRAM="0" BUNDLEDNAME="" DISPNAME="bind_storage ram_1p" DSP="0" ID="" IMPL="auto" LATENCY="1" LOOP="" OPTYPE="ram_1p" PRAGMA="" RTLNAME="state_issue_alu_iq_entries_request_U" SOURCE="" URAM="0" VARIABLE="state_issue_alu_iq_entries_request"/>
+                <BindNode BINDTYPE="storage" BRAM="0" BUNDLEDNAME="" DISPNAME="bind_storage ram_1p" DSP="0" ID="" IMPL="auto" LATENCY="1" LOOP="" OPTYPE="ram_1p" PRAGMA="" RTLNAME="state_issue_alu_iq_entries_granted_U" SOURCE="" URAM="0" VARIABLE="state_issue_alu_iq_entries_granted"/>
+                <BindNode BINDTYPE="storage" BRAM="0" BUNDLEDNAME="" DISPNAME="bind_storage ram_1p" DSP="0" ID="" IMPL="auto" LATENCY="1" LOOP="" OPTYPE="ram_1p" PRAGMA="" RTLNAME="state_issue_alu_iq_entries_killed_U" SOURCE="" URAM="0" VARIABLE="state_issue_alu_iq_entries_killed"/>
+                <BindNode BINDTYPE="storage" BRAM="0" BUNDLEDNAME="" DISPNAME="bind_storage ram_1p" DSP="0" ID="" IMPL="auto" LATENCY="1" LOOP="" OPTYPE="ram_1p" PRAGMA="" RTLNAME="state_issue_alu_iq_entries_pdst_busy_U" SOURCE="" URAM="0" VARIABLE="state_issue_alu_iq_entries_pdst_busy"/>
+                <BindNode BINDTYPE="storage" BRAM="0" BUNDLEDNAME="" DISPNAME="bind_storage ram_1p" DSP="0" ID="" IMPL="auto" LATENCY="1" LOOP="" OPTYPE="ram_1p" PRAGMA="" RTLNAME="state_issue_alu_iq_entries_prs1_busy_U" SOURCE="" URAM="0" VARIABLE="state_issue_alu_iq_entries_prs1_busy"/>
+                <BindNode BINDTYPE="storage" BRAM="0" BUNDLEDNAME="" DISPNAME="bind_storage ram_1p" DSP="0" ID="" IMPL="auto" LATENCY="1" LOOP="" OPTYPE="ram_1p" PRAGMA="" RTLNAME="state_issue_alu_iq_entries_prs2_busy_U" SOURCE="" URAM="0" VARIABLE="state_issue_alu_iq_entries_prs2_busy"/>
+                <BindNode BINDTYPE="storage" BRAM="0" BUNDLEDNAME="" DISPNAME="bind_storage ram_1p" DSP="0" ID="" IMPL="auto" LATENCY="1" LOOP="" OPTYPE="ram_1p" PRAGMA="" RTLNAME="state_issue_alu_iq_entries_prs3_busy_U" SOURCE="" URAM="0" VARIABLE="state_issue_alu_iq_entries_prs3_busy"/>
+                <BindNode BINDTYPE="storage" BRAM="0" BUNDLEDNAME="" DISPNAME="bind_storage ram_1p" DSP="0" ID="" IMPL="auto" LATENCY="1" LOOP="" OPTYPE="ram_1p" PRAGMA="" RTLNAME="state_issue_alu_iq_entries_uop_uopc_U" SOURCE="" URAM="0" VARIABLE="state_issue_alu_iq_entries_uop_uopc"/>
+                <BindNode BINDTYPE="storage" BRAM="0" BUNDLEDNAME="" DISPNAME="bind_storage ram_1p" DSP="0" ID="" IMPL="auto" LATENCY="1" LOOP="" OPTYPE="ram_1p" PRAGMA="" RTLNAME="state_issue_alu_iq_entries_uop_inst_U" SOURCE="" URAM="0" VARIABLE="state_issue_alu_iq_entries_uop_inst"/>
+                <BindNode BINDTYPE="storage" BRAM="0" BUNDLEDNAME="" DISPNAME="bind_storage ram_1p" DSP="0" ID="" IMPL="auto" LATENCY="1" LOOP="" OPTYPE="ram_1p" PRAGMA="" RTLNAME="state_issue_alu_iq_entries_uop_debug_inst_U" SOURCE="" URAM="0" VARIABLE="state_issue_alu_iq_entries_uop_debug_inst"/>
+                <BindNode BINDTYPE="storage" BRAM="0" BUNDLEDNAME="" DISPNAME="bind_storage ram_1p" DSP="0" ID="" IMPL="auto" LATENCY="1" LOOP="" OPTYPE="ram_1p" PRAGMA="" RTLNAME="state_issue_alu_iq_entries_uop_is_rvc_U" SOURCE="" URAM="0" VARIABLE="state_issue_alu_iq_entries_uop_is_rvc"/>
+                <BindNode BINDTYPE="storage" BRAM="0" BUNDLEDNAME="" DISPNAME="bind_storage ram_1p" DSP="0" ID="" IMPL="auto" LATENCY="1" LOOP="" OPTYPE="ram_1p" PRAGMA="" RTLNAME="state_issue_alu_iq_entries_uop_debug_pc_U" SOURCE="" URAM="0" VARIABLE="state_issue_alu_iq_entries_uop_debug_pc"/>
+                <BindNode BINDTYPE="storage" BRAM="0" BUNDLEDNAME="" DISPNAME="bind_storage ram_1p" DSP="0" ID="" IMPL="auto" LATENCY="1" LOOP="" OPTYPE="ram_1p" PRAGMA="" RTLNAME="state_issue_alu_iq_entries_uop_iq_type_U" SOURCE="" URAM="0" VARIABLE="state_issue_alu_iq_entries_uop_iq_type"/>
+                <BindNode BINDTYPE="storage" BRAM="0" BUNDLEDNAME="" DISPNAME="bind_storage ram_1p" DSP="0" ID="" IMPL="auto" LATENCY="1" LOOP="" OPTYPE="ram_1p" PRAGMA="" RTLNAME="state_issue_alu_iq_entries_uop_fu_code_U" SOURCE="" URAM="0" VARIABLE="state_issue_alu_iq_entries_uop_fu_code"/>
+                <BindNode BINDTYPE="storage" BRAM="0" BUNDLEDNAME="" DISPNAME="bind_storage ram_1p" DSP="0" ID="" IMPL="auto" LATENCY="1" LOOP="" OPTYPE="ram_1p" PRAGMA="" RTLNAME="state_issue_alu_iq_entries_uop_ctrl_br_type_U" SOURCE="" URAM="0" VARIABLE="state_issue_alu_iq_entries_uop_ctrl_br_type"/>
+                <BindNode BINDTYPE="storage" BRAM="0" BUNDLEDNAME="" DISPNAME="bind_storage ram_1p" DSP="0" ID="" IMPL="auto" LATENCY="1" LOOP="" OPTYPE="ram_1p" PRAGMA="" RTLNAME="state_issue_alu_iq_entries_uop_ctrl_op1_sel_U" SOURCE="" URAM="0" VARIABLE="state_issue_alu_iq_entries_uop_ctrl_op1_sel"/>
+                <BindNode BINDTYPE="storage" BRAM="0" BUNDLEDNAME="" DISPNAME="bind_storage ram_1p" DSP="0" ID="" IMPL="auto" LATENCY="1" LOOP="" OPTYPE="ram_1p" PRAGMA="" RTLNAME="state_issue_alu_iq_entries_uop_ctrl_op2_sel_U" SOURCE="" URAM="0" VARIABLE="state_issue_alu_iq_entries_uop_ctrl_op2_sel"/>
+                <BindNode BINDTYPE="storage" BRAM="0" BUNDLEDNAME="" DISPNAME="bind_storage ram_1p" DSP="0" ID="" IMPL="auto" LATENCY="1" LOOP="" OPTYPE="ram_1p" PRAGMA="" RTLNAME="state_issue_alu_iq_entries_uop_ctrl_imm_sel_U" SOURCE="" URAM="0" VARIABLE="state_issue_alu_iq_entries_uop_ctrl_imm_sel"/>
+                <BindNode BINDTYPE="storage" BRAM="0" BUNDLEDNAME="" DISPNAME="bind_storage ram_1p" DSP="0" ID="" IMPL="auto" LATENCY="1" LOOP="" OPTYPE="ram_1p" PRAGMA="" RTLNAME="state_issue_alu_iq_entries_uop_ctrl_op_fcn_U" SOURCE="" URAM="0" VARIABLE="state_issue_alu_iq_entries_uop_ctrl_op_fcn"/>
+                <BindNode BINDTYPE="storage" BRAM="0" BUNDLEDNAME="" DISPNAME="bind_storage ram_1p" DSP="0" ID="" IMPL="auto" LATENCY="1" LOOP="" OPTYPE="ram_1p" PRAGMA="" RTLNAME="state_issue_alu_iq_entries_uop_ctrl_fcn_dw_U" SOURCE="" URAM="0" VARIABLE="state_issue_alu_iq_entries_uop_ctrl_fcn_dw"/>
+                <BindNode BINDTYPE="storage" BRAM="0" BUNDLEDNAME="" DISPNAME="bind_storage ram_1p" DSP="0" ID="" IMPL="auto" LATENCY="1" LOOP="" OPTYPE="ram_1p" PRAGMA="" RTLNAME="state_issue_alu_iq_entries_uop_ctrl_csr_cmd_U" SOURCE="" URAM="0" VARIABLE="state_issue_alu_iq_entries_uop_ctrl_csr_cmd"/>
+                <BindNode BINDTYPE="storage" BRAM="0" BUNDLEDNAME="" DISPNAME="bind_storage ram_1p" DSP="0" ID="" IMPL="auto" LATENCY="1" LOOP="" OPTYPE="ram_1p" PRAGMA="" RTLNAME="state_issue_alu_iq_entries_uop_ctrl_is_load_U" SOURCE="" URAM="0" VARIABLE="state_issue_alu_iq_entries_uop_ctrl_is_load"/>
+                <BindNode BINDTYPE="storage" BRAM="0" BUNDLEDNAME="" DISPNAME="bind_storage ram_1p" DSP="0" ID="" IMPL="auto" LATENCY="1" LOOP="" OPTYPE="ram_1p" PRAGMA="" RTLNAME="state_issue_alu_iq_entries_uop_ctrl_is_sta_U" SOURCE="" URAM="0" VARIABLE="state_issue_alu_iq_entries_uop_ctrl_is_sta"/>
+                <BindNode BINDTYPE="storage" BRAM="0" BUNDLEDNAME="" DISPNAME="bind_storage ram_1p" DSP="0" ID="" IMPL="auto" LATENCY="1" LOOP="" OPTYPE="ram_1p" PRAGMA="" RTLNAME="state_issue_alu_iq_entries_uop_ctrl_is_std_U" SOURCE="" URAM="0" VARIABLE="state_issue_alu_iq_entries_uop_ctrl_is_std"/>
+                <BindNode BINDTYPE="storage" BRAM="0" BUNDLEDNAME="" DISPNAME="bind_storage ram_1p" DSP="0" ID="" IMPL="auto" LATENCY="1" LOOP="" OPTYPE="ram_1p" PRAGMA="" RTLNAME="state_issue_alu_iq_entries_uop_iw_state_U" SOURCE="" URAM="0" VARIABLE="state_issue_alu_iq_entries_uop_iw_state"/>
+                <BindNode BINDTYPE="storage" BRAM="0" BUNDLEDNAME="" DISPNAME="bind_storage ram_1p" DSP="0" ID="" IMPL="auto" LATENCY="1" LOOP="" OPTYPE="ram_1p" PRAGMA="" RTLNAME="state_issue_alu_iq_entries_uop_iw_p1_poisoned_U" SOURCE="" URAM="0" VARIABLE="state_issue_alu_iq_entries_uop_iw_p1_poisoned"/>
+                <BindNode BINDTYPE="storage" BRAM="0" BUNDLEDNAME="" DISPNAME="bind_storage ram_1p" DSP="0" ID="" IMPL="auto" LATENCY="1" LOOP="" OPTYPE="ram_1p" PRAGMA="" RTLNAME="state_issue_alu_iq_entries_uop_iw_p2_poisoned_U" SOURCE="" URAM="0" VARIABLE="state_issue_alu_iq_entries_uop_iw_p2_poisoned"/>
+                <BindNode BINDTYPE="storage" BRAM="0" BUNDLEDNAME="" DISPNAME="bind_storage ram_1p" DSP="0" ID="" IMPL="auto" LATENCY="1" LOOP="" OPTYPE="ram_1p" PRAGMA="" RTLNAME="state_issue_alu_iq_entries_uop_branch_br_mask_U" SOURCE="" URAM="0" VARIABLE="state_issue_alu_iq_entries_uop_branch_br_mask"/>
+                <BindNode BINDTYPE="storage" BRAM="0" BUNDLEDNAME="" DISPNAME="bind_storage ram_1p" DSP="0" ID="" IMPL="auto" LATENCY="1" LOOP="" OPTYPE="ram_1p" PRAGMA="" RTLNAME="state_issue_alu_iq_entries_uop_branch_br_tag_U" SOURCE="" URAM="0" VARIABLE="state_issue_alu_iq_entries_uop_branch_br_tag"/>
+                <BindNode BINDTYPE="storage" BRAM="0" BUNDLEDNAME="" DISPNAME="bind_storage ram_1p" DSP="0" ID="" IMPL="auto" LATENCY="1" LOOP="" OPTYPE="ram_1p" PRAGMA="" RTLNAME="state_issue_alu_iq_entries_uop_branch_ftq_idx_U" SOURCE="" URAM="0" VARIABLE="state_issue_alu_iq_entries_uop_branch_ftq_idx"/>
+                <BindNode BINDTYPE="storage" BRAM="0" BUNDLEDNAME="" DISPNAME="bind_storage ram_1p" DSP="0" ID="" IMPL="auto" LATENCY="1" LOOP="" OPTYPE="ram_1p" PRAGMA="" RTLNAME="state_issue_alu_iq_entries_uop_branch_pc_lob_U" SOURCE="" URAM="0" VARIABLE="state_issue_alu_iq_entries_uop_branch_pc_lob"/>
+                <BindNode BINDTYPE="storage" BRAM="0" BUNDLEDNAME="" DISPNAME="bind_storage ram_1p" DSP="0" ID="" IMPL="auto" LATENCY="1" LOOP="" OPTYPE="ram_1p" PRAGMA="" RTLNAME="state_issue_alu_iq_entries_uop_branch_edge_inst_U" SOURCE="" URAM="0" VARIABLE="state_issue_alu_iq_entries_uop_branch_edge_inst"/>
+                <BindNode BINDTYPE="storage" BRAM="0" BUNDLEDNAME="" DISPNAME="bind_storage ram_1p" DSP="0" ID="" IMPL="auto" LATENCY="1" LOOP="" OPTYPE="ram_1p" PRAGMA="" RTLNAME="state_issue_alu_iq_entries_uop_branch_taken_U" SOURCE="" URAM="0" VARIABLE="state_issue_alu_iq_entries_uop_branch_taken"/>
+                <BindNode BINDTYPE="storage" BRAM="0" BUNDLEDNAME="" DISPNAME="bind_storage ram_1p" DSP="0" ID="" IMPL="auto" LATENCY="1" LOOP="" OPTYPE="ram_1p" PRAGMA="" RTLNAME="state_issue_alu_iq_entries_uop_branch_is_br_U" SOURCE="" URAM="0" VARIABLE="state_issue_alu_iq_entries_uop_branch_is_br"/>
+                <BindNode BINDTYPE="storage" BRAM="0" BUNDLEDNAME="" DISPNAME="bind_storage ram_1p" DSP="0" ID="" IMPL="auto" LATENCY="1" LOOP="" OPTYPE="ram_1p" PRAGMA="" RTLNAME="state_issue_alu_iq_entries_uop_branch_is_jalr_U" SOURCE="" URAM="0" VARIABLE="state_issue_alu_iq_entries_uop_branch_is_jalr"/>
+                <BindNode BINDTYPE="storage" BRAM="0" BUNDLEDNAME="" DISPNAME="bind_storage ram_1p" DSP="0" ID="" IMPL="auto" LATENCY="1" LOOP="" OPTYPE="ram_1p" PRAGMA="" RTLNAME="state_issue_alu_iq_entries_uop_branch_is_jal_U" SOURCE="" URAM="0" VARIABLE="state_issue_alu_iq_entries_uop_branch_is_jal"/>
+                <BindNode BINDTYPE="storage" BRAM="0" BUNDLEDNAME="" DISPNAME="bind_storage ram_1p" DSP="0" ID="" IMPL="auto" LATENCY="1" LOOP="" OPTYPE="ram_1p" PRAGMA="" RTLNAME="state_issue_alu_iq_entries_uop_branch_is_sfb_U" SOURCE="" URAM="0" VARIABLE="state_issue_alu_iq_entries_uop_branch_is_sfb"/>
+                <BindNode BINDTYPE="storage" BRAM="0" BUNDLEDNAME="" DISPNAME="bind_storage ram_1p" DSP="0" ID="" IMPL="auto" LATENCY="1" LOOP="" OPTYPE="ram_1p" PRAGMA="" RTLNAME="state_issue_alu_iq_entries_uop_imm_packed_U" SOURCE="" URAM="0" VARIABLE="state_issue_alu_iq_entries_uop_imm_packed"/>
+                <BindNode BINDTYPE="storage" BRAM="0" BUNDLEDNAME="" DISPNAME="bind_storage ram_1p" DSP="0" ID="" IMPL="auto" LATENCY="1" LOOP="" OPTYPE="ram_1p" PRAGMA="" RTLNAME="state_issue_alu_iq_entries_uop_csr_addr_U" SOURCE="" URAM="0" VARIABLE="state_issue_alu_iq_entries_uop_csr_addr"/>
+                <BindNode BINDTYPE="storage" BRAM="0" BUNDLEDNAME="" DISPNAME="bind_storage ram_1p" DSP="0" ID="" IMPL="auto" LATENCY="1" LOOP="" OPTYPE="ram_1p" PRAGMA="" RTLNAME="state_issue_alu_iq_entries_uop_queue_rob_idx_U" SOURCE="" URAM="0" VARIABLE="state_issue_alu_iq_entries_uop_queue_rob_idx"/>
+                <BindNode BINDTYPE="storage" BRAM="0" BUNDLEDNAME="" DISPNAME="bind_storage ram_1p" DSP="0" ID="" IMPL="auto" LATENCY="1" LOOP="" OPTYPE="ram_1p" PRAGMA="" RTLNAME="state_issue_alu_iq_entries_uop_queue_ldq_idx_U" SOURCE="" URAM="0" VARIABLE="state_issue_alu_iq_entries_uop_queue_ldq_idx"/>
+                <BindNode BINDTYPE="storage" BRAM="0" BUNDLEDNAME="" DISPNAME="bind_storage ram_1p" DSP="0" ID="" IMPL="auto" LATENCY="1" LOOP="" OPTYPE="ram_1p" PRAGMA="" RTLNAME="state_issue_alu_iq_entries_uop_queue_stq_idx_U" SOURCE="" URAM="0" VARIABLE="state_issue_alu_iq_entries_uop_queue_stq_idx"/>
+                <BindNode BINDTYPE="storage" BRAM="0" BUNDLEDNAME="" DISPNAME="bind_storage ram_1p" DSP="0" ID="" IMPL="auto" LATENCY="1" LOOP="" OPTYPE="ram_1p" PRAGMA="" RTLNAME="state_issue_alu_iq_entries_uop_queue_rxq_idx_U" SOURCE="" URAM="0" VARIABLE="state_issue_alu_iq_entries_uop_queue_rxq_idx"/>
+                <BindNode BINDTYPE="storage" BRAM="0" BUNDLEDNAME="" DISPNAME="bind_storage ram_1p" DSP="0" ID="" IMPL="auto" LATENCY="1" LOOP="" OPTYPE="ram_1p" PRAGMA="" RTLNAME="state_issue_alu_iq_entries_uop_queue_rob_allocation_id_U" SOURCE="" URAM="0" VARIABLE="state_issue_alu_iq_entries_uop_queue_rob_allocation_id"/>
+                <BindNode BINDTYPE="storage" BRAM="0" BUNDLEDNAME="" DISPNAME="bind_storage ram_1p" DSP="0" ID="" IMPL="auto" LATENCY="1" LOOP="" OPTYPE="ram_1p" PRAGMA="" RTLNAME="state_issue_alu_iq_entries_uop_rename_ldst_U" SOURCE="" URAM="0" VARIABLE="state_issue_alu_iq_entries_uop_rename_ldst"/>
+                <BindNode BINDTYPE="storage" BRAM="0" BUNDLEDNAME="" DISPNAME="bind_storage ram_1p" DSP="0" ID="" IMPL="auto" LATENCY="1" LOOP="" OPTYPE="ram_1p" PRAGMA="" RTLNAME="state_issue_alu_iq_entries_uop_rename_lrs1_U" SOURCE="" URAM="0" VARIABLE="state_issue_alu_iq_entries_uop_rename_lrs1"/>
+                <BindNode BINDTYPE="storage" BRAM="0" BUNDLEDNAME="" DISPNAME="bind_storage ram_1p" DSP="0" ID="" IMPL="auto" LATENCY="1" LOOP="" OPTYPE="ram_1p" PRAGMA="" RTLNAME="state_issue_alu_iq_entries_uop_rename_lrs2_U" SOURCE="" URAM="0" VARIABLE="state_issue_alu_iq_entries_uop_rename_lrs2"/>
+                <BindNode BINDTYPE="storage" BRAM="0" BUNDLEDNAME="" DISPNAME="bind_storage ram_1p" DSP="0" ID="" IMPL="auto" LATENCY="1" LOOP="" OPTYPE="ram_1p" PRAGMA="" RTLNAME="state_issue_alu_iq_entries_uop_rename_lrs3_U" SOURCE="" URAM="0" VARIABLE="state_issue_alu_iq_entries_uop_rename_lrs3"/>
+                <BindNode BINDTYPE="storage" BRAM="0" BUNDLEDNAME="" DISPNAME="bind_storage ram_1p" DSP="0" ID="" IMPL="auto" LATENCY="1" LOOP="" OPTYPE="ram_1p" PRAGMA="" RTLNAME="state_issue_alu_iq_entries_uop_rename_pdst_U" SOURCE="" URAM="0" VARIABLE="state_issue_alu_iq_entries_uop_rename_pdst"/>
+                <BindNode BINDTYPE="storage" BRAM="0" BUNDLEDNAME="" DISPNAME="bind_storage ram_1p" DSP="0" ID="" IMPL="auto" LATENCY="1" LOOP="" OPTYPE="ram_1p" PRAGMA="" RTLNAME="state_issue_alu_iq_entries_uop_rename_prs1_U" SOURCE="" URAM="0" VARIABLE="state_issue_alu_iq_entries_uop_rename_prs1"/>
+                <BindNode BINDTYPE="storage" BRAM="0" BUNDLEDNAME="" DISPNAME="bind_storage ram_1p" DSP="0" ID="" IMPL="auto" LATENCY="1" LOOP="" OPTYPE="ram_1p" PRAGMA="" RTLNAME="state_issue_alu_iq_entries_uop_rename_prs2_U" SOURCE="" URAM="0" VARIABLE="state_issue_alu_iq_entries_uop_rename_prs2"/>
+                <BindNode BINDTYPE="storage" BRAM="0" BUNDLEDNAME="" DISPNAME="bind_storage ram_1p" DSP="0" ID="" IMPL="auto" LATENCY="1" LOOP="" OPTYPE="ram_1p" PRAGMA="" RTLNAME="state_issue_alu_iq_entries_uop_rename_prs3_U" SOURCE="" URAM="0" VARIABLE="state_issue_alu_iq_entries_uop_rename_prs3"/>
+                <BindNode BINDTYPE="storage" BRAM="0" BUNDLEDNAME="" DISPNAME="bind_storage ram_1p" DSP="0" ID="" IMPL="auto" LATENCY="1" LOOP="" OPTYPE="ram_1p" PRAGMA="" RTLNAME="state_issue_alu_iq_entries_uop_rename_ppred_U" SOURCE="" URAM="0" VARIABLE="state_issue_alu_iq_entries_uop_rename_ppred"/>
+                <BindNode BINDTYPE="storage" BRAM="0" BUNDLEDNAME="" DISPNAME="bind_storage ram_1p" DSP="0" ID="" IMPL="auto" LATENCY="1" LOOP="" OPTYPE="ram_1p" PRAGMA="" RTLNAME="state_issue_alu_iq_entries_uop_rename_prs1_busy_U" SOURCE="" URAM="0" VARIABLE="state_issue_alu_iq_entries_uop_rename_prs1_busy"/>
+                <BindNode BINDTYPE="storage" BRAM="0" BUNDLEDNAME="" DISPNAME="bind_storage ram_1p" DSP="0" ID="" IMPL="auto" LATENCY="1" LOOP="" OPTYPE="ram_1p" PRAGMA="" RTLNAME="state_issue_alu_iq_entries_uop_rename_prs2_busy_U" SOURCE="" URAM="0" VARIABLE="state_issue_alu_iq_entries_uop_rename_prs2_busy"/>
+                <BindNode BINDTYPE="storage" BRAM="0" BUNDLEDNAME="" DISPNAME="bind_storage ram_1p" DSP="0" ID="" IMPL="auto" LATENCY="1" LOOP="" OPTYPE="ram_1p" PRAGMA="" RTLNAME="state_issue_alu_iq_entries_uop_rename_prs3_busy_U" SOURCE="" URAM="0" VARIABLE="state_issue_alu_iq_entries_uop_rename_prs3_busy"/>
+                <BindNode BINDTYPE="storage" BRAM="0" BUNDLEDNAME="" DISPNAME="bind_storage ram_1p" DSP="0" ID="" IMPL="auto" LATENCY="1" LOOP="" OPTYPE="ram_1p" PRAGMA="" RTLNAME="state_issue_alu_iq_entries_uop_rename_ppred_busy_U" SOURCE="" URAM="0" VARIABLE="state_issue_alu_iq_entries_uop_rename_ppred_busy"/>
+                <BindNode BINDTYPE="storage" BRAM="0" BUNDLEDNAME="" DISPNAME="bind_storage ram_1p" DSP="0" ID="" IMPL="auto" LATENCY="1" LOOP="" OPTYPE="ram_1p" PRAGMA="" RTLNAME="state_issue_alu_iq_entries_uop_rename_stale_pdst_U" SOURCE="" URAM="0" VARIABLE="state_issue_alu_iq_entries_uop_rename_stale_pdst"/>
+                <BindNode BINDTYPE="storage" BRAM="0" BUNDLEDNAME="" DISPNAME="bind_storage ram_1p" DSP="0" ID="" IMPL="auto" LATENCY="1" LOOP="" OPTYPE="ram_1p" PRAGMA="" RTLNAME="state_issue_alu_iq_entries_uop_rename_dst_rtype_U" SOURCE="" URAM="0" VARIABLE="state_issue_alu_iq_entries_uop_rename_dst_rtype"/>
+                <BindNode BINDTYPE="storage" BRAM="0" BUNDLEDNAME="" DISPNAME="bind_storage ram_1p" DSP="0" ID="" IMPL="auto" LATENCY="1" LOOP="" OPTYPE="ram_1p" PRAGMA="" RTLNAME="state_issue_alu_iq_entries_uop_rename_lrs1_rtype_U" SOURCE="" URAM="0" VARIABLE="state_issue_alu_iq_entries_uop_rename_lrs1_rtype"/>
+                <BindNode BINDTYPE="storage" BRAM="0" BUNDLEDNAME="" DISPNAME="bind_storage ram_1p" DSP="0" ID="" IMPL="auto" LATENCY="1" LOOP="" OPTYPE="ram_1p" PRAGMA="" RTLNAME="state_issue_alu_iq_entries_uop_rename_lrs2_rtype_U" SOURCE="" URAM="0" VARIABLE="state_issue_alu_iq_entries_uop_rename_lrs2_rtype"/>
+                <BindNode BINDTYPE="storage" BRAM="0" BUNDLEDNAME="" DISPNAME="bind_storage ram_1p" DSP="0" ID="" IMPL="auto" LATENCY="1" LOOP="" OPTYPE="ram_1p" PRAGMA="" RTLNAME="state_issue_alu_iq_entries_uop_rename_frs3_en_U" SOURCE="" URAM="0" VARIABLE="state_issue_alu_iq_entries_uop_rename_frs3_en"/>
+                <BindNode BINDTYPE="storage" BRAM="0" BUNDLEDNAME="" DISPNAME="bind_storage ram_1p" DSP="0" ID="" IMPL="auto" LATENCY="1" LOOP="" OPTYPE="ram_1p" PRAGMA="" RTLNAME="state_issue_alu_iq_entries_uop_rename_fp_val_U" SOURCE="" URAM="0" VARIABLE="state_issue_alu_iq_entries_uop_rename_fp_val"/>
+                <BindNode BINDTYPE="storage" BRAM="0" BUNDLEDNAME="" DISPNAME="bind_storage ram_1p" DSP="0" ID="" IMPL="auto" LATENCY="1" LOOP="" OPTYPE="ram_1p" PRAGMA="" RTLNAME="state_issue_alu_iq_entries_uop_rename_fp_single_U" SOURCE="" URAM="0" VARIABLE="state_issue_alu_iq_entries_uop_rename_fp_single"/>
+                <BindNode BINDTYPE="storage" BRAM="0" BUNDLEDNAME="" DISPNAME="bind_storage ram_1p" DSP="0" ID="" IMPL="auto" LATENCY="1" LOOP="" OPTYPE="ram_1p" PRAGMA="" RTLNAME="state_issue_alu_iq_entries_uop_exception_U" SOURCE="" URAM="0" VARIABLE="state_issue_alu_iq_entries_uop_exception"/>
+                <BindNode BINDTYPE="storage" BRAM="0" BUNDLEDNAME="" DISPNAME="bind_storage ram_1p" DSP="0" ID="" IMPL="auto" LATENCY="1" LOOP="" OPTYPE="ram_1p" PRAGMA="" RTLNAME="state_issue_alu_iq_entries_uop_exc_cause_U" SOURCE="" URAM="0" VARIABLE="state_issue_alu_iq_entries_uop_exc_cause"/>
+                <BindNode BINDTYPE="storage" BRAM="0" BUNDLEDNAME="" DISPNAME="bind_storage ram_1p" DSP="0" ID="" IMPL="auto" LATENCY="1" LOOP="" OPTYPE="ram_1p" PRAGMA="" RTLNAME="state_issue_alu_iq_entries_uop_bypassable_U" SOURCE="" URAM="0" VARIABLE="state_issue_alu_iq_entries_uop_bypassable"/>
+                <BindNode BINDTYPE="storage" BRAM="0" BUNDLEDNAME="" DISPNAME="bind_storage ram_1p" DSP="0" ID="" IMPL="auto" LATENCY="1" LOOP="" OPTYPE="ram_1p" PRAGMA="" RTLNAME="state_issue_alu_iq_entries_uop_mem_mem_cmd_U" SOURCE="" URAM="0" VARIABLE="state_issue_alu_iq_entries_uop_mem_mem_cmd"/>
+                <BindNode BINDTYPE="storage" BRAM="0" BUNDLEDNAME="" DISPNAME="bind_storage ram_1p" DSP="0" ID="" IMPL="auto" LATENCY="1" LOOP="" OPTYPE="ram_1p" PRAGMA="" RTLNAME="state_issue_alu_iq_entries_uop_mem_mem_size_U" SOURCE="" URAM="0" VARIABLE="state_issue_alu_iq_entries_uop_mem_mem_size"/>
+                <BindNode BINDTYPE="storage" BRAM="0" BUNDLEDNAME="" DISPNAME="bind_storage ram_1p" DSP="0" ID="" IMPL="auto" LATENCY="1" LOOP="" OPTYPE="ram_1p" PRAGMA="" RTLNAME="state_issue_alu_iq_entries_uop_mem_mem_signed_U" SOURCE="" URAM="0" VARIABLE="state_issue_alu_iq_entries_uop_mem_mem_signed"/>
+                <BindNode BINDTYPE="storage" BRAM="0" BUNDLEDNAME="" DISPNAME="bind_storage ram_1p" DSP="0" ID="" IMPL="auto" LATENCY="1" LOOP="" OPTYPE="ram_1p" PRAGMA="" RTLNAME="state_issue_alu_iq_entries_uop_mem_is_fence_U" SOURCE="" URAM="0" VARIABLE="state_issue_alu_iq_entries_uop_mem_is_fence"/>
+                <BindNode BINDTYPE="storage" BRAM="0" BUNDLEDNAME="" DISPNAME="bind_storage ram_1p" DSP="0" ID="" IMPL="auto" LATENCY="1" LOOP="" OPTYPE="ram_1p" PRAGMA="" RTLNAME="state_issue_alu_iq_entries_uop_mem_is_fencei_U" SOURCE="" URAM="0" VARIABLE="state_issue_alu_iq_entries_uop_mem_is_fencei"/>
+                <BindNode BINDTYPE="storage" BRAM="0" BUNDLEDNAME="" DISPNAME="bind_storage ram_1p" DSP="0" ID="" IMPL="auto" LATENCY="1" LOOP="" OPTYPE="ram_1p" PRAGMA="" RTLNAME="state_issue_alu_iq_entries_uop_mem_is_amo_U" SOURCE="" URAM="0" VARIABLE="state_issue_alu_iq_entries_uop_mem_is_amo"/>
+                <BindNode BINDTYPE="storage" BRAM="0" BUNDLEDNAME="" DISPNAME="bind_storage ram_1p" DSP="0" ID="" IMPL="auto" LATENCY="1" LOOP="" OPTYPE="ram_1p" PRAGMA="" RTLNAME="state_issue_alu_iq_entries_uop_mem_uses_ldq_U" SOURCE="" URAM="0" VARIABLE="state_issue_alu_iq_entries_uop_mem_uses_ldq"/>
+                <BindNode BINDTYPE="storage" BRAM="0" BUNDLEDNAME="" DISPNAME="bind_storage ram_1p" DSP="0" ID="" IMPL="auto" LATENCY="1" LOOP="" OPTYPE="ram_1p" PRAGMA="" RTLNAME="state_issue_alu_iq_entries_uop_mem_uses_stq_U" SOURCE="" URAM="0" VARIABLE="state_issue_alu_iq_entries_uop_mem_uses_stq"/>
+                <BindNode BINDTYPE="storage" BRAM="0" BUNDLEDNAME="" DISPNAME="bind_storage ram_1p" DSP="0" ID="" IMPL="auto" LATENCY="1" LOOP="" OPTYPE="ram_1p" PRAGMA="" RTLNAME="state_issue_alu_iq_entries_uop_mem_ldst_is_rs1_U" SOURCE="" URAM="0" VARIABLE="state_issue_alu_iq_entries_uop_mem_ldst_is_rs1"/>
+                <BindNode BINDTYPE="storage" BRAM="0" BUNDLEDNAME="" DISPNAME="bind_storage ram_1p" DSP="0" ID="" IMPL="auto" LATENCY="1" LOOP="" OPTYPE="ram_1p" PRAGMA="" RTLNAME="state_issue_alu_iq_entries_uop_mem_ldst_val_U" SOURCE="" URAM="0" VARIABLE="state_issue_alu_iq_entries_uop_mem_ldst_val"/>
+                <BindNode BINDTYPE="storage" BRAM="0" BUNDLEDNAME="" DISPNAME="bind_storage ram_1p" DSP="0" ID="" IMPL="auto" LATENCY="1" LOOP="" OPTYPE="ram_1p" PRAGMA="" RTLNAME="state_issue_alu_iq_entries_uop_is_sys_pc2epc_U" SOURCE="" URAM="0" VARIABLE="state_issue_alu_iq_entries_uop_is_sys_pc2epc"/>
+                <BindNode BINDTYPE="storage" BRAM="0" BUNDLEDNAME="" DISPNAME="bind_storage ram_1p" DSP="0" ID="" IMPL="auto" LATENCY="1" LOOP="" OPTYPE="ram_1p" PRAGMA="" RTLNAME="state_issue_alu_iq_entries_uop_is_unique_U" SOURCE="" URAM="0" VARIABLE="state_issue_alu_iq_entries_uop_is_unique"/>
+                <BindNode BINDTYPE="storage" BRAM="0" BUNDLEDNAME="" DISPNAME="bind_storage ram_1p" DSP="0" ID="" IMPL="auto" LATENCY="1" LOOP="" OPTYPE="ram_1p" PRAGMA="" RTLNAME="state_issue_alu_iq_entries_uop_flush_on_commit_U" SOURCE="" URAM="0" VARIABLE="state_issue_alu_iq_entries_uop_flush_on_commit"/>
+                <BindNode BINDTYPE="storage" BRAM="0" BUNDLEDNAME="" DISPNAME="bind_storage ram_1p" DSP="0" ID="" IMPL="auto" LATENCY="1" LOOP="" OPTYPE="ram_1p" PRAGMA="" RTLNAME="state_issue_alu_iq_entries_uop_exc_exception_U" SOURCE="" URAM="0" VARIABLE="state_issue_alu_iq_entries_uop_exc_exception"/>
+                <BindNode BINDTYPE="storage" BRAM="0" BUNDLEDNAME="" DISPNAME="bind_storage ram_1p" DSP="0" ID="" IMPL="auto" LATENCY="1" LOOP="" OPTYPE="ram_1p" PRAGMA="" RTLNAME="state_issue_alu_iq_entries_uop_exc_exc_cause_U" SOURCE="" URAM="0" VARIABLE="state_issue_alu_iq_entries_uop_exc_exc_cause"/>
+                <BindNode BINDTYPE="storage" BRAM="0" BUNDLEDNAME="" DISPNAME="bind_storage ram_1p" DSP="0" ID="" IMPL="auto" LATENCY="1" LOOP="" OPTYPE="ram_1p" PRAGMA="" RTLNAME="state_issue_alu_iq_entries_uop_exc_xcpt_pf_if_U" SOURCE="" URAM="0" VARIABLE="state_issue_alu_iq_entries_uop_exc_xcpt_pf_if"/>
+                <BindNode BINDTYPE="storage" BRAM="0" BUNDLEDNAME="" DISPNAME="bind_storage ram_1p" DSP="0" ID="" IMPL="auto" LATENCY="1" LOOP="" OPTYPE="ram_1p" PRAGMA="" RTLNAME="state_issue_alu_iq_entries_uop_exc_xcpt_ae_if_U" SOURCE="" URAM="0" VARIABLE="state_issue_alu_iq_entries_uop_exc_xcpt_ae_if"/>
+                <BindNode BINDTYPE="storage" BRAM="0" BUNDLEDNAME="" DISPNAME="bind_storage ram_1p" DSP="0" ID="" IMPL="auto" LATENCY="1" LOOP="" OPTYPE="ram_1p" PRAGMA="" RTLNAME="state_issue_alu_iq_entries_uop_exc_xcpt_ma_if_U" SOURCE="" URAM="0" VARIABLE="state_issue_alu_iq_entries_uop_exc_xcpt_ma_if"/>
+                <BindNode BINDTYPE="storage" BRAM="0" BUNDLEDNAME="" DISPNAME="bind_storage ram_1p" DSP="0" ID="" IMPL="auto" LATENCY="1" LOOP="" OPTYPE="ram_1p" PRAGMA="" RTLNAME="state_issue_alu_iq_entries_uop_exc_bp_debug_if_U" SOURCE="" URAM="0" VARIABLE="state_issue_alu_iq_entries_uop_exc_bp_debug_if"/>
+                <BindNode BINDTYPE="storage" BRAM="0" BUNDLEDNAME="" DISPNAME="bind_storage ram_1p" DSP="0" ID="" IMPL="auto" LATENCY="1" LOOP="" OPTYPE="ram_1p" PRAGMA="" RTLNAME="state_issue_alu_iq_entries_uop_exc_bp_xcpt_if_U" SOURCE="" URAM="0" VARIABLE="state_issue_alu_iq_entries_uop_exc_bp_xcpt_if"/>
+                <BindNode BINDTYPE="storage" BRAM="0" BUNDLEDNAME="" DISPNAME="bind_storage ram_1p" DSP="0" ID="" IMPL="auto" LATENCY="1" LOOP="" OPTYPE="ram_1p" PRAGMA="" RTLNAME="state_issue_alu_iq_entries_uop_debug_debug_fsrc_U" SOURCE="" URAM="0" VARIABLE="state_issue_alu_iq_entries_uop_debug_debug_fsrc"/>
+                <BindNode BINDTYPE="storage" BRAM="0" BUNDLEDNAME="" DISPNAME="bind_storage ram_1p" DSP="0" ID="" IMPL="auto" LATENCY="1" LOOP="" OPTYPE="ram_1p" PRAGMA="" RTLNAME="state_issue_alu_iq_entries_uop_debug_debug_tsrc_U" SOURCE="" URAM="0" VARIABLE="state_issue_alu_iq_entries_uop_debug_debug_tsrc"/>
+                <BindNode BINDTYPE="storage" BRAM="0" BUNDLEDNAME="" DISPNAME="bind_storage ram_1p" DSP="0" ID="" IMPL="auto" LATENCY="1" LOOP="" OPTYPE="ram_1p" PRAGMA="" RTLNAME="state_issue_alu_iq_entries_uop_debug_debug_inst_U" SOURCE="" URAM="0" VARIABLE="state_issue_alu_iq_entries_uop_debug_debug_inst"/>
+                <BindNode BINDTYPE="storage" BRAM="0" BUNDLEDNAME="" DISPNAME="bind_storage ram_1p" DSP="0" ID="" IMPL="auto" LATENCY="1" LOOP="" OPTYPE="ram_1p" PRAGMA="" RTLNAME="state_issue_alu_iq_entries_uop_debug_debug_pc_U" SOURCE="" URAM="0" VARIABLE="state_issue_alu_iq_entries_uop_debug_debug_pc"/>
+                <BindNode BINDTYPE="storage" BRAM="0" BUNDLEDNAME="" DISPNAME="bind_storage ram_1p" DSP="0" ID="" IMPL="auto" LATENCY="1" LOOP="" OPTYPE="ram_1p" PRAGMA="" RTLNAME="state_issue_alu_iq_entries_prs1_data_U" SOURCE="" URAM="0" VARIABLE="state_issue_alu_iq_entries_prs1_data"/>
+                <BindNode BINDTYPE="storage" BRAM="0" BUNDLEDNAME="" DISPNAME="bind_storage ram_1p" DSP="0" ID="" IMPL="auto" LATENCY="1" LOOP="" OPTYPE="ram_1p" PRAGMA="" RTLNAME="state_issue_alu_iq_entries_prs2_data_U" SOURCE="" URAM="0" VARIABLE="state_issue_alu_iq_entries_prs2_data"/>
+                <BindNode BINDTYPE="storage" BRAM="0" BUNDLEDNAME="" DISPNAME="bind_storage ram_1p" DSP="0" ID="" IMPL="auto" LATENCY="1" LOOP="" OPTYPE="ram_1p" PRAGMA="" RTLNAME="state_issue_alu_iq_entries_prs3_data_U" SOURCE="" URAM="0" VARIABLE="state_issue_alu_iq_entries_prs3_data"/>
+            </BindNodes>
+        </Module>
+    </ModuleInformation>
+    <FIFOInformation/>
+    <UserConfigCommands>
+        <config_compile pipeline_loops="0"/>
+    </UserConfigCommands>
+    <Args>
+        <Arg ArgName="seed_inst" index="0" direction="in" srcType="unsigned int" srcSize="32">
+            <hwRefs>
+                <hwRef type="port" interface="seed_inst" name="seed_inst" usage="data" direction="in"/>
+            </hwRefs>
+        </Arg>
+        <Arg ArgName="seed_pc" index="1" direction="in" srcType="long unsigned int" srcSize="64">
+            <hwRefs>
+                <hwRef type="port" interface="seed_pc" name="seed_pc" usage="data" direction="in"/>
+            </hwRefs>
+        </Arg>
+        <Arg ArgName="observable" index="2" direction="out" srcType="long unsigned int&amp;" srcSize="64">
+            <hwRefs>
+                <hwRef type="port" interface="observable" name="observable" usage="data" direction="out"/>
+                <hwRef type="port" interface="observable_ap_vld" name="observable_ap_vld" usage="control" direction="out"/>
+            </hwRefs>
+        </Arg>
+    </Args>
+    <Interfaces>
+        <Interface InterfaceName="ap_clk" type="clock" busTypeName="clock" mode="slave">
+            <busParams>
+                <busParam busParamName="ASSOCIATED_RESET">ap_rst</busParam>
+            </busParams>
+            <portMaps>
+                <portMap portMapName="ap_clk">CLK</portMap>
+            </portMaps>
+            <ports>
+                <port>ap_clk</port>
+            </ports>
+        </Interface>
+        <Interface InterfaceName="ap_rst" type="reset" busTypeName="reset" mode="slave">
+            <busParams>
+                <busParam busParamName="POLARITY">ACTIVE_HIGH</busParam>
+            </busParams>
+            <portMaps>
+                <portMap portMapName="ap_rst">RST</portMap>
+            </portMaps>
+            <ports>
+                <port>ap_rst</port>
+            </ports>
+        </Interface>
+        <Interface InterfaceName="ap_ctrl" type="ap_ctrl" busTypeName="acc_handshake" mode="slave">
+            <portMaps>
+                <portMap portMapName="ap_start">start</portMap>
+                <portMap portMapName="ap_done">done</portMap>
+                <portMap portMapName="ap_idle">idle</portMap>
+                <portMap portMapName="ap_ready">ready</portMap>
+            </portMaps>
+            <ports>
+                <port>ap_done</port>
+                <port>ap_idle</port>
+                <port>ap_ready</port>
+                <port>ap_start</port>
+            </ports>
+        </Interface>
+        <Interface InterfaceName="seed_inst" type="data" busTypeName="data" protocol="ap_none" mode="slave" dataWidth="32">
+            <portMaps>
+                <portMap portMapName="seed_inst">DATA</portMap>
+            </portMaps>
+            <ports>
+                <port>seed_inst</port>
+            </ports>
+            <constraints>
+                <constraint constraint_type="pragma interface" mode="ap_none" register_option="0" argName="seed_inst"/>
+            </constraints>
+        </Interface>
+        <Interface InterfaceName="seed_pc" type="data" busTypeName="data" protocol="ap_none" mode="slave" dataWidth="64">
+            <portMaps>
+                <portMap portMapName="seed_pc">DATA</portMap>
+            </portMaps>
+            <ports>
+                <port>seed_pc</port>
+            </ports>
+            <constraints>
+                <constraint constraint_type="pragma interface" mode="ap_none" register_option="0" argName="seed_pc"/>
+            </constraints>
+        </Interface>
+        <Interface InterfaceName="observable" type="data" busTypeName="data" protocol="ap_vld" mode="master" dataWidth="64">
+            <portMaps>
+                <portMap portMapName="observable">DATA</portMap>
+            </portMaps>
+            <ports>
+                <port>observable</port>
+            </ports>
+            <constraints>
+                <constraint constraint_type="pragma interface" mode="ap_none" register_option="0" argName="observable"/>
+            </constraints>
+        </Interface>
+    </Interfaces>
+    <ReportHWInterface>
+        <section name="HW Interfaces" level="0">
+            <item name="REGISTER">
+                <table isCollapsed="0">
+                    <keys size="3">Interface, Mode, Bitwidth</keys>
+                    <column name="observable">ap_none, 64</column>
+                    <column name="seed_inst">ap_none, 32</column>
+                    <column name="seed_pc">ap_none, 64</column>
+                </table>
+            </item>
+            <item name="TOP LEVEL CONTROL">
+                <table isCollapsed="0">
+                    <keys size="3">Interface, Type, Ports</keys>
+                    <column name="ap_clk">clock, ap_clk</column>
+                    <column name="ap_rst">reset, ap_rst</column>
+                    <column name="ap_ctrl">ap_ctrl_hs, ap_done ap_idle ap_ready ap_start</column>
+                </table>
+            </item>
+        </section>
+    </ReportHWInterface>
+    <ReportSWInterface>
+        <section name="SW I/O Information" level="0">
+            <item name="Top Function Arguments">
+                <table isCollapsed="1">
+                    <keys size="3">Argument, Direction, Datatype</keys>
+                    <column name="seed_inst">in, unsigned int</column>
+                    <column name="seed_pc">in, long unsigned int</column>
+                    <column name="observable">out, long unsigned int&amp;</column>
+                </table>
+            </item>
+            <item name="SW-to-HW Mapping">
+                <table isCollapsed="1">
+                    <keys size="3">Argument, HW Interface, HW Type</keys>
+                    <column name="seed_inst">seed_inst, port</column>
+                    <column name="seed_pc">seed_pc, port</column>
+                    <column name="observable">observable, port</column>
+                    <column name="observable">observable_ap_vld, port</column>
+                </table>
+            </item>
+        </section>
+    </ReportSWInterface>
+    <ReportBurst>
+        <section name="M_AXI Burst Information" level="0" HEADER_NOTE="Note: All burst requests might be further partitioned into multiple requests during RTL generation based on max_read_burst_length or max_write_burst_length settings."/>
+    </ReportBurst>
+    <PragmaReport>
+        <Pragma type="inline" location="/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:464" status="valid" parentFunction="complete_selected" variable="" isDirective="0" options=""/>
+        <Pragma type="interface" location="/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:1798" status="valid" parentFunction="boom_core_top" variable="return" isDirective="0" options="ap_ctrl_none port=return"/>
+        <Pragma type="interface" location="/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:1799" status="valid" parentFunction="boom_core_top" variable="imem_req_out" isDirective="0" options="axis port=imem_req_out"/>
+        <Pragma type="interface" location="/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:1800" status="valid" parentFunction="boom_core_top" variable="imem_resp_in" isDirective="0" options="axis port=imem_resp_in"/>
+        <Pragma type="interface" location="/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:1801" status="valid" parentFunction="boom_core_top" variable="dmem_req_out" isDirective="0" options="axis port=dmem_req_out"/>
+        <Pragma type="interface" location="/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:1802" status="valid" parentFunction="boom_core_top" variable="dmem_resp_in" isDirective="0" options="axis port=dmem_resp_in"/>
+        <Pragma type="interface" location="/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:1803" status="valid" parentFunction="boom_core_top" variable="commit_trace_out" isDirective="0" options="axis port=commit_trace_out"/>
+        <Pragma type="interface" location="/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:1804" status="valid" parentFunction="boom_core_top" variable="io_success" isDirective="0" options="ap_none port=io_success"/>
+        <Pragma type="interface" location="/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:1805" status="valid" parentFunction="boom_core_top" variable="io_halted" isDirective="0" options="ap_none port=io_halted"/>
+        <Pragma type="interface" location="/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:1806" status="valid" parentFunction="boom_core_top" variable="io_trap" isDirective="0" options="ap_none port=io_trap"/>
+        <Pragma type="interface" location="/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:1807" status="valid" parentFunction="boom_core_top" variable="io_cycle_valid" isDirective="0" options="ap_none port=io_cycle_valid"/>
+        <Pragma type="interface" location="/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:1808" status="valid" parentFunction="boom_core_top" variable="io_cycle" isDirective="0" options="ap_none port=io_cycle"/>
+        <Pragma type="interface" location="/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:1809" status="valid" parentFunction="boom_core_top" variable="io_instret" isDirective="0" options="ap_none port=io_instret"/>
+        <Pragma type="reset" location="/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:1813" status="valid" parentFunction="boom_core_top" variable="reset_ctrl" isDirective="0" options="variable=reset_ctrl"/>
+        <Pragma type="interface" location="/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:1841" status="valid" parentFunction="boom_core_step_top" variable="return" isDirective="0" options="ap_ctrl_none port=return"/>
+        <Pragma type="interface" location="/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:1842" status="valid" parentFunction="boom_core_step_top" variable="imem_req_out" isDirective="0" options="axis port=imem_req_out"/>
+        <Pragma type="interface" location="/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:1843" status="valid" parentFunction="boom_core_step_top" variable="imem_resp_in" isDirective="0" options="axis port=imem_resp_in"/>
+        <Pragma type="interface" location="/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:1844" status="valid" parentFunction="boom_core_step_top" variable="dmem_req_out" isDirective="0" options="axis port=dmem_req_out"/>
+        <Pragma type="interface" location="/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:1845" status="valid" parentFunction="boom_core_step_top" variable="dmem_resp_in" isDirective="0" options="axis port=dmem_resp_in"/>
+        <Pragma type="interface" location="/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:1846" status="valid" parentFunction="boom_core_step_top" variable="commit_trace_out" isDirective="0" options="axis port=commit_trace_out"/>
+        <Pragma type="interface" location="/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:1847" status="valid" parentFunction="boom_core_step_top" variable="io_success" isDirective="0" options="ap_none port=io_success"/>
+        <Pragma type="interface" location="/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:1848" status="valid" parentFunction="boom_core_step_top" variable="io_halted" isDirective="0" options="ap_none port=io_halted"/>
+        <Pragma type="interface" location="/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:1849" status="valid" parentFunction="boom_core_step_top" variable="io_trap" isDirective="0" options="ap_none port=io_trap"/>
+        <Pragma type="interface" location="/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:1850" status="valid" parentFunction="boom_core_step_top" variable="io_cycle_valid" isDirective="0" options="ap_none port=io_cycle_valid"/>
+        <Pragma type="interface" location="/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:1851" status="valid" parentFunction="boom_core_step_top" variable="io_cycle" isDirective="0" options="ap_none port=io_cycle"/>
+        <Pragma type="interface" location="/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:1852" status="valid" parentFunction="boom_core_step_top" variable="io_instret" isDirective="0" options="ap_none port=io_instret"/>
+        <Pragma type="reset" location="/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:1856" status="valid" parentFunction="boom_core_step_top" variable="reset_ctrl" isDirective="0" options="variable=reset_ctrl"/>
+        <Pragma type="reset" location="/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:1902" status="valid" parentFunction="boom_core_ncycle_n1_top" variable="reset_ctrl" isDirective="0" options="variable=reset_ctrl"/>
+        <Pragma type="reset" location="/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:1903" status="valid" parentFunction="boom_core_ncycle_n2_top" variable="reset_ctrl" isDirective="0" options="variable=reset_ctrl"/>
+        <Pragma type="reset" location="/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:1904" status="valid" parentFunction="boom_core_ncycle_n4_top" variable="reset_ctrl" isDirective="0" options="variable=reset_ctrl"/>
+        <Pragma type="reset" location="/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:1905" status="valid" parentFunction="boom_core_ncycle_n8_top" variable="reset_ctrl" isDirective="0" options="variable=reset_ctrl"/>
+        <Pragma type="inline" location="/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:2248" status="valid" parentFunction="w3_seed_rob" variable="" isDirective="0" options=""/>
+        <Pragma type="inline" location="/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:2269" status="valid" parentFunction="w3_seed_issue" variable="" isDirective="0" options=""/>
+        <Pragma type="stream" location="/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:2317" status="valid" parentFunction="synth_w3_diagnostic_top" variable="commit_pipe.commit_trace" isDirective="0" options="variable=commit_pipe.commit_trace depth=1"/>
+        <Pragma type="stream" location="/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:2318" status="valid" parentFunction="synth_w3_diagnostic_top" variable="commit_pipe.dmem_req" isDirective="0" options="variable=commit_pipe.dmem_req depth=1"/>
+    </PragmaReport>
+</profile>
+

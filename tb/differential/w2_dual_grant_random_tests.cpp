@@ -165,16 +165,17 @@ RefResult reference_step(const BoomCoreState& before) {
         grant.uop = work[selected[lane]].uop;
     }
 
-    bool dispatch_pending = before.rename.renamed_valids[0] &&
-                            !before.rename.renamed_uops[0].exception;
+    bool dispatch_pending = before.rename.dispatch_packets[0].valid &&
+                             before.rename.dispatch_packets[0].rob_allocated &&
+                             !before.rename.dispatch_packets[0].uop.exception;
     MicroOp dispatch_uop;
     if (dispatch_pending) {
-        dispatch_uop = before.rename.renamed_uops[0];
+        dispatch_uop = before.rename.dispatch_packets[0].uop;
         const RefClass port = ref_classify(dispatch_uop);
         const int lane = port == REF_MEM ? MEM_ISSUE_LANE :
                          (port == REF_INT ? INT_ISSUE_LANE : -1);
-        const bool dispatch_ready = !dispatch_uop.rename.prs1_busy &&
-                                    !dispatch_uop.rename.prs2_busy;
+        const bool dispatch_ready = !ref_preg_busy(before, dispatch_uop.rename.prs1) &&
+                                    !ref_preg_busy(before, dispatch_uop.rename.prs2);
         bool old_grant_can_accept = false;
         for (int old_lane = 0; old_lane < INTEGER_ISSUE_PORTS; ++old_lane)
             old_grant_can_accept |= out.grants[old_lane].valid &&
@@ -196,19 +197,13 @@ RefResult reference_step(const BoomCoreState& before) {
     for (int lane = 0; lane < INTEGER_ISSUE_PORTS; ++lane)
         if (out.grants[lane].valid) ++out.generated;
 
-    int accepted_lane = -1;
     for (int lane = 0; lane < INTEGER_ISSUE_PORTS; ++lane) {
         if (!out.grants[lane].valid || !before.issue.port_ready[lane]) continue;
-        if (accepted_lane < 0 ||
-            out.grants[lane].entry_index < out.grants[accepted_lane].entry_index)
-            accepted_lane = lane;
-    }
-    if (accepted_lane >= 0) {
-        RefGrant& grant = out.grants[accepted_lane];
+        RefGrant& grant = out.grants[lane];
         grant.accepted = true;
-        out.accepted = 1;
-        out.issued_valids[0] = true;
-        out.issued_uops[0] = grant.uop;
+        ++out.accepted;
+        out.issued_valids[lane] = true;
+        out.issued_uops[lane] = grant.uop;
         if (grant.from_dispatch) {
             dispatch_pending = false;
             out.dispatch_bypassed = true;
@@ -226,8 +221,8 @@ RefResult reference_step(const BoomCoreState& before) {
         entry.valid = true;
         entry.request = true;
         entry.uop = dispatch_uop;
-        entry.prs1_busy = dispatch_uop.rename.prs1_busy;
-        entry.prs2_busy = dispatch_uop.rename.prs2_busy;
+        entry.prs1_busy = ref_preg_busy(before, dispatch_uop.rename.prs1);
+        entry.prs2_busy = ref_preg_busy(before, dispatch_uop.rename.prs2);
         out.survivors.push_back(entry);
         out.dispatch_enqueued = true;
     }
@@ -264,13 +259,13 @@ void print_failure(uint32_t seed, int cycle, const BoomCoreState& before,
                 before.brupdate.mispredict_mask,
                 (before.issue.port_ready[0] ? 1 : 0) |
                 (before.issue.port_ready[1] ? 2 : 0),
-                before.rename.renamed_valids[0]);
+                 before.rename.dispatch_packets[0].valid);
     for (int i = 0; i < ISSUE_QUEUE_ALU_DEPTH; ++i)
         if (before.issue.alu_iq.entries[i].valid) print_entry(before.issue.alu_iq.entries[i], i);
-    if (before.rename.renamed_valids[0]) {
+    if (before.rename.dispatch_packets[0].valid) {
         IssueSlotEntry dispatch;
         dispatch.valid = true;
-        dispatch.uop = before.rename.renamed_uops[0];
+        dispatch.uop = before.rename.dispatch_packets[0].uop;
         print_entry(dispatch, 0xff);
     }
     std::printf("Expected generated=%u accepted=%u retained=%u dropped=%u survivors=%zu\n",
@@ -378,11 +373,12 @@ void randomize_cycle_inputs(BoomCoreState& state, Rng& rng, uint64_t& token,
     for (int lane = 0; lane < ISSUE_WIDTH; ++lane)
         state.issue.port_ready[lane] = lane != FP_ISSUE_LANE && rng.bit();
 
-    state.rename.renamed_valids[0] = rng.range(2) == 0;
-    state.rename.renamed_uops[0] = MicroOp();
-    if (state.rename.renamed_valids[0]) {
-        state.rename.renamed_uops[0] = random_uop(rng, token++);
-        ++class_counts[ref_classify(state.rename.renamed_uops[0])];
+    state.rename.dispatch_packets[0] = RenameDispatchPacket();
+    state.rename.dispatch_packets[0].valid = rng.range(2) == 0;
+    state.rename.dispatch_packets[0].rob_allocated = state.rename.dispatch_packets[0].valid;
+    if (state.rename.dispatch_packets[0].valid) {
+        state.rename.dispatch_packets[0].uop = random_uop(rng, token++);
+        ++class_counts[ref_classify(state.rename.dispatch_packets[0].uop)];
     }
 }
 
@@ -410,7 +406,7 @@ int main() {
 
             if (before.brupdate.valid) ++branch_resolves;
             if (before.brupdate.valid && before.brupdate.mispredict) ++branch_mispredicts;
-            if (before.rename.renamed_valids[0]) ++dispatches;
+            if (before.rename.dispatch_packets[0].valid) ++dispatches;
             const unsigned port_mask = (before.issue.port_ready[0] ? 1u : 0u) |
                                        (before.issue.port_ready[1] ? 2u : 0u);
             ++port_masks[port_mask];

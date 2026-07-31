@@ -63,13 +63,12 @@ void rename_module(BoomCoreState& state) {
     RenameFreeListState& fl = ren.int_free_list;
     BranchRecoveryState& br = state.branch_state;
 
-    for (int i=0; i<DISPATCH_WIDTH; i++) {
-        ren.renamed_valids[i]=false; ren.renamed_uops[i]=MicroOp();
-    }
     if (state.global_flush) return;
     mt.map_table[0] = 0;
 
     for (int i=0; i<DISPATCH_WIDTH; i++) {
+        RenameDispatchPacket& packet = ren.dispatch_packets[i];
+        if (packet.valid) continue;
         if (!state.decode.dec_valids[i]) continue;
         MicroOp uop = state.decode.dec_uops[i];
         bool is_branch = is_control_uop(uop);
@@ -80,7 +79,6 @@ void rename_module(BoomCoreState& state) {
 
         if (is_branch) {
             if (!allocate_branch_tag(br, new_tag)) {
-                ren.renamed_valids[i] = false;
                 break;
             }
             got_tag = true;
@@ -98,7 +96,6 @@ void rename_module(BoomCoreState& state) {
         if (allocates_dst) {
             uint8_t pdst = 0;
             if (!allocate_preg(fl, pdst)) {
-                ren.renamed_valids[i] = false;
                 break;
             }
             fl.busy_table[pdst] = true;
@@ -115,8 +112,10 @@ void rename_module(BoomCoreState& state) {
             br.allocations++;
         }
 
-        ren.renamed_uops[i] = uop;
-        ren.renamed_valids[i] = true;
+        packet.uop = uop;
+        packet.rob_allocated = false;
+        packet.valid = true;
+        state.decode.dec_valids[i] = false;
     }
 }
 

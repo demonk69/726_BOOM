@@ -1,0 +1,26 @@
+
+****** xsim v2021.2 (64-bit)
+  **** SW Build 3367213 on Tue Oct 19 02:47:39 MDT 2021
+  **** IP Build 3369179 on Thu Oct 21 08:25:16 MDT 2021
+    ** Copyright 1986-2021 Xilinx, Inc. All Rights Reserved.
+
+source xsim.dir/gate3_9_snapshot/xsim_script.tcl
+# xsim {gate3_9_snapshot} -testplusarg PROGRAM=/home/lab_726/boom/hls_boom/reports/gate4_0/w3/full_core_rtl/xsim/nested_branch.readmemh -testplusarg PROGRAM_NAME=nested_branch -testplusarg SCENARIO=N4_NORMAL_NESTED_BRANCH -testplusarg MAX_CYCLES=50000 -testplusarg TRACE=/home/lab_726/boom/hls_boom/reports/gate4_0/w3/rtl_traces/nested_branch_N4_NORMAL_NESTED_BRANCH.jsonl -autoloadwcfg -runall -onerror quit
+Time resolution is 1 ps
+run -all
+GATE3_8_IMEM program=/home/lab_726/boom/hls_boom/reports/gate4_0/w3/full_core_rtl/xsim/nested_branch.readmemh
+GATE3_8_START scenario=N4_NORMAL_NESTED_BRANCH code=0 program=nested_branch max_cycles=50000
+GATE3_8_PASS scenario=N4_NORMAL_NESTED_BRANCH cycles=17429 commits=14 resets=1 imem=15 dmem=1 loads=0 stores=1 tohost=0000000000000001
+$finish called at time : 174335 ns : File "/home/lab_726/boom/hls_boom/rtl_tb/boom_core_rtl_tb.sv" Line 282
+exit
+INFO: [Common 17-206] Exiting xsim at Fri Jul 31 18:54:59 2026...
+{
+  "cpp_csim_commit_first_difference": null,
+  "cpp_csim_tohost_first_difference": null,
+  "cpp_records": 12,
+  "cpp_rtl_commit_first_difference": null,
+  "cpp_rtl_tohost_first_difference": null,
+  "csim_records": 12,
+  "rtl_records": 12,
+  "status": "PASS"
+}

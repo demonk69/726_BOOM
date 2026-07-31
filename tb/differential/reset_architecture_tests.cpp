@@ -35,7 +35,8 @@ static void dirty_state(BoomCoreState& state) {
     state.frontend.fetch_packet_valid = true;
     state.frontend.fetch_id = 99;
     state.decode.dec_valids[0] = true;
-    state.rename.renamed_valids[0] = true;
+    state.rename.dispatch_packets[0].valid = true;
+    state.rename.dispatch_packets[0].rob_allocated = true;
     state.issue.issued_valids[0] = true;
     state.execute.alu_results[0].valid = true;
     state.execute.alu_results[0].mispredict = true;
@@ -43,6 +44,7 @@ static void dirty_state(BoomCoreState& state) {
     state.rob.tail = 7;
     state.rob.maybe_full = true;
     state.rob.commit_valid = true;
+    state.rob.next_allocation_id = 88;
     state.rob.entries[3].valid = true;
     state.rob.entries[3].busy = true;
     state.issue.alu_iq.head = 2;
@@ -113,6 +115,7 @@ static void t_pending_load_reset() {
     ResetControllerState ctrl;
     run_reset(state, ctrl);
     CHECK(state.lsu.ldq_count == 0 && !state.lsu.load_response_pending, "load pending retained");
+    CHECK(state.lsu.next_transaction_id == 77, "transaction ID rewound by runtime reset");
     for (int i = 0; i < LDQ_DEPTH; i++) CHECK(!state.lsu.ldq[i].valid, "LDQ valid retained");
     PASS();
 }
@@ -164,6 +167,8 @@ static void t_double_runtime_reset() {
     ResetControllerState second;
     CHECK(run_reset(state, second) == EXPECTED_RESET_STEPS, "second reset length mismatch");
     CHECK(state.frontend.pc == RESET_VECTOR && state.rob.head == state.rob.tail, "second reset failed");
+    CHECK(state.rob.next_allocation_id == 88 && state.lsu.next_transaction_id == 77,
+          "monotonic identity counter rewound");
     PASS();
 }
 

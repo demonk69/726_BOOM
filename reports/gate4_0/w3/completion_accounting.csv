@@ -1,0 +1,9 @@
+requirement,status,passed,total,metric,observed,evidence
+software_checks,PASS,400,400,failed_checks,0,reports/gate4_0/w3/regression/regression_after.md
+persistent_random_runs,PASS,100,100,cycles_per_seed,64,reports/gate4_0/w3/regression/suite_results.csv
+persistent_random_cycles,PASS,6400,6400,dropped_tokens,0,reports/gate4_0/w3/regression/random_metrics.csv
+persistent_random_identity,PASS,2815,2815,duplicate_tokens,0,reports/gate4_0/w3/regression/random_metrics.csv
+focused_generated_rtl,PASS,11,11,failed_cases,0,reports/gate4_0/w3/rtl_test_matrix.csv
+full_core_xsim_trace_compare,PASS,49,49,failed_cases,0,reports/gate4_0/w3/full_core_rtl_summary.json
+canonical_csynth_targets,PASS,5,5,failed_targets,0,reports/gate4_0/w3/resource_summary.csv
+synthesis_guardrails,PASS,1,1,failed_guardrails,0,reports/gate4_0/w3/guardrail_audit.md

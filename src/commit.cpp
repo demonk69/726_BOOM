@@ -7,6 +7,7 @@ namespace boom {
 
 extern bool rob_branch_kill(BoomCoreState& state);
 extern void rob_complete(BoomCoreState& state);
+extern void lsu_reclaim_store(BoomCoreState& state, uint8_t rob_idx, uint32_t allocation_id);
 
 static bool free_list_contains(const RenameFreeListState& fl, uint8_t preg) {
     uint8_t idx = fl.head;
@@ -32,7 +33,6 @@ void rob_commit_module(BoomCoreState& state, PipeSignals& pipe) {
     rob.commit_valid = false;
 
     if (rob_branch_kill(state)) return;
-    rob_complete(state);
 
     bool is_empty = (rob.head==rob.tail) && !rob.maybe_full;
     if (!is_empty && rob.entries[rob.head].valid && !rob.entries[rob.head].busy) {
@@ -48,6 +48,7 @@ void rob_commit_module(BoomCoreState& state, PipeSignals& pipe) {
             } else { rob.state = ROB_EXCEPTION; state.io_trap = true; }
         } else {
             if ((uop.ctrl.is_load || he.is_load) && !he.memory_completed) return;
+            if (pipe.commit_trace.full()) return;
             if (uop.ctrl.is_sta || he.is_store) {
                 if (!he.memory_valid) return;
                 if (!he.memory_request_sent) {
@@ -69,6 +70,7 @@ void rob_commit_module(BoomCoreState& state, PipeSignals& pipe) {
                     he.memory_request_sent = true;
                     he.memory_completed = true;
                     state.tohost = he.memory_data;
+                    lsu_reclaim_store(state, uop.queue.rob_idx, uop.queue.rob_allocation_id);
                 }
             }
             state.csr.instret++;
@@ -93,7 +95,7 @@ void rob_commit_module(BoomCoreState& state, PipeSignals& pipe) {
                     free_preg_unique(fl, uop.rename.stale_pdst);
                 }
             }
-            if (!pipe.commit_trace.full()) pipe.commit_trace.write(ce);
+            pipe.commit_trace.write(ce);
             rob.last_commit=ce; rob.commit_valid=true;
             he.valid=false; rob.head=(rob.head+1)%ROB_DEPTH; rob.maybe_full=false;
         }

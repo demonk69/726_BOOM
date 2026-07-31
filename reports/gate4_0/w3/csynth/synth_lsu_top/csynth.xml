@@ -1,0 +1,550 @@
+<profile>
+    <ReportVersion>
+        <Version>2021.2</Version>
+    </ReportVersion>
+    <UserAssignments>
+        <unit>ns</unit>
+        <ProductFamily>zynquplus</ProductFamily>
+        <Part>xczu7ev-ffvc1156-2-e</Part>
+        <TopModelName>synth_lsu_top</TopModelName>
+        <TargetClockPeriod>10.00</TargetClockPeriod>
+        <ClockUncertainty>2.70</ClockUncertainty>
+        <FlowTarget>vivado</FlowTarget>
+    </UserAssignments>
+    <PerformanceEstimates>
+        <PipelineType>no</PipelineType>
+        <SummaryOfTimingAnalysis>
+            <unit>ns</unit>
+            <EstimatedClockPeriod>3.474</EstimatedClockPeriod>
+        </SummaryOfTimingAnalysis>
+        <SummaryOfOverallLatency>
+            <unit>clock cycles</unit>
+            <Best-caseLatency>1</Best-caseLatency>
+            <Average-caseLatency>1</Average-caseLatency>
+            <Worst-caseLatency>1</Worst-caseLatency>
+            <Best-caseRealTimeLatency>10.000 ns</Best-caseRealTimeLatency>
+            <Average-caseRealTimeLatency>10.000 ns</Average-caseRealTimeLatency>
+            <Worst-caseRealTimeLatency>10.000 ns</Worst-caseRealTimeLatency>
+            <Interval-min>2</Interval-min>
+            <Interval-max>2</Interval-max>
+        </SummaryOfOverallLatency>
+    </PerformanceEstimates>
+    <AreaEstimates>
+        <Resources>
+            <FF>102</FF>
+            <LUT>129</LUT>
+            <BRAM_18K>0</BRAM_18K>
+            <DSP>0</DSP>
+            <URAM>0</URAM>
+        </Resources>
+        <AvailableResources>
+            <BRAM_18K>624</BRAM_18K>
+            <DSP>1728</DSP>
+            <FF>460800</FF>
+            <LUT>230400</LUT>
+            <URAM>96</URAM>
+        </AvailableResources>
+    </AreaEstimates>
+    <InterfaceSummary>
+        <RtlPorts>
+            <name>ap_local_block</name>
+            <Object>synth_lsu_top</Object>
+            <Type>return value</Type>
+            <Scope/>
+            <IOProtocol>ap_ctrl_hs</IOProtocol>
+            <IOConfig/>
+            <Dir>out</Dir>
+            <Bits>1</Bits>
+            <Attribute>unknown</Attribute>
+        </RtlPorts>
+        <RtlPorts>
+            <name>ap_local_deadlock</name>
+            <Object>synth_lsu_top</Object>
+            <Type>return value</Type>
+            <Scope/>
+            <IOProtocol>ap_ctrl_hs</IOProtocol>
+            <IOConfig/>
+            <Dir>out</Dir>
+            <Bits>1</Bits>
+            <Attribute>unknown</Attribute>
+        </RtlPorts>
+        <RtlPorts>
+            <name>ap_clk</name>
+            <Object>synth_lsu_top</Object>
+            <Type>return value</Type>
+            <Scope/>
+            <IOProtocol>ap_ctrl_hs</IOProtocol>
+            <IOConfig/>
+            <Dir>in</Dir>
+            <Bits>1</Bits>
+            <Attribute>control</Attribute>
+        </RtlPorts>
+        <RtlPorts>
+            <name>ap_rst</name>
+            <Object>synth_lsu_top</Object>
+            <Type>return value</Type>
+            <Scope/>
+            <IOProtocol>ap_ctrl_hs</IOProtocol>
+            <IOConfig/>
+            <Dir>in</Dir>
+            <Bits>1</Bits>
+            <Attribute>control</Attribute>
+        </RtlPorts>
+        <RtlPorts>
+            <name>ap_start</name>
+            <Object>synth_lsu_top</Object>
+            <Type>return value</Type>
+            <Scope/>
+            <IOProtocol>ap_ctrl_hs</IOProtocol>
+            <IOConfig/>
+            <Dir>in</Dir>
+            <Bits>1</Bits>
+            <Attribute>control</Attribute>
+        </RtlPorts>
+        <RtlPorts>
+            <name>ap_done</name>
+            <Object>synth_lsu_top</Object>
+            <Type>return value</Type>
+            <Scope/>
+            <IOProtocol>ap_ctrl_hs</IOProtocol>
+            <IOConfig/>
+            <Dir>out</Dir>
+            <Bits>1</Bits>
+            <Attribute>control</Attribute>
+        </RtlPorts>
+        <RtlPorts>
+            <name>ap_idle</name>
+            <Object>synth_lsu_top</Object>
+            <Type>return value</Type>
+            <Scope/>
+            <IOProtocol>ap_ctrl_hs</IOProtocol>
+            <IOConfig/>
+            <Dir>out</Dir>
+            <Bits>1</Bits>
+            <Attribute>control</Attribute>
+        </RtlPorts>
+        <RtlPorts>
+            <name>ap_ready</name>
+            <Object>synth_lsu_top</Object>
+            <Type>return value</Type>
+            <Scope/>
+            <IOProtocol>ap_ctrl_hs</IOProtocol>
+            <IOConfig/>
+            <Dir>out</Dir>
+            <Bits>1</Bits>
+            <Attribute>control</Attribute>
+        </RtlPorts>
+        <RtlPorts>
+            <name>dmem_req_out_din</name>
+            <Object>dmem_req_out</Object>
+            <Type>pointer</Type>
+            <Scope/>
+            <IOProtocol>ap_fifo</IOProtocol>
+            <IOConfig/>
+            <Dir>out</Dir>
+            <Bits>283</Bits>
+            <Attribute>control</Attribute>
+            <CType>int</CType>
+        </RtlPorts>
+        <RtlPorts>
+            <name>dmem_req_out_full_n</name>
+            <Object>dmem_req_out</Object>
+            <Type>pointer</Type>
+            <Scope/>
+            <IOProtocol>ap_fifo</IOProtocol>
+            <IOConfig/>
+            <Dir>in</Dir>
+            <Bits>1</Bits>
+            <Attribute>control</Attribute>
+            <CType>int</CType>
+        </RtlPorts>
+        <RtlPorts>
+            <name>dmem_req_out_write</name>
+            <Object>dmem_req_out</Object>
+            <Type>pointer</Type>
+            <Scope/>
+            <IOProtocol>ap_fifo</IOProtocol>
+            <IOConfig/>
+            <Dir>out</Dir>
+            <Bits>1</Bits>
+            <Attribute>control</Attribute>
+            <CType>int</CType>
+        </RtlPorts>
+        <RtlPorts>
+            <name>dmem_resp_in_dout</name>
+            <Object>dmem_resp_in</Object>
+            <Type>pointer</Type>
+            <Scope/>
+            <IOProtocol>ap_fifo</IOProtocol>
+            <IOConfig/>
+            <Dir>in</Dir>
+            <Bits>289</Bits>
+            <Attribute>control</Attribute>
+            <CType>int</CType>
+        </RtlPorts>
+        <RtlPorts>
+            <name>dmem_resp_in_empty_n</name>
+            <Object>dmem_resp_in</Object>
+            <Type>pointer</Type>
+            <Scope/>
+            <IOProtocol>ap_fifo</IOProtocol>
+            <IOConfig/>
+            <Dir>in</Dir>
+            <Bits>1</Bits>
+            <Attribute>control</Attribute>
+            <CType>int</CType>
+        </RtlPorts>
+        <RtlPorts>
+            <name>dmem_resp_in_read</name>
+            <Object>dmem_resp_in</Object>
+            <Type>pointer</Type>
+            <Scope/>
+            <IOProtocol>ap_fifo</IOProtocol>
+            <IOConfig/>
+            <Dir>out</Dir>
+            <Bits>1</Bits>
+            <Attribute>control</Attribute>
+            <CType>int</CType>
+        </RtlPorts>
+        <RtlPorts>
+            <name>seed_addr</name>
+            <Object>seed_addr</Object>
+            <Type>scalar</Type>
+            <Scope/>
+            <IOProtocol>ap_none</IOProtocol>
+            <IOConfig/>
+            <Dir>in</Dir>
+            <Bits>64</Bits>
+            <Attribute>data</Attribute>
+            <CType>int</CType>
+        </RtlPorts>
+        <RtlPorts>
+            <name>observable</name>
+            <Object>observable</Object>
+            <Type>pointer</Type>
+            <Scope/>
+            <IOProtocol>ap_vld</IOProtocol>
+            <IOConfig/>
+            <Dir>out</Dir>
+            <Bits>64</Bits>
+            <Attribute>data</Attribute>
+            <CType>int</CType>
+        </RtlPorts>
+        <RtlPorts>
+            <name>observable_ap_vld</name>
+            <Object>observable</Object>
+            <Type>pointer</Type>
+            <Scope/>
+            <IOProtocol>ap_vld</IOProtocol>
+            <IOConfig/>
+            <Dir>out</Dir>
+            <Bits>1</Bits>
+            <Attribute>control</Attribute>
+            <CType>int</CType>
+        </RtlPorts>
+    </InterfaceSummary>
+    <RTLDesignHierarchy>
+        <TopModule MAX_DEPTH="2">
+            <ModuleName>synth_lsu_top</ModuleName>
+            <InstancesList>
+                <Instance>
+                    <InstName>call_ln2052_lsu_module_fu_109</InstName>
+                    <ModuleName>lsu_module</ModuleName>
+                    <IsCompInst>true</IsCompInst>
+                    <ID>109</ID>
+                </Instance>
+            </InstancesList>
+            <BindInstances>pipe_3_fifo_U</BindInstances>
+        </TopModule>
+    </RTLDesignHierarchy>
+    <ModuleInformation>
+        <Module>
+            <Name>lsu_module</Name>
+            <PerformanceEstimates>
+                <SummaryOfTimingAnalysis>
+                    <TargetClockPeriod>10.00</TargetClockPeriod>
+                    <ClockUncertainty>2.70</ClockUncertainty>
+                    <EstimatedClockPeriod>1.838</EstimatedClockPeriod>
+                </SummaryOfTimingAnalysis>
+                <SummaryOfOverallLatency>
+                    <Best-caseLatency>0</Best-caseLatency>
+                    <Average-caseLatency>0</Average-caseLatency>
+                    <Worst-caseLatency>0</Worst-caseLatency>
+                    <Best-caseRealTimeLatency>0 ns</Best-caseRealTimeLatency>
+                    <Average-caseRealTimeLatency>0 ns</Average-caseRealTimeLatency>
+                    <Worst-caseRealTimeLatency>0 ns</Worst-caseRealTimeLatency>
+                    <PipelineInitiationInterval>0</PipelineInitiationInterval>
+                    <PipelineType>no</PipelineType>
+                </SummaryOfOverallLatency>
+            </PerformanceEstimates>
+            <AreaEstimates>
+                <Resources>
+                    <FF>1</FF>
+                    <AVAIL_FF>460800</AVAIL_FF>
+                    <UTIL_FF>~0</UTIL_FF>
+                    <LUT>13</LUT>
+                    <AVAIL_LUT>230400</AVAIL_LUT>
+                    <UTIL_LUT>~0</UTIL_LUT>
+                    <BRAM_18K>0</BRAM_18K>
+                    <AVAIL_BRAM>624</AVAIL_BRAM>
+                    <UTIL_BRAM>0</UTIL_BRAM>
+                    <DSP>0</DSP>
+                    <AVAIL_DSP>1728</AVAIL_DSP>
+                    <UTIL_DSP>0</UTIL_DSP>
+                    <URAM>0</URAM>
+                    <AVAIL_URAM>96</AVAIL_URAM>
+                    <UTIL_URAM>0</UTIL_URAM>
+                </Resources>
+            </AreaEstimates>
+        </Module>
+        <Module>
+            <Name>synth_lsu_top</Name>
+            <PerformanceEstimates>
+                <SummaryOfTimingAnalysis>
+                    <TargetClockPeriod>10.00</TargetClockPeriod>
+                    <ClockUncertainty>2.70</ClockUncertainty>
+                    <EstimatedClockPeriod>3.474</EstimatedClockPeriod>
+                </SummaryOfTimingAnalysis>
+                <SummaryOfOverallLatency>
+                    <Best-caseLatency>1</Best-caseLatency>
+                    <Average-caseLatency>1</Average-caseLatency>
+                    <Worst-caseLatency>1</Worst-caseLatency>
+                    <Best-caseRealTimeLatency>10.000 ns</Best-caseRealTimeLatency>
+                    <Average-caseRealTimeLatency>10.000 ns</Average-caseRealTimeLatency>
+                    <Worst-caseRealTimeLatency>10.000 ns</Worst-caseRealTimeLatency>
+                    <PipelineInitiationInterval>2</PipelineInitiationInterval>
+                    <PipelineType>no</PipelineType>
+                </SummaryOfOverallLatency>
+            </PerformanceEstimates>
+            <AreaEstimates>
+                <Resources>
+                    <FF>102</FF>
+                    <AVAIL_FF>460800</AVAIL_FF>
+                    <UTIL_FF>~0</UTIL_FF>
+                    <LUT>129</LUT>
+                    <AVAIL_LUT>230400</AVAIL_LUT>
+                    <UTIL_LUT>~0</UTIL_LUT>
+                    <BRAM_18K>0</BRAM_18K>
+                    <AVAIL_BRAM>624</AVAIL_BRAM>
+                    <UTIL_BRAM>0</UTIL_BRAM>
+                    <DSP>0</DSP>
+                    <AVAIL_DSP>1728</AVAIL_DSP>
+                    <UTIL_DSP>0</UTIL_DSP>
+                    <URAM>0</URAM>
+                    <AVAIL_URAM>96</AVAIL_URAM>
+                    <UTIL_URAM>0</UTIL_URAM>
+                </Resources>
+            </AreaEstimates>
+            <BindNodes>
+                <BindNode BINDTYPE="storage" BRAM="0" BUNDLEDNAME="" DISPNAME="bind_storage fifo" DSP="0" ID="" IMPL="srl" LATENCY="0" LOOP="" OPTYPE="fifo" PRAGMA="" RTLNAME="pipe_3_fifo_U" SOURCE="" URAM="0" VARIABLE="pipe_3"/>
+            </BindNodes>
+        </Module>
+    </ModuleInformation>
+    <FIFOInformation/>
+    <UserConfigCommands>
+        <config_compile pipeline_loops="0"/>
+    </UserConfigCommands>
+    <Args>
+        <Arg ArgName="dmem_req_out" index="0" direction="out" srcType="stream&lt;DmemRequest, 0&gt;&amp;" srcSize="320">
+            <hwRefs>
+                <hwRef type="interface" interface="dmem_req_out" name="" usage="data" direction="out"/>
+            </hwRefs>
+        </Arg>
+        <Arg ArgName="dmem_resp_in" index="1" direction="in" srcType="stream&lt;DmemResponse, 0&gt;&amp;" srcSize="384">
+            <hwRefs>
+                <hwRef type="interface" interface="dmem_resp_in" name="" usage="data" direction="in"/>
+            </hwRefs>
+        </Arg>
+        <Arg ArgName="seed_addr" index="2" direction="in" srcType="long unsigned int" srcSize="64">
+            <hwRefs>
+                <hwRef type="port" interface="seed_addr" name="seed_addr" usage="data" direction="in"/>
+            </hwRefs>
+        </Arg>
+        <Arg ArgName="observable" index="3" direction="out" srcType="long unsigned int&amp;" srcSize="64">
+            <hwRefs>
+                <hwRef type="port" interface="observable" name="observable" usage="data" direction="out"/>
+                <hwRef type="port" interface="observable_ap_vld" name="observable_ap_vld" usage="control" direction="out"/>
+            </hwRefs>
+        </Arg>
+    </Args>
+    <Interfaces>
+        <Interface InterfaceName="ap_clk" type="clock" busTypeName="clock" mode="slave">
+            <busParams>
+                <busParam busParamName="ASSOCIATED_RESET">ap_rst</busParam>
+            </busParams>
+            <portMaps>
+                <portMap portMapName="ap_clk">CLK</portMap>
+            </portMaps>
+            <ports>
+                <port>ap_clk</port>
+            </ports>
+        </Interface>
+        <Interface InterfaceName="ap_rst" type="reset" busTypeName="reset" mode="slave">
+            <busParams>
+                <busParam busParamName="POLARITY">ACTIVE_HIGH</busParam>
+            </busParams>
+            <portMaps>
+                <portMap portMapName="ap_rst">RST</portMap>
+            </portMaps>
+            <ports>
+                <port>ap_rst</port>
+            </ports>
+        </Interface>
+        <Interface InterfaceName="ap_ctrl" type="ap_ctrl" busTypeName="acc_handshake" mode="slave">
+            <portMaps>
+                <portMap portMapName="ap_start">start</portMap>
+                <portMap portMapName="ap_done">done</portMap>
+                <portMap portMapName="ap_idle">idle</portMap>
+                <portMap portMapName="ap_ready">ready</portMap>
+            </portMaps>
+            <ports>
+                <port>ap_done</port>
+                <port>ap_idle</port>
+                <port>ap_ready</port>
+                <port>ap_start</port>
+            </ports>
+        </Interface>
+        <Interface InterfaceName="dmem_req_out" type="ap_fifo" busTypeName="acc_fifo_write" mode="master" dataWidth="283" portPrefix="dmem_req_out_">
+            <portMaps>
+                <portMap portMapName="dmem_req_out_din">WR_DATA</portMap>
+                <portMap portMapName="dmem_req_out_full_n">FULL_N</portMap>
+                <portMap portMapName="dmem_req_out_write">WR_EN</portMap>
+            </portMaps>
+            <ports>
+                <port>dmem_req_out_din</port>
+                <port>dmem_req_out_full_n</port>
+                <port>dmem_req_out_write</port>
+            </ports>
+            <constraints>
+                <constraint constraint_type="pragma interface" mode="ap_fifo" register_option="0" argName="dmem_req_out"/>
+            </constraints>
+        </Interface>
+        <Interface InterfaceName="dmem_resp_in" type="ap_fifo" busTypeName="acc_fifo_read" mode="master" dataWidth="289" portPrefix="dmem_resp_in_">
+            <portMaps>
+                <portMap portMapName="dmem_resp_in_dout">RD_DATA</portMap>
+                <portMap portMapName="dmem_resp_in_empty_n">EMPTY_N</portMap>
+                <portMap portMapName="dmem_resp_in_read">RD_EN</portMap>
+            </portMaps>
+            <ports>
+                <port>dmem_resp_in_dout</port>
+                <port>dmem_resp_in_empty_n</port>
+                <port>dmem_resp_in_read</port>
+            </ports>
+            <constraints>
+                <constraint constraint_type="pragma interface" mode="ap_fifo" register_option="0" argName="dmem_resp_in"/>
+            </constraints>
+        </Interface>
+        <Interface InterfaceName="seed_addr" type="data" busTypeName="data" protocol="ap_none" mode="slave" dataWidth="64">
+            <portMaps>
+                <portMap portMapName="seed_addr">DATA</portMap>
+            </portMaps>
+            <ports>
+                <port>seed_addr</port>
+            </ports>
+            <constraints>
+                <constraint constraint_type="pragma interface" mode="ap_none" register_option="0" argName="seed_addr"/>
+            </constraints>
+        </Interface>
+        <Interface InterfaceName="observable" type="data" busTypeName="data" protocol="ap_vld" mode="master" dataWidth="64">
+            <portMaps>
+                <portMap portMapName="observable">DATA</portMap>
+            </portMaps>
+            <ports>
+                <port>observable</port>
+            </ports>
+            <constraints>
+                <constraint constraint_type="pragma interface" mode="ap_none" register_option="0" argName="observable"/>
+            </constraints>
+        </Interface>
+    </Interfaces>
+    <ReportHWInterface>
+        <section name="HW Interfaces" level="0">
+            <item name="AP_FIFO">
+                <table isCollapsed="0">
+                    <keys size="2">Interface, Data Width</keys>
+                    <column name="dmem_req_out">283</column>
+                    <column name="dmem_resp_in">289</column>
+                </table>
+            </item>
+            <item name="REGISTER">
+                <table isCollapsed="0">
+                    <keys size="3">Interface, Mode, Bitwidth</keys>
+                    <column name="observable">ap_none, 64</column>
+                    <column name="seed_addr">ap_none, 64</column>
+                </table>
+            </item>
+            <item name="TOP LEVEL CONTROL">
+                <table isCollapsed="0">
+                    <keys size="3">Interface, Type, Ports</keys>
+                    <column name="ap_clk">clock, ap_clk</column>
+                    <column name="ap_rst">reset, ap_rst</column>
+                    <column name="ap_ctrl">ap_ctrl_hs, ap_done ap_idle ap_ready ap_start</column>
+                </table>
+            </item>
+        </section>
+    </ReportHWInterface>
+    <ReportSWInterface>
+        <section name="SW I/O Information" level="0">
+            <item name="Top Function Arguments">
+                <table isCollapsed="1">
+                    <keys size="3">Argument, Direction, Datatype</keys>
+                    <column name="dmem_req_out">out, stream&lt;DmemRequest 0&gt;&amp;</column>
+                    <column name="dmem_resp_in">in, stream&lt;DmemResponse 0&gt;&amp;</column>
+                    <column name="seed_addr">in, long unsigned int</column>
+                    <column name="observable">out, long unsigned int&amp;</column>
+                </table>
+            </item>
+            <item name="SW-to-HW Mapping">
+                <table isCollapsed="1">
+                    <keys size="3">Argument, HW Interface, HW Type</keys>
+                    <column name="dmem_req_out">dmem_req_out, interface</column>
+                    <column name="dmem_resp_in">dmem_resp_in, interface</column>
+                    <column name="seed_addr">seed_addr, port</column>
+                    <column name="observable">observable, port</column>
+                    <column name="observable">observable_ap_vld, port</column>
+                </table>
+            </item>
+        </section>
+    </ReportSWInterface>
+    <ReportBurst>
+        <section name="M_AXI Burst Information" level="0" HEADER_NOTE="Note: All burst requests might be further partitioned into multiple requests during RTL generation based on max_read_burst_length or max_write_burst_length settings."/>
+    </ReportBurst>
+    <PragmaReport>
+        <Pragma type="inline" location="/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:464" status="valid" parentFunction="complete_selected" variable="" isDirective="0" options=""/>
+        <Pragma type="interface" location="/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:1798" status="valid" parentFunction="boom_core_top" variable="return" isDirective="0" options="ap_ctrl_none port=return"/>
+        <Pragma type="interface" location="/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:1799" status="valid" parentFunction="boom_core_top" variable="imem_req_out" isDirective="0" options="axis port=imem_req_out"/>
+        <Pragma type="interface" location="/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:1800" status="valid" parentFunction="boom_core_top" variable="imem_resp_in" isDirective="0" options="axis port=imem_resp_in"/>
+        <Pragma type="interface" location="/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:1801" status="valid" parentFunction="boom_core_top" variable="dmem_req_out" isDirective="0" options="axis port=dmem_req_out"/>
+        <Pragma type="interface" location="/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:1802" status="valid" parentFunction="boom_core_top" variable="dmem_resp_in" isDirective="0" options="axis port=dmem_resp_in"/>
+        <Pragma type="interface" location="/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:1803" status="valid" parentFunction="boom_core_top" variable="commit_trace_out" isDirective="0" options="axis port=commit_trace_out"/>
+        <Pragma type="interface" location="/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:1804" status="valid" parentFunction="boom_core_top" variable="io_success" isDirective="0" options="ap_none port=io_success"/>
+        <Pragma type="interface" location="/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:1805" status="valid" parentFunction="boom_core_top" variable="io_halted" isDirective="0" options="ap_none port=io_halted"/>
+        <Pragma type="interface" location="/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:1806" status="valid" parentFunction="boom_core_top" variable="io_trap" isDirective="0" options="ap_none port=io_trap"/>
+        <Pragma type="interface" location="/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:1807" status="valid" parentFunction="boom_core_top" variable="io_cycle_valid" isDirective="0" options="ap_none port=io_cycle_valid"/>
+        <Pragma type="interface" location="/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:1808" status="valid" parentFunction="boom_core_top" variable="io_cycle" isDirective="0" options="ap_none port=io_cycle"/>
+        <Pragma type="interface" location="/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:1809" status="valid" parentFunction="boom_core_top" variable="io_instret" isDirective="0" options="ap_none port=io_instret"/>
+        <Pragma type="reset" location="/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:1813" status="valid" parentFunction="boom_core_top" variable="reset_ctrl" isDirective="0" options="variable=reset_ctrl"/>
+        <Pragma type="interface" location="/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:1841" status="valid" parentFunction="boom_core_step_top" variable="return" isDirective="0" options="ap_ctrl_none port=return"/>
+        <Pragma type="interface" location="/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:1842" status="valid" parentFunction="boom_core_step_top" variable="imem_req_out" isDirective="0" options="axis port=imem_req_out"/>
+        <Pragma type="interface" location="/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:1843" status="valid" parentFunction="boom_core_step_top" variable="imem_resp_in" isDirective="0" options="axis port=imem_resp_in"/>
+        <Pragma type="interface" location="/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:1844" status="valid" parentFunction="boom_core_step_top" variable="dmem_req_out" isDirective="0" options="axis port=dmem_req_out"/>
+        <Pragma type="interface" location="/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:1845" status="valid" parentFunction="boom_core_step_top" variable="dmem_resp_in" isDirective="0" options="axis port=dmem_resp_in"/>
+        <Pragma type="interface" location="/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:1846" status="valid" parentFunction="boom_core_step_top" variable="commit_trace_out" isDirective="0" options="axis port=commit_trace_out"/>
+        <Pragma type="interface" location="/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:1847" status="valid" parentFunction="boom_core_step_top" variable="io_success" isDirective="0" options="ap_none port=io_success"/>
+        <Pragma type="interface" location="/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:1848" status="valid" parentFunction="boom_core_step_top" variable="io_halted" isDirective="0" options="ap_none port=io_halted"/>
+        <Pragma type="interface" location="/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:1849" status="valid" parentFunction="boom_core_step_top" variable="io_trap" isDirective="0" options="ap_none port=io_trap"/>
+        <Pragma type="interface" location="/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:1850" status="valid" parentFunction="boom_core_step_top" variable="io_cycle_valid" isDirective="0" options="ap_none port=io_cycle_valid"/>
+        <Pragma type="interface" location="/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:1851" status="valid" parentFunction="boom_core_step_top" variable="io_cycle" isDirective="0" options="ap_none port=io_cycle"/>
+        <Pragma type="interface" location="/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:1852" status="valid" parentFunction="boom_core_step_top" variable="io_instret" isDirective="0" options="ap_none port=io_instret"/>
+        <Pragma type="reset" location="/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:1856" status="valid" parentFunction="boom_core_step_top" variable="reset_ctrl" isDirective="0" options="variable=reset_ctrl"/>
+        <Pragma type="reset" location="/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:1902" status="valid" parentFunction="boom_core_ncycle_n1_top" variable="reset_ctrl" isDirective="0" options="variable=reset_ctrl"/>
+        <Pragma type="reset" location="/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:1903" status="valid" parentFunction="boom_core_ncycle_n2_top" variable="reset_ctrl" isDirective="0" options="variable=reset_ctrl"/>
+        <Pragma type="reset" location="/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:1904" status="valid" parentFunction="boom_core_ncycle_n4_top" variable="reset_ctrl" isDirective="0" options="variable=reset_ctrl"/>
+        <Pragma type="reset" location="/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:1905" status="valid" parentFunction="boom_core_ncycle_n8_top" variable="reset_ctrl" isDirective="0" options="variable=reset_ctrl"/>
+        <Pragma type="inline" location="/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:2248" status="valid" parentFunction="w3_seed_rob" variable="" isDirective="0" options=""/>
+        <Pragma type="inline" location="/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:2269" status="valid" parentFunction="w3_seed_issue" variable="" isDirective="0" options=""/>
+        <Pragma type="stream" location="/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:2317" status="valid" parentFunction="synth_w3_diagnostic_top" variable="commit_pipe.commit_trace" isDirective="0" options="variable=commit_pipe.commit_trace depth=1"/>
+        <Pragma type="stream" location="/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:2318" status="valid" parentFunction="synth_w3_diagnostic_top" variable="commit_pipe.dmem_req" isDirective="0" options="variable=commit_pipe.dmem_req depth=1"/>
+    </PragmaReport>
+</profile>
+

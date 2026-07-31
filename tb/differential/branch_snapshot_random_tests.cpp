@@ -8,7 +8,8 @@
 namespace boom {
 void rename_module(BoomCoreState& state);
 void rob_allocate(BoomCoreState& state);
-void branch_module(BoomCoreState& state);
+void rob_complete(BoomCoreState& state);
+void rob_commit_module(BoomCoreState& state, PipeSignals& pipe);
 }
 
 static const uint32_t DEFAULT_RANDOM_SEED = 0x3A33B007u;
@@ -53,9 +54,11 @@ static bool rename_alloc(BoomCoreState& s, const MicroOp& in, MicroOp& out) {
     s.decode.dec_uops[0] = in;
     boom::rename_module(s);
     s.decode.dec_valids[0] = false;
-    if (!s.rename.renamed_valids[0]) return false;
+    if (!s.rename.dispatch_packets[0].valid) return false;
     boom::rob_allocate(s);
-    out = s.rename.renamed_uops[0];
+    if (!s.rename.dispatch_packets[0].rob_allocated) return false;
+    out = s.rename.dispatch_packets[0].uop;
+    s.rename.dispatch_packets[0] = RenameDispatchPacket();
     return true;
 }
 
@@ -65,7 +68,12 @@ static void resolve(BoomCoreState& s, const MicroOp& br, bool mispredict) {
     s.execute.alu_results[0].uop = br;
     s.execute.alu_results[0].mispredict = mispredict;
     s.execute.alu_results[0].redirect_pc = RESET_VECTOR + 0x80;
-    boom::branch_module(s);
+    boom::rob_complete(s);
+    PipeSignals pipe;
+    do {
+        boom::rob_commit_module(s, pipe);
+        if (s.rob.commit_valid) pipe.commit_trace.read();
+    } while (s.rob.commit_valid);
 }
 
 static int choose_active_tag(uint8_t mask) {
@@ -98,8 +106,10 @@ void random_tag_mask_pressure() { TEST("random branch mask/tag pressure sequence
     for (int i=0; i<MAX_BRANCH_COUNT; i++) live[i]=false;
     uint8_t model_mask = 0;
 
-    for (int step=0; step<300; step++) {
-        bool do_alloc = (model_mask == 0) || ((rnd() & 3u) != 0 && model_mask != 0xff);
+    // Keep each pressure sequence below ROB wrap; wrap/reuse has separate directed coverage.
+    for (int step=0; step<ROB_DEPTH-1; step++) {
+        bool rob_full = s.rob.head == s.rob.tail && s.rob.maybe_full;
+        bool do_alloc = !rob_full && ((model_mask == 0) || ((rnd() & 3u) != 0 && model_mask != 0xff));
         if (do_alloc) {
             MicroOp br;
             CHECK(rename_alloc(s, make_branch(), br), "random branch allocation failed");
@@ -112,6 +122,9 @@ void random_tag_mask_pressure() { TEST("random branch mask/tag pressure sequence
             CHECK(tag >= 0, "no active tag to resolve");
             bool mispredict = (rnd() & 7u) == 0;
             MicroOp br = by_tag[tag];
+            CHECK(s.rob.entries[br.queue.rob_idx].valid &&
+                  s.rob.entries[br.queue.rob_idx].uop.queue.rob_allocation_id == br.queue.rob_allocation_id,
+                  "selected branch no longer owns its ROB entry");
             resolve(s, br, mispredict);
             if (mispredict) {
                 model_mask = br.branch.br_mask;

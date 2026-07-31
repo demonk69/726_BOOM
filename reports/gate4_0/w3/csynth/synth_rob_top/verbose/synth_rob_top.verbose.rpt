@@ -1,0 +1,587 @@
+
+
+================================================================
+== Vitis HLS Report for 'synth_rob_top'
+================================================================
+* Date:           Fri Jul 31 19:21:41 2026
+
+* Version:        2021.2 (Build 3367213 on Tue Oct 19 02:47:39 MDT 2021)
+* Project:        synth_rob_top
+* Solution:       solution_w3_csynth (Vivado IP Flow Target)
+* Product family: zynquplus
+* Target device:  xczu7ev-ffvc1156-2-e
+
+
+================================================================
+== Performance Estimates
+================================================================
++ Timing: 
+    * Summary: 
+    +--------+----------+----------+------------+
+    |  Clock |  Target  | Estimated| Uncertainty|
+    +--------+----------+----------+------------+
+    |ap_clk  |  10.00 ns|  1.829 ns|     2.70 ns|
+    +--------+----------+----------+------------+
+
++ Latency: 
+    * Summary: 
+    +---------+---------+-----------+-----------+-----+-----+---------+
+    |  Latency (cycles) |   Latency (absolute)  |  Interval | Pipeline|
+    |   min   |   max   |    min    |    max    | min | max |   Type  |
+    +---------+---------+-----------+-----------+-----+-----+---------+
+    |        1|        1|  10.000 ns|  10.000 ns|    2|    2|       no|
+    +---------+---------+-----------+-----------+-----+-----+---------+
+
+    + Detail: 
+        * Instance: 
+        +--------------------------------+--------------+---------+---------+----------+----------+-----+-----+---------+
+        |                                |              |  Latency (cycles) |  Latency (absolute) |  Interval | Pipeline|
+        |            Instance            |    Module    |   min   |   max   |    min   |    max   | min | max |   Type  |
+        +--------------------------------+--------------+---------+---------+----------+----------+-----+-----+---------+
+        |call_ln1969_rob_allocate_fu_52  |rob_allocate  |        0|        0|      0 ns|      0 ns|    0|    0|       no|
+        +--------------------------------+--------------+---------+---------+----------+----------+-----+-----+---------+
+
+        * Loop: 
+        N/A
+
+
+
+================================================================
+== Utilization Estimates
+================================================================
+* Summary: 
++-----------------+---------+------+--------+--------+-----+
+|       Name      | BRAM_18K|  DSP |   FF   |   LUT  | URAM|
++-----------------+---------+------+--------+--------+-----+
+|DSP              |        -|     -|       -|       -|    -|
+|Expression       |        -|     -|       -|       -|    -|
+|FIFO             |        -|     -|       -|       -|    -|
+|Instance         |        -|     -|      41|     130|    -|
+|Memory           |        -|     -|       -|       -|    -|
+|Multiplexer      |        -|     -|       -|      14|    -|
+|Register         |        -|     -|       5|       -|    -|
++-----------------+---------+------+--------+--------+-----+
+|Total            |        0|     0|      46|     144|    0|
++-----------------+---------+------+--------+--------+-----+
+|Available        |      624|  1728|  460800|  230400|   96|
++-----------------+---------+------+--------+--------+-----+
+|Utilization (%)  |        0|     0|      ~0|      ~0|    0|
++-----------------+---------+------+--------+--------+-----+
+
++ Detail: 
+    * Instance: 
+    +--------------------------------+--------------+---------+----+----+-----+-----+
+    |            Instance            |    Module    | BRAM_18K| DSP| FF | LUT | URAM|
+    +--------------------------------+--------------+---------+----+----+-----+-----+
+    |call_ln1969_rob_allocate_fu_52  |rob_allocate  |        0|   0|  41|  130|    0|
+    +--------------------------------+--------------+---------+----+----+-----+-----+
+    |Total                           |              |        0|   0|  41|  130|    0|
+    +--------------------------------+--------------+---------+----+----+-----+-----+
+
+    * DSP: 
+    N/A
+
+    * Memory: 
+    N/A
+
+    * FIFO: 
+    N/A
+
+    * Expression: 
+    N/A
+
+    * Multiplexer: 
+    +-----------+----+-----------+-----+-----------+
+    |    Name   | LUT| Input Size| Bits| Total Bits|
+    +-----------+----+-----------+-----+-----------+
+    |ap_NS_fsm  |  14|          3|    1|          3|
+    +-----------+----+-----------+-----+-----------+
+    |Total      |  14|          3|    1|          3|
+    +-----------+----+-----------+-----+-----------+
+
+    * Register: 
+    +------------------------------------------+---+----+-----+-----------+
+    |                   Name                   | FF| LUT| Bits| Const Bits|
+    +------------------------------------------+---+----+-----+-----------+
+    |ap_CS_fsm                                 |  2|   0|    2|          0|
+    |state_rename_dispatch_packets_uop_uopc_0  |  2|   0|    5|          3|
+    |state_rename_dispatch_packets_valid_0     |  1|   0|    1|          0|
+    +------------------------------------------+---+----+-----+-----------+
+    |Total                                     |  5|   0|    8|          3|
+    +------------------------------------------+---+----+-----+-----------+
+
+
+
+================================================================
+== Interface
+================================================================
+* Summary: 
++-------------------+-----+-----+------------+---------------+--------------+
+|     RTL Ports     | Dir | Bits|  Protocol  | Source Object |    C Type    |
++-------------------+-----+-----+------------+---------------+--------------+
+|ap_local_block     |  out|    1|  ap_ctrl_hs|  synth_rob_top|  return value|
+|ap_local_deadlock  |  out|    1|  ap_ctrl_hs|  synth_rob_top|  return value|
+|ap_clk             |   in|    1|  ap_ctrl_hs|  synth_rob_top|  return value|
+|ap_rst             |   in|    1|  ap_ctrl_hs|  synth_rob_top|  return value|
+|ap_start           |   in|    1|  ap_ctrl_hs|  synth_rob_top|  return value|
+|ap_done            |  out|    1|  ap_ctrl_hs|  synth_rob_top|  return value|
+|ap_idle            |  out|    1|  ap_ctrl_hs|  synth_rob_top|  return value|
+|ap_ready           |  out|    1|  ap_ctrl_hs|  synth_rob_top|  return value|
+|seed_inst          |   in|   32|     ap_none|      seed_inst|        scalar|
+|seed_pc            |   in|   64|     ap_none|        seed_pc|        scalar|
+|observable         |  out|   64|      ap_vld|     observable|       pointer|
+|observable_ap_vld  |  out|    1|      ap_vld|     observable|       pointer|
++-------------------+-----+-----+------------+---------------+--------------+
+
+============================================================
++ Verbose Summary: Synthesis Manager
+============================================================
+InlineROM: 1
+ExposeGlobal: 0
+============================================================
++ Verbose Summary: CDFG Model
+============================================================
+IsTopModel: 1
+ResetActiveHigh: 1
+IsCombinational: 2
+IsDatapathOnly: 2
+HasWiredReturn: 1
+HasMFsm: 0
+HasVarLatency: 1
+IsPipeline: 0
+IsRtlPipelined: 0
+IsInstanceOverlapped: 0
+IsDontTouch: 0
+HasImplIP: 0
+IsGatedGlobalClock: 0
+
+
+============================================================
++ Verbose Summary: Schedule
+============================================================
+* Number of FSM states : 2
+* Pipeline : 0
+* Dataflow Pipeline: 0
+
+* FSM state transitions: 
+1 --> 2 
+2 --> 
+
+* FSM state operations: 
+
+State 1 <SV = 0> <Delay = 0.00>
+ST_1 : Operation 3 [1/1] (0.00ns)   --->   "%store_ln1965 = store i1 1, i1 %state_rename_dispatch_packets_valid_0" [/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:1965]   --->   Operation 3 'store' 'store_ln1965' <Predicate = true> <Delay = 0.00>
+ST_1 : Operation 4 [1/1] (0.00ns)   --->   "%store_ln1968 = store i5 18, i5 %state_rename_dispatch_packets_uop_uopc_0" [/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:1968]   --->   Operation 4 'store' 'store_ln1968' <Predicate = true> <Delay = 0.00>
+
+State 2 <SV = 1> <Delay = 0.00>
+ST_2 : Operation 5 [1/1] (0.00ns)   --->   "%spectopmodule_ln0 = spectopmodule void @_ssdm_op_SpecTopModule, void @empty_1"   --->   Operation 5 'spectopmodule' 'spectopmodule_ln0' <Predicate = true> <Delay = 0.00>
+ST_2 : Operation 6 [1/1] (0.00ns)   --->   "%specbitsmap_ln0 = specbitsmap void @_ssdm_op_SpecBitsMap, i32 %seed_inst"   --->   Operation 6 'specbitsmap' 'specbitsmap_ln0' <Predicate = true> <Delay = 0.00>
+ST_2 : Operation 7 [1/1] (0.00ns)   --->   "%specinterface_ln0 = specinterface void @_ssdm_op_SpecInterface, i32 %seed_inst, void @empty, i32 0, i32 0, void @empty_0, i32 0, i32 0, void @empty_0, void @empty_0, void @empty_0, i32 0, i32 0, i32 0, i32 0, void @empty_0, void @empty_0"   --->   Operation 7 'specinterface' 'specinterface_ln0' <Predicate = true> <Delay = 0.00>
+ST_2 : Operation 8 [1/1] (0.00ns)   --->   "%specbitsmap_ln0 = specbitsmap void @_ssdm_op_SpecBitsMap, i64 %seed_pc"   --->   Operation 8 'specbitsmap' 'specbitsmap_ln0' <Predicate = true> <Delay = 0.00>
+ST_2 : Operation 9 [1/1] (0.00ns)   --->   "%specinterface_ln0 = specinterface void @_ssdm_op_SpecInterface, i64 %seed_pc, void @empty, i32 0, i32 0, void @empty_0, i32 0, i32 0, void @empty_0, void @empty_0, void @empty_0, i32 0, i32 0, i32 0, i32 0, void @empty_0, void @empty_0"   --->   Operation 9 'specinterface' 'specinterface_ln0' <Predicate = true> <Delay = 0.00>
+ST_2 : Operation 10 [1/1] (0.00ns)   --->   "%specbitsmap_ln0 = specbitsmap void @_ssdm_op_SpecBitsMap, i64 %observable"   --->   Operation 10 'specbitsmap' 'specbitsmap_ln0' <Predicate = true> <Delay = 0.00>
+ST_2 : Operation 11 [1/1] (0.00ns)   --->   "%specinterface_ln0 = specinterface void @_ssdm_op_SpecInterface, i64 %observable, void @empty, i32 0, i32 0, void @empty_0, i32 0, i32 0, void @empty_0, void @empty_0, void @empty_0, i32 0, i32 0, i32 0, i32 0, void @empty_0, void @empty_0"   --->   Operation 11 'specinterface' 'specinterface_ln0' <Predicate = true> <Delay = 0.00>
+ST_2 : Operation 12 [1/1] (0.00ns)   --->   "%call_ln1969 = call void @rob_allocate, i1 %state_rob_state, i1 %state_rename_dispatch_packets_valid_0, i1 %state_rename_dispatch_packets_rob_allocated_0, i5 %state_rob_tail, i1 %state_rob_maybe_full, i5 %state_rename_dispatch_packets_uop_uopc_0, i32 %state_rob_next_allocation_id" [/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:1969]   --->   Operation 12 'call' 'call_ln1969' <Predicate = true> <Delay = 0.00> <CoreType = "Generic">   --->   Core 0 '' <Latency = 0> <II = 1> <Delay = 1.00> <Generic> <Opcode : >
+ST_2 : Operation 13 [1/1] (0.00ns)   --->   "%write_ln1971 = write void @_ssdm_op_Write.ap_auto.i64P0A, i64 %observable, i64 0" [/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:1971]   --->   Operation 13 'write' 'write_ln1971' <Predicate = true> <Delay = 0.00>
+ST_2 : Operation 14 [1/1] (0.00ns)   --->   "%ret_ln1972 = ret" [/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:1972]   --->   Operation 14 'ret' 'ret_ln1972' <Predicate = true> <Delay = 0.00>
+
+
+============================================================
++ Verbose Summary: Binding
+============================================================
+STG Binding: 
+---------------- STG Properties BEGIN ----------------
+- Is combinational: 0
+- Is one-state seq: 0
+- Is datapath-only: 0
+- Is pipelined: 0
+- Is top level: 1
+Port [ Return ] is wired: 1; IO mode=ap_ctrl_hs:ce=0
+Port [ seed_inst]:  wired=1; compound=0; hidden=0; nouse=1; global=0; static=0; extern=0; dir=0; type=0; pingpong=0; private_global=0; IO mode=ap_none:ce=0
+Port [ seed_pc]:  wired=1; compound=0; hidden=0; nouse=1; global=0; static=0; extern=0; dir=0; type=0; pingpong=0; private_global=0; IO mode=ap_none:ce=0
+Port [ observable]:  wired=1; compound=0; hidden=0; nouse=0; global=0; static=0; extern=0; dir=1; type=0; pingpong=0; private_global=0; IO mode=ap_vld:ce=0
+Port [ state_rename_dispatch_packets_valid_0]:  wired=0; compound=0; hidden=1; nouse=0; global=1; static=1; extern=0; dir=2; type=0; pingpong=0; private_global=1; IO mode=ap_ovld:ce=0
+Port [ state_rename_dispatch_packets_uop_uopc_0]:  wired=0; compound=0; hidden=1; nouse=0; global=1; static=1; extern=0; dir=2; type=0; pingpong=0; private_global=1; IO mode=ap_ovld:ce=0
+Port [ state_rob_state]:  wired=0; compound=0; hidden=1; nouse=1; global=1; static=1; extern=0; dir=2; type=0; pingpong=0; private_global=0; IO mode=ap_ovld:ce=0
+Port [ state_rename_dispatch_packets_rob_allocated_0]:  wired=0; compound=0; hidden=1; nouse=1; global=1; static=1; extern=0; dir=2; type=0; pingpong=0; private_global=0; IO mode=ap_ovld:ce=0
+Port [ state_rob_tail]:  wired=0; compound=0; hidden=1; nouse=1; global=1; static=1; extern=0; dir=2; type=0; pingpong=0; private_global=0; IO mode=ap_ovld:ce=0
+Port [ state_rob_maybe_full]:  wired=0; compound=0; hidden=1; nouse=1; global=1; static=1; extern=0; dir=2; type=0; pingpong=0; private_global=0; IO mode=ap_ovld:ce=0
+Port [ state_rob_next_allocation_id]:  wired=0; compound=0; hidden=1; nouse=1; global=1; static=1; extern=0; dir=2; type=0; pingpong=0; private_global=0; IO mode=ap_ovld:ce=0
+---------------- STG Properties END ------------------
+
+---------------- Datapath Model BEGIN ----------------
+
+<LifeTime>
+<method=bitvector/>
+store_ln1965      (store        ) [ 000]
+store_ln1968      (store        ) [ 000]
+spectopmodule_ln0 (spectopmodule) [ 000]
+specbitsmap_ln0   (specbitsmap  ) [ 000]
+specinterface_ln0 (specinterface) [ 000]
+specbitsmap_ln0   (specbitsmap  ) [ 000]
+specinterface_ln0 (specinterface) [ 000]
+specbitsmap_ln0   (specbitsmap  ) [ 000]
+specinterface_ln0 (specinterface) [ 000]
+call_ln1969       (call         ) [ 000]
+write_ln1971      (write        ) [ 000]
+ret_ln1972        (ret          ) [ 000]
+</LifeTime>
+
+<model>
+
+<comp_list>
+<comp id="0" class="1000" name="seed_inst">
+<pin_list>
+<pin id="1" dir="1" index="0" bw="1" slack="2147483647"/>
+</pin_list>
+<bind>
+<StgValue><ssdm name="seed_inst"/></StgValue>
+</bind>
+</comp>
+
+<comp id="2" class="1000" name="seed_pc">
+<pin_list>
+<pin id="3" dir="1" index="0" bw="1" slack="2147483647"/>
+</pin_list>
+<bind>
+<StgValue><ssdm name="seed_pc"/></StgValue>
+</bind>
+</comp>
+
+<comp id="4" class="1000" name="observable">
+<pin_list>
+<pin id="5" dir="1" index="0" bw="1" slack="0"/>
+</pin_list>
+<bind>
+<StgValue><ssdm name="observable"/></StgValue>
+</bind>
+</comp>
+
+<comp id="6" class="1000" name="state_rename_dispatch_packets_valid_0">
+<pin_list>
+<pin id="7" dir="1" index="0" bw="1" slack="0"/>
+</pin_list>
+<bind>
+<StgValue><ssdm name="state_rename_dispatch_packets_valid_0"/></StgValue>
+</bind>
+</comp>
+
+<comp id="8" class="1000" name="state_rename_dispatch_packets_uop_uopc_0">
+<pin_list>
+<pin id="9" dir="1" index="0" bw="1" slack="0"/>
+</pin_list>
+<bind>
+<StgValue><ssdm name="state_rename_dispatch_packets_uop_uopc_0"/></StgValue>
+</bind>
+</comp>
+
+<comp id="10" class="1000" name="state_rob_state">
+<pin_list>
+<pin id="11" dir="1" index="0" bw="1" slack="0"/>
+</pin_list>
+<bind>
+<StgValue><ssdm name="state_rob_state"/></StgValue>
+</bind>
+</comp>
+
+<comp id="12" class="1000" name="state_rename_dispatch_packets_rob_allocated_0">
+<pin_list>
+<pin id="13" dir="1" index="0" bw="1" slack="0"/>
+</pin_list>
+<bind>
+<StgValue><ssdm name="state_rename_dispatch_packets_rob_allocated_0"/></StgValue>
+</bind>
+</comp>
+
+<comp id="14" class="1000" name="state_rob_tail">
+<pin_list>
+<pin id="15" dir="1" index="0" bw="1" slack="0"/>
+</pin_list>
+<bind>
+<StgValue><ssdm name="state_rob_tail"/></StgValue>
+</bind>
+</comp>
+
+<comp id="16" class="1000" name="state_rob_maybe_full">
+<pin_list>
+<pin id="17" dir="1" index="0" bw="1" slack="0"/>
+</pin_list>
+<bind>
+<StgValue><ssdm name="state_rob_maybe_full"/></StgValue>
+</bind>
+</comp>
+
+<comp id="18" class="1000" name="state_rob_next_allocation_id">
+<pin_list>
+<pin id="19" dir="1" index="0" bw="1" slack="0"/>
+</pin_list>
+<bind>
+<StgValue><ssdm name="state_rob_next_allocation_id"/></StgValue>
+</bind>
+</comp>
+
+<comp id="20" class="1001" name="const_20">
+<pin_list>
+<pin id="21" dir="1" index="0" bw="1" slack="0"/>
+</pin_list>
+<bind>
+<StgValue><ssdm name=""/></StgValue>
+</bind>
+</comp>
+
+<comp id="22" class="1001" name="const_22">
+<pin_list>
+<pin id="23" dir="1" index="0" bw="1" slack="0"/>
+</pin_list>
+<bind>
+<StgValue><ssdm name=""/></StgValue>
+</bind>
+</comp>
+
+<comp id="24" class="1001" name="const_24">
+<pin_list>
+<pin id="25" dir="1" index="0" bw="1" slack="2147483647"/>
+</pin_list>
+<bind>
+<StgValue><ssdm name="_ssdm_op_SpecTopModule"/></StgValue>
+</bind>
+</comp>
+
+<comp id="26" class="1001" name="const_26">
+<pin_list>
+<pin id="27" dir="1" index="0" bw="1" slack="2147483647"/>
+</pin_list>
+<bind>
+<StgValue><ssdm name="empty_1"/></StgValue>
+</bind>
+</comp>
+
+<comp id="28" class="1001" name="const_28">
+<pin_list>
+<pin id="29" dir="1" index="0" bw="1" slack="2147483647"/>
+</pin_list>
+<bind>
+<StgValue><ssdm name="_ssdm_op_SpecBitsMap"/></StgValue>
+</bind>
+</comp>
+
+<comp id="30" class="1001" name="const_30">
+<pin_list>
+<pin id="31" dir="1" index="0" bw="1" slack="2147483647"/>
+</pin_list>
+<bind>
+<StgValue><ssdm name="_ssdm_op_SpecInterface"/></StgValue>
+</bind>
+</comp>
+
+<comp id="32" class="1001" name="const_32">
+<pin_list>
+<pin id="33" dir="1" index="0" bw="1" slack="2147483647"/>
+</pin_list>
+<bind>
+<StgValue><ssdm name="empty"/></StgValue>
+</bind>
+</comp>
+
+<comp id="34" class="1001" name="const_34">
+<pin_list>
+<pin id="35" dir="1" index="0" bw="1" slack="2147483647"/>
+</pin_list>
+<bind>
+<StgValue><ssdm name=""/></StgValue>
+</bind>
+</comp>
+
+<comp id="36" class="1001" name="const_36">
+<pin_list>
+<pin id="37" dir="1" index="0" bw="1" slack="2147483647"/>
+</pin_list>
+<bind>
+<StgValue><ssdm name="empty_0"/></StgValue>
+</bind>
+</comp>
+
+<comp id="38" class="1001" name="const_38">
+<pin_list>
+<pin id="39" dir="1" index="0" bw="1" slack="0"/>
+</pin_list>
+<bind>
+<StgValue><ssdm name="rob_allocate"/></StgValue>
+</bind>
+</comp>
+
+<comp id="40" class="1001" name="const_40">
+<pin_list>
+<pin id="41" dir="1" index="0" bw="1" slack="0"/>
+</pin_list>
+<bind>
+<StgValue><ssdm name="_ssdm_op_Write.ap_auto.i64P0A"/></StgValue>
+</bind>
+</comp>
+
+<comp id="42" class="1001" name="const_42">
+<pin_list>
+<pin id="43" dir="1" index="0" bw="1" slack="0"/>
+</pin_list>
+<bind>
+<StgValue><ssdm name=""/></StgValue>
+</bind>
+</comp>
+
+<comp id="44" class="1004" name="write_ln1971_write_fu_44">
+<pin_list>
+<pin id="45" dir="0" index="0" bw="0" slack="0"/>
+<pin id="46" dir="0" index="1" bw="64" slack="0"/>
+<pin id="47" dir="0" index="2" bw="1" slack="0"/>
+<pin id="48" dir="1" index="3" bw="0" slack="2147483647"/>
+</pin_list>
+<bind>
+<opcode="write(1151) " fcode="write"/>
+<opset="write_ln1971/2 "/>
+</bind>
+</comp>
+
+<comp id="52" class="1004" name="call_ln1969_rob_allocate_fu_52">
+<pin_list>
+<pin id="53" dir="0" index="0" bw="0" slack="0"/>
+<pin id="54" dir="0" index="1" bw="1" slack="0"/>
+<pin id="55" dir="0" index="2" bw="1" slack="0"/>
+<pin id="56" dir="0" index="3" bw="1" slack="0"/>
+<pin id="57" dir="0" index="4" bw="5" slack="0"/>
+<pin id="58" dir="0" index="5" bw="1" slack="0"/>
+<pin id="59" dir="0" index="6" bw="5" slack="0"/>
+<pin id="60" dir="0" index="7" bw="32" slack="0"/>
+<pin id="61" dir="1" index="8" bw="0" slack="2147483647"/>
+</pin_list>
+<bind>
+<opcode="call(48) " fcode="call"/>
+<opset="call_ln1969/2 "/>
+</bind>
+</comp>
+
+<comp id="70" class="1004" name="store_ln1965_store_fu_70">
+<pin_list>
+<pin id="71" dir="0" index="0" bw="1" slack="0"/>
+<pin id="72" dir="0" index="1" bw="1" slack="0"/>
+<pin id="73" dir="1" index="2" bw="0" slack="2147483647"/>
+</pin_list>
+<bind>
+<opcode="store(28) " fcode="store"/>
+<opset="store_ln1965/1 "/>
+</bind>
+</comp>
+
+<comp id="76" class="1004" name="store_ln1968_store_fu_76">
+<pin_list>
+<pin id="77" dir="0" index="0" bw="5" slack="0"/>
+<pin id="78" dir="0" index="1" bw="5" slack="0"/>
+<pin id="79" dir="1" index="2" bw="0" slack="2147483647"/>
+</pin_list>
+<bind>
+<opcode="store(28) " fcode="store"/>
+<opset="store_ln1968/1 "/>
+</bind>
+</comp>
+
+</comp_list>
+
+<net_list>
+<net id="49"><net_src comp="40" pin="0"/><net_sink comp="44" pin=0"/></net>
+
+<net id="50"><net_src comp="4" pin="0"/><net_sink comp="44" pin=1"/></net>
+
+<net id="51"><net_src comp="42" pin="0"/><net_sink comp="44" pin=2"/></net>
+
+<net id="62"><net_src comp="38" pin="0"/><net_sink comp="52" pin=0"/></net>
+
+<net id="63"><net_src comp="10" pin="0"/><net_sink comp="52" pin=1"/></net>
+
+<net id="64"><net_src comp="6" pin="0"/><net_sink comp="52" pin=2"/></net>
+
+<net id="65"><net_src comp="12" pin="0"/><net_sink comp="52" pin=3"/></net>
+
+<net id="66"><net_src comp="14" pin="0"/><net_sink comp="52" pin=4"/></net>
+
+<net id="67"><net_src comp="16" pin="0"/><net_sink comp="52" pin=5"/></net>
+
+<net id="68"><net_src comp="8" pin="0"/><net_sink comp="52" pin=6"/></net>
+
+<net id="69"><net_src comp="18" pin="0"/><net_sink comp="52" pin=7"/></net>
+
+<net id="74"><net_src comp="20" pin="0"/><net_sink comp="70" pin=0"/></net>
+
+<net id="75"><net_src comp="6" pin="0"/><net_sink comp="70" pin=1"/></net>
+
+<net id="80"><net_src comp="22" pin="0"/><net_sink comp="76" pin=0"/></net>
+
+<net id="81"><net_src comp="8" pin="0"/><net_sink comp="76" pin=1"/></net>
+
+</net_list>
+
+</model> 
+---------------- Datapath Model END ------------------
+
+* FSMD analyzer results:
+  - Output states:
+	Port: observable | {2 }
+	Port: state_rename_dispatch_packets_valid_0 | {1 }
+	Port: state_rename_dispatch_packets_uop_uopc_0 | {1 }
+	Port: state_rob_state | {2 }
+	Port: state_rename_dispatch_packets_rob_allocated_0 | {2 }
+	Port: state_rob_tail | {2 }
+	Port: state_rob_maybe_full | {2 }
+	Port: state_rob_next_allocation_id | {2 }
+ - Input state : 
+	Port: synth_rob_top : state_rename_dispatch_packets_valid_0 | {2 }
+	Port: synth_rob_top : state_rename_dispatch_packets_uop_uopc_0 | {2 }
+	Port: synth_rob_top : state_rob_state | {2 }
+	Port: synth_rob_top : state_rename_dispatch_packets_rob_allocated_0 | {2 }
+	Port: synth_rob_top : state_rob_tail | {2 }
+	Port: synth_rob_top : state_rob_maybe_full | {2 }
+	Port: synth_rob_top : state_rob_next_allocation_id | {2 }
+  - Chain level:
+	State 1
+	State 2
+
+
+============================================================
++ Verbose Summary: Datapath Resource usage 
+============================================================
+
+* Functional unit list:
+|----------|--------------------------------|---------|---------|
+| Operation|         Functional Unit        |    FF   |   LUT   |
+|----------|--------------------------------|---------|---------|
+|   call   | call_ln1969_rob_allocate_fu_52 |    0    |   130   |
+|----------|--------------------------------|---------|---------|
+|   write  |    write_ln1971_write_fu_44    |    0    |    0    |
+|----------|--------------------------------|---------|---------|
+|   Total  |                                |    0    |   130   |
+|----------|--------------------------------|---------|---------|
+
+Memories:
+N/A
+
+* Register list:
+N/A
+
+* Multiplexer (MUX) list: 
+|--------|------|------|------|--------|
+|  Comp  |  Pin | Size |  BW  | S x BW |
+|--------|------|------|------|--------|
+|  Total |      |      |      |    0   |
+|--------|------|------|------|--------|
+
+
+
+* Summary:
++-----------+--------+--------+
+|           |   FF   |   LUT  |
++-----------+--------+--------+
+|  Function |    0   |   130  |
+|   Memory  |    -   |    -   |
+|Multiplexer|    -   |    -   |
+|  Register |    -   |    -   |
++-----------+--------+--------+
+|   Total   |    0   |   130  |
++-----------+--------+--------+

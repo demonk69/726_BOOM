@@ -97,7 +97,8 @@ void t6_rob_full() { TEST("ROB fill: 33 instructions should stall");
     CHECK(s.rob.head==0,"ROB head changed while full");
     CHECK(s.rob.tail==0,"ROB tail advanced while full");
     CHECK(s.rob.maybe_full,"ROB full flag cleared");
-    CHECK(!s.rename.renamed_valids[0],"rename valid was not backpressured");
+    CHECK(s.rename.dispatch_packets[0].valid,"rename packet was not retained by ROB backpressure");
+    CHECK(!s.rename.dispatch_packets[0].rob_allocated,"ROB-full packet gained ownership");
     PASS(); }
 
 void t7_rob_wrap() { TEST("ROB wrap-around: commit all 32+1 entries");

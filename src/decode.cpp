@@ -94,9 +94,10 @@ static uint32_t extract_imm_j(uint32_t inst) {
 
 void decode_module(BoomCoreState& state) {
     DecodeState& dec = state.decode;
-    dec.dec_valids[0] = false;
 
-    if (state.global_flush) return;
+    if (state.global_flush) { dec.dec_valids[0] = false; return; }
+    if (state.rename.dispatch_packets[0].valid || dec.dec_valids[0]) return;
+    dec.dec_valids[0] = false;
     if (!state.frontend.fetch_packet_valid) return;
 
     uint64_t pc = state.frontend.fetch_uop.debug_pc;

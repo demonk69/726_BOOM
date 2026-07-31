@@ -1,0 +1,154 @@
+
+
+================================================================
+== Synthesis Summary Report of 'synth_execute_top'
+================================================================
++ General Information: 
+    * Date:           Fri Jul 31 19:21:10 2026
+    * Version:        2021.2 (Build 3367213 on Tue Oct 19 02:47:39 MDT 2021)
+    * Project:        synth_execute_top
+    * Solution:       solution_w3_csynth (Vivado IP Flow Target)
+    * Product family: zynquplus
+    * Target device:  xczu7ev-ffvc1156-2-e
+    
+
++ Performance & Resource Estimates: 
+    
+    PS: '+' for module; 'o' for loop; '*' for dataflow
+    +----------------------+------+------+---------+--------+----------+---------+------+----------+---------+---------+-----------+------------+-----+
+    |        Modules       | Issue|      | Latency | Latency| Iteration|         | Trip |          |         |         |           |            |     |
+    |        & Loops       | Type | Slack| (cycles)|  (ns)  |  Latency | Interval| Count| Pipelined|  BRAM   |   DSP   |     FF    |     LUT    | URAM|
+    +----------------------+------+------+---------+--------+----------+---------+------+----------+---------+---------+-----------+------------+-----+
+    |+ synth_execute_top   |     -|  2.22|        7|  70.000|         -|        8|     -|        no|  4 (~0%)|  3 (~0%)|  861 (~0%)|  1486 (~0%)|    -|
+    | + execute_module     |     -|  2.22|        4|  40.000|         -|        4|     -|        no|        -|  3 (~0%)|  779 (~0%)|  1386 (~0%)|    -|
+    |  o VITIS_LOOP_740_1  |     -|  7.30|        2|  20.000|         1|        -|     2|        no|        -|        -|          -|           -|    -|
+    +----------------------+------+------+---------+--------+----------+---------+------+----------+---------+---------+-----------+------------+-----+
+
+
+================================================================
+== HW Interfaces
+================================================================
+* REGISTER
++------------+---------+----------+
+| Interface  | Mode    | Bitwidth |
++------------+---------+----------+
+| observable | ap_none | 64       |
+| seed_rs1   | ap_none | 64       |
+| seed_rs2   | ap_none | 64       |
+| seed_uopc  | ap_none | 8        |
++------------+---------+----------+
+
+* TOP LEVEL CONTROL
++-----------+------------+-----------------------------------+
+| Interface | Type       | Ports                             |
++-----------+------------+-----------------------------------+
+| ap_clk    | clock      | ap_clk                            |
+| ap_rst    | reset      | ap_rst                            |
+| ap_ctrl   | ap_ctrl_hs | ap_done ap_idle ap_ready ap_start |
++-----------+------------+-----------------------------------+
+
+
+================================================================
+== SW I/O Information
+================================================================
+* Top Function Arguments
++------------+-----------+--------------------+
+| Argument   | Direction | Datatype           |
++------------+-----------+--------------------+
+| seed_uopc  | in        | unsigned char      |
+| seed_rs1   | in        | long unsigned int  |
+| seed_rs2   | in        | long unsigned int  |
+| observable | out       | long unsigned int& |
++------------+-----------+--------------------+
+
+* SW-to-HW Mapping
++------------+-------------------+---------+
+| Argument   | HW Interface      | HW Type |
++------------+-------------------+---------+
+| seed_uopc  | seed_uopc         | port    |
+| seed_rs1   | seed_rs1          | port    |
+| seed_rs2   | seed_rs2          | port    |
+| observable | observable        | port    |
+| observable | observable_ap_vld | port    |
++------------+-------------------+---------+
+
+
+================================================================
+== M_AXI Burst Information
+================================================================
+ Note: All burst requests might be further partitioned into multiple requests during RTL generation based on max_read_burst_length or max_write_burst_length settings.
+
+  No burst in design
+
+================================================================
+== Bind Op Report
+================================================================
++--------------------------+-----+--------+-----------+-----+--------+---------+
+| Name                     | DSP | Pragma | Variable  | Op  | Impl   | Latency |
++--------------------------+-----+--------+-----------+-----+--------+---------+
+| + synth_execute_top      | 3   |        |           |     |        |         |
+|  + execute_module        | 3   |        |           |     |        |         |
+|    add_ln762_fu_260_p2   | -   |        | add_ln762 | add | fabric | 0       |
+|    sub_ln763_fu_266_p2   | -   |        | sub_ln763 | sub | fabric | 0       |
+|    sub_ln773_fu_344_p2   | -   |        | sub_ln773 | sub | fabric | 0       |
+|    mul_32s_32s_64_1_1_U1 | 3   |        | mul_ln776 | mul | auto   | 0       |
+|    add_ln740_fu_421_p2   | -   |        | add_ln740 | add | fabric | 0       |
++--------------------------+-----+--------+-----------+-----+--------+---------+
+
+
+================================================================
+== Bind Storage Report
+================================================================
++---------------------+------+------+--------+--------------+---------+------+---------+
+| Name                | BRAM | URAM | Pragma | Variable     | Storage | Impl | Latency |
++---------------------+------+------+--------+--------------+---------+------+---------+
+| + synth_execute_top | 4    | 0    |        |              |         |      |         |
+|   state_int_rf_U    | 4    | -    |        | state_int_rf | ram_t2p | auto | 1       |
++---------------------+------+------+--------+--------------+---------+------+---------+
+
+
+================================================================
+== User Pragma Report
+================================================================
+* Valid Pragma Syntax
++-----------+-------------------------------------------+----------------------------------------------------------------------------------------------------------------+
+| Type      | Options                                   | Location                                                                                                       |
++-----------+-------------------------------------------+----------------------------------------------------------------------------------------------------------------+
+| inline    |                                           | /home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:464 in complete_selected                                  |
+| interface | ap_ctrl_none port=return                  | /home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:1798 in boom_core_top, return                             |
+| interface | axis port=imem_req_out                    | /home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:1799 in boom_core_top, imem_req_out                       |
+| interface | axis port=imem_resp_in                    | /home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:1800 in boom_core_top, imem_resp_in                       |
+| interface | axis port=dmem_req_out                    | /home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:1801 in boom_core_top, dmem_req_out                       |
+| interface | axis port=dmem_resp_in                    | /home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:1802 in boom_core_top, dmem_resp_in                       |
+| interface | axis port=commit_trace_out                | /home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:1803 in boom_core_top, commit_trace_out                   |
+| interface | ap_none port=io_success                   | /home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:1804 in boom_core_top, io_success                         |
+| interface | ap_none port=io_halted                    | /home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:1805 in boom_core_top, io_halted                          |
+| interface | ap_none port=io_trap                      | /home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:1806 in boom_core_top, io_trap                            |
+| interface | ap_none port=io_cycle_valid               | /home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:1807 in boom_core_top, io_cycle_valid                     |
+| interface | ap_none port=io_cycle                     | /home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:1808 in boom_core_top, io_cycle                           |
+| interface | ap_none port=io_instret                   | /home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:1809 in boom_core_top, io_instret                         |
+| reset     | variable=reset_ctrl                       | /home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:1813 in boom_core_top, reset_ctrl                         |
+| interface | ap_ctrl_none port=return                  | /home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:1841 in boom_core_step_top, return                        |
+| interface | axis port=imem_req_out                    | /home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:1842 in boom_core_step_top, imem_req_out                  |
+| interface | axis port=imem_resp_in                    | /home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:1843 in boom_core_step_top, imem_resp_in                  |
+| interface | axis port=dmem_req_out                    | /home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:1844 in boom_core_step_top, dmem_req_out                  |
+| interface | axis port=dmem_resp_in                    | /home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:1845 in boom_core_step_top, dmem_resp_in                  |
+| interface | axis port=commit_trace_out                | /home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:1846 in boom_core_step_top, commit_trace_out              |
+| interface | ap_none port=io_success                   | /home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:1847 in boom_core_step_top, io_success                    |
+| interface | ap_none port=io_halted                    | /home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:1848 in boom_core_step_top, io_halted                     |
+| interface | ap_none port=io_trap                      | /home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:1849 in boom_core_step_top, io_trap                       |
+| interface | ap_none port=io_cycle_valid               | /home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:1850 in boom_core_step_top, io_cycle_valid                |
+| interface | ap_none port=io_cycle                     | /home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:1851 in boom_core_step_top, io_cycle                      |
+| interface | ap_none port=io_instret                   | /home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:1852 in boom_core_step_top, io_instret                    |
+| reset     | variable=reset_ctrl                       | /home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:1856 in boom_core_step_top, reset_ctrl                    |
+| reset     | variable=reset_ctrl                       | /home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:1902 in boom_core_ncycle_n1_top, reset_ctrl               |
+| reset     | variable=reset_ctrl                       | /home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:1903 in boom_core_ncycle_n2_top, reset_ctrl               |
+| reset     | variable=reset_ctrl                       | /home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:1904 in boom_core_ncycle_n4_top, reset_ctrl               |
+| reset     | variable=reset_ctrl                       | /home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:1905 in boom_core_ncycle_n8_top, reset_ctrl               |
+| inline    |                                           | /home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:2248 in w3_seed_rob                                       |
+| inline    |                                           | /home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:2269 in w3_seed_issue                                     |
+| stream    | variable=commit_pipe.commit_trace depth=1 | /home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:2317 in synth_w3_diagnostic_top, commit_pipe.commit_trace |
+| stream    | variable=commit_pipe.dmem_req depth=1     | /home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:2318 in synth_w3_diagnostic_top, commit_pipe.dmem_req     |
++-----------+-------------------------------------------+----------------------------------------------------------------------------------------------------------------+
+
+

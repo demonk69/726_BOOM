@@ -57,25 +57,24 @@ static bool accounting_is(const BoomCoreState& state, int generated, int accepte
 }
 
 static void t01_dual_mem_int_generated() {
-    TEST("01 dual MEM+INT grants generated with budget-one acceptance");
+    TEST("01 dual MEM+INT grants independently accept");
     BoomCoreState state;
     seed(state, 0, ISSUE_PORT_MEM, 10);
     seed(state, 1, ISSUE_PORT_INT, 11);
     set_count(state, 2);
     boom::issue_module(state);
-    CHECK(accounting_is(state, 2, 1, 1), "wrong dual accounting");
+    CHECK(accounting_is(state, 2, 2, 0), "wrong dual accounting");
     CHECK(state.issue.grants[MEM_ISSUE_LANE].valid && state.issue.grants[MEM_ISSUE_LANE].accepted,
           "MEM grant was not accepted");
-    CHECK(state.issue.grants[INT_ISSUE_LANE].valid && !state.issue.grants[INT_ISSUE_LANE].accepted,
-          "INT grant was not retained");
+    CHECK(state.issue.grants[INT_ISSUE_LANE].valid && state.issue.grants[INT_ISSUE_LANE].accepted,
+          "INT grant was not accepted");
     CHECK(state.issue.grants[MEM_ISSUE_LANE].entry_index == 0 &&
           state.issue.grants[MEM_ISSUE_LANE].uop.queue.rob_idx == 10 &&
           state.issue.grants[MEM_ISSUE_LANE].port_class == ISSUE_PORT_MEM, "bad MEM grant metadata");
     CHECK(state.issue.grants[INT_ISSUE_LANE].entry_index == 1 &&
           state.issue.grants[INT_ISSUE_LANE].uop.queue.rob_idx == 11 &&
           state.issue.grants[INT_ISSUE_LANE].port_class == ISSUE_PORT_INT, "bad INT grant metadata");
-    CHECK(state.issue.alu_iq.count == 1 && state.issue.alu_iq.entries[0].uop.queue.rob_idx == 11,
-          "retained INT entry was lost");
+    CHECK(state.issue.alu_iq.count == 0, "accepted entries remained queued");
     PASS();
 }
 
@@ -147,13 +146,13 @@ static void t06_two_mem_one_int_mix() {
     seed(state, 2, ISSUE_PORT_INT, 62);
     set_count(state, 3);
     boom::issue_module(state);
-    CHECK(accounting_is(state, 2, 1, 1), "wrong 2+1 accounting");
+    CHECK(accounting_is(state, 2, 2, 0), "wrong 2+1 accounting");
     CHECK(state.issue.grants[0].entry_index == 0 && state.issue.grants[0].uop.queue.rob_idx == 60,
           "wrong MEM selected from 2+1 mix");
     CHECK(state.issue.grants[1].entry_index == 2 && state.issue.grants[1].uop.queue.rob_idx == 62,
           "wrong INT selected from 2+1 mix");
-    CHECK(state.issue.alu_iq.count == 2 && state.issue.alu_iq.entries[0].uop.queue.rob_idx == 61 &&
-          state.issue.alu_iq.entries[1].uop.queue.rob_idx == 62, "2+1 survivor order changed");
+    CHECK(state.issue.alu_iq.count == 1 && state.issue.alu_iq.entries[0].uop.queue.rob_idx == 61,
+          "2+1 survivor order changed");
     PASS();
 }
 
@@ -165,13 +164,13 @@ static void t07_one_mem_two_int_mix() {
     seed(state, 2, ISSUE_PORT_MEM, 72);
     set_count(state, 3);
     boom::issue_module(state);
-    CHECK(accounting_is(state, 2, 1, 1), "wrong 1+2 accounting");
+    CHECK(accounting_is(state, 2, 2, 0), "wrong 1+2 accounting");
     CHECK(state.issue.grants[1].entry_index == 0 && state.issue.grants[1].uop.queue.rob_idx == 70,
           "wrong INT selected from 1+2 mix");
     CHECK(state.issue.grants[0].entry_index == 2 && state.issue.grants[0].uop.queue.rob_idx == 72,
           "wrong MEM selected from 1+2 mix");
-    CHECK(state.issue.alu_iq.count == 2 && state.issue.alu_iq.entries[0].uop.queue.rob_idx == 71 &&
-          state.issue.alu_iq.entries[1].uop.queue.rob_idx == 72, "1+2 survivor order changed");
+    CHECK(state.issue.alu_iq.count == 1 && state.issue.alu_iq.entries[0].uop.queue.rob_idx == 71,
+          "1+2 survivor order changed");
     PASS();
 }
 
@@ -188,8 +187,8 @@ static void t08_unique_grant_entries() {
           "dual grants alias one queue entry");
     CHECK(mem.uop.queue.rob_idx == 81 && integer.uop.queue.rob_idx == 80 &&
           mem.uop.queue.rob_idx != integer.uop.queue.rob_idx, "dual grants alias one ROB");
-    CHECK(integer.accepted && !mem.accepted && accounting_is(state, 2, 1, 1),
-          "lower-index unique entry was not solely accepted");
+    CHECK(integer.accepted && mem.accepted && accounting_is(state, 2, 2, 0),
+          "unique entries were not independently accepted");
     PASS();
 }
 
@@ -205,7 +204,7 @@ static void t09_oldest_mem_per_port() {
           state.issue.grants[0].port_class == ISSUE_PORT_MEM, "younger MEM won");
     CHECK(state.issue.grants[1].entry_index == 0 && state.issue.grants[1].uop.queue.rob_idx == 90,
           "INT selection interfered with oldest MEM");
-    CHECK(accounting_is(state, 2, 1, 1), "wrong oldest-MEM accounting");
+    CHECK(accounting_is(state, 2, 2, 0), "wrong oldest-MEM accounting");
     PASS();
 }
 
@@ -221,7 +220,7 @@ static void t10_oldest_int_per_port() {
           state.issue.grants[1].port_class == ISSUE_PORT_INT, "younger INT won");
     CHECK(state.issue.grants[0].entry_index == 0 && state.issue.grants[0].uop.queue.rob_idx == 100,
           "MEM selection interfered with oldest INT");
-    CHECK(accounting_is(state, 2, 1, 1), "wrong oldest-INT accounting");
+    CHECK(accounting_is(state, 2, 2, 0), "wrong oldest-INT accounting");
     PASS();
 }
 
@@ -274,13 +273,12 @@ static void t13_kill_plus_dual() {
     state.brupdate.mispredict = true;
     state.brupdate.mispredict_mask = 1;
     boom::issue_module(state);
-    CHECK(accounting_is(state, 2, 1, 1), "kill+dual accounting wrong");
+    CHECK(accounting_is(state, 2, 2, 0), "kill+dual accounting wrong");
     CHECK(state.issue.grants[0].entry_index == 0 && state.issue.grants[0].uop.queue.rob_idx == 131 &&
           state.issue.grants[0].accepted, "post-kill MEM grant wrong");
     CHECK(state.issue.grants[1].entry_index == 1 && state.issue.grants[1].uop.queue.rob_idx == 132 &&
-          !state.issue.grants[1].accepted, "post-kill INT grant wrong");
-    CHECK(state.issue.alu_iq.count == 1 && state.issue.alu_iq.entries[0].uop.queue.rob_idx == 132,
-          "kill+dual retained survivor wrong");
+          state.issue.grants[1].accepted, "post-kill INT grant wrong");
+    CHECK(state.issue.alu_iq.count == 0, "kill+dual accepted entry remained");
     PASS();
 }
 
@@ -293,31 +291,27 @@ static void t14_resolve_mask_plus_dual() {
     state.brupdate.valid = true;
     state.brupdate.resolve_mask = 1;
     boom::issue_module(state);
-    CHECK(accounting_is(state, 2, 1, 1), "resolve+dual accounting wrong");
+    CHECK(accounting_is(state, 2, 2, 0), "resolve+dual accounting wrong");
     CHECK(state.issue.grants[0].uop.branch.br_mask == 2 &&
           state.issue.grants[1].uop.branch.br_mask == 0, "resolved mask not reflected in grants");
     CHECK(state.issue.grants[0].entry_index == 0 && state.issue.grants[1].entry_index == 1,
           "resolve changed grant indices");
-    CHECK(state.issue.alu_iq.count == 1 && state.issue.alu_iq.entries[0].uop.queue.rob_idx == 141 &&
-          state.issue.alu_iq.entries[0].uop.branch.br_mask == 0, "resolved retained entry wrong");
+    CHECK(state.issue.alu_iq.count == 0, "resolved accepted entry remained");
     PASS();
 }
 
 static void t15_full_iq_frees_slot() {
-    TEST("15 full IQ dual generation frees only accepted entry slot");
+    TEST("15 full IQ dual acceptance frees both entry slots");
     BoomCoreState state;
     for (int i = 0; i < ISSUE_QUEUE_ALU_DEPTH; ++i)
         seed(state, i, (i & 1) ? ISSUE_PORT_INT : ISSUE_PORT_MEM, (uint8_t)(150 + i));
     set_count(state, ISSUE_QUEUE_ALU_DEPTH);
     boom::issue_module(state);
-    CHECK(accounting_is(state, 2, 1, 1), "full-IQ accounting wrong");
-    CHECK(state.issue.alu_iq.count == ISSUE_QUEUE_ALU_DEPTH - 1 &&
-          state.issue.alu_iq.tail == ISSUE_QUEUE_ALU_DEPTH - 1, "accepted grant did not free one slot");
-    for (int i = 0; i < ISSUE_QUEUE_ALU_DEPTH - 1; ++i)
-        CHECK(state.issue.alu_iq.entries[i].uop.queue.rob_idx == 151 + i, "full-IQ survivor order wrong");
-    CHECK(state.issue.grants[1].valid && !state.issue.grants[1].accepted &&
-          state.issue.alu_iq.entries[0].uop.queue.rob_idx == state.issue.grants[1].uop.queue.rob_idx,
-          "unaccepted old INT was not retained");
+    CHECK(accounting_is(state, 2, 2, 0), "full-IQ accounting wrong");
+    CHECK(state.issue.alu_iq.count == ISSUE_QUEUE_ALU_DEPTH - 2 &&
+          state.issue.alu_iq.tail == ISSUE_QUEUE_ALU_DEPTH - 2, "accepted grants did not free two slots");
+    for (int i = 0; i < ISSUE_QUEUE_ALU_DEPTH - 2; ++i)
+        CHECK(state.issue.alu_iq.entries[i].uop.queue.rob_idx == 152 + i, "full-IQ survivor order wrong");
     PASS();
 }
 
@@ -326,8 +320,9 @@ static void t16_dispatch_insertion() {
     BoomCoreState state;
     seed(state, 0, ISSUE_PORT_INT, 160);
     set_count(state, 1);
-    state.rename.renamed_valids[0] = true;
-    state.rename.renamed_uops[0] = make_uop(ISSUE_PORT_INT, 161);
+    state.rename.dispatch_packets[0].valid = true;
+    state.rename.dispatch_packets[0].rob_allocated = true;
+    state.rename.dispatch_packets[0].uop = make_uop(ISSUE_PORT_INT, 161);
     boom::issue_module(state);
     CHECK(accounting_is(state, 1, 1, 0), "dispatch insertion accounting wrong");
     CHECK(state.issue.grants[1].valid && !state.issue.grants[1].from_dispatch &&
@@ -340,8 +335,9 @@ static void t16_dispatch_insertion() {
 static void t17_dispatch_bypass() {
     TEST("17 empty-lane dispatch bypass grants without IQ insertion");
     BoomCoreState state;
-    state.rename.renamed_valids[0] = true;
-    state.rename.renamed_uops[0] = make_uop(ISSUE_PORT_MEM, 170);
+    state.rename.dispatch_packets[0].valid = true;
+    state.rename.dispatch_packets[0].rob_allocated = true;
+    state.rename.dispatch_packets[0].uop = make_uop(ISSUE_PORT_MEM, 170);
     boom::issue_module(state);
     const IssueGrant& grant = state.issue.grants[MEM_ISSUE_LANE];
     CHECK(accounting_is(state, 1, 1, 0), "dispatch bypass accounting wrong");
@@ -375,9 +371,11 @@ static void t18_stable_compaction() {
 static void t26_dispatch_raw_blocked() {
     TEST("26 RAW-busy dispatch cannot bypass issue readiness");
     BoomCoreState state;
-    state.rename.renamed_valids[0] = true;
-    state.rename.renamed_uops[0] = make_uop(ISSUE_PORT_INT, 252);
-    state.rename.renamed_uops[0].rename.prs1_busy = true;
+    state.rename.dispatch_packets[0].valid = true;
+    state.rename.dispatch_packets[0].rob_allocated = true;
+    state.rename.dispatch_packets[0].uop = make_uop(ISSUE_PORT_INT, 252);
+    state.rename.dispatch_packets[0].uop.rename.prs1 = 7;
+    state.rename.int_free_list.busy_table[7] = true;
     boom::issue_module(state);
     CHECK(accounting_is(state, 0, 0, 0), "busy dispatch generated a grant");
     CHECK(!state.issue.issued_valids[0], "busy dispatch reached execute intake");
@@ -476,7 +474,7 @@ static void t23_lane2_always_invalid() {
     seed(state, 1, ISSUE_PORT_INT, 231);
     set_count(state, 2);
     boom::issue_module(state);
-    CHECK(accounting_is(state, 2, 1, 1), "lane-2 test dual accounting wrong");
+    CHECK(accounting_is(state, 2, 2, 0), "lane-2 test dual accounting wrong");
     CHECK(!state.issue.grants[FP_ISSUE_LANE].valid &&
           state.issue.grants[FP_ISSUE_LANE].port_class == ISSUE_PORT_UNSUPPORTED &&
           !state.issue.issued_valids[FP_ISSUE_LANE], "reserved lane 2 became active");
@@ -495,7 +493,7 @@ static void t24_per_lane_ready_backpressure() {
     boom::issue_module(mem_blocked);
     CHECK(accounting_is(mem_blocked, 2, 1, 1), "MEM-blocked accounting wrong");
     CHECK(!mem_blocked.issue.grants[0].accepted && mem_blocked.issue.grants[1].accepted &&
-          mem_blocked.issue.issued_valids[0] && !mem_blocked.issue.issued_valids[1],
+          !mem_blocked.issue.issued_valids[0] && mem_blocked.issue.issued_valids[1],
           "MEM backpressure did not select INT");
     CHECK(mem_blocked.issue.alu_iq.count == 1 &&
           mem_blocked.issue.alu_iq.entries[0].uop.queue.rob_idx == 240,
@@ -543,9 +541,10 @@ static void t27_exception_bypasses_iq() {
     seed(state, 0, ISSUE_PORT_INT, 253);
     state.issue.alu_iq.entries[0].uop.exception = true;
     set_count(state, 1);
-    state.rename.renamed_valids[0] = true;
-    state.rename.renamed_uops[0] = make_uop(ISSUE_PORT_INT, 254);
-    state.rename.renamed_uops[0].exception = true;
+    state.rename.dispatch_packets[0].valid = true;
+    state.rename.dispatch_packets[0].rob_allocated = true;
+    state.rename.dispatch_packets[0].uop = make_uop(ISSUE_PORT_INT, 254);
+    state.rename.dispatch_packets[0].uop.exception = true;
     boom::issue_module(state);
     CHECK(accounting_is(state, 0, 0, 0), "exception affected grant accounting");
     CHECK(state.issue.alu_iq.count == 0, "exception remained in selection storage");
@@ -561,8 +560,9 @@ static void t28_full_blocked_iq_does_not_grant_dispatch() {
     set_count(state, ISSUE_QUEUE_ALU_DEPTH);
     state.issue.port_ready[MEM_ISSUE_LANE] = false;
     state.issue.port_ready[INT_ISSUE_LANE] = false;
-    state.rename.renamed_valids[0] = true;
-    state.rename.renamed_uops[0] = make_uop(ISSUE_PORT_INT, 255);
+    state.rename.dispatch_packets[0].valid = true;
+    state.rename.dispatch_packets[0].rob_allocated = true;
+    state.rename.dispatch_packets[0].uop = make_uop(ISSUE_PORT_INT, 255);
     boom::issue_module(state);
     CHECK(accounting_is(state, 1, 0, 1), "unretainable dispatch entered grant accounting");
     CHECK(state.issue.grants[MEM_ISSUE_LANE].valid &&

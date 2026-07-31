@@ -82,8 +82,8 @@ void issue_one_kill_younger() { TEST("issue one plus kill younger");
     seed_entry(s, 1, 11, 1, true);
     seed_entry(s, 2, 12, 1, true);
     set_count(s, 3); boom::issue_module(s);
-    CHECK(s.issue.issued_valids[0], "nothing issued");
-    CHECK(s.issue.issued_uops[0].debug_inst == 10, "wrong issued uop");
+    CHECK(s.issue.issued_valids[INT_ISSUE_LANE], "nothing issued");
+    CHECK(s.issue.issued_uops[INT_ISSUE_LANE].debug_inst == 10, "wrong issued uop");
     CHECK(s.issue.alu_iq.count == 0, "younger killed entries survived"); PASS(); }
 
 void issue_one_kill_older() { TEST("issue one after killing older entry");
@@ -91,19 +91,20 @@ void issue_one_kill_older() { TEST("issue one after killing older entry");
     seed_entry(s, 0, 20, 1, true);
     seed_entry(s, 1, 21, 0, true);
     set_count(s, 2); boom::issue_module(s);
-    CHECK(s.issue.issued_valids[0], "survivor not issued");
-    CHECK(s.issue.issued_uops[0].debug_inst == 21, "wrong survivor issued");
+    CHECK(s.issue.issued_valids[INT_ISSUE_LANE], "survivor not issued");
+    CHECK(s.issue.issued_uops[INT_ISSUE_LANE].debug_inst == 21, "wrong survivor issued");
     CHECK(s.issue.alu_iq.count == 0, "issued survivor not removed"); PASS(); }
 
 void dispatch_issue_kill_same_cycle() { TEST("dispatch plus issue plus kill same cycle");
     BoomCoreState s; set_mispredict(s, 1);
     seed_entry(s, 0, 30, 1, true);
     set_count(s, 1);
-    s.rename.renamed_valids[0] = true;
-    s.rename.renamed_uops[0] = make_uop(31, 0);
+    s.rename.dispatch_packets[0].valid = true;
+    s.rename.dispatch_packets[0].rob_allocated = true;
+    s.rename.dispatch_packets[0].uop = make_uop(31, 0);
     boom::issue_module(s);
-    CHECK(s.issue.issued_valids[0], "dispatch survivor not issued");
-    CHECK(s.issue.issued_uops[0].debug_inst == 31, "wrong dispatch issued");
+    CHECK(s.issue.issued_valids[INT_ISSUE_LANE], "dispatch survivor not issued");
+    CHECK(s.issue.issued_uops[INT_ISSUE_LANE].debug_inst == 31, "wrong dispatch issued");
     CHECK(s.issue.alu_iq.count == 0, "queue not compacted after issue"); PASS(); }
 
 void iq_full_compact() { TEST("IQ full compacts killed entries");
@@ -132,8 +133,8 @@ void oldest_ready_kept() { TEST("oldest ready selection preserved");
     BoomCoreState s; set_mispredict(s, 1);
     for (int i=0; i<3; i++) seed_entry(s, i, (uint8_t)(70+i), 0, true);
     set_count(s, 3); boom::issue_module(s);
-    CHECK(s.issue.issued_valids[0], "no issue");
-    CHECK(s.issue.issued_uops[0].debug_inst == 70, "oldest ready not selected");
+    CHECK(s.issue.issued_valids[INT_ISSUE_LANE], "no issue");
+    CHECK(s.issue.issued_uops[INT_ISSUE_LANE].debug_inst == 70, "oldest ready not selected");
     CHECK(s.issue.alu_iq.count == 2, "issued entry not removed"); PASS(); }
 
 int main() {
