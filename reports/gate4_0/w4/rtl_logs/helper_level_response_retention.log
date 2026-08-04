@@ -1,0 +1,20 @@
+#-----------------------------------------------------------
+# xsim v2021.2 (64-bit)
+# SW Build 3367213 on Tue Oct 19 02:47:39 MDT 2021
+# IP Build 3369179 on Thu Oct 21 08:25:16 MDT 2021
+# Start of session at: Tue Aug  4 18:47:15 2026
+# Process ID: 230077
+# Current directory: /home/lab_726/boom/hls_boom/build/gate4_0/w4_rtl/xsim
+# Command line: xsim -log /home/lab_726/boom/hls_boom/reports/gate4_0/w4/rtl_logs/helper_level_response_retention.log -mode tcl -source {xsim.dir/w4_completion_diagnostic_snapshot/xsim_script.tcl}
+# Log file: /home/lab_726/boom/hls_boom/reports/gate4_0/w4/rtl_logs/helper_level_response_retention.log
+# Journal file: /home/lab_726/boom/hls_boom/build/gate4_0/w4_rtl/xsim/xsim.jou
+# Running On: 726, OS: Linux, CPU Frequency: 2803.018 MHz, CPU Physical cores: 14, Host memory: 67148 MB
+#-----------------------------------------------------------
+source xsim.dir/w4_completion_diagnostic_snapshot/xsim_script.tcl
+# xsim {w4_completion_diagnostic_snapshot} -testplusarg SCENARIO=16 -testplusarg EXPECT=000000000000003f -autoloadwcfg -runall -onerror quit
+Time resolution is 1 ps
+run -all
+W4_RTL_PASS scenario=16 expected=000000000000003f observed=000000000000003f
+$finish called at time : 22945 ns : File "/home/lab_726/boom/hls_boom/rtl_tb/gate4_0/w4_completion_diagnostic_tb.sv" Line 33
+exit
+INFO: [Common 17-206] Exiting xsim at Tue Aug  4 18:47:19 2026...

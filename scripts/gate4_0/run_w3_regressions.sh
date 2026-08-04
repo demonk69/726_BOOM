@@ -2,8 +2,8 @@
 set -euo pipefail
 
 ROOT=${HLS_BOOM_ROOT:-"$(cd "$(dirname "${BASH_SOURCE[0]}")/../.." && pwd)"}
-BUILD_DIR="$ROOT/build/gate4_0/w3_regression"
-REPORT_DIR="$ROOT/reports/gate4_0/w3/regression"
+BUILD_DIR=${BOOM_REGRESSION_BUILD_DIR:-"$ROOT/build/gate4_0/w3_regression"}
+REPORT_DIR=${BOOM_REGRESSION_REPORT_DIR:-"$ROOT/reports/gate4_0/w3/regression"}
 LOG_DIR="$REPORT_DIR/logs"
 TRACE_DIR="$REPORT_DIR/hls_traces"
 NORMALIZED_DIR="$REPORT_DIR/normalized"
@@ -15,6 +15,7 @@ mkdir -p "$BUILD_DIR" "$LOG_DIR" "$TRACE_DIR" "$NORMALIZED_DIR"
 COMMON_SRCS=(
   "$ROOT/src/boom_core_step.cpp" "$ROOT/src/frontend.cpp" "$ROOT/src/decode.cpp"
   "$ROOT/src/rename.cpp" "$ROOT/src/rob.cpp" "$ROOT/src/issue.cpp"
+  "$ROOT/src/completion.cpp"
   "$ROOT/src/execute.cpp" "$ROOT/src/branch.cpp" "$ROOT/src/lsu.cpp"
   "$ROOT/src/commit.cpp" "$ROOT/src/csr.cpp" "$ROOT/src/reset.cpp"
 )

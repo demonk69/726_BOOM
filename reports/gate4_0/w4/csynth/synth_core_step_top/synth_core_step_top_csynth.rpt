@@ -1,0 +1,183 @@
+
+
+================================================================
+== Vitis HLS Report for 'synth_core_step_top'
+================================================================
+* Date:           Sun Aug  2 12:08:49 2026
+
+* Version:        2021.2 (Build 3367213 on Tue Oct 19 02:47:39 MDT 2021)
+* Project:        synth_core_step_top
+* Solution:       solution_w4a_csynth (Vivado IP Flow Target)
+* Product family: zynquplus
+* Target device:  xczu7ev-ffvc1156-2-e
+
+
+================================================================
+== Performance Estimates
+================================================================
++ Timing: 
+    * Summary: 
+    +--------+----------+----------+------------+
+    |  Clock |  Target  | Estimated| Uncertainty|
+    +--------+----------+----------+------------+
+    |ap_clk  |  10.00 ns|  5.875 ns|     2.70 ns|
+    +--------+----------+----------+------------+
+
++ Latency: 
+    * Summary: 
+    +---------+---------+----------+----------+-----+-----+---------+
+    |  Latency (cycles) |  Latency (absolute) |  Interval | Pipeline|
+    |   min   |   max   |    min   |    max   | min | max |   Type  |
+    +---------+---------+----------+----------+-----+-----+---------+
+    |        ?|        ?|         ?|         ?|    ?|    ?|       no|
+    +---------+---------+----------+----------+-----+-----+---------+
+
+    + Detail: 
+        * Instance: 
+        +----------------------------+----------------+---------+---------+----------+----------+-----+-----+---------+
+        |                            |                |  Latency (cycles) |  Latency (absolute) |  Interval | Pipeline|
+        |          Instance          |     Module     |   min   |   max   |    min   |    max   | min | max |   Type  |
+        +----------------------------+----------------+---------+---------+----------+----------+-----+-----+---------+
+        |grp_boom_core_step_fu_1079  |boom_core_step  |        ?|        ?|         ?|         ?|    ?|    ?|       no|
+        +----------------------------+----------------+---------+---------+----------+----------+-----+-----+---------+
+
+        * Loop: 
+        N/A
+
+
+
+================================================================
+== Utilization Estimates
+================================================================
+* Summary: 
++-----------------+---------+------+--------+--------+-----+
+|       Name      | BRAM_18K|  DSP |   FF   |   LUT  | URAM|
++-----------------+---------+------+--------+--------+-----+
+|DSP              |        -|     -|       -|       -|    -|
+|Expression       |        -|     -|       0|      14|    -|
+|FIFO             |        -|     -|     495|     335|    -|
+|Instance         |       14|     3|   15956|   61934|    0|
+|Memory           |        -|     -|       -|       -|    -|
+|Multiplexer      |        -|     -|       -|     125|    -|
+|Register         |        -|     -|     133|       -|    -|
++-----------------+---------+------+--------+--------+-----+
+|Total            |       14|     3|   16584|   62408|    0|
++-----------------+---------+------+--------+--------+-----+
+|Available        |      624|  1728|  460800|  230400|   96|
++-----------------+---------+------+--------+--------+-----+
+|Utilization (%)  |        2|    ~0|       3|      27|    0|
++-----------------+---------+------+--------+--------+-----+
+
++ Detail: 
+    * Instance: 
+    +----------------------------+----------------+---------+----+-------+-------+-----+
+    |          Instance          |     Module     | BRAM_18K| DSP|   FF  |  LUT  | URAM|
+    +----------------------------+----------------+---------+----+-------+-------+-----+
+    |grp_boom_core_step_fu_1079  |boom_core_step  |       14|   3|  15956|  61934|    0|
+    +----------------------------+----------------+---------+----+-------+-------+-----+
+    |Total                       |                |       14|   3|  15956|  61934|    0|
+    +----------------------------+----------------+---------+----+-------+-------+-----+
+
+    * DSP: 
+    N/A
+
+    * Memory: 
+    N/A
+
+    * FIFO: 
+    +---------------+---------+----+----+-----+------+-----+---------+
+    |      Name     | BRAM_18K| FF | LUT| URAM| Depth| Bits| Size:D*B|
+    +---------------+---------+----+----+-----+------+-----+---------+
+    |pipe_0_fifo_U  |        0|  99|   0|    -|     2|   97|      194|
+    |pipe_1_fifo_U  |        0|  99|   0|    -|     2|  193|      386|
+    |pipe_2_fifo_U  |        0|  99|   0|    -|     2|  283|      566|
+    |pipe_3_fifo_U  |        0|  99|   0|    -|     2|  289|      578|
+    |pipe_4_fifo_U  |        0|  99|   0|    -|     2|  518|     1036|
+    +---------------+---------+----+----+-----+------+-----+---------+
+    |Total          |        0| 495|   0|    0|    10| 1380|     2760|
+    +---------------+---------+----+----+-----+------+-----+---------+
+
+    * Expression: 
+    +----------------------------+----------+----+---+----+------------+------------+
+    |        Variable Name       | Operation| DSP| FF| LUT| Bitwidth P0| Bitwidth P1|
+    +----------------------------+----------+----+---+----+------------+------------+
+    |tmp_1_nbreadreq_fu_991_p3   |       and|   0|  0|   2|           1|           0|
+    |tmp_2_nbreadreq_fu_1012_p3  |       and|   0|  0|   2|           1|           0|
+    |tmp_3_nbreadreq_fu_1032_p3  |       and|   0|  0|   2|           1|           0|
+    |tmp_4_nbreadreq_fu_1052_p3  |       and|   0|  0|   2|           1|           0|
+    |tmp_nbreadreq_fu_970_p3     |       and|   0|  0|   2|           1|           0|
+    |ap_block_state1             |        or|   0|  0|   2|           1|           1|
+    |ap_block_state4             |        or|   0|  0|   2|           1|           1|
+    +----------------------------+----------+----+---+----+------------+------------+
+    |Total                       |          |   0|  0|  14|           7|           2|
+    +----------------------------+----------+----+---+----+------------+------------+
+
+    * Multiplexer: 
+    +------------------------+----+-----------+-----+-----------+
+    |          Name          | LUT| Input Size| Bits| Total Bits|
+    +------------------------+----+-----------+-----+-----------+
+    |ap_NS_fsm               |  26|          5|    1|          5|
+    |commit_trace_out_blk_n  |   9|          2|    1|          2|
+    |dmem_req_out_blk_n      |   9|          2|    1|          2|
+    |dmem_resp_in_blk_n      |   9|          2|    1|          2|
+    |imem_req_out_blk_n      |   9|          2|    1|          2|
+    |imem_resp_in_blk_n      |   9|          2|    1|          2|
+    |pipe_0_write            |   9|          2|    1|          2|
+    |pipe_1_read             |   9|          2|    1|          2|
+    |pipe_2_write            |   9|          2|    1|          2|
+    |pipe_3_read             |   9|          2|    1|          2|
+    |pipe_4_write            |   9|          2|    1|          2|
+    |state_frontend_pc       |   9|          2|   64|        128|
+    +------------------------+----+-----------+-----+-----------+
+    |Total                   | 125|         27|   75|        153|
+    +------------------------+----+-----------+-----+-----------+
+
+    * Register: 
+    +-----------------------------------------+----+----+-----+-----------+
+    |                   Name                  | FF | LUT| Bits| Const Bits|
+    +-----------------------------------------+----+----+-----+-----------+
+    |ap_CS_fsm                                |   4|   0|    4|          0|
+    |grp_boom_core_step_fu_1079_ap_start_reg  |   1|   0|    1|          0|
+    |state_csr_cycle                          |  64|   0|   64|          0|
+    |state_frontend_pc                        |  64|   0|   64|          0|
+    +-----------------------------------------+----+----+-----+-----------+
+    |Total                                    | 133|   0|  133|          0|
+    +-----------------------------------------+----+----+-----+-----------+
+
+
+
+================================================================
+== Interface
+================================================================
+* Summary: 
++-------------------------+-----+-----+------------+---------------------+--------------+
+|        RTL Ports        | Dir | Bits|  Protocol  |    Source Object    |    C Type    |
++-------------------------+-----+-----+------------+---------------------+--------------+
+|ap_local_block           |  out|    1|  ap_ctrl_hs|  synth_core_step_top|  return value|
+|ap_local_deadlock        |  out|    1|  ap_ctrl_hs|  synth_core_step_top|  return value|
+|ap_clk                   |   in|    1|  ap_ctrl_hs|  synth_core_step_top|  return value|
+|ap_rst                   |   in|    1|  ap_ctrl_hs|  synth_core_step_top|  return value|
+|ap_start                 |   in|    1|  ap_ctrl_hs|  synth_core_step_top|  return value|
+|ap_done                  |  out|    1|  ap_ctrl_hs|  synth_core_step_top|  return value|
+|ap_idle                  |  out|    1|  ap_ctrl_hs|  synth_core_step_top|  return value|
+|ap_ready                 |  out|    1|  ap_ctrl_hs|  synth_core_step_top|  return value|
+|imem_req_out_din         |  out|   97|     ap_fifo|         imem_req_out|       pointer|
+|imem_req_out_full_n      |   in|    1|     ap_fifo|         imem_req_out|       pointer|
+|imem_req_out_write       |  out|    1|     ap_fifo|         imem_req_out|       pointer|
+|imem_resp_in_dout        |   in|  193|     ap_fifo|         imem_resp_in|       pointer|
+|imem_resp_in_empty_n     |   in|    1|     ap_fifo|         imem_resp_in|       pointer|
+|imem_resp_in_read        |  out|    1|     ap_fifo|         imem_resp_in|       pointer|
+|dmem_req_out_din         |  out|  283|     ap_fifo|         dmem_req_out|       pointer|
+|dmem_req_out_full_n      |   in|    1|     ap_fifo|         dmem_req_out|       pointer|
+|dmem_req_out_write       |  out|    1|     ap_fifo|         dmem_req_out|       pointer|
+|dmem_resp_in_dout        |   in|  289|     ap_fifo|         dmem_resp_in|       pointer|
+|dmem_resp_in_empty_n     |   in|    1|     ap_fifo|         dmem_resp_in|       pointer|
+|dmem_resp_in_read        |  out|    1|     ap_fifo|         dmem_resp_in|       pointer|
+|commit_trace_out_din     |  out|  518|     ap_fifo|     commit_trace_out|       pointer|
+|commit_trace_out_full_n  |   in|    1|     ap_fifo|     commit_trace_out|       pointer|
+|commit_trace_out_write   |  out|    1|     ap_fifo|     commit_trace_out|       pointer|
+|seed_pc                  |   in|   64|     ap_none|              seed_pc|        scalar|
+|observable               |  out|   64|      ap_vld|           observable|       pointer|
+|observable_ap_vld        |  out|    1|      ap_vld|           observable|       pointer|
++-------------------------+-----+-----+------------+---------------------+--------------+
+

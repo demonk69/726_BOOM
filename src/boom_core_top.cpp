@@ -101,12 +101,12 @@ void boom_core_top(hls::stream<ImemRequest>&  imem_req_out,
                    hls::stream<DmemRequest>&  dmem_req_out,
                    hls::stream<DmemResponse>& dmem_resp_in,
                    hls::stream<CommitEntry>&  commit_trace_out,
-                   bool& io_success,
-                   bool& io_halted,
-                   bool& io_trap,
-                   bool& io_cycle_valid,
-                   uint64_t& io_cycle,
-                   uint64_t& io_instret) {
+                    volatile bool* io_success,
+                    volatile bool* io_halted,
+                    volatile bool* io_trap,
+                    volatile bool* io_cycle_valid,
+                    volatile uint64_t* io_cycle,
+                    volatile uint64_t* io_instret) {
 #pragma HLS INTERFACE ap_ctrl_none port=return
 #pragma HLS INTERFACE axis port=imem_req_out
 #pragma HLS INTERFACE axis port=imem_resp_in
@@ -125,6 +125,8 @@ void boom_core_top(hls::stream<ImemRequest>&  imem_req_out,
 #pragma HLS RESET variable=reset_ctrl
 
     PipeSignals pipe;
+    bool success, halted, trap, cycle_valid;
+    uint64_t cycle, instret;
 
 CORE_CYCLE:
     while (true) {
@@ -134,8 +136,14 @@ CORE_CYCLE:
         boom_core_cycle_or_reset(state, reset_ctrl, pipe,
                                  imem_req_out, imem_resp_in,
                                  dmem_req_out, dmem_resp_in, commit_trace_out,
-                                 io_success, io_halted, io_trap,
-                                 io_cycle_valid, io_cycle, io_instret);
+                                 success, halted, trap,
+                                 cycle_valid, cycle, instret);
+        *io_success = success;
+        *io_halted = halted;
+        *io_trap = trap;
+        *io_cycle_valid = cycle_valid;
+        *io_cycle = cycle;
+        *io_instret = instret;
     }
 }
 
@@ -144,12 +152,12 @@ void boom_core_step_top(hls::stream<ImemRequest>&  imem_req_out,
                         hls::stream<DmemRequest>&  dmem_req_out,
                         hls::stream<DmemResponse>& dmem_resp_in,
                         hls::stream<CommitEntry>&  commit_trace_out,
-                        bool& io_success,
-                        bool& io_halted,
-                        bool& io_trap,
-                        bool& io_cycle_valid,
-                        uint64_t& io_cycle,
-                        uint64_t& io_instret) {
+                         volatile bool* io_success,
+                         volatile bool* io_halted,
+                         volatile bool* io_trap,
+                         volatile bool* io_cycle_valid,
+                         volatile uint64_t* io_cycle,
+                         volatile uint64_t* io_instret) {
 #pragma HLS INTERFACE ap_ctrl_none port=return
 #pragma HLS INTERFACE axis port=imem_req_out
 #pragma HLS INTERFACE axis port=imem_resp_in
@@ -168,11 +176,19 @@ void boom_core_step_top(hls::stream<ImemRequest>&  imem_req_out,
 #pragma HLS RESET variable=reset_ctrl
 
     PipeSignals pipe;
+    bool success, halted, trap, cycle_valid;
+    uint64_t cycle, instret;
     boom_core_cycle_or_reset(state, reset_ctrl, pipe,
                              imem_req_out, imem_resp_in,
                              dmem_req_out, dmem_resp_in, commit_trace_out,
-                             io_success, io_halted, io_trap,
-                             io_cycle_valid, io_cycle, io_instret);
+                             success, halted, trap,
+                             cycle_valid, cycle, instret);
+    *io_success = success;
+    *io_halted = halted;
+    *io_trap = trap;
+    *io_cycle_valid = cycle_valid;
+    *io_cycle = cycle;
+    *io_instret = instret;
 }
 
 #define BOOM_NCYCLE_INTERFACES() \
@@ -195,20 +211,25 @@ void NAME(hls::stream<ImemRequest>& imem_req_out, \
           hls::stream<DmemRequest>& dmem_req_out, \
           hls::stream<DmemResponse>& dmem_resp_in, \
           hls::stream<CommitEntry>& commit_trace_out, \
-          bool& io_success, bool& io_halted, bool& io_trap, \
-          bool& io_cycle_valid, uint64_t& io_cycle, uint64_t& io_instret) { \
+          volatile bool* io_success, volatile bool* io_halted, volatile bool* io_trap, \
+          volatile bool* io_cycle_valid, volatile uint64_t* io_cycle, volatile uint64_t* io_instret) { \
     BOOM_NCYCLE_INTERFACES(); \
     static BoomCoreState state; \
     static ResetControllerState reset_ctrl; \
     _Pragma("HLS RESET variable=reset_ctrl") \
     PipeSignals pipe; \
+    bool success, halted, trap, cycle_valid; \
+    uint64_t cycle_value, instret_value; \
     for (int cycle = 0; cycle < CYCLES; cycle++) { \
         boom_core_cycle_or_reset(state, reset_ctrl, pipe, \
                                  imem_req_out, imem_resp_in, \
                                  dmem_req_out, dmem_resp_in, commit_trace_out, \
-                                 io_success, io_halted, io_trap, \
-                                 io_cycle_valid, io_cycle, io_instret); \
+                                 success, halted, trap, \
+                                 cycle_valid, cycle_value, instret_value); \
     } \
+    *io_success = success; *io_halted = halted; *io_trap = trap; \
+    *io_cycle_valid = cycle_valid; *io_cycle = cycle_value; \
+    *io_instret = instret_value; \
 }
 
 DEFINE_BOOM_NCYCLE_TOP(boom_core_ncycle_n1_top, 1)

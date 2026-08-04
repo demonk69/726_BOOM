@@ -2,6 +2,7 @@
 #include "boom_types.hpp"
 #include "boom_state.hpp"
 #include "boom_interfaces.hpp"
+#include "completion.hpp"
 
 namespace boom {
 extern void frontend_module(BoomCoreState& state, PipeSignals& pipe);
@@ -24,8 +25,8 @@ void boom_core_step(BoomCoreState& state, PipeSignals& pipe) {
     state.brupdate.valid = state.brupdate.mispredict = false;
 
     boom::csr_module(state);
-    // A load response owns the single writeback opportunity for this cycle.
-    if (pipe.dmem_resp.empty()) boom::rob_complete(state);
+    // A queued load response retains W3 ownership of the serial completion path.
+    boom::completion_service_cycle(state, pipe);
     boom::lsu_module(state, pipe);
     boom::rob_commit_module(state, pipe);
     boom::frontend_module(state, pipe);

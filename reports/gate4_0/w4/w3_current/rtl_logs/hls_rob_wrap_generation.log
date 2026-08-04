@@ -1,0 +1,310 @@
+
+****** Vitis HLS - High-Level Synthesis from C, C++ and OpenCL v2021.2 (64-bit)
+  **** SW Build 3367213 on Tue Oct 19 02:47:39 MDT 2021
+  **** IP Build 3369179 on Thu Oct 21 08:25:16 MDT 2021
+    ** Copyright 1986-2021 Xilinx, Inc. All Rights Reserved.
+
+source /home/lab_726/Xilinx/Vitis_HLS/2021.2/scripts/vitis_hls/hls.tcl -notrace
+INFO: [HLS 200-10] Running '/home/lab_726/Xilinx/Vitis_HLS/2021.2/bin/unwrapped/lnx64.o/vitis_hls'
+INFO: [HLS 200-10] For user 'lab_726' on host '726' (Linux_x86_64 version 6.8.0-136-generic) on Mon Aug 03 22:50:55 CST 2026
+INFO: [HLS 200-10] On os Ubuntu 22.04.5 LTS
+INFO: [HLS 200-10] In directory '/home/lab_726/boom/hls_boom/build/gate4_0/w4_rtl/w3_current'
+Sourcing Tcl script '/home/lab_726/boom/hls_boom/build/gate4_0/w4_rtl/w3_current/run_w3_csynth.tcl'
+INFO: [HLS 200-1510] Running: open_project -reset hls_rob_wrap_project 
+INFO: [HLS 200-10] Creating and opening project '/home/lab_726/boom/hls_boom/build/gate4_0/w4_rtl/w3_current/hls_rob_wrap_project'.
+INFO: [HLS 200-1510] Running: set_top synth_w3_rob_wrap_top 
+INFO: [HLS 200-1510] Running: add_files -cflags -std=c++11 -I/home/lab_726/boom/hls_boom/include -DBOOM_HLS_W3_DIAGNOSTIC -DBOOM_HLS_W4A_COMPLETION_DIAGNOSTIC /home/lab_726/boom/hls_boom/src/boom_core_merged.cpp 
+INFO: [HLS 200-10] Adding design file '/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp' to the project
+INFO: [HLS 200-1510] Running: open_solution -reset solution_w3_rtl 
+INFO: [HLS 200-10] Creating and opening solution '/home/lab_726/boom/hls_boom/build/gate4_0/w4_rtl/w3_current/hls_rob_wrap_project/solution_w3_rtl'.
+INFO: [HLS 200-10] Cleaning up the solution database.
+WARNING: [HLS 200-40] No /home/lab_726/boom/hls_boom/build/gate4_0/w4_rtl/w3_current/hls_rob_wrap_project/solution_w3_rtl/solution_w3_rtl.aps file found.
+INFO: [HLS 200-1505] Using default flow_target 'vivado'
+Resolution: For help on HLS 200-1505 see www.xilinx.com/cgi-bin/docs/rdoc?v=2021.2;t=hls+guidance;d=200-1505.html
+INFO: [HLS 200-1510] Running: set_part xczu7ev-ffvc1156-2-e 
+INFO: [HLS 200-1611] Setting target device to 'xczu7ev-ffvc1156-2-e'
+INFO: [HLS 200-1510] Running: create_clock -period 10 -name default 
+INFO: [SYN 201-201] Setting up clock 'default' with a period of 10ns.
+INFO: [HLS 200-1510] Running: add_files -tb -cflags -std=c++11 -I/home/lab_726/boom/hls_boom/include /home/lab_726/boom/hls_boom/tb/differential/w3_rtl_wrapper_tests.cpp 
+INFO: [HLS 200-10] Adding test bench file '/home/lab_726/boom/hls_boom/tb/differential/w3_rtl_wrapper_tests.cpp' to the project
+INFO: [HLS 200-1510] Running: csim_design -clean 
+INFO: [SIM 211-2] *************** CSIM start ***************
+INFO: [SIM 211-4] CSIM will launch GCC as the compiler.
+   Compiling ../../../../../../../../tb/differential/w3_rtl_wrapper_tests.cpp in debug mode
+   Compiling ../../../../../../../../src/boom_core_merged.cpp in debug mode
+   Generating csim.exe
+W3_WRAPPER_PASS case=int_blocked_mem_forward observed=001d000b00000117
+W3_WRAPPER_PASS case=dual_pending observed=0020000008d00002
+W3_WRAPPER_PASS case=branch_kill observed=0000000008100400
+W3_WRAPPER_PASS case=rob_wrap_multiple_identity observed=0000005cf8d00001
+INFO: [SIM 211-1] CSim done with 0 errors.
+INFO: [SIM 211-3] *************** CSIM finish ***************
+INFO: [HLS 200-111] Finished Command csim_design CPU user time: 1.22 seconds. CPU system time: 0.24 seconds. Elapsed time: 0.91 seconds; current allocated memory: -937.109 MB.
+INFO: [HLS 200-1510] Running: config_compile -pipeline_loops 0 
+INFO: [XFORM 203-1171] Pipeline the innermost loop with trip count more than 0 or its parent loop when its trip count is less than or equal 0.
+INFO: [HLS 200-1510] Running: set_directive_inline boom::lsu_module 
+INFO: [HLS 200-1510] Running: set_directive_inline boom::rob_commit_module 
+INFO: [HLS 200-1510] Running: csynth_design 
+INFO: [HLS 200-111] Finished File checks and directory preparation: CPU user time: 0 seconds. CPU system time: 0 seconds. Elapsed time: 0 seconds; current allocated memory: 415.477 MB.
+INFO: [HLS 200-10] Analyzing design file '/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp' ... 
+INFO: [HLS 200-111] Finished Source Code Analysis and Preprocessing: CPU user time: 0.56 seconds. CPU system time: 0.17 seconds. Elapsed time: 0.73 seconds; current allocated memory: 419.520 MB.
+INFO: [HLS 200-777] Using interface defaults for 'Vivado' flow target.
+INFO: [HLS 214-284] Auto array partition mode is set into default.
+INFO: [HLS 214-131] Inlining function 'boom::completion_writes_integer(RobCompleteEvent const&)' into 'boom::apply_completion_selected(BoomCoreState&, RobCompleteEvent const&, bool, bool)' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:636:27)
+INFO: [HLS 214-131] Inlining function 'boom::prf_seed(BoomCoreState&, unsigned char, unsigned long)' into 'boom::apply_completion_selected(BoomCoreState&, RobCompleteEvent const&, bool, bool)' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:655:9)
+INFO: [HLS 214-131] Inlining function 'boom::apply_completion_selected(BoomCoreState&, RobCompleteEvent const&, bool, bool)' into 'boom::apply_completion(BoomCoreState&, RobCompleteEvent const&)' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:678:12)
+INFO: [HLS 214-131] Inlining function 'boom::completion_from_execute(ExecuteState::AluResult const&, CompletionSourceId, RobCompleteEvent&)' into 'boom::completion_service_execute_w4a(BoomCoreState&)' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:1248:5)
+INFO: [HLS 214-131] Inlining function 'boom::completion_from_execute(ExecuteState::AluResult const&, CompletionSourceId, RobCompleteEvent&)' into 'boom::completion_service_execute_w4a(BoomCoreState&)' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:1250:5)
+INFO: [HLS 214-131] Inlining function 'boom::select_completion_serial(BoomCoreState const&, RobCompleteEvent const&, RobCompleteEvent const&, bool&)' into 'boom::completion_service_execute_w4a(BoomCoreState&)' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:1257:35)
+INFO: [HLS 214-131] Inlining function 'w3_seed_rob(BoomCoreState&, unsigned char, unsigned int)' into 'synth_w3_rob_wrap_top(unsigned int, unsigned long&)' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:3519:5)
+INFO: [HLS 214-131] Inlining function 'w3_seed_rob(BoomCoreState&, unsigned char, unsigned int)' into 'synth_w3_rob_wrap_top(unsigned int, unsigned long&)' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:3520:5)
+INFO: [HLS 214-131] Inlining function 'boom::rob_complete(BoomCoreState&)' into 'synth_w3_rob_wrap_top(unsigned int, unsigned long&)' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:3524:5)
+INFO: [HLS 214-178] Inlining function 'MicroOp::MicroOp() (.30.84.90.144.150.204.210.264)' into 'FrontendState::FrontendState()' (/home/lab_726/boom/hls_boom/include/boom_state.hpp:26:0)
+INFO: [HLS 214-178] Inlining function 'MicroOp::MicroOp() (.30.84.90.144.150.204.210.264)' into 'DecodeState::DecodeState()' (/home/lab_726/boom/hls_boom/include/boom_state.hpp:32:0)
+INFO: [HLS 214-178] Inlining function 'MicroOp::MicroOp() (.30.84.90.144.150.204.210.264)' into 'RenameDispatchPacket::RenameDispatchPacket()' (/home/lab_726/boom/hls_boom/include/boom_state.hpp:73:0)
+INFO: [HLS 214-178] Inlining function 'RenameMapTableState::RenameMapTableState()' into 'RenameState::RenameState()' (/home/lab_726/boom/hls_boom/include/boom_state.hpp:76:0)
+INFO: [HLS 214-178] Inlining function 'RenameFreeListState::RenameFreeListState()' into 'RenameState::RenameState()' (/home/lab_726/boom/hls_boom/include/boom_state.hpp:76:0)
+INFO: [HLS 214-178] Inlining function 'RenameDispatchPacket::RenameDispatchPacket()' into 'RenameState::RenameState()' (/home/lab_726/boom/hls_boom/include/boom_state.hpp:76:0)
+INFO: [HLS 214-178] Inlining function 'MicroOp::MicroOp() (.30.84.90.144.150.204.210.264)' into 'IssueSlotEntry::IssueSlotEntry()' (/home/lab_726/boom/hls_boom/include/boom_types.hpp:179:0)
+INFO: [HLS 214-178] Inlining function 'IssueSlotEntry::IssueSlotEntry()' into 'IssueQueueState::IssueQueueState()' (/home/lab_726/boom/hls_boom/include/boom_state.hpp:85:0)
+INFO: [HLS 214-178] Inlining function 'MicroOp::MicroOp() (.30.84.90.144.150.204.210.264)' into 'IssueGrant::IssueGrant()' (/home/lab_726/boom/hls_boom/include/boom_types.hpp:155:0)
+INFO: [HLS 214-178] Inlining function 'IssueGrant::IssueGrant()' into 'IssueState::IssueState()' (/home/lab_726/boom/hls_boom/include/boom_state.hpp:104:0)
+INFO: [HLS 214-178] Inlining function 'MicroOp::MicroOp() (.30.84.90.144.150.204.210.264)' into 'IssueState::IssueState()' (/home/lab_726/boom/hls_boom/include/boom_state.hpp:104:0)
+INFO: [HLS 214-178] Inlining function 'MicroOp::MicroOp() (.30.84.90.144.150.204.210.264)' into 'ExecuteState::AluResult::AluResult() (.305.311.317.323.329.335.341.347.353)' (/home/lab_726/boom/hls_boom/include/boom_state.hpp:124:0)
+INFO: [HLS 214-178] Inlining function 'ExecuteState::AluResult::AluResult() (.305.311.317.323.329.335.341.347.353)' into 'ExecuteState::ExecuteState()' (/home/lab_726/boom/hls_boom/include/boom_state.hpp:127:0)
+INFO: [HLS 214-178] Inlining function 'MicroOp::MicroOp() (.30.84.90.144.150.204.210.264)' into 'RobEntry::RobEntry()' (/home/lab_726/boom/hls_boom/include/boom_types.hpp:170:0)
+INFO: [HLS 214-178] Inlining function 'CommitEntry::CommitEntry()' into 'RobInternalState::RobInternalState()' (/home/lab_726/boom/hls_boom/include/boom_state.hpp:141:0)
+INFO: [HLS 214-178] Inlining function 'StoreQueueEntry::StoreQueueEntry()' into 'LsuState::LsuState()' (/home/lab_726/boom/hls_boom/include/boom_state.hpp:184:0)
+INFO: [HLS 214-178] Inlining function 'LoadQueueEntry::LoadQueueEntry()' into 'LsuState::LsuState()' (/home/lab_726/boom/hls_boom/include/boom_state.hpp:184:0)
+INFO: [HLS 214-178] Inlining function 'MicroOp::MicroOp() (.30.84.90.144.150.204.210.264)' into 'RobCompleteEvent::RobCompleteEvent()' (/home/lab_726/boom/hls_boom/include/boom_types.hpp:108:0)
+INFO: [HLS 214-178] Inlining function 'WritebackEvent::WritebackEvent()' into 'CompletionPendingState::CompletionPendingState()' (/home/lab_726/boom/hls_boom/include/boom_state.hpp:224:0)
+INFO: [HLS 214-178] Inlining function 'WakeupEvent::WakeupEvent()' into 'CompletionPendingState::CompletionPendingState()' (/home/lab_726/boom/hls_boom/include/boom_state.hpp:224:0)
+INFO: [HLS 214-178] Inlining function 'BypassEvent::BypassEvent()' into 'CompletionPendingState::CompletionPendingState()' (/home/lab_726/boom/hls_boom/include/boom_state.hpp:224:0)
+INFO: [HLS 214-178] Inlining function 'MicroOp::MicroOp() (.30.84.90.144.150.204.210.264)' into 'BranchUpdate::BranchUpdate()' (/home/lab_726/boom/hls_boom/include/boom_types.hpp:188:0)
+INFO: [HLS 214-178] Inlining function 'FrontendState::FrontendState()' into 'BoomCoreState::BoomCoreState()' (/home/lab_726/boom/hls_boom/include/boom_state.hpp:256:0)
+INFO: [HLS 214-178] Inlining function 'CsrState::CsrState()' into 'BoomCoreState::BoomCoreState()' (/home/lab_726/boom/hls_boom/include/boom_state.hpp:256:0)
+INFO: [HLS 214-178] Inlining function 'LsuState::LsuState()' into 'BoomCoreState::BoomCoreState()' (/home/lab_726/boom/hls_boom/include/boom_state.hpp:256:0)
+INFO: [HLS 214-178] Inlining function 'BranchRecoveryState::BranchRecoveryState()' into 'BoomCoreState::BoomCoreState()' (/home/lab_726/boom/hls_boom/include/boom_state.hpp:256:0)
+INFO: [HLS 214-178] Inlining function 'BranchUpdate::BranchUpdate()' into 'BoomCoreState::BoomCoreState()' (/home/lab_726/boom/hls_boom/include/boom_state.hpp:256:0)
+INFO: [HLS 214-178] Inlining function 'ExecuteState::AluResult::AluResult() (.305.311.317.323.329.335.341.347.353)' into 'w3_result(unsigned char, unsigned int)' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:3217:0)
+INFO: [HLS 214-178] Inlining function 'boom::completion_has_rob_owner(BoomCoreState const&, RobCompleteEvent const&) (.15.36.63.96.123.156.183.216.243.370.407.433.471.497.535.561.599.625.663.689.727.753.793.819.858.884.924.950.990.1016.1056.1082.1122.1148.1187.1213.1253.1279.1319.1345.1385.1411.1451.1477.1517.1543.1583.1609.1649.1675.1715.1741.1780.1806.1845.1871.1910.1936.1986.2018.2068.2100.2150.2182.2232.2264.2311.2337.2375.2409.2447.2477.2519.2549.2591.2621.2663.2689.2727.2753.2791.2817.2855.2881.2919.2945.2985.3011.3051.3077.3117.3143.3183.3209.3249.3275.3317.3343.3385.3411.3453.3479.3521.3547.3587.3613.3653.3679.3719.3745.3785.3811.3851.3877.3919.3945.3987.4013.4052.4078.4116.4142.4180.4206.4244.4270.4308.4334.4372.4398.4436.4462.4500.4526.4564.4590)' into 'boom::completion_is_valid(BoomCoreState const&, RobCompleteEvent const&) (.12.33.60.93.120.153.180.213.240.367.404.430.468.494.532.558.596.622.660.686.724.750.790.816.855.881.921.947.987.1013.1053.1079.1119.1145.1184.1210.1250.1276.1316.1342.1382.1408.1448.1474.1514.1540.1580.1606.1646.1672.1712.1738.1777.1803.1842.1868.1907.1933.1983.2015.2065.2097.2147.2179.2229.2261.2308.2334.2372.2406.2444.2474.2516.2546.2588.2618.2660.2686.2724.2750.2788.2814.2852.2878.2916.2942.2982.3008.3048.3074.3114.3140.3180.3206.3246.3272.3314.3340.3382.3408.3450.3476.3518.3544.3584.3610.3650.3676.3716.3742.3782.3808.3848.3874.3916.3942.3984.4010.4049.4075.4113.4139.4177.4203.4241.4267.4305.4331.4369.4395.4433.4459.4497.4523.4561.4587)' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:583:0)
+INFO: [HLS 214-178] Inlining function 'boom::enqueue_store(BoomCoreState&, MicroOp const&, unsigned long, unsigned long, unsigned char, unsigned char, RobEntry&) (.48.78.108.138.168.198.228.258.382.422.445.486.509.550.573.614.637.678.701.742.765.808.831.873.896.939.962.1005.1028.1071.1094.1137.1160.1202.1225.1268.1291.1334.1357.1400.1423.1466.1489.1532.1555.1598.1621.1664.1687.1730.1753.1795.1818.1860.1883.1925.1951.2004.2033.2086.2115.2168.2197.2250.2279.2326.2349.2390.2421.2462.2489.2534.2561.2606.2633.2678.2701.2742.2765.2806.2829.2870.2893.2934.2957.3000.3023.3066.3089.3132.3155.3198.3221.3264.3287.3332.3355.3400.3423.3468.3491.3536.3559.3602.3625.3668.3691.3734.3757.3800.3823.3866.3889.3934.3957.4002.4025.4067.4090.4131.4154.4195.4218.4259.4282.4323.4346.4387.4410.4451.4474.4515.4538.4579.4602)' into 'boom::lsu_accept_completion(BoomCoreState&, MicroOp const&, bool, bool, bool, unsigned long, unsigned long, unsigned char, unsigned char) (.42.72.102.132.162.192.222.252.376.416.439.480.503.544.567.608.631.672.695.736.759.802.825.867.890.933.956.999.1022.1065.1088.1131.1154.1196.1219.1262.1285.1328.1351.1394.1417.1460.1483.1526.1549.1592.1615.1658.1681.1724.1747.1789.1812.1854.1877.1919.1942.1995.2024.2077.2106.2159.2188.2241.2270.2320.2343.2384.2415.2456.2483.2528.2555.2600.2627.2672.2695.2736.2759.2800.2823.2864.2887.2928.2951.2994.3017.3060.3083.3126.3149.3192.3215.3258.3281.3326.3349.3394.3417.3462.3485.3530.3553.3596.3619.3662.3685.3728.3751.3794.3817.3860.3883.3928.3951.3996.4019.4061.4084.4125.4148.4189.4212.4253.4276.4317.4340.4381.4404.4445.4468.4509.4532.4573.4596)' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:2084:0)
+INFO: [HLS 214-178] Inlining function 'boom::enqueue_load(BoomCoreState&, MicroOp const&, bool, unsigned long, unsigned char, unsigned char, RobEntry&) (.45.75.105.135.165.195.225.255.379.419.442.483.506.547.570.611.634.675.698.739.762.805.828.870.893.936.959.1002.1025.1068.1091.1134.1157.1199.1222.1265.1288.1331.1354.1397.1420.1463.1486.1529.1552.1595.1618.1661.1684.1727.1750.1792.1815.1857.1880.1922.1945.1998.2027.2080.2109.2162.2191.2244.2273.2323.2346.2387.2418.2459.2486.2531.2558.2603.2630.2675.2698.2739.2762.2803.2826.2867.2890.2931.2954.2997.3020.3063.3086.3129.3152.3195.3218.3261.3284.3329.3352.3397.3420.3465.3488.3533.3556.3599.3622.3665.3688.3731.3754.3797.3820.3863.3886.3931.3954.3999.4022.4064.4087.4128.4151.4192.4215.4256.4279.4320.4343.4384.4407.4448.4471.4512.4535.4576.4599)' into 'boom::lsu_accept_completion(BoomCoreState&, MicroOp const&, bool, bool, bool, unsigned long, unsigned long, unsigned char, unsigned char) (.42.72.102.132.162.192.222.252.376.416.439.480.503.544.567.608.631.672.695.736.759.802.825.867.890.933.956.999.1022.1065.1088.1131.1154.1196.1219.1262.1285.1328.1351.1394.1417.1460.1483.1526.1549.1592.1615.1658.1681.1724.1747.1789.1812.1854.1877.1919.1942.1995.2024.2077.2106.2159.2188.2241.2270.2320.2343.2384.2415.2456.2483.2528.2555.2600.2627.2672.2695.2736.2759.2800.2823.2864.2887.2928.2951.2994.3017.3060.3083.3126.3149.3192.3215.3258.3281.3326.3349.3394.3417.3462.3485.3530.3553.3596.3619.3662.3685.3728.3751.3794.3817.3860.3883.3928.3951.3996.4019.4061.4084.4125.4148.4189.4212.4253.4276.4317.4340.4381.4404.4445.4468.4509.4532.4573.4596)' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:2084:0)
+INFO: [HLS 214-178] Inlining function 'boom::completion_is_valid(BoomCoreState const&, RobCompleteEvent const&) (.12.33.60.93.120.153.180.213.240.367.404.430.468.494.532.558.596.622.660.686.724.750.790.816.855.881.921.947.987.1013.1053.1079.1119.1145.1184.1210.1250.1276.1316.1342.1382.1408.1448.1474.1514.1540.1580.1606.1646.1672.1712.1738.1777.1803.1842.1868.1907.1933.1983.2015.2065.2097.2147.2179.2229.2261.2308.2334.2372.2406.2444.2474.2516.2546.2588.2618.2660.2686.2724.2750.2788.2814.2852.2878.2916.2942.2982.3008.3048.3074.3114.3140.3180.3206.3246.3272.3314.3340.3382.3408.3450.3476.3518.3544.3584.3610.3650.3676.3716.3742.3782.3808.3848.3874.3916.3942.3984.4010.4049.4075.4113.4139.4177.4203.4241.4267.4305.4331.4369.4395.4433.4459.4497.4523.4561.4587)' into 'boom::apply_completion(BoomCoreState&, RobCompleteEvent const&)' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:667:0)
+INFO: [HLS 214-178] Inlining function 'boom::is_branch(MicroOp const&)' into 'boom::completion_service_execute_w4a(BoomCoreState&)' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:1242:0)
+INFO: [HLS 214-178] Inlining function 'boom::completion_age(BoomCoreState const&, RobCompleteEvent const&)' into 'boom::completion_service_execute_w4a(BoomCoreState&)' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:1242:0)
+INFO: [HLS 214-178] Inlining function 'boom::record_w4a_completion(BoomCoreState&, RobCompleteEvent const&)' into 'boom::completion_service_execute_w4a(BoomCoreState&)' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:1242:0)
+INFO: [HLS 214-178] Inlining function 'boom::completion_service_execute(BoomCoreState&)' into 'synth_w3_rob_wrap_top(unsigned int, unsigned long&)' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:3517:0)
+INFO: [HLS 214-178] Inlining function 'w3_pack_observable(BoomCoreState const&, unsigned char, unsigned char, bool, bool)' into 'synth_w3_rob_wrap_top(unsigned int, unsigned long&)' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:3517:0)
+INFO: [HLS 214-270] Starting automatic array partition analysis...
+INFO: [HLS 200-111] Finished Compiling Optimization and Transform: CPU user time: 29.34 seconds. CPU system time: 0.59 seconds. Elapsed time: 29.93 seconds; current allocated memory: 438.207 MB.
+INFO: [HLS 200-111] Finished Checking Pragmas: CPU user time: 0 seconds. CPU system time: 0 seconds. Elapsed time: 0 seconds; current allocated memory: 438.207 MB.
+INFO: [HLS 200-10] Starting code transformations ...
+INFO: [HLS 200-111] Finished Standard Transforms: CPU user time: 0.92 seconds. CPU system time: 0.01 seconds. Elapsed time: 0.93 seconds; current allocated memory: 471.504 MB.
+INFO: [HLS 200-10] Checking synthesizability ...
+INFO: [HLS 200-111] Finished Checking Synthesizability: CPU user time: 0.21 seconds. CPU system time: 0 seconds. Elapsed time: 0.22 seconds; current allocated memory: 471.754 MB.
+INFO: [XFORM 203-102] Partitioning array 'state.issue.issued_valids' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:3518) automatically.
+INFO: [XFORM 203-102] Partitioning array 'state.execute.alu_results.valid' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:3518) automatically.
+INFO: [XFORM 203-102] Partitioning array 'state.execute.alu_results.uop.uopc' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:3518) automatically.
+INFO: [XFORM 203-102] Partitioning array 'state.execute.alu_results.uop.inst' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:3518) automatically.
+INFO: [XFORM 203-102] Partitioning array 'state.execute.alu_results.uop.debug_inst' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:3518) automatically.
+INFO: [XFORM 203-102] Partitioning array 'state.execute.alu_results.uop.is_rvc' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:3518) automatically.
+INFO: [XFORM 203-102] Partitioning array 'state.execute.alu_results.uop.debug_pc' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:3518) automatically.
+INFO: [XFORM 203-102] Partitioning array 'state.execute.alu_results.uop.iq_type' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:3518) automatically.
+INFO: [XFORM 203-102] Partitioning array 'state.execute.alu_results.uop.fu_code' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:3518) automatically.
+INFO: [XFORM 203-102] Partitioning array 'state.execute.alu_results.uop.ctrl.br_type' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:3518) automatically.
+INFO: [XFORM 203-102] Partitioning array 'state.execute.alu_results.uop.ctrl.op1_sel' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:3518) automatically.
+INFO: [XFORM 203-102] Partitioning array 'state.execute.alu_results.uop.ctrl.op2_sel' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:3518) automatically.
+INFO: [XFORM 203-102] Partitioning array 'state.execute.alu_results.uop.ctrl.imm_sel' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:3518) automatically.
+INFO: [XFORM 203-102] Partitioning array 'state.execute.alu_results.uop.ctrl.op_fcn' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:3518) automatically.
+INFO: [XFORM 203-102] Partitioning array 'state.execute.alu_results.uop.ctrl.fcn_dw' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:3518) automatically.
+INFO: [XFORM 203-102] Partitioning array 'state.execute.alu_results.uop.ctrl.csr_cmd' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:3518) automatically.
+INFO: [XFORM 203-102] Partitioning array 'state.execute.alu_results.uop.ctrl.is_load' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:3518) automatically.
+INFO: [XFORM 203-102] Partitioning array 'state.execute.alu_results.uop.ctrl.is_sta' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:3518) automatically.
+INFO: [XFORM 203-102] Partitioning array 'state.execute.alu_results.uop.ctrl.is_std' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:3518) automatically.
+INFO: [XFORM 203-102] Partitioning array 'state.execute.alu_results.uop.iw_state' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:3518) automatically.
+INFO: [XFORM 203-102] Partitioning array 'state.execute.alu_results.uop.iw_p1_poisoned' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:3518) automatically.
+INFO: [XFORM 203-102] Partitioning array 'state.execute.alu_results.uop.iw_p2_poisoned' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:3518) automatically.
+INFO: [XFORM 203-102] Partitioning array 'state.execute.alu_results.uop.branch.br_mask' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:3518) automatically.
+INFO: [XFORM 203-102] Partitioning array 'state.execute.alu_results.uop.branch.br_tag' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:3518) automatically.
+INFO: [XFORM 203-102] Partitioning array 'state.execute.alu_results.uop.branch.ftq_idx' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:3518) automatically.
+INFO: [XFORM 203-102] Partitioning array 'state.execute.alu_results.uop.branch.pc_lob' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:3518) automatically.
+INFO: [XFORM 203-102] Partitioning array 'state.execute.alu_results.uop.branch.edge_inst' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:3518) automatically.
+INFO: [XFORM 203-102] Partitioning array 'state.execute.alu_results.uop.branch.taken' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:3518) automatically.
+INFO: [XFORM 203-102] Partitioning array 'state.execute.alu_results.uop.branch.is_br' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:3518) automatically.
+INFO: [XFORM 203-102] Partitioning array 'state.execute.alu_results.uop.branch.is_jalr' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:3518) automatically.
+INFO: [XFORM 203-102] Partitioning array 'state.execute.alu_results.uop.branch.is_jal' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:3518) automatically.
+INFO: [XFORM 203-102] Partitioning array 'state.execute.alu_results.uop.branch.is_sfb' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:3518) automatically.
+INFO: [XFORM 203-102] Partitioning array 'state.execute.alu_results.uop.imm_packed' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:3518) automatically.
+INFO: [XFORM 203-102] Partitioning array 'state.execute.alu_results.uop.csr_addr' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:3518) automatically.
+INFO: [XFORM 203-102] Partitioning array 'state.execute.alu_results.uop.queue.rob_idx' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:3518) automatically.
+INFO: [XFORM 203-102] Partitioning array 'state.execute.alu_results.uop.queue.ldq_idx' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:3518) automatically.
+INFO: [XFORM 203-102] Partitioning array 'state.execute.alu_results.uop.queue.stq_idx' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:3518) automatically.
+INFO: [XFORM 203-102] Partitioning array 'state.execute.alu_results.uop.queue.rxq_idx' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:3518) automatically.
+INFO: [XFORM 203-102] Partitioning array 'state.execute.alu_results.uop.queue.rob_allocation_id' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:3518) automatically.
+INFO: [XFORM 203-102] Partitioning array 'state.execute.alu_results.uop.rename.ldst' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:3518) automatically.
+INFO: [XFORM 203-102] Partitioning array 'state.execute.alu_results.uop.rename.lrs1' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:3518) automatically.
+INFO: [XFORM 203-102] Partitioning array 'state.execute.alu_results.uop.rename.lrs2' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:3518) automatically.
+INFO: [XFORM 203-102] Partitioning array 'state.execute.alu_results.uop.rename.lrs3' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:3518) automatically.
+INFO: [XFORM 203-102] Partitioning array 'state.execute.alu_results.uop.rename.pdst' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:3518) automatically.
+INFO: [XFORM 203-102] Partitioning array 'state.execute.alu_results.uop.rename.prs1' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:3518) automatically.
+INFO: [XFORM 203-102] Partitioning array 'state.execute.alu_results.uop.rename.prs2' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:3518) automatically.
+INFO: [XFORM 203-102] Partitioning array 'state.execute.alu_results.uop.rename.prs3' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:3518) automatically.
+INFO: [XFORM 203-102] Partitioning array 'state.execute.alu_results.uop.rename.ppred' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:3518) automatically.
+INFO: [XFORM 203-102] Partitioning array 'state.execute.alu_results.uop.rename.prs1_busy' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:3518) automatically.
+INFO: [XFORM 203-102] Partitioning array 'state.execute.alu_results.uop.rename.prs2_busy' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:3518) automatically.
+INFO: [XFORM 203-102] Partitioning array 'state.execute.alu_results.uop.rename.prs3_busy' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:3518) automatically.
+INFO: [XFORM 203-102] Partitioning array 'state.execute.alu_results.uop.rename.ppred_busy' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:3518) automatically.
+INFO: [XFORM 203-102] Partitioning array 'state.execute.alu_results.uop.rename.stale_pdst' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:3518) automatically.
+INFO: [XFORM 203-102] Partitioning array 'state.execute.alu_results.uop.rename.dst_rtype' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:3518) automatically.
+INFO: [XFORM 203-102] Partitioning array 'state.execute.alu_results.uop.rename.lrs1_rtype' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:3518) automatically.
+INFO: [XFORM 203-102] Partitioning array 'state.execute.alu_results.uop.rename.lrs2_rtype' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:3518) automatically.
+INFO: [XFORM 203-102] Partitioning array 'state.execute.alu_results.uop.rename.frs3_en' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:3518) automatically.
+INFO: [XFORM 203-102] Partitioning array 'state.execute.alu_results.uop.rename.fp_val' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:3518) automatically.
+INFO: [XFORM 203-102] Partitioning array 'state.execute.alu_results.uop.rename.fp_single' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:3518) automatically.
+INFO: [XFORM 203-102] Partitioning array 'state.execute.alu_results.uop.exception' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:3518) automatically.
+INFO: [XFORM 203-102] Partitioning array 'state.execute.alu_results.uop.exc_cause' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:3518) automatically.
+INFO: [XFORM 203-102] Partitioning array 'state.execute.alu_results.uop.bypassable' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:3518) automatically.
+INFO: [XFORM 203-102] Partitioning array 'state.execute.alu_results.uop.mem.mem_cmd' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:3518) automatically.
+INFO: [XFORM 203-102] Partitioning array 'state.execute.alu_results.uop.mem.mem_size' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:3518) automatically.
+INFO: [XFORM 203-102] Partitioning array 'state.execute.alu_results.uop.mem.mem_signed' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:3518) automatically.
+INFO: [XFORM 203-102] Partitioning array 'state.execute.alu_results.uop.mem.is_fence' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:3518) automatically.
+INFO: [XFORM 203-102] Partitioning array 'state.execute.alu_results.uop.mem.is_fencei' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:3518) automatically.
+INFO: [XFORM 203-102] Partitioning array 'state.execute.alu_results.uop.mem.is_amo' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:3518) automatically.
+INFO: [XFORM 203-102] Partitioning array 'state.execute.alu_results.uop.mem.uses_ldq' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:3518) automatically.
+INFO: [XFORM 203-102] Partitioning array 'state.execute.alu_results.uop.mem.uses_stq' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:3518) automatically.
+INFO: [XFORM 203-102] Partitioning array 'state.execute.alu_results.uop.mem.ldst_is_rs1' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:3518) automatically.
+INFO: [XFORM 203-102] Partitioning array 'state.execute.alu_results.uop.mem.ldst_val' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:3518) automatically.
+INFO: [XFORM 203-102] Partitioning array 'state.execute.alu_results.uop.is_sys_pc2epc' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:3518) automatically.
+INFO: [XFORM 203-102] Partitioning array 'state.execute.alu_results.uop.is_unique' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:3518) automatically.
+INFO: [XFORM 203-102] Partitioning array 'state.execute.alu_results.uop.flush_on_commit' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:3518) automatically.
+INFO: [XFORM 203-102] Partitioning array 'state.execute.alu_results.uop.exc.exception' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:3518) automatically.
+INFO: [XFORM 203-102] Partitioning array 'state.execute.alu_results.uop.exc.exc_cause' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:3518) automatically.
+INFO: [XFORM 203-102] Partitioning array 'state.execute.alu_results.uop.exc.xcpt_pf_if' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:3518) automatically.
+INFO: [XFORM 203-102] Partitioning array 'state.execute.alu_results.uop.exc.xcpt_ae_if' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:3518) automatically.
+INFO: [XFORM 203-102] Partitioning array 'state.execute.alu_results.uop.exc.xcpt_ma_if' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:3518) automatically.
+INFO: [XFORM 203-102] Partitioning array 'state.execute.alu_results.uop.exc.bp_debug_if' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:3518) automatically.
+INFO: [XFORM 203-102] Partitioning array 'state.execute.alu_results.uop.exc.bp_xcpt_if' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:3518) automatically.
+INFO: [XFORM 203-102] Partitioning array 'state.execute.alu_results.uop.debug.debug_fsrc' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:3518) automatically.
+INFO: [XFORM 203-102] Partitioning array 'state.execute.alu_results.uop.debug.debug_tsrc' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:3518) automatically.
+INFO: [XFORM 203-102] Partitioning array 'state.execute.alu_results.uop.debug.debug_inst' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:3518) automatically.
+INFO: [XFORM 203-102] Partitioning array 'state.execute.alu_results.uop.debug.debug_pc' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:3518) automatically.
+INFO: [XFORM 203-102] Partitioning array 'state.execute.alu_results.result' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:3518) automatically.
+INFO: [XFORM 203-102] Partitioning array 'state.execute.alu_results.exception' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:3518) automatically.
+INFO: [XFORM 203-102] Partitioning array 'state.execute.alu_results.exc_cause' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:3518) automatically.
+INFO: [XFORM 203-102] Partitioning array 'state.execute.alu_results.mispredict' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:3518) automatically.
+INFO: [XFORM 203-102] Partitioning array 'state.execute.alu_results.redirect_pc' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:3518) automatically.
+INFO: [XFORM 203-102] Partitioning array 'state.execute.alu_results.memory_valid' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:3518) automatically.
+INFO: [XFORM 203-102] Partitioning array 'state.execute.alu_results.is_load' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:3518) automatically.
+INFO: [XFORM 203-102] Partitioning array 'state.execute.alu_results.is_store' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:3518) automatically.
+INFO: [XFORM 203-102] Partitioning array 'state.execute.alu_results.signed_load' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:3518) automatically.
+INFO: [XFORM 203-102] Partitioning array 'state.execute.alu_results.memory_address' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:3518) automatically.
+INFO: [XFORM 203-102] Partitioning array 'state.execute.alu_results.store_data' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:3518) automatically.
+INFO: [XFORM 203-102] Partitioning array 'state.execute.alu_results.memory_mask' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:3518) automatically.
+INFO: [XFORM 203-102] Partitioning array 'state.execute.alu_results.memory_size' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:3518) automatically.
+INFO: [XFORM 203-102] Partitioning array 'state.rename.int_free_list.busy_table' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:3518) automatically.
+INFO: [XFORM 203-102] Partitioning array 'state.rob.entries.exception' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:3518) automatically.
+INFO: [XFORM 203-102] Partitioning array 'state.rob.entries.uop.exception' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:3518) automatically.
+INFO: [XFORM 203-102] Partitioning array 'state.rob.entries.uop.exc_cause' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:3518) automatically.
+INFO: [XFORM 203-102] Partitioning array 'state.rob.entries.is_store' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:3518) automatically.
+INFO: [XFORM 203-102] Partitioning array 'state.rob.entries.signed_load' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:3518) automatically.
+INFO: [XFORM 203-102] Partitioning array 'state.rob.entries.memory_address' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:3518) automatically.
+INFO: [XFORM 203-102] Partitioning array 'state.rob.entries.memory_mask' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:3518) automatically.
+INFO: [XFORM 203-102] Partitioning array 'state.rob.entries.memory_size' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:3518) automatically.
+INFO: [XFORM 203-102] Partitioning array 'state.lsu.stq.valid' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:3518) automatically.
+INFO: [XFORM 203-102] Partitioning array 'state.lsu.stq.address_valid' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:3518) automatically.
+INFO: [XFORM 203-102] Partitioning array 'state.lsu.stq.data_valid' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:3518) automatically.
+INFO: [XFORM 203-102] Partitioning array 'state.lsu.stq.rob_idx' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:3518) automatically.
+INFO: [XFORM 203-102] Partitioning array 'state.lsu.stq.mask' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:3518) automatically.
+INFO: [XFORM 203-102] Partitioning array 'state.lsu.stq.size' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:3518) automatically.
+INFO: [XFORM 203-102] Partitioning array 'state.lsu.stq.branch_mask' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:3518) automatically.
+INFO: [XFORM 203-102] Partitioning array 'state.lsu.stq.rob_allocation_id' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:3518) automatically.
+INFO: [XFORM 203-102] Partitioning array 'state.lsu.stq.address' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:3518) automatically.
+INFO: [XFORM 203-102] Partitioning array 'state.lsu.stq.data' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:3518) automatically.
+INFO: [XFORM 203-102] Partitioning array 'state.lsu.ldq.valid' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:3518) automatically.
+INFO: [XFORM 203-102] Partitioning array 'state.lsu.ldq.signed_load' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:3518) automatically.
+INFO: [XFORM 203-102] Partitioning array 'state.lsu.ldq.rob_idx' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:3518) automatically.
+INFO: [XFORM 203-102] Partitioning array 'state.lsu.ldq.size' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:3518) automatically.
+INFO: [XFORM 203-102] Partitioning array 'state.lsu.ldq.branch_mask' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:3518) automatically.
+INFO: [XFORM 203-102] Partitioning array 'state.lsu.ldq.rob_allocation_id' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:3518) automatically.
+INFO: [XFORM 203-102] Partitioning array 'state.lsu.ldq.address' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:3518) automatically.
+INFO: [XFORM 203-102] Partitioning array 'state.int_rf_bank0' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:3518) automatically.
+INFO: [XFORM 203-102] Partitioning array 'state.int_rf_bank1' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:3518) automatically.
+INFO: [XFORM 203-602] Inlining function 'boom::lsu_accept_completion' into 'boom::apply_completion' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:641) automatically.
+INFO: [XFORM 203-401] Performing if-conversion on hyperblock from (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:504:15) to (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:1259:9) in function 'boom::completion_service_execute_w4a'... converting 3 basic blocks.
+INFO: [XFORM 203-602] Inlining function 'w3_result' into 'synth_w3_rob_wrap_top' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:3522) automatically.
+INFO: [XFORM 203-602] Inlining function 'boom::completion_service_execute_w4a' into 'synth_w3_rob_wrap_top' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:1274) automatically.
+INFO: [XFORM 203-11] Balancing expressions in function 'synth_w3_rob_wrap_top' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:3517)...4 expression(s) balanced.
+INFO: [HLS 200-111] Finished Loop, function and other optimizations: CPU user time: 0.35 seconds. CPU system time: 0 seconds. Elapsed time: 0.35 seconds; current allocated memory: 491.281 MB.
+INFO: [HLS 200-472] Inferring partial write operation for 'state.rob.entries.busy' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:3518:19)
+INFO: [HLS 200-472] Inferring partial write operation for 'state.rob.entries.busy' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:3212:35)
+INFO: [HLS 200-472] Inferring partial write operation for 'state.rob.entries.uop.queue.rob_allocation_id' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:3214:58)
+INFO: [HLS 200-472] Inferring partial write operation for 'state_rob_entries_busy' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:647:35)
+INFO: [HLS 200-111] Finished Architecture Synthesis: CPU user time: 0.04 seconds. CPU system time: 0 seconds. Elapsed time: 0.04 seconds; current allocated memory: 500.785 MB.
+INFO: [HLS 200-10] Starting hardware synthesis ...
+INFO: [HLS 200-10] Synthesizing 'synth_w3_rob_wrap_top' ...
+INFO: [HLS 200-10] ----------------------------------------------------------------
+INFO: [HLS 200-42] -- Implementing module 'completion_is_valid' 
+INFO: [HLS 200-10] ----------------------------------------------------------------
+INFO: [SCHED 204-11] Starting scheduling ...
+INFO: [SCHED 204-11] Finished scheduling.
+INFO: [HLS 200-111] Finished Scheduling: CPU user time: 0.02 seconds. CPU system time: 0.01 seconds. Elapsed time: 0.03 seconds; current allocated memory: 501.094 MB.
+INFO: [BIND 205-100] Starting micro-architecture generation ...
+INFO: [BIND 205-101] Performing variable lifetime analysis.
+INFO: [BIND 205-101] Exploring resource sharing.
+INFO: [BIND 205-101] Binding ...
+INFO: [BIND 205-100] Finished micro-architecture generation.
+INFO: [HLS 200-111] Finished Binding: CPU user time: 0.02 seconds. CPU system time: 0 seconds. Elapsed time: 0.01 seconds; current allocated memory: 501.094 MB.
+INFO: [HLS 200-10] ----------------------------------------------------------------
+INFO: [HLS 200-42] -- Implementing module 'apply_completion' 
+INFO: [HLS 200-10] ----------------------------------------------------------------
+INFO: [SCHED 204-11] Starting scheduling ...
+INFO: [SCHED 204-11] Finished scheduling.
+INFO: [HLS 200-111] Finished Scheduling: CPU user time: 0.01 seconds. CPU system time: 0 seconds. Elapsed time: 0.02 seconds; current allocated memory: 501.098 MB.
+INFO: [BIND 205-100] Starting micro-architecture generation ...
+INFO: [BIND 205-101] Performing variable lifetime analysis.
+INFO: [BIND 205-101] Exploring resource sharing.
+INFO: [BIND 205-101] Binding ...
+INFO: [BIND 205-100] Finished micro-architecture generation.
+INFO: [HLS 200-111] Finished Binding: CPU user time: 0.02 seconds. CPU system time: 0 seconds. Elapsed time: 0.01 seconds; current allocated memory: 501.098 MB.
+INFO: [HLS 200-10] ----------------------------------------------------------------
+INFO: [HLS 200-42] -- Implementing module 'synth_w3_rob_wrap_top' 
+INFO: [HLS 200-10] ----------------------------------------------------------------
+INFO: [SCHED 204-11] Starting scheduling ...
+INFO: [SCHED 204-11] Finished scheduling.
+INFO: [HLS 200-111] Finished Scheduling: CPU user time: 0.06 seconds. CPU system time: 0 seconds. Elapsed time: 0.06 seconds; current allocated memory: 501.961 MB.
+INFO: [BIND 205-100] Starting micro-architecture generation ...
+INFO: [BIND 205-101] Performing variable lifetime analysis.
+INFO: [BIND 205-101] Exploring resource sharing.
+INFO: [BIND 205-101] Binding ...
+INFO: [BIND 205-100] Finished micro-architecture generation.
+INFO: [HLS 200-111] Finished Binding: CPU user time: 0.06 seconds. CPU system time: 0 seconds. Elapsed time: 0.06 seconds; current allocated memory: 501.961 MB.
+INFO: [HLS 200-10] ----------------------------------------------------------------
+INFO: [HLS 200-10] -- Generating RTL for module 'completion_is_valid' 
+INFO: [HLS 200-10] ----------------------------------------------------------------
+INFO: [RTGEN 206-100] Finished creating RTL model for 'completion_is_valid'.
+INFO: [HLS 200-111] Finished Creating RTL model: CPU user time: 0.04 seconds. CPU system time: 0 seconds. Elapsed time: 0.04 seconds; current allocated memory: 501.961 MB.
+INFO: [HLS 200-10] ----------------------------------------------------------------
+INFO: [HLS 200-10] -- Generating RTL for module 'apply_completion' 
+INFO: [HLS 200-10] ----------------------------------------------------------------
+INFO: [RTGEN 206-100] Finished creating RTL model for 'apply_completion'.
+INFO: [HLS 200-111] Finished Creating RTL model: CPU user time: 0.02 seconds. CPU system time: 0 seconds. Elapsed time: 0.02 seconds; current allocated memory: 501.961 MB.
+INFO: [HLS 200-10] ----------------------------------------------------------------
+INFO: [HLS 200-10] -- Generating RTL for module 'synth_w3_rob_wrap_top' 
+INFO: [HLS 200-10] ----------------------------------------------------------------
+INFO: [RTGEN 206-500] Setting interface mode on port 'synth_w3_rob_wrap_top/allocation_base' to 'ap_none'.
+INFO: [RTGEN 206-500] Setting interface mode on port 'synth_w3_rob_wrap_top/observable' to 'ap_vld'.
+INFO: [RTGEN 206-500] Setting interface mode on function 'synth_w3_rob_wrap_top' to 'ap_ctrl_hs'.
+INFO: [RTGEN 206-100] Finished creating RTL model for 'synth_w3_rob_wrap_top'.
+INFO: [HLS 200-111] Finished Creating RTL model: CPU user time: 0.03 seconds. CPU system time: 0.01 seconds. Elapsed time: 0.03 seconds; current allocated memory: 502.852 MB.
+INFO: [RTMG 210-279] Implementing memory 'synth_w3_rob_wrap_top_completion_is_valid_state_6_0_0_ROM_AUTO_1R' using auto ROMs.
+INFO: [RTMG 210-278] Implementing memory 'synth_w3_rob_wrap_top_state_rob_entries_busy_RAM_AUTO_1R1W_ram (RAM)' using auto RAMs.
+INFO: [RTMG 210-278] Implementing memory 'synth_w3_rob_wrap_top_state_rob_entries_uop_queue_rob_allocation_id_RAM_AUTO_1R1W_ram (RAM)' using auto RAMs.
+INFO: [HLS 200-111] Finished Generating all RTL models: CPU user time: 0.23 seconds. CPU system time: 0 seconds. Elapsed time: 0.24 seconds; current allocated memory: 509.066 MB.
+INFO: [HLS 200-111] Finished Updating report files: CPU user time: 0.16 seconds. CPU system time: 0.01 seconds. Elapsed time: 0.16 seconds; current allocated memory: 509.066 MB.
+INFO: [VHDL 208-304] Generating VHDL RTL for synth_w3_rob_wrap_top.
+INFO: [VLOG 209-307] Generating Verilog RTL for synth_w3_rob_wrap_top.
+INFO: [HLS 200-789] **** Estimated Fmax: 404.20 MHz
+INFO: [HLS 200-111] Finished Command csynth_design CPU user time: 32.1 seconds. CPU system time: 0.8 seconds. Elapsed time: 32.92 seconds; current allocated memory: 93.609 MB.
+INFO: [HLS 200-112] Total CPU user time: 34.68 seconds. Total CPU system time: 1.45 seconds. Total elapsed time: 34.93 seconds; peak allocated memory: 509.086 MB.
+INFO: [Common 17-206] Exiting vitis_hls at Mon Aug  3 22:51:30 2026...

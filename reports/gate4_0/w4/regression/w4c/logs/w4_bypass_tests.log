@@ -1,0 +1,14 @@
+=== Gate 4.0 W4C Bypass Tests ===
+  [W4C bypass] x0 precedes bypass and PRF                 ... PASS
+  [W4C bypass] ALU to ALU                                 ... PASS
+  [W4C bypass] ALU to branch                              ... PASS
+  [W4C bypass] ALU to MEM address and data                ... PASS
+  [W4C bypass] load to ALU                                ... PASS
+  [W4C bypass] load to branch                             ... PASS
+  [W4C bypass] MUL to ALU and ALU to MUL                  ... PASS
+  [W4C bypass] same-source duplicate must agree           ... PASS
+  [W4C bypass] invalid and stale completion filtered      ... PASS
+  [W4C bypass] peak two bypass with serial PRF            ... PASS
+  [W4C bypass] reset clears bypass ports                  ... PASS
+W4C bypass: 11 passed, 0 failed
+W4C_BYPASS_METRICS peak_bypass=2 peak_prf_writes=1 conflicts_checked=1

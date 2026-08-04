@@ -1,0 +1,154 @@
+
+****** Vitis HLS - High-Level Synthesis from C, C++ and OpenCL v2021.2 (64-bit)
+  **** SW Build 3367213 on Tue Oct 19 02:47:39 MDT 2021
+  **** IP Build 3369179 on Thu Oct 21 08:25:16 MDT 2021
+    ** Copyright 1986-2021 Xilinx, Inc. All Rights Reserved.
+
+source /home/lab_726/Xilinx/Vitis_HLS/2021.2/scripts/vitis_hls/hls.tcl -notrace
+INFO: [HLS 200-10] Running '/home/lab_726/Xilinx/Vitis_HLS/2021.2/bin/unwrapped/lnx64.o/vitis_hls'
+INFO: [HLS 200-10] For user 'lab_726' on host '726' (Linux_x86_64 version 6.8.0-136-generic) on Sun Aug 02 12:04:22 CST 2026
+INFO: [HLS 200-10] On os Ubuntu 22.04.5 LTS
+INFO: [HLS 200-10] In directory '/home/lab_726/boom/hls_boom/build/gate4_0/w4a_csynth/projects'
+Sourcing Tcl script '/home/lab_726/boom/hls_boom/scripts/run_top_csynth.tcl'
+INFO: [HLS 200-1510] Running: open_project -reset synth_execute_top 
+INFO: [HLS 200-10] Opening and resetting project '/home/lab_726/boom/hls_boom/build/gate4_0/w4a_csynth/projects/synth_execute_top'.
+WARNING: [HLS 200-40] No /home/lab_726/boom/hls_boom/build/gate4_0/w4a_csynth/projects/synth_execute_top/solution_w4a_csynth/solution_w4a_csynth.aps file found.
+INFO: [HLS 200-1510] Running: set_top synth_execute_top 
+INFO: [HLS 200-1510] Running: add_files -cflags -std=c++11 -I/home/lab_726/boom/hls_boom/include  /home/lab_726/boom/hls_boom/src/boom_core_merged.cpp 
+INFO: [HLS 200-10] Adding design file '/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp' to the project
+INFO: [HLS 200-1510] Running: open_solution -reset solution_w4a_csynth 
+INFO: [HLS 200-10] Creating and opening solution '/home/lab_726/boom/hls_boom/build/gate4_0/w4a_csynth/projects/synth_execute_top/solution_w4a_csynth'.
+INFO: [HLS 200-10] Cleaning up the solution database.
+WARNING: [HLS 200-40] No /home/lab_726/boom/hls_boom/build/gate4_0/w4a_csynth/projects/synth_execute_top/solution_w4a_csynth/solution_w4a_csynth.aps file found.
+INFO: [HLS 200-1505] Using default flow_target 'vivado'
+Resolution: For help on HLS 200-1505 see www.xilinx.com/cgi-bin/docs/rdoc?v=2021.2;t=hls+guidance;d=200-1505.html
+INFO: [HLS 200-1510] Running: set_part xczu7ev-ffvc1156-2-e 
+INFO: [HLS 200-1611] Setting target device to 'xczu7ev-ffvc1156-2-e'
+INFO: [HLS 200-1510] Running: create_clock -period 10 -name default 
+INFO: [SYN 201-201] Setting up clock 'default' with a period of 10ns.
+INFO: [HLS 200-1510] Running: config_compile -pipeline_loops 0 
+INFO: [XFORM 203-1171] Pipeline the innermost loop with trip count more than 0 or its parent loop when its trip count is less than or equal 0.
+INFO: [HLS 200-1510] Running: csynth_design 
+INFO: [HLS 200-111] Finished File checks and directory preparation: CPU user time: 0.01 seconds. CPU system time: 0 seconds. Elapsed time: 0.01 seconds; current allocated memory: 1.321 GB.
+INFO: [HLS 200-10] Analyzing design file '/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp' ... 
+INFO: [HLS 200-111] Finished Source Code Analysis and Preprocessing: CPU user time: 0.93 seconds. CPU system time: 0.25 seconds. Elapsed time: 0.62 seconds; current allocated memory: 418.312 MB.
+INFO: [HLS 200-777] Using interface defaults for 'Vivado' flow target.
+INFO: [HLS 214-284] Auto array partition mode is set into default.
+INFO: [HLS 214-178] Inlining function 'MicroOp::MicroOp()' into 'FrontendState::FrontendState()' (/home/lab_726/boom/hls_boom/include/boom_state.hpp:26:0)
+INFO: [HLS 214-178] Inlining function 'MicroOp::MicroOp()' into 'DecodeState::DecodeState()' (/home/lab_726/boom/hls_boom/include/boom_state.hpp:32:0)
+INFO: [HLS 214-178] Inlining function 'MicroOp::MicroOp()' into 'RenameDispatchPacket::RenameDispatchPacket()' (/home/lab_726/boom/hls_boom/include/boom_state.hpp:73:0)
+INFO: [HLS 214-178] Inlining function 'RenameMapTableState::RenameMapTableState()' into 'RenameState::RenameState()' (/home/lab_726/boom/hls_boom/include/boom_state.hpp:76:0)
+INFO: [HLS 214-178] Inlining function 'RenameFreeListState::RenameFreeListState()' into 'RenameState::RenameState()' (/home/lab_726/boom/hls_boom/include/boom_state.hpp:76:0)
+INFO: [HLS 214-178] Inlining function 'RenameDispatchPacket::RenameDispatchPacket()' into 'RenameState::RenameState()' (/home/lab_726/boom/hls_boom/include/boom_state.hpp:76:0)
+INFO: [HLS 214-178] Inlining function 'MicroOp::MicroOp()' into 'IssueSlotEntry::IssueSlotEntry()' (/home/lab_726/boom/hls_boom/include/boom_types.hpp:100:0)
+INFO: [HLS 214-178] Inlining function 'IssueSlotEntry::IssueSlotEntry()' into 'IssueQueueState::IssueQueueState()' (/home/lab_726/boom/hls_boom/include/boom_state.hpp:85:0)
+INFO: [HLS 214-178] Inlining function 'MicroOp::MicroOp()' into 'IssueGrant::IssueGrant()' (/home/lab_726/boom/hls_boom/include/boom_types.hpp:77:0)
+INFO: [HLS 214-178] Inlining function 'IssueGrant::IssueGrant()' into 'IssueState::IssueState()' (/home/lab_726/boom/hls_boom/include/boom_state.hpp:102:0)
+INFO: [HLS 214-178] Inlining function 'MicroOp::MicroOp()' into 'IssueState::IssueState()' (/home/lab_726/boom/hls_boom/include/boom_state.hpp:102:0)
+INFO: [HLS 214-178] Inlining function 'MicroOp::MicroOp()' into 'ExecuteState::AluResult::AluResult()' (/home/lab_726/boom/hls_boom/include/boom_state.hpp:121:0)
+INFO: [HLS 214-178] Inlining function 'ExecuteState::AluResult::AluResult()' into 'ExecuteState::ExecuteState()' (/home/lab_726/boom/hls_boom/include/boom_state.hpp:124:0)
+INFO: [HLS 214-178] Inlining function 'MicroOp::MicroOp()' into 'RobEntry::RobEntry()' (/home/lab_726/boom/hls_boom/include/boom_types.hpp:91:0)
+INFO: [HLS 214-178] Inlining function 'RobEntry::RobEntry()' into 'RobInternalState::RobInternalState()' (/home/lab_726/boom/hls_boom/include/boom_state.hpp:138:0)
+INFO: [HLS 214-178] Inlining function 'CommitEntry::CommitEntry()' into 'RobInternalState::RobInternalState()' (/home/lab_726/boom/hls_boom/include/boom_state.hpp:138:0)
+INFO: [HLS 214-178] Inlining function 'StoreQueueEntry::StoreQueueEntry()' into 'LsuState::LsuState()' (/home/lab_726/boom/hls_boom/include/boom_state.hpp:181:0)
+INFO: [HLS 214-178] Inlining function 'LoadQueueEntry::LoadQueueEntry()' into 'LsuState::LsuState()' (/home/lab_726/boom/hls_boom/include/boom_state.hpp:181:0)
+INFO: [HLS 214-178] Inlining function 'MicroOp::MicroOp()' into 'BranchUpdate::BranchUpdate()' (/home/lab_726/boom/hls_boom/include/boom_types.hpp:109:0)
+INFO: [HLS 214-178] Inlining function 'FrontendState::FrontendState()' into 'BoomCoreState::BoomCoreState()' (/home/lab_726/boom/hls_boom/include/boom_state.hpp:205:0)
+INFO: [HLS 214-178] Inlining function 'CsrState::CsrState()' into 'BoomCoreState::BoomCoreState()' (/home/lab_726/boom/hls_boom/include/boom_state.hpp:205:0)
+INFO: [HLS 214-178] Inlining function 'LsuState::LsuState()' into 'BoomCoreState::BoomCoreState()' (/home/lab_726/boom/hls_boom/include/boom_state.hpp:205:0)
+INFO: [HLS 214-178] Inlining function 'BranchRecoveryState::BranchRecoveryState()' into 'BoomCoreState::BoomCoreState()' (/home/lab_726/boom/hls_boom/include/boom_state.hpp:205:0)
+INFO: [HLS 214-178] Inlining function 'BranchUpdate::BranchUpdate()' into 'BoomCoreState::BoomCoreState()' (/home/lab_726/boom/hls_boom/include/boom_state.hpp:205:0)
+INFO: [HLS 214-178] Inlining function 'classify_issue_port(MicroOp const&)' into 'boom::execute_module(BoomCoreState&)' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:926:0)
+INFO: [HLS 214-178] Inlining function 'boom::sext32(long)' into 'boom::execute_module(BoomCoreState&)' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:926:0)
+INFO: [HLS 214-178] Inlining function 'boom::mask_for_size(unsigned char)' into 'boom::execute_module(BoomCoreState&)' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:926:0)
+INFO: [HLS 214-270] Starting automatic array partition analysis...
+INFO: [HLS 200-111] Finished Compiling Optimization and Transform: CPU user time: 8.52 seconds. CPU system time: 0.27 seconds. Elapsed time: 8.8 seconds; current allocated memory: 434.066 MB.
+INFO: [HLS 200-111] Finished Checking Pragmas: CPU user time: 0.01 seconds. CPU system time: 0 seconds. Elapsed time: 0 seconds; current allocated memory: 434.066 MB.
+INFO: [HLS 200-10] Starting code transformations ...
+INFO: [HLS 200-111] Finished Standard Transforms: CPU user time: 0.05 seconds. CPU system time: 0 seconds. Elapsed time: 0.05 seconds; current allocated memory: 441.301 MB.
+INFO: [HLS 200-10] Checking synthesizability ...
+INFO: [HLS 200-111] Finished Checking Synthesizability: CPU user time: 0.02 seconds. CPU system time: 0 seconds. Elapsed time: 0.02 seconds; current allocated memory: 441.301 MB.
+INFO: [XFORM 203-102] Automatically partitioning small array 'state.issue.issued_valids' completely based on array size.
+INFO: [XFORM 203-102] Automatically partitioning small array 'state.issue.issued_uops.uopc' completely based on array size.
+INFO: [XFORM 203-102] Automatically partitioning small array 'state.issue.issued_uops.rename.prs2' completely based on array size.
+INFO: [XFORM 203-102] Automatically partitioning small array 'state.issue.issued_uops.rename.prs1' completely based on array size.
+INFO: [XFORM 203-102] Automatically partitioning small array 'state.issue.issued_uops.rename.pdst' completely based on array size.
+INFO: [XFORM 203-102] Automatically partitioning small array 'state.issue.issued_uops.rename.dst_rtype' completely based on array size.
+INFO: [XFORM 203-102] Automatically partitioning small array 'state.issue.issued_uops.iq_type' completely based on array size.
+INFO: [XFORM 203-102] Automatically partitioning small array 'state.issue.issued_uops.fu_code' completely based on array size.
+INFO: [XFORM 203-102] Automatically partitioning small array 'state.execute.alu_results.valid' completely based on array size.
+INFO: [XFORM 203-102] Automatically partitioning small array 'state.execute.alu_results.result' completely based on array size.
+INFO: [XFORM 203-101] Partitioning array 'state.issue.issued_valids' in dimension 1 completely.
+INFO: [XFORM 203-101] Partitioning array 'state.issue.issued_uops.uopc' in dimension 1 completely.
+INFO: [XFORM 203-101] Partitioning array 'state.issue.issued_uops.rename.prs2' in dimension 1 completely.
+INFO: [XFORM 203-101] Partitioning array 'state.issue.issued_uops.rename.prs1' in dimension 1 completely.
+INFO: [XFORM 203-101] Partitioning array 'state.issue.issued_uops.rename.pdst' in dimension 1 completely.
+INFO: [XFORM 203-101] Partitioning array 'state.issue.issued_uops.rename.dst_rtype' in dimension 1 completely.
+INFO: [XFORM 203-101] Partitioning array 'state.issue.issued_uops.iq_type' in dimension 1 completely.
+INFO: [XFORM 203-101] Partitioning array 'state.issue.issued_uops.fu_code' in dimension 1 completely.
+INFO: [XFORM 203-101] Partitioning array 'state.execute.alu_results.valid' in dimension 1 completely.
+INFO: [XFORM 203-101] Partitioning array 'state.execute.alu_results.result' in dimension 1 completely.
+INFO: [XFORM 203-401] Performing if-conversion on hyperblock from (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:943:36) to (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:954:16) in function 'boom::execute_module'... converting 5 basic blocks.
+INFO: [HLS 200-111] Finished Loop, function and other optimizations: CPU user time: 0.08 seconds. CPU system time: 0.01 seconds. Elapsed time: 0.09 seconds; current allocated memory: 465.895 MB.
+INFO: [HLS 200-472] Inferring partial write operation for 'state.int_rf' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:2214:21)
+INFO: [HLS 200-472] Inferring partial write operation for 'state.int_rf' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:2215:21)
+INFO: [HLS 200-111] Finished Architecture Synthesis: CPU user time: 0.25 seconds. CPU system time: 0 seconds. Elapsed time: 0.25 seconds; current allocated memory: 489.160 MB.
+INFO: [HLS 200-10] Starting hardware synthesis ...
+INFO: [HLS 200-10] Synthesizing 'synth_execute_top' ...
+INFO: [HLS 200-10] ----------------------------------------------------------------
+INFO: [HLS 200-42] -- Implementing module 'execute_module' 
+INFO: [HLS 200-10] ----------------------------------------------------------------
+INFO: [SCHED 204-11] Starting scheduling ...
+INFO: [SCHED 204-11] Finished scheduling.
+INFO: [HLS 200-111] Finished Scheduling: CPU user time: 0.03 seconds. CPU system time: 0.01 seconds. Elapsed time: 0.05 seconds; current allocated memory: 491.652 MB.
+INFO: [BIND 205-100] Starting micro-architecture generation ...
+INFO: [BIND 205-101] Performing variable lifetime analysis.
+INFO: [BIND 205-101] Exploring resource sharing.
+INFO: [BIND 205-101] Binding ...
+INFO: [BIND 205-100] Finished micro-architecture generation.
+INFO: [HLS 200-111] Finished Binding: CPU user time: 0.04 seconds. CPU system time: 0 seconds. Elapsed time: 0.04 seconds; current allocated memory: 491.652 MB.
+INFO: [HLS 200-10] ----------------------------------------------------------------
+INFO: [HLS 200-42] -- Implementing module 'synth_execute_top' 
+INFO: [HLS 200-10] ----------------------------------------------------------------
+INFO: [SCHED 204-11] Starting scheduling ...
+INFO: [SCHED 204-11] Finished scheduling.
+INFO: [HLS 200-111] Finished Scheduling: CPU user time: 0.05 seconds. CPU system time: 0 seconds. Elapsed time: 0.05 seconds; current allocated memory: 491.652 MB.
+INFO: [BIND 205-100] Starting micro-architecture generation ...
+INFO: [BIND 205-101] Performing variable lifetime analysis.
+INFO: [BIND 205-101] Exploring resource sharing.
+INFO: [BIND 205-101] Binding ...
+INFO: [BIND 205-100] Finished micro-architecture generation.
+INFO: [HLS 200-111] Finished Binding: CPU user time: 0.02 seconds. CPU system time: 0 seconds. Elapsed time: 0.02 seconds; current allocated memory: 491.652 MB.
+INFO: [HLS 200-10] ----------------------------------------------------------------
+INFO: [HLS 200-10] -- Generating RTL for module 'execute_module' 
+INFO: [HLS 200-10] ----------------------------------------------------------------
+INFO: [RTGEN 206-100] Generating core module 'mul_32s_32s_64_1_1': 1 instance(s).
+INFO: [RTGEN 206-100] Finished creating RTL model for 'execute_module'.
+INFO: [HLS 200-111] Finished Creating RTL model: CPU user time: 0.05 seconds. CPU system time: 0 seconds. Elapsed time: 0.05 seconds; current allocated memory: 492.348 MB.
+INFO: [HLS 200-10] ----------------------------------------------------------------
+INFO: [HLS 200-10] -- Generating RTL for module 'synth_execute_top' 
+INFO: [HLS 200-10] ----------------------------------------------------------------
+INFO: [RTGEN 206-500] Setting interface mode on port 'synth_execute_top/seed_uopc' to 'ap_none'.
+INFO: [RTGEN 206-500] Setting interface mode on port 'synth_execute_top/seed_rs1' to 'ap_none'.
+INFO: [RTGEN 206-500] Setting interface mode on port 'synth_execute_top/seed_rs2' to 'ap_none'.
+INFO: [RTGEN 206-500] Setting interface mode on port 'synth_execute_top/observable' to 'ap_vld'.
+INFO: [RTGEN 206-500] Setting interface mode on function 'synth_execute_top' to 'ap_ctrl_hs'.
+WARNING: [RTGEN 206-101] Register 'state_execute_alu_results_valid_1' is power-on initialization.
+WARNING: [RTGEN 206-101] Register 'state_execute_alu_results_result_1' is power-on initialization.
+WARNING: [RTGEN 206-101] Register 'state_issue_issued_valids_1' is power-on initialization.
+WARNING: [RTGEN 206-101] Register 'state_issue_issued_uops_uopc_1' is power-on initialization.
+WARNING: [RTGEN 206-101] Register 'state_issue_issued_uops_iq_type_1' is power-on initialization.
+WARNING: [RTGEN 206-101] Register 'state_issue_issued_uops_rename_prs1_1' is power-on initialization.
+WARNING: [RTGEN 206-101] Register 'state_issue_issued_uops_rename_prs2_1' is power-on initialization.
+INFO: [RTGEN 206-100] Finished creating RTL model for 'synth_execute_top'.
+INFO: [HLS 200-111] Finished Creating RTL model: CPU user time: 0.12 seconds. CPU system time: 0.01 seconds. Elapsed time: 0.13 seconds; current allocated memory: 494.824 MB.
+INFO: [RTMG 210-278] Implementing memory 'synth_execute_top_state_int_rf_RAM_AUTO_1R1W_ram (RAM)' using auto RAMs with power-on initialization.
+INFO: [HLS 200-111] Finished Generating all RTL models: CPU user time: 0.14 seconds. CPU system time: 0 seconds. Elapsed time: 0.14 seconds; current allocated memory: 499.207 MB.
+INFO: [HLS 200-111] Finished Updating report files: CPU user time: 0.15 seconds. CPU system time: 0 seconds. Elapsed time: 0.15 seconds; current allocated memory: 499.207 MB.
+INFO: [VHDL 208-304] Generating VHDL RTL for synth_execute_top.
+INFO: [VLOG 209-307] Generating Verilog RTL for synth_execute_top.
+INFO: [HLS 200-790] **** Loop Constraint Status: All loop constraints were satisfied.
+INFO: [HLS 200-789] **** Estimated Fmax: 196.81 MHz
+INFO: [HLS 200-111] Finished Command csynth_design CPU user time: 10.47 seconds. CPU system time: 0.55 seconds. Elapsed time: 10.48 seconds; current allocated memory: -853.465 MB.
+INFO: [HLS 200-112] Total CPU user time: 11.79 seconds. Total CPU system time: 0.98 seconds. Total elapsed time: 11.57 seconds; peak allocated memory: 1.321 GB.
+INFO: [Common 17-206] Exiting vitis_hls at Sun Aug  2 12:04:33 2026...

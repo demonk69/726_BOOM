@@ -2,11 +2,26 @@
 #include "boom_types.hpp"
 #include "boom_state.hpp"
 #include "issue.hpp"
+#include "completion.hpp"
 
 namespace boom {
 
 static uint64_t sext32(int64_t v) { return (uint64_t)((int32_t)(v&0xFFFFFFFF)); }
 static uint8_t mask_for_size(uint8_t size) { return (uint8_t)((size>=3) ? 0xFF : ((1u << (1u << size)) - 1u)); }
+
+static uint64_t execute_operand(const BoomCoreState& state, uint8_t lane,
+                                uint8_t prs, uint64_t issued_data) {
+#pragma HLS INLINE
+    if (prs == 0) return 0;
+    if (prs >= INT_PHYS_REGS) return 0;
+    uint64_t value = 0;
+    bool conflict = false;
+    if (boom::bypass_lookup(state, prs, value, conflict)) return value;
+    if (conflict) return 0;
+    if (!state.rename.int_free_list.busy_table[prs]) return prf_read(state, prs);
+    (void)lane;
+    return issued_data;
+}
 
 void execute_module(BoomCoreState& state) {
 #ifdef BOOM_HLS_W3_DIAGNOSTIC
@@ -25,8 +40,10 @@ void execute_module(BoomCoreState& state) {
         if (state.brupdate.valid && state.brupdate.mispredict &&
             ((uop.branch.br_mask & state.brupdate.mispredict_mask) != 0)) continue;
 
-        uint64_t rs1 = (uop.rename.prs1!=0) ? state.int_rf[uop.rename.prs1] : 0;
-        uint64_t rs2 = (uop.rename.prs2!=0) ? state.int_rf[uop.rename.prs2] : 0;
+        uint64_t rs1 = execute_operand(state, (uint8_t)i, uop.rename.prs1,
+                                       iss.issued_prs1_data[i]);
+        uint64_t rs2 = execute_operand(state, (uint8_t)i, uop.rename.prs2,
+                                       iss.issued_prs2_data[i]);
         uint64_t pc = uop.debug_pc;
 
         int64_t op1=(int64_t)rs1, op2=(int64_t)rs2;

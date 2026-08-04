@@ -1,0 +1,35 @@
+from_stage,to_stage,top,lut_delta,ff_delta,bram_18k_delta,dsp_delta,attribution
+W3,W4A,synth_issue_top,0,0,0,0,completion interface only
+W3,W4A,synth_execute_top,0,0,0,0,completion interface only
+W3,W4A,synth_completion_top,NA,NA,NA,NA,new W4 diagnostic top
+W3,W4A,synth_rob_top,0,0,0,0,completion interface only
+W3,W4A,synth_lsu_top,3121,1520,3,0,completion interface and retained state
+W3,W4A,boom_core_top,3096,529,-1,0,completion interface
+W4A,W4B,synth_issue_top,1701,35,0,0,fixed three-source completion retention
+W4A,W4B,synth_execute_top,147,16,0,0,fixed three-source completion retention
+W4A,W4B,synth_completion_top,3872,380,0,0,multi-ROB completion
+W4A,W4B,synth_rob_top,1251,175,1,0,multi-ROB completion
+W4A,W4B,synth_lsu_top,6168,1009,0,0,multi-ROB completion
+W4A,W4B,synth_core_step_top,24891,1649,0,0,multi-ROB completion
+W4A,W4B,boom_core_top,21416,1647,0,0,multi-ROB completion
+W4B,W4C,synth_issue_top,495,87,0,0,three wakeup and bypass publications
+W4B,W4C,synth_execute_top,183,-493,0,0,three wakeup and bypass publications
+W4B,W4C,synth_completion_top,3341,932,0,0,three wakeup and bypass publications
+W4B,W4C,synth_rob_top,1878,411,0,0,three wakeup and bypass publications
+W4B,W4C,synth_lsu_top,4351,895,0,0,three wakeup and bypass publications
+W4B,W4C,synth_core_step_top,9548,3193,-2,0,three wakeup and bypass publications
+W4B,W4C,boom_core_top,10080,3193,-2,0,three wakeup and bypass publications
+W4C,W4D,synth_issue_top,0,0,0,0,two-port writeback
+W4C,W4D,synth_execute_top,0,0,0,0,two-port writeback
+W4C,W4D,synth_completion_top,28127,8729,0,0,two-port PRF writeback and validation
+W4C,W4D,synth_rob_top,25812,7563,4,0,two-port PRF writeback and validation
+W4C,W4D,synth_lsu_top,29236,8568,4,0,two-port PRF writeback and validation
+W4C,W4D,synth_core_step_top,4491,3138,4,0,two-port PRF writeback and validation
+W4C,W4D,boom_core_top,5046,3400,4,0,two-port PRF writeback and validation
+W4D,W4E_FINAL,synth_issue_top,6,0,0,0,two-bank LVT state shape
+W4D,W4E_FINAL,synth_execute_top,134,193,4,0,replicated PRF reads plus LVT select
+W4D,W4E_FINAL,synth_completion_top,753,64,4,0,two replicated banks and LVT write stage
+W4D,W4E_FINAL,synth_rob_top,481,-72,-4,0,two-bank LVT state shape
+W4D,W4E_FINAL,synth_lsu_top,-42142,-11850,-7,0,LSU no longer embeds completion service
+W4D,W4E_FINAL,synth_core_step_top,3783,123,0,0,two-bank LVT product integration and single completion owner
+W4D,W4E_FINAL,boom_core_top,4176,176,0,0,two-bank LVT product integration and single completion owner

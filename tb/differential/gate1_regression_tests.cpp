@@ -140,7 +140,8 @@ void t_iq_port_conflict() { TEST("IQ grants only implemented ALU execute port");
 void t_iq_oldest_ready() { TEST("IQ selects oldest ready entry and keeps older blocked");
     BoomCoreState s;
     for (int i=0; i<3; i++) { IssueSlotEntry& e=s.issue.alu_iq.entries[i]; e.valid=true; e.request=true; e.uop=make_iq_uop(RESET_VECTOR+4*i,i); }
-    s.issue.alu_iq.entries[0].prs1_busy=true;
+    s.issue.alu_iq.entries[0].uop.rename.prs1=7;
+    s.rename.int_free_list.busy_table[7]=true;
     s.issue.alu_iq.count=3; s.issue.alu_iq.tail=3;
     boom::issue_module(s);
     CHECK(s.issue.issued_valids[INT_ISSUE_LANE],"no ready grant");

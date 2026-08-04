@@ -253,7 +253,7 @@ static void t_no_old_writeback() {
     run_reset(state, ctrl);
     PipeSignals pipe;
     boom_core_step(state, pipe);
-    CHECK(state.int_rf[9] != 0xdeadbeef, "stale execute result wrote back");
+    CHECK(boom::prf_read(state,9) != 0xdeadbeef, "stale execute result wrote back");
     PASS();
 }
 

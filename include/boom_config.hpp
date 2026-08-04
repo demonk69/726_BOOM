@@ -19,6 +19,8 @@
 #define INTEGER_ISSUE_PORTS 2
 #define COMMIT_WIDTH        1
 #define MACHINE_WIDTH       1
+#define NUM_ROB_COMPLETE_PORTS 4
+#define COMPLETION_PENDING_SLOTS 3
 
 #define ROB_DEPTH           32
 #define ROB_IDX_BITS        5
@@ -72,6 +74,8 @@
 #define CLOCK_FREQ_HZ       100000000
 #define CLOCK_PERIOD_NS     10
 
+#define WRITEBACK_VALIDATION_FAULT_CAUSE 0x100ULL
+
 #define MAIN_MEM_BASE       0x80000000ull
 #define MAIN_MEM_SIZE       0x10000000ull
 
@@ -83,13 +87,16 @@
 #define DEBUG_BASE          0x00000000ull
 #define BOOT_ROM_BASE       0x00010000ull
 
-#define INUM_WAKEUP_PORTS   3
-#define INUM_BYPASS_PORTS   3
+#define NUM_INT_WAKEUP_PORTS 3
+#define NUM_INT_BYPASS_PORTS 3
+#define INUM_WAKEUP_PORTS   NUM_INT_WAKEUP_PORTS
+#define INUM_BYPASS_PORTS   NUM_INT_BYPASS_PORTS
 #define FP_WAKEUP_PORTS     2
 #define FP_BYPASS_PORTS     0
 
 #define INT_RF_READ_PORTS   4
 #define INT_RF_WRITE_PORTS  2
+#define NUM_INT_WRITEBACK_PORTS INT_RF_WRITE_PORTS
 #define FP_RF_READ_PORTS    3
 #define FP_RF_WRITE_PORTS   2
 
@@ -118,5 +125,11 @@ static_assert(EXECUTE_RESULT_LANES == ISSUE_WIDTH, "execute result interface mus
 static_assert(ISSUE_WIDTH == 3, "SmallBoom fixed issue interface must contain MEM, INT, and FP lanes");
 static_assert(MEM_ISSUE_LANE != INT_ISSUE_LANE, "MEM and INT issue lanes must be distinct");
 static_assert(FP_ISSUE_LANE < ISSUE_WIDTH, "FP reserved lane must exist");
+static_assert(NUM_ROB_COMPLETE_PORTS == 4, "SmallBoom has four general ROB response ports");
+static_assert(COMPLETION_PENDING_SLOTS == 3, "W4B retains two execute lanes and one load response");
+static_assert(NUM_INT_WAKEUP_PORTS == 3, "SmallBoom has three regular integer wakeups");
+static_assert(NUM_INT_BYPASS_PORTS == 3, "SmallBoom has three integer bypass buses");
+static_assert(NUM_INT_WRITEBACK_PORTS == 2, "SmallBoom has exactly two integer PRF writes");
+static_assert(COMMIT_WIDTH == 1, "W4D does not widen commit");
 
 #endif

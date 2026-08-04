@@ -69,6 +69,16 @@ static void clear_resolved_masks_in_state(BoomCoreState& state, uint8_t resolve_
     for (int i=0; i<ISSUE_WIDTH; i++) clear_resolved_mask(state.issue.issued_uops[i], resolve_mask);
     for (int i=0; i<ISSUE_QUEUE_ALU_DEPTH; i++) clear_resolved_mask(state.issue.alu_iq.entries[i].uop, resolve_mask);
     for (int i=0; i<ROB_DEPTH; i++) clear_resolved_mask(state.rob.entries[i].uop, resolve_mask);
+    if (state.completion.load_response.valid)
+        clear_resolved_mask(state.completion.load_response.uop, resolve_mask);
+    if (state.completion.mem_execute.valid)
+        clear_resolved_mask(state.completion.mem_execute.uop, resolve_mask);
+    if (state.completion.int_execute.valid)
+        clear_resolved_mask(state.completion.int_execute.uop, resolve_mask);
+    for (int i=0; i<NUM_INT_WAKEUP_PORTS; i++)
+        state.completion.wakeups[i].branch_mask &= (uint8_t)~resolve_mask;
+    for (int i=0; i<NUM_INT_BYPASS_PORTS; i++)
+        state.completion.bypass[i].branch_mask &= (uint8_t)~resolve_mask;
     for (int i=0; i<LDQ_DEPTH; i++) state.lsu.ldq[i].branch_mask &= (uint8_t)~resolve_mask;
     for (int i=0; i<STQ_DEPTH; i++) state.lsu.stq[i].branch_mask &= (uint8_t)~resolve_mask;
 }
@@ -109,6 +119,23 @@ static void kill_execute_state(BoomCoreState& state, uint8_t mispredict_mask) {
             state.execute.alu_results[i] = ExecuteState::AluResult();
         }
     }
+    if (state.completion.load_response.valid &&
+        killed_by_mask(state.completion.load_response.uop, mispredict_mask))
+        state.completion.load_response = RobCompleteEvent();
+    if (state.completion.mem_execute.valid &&
+        killed_by_mask(state.completion.mem_execute.uop, mispredict_mask))
+        state.completion.mem_execute = RobCompleteEvent();
+    if (state.completion.int_execute.valid &&
+        killed_by_mask(state.completion.int_execute.uop, mispredict_mask))
+        state.completion.int_execute = RobCompleteEvent();
+    for (int i=0; i<NUM_INT_WAKEUP_PORTS; i++)
+        if (state.completion.wakeups[i].valid &&
+            (state.completion.wakeups[i].branch_mask & mispredict_mask) != 0)
+            state.completion.wakeups[i] = WakeupEvent();
+    for (int i=0; i<NUM_INT_BYPASS_PORTS; i++)
+        if (state.completion.bypass[i].valid &&
+            (state.completion.bypass[i].branch_mask & mispredict_mask) != 0)
+            state.completion.bypass[i] = BypassEvent();
 }
 
 static void kill_lsu_state(BoomCoreState& state, uint8_t mispredict_mask) {
@@ -258,22 +285,27 @@ static void release_resolved_branch(BoomCoreState& state, uint8_t tag, uint8_t r
     clear_resolved_masks_in_state(state, resolve_mask);
 }
 
-void branch_complete(BoomCoreState& state, const ExecuteState::AluResult& r) {
-    uint8_t rob_idx = r.uop.queue.rob_idx;
+void branch_complete_event(BoomCoreState& state, const MicroOp& uop,
+                           bool mispredict, uint64_t redirect_pc) {
+    uint8_t rob_idx = uop.queue.rob_idx;
     if (rob_idx >= ROB_DEPTH || !state.rob.entries[rob_idx].valid ||
-        state.rob.entries[rob_idx].uop.queue.rob_allocation_id != r.uop.queue.rob_allocation_id) return;
-    uint8_t tag = r.uop.branch.br_tag;
+        state.rob.entries[rob_idx].uop.queue.rob_allocation_id != uop.queue.rob_allocation_id) return;
+    uint8_t tag = uop.branch.br_tag;
     uint8_t resolve_mask = branch_tag_bit(tag);
     state.brupdate.valid = true;
-    state.brupdate.mispredict = r.mispredict;
-    state.brupdate.jalr_target = r.redirect_pc;
+    state.brupdate.mispredict = mispredict;
+    state.brupdate.jalr_target = redirect_pc;
     state.brupdate.resolve_mask = resolve_mask;
-    state.brupdate.mispredict_mask = r.mispredict ? resolve_mask : 0;
+    state.brupdate.mispredict_mask = mispredict ? resolve_mask : 0;
     state.brupdate.br_tag = tag;
-    state.brupdate.uop = r.uop;
-    state.brupdate.taken = r.mispredict;
-    if (r.mispredict) recover_mispredict(state, state.brupdate);
+    state.brupdate.uop = uop;
+    state.brupdate.taken = mispredict;
+    if (mispredict) recover_mispredict(state, state.brupdate);
     else release_resolved_branch(state, tag, resolve_mask);
+}
+
+void branch_complete(BoomCoreState& state, const ExecuteState::AluResult& r) {
+    branch_complete_event(state, r.uop, r.mispredict, r.redirect_pc);
 }
 
 void branch_module(BoomCoreState& state) {

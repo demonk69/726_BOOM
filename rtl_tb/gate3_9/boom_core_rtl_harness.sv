@@ -46,6 +46,12 @@ module boom_core_rtl_harness (
     wire [31:0] imem_responses;
     wire [31:0] dmem_responses;
     wire [31:0] trace_transfers;
+    wire io_success;
+    wire io_halted;
+    wire io_trap;
+    wire io_cycle_valid;
+    wire [63:0] io_cycle;
+    wire [63:0] io_instret;
 
     assign protocol_error = imem_protocol_error || dmem_protocol_error || trace_protocol_error;
     assign dmem_stalled = dmem_req_tvalid && !dmem_req_tready;
@@ -75,12 +81,12 @@ module boom_core_rtl_harness (
         .commit_trace_out_TDATA(commit_trace_tdata),
         .commit_trace_out_TVALID(commit_trace_tvalid),
         .commit_trace_out_TREADY(commit_trace_tready),
-        .io_success(1'b0),
-        .io_halted(1'b0),
-        .io_trap(1'b0),
-        .io_cycle_valid(1'b0),
-        .io_cycle(64'd0),
-        .io_instret(64'd0)
+        .io_success(io_success),
+        .io_halted(io_halted),
+        .io_trap(io_trap),
+        .io_cycle_valid(io_cycle_valid),
+        .io_cycle(io_cycle),
+        .io_instret(io_instret)
     );
 
     axis_imem_model imem_model (

@@ -41,11 +41,28 @@ void rob_commit_module(BoomCoreState& state, PipeSignals& pipe) {
         if (he.exception) {
             if (uop.uopc == 65) {
                 uint8_t a0_pdst = state.rename.int_map_table.map_table[10];
-                uint64_t a0_val = (a0_pdst!=0) ? state.int_rf[a0_pdst] : 0;
+                uint64_t a0_val = prf_read(state, a0_pdst);
                 if (a0_val==0) state.io_success = true;
                 else state.io_trap = true;
                 he.valid=false; rob.head=(rob.head+1)%ROB_DEPTH; rob.maybe_full=false;
-            } else { rob.state = ROB_EXCEPTION; state.io_trap = true; }
+            } else {
+                if (!he.exception_reported) {
+                    if (pipe.commit_trace.full()) return;
+                    CommitEntry ce;
+                    ce.valid = true;
+                    ce.pc = uop.debug_pc;
+                    ce.inst = uop.inst;
+                    ce.priv = state.csr.priv;
+                    ce.exception = true;
+                    ce.exc_cause = uop.exc_cause;
+                    pipe.commit_trace.write(ce);
+                    rob.last_commit = ce;
+                    rob.commit_valid = true;
+                    he.exception_reported = true;
+                }
+                rob.state = ROB_EXCEPTION;
+                state.io_trap = true;
+            }
         } else {
             if ((uop.ctrl.is_load || he.is_load) && !he.memory_completed) return;
             if (pipe.commit_trace.full()) return;
@@ -79,7 +96,7 @@ void rob_commit_module(BoomCoreState& state, PipeSignals& pipe) {
             ce.rd_valid=(uop.rename.dst_rtype==DST_INT && uop.rename.pdst!=0);
             ce.rd=uop.rename.ldst; ce.priv=state.csr.priv;
             ce.exception=false; ce.branch_mispredict=false;
-            ce.rd_value=ce.rd_valid ? state.int_rf[uop.rename.pdst] : 0;
+            ce.rd_value=ce.rd_valid ? prf_read(state, uop.rename.pdst) : 0;
             ce.memory_valid = he.memory_valid;
             ce.is_store = he.is_store;
             ce.memory_address = he.memory_address;

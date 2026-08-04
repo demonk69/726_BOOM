@@ -1,0 +1,7 @@
+port,interface,producer,class,evidence_file,evidence_lines,signal_evidence
+0,rob.io_wb_resps[0],ll_wbarb_io_out,load_response/MEM low-latency or FP-to-int,/home/lab_726/boom/chipyard.TestHarness.SmallBoomConfig/chipyard.TestHarness.SmallBoomConfig.top.v,260780-260783;279461-279476;279587-279591,rob_io_wb_resps_0_valid and rob_idx/pdst/predicated
+1,rob.io_wb_resps[1],csr_exe_unit_io_iresp,ALU/MUL/DIV/branch/CSR,/home/lab_726/boom/chipyard.TestHarness.SmallBoomConfig/chipyard.TestHarness.SmallBoomConfig.top.v,260784-260786;225233-225245;225474-225485;279592-279595,rob_io_wb_resps_1_valid and rob_idx/pdst
+2,rob.io_wb_resps[2],fp_pipeline_io_wakeups_0,FP long-latency wakeup 0,/home/lab_726/boom/chipyard.TestHarness.SmallBoomConfig/chipyard.TestHarness.SmallBoomConfig.top.v,260787-260790;279596-279599,rob_io_wb_resps_2_valid and rob_idx/pdst/predicated
+3,rob.io_wb_resps[3],fp_pipeline_io_wakeups_1,FP wakeup 1,/home/lab_726/boom/chipyard.TestHarness.SmallBoomConfig/chipyard.TestHarness.SmallBoomConfig.top.v,260791-260793;279600-279602,rob_io_wb_resps_3_valid and rob_idx/pdst
+lsu_0,rob.io_lsu_clr_bsy[0],io_lsu_clr_bsy_0,LSU completion sideband,/home/lab_726/boom/chipyard.TestHarness.SmallBoomConfig/chipyard.TestHarness.SmallBoomConfig.top.v,260794-260795;279603-279604,rob_io_lsu_clr_bsy_0_valid/bits
+lsu_1,rob.io_lsu_clr_bsy[1],io_lsu_clr_bsy_1,LSU completion sideband,/home/lab_726/boom/chipyard.TestHarness.SmallBoomConfig/chipyard.TestHarness.SmallBoomConfig.top.v,260796-260797;279605-279606,rob_io_lsu_clr_bsy_1_valid/bits

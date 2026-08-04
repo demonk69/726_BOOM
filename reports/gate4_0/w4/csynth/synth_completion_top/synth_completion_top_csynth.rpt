@@ -1,0 +1,219 @@
+
+
+================================================================
+== Vitis HLS Report for 'synth_completion_top'
+================================================================
+* Date:           Sun Aug  2 12:05:15 2026
+
+* Version:        2021.2 (Build 3367213 on Tue Oct 19 02:47:39 MDT 2021)
+* Project:        synth_completion_top
+* Solution:       solution_w4a_csynth (Vivado IP Flow Target)
+* Product family: zynquplus
+* Target device:  xczu7ev-ffvc1156-2-e
+
+
+================================================================
+== Performance Estimates
+================================================================
++ Timing: 
+    * Summary: 
+    +--------+----------+----------+------------+
+    |  Clock |  Target  | Estimated| Uncertainty|
+    +--------+----------+----------+------------+
+    |ap_clk  |  10.00 ns|  2.702 ns|     2.70 ns|
+    +--------+----------+----------+------------+
+
++ Latency: 
+    * Summary: 
+    +---------+---------+----------+----------+-----+-----+---------+
+    |  Latency (cycles) |  Latency (absolute) |  Interval | Pipeline|
+    |   min   |   max   |    min   |    max   | min | max |   Type  |
+    +---------+---------+----------+----------+-----+-----+---------+
+    |       14|      150|  0.140 us|  1.500 us|   15|  151|       no|
+    +---------+---------+----------+----------+-----+-----+---------+
+
+    + Detail: 
+        * Instance: 
+        +---------------------------------------+----------------------------+---------+---------+-----------+----------+-----+-----+---------+
+        |                                       |                            |  Latency (cycles) |  Latency (absolute)  |  Interval | Pipeline|
+        |                Instance               |           Module           |   min   |   max   |    min    |    max   | min | max |   Type  |
+        +---------------------------------------+----------------------------+---------+---------+-----------+----------+-----+-----+---------+
+        |grp_completion_service_execute_fu_299  |completion_service_execute  |        8|      143|  80.000 ns|  1.430 us|    8|  143|       no|
+        +---------------------------------------+----------------------------+---------+---------+-----------+----------+-----+-----+---------+
+
+        * Loop: 
+        N/A
+
+
+
+================================================================
+== Utilization Estimates
+================================================================
+* Summary: 
++-----------------+---------+------+--------+--------+-----+
+|       Name      | BRAM_18K|  DSP |   FF   |   LUT  | URAM|
++-----------------+---------+------+--------+--------+-----+
+|DSP              |        -|     -|       -|       -|    -|
+|Expression       |        -|     -|       0|     131|    -|
+|FIFO             |        -|     -|       -|       -|    -|
+|Instance         |        0|     -|     381|    1273|    0|
+|Memory           |        4|     -|      34|      10|    0|
+|Multiplexer      |        -|     -|       -|     452|    -|
+|Register         |        -|     -|     259|       -|    -|
++-----------------+---------+------+--------+--------+-----+
+|Total            |        4|     0|     674|    1866|    0|
++-----------------+---------+------+--------+--------+-----+
+|Available        |      624|  1728|  460800|  230400|   96|
++-----------------+---------+------+--------+--------+-----+
+|Utilization (%)  |       ~0|     0|      ~0|      ~0|    0|
++-----------------+---------+------+--------+--------+-----+
+
++ Detail: 
+    * Instance: 
+    +---------------------------------------+----------------------------+---------+----+-----+------+-----+
+    |                Instance               |           Module           | BRAM_18K| DSP|  FF |  LUT | URAM|
+    +---------------------------------------+----------------------------+---------+----+-----+------+-----+
+    |grp_completion_service_execute_fu_299  |completion_service_execute  |        0|   0|  381|  1273|    0|
+    +---------------------------------------+----------------------------+---------+----+-----+------+-----+
+    |Total                                  |                            |        0|   0|  381|  1273|    0|
+    +---------------------------------------+----------------------------+---------+----+-----+------+-----+
+
+    * DSP: 
+    N/A
+
+    * Memory: 
+    +-------------------------------------------------+-------------------------------------------------------------+---------+----+----+-----+------+-----+------+-------------+
+    |                      Memory                     |                            Module                           | BRAM_18K| FF | LUT| URAM| Words| Bits| Banks| W*Bits*Banks|
+    +-------------------------------------------------+-------------------------------------------------------------+---------+----+----+-----+------+-----+------+-------------+
+    |state_int_rf_U                                   |state_int_rf_RAM_AUTO_1R1W                                   |        4|   0|   0|    0|    52|   56|     1|         2912|
+    |state_rob_entries_busy_U                         |state_rob_entries_busy_RAM_AUTO_1R1W                         |        0|   2|   1|    0|    32|    1|     1|           32|
+    |state_rob_entries_uop_branch_br_mask_U           |state_rob_entries_uop_branch_br_mask_RAM_AUTO_1R1W           |        0|  16|   4|    0|    32|    8|     1|          256|
+    |state_rob_entries_uop_queue_rob_allocation_id_U  |state_rob_entries_uop_queue_rob_allocation_id_RAM_AUTO_1R1W  |        0|   4|   1|    0|    32|    2|     1|           64|
+    |state_rob_entries_uop_queue_rob_idx_U            |state_rob_entries_uop_queue_rob_idx_RAM_AUTO_1R1W            |        0|  10|   3|    0|    32|    5|     1|          160|
+    |state_rob_entries_valid_U                        |state_rob_entries_valid_RAM_AUTO_1R1W                        |        0|   2|   1|    0|    32|    1|     1|           32|
+    +-------------------------------------------------+-------------------------------------------------------------+---------+----+----+-----+------+-----+------+-------------+
+    |Total                                            |                                                             |        4|  34|  10|    0|   212|   73|     6|         3456|
+    +-------------------------------------------------+-------------------------------------------------------------+---------+----+----+-----+------+-----+------+-------------+
+
+    * FIFO: 
+    N/A
+
+    * Expression: 
+    +----------------------+----------+----+---+----+------------+------------+
+    |     Variable Name    | Operation| DSP| FF| LUT| Bitwidth P0| Bitwidth P1|
+    +----------------------+----------+----+---+----+------------+------------+
+    |add_ln2249_fu_534_p2  |         +|   0|  0|  63|          56|           1|
+    |mem_idx_fu_396_p2     |         +|   0|  0|  12|           5|           1|
+    |xor_ln2256_fu_559_p2  |       xor|   0|  0|  56|          56|          56|
+    +----------------------+----------+----+---+----+------------+------------+
+    |Total                 |          |   0|  0| 131|         117|          58|
+    +----------------------+----------+----+---+----+------------+------------+
+
+    * Multiplexer: 
+    +---------------------------------------------------------+----+-----------+-----+-----------+
+    |                           Name                          | LUT| Input Size| Bits| Total Bits|
+    +---------------------------------------------------------+----+-----------+-----+-----------+
+    |ap_NS_fsm                                                |  49|          9|    1|          9|
+    |state_execute_alu_results_result_0                       |   9|          2|   56|        112|
+    |state_execute_alu_results_result_1                       |   9|          2|   56|        112|
+    |state_execute_alu_results_uop_branch_br_mask_0           |   9|          2|    8|         16|
+    |state_execute_alu_results_uop_branch_br_mask_1           |   9|          2|    8|         16|
+    |state_execute_alu_results_uop_branch_br_tag_0            |   9|          2|    1|          2|
+    |state_execute_alu_results_uop_branch_br_tag_1            |   9|          2|    1|          2|
+    |state_execute_alu_results_uop_branch_is_br_0             |   9|          2|    1|          2|
+    |state_execute_alu_results_uop_branch_is_br_1             |   9|          2|    1|          2|
+    |state_execute_alu_results_uop_branch_is_jal_0            |   9|          2|    1|          2|
+    |state_execute_alu_results_uop_branch_is_jal_1            |   9|          2|    1|          2|
+    |state_execute_alu_results_uop_branch_is_jalr_0           |   9|          2|    1|          2|
+    |state_execute_alu_results_uop_branch_is_jalr_1           |   9|          2|    1|          2|
+    |state_execute_alu_results_uop_queue_rob_allocation_id_0  |   9|          2|    2|          4|
+    |state_execute_alu_results_uop_queue_rob_allocation_id_1  |   9|          2|    2|          4|
+    |state_execute_alu_results_uop_queue_rob_idx_0            |   9|          2|    5|         10|
+    |state_execute_alu_results_uop_queue_rob_idx_1            |   9|          2|    5|         10|
+    |state_execute_alu_results_uop_rename_pdst_0              |   9|          2|    2|          4|
+    |state_execute_alu_results_uop_rename_pdst_1              |   9|          2|    3|          6|
+    |state_execute_alu_results_valid_0                        |   9|          2|    1|          2|
+    |state_execute_alu_results_valid_1                        |   9|          2|    1|          2|
+    |state_int_rf_address0                                    |  14|          3|    6|         18|
+    |state_int_rf_ce0                                         |  14|          3|    1|          3|
+    |state_rob_entries_busy_address0                          |  20|          4|    5|         20|
+    |state_rob_entries_busy_address1                          |  14|          3|    5|         15|
+    |state_rob_entries_busy_ce0                               |  14|          3|    1|          3|
+    |state_rob_entries_busy_d0                                |  14|          3|    1|          3|
+    |state_rob_entries_busy_we0                               |  14|          3|    1|          3|
+    |state_rob_entries_uop_branch_br_mask_address0            |  20|          4|    5|         20|
+    |state_rob_entries_uop_branch_br_mask_ce0                 |  14|          3|    1|          3|
+    |state_rob_entries_uop_branch_br_mask_we0                 |   9|          2|    1|          2|
+    |state_rob_entries_uop_queue_rob_allocation_id_address0   |  20|          4|    5|         20|
+    |state_rob_entries_uop_queue_rob_allocation_id_ce0        |  14|          3|    1|          3|
+    |state_rob_entries_uop_queue_rob_idx_address0             |  14|          3|    5|         15|
+    |state_rob_entries_valid_address0                         |  14|          3|    5|         15|
+    |state_rob_entries_valid_ce0                              |  14|          3|    1|          3|
+    +---------------------------------------------------------+----+-----------+-----+-----------+
+    |Total                                                    | 452|         96|  202|        469|
+    +---------------------------------------------------------+----+-----------+-----+-----------+
+
+    * Register: 
+    +------------------------------------------------------------+----+----+-----+-----------+
+    |                            Name                            | FF | LUT| Bits| Const Bits|
+    +------------------------------------------------------------+----+----+-----+-----------+
+    |ap_CS_fsm                                                   |   8|   0|    8|          0|
+    |empty_11_reg_592                                            |   1|   0|    1|          0|
+    |empty_reg_587                                               |  56|   0|   56|          0|
+    |grp_completion_service_execute_fu_299_ap_start_reg          |   1|   0|    1|          0|
+    |int_idx_reg_596                                             |   5|   0|    5|          0|
+    |state_execute_alu_results_result_0                          |  56|   0|   56|          0|
+    |state_execute_alu_results_result_1                          |  56|   0|   56|          0|
+    |state_execute_alu_results_uop_branch_br_mask_0              |   8|   0|    8|          0|
+    |state_execute_alu_results_uop_branch_br_mask_1              |   8|   0|    8|          0|
+    |state_execute_alu_results_uop_branch_br_tag_0               |   1|   0|    1|          0|
+    |state_execute_alu_results_uop_branch_br_tag_1               |   1|   0|    1|          0|
+    |state_execute_alu_results_uop_branch_is_br_0                |   1|   0|    1|          0|
+    |state_execute_alu_results_uop_branch_is_br_1                |   1|   0|    1|          0|
+    |state_execute_alu_results_uop_branch_is_jal_0               |   1|   0|    1|          0|
+    |state_execute_alu_results_uop_branch_is_jal_1               |   1|   0|    1|          0|
+    |state_execute_alu_results_uop_branch_is_jalr_0              |   1|   0|    1|          0|
+    |state_execute_alu_results_uop_branch_is_jalr_1              |   1|   0|    1|          0|
+    |state_execute_alu_results_uop_queue_rob_allocation_id_0     |   2|   0|    2|          0|
+    |state_execute_alu_results_uop_queue_rob_allocation_id_1     |   2|   0|    2|          0|
+    |state_execute_alu_results_uop_queue_rob_idx_0               |   5|   0|    5|          0|
+    |state_execute_alu_results_uop_queue_rob_idx_1               |   5|   0|    5|          0|
+    |state_execute_alu_results_uop_rename_pdst_0                 |   2|   0|    2|          0|
+    |state_execute_alu_results_uop_rename_pdst_1                 |   3|   0|    3|          0|
+    |state_execute_alu_results_valid_0                           |   1|   0|    1|          0|
+    |state_execute_alu_results_valid_1                           |   1|   0|    1|          0|
+    |state_rob_entries_busy_addr_1_reg_621                       |   5|   0|    5|          0|
+    |state_rob_entries_busy_addr_reg_601                         |   5|   0|    5|          0|
+    |state_rob_entries_uop_queue_rob_allocation_id_addr_reg_611  |   5|   0|    5|          0|
+    |state_rob_entries_uop_queue_rob_idx_addr_reg_606            |   5|   0|    5|          0|
+    |state_rob_head                                              |   5|   0|    5|          0|
+    |tmp_reg_631                                                 |   1|   0|    1|          0|
+    |zext_ln2230_reg_616                                         |   5|   0|   64|         59|
+    +------------------------------------------------------------+----+----+-----+-----------+
+    |Total                                                       | 259|   0|  318|         59|
+    +------------------------------------------------------------+----+----+-----+-----------+
+
+
+
+================================================================
+== Interface
+================================================================
+* Summary: 
++-------------------+-----+-----+------------+----------------------+--------------+
+|     RTL Ports     | Dir | Bits|  Protocol  |     Source Object    |    C Type    |
++-------------------+-----+-----+------------+----------------------+--------------+
+|ap_local_block     |  out|    1|  ap_ctrl_hs|  synth_completion_top|  return value|
+|ap_local_deadlock  |  out|    1|  ap_ctrl_hs|  synth_completion_top|  return value|
+|ap_clk             |   in|    1|  ap_ctrl_hs|  synth_completion_top|  return value|
+|ap_rst             |   in|    1|  ap_ctrl_hs|  synth_completion_top|  return value|
+|ap_start           |   in|    1|  ap_ctrl_hs|  synth_completion_top|  return value|
+|ap_done            |  out|    1|  ap_ctrl_hs|  synth_completion_top|  return value|
+|ap_idle            |  out|    1|  ap_ctrl_hs|  synth_completion_top|  return value|
+|ap_ready           |  out|    1|  ap_ctrl_hs|  synth_completion_top|  return value|
+|seed_sources       |   in|    8|     ap_none|          seed_sources|        scalar|
+|seed_head          |   in|    8|     ap_none|             seed_head|        scalar|
+|seed_value         |   in|   64|     ap_none|            seed_value|        scalar|
+|observable         |  out|   64|      ap_vld|            observable|       pointer|
+|observable_ap_vld  |  out|    1|      ap_vld|            observable|       pointer|
++-------------------+-----+-----+------------+----------------------+--------------+
+

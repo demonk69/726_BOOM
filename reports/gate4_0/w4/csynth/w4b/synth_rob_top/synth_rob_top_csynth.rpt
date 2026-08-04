@@ -1,0 +1,252 @@
+
+
+================================================================
+== Vitis HLS Report for 'synth_rob_top'
+================================================================
+* Date:           Sun Aug  2 13:08:48 2026
+
+* Version:        2021.2 (Build 3367213 on Tue Oct 19 02:47:39 MDT 2021)
+* Project:        synth_rob_top
+* Solution:       solution_w4b_csynth (Vivado IP Flow Target)
+* Product family: zynquplus
+* Target device:  xczu7ev-ffvc1156-2-e
+
+
+================================================================
+== Performance Estimates
+================================================================
++ Timing: 
+    * Summary: 
+    +--------+----------+----------+------------+
+    |  Clock |  Target  | Estimated| Uncertainty|
+    +--------+----------+----------+------------+
+    |ap_clk  |  10.00 ns|  3.385 ns|     2.70 ns|
+    +--------+----------+----------+------------+
+
++ Latency: 
+    * Summary: 
+    +---------+---------+----------+----------+-----+-----+---------+
+    |  Latency (cycles) |  Latency (absolute) |  Interval | Pipeline|
+    |   min   |   max   |    min   |    max   | min | max |   Type  |
+    +---------+---------+----------+----------+-----+-----+---------+
+    |       41|      170|  0.410 us|  1.700 us|   42|  171|       no|
+    +---------+---------+----------+----------+-----+-----+---------+
+
+    + Detail: 
+        * Instance: 
+        +---------------------------------+-----------------+---------+---------+----------+----------+-----+-----+---------+
+        |                                 |                 |  Latency (cycles) |  Latency (absolute) |  Interval | Pipeline|
+        |             Instance            |      Module     |   min   |   max   |    min   |    max   | min | max |   Type  |
+        +---------------------------------+-----------------+---------+---------+----------+----------+-----+-----+---------+
+        |call_ln2408_rob_allocate_fu_338  |rob_allocate     |        0|        0|      0 ns|      0 ns|    0|    0|       no|
+        |grp_service_pending_fu_366       |service_pending  |       37|       49|  0.370 us|  0.490 us|   37|   49|       no|
+        +---------------------------------+-----------------+---------+---------+----------+----------+-----+-----+---------+
+
+        * Loop: 
+        +--------------------+---------+---------+----------+-----------+-----------+------+----------+
+        |                    |  Latency (cycles) | Iteration|  Initiation Interval  | Trip |          |
+        |      Loop Name     |   min   |   max   |  Latency |  achieved |   target  | Count| Pipelined|
+        +--------------------+---------+---------+----------+-----------+-----------+------+----------+
+        |- Loop 1            |        8|        8|         1|          -|          -|     8|        no|
+        |- VITIS_LOOP_86_1   |        8|        8|         1|          -|          -|     8|        no|
+        |- Loop 3            |        3|        3|         1|          -|          -|     3|        no|
+        |- VITIS_LOOP_103_1  |        3|        3|         1|          -|          -|     3|        no|
+        |- Loop 5            |        3|        3|         1|          -|          -|     3|        no|
+        |- VITIS_LOOP_124_1  |        3|        3|         1|          -|          -|     3|        no|
+        |- Loop 7            |       32|       32|         1|          -|          -|    32|        no|
+        |- VITIS_LOOP_139_1  |       32|       32|         1|          -|          -|    32|        no|
+        |- Loop 9            |        8|        8|         1|          -|          -|     8|        no|
+        |- Loop 10           |        8|        8|         1|          -|          -|     8|        no|
+        +--------------------+---------+---------+----------+-----------+-----------+------+----------+
+
+
+
+================================================================
+== Utilization Estimates
+================================================================
+* Summary: 
++-----------------+---------+------+--------+--------+-----+
+|       Name      | BRAM_18K|  DSP |   FF   |   LUT  | URAM|
++-----------------+---------+------+--------+--------+-----+
+|DSP              |        -|     -|       -|       -|    -|
+|Expression       |        -|     -|       0|     187|    -|
+|FIFO             |        -|     -|       -|       -|    -|
+|Instance         |        -|     -|      33|     629|    -|
+|Memory           |        1|     -|      12|       6|    0|
+|Multiplexer      |        -|     -|       -|     573|    -|
+|Register         |        -|     -|     176|       -|    -|
++-----------------+---------+------+--------+--------+-----+
+|Total            |        1|     0|     221|    1395|    0|
++-----------------+---------+------+--------+--------+-----+
+|Available        |      624|  1728|  460800|  230400|   96|
++-----------------+---------+------+--------+--------+-----+
+|Utilization (%)  |       ~0|     0|      ~0|      ~0|    0|
++-----------------+---------+------+--------+--------+-----+
+
++ Detail: 
+    * Instance: 
+    +---------------------------------+-----------------+---------+----+----+-----+-----+
+    |             Instance            |      Module     | BRAM_18K| DSP| FF | LUT | URAM|
+    +---------------------------------+-----------------+---------+----+----+-----+-----+
+    |call_ln2408_rob_allocate_fu_338  |rob_allocate     |        0|   0|   0|  207|    0|
+    |grp_service_pending_fu_366       |service_pending  |        0|   0|  33|  422|    0|
+    +---------------------------------+-----------------+---------+----+----+-----+-----+
+    |Total                            |                 |        0|   0|  33|  629|    0|
+    +---------------------------------+-----------------+---------+----+----+-----+-----+
+
+    * DSP: 
+    N/A
+
+    * Memory: 
+    +-------------------------------------------------+-------------------------------------------------------------+---------+---+----+-----+------+-----+------+-------------+
+    |                      Memory                     |                            Module                           | BRAM_18K| FF| LUT| URAM| Words| Bits| Banks| W*Bits*Banks|
+    +-------------------------------------------------+-------------------------------------------------------------+---------+---+----+-----+------+-----+------+-------------+
+    |state_issue_alu_iq_entries_uop_branch_br_mask_U  |state_issue_alu_iq_entries_uop_branch_br_mask_RAM_AUTO_0R0W  |        0|  2|   1|    0|     8|    1|     1|            8|
+    |state_lsu_stq_branch_mask_U                      |state_issue_alu_iq_entries_uop_branch_br_mask_RAM_AUTO_0R0W  |        0|  2|   1|    0|     8|    1|     1|            8|
+    |state_lsu_ldq_branch_mask_U                      |state_issue_alu_iq_entries_uop_branch_br_mask_RAM_AUTO_0R0W  |        0|  2|   1|    0|     8|    1|     1|            8|
+    |state_rob_entries_uop_branch_br_mask_U           |state_rob_entries_uop_branch_br_mask_RAM_AUTO_0R0W           |        0|  2|   1|    0|    32|    1|     1|           32|
+    |state_rob_entries_uop_queue_rob_allocation_id_U  |state_rob_entries_uop_queue_rob_allocation_id_RAM_AUTO_1R1W  |        1|  0|   0|    0|    32|   32|     1|         1024|
+    |state_rob_entries_valid_U                        |state_rob_entries_valid_RAM_AUTO_1R1W                        |        0|  2|   1|    0|    32|    1|     1|           32|
+    |state_rob_entries_busy_U                         |state_rob_entries_valid_RAM_AUTO_1R1W                        |        0|  2|   1|    0|    32|    1|     1|           32|
+    +-------------------------------------------------+-------------------------------------------------------------+---------+---+----+-----+------+-----+------+-------------+
+    |Total                                            |                                                             |        1| 12|   6|    0|   152|   38|     7|         1144|
+    +-------------------------------------------------+-------------------------------------------------------------+---------+---+----+-----+------+-----+------+-------------+
+
+    * FIFO: 
+    N/A
+
+    * Expression: 
+    +------------------------+----------+----+---+----+------------+------------+
+    |      Variable Name     | Operation| DSP| FF| LUT| Bitwidth P0| Bitwidth P1|
+    +------------------------+----------+----+---+----+------------+------------+
+    |add_ln103_fu_531_p2     |         +|   0|  0|   9|           2|           1|
+    |add_ln124_1_fu_611_p2   |         +|   0|  0|   9|           2|           1|
+    |add_ln124_fu_568_p2     |         +|   0|  0|   9|           2|           1|
+    |add_ln137_fu_642_p2     |         +|   0|  0|  12|           5|           1|
+    |add_ln139_fu_713_p2     |         +|   0|  0|  13|           6|           1|
+    |add_ln179_1_fu_762_p2   |         +|   0|  0|  10|           3|           1|
+    |add_ln179_fu_732_p2     |         +|   0|  0|  10|           3|           1|
+    |add_ln85_fu_422_p2      |         +|   0|  0|  10|           3|           1|
+    |add_ln86_fu_463_p2      |         +|   0|  0|  12|           4|           1|
+    |add_ln99_fu_482_p2      |         +|   0|  0|   9|           2|           1|
+    |icmp_ln103_fu_525_p2    |      icmp|   0|  0|   8|           2|           2|
+    |icmp_ln124_1_fu_605_p2  |      icmp|   0|  0|   8|           2|           2|
+    |icmp_ln124_fu_586_p2    |      icmp|   0|  0|   8|           2|           3|
+    |icmp_ln137_fu_656_p2    |      icmp|   0|  0|   9|           5|           2|
+    |icmp_ln139_fu_707_p2    |      icmp|   0|  0|  10|           6|           7|
+    |icmp_ln179_1_fu_773_p2  |      icmp|   0|  0|   8|           3|           2|
+    |icmp_ln179_fu_743_p2    |      icmp|   0|  0|   8|           3|           2|
+    |icmp_ln85_fu_433_p2     |      icmp|   0|  0|   8|           3|           2|
+    |icmp_ln86_fu_457_p2     |      icmp|   0|  0|   9|           4|           5|
+    |icmp_ln99_fu_506_p2     |      icmp|   0|  0|   8|           2|           3|
+    +------------------------+----------+----+---+----+------------+------------+
+    |Total                   |          |   0|  0| 187|          64|          40|
+    +------------------------+----------+----+---+----+------------+------------+
+
+    * Multiplexer: 
+    +--------------------------------------------------------+----+-----------+-----+-----------+
+    |                          Name                          | LUT| Input Size| Bits| Total Bits|
+    +--------------------------------------------------------+----+-----------+-----+-----------+
+    |ap_NS_fsm                                               |  65|         15|    1|         15|
+    |i_1_fu_164                                              |   9|          2|    2|          4|
+    |i_2_fu_172                                              |   9|          2|    2|          4|
+    |i_3_fu_180                                              |   9|          2|    6|         12|
+    |i_fu_156                                                |   9|          2|    4|          8|
+    |indvar4_i3_i_fu_160                                     |   9|          2|    2|          4|
+    |indvar4_i_i_fu_188                                      |   9|          2|    3|          6|
+    |indvar_i27_i_fu_176                                     |   9|          2|    5|         10|
+    |indvar_i6_i_fu_168                                      |   9|          2|    2|          4|
+    |indvar_i_i_fu_184                                       |   9|          2|    3|          6|
+    |indvar_i_i_i_fu_152                                     |   9|          2|    3|          6|
+    |state_completion_int_execute_kind                       |   9|          2|    1|          2|
+    |state_completion_int_execute_valid                      |   9|          2|    1|          2|
+    |state_completion_mem_execute_kind                       |   9|          2|    1|          2|
+    |state_completion_mem_execute_valid                      |   9|          2|    1|          2|
+    |state_completion_peak_rob_completes                     |   9|          2|    8|         16|
+    |state_completion_rob_completes_this_cycle               |   9|          2|    8|         16|
+    |state_completion_total_rob_completes                    |   9|          2|   64|        128|
+    |state_issue_alu_iq_entries_uop_branch_br_mask_address0  |  14|          3|    3|          9|
+    |state_rename_dispatch_packets_rob_allocated_0           |   9|          2|    1|          2|
+    |state_rob_entries_busy_address0                         |  26|          5|    5|         25|
+    |state_rob_entries_busy_ce0                              |  20|          4|    1|          4|
+    |state_rob_entries_busy_d0                               |  20|          4|    1|          4|
+    |state_rob_entries_busy_we0                              |  20|          4|    1|          4|
+    |state_rob_entries_uop_branch_br_mask_address0           |  20|          4|    5|         20|
+    |state_rob_entries_uop_branch_br_mask_ce0                |  14|          3|    1|          3|
+    |state_rob_entries_uop_branch_br_mask_d0                 |  14|          3|    1|          3|
+    |state_rob_entries_uop_branch_br_mask_we0                |  14|          3|    1|          3|
+    |state_rob_entries_uop_queue_rob_allocation_id_address0  |  26|          5|    5|         25|
+    |state_rob_entries_uop_queue_rob_allocation_id_ce0       |  20|          4|    1|          4|
+    |state_rob_entries_uop_queue_rob_allocation_id_d0        |  14|          3|   32|         96|
+    |state_rob_entries_uop_queue_rob_allocation_id_we0       |  14|          3|    1|          3|
+    |state_rob_entries_valid_address0                        |  26|          5|    5|         25|
+    |state_rob_entries_valid_ce0                             |  20|          4|    1|          4|
+    |state_rob_entries_valid_d0                              |  14|          3|    1|          3|
+    |state_rob_entries_valid_we0                             |  14|          3|    1|          3|
+    |state_rob_maybe_full                                    |   9|          2|    1|          2|
+    |state_rob_next_allocation_id                            |   9|          2|   32|         64|
+    |state_rob_state                                         |   9|          2|    1|          2|
+    |state_rob_tail                                          |   9|          2|    5|         10|
+    +--------------------------------------------------------+----+-----------+-----+-----------+
+    |Total                                                   | 573|        122|  223|        565|
+    +--------------------------------------------------------+----+-----------+-----+-----------+
+
+    * Register: 
+    +----------------------------------------------------------------------------------------------+----+----+-----+-----------+
+    |                                             Name                                             | FF | LUT| Bits| Const Bits|
+    +----------------------------------------------------------------------------------------------+----+----+-----+-----------+
+    |ap_CS_fsm                                                                                     |  14|   0|   14|          0|
+    |grp_service_pending_fu_366_ap_start_reg                                                       |   1|   0|    1|          0|
+    |guard_variable_for_synth_rob_top_unsigned_int_unsigned_long_unsigned_long_state               |   1|   0|    1|          0|
+    |guard_variable_for_synth_rob_top_unsigned_int_unsigned_long_unsigned_long_state_load_reg_868  |   1|   0|    1|          0|
+    |i_1_fu_164                                                                                    |   2|   0|    2|          0|
+    |i_2_fu_172                                                                                    |   2|   0|    2|          0|
+    |i_3_fu_180                                                                                    |   6|   0|    6|          0|
+    |i_fu_156                                                                                      |   4|   0|    4|          0|
+    |indvar4_i3_i_fu_160                                                                           |   2|   0|    2|          0|
+    |indvar4_i_i_fu_188                                                                            |   3|   0|    3|          0|
+    |indvar_i27_i_fu_176                                                                           |   5|   0|    5|          0|
+    |indvar_i6_i_fu_168                                                                            |   2|   0|    2|          0|
+    |indvar_i_i_fu_184                                                                             |   3|   0|    3|          0|
+    |indvar_i_i_i_fu_152                                                                           |   3|   0|    3|          0|
+    |state_completion_int_execute_kind                                                             |   1|   0|    1|          0|
+    |state_completion_int_execute_valid                                                            |   1|   0|    1|          0|
+    |state_completion_mem_execute_kind                                                             |   1|   0|    1|          0|
+    |state_completion_mem_execute_valid                                                            |   1|   0|    1|          0|
+    |state_completion_peak_rob_completes                                                           |   8|   0|    8|          0|
+    |state_completion_rob_completes_this_cycle                                                     |   8|   0|    8|          0|
+    |state_completion_total_rob_completes                                                          |  64|   0|   64|          0|
+    |state_rename_dispatch_packets_rob_allocated_0                                                 |   1|   0|    1|          0|
+    |state_rename_dispatch_packets_uop_uopc_0                                                      |   2|   0|    5|          3|
+    |state_rename_dispatch_packets_valid_0                                                         |   1|   0|    1|          0|
+    |state_rob_maybe_full                                                                          |   1|   0|    1|          0|
+    |state_rob_next_allocation_id                                                                  |  32|   0|   32|          0|
+    |state_rob_state                                                                               |   1|   0|    1|          0|
+    |state_rob_tail                                                                                |   5|   0|    5|          0|
+    +----------------------------------------------------------------------------------------------+----+----+-----+-----------+
+    |Total                                                                                         | 176|   0|  179|          3|
+    +----------------------------------------------------------------------------------------------+----+----+-----+-----------+
+
+
+
+================================================================
+== Interface
+================================================================
+* Summary: 
++-------------------+-----+-----+------------+---------------+--------------+
+|     RTL Ports     | Dir | Bits|  Protocol  | Source Object |    C Type    |
++-------------------+-----+-----+------------+---------------+--------------+
+|ap_local_block     |  out|    1|  ap_ctrl_hs|  synth_rob_top|  return value|
+|ap_local_deadlock  |  out|    1|  ap_ctrl_hs|  synth_rob_top|  return value|
+|ap_clk             |   in|    1|  ap_ctrl_hs|  synth_rob_top|  return value|
+|ap_rst             |   in|    1|  ap_ctrl_hs|  synth_rob_top|  return value|
+|ap_start           |   in|    1|  ap_ctrl_hs|  synth_rob_top|  return value|
+|ap_done            |  out|    1|  ap_ctrl_hs|  synth_rob_top|  return value|
+|ap_idle            |  out|    1|  ap_ctrl_hs|  synth_rob_top|  return value|
+|ap_ready           |  out|    1|  ap_ctrl_hs|  synth_rob_top|  return value|
+|seed_inst          |   in|   32|     ap_none|      seed_inst|        scalar|
+|seed_pc            |   in|   64|     ap_none|        seed_pc|        scalar|
+|observable         |  out|   64|      ap_vld|     observable|       pointer|
+|observable_ap_vld  |  out|    1|      ap_vld|     observable|       pointer|
++-------------------+-----+-----+------------+---------------+--------------+
+

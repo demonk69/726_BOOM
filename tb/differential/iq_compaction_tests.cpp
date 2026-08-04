@@ -30,8 +30,12 @@ static void seed_entry(BoomCoreState& s, int idx, uint8_t id, uint8_t br_mask, b
     e.request = true;
     e.killed = false;
     e.granted = false;
-    e.prs1_busy = !ready;
     e.uop = make_uop(id, br_mask);
+    if (!ready) {
+        e.uop.rename.prs1 = 40;
+        e.prs1_busy = true;
+        s.rename.int_free_list.busy_table[40] = true;
+    }
 }
 
 static void set_mispredict(BoomCoreState& s, uint8_t mask) {

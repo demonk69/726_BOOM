@@ -32,7 +32,7 @@ struct IM {
 
 static uint64_t read_rf(BoomCoreState& s, int r) {
     uint8_t p=s.rename.int_map_table.committed_map_table[r];
-    return (p>0)?s.int_rf[p]:0;
+    return boom::prf_read(s, p);
 }
 
 struct TR { uint64_t pc,rd_v; uint32_t inst; uint8_t rd; bool rd_ok,exc;

@@ -85,7 +85,9 @@ module axis_dmem_model (
     wire directed_stall_scenario =
         scenario_code == 8'd5 || scenario_code == 8'd31 || scenario_code == 8'd32 ||
         scenario_code == 8'd38 || scenario_code == 8'd42 || scenario_code == 8'd46;
-    wire directed_stall = directed_stall_scenario && (cycle_count[1:0] != 2'b11);
+    // Every directed request must visibly stall once; cycle phase must not
+    // decide whether reset/backpressure scenarios reach their trigger.
+    wire directed_stall = directed_stall_scenario && !held_request;
     assign req_tready = rst_n && !pending && !resp_tvalid && !stale_after_reset && !directed_stall;
     assign pending_visible = pending || resp_tvalid || stale_after_reset;
 

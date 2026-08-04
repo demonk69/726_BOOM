@@ -88,10 +88,12 @@ void rename_module(BoomCoreState& state) {
 
         uop.rename.prs1 = mt.map_table[uop.rename.lrs1];
         uop.rename.prs2 = mt.map_table[uop.rename.lrs2];
+        uop.rename.prs3 = mt.map_table[uop.rename.lrs3];
         uop.rename.stale_pdst = mt.map_table[uop.rename.ldst];
 
         uop.rename.prs1_busy = (uop.rename.prs1 != 0) && fl.busy_table[uop.rename.prs1];
         uop.rename.prs2_busy = (uop.rename.prs2 != 0) && fl.busy_table[uop.rename.prs2];
+        uop.rename.prs3_busy = (uop.rename.prs3 != 0) && fl.busy_table[uop.rename.prs3];
 
         if (allocates_dst) {
             uint8_t pdst = 0;

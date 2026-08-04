@@ -36,6 +36,7 @@ Gate 3.10 status: LOCAL_PIPELINE_CHARACTERIZED_NO_ACCEPTED_CANDIDATE. R1 passes 
 | Structural Correspondence | PARTIALLY_VERIFIED | SmallBoom parameters and main integer state sizes match; Gate 3.3 branch parameter/state inventories match generated FIRRTL for the implemented subset; Gate 3.4 confirms snapshot and allocation-list RTL structures and module baselines. Multiple full BOOM modules remain NOT_IMPLEMENTED. |
 | Generated RTL Runtime Reset | VERIFIED | Gate 3.9 XSim 49/49; M014 closed by fine-grain initialization. |
 | Generated RTL AXIS Backpressure | VERIFIED_FOR_TESTED_SCENARIOS | Gate 3.8 passes all commit-trace, IMEM, DMEM, stale-response, and tested priority/backpressure cases outside the reset failures. |
+| Gate 4.0 W4 concurrency | VERIFIED_FOR_SUPPORTED_SUBSET | Directed 95/95, random 128/128, focused RTL 20/20, current W3 11/11, and full-core 49/49 verify two writes, three wakeups/bypasses, and multi-ROB complete. Source-bound final csynth passes 7/7 with two replicated PRF banks, a 52-bit LVT, two independent bank write enables, and final II=1. |
 
 ## Gate 1 Results
 
@@ -234,3 +235,5 @@ See `reports/gate3_8/gate3_8_results.md` and `docs/gate3_8_rtl_verification.md`.
 ## Timing Status
 
 The latest accepted PPA configuration remains Gate 3.3. Gate 3.8 reproduces its synthesis metrics and adds normal-operation/backpressure RTL evidence, but demonstrates that its runtime reset semantics are not acceptable. Strict BOOM cycle equivalence remains `INSUFFICIENT_EVIDENCE`.
+
+Gate 4.0 does not change the strict-equivalence verdict. `M009=PARTIALLY_VERIFIED`, `M014=VERIFIED`, and `READY_FOR_OFFICIAL_GATE_3=false`. The official Chipyard/FESVR/DRAMSim environment remains unavailable.

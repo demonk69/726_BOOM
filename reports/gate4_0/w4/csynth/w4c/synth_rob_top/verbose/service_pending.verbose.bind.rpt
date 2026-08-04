@@ -1,0 +1,1774 @@
+
+
+================================================================
+== Vitis HLS Report for 'service_pending'
+================================================================
+* Date:           Mon Aug  3 11:25:35 2026
+
+* Version:        2021.2 (Build 3367213 on Tue Oct 19 02:47:39 MDT 2021)
+* Project:        synth_rob_top
+* Solution:       solution_w4c_csynth (Vivado IP Flow Target)
+* Product family: zynquplus
+* Target device:  xczu7ev-ffvc1156-2-e
+
+
+================================================================
+== Performance Estimates
+================================================================
++ Timing: 
+    * Summary: 
+    +--------+----------+----------+------------+
+    |  Clock |  Target  | Estimated| Uncertainty|
+    +--------+----------+----------+------------+
+    |ap_clk  |  10.00 ns|  3.385 ns|     2.70 ns|
+    +--------+----------+----------+------------+
+
++ Latency: 
+    * Summary: 
+    +---------+---------+----------+----------+-----+-----+---------+
+    |  Latency (cycles) |  Latency (absolute) |  Interval | Pipeline|
+    |   min   |   max   |    min   |    max   | min | max |   Type  |
+    +---------+---------+----------+----------+-----+-----+---------+
+    |       37|       49|  0.370 us|  0.490 us|   37|   49|       no|
+    +---------+---------+----------+----------+-----+-----+---------+
+
+    + Detail: 
+        * Instance: 
+        +-------------------------------+---------------------+---------+---------+-----------+-----------+-----+-----+---------+
+        |                               |                     |  Latency (cycles) |   Latency (absolute)  |  Interval | Pipeline|
+        |            Instance           |        Module       |   min   |   max   |    min    |    max    | min | max |   Type  |
+        +-------------------------------+---------------------+---------+---------+-----------+-----------+-----+-----+---------+
+        |grp_completion_is_valid_fu_75  |completion_is_valid  |        1|        1|  10.000 ns|  10.000 ns|    1|    1|       no|
+        +-------------------------------+---------------------+---------+---------+-----------+-----------+-----+-----+---------+
+
+        * Loop: 
+        +-------------------------+---------+---------+----------+-----------+-----------+------+----------+
+        |                         |  Latency (cycles) | Iteration|  Initiation Interval  | Trip |          |
+        |        Loop Name        |   min   |   max   |  Latency |  achieved |   target  | Count| Pipelined|
+        +-------------------------+---------+---------+----------+-----------+-----------+------+----------+
+        |- SERVICE_FIXED_PENDING  |       36|       48|   12 ~ 16|          -|          -|     3|        no|
+        +-------------------------+---------+---------+----------+-----------+-----------+------+----------+
+
+============================================================
++ Verbose Summary: Synthesis Manager
+============================================================
+InlineROM: 1
+ExposeGlobal: 0
+============================================================
++ Verbose Summary: CDFG Model
+============================================================
+IsTopModel: 0
+ResetActiveHigh: 1
+IsCombinational: 0
+IsDatapathOnly: 0
+HasWiredReturn: 1
+HasMFsm: 0
+HasVarLatency: 1
+IsPipeline: 0
+IsRtlPipelined: 0
+IsInstanceOverlapped: 0
+IsDontTouch: 0
+HasImplIP: 0
+IsGatedGlobalClock: 0
+
+
+============================================================
++ Verbose Summary: Schedule
+============================================================
+* Number of FSM states : 12
+* Pipeline : 0
+* Dataflow Pipeline: 0
+
+* FSM state transitions: 
+1 --> 2 
+2 --> 3 
+3 --> 4 6 
+4 --> 5 
+5 --> 6 
+6 --> 7 
+7 --> 8 
+8 --> 9 
+9 --> 10 
+10 --> 11 
+11 --> 12 
+12 --> 2 
+
+* FSM state operations: 
+
+State 1 <SV = 0> <Delay = 0.42>
+ST_1 : Operation 13 [1/1] (0.00ns)   --->   "%service = alloca i32 1"   --->   Operation 13 'alloca' 'service' <Predicate = true> <Delay = 0.00>
+ST_1 : Operation 14 [1/1] (0.42ns)   --->   "%store_ln909 = store i2 0, i2 %service" [/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:909]   --->   Operation 14 'store' 'store_ln909' <Predicate = true> <Delay = 0.42>
+ST_1 : Operation 15 [1/1] (0.00ns)   --->   "%br_ln909 = br void" [/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:909]   --->   Operation 15 'br' 'br_ln909' <Predicate = true> <Delay = 0.00>
+
+State 2 <SV = 1> <Delay = 1.65>
+ST_2 : Operation 16 [1/1] (0.00ns)   --->   "%service_1 = load i2 %service" [/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:909]   --->   Operation 16 'load' 'service_1' <Predicate = true> <Delay = 0.00>
+ST_2 : Operation 17 [1/1] (0.44ns)   --->   "%icmp_ln909 = icmp_eq  i2 %service_1, i2 3" [/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:909]   --->   Operation 17 'icmp' 'icmp_ln909' <Predicate = true> <Delay = 0.44> <CoreInst = "Cmp">   --->   Core 9 'Cmp' <Latency = 0> <II = 1> <Delay = 0.84> <FuncUnit> <Opcode : 'icmp'> <InPorts = 2> <OutPorts = 1>
+ST_2 : Operation 18 [1/1] (0.00ns)   --->   "%empty = speclooptripcount i32 @_ssdm_op_SpecLoopTripCount, i64 3, i64 3, i64 3"   --->   Operation 18 'speclooptripcount' 'empty' <Predicate = true> <Delay = 0.00>
+ST_2 : Operation 19 [1/1] (0.54ns)   --->   "%service_2 = add i2 %service_1, i2 1" [/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:909]   --->   Operation 19 'add' 'service_2' <Predicate = true> <Delay = 0.54> <CoreInst = "Adder">   --->   Core 1 'Adder' <Latency = 0> <II = 1> <Delay = 0.54> <FuncUnit> <Opcode : 'add' 'sub'> <InPorts = 2> <OutPorts = 1>
+ST_2 : Operation 20 [1/1] (0.00ns)   --->   "%br_ln909 = br i1 %icmp_ln909, void %.split4, void %.loopexit" [/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:909]   --->   Operation 20 'br' 'br_ln909' <Predicate = true> <Delay = 0.00>
+ST_2 : Operation 21 [1/1] (0.00ns)   --->   "%specloopname_ln909 = specloopname void @_ssdm_op_SpecLoopName, void @empty_8" [/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:909]   --->   Operation 21 'specloopname' 'specloopname_ln909' <Predicate = (!icmp_ln909)> <Delay = 0.00>
+ST_2 : Operation 22 [1/1] (0.00ns)   --->   "%state_completion_mem_execute_valid_load = load i1 %state_completion_mem_execute_valid" [/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:832]   --->   Operation 22 'load' 'state_completion_mem_execute_valid_load' <Predicate = (!icmp_ln909)> <Delay = 0.00>
+ST_2 : Operation 23 [1/1] (0.00ns)   --->   "%br_ln832 = br i1 %state_completion_mem_execute_valid_load, void %._crit_edge20, void" [/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:832]   --->   Operation 23 'br' 'br_ln832' <Predicate = (!icmp_ln909)> <Delay = 0.00>
+ST_2 : Operation 24 [1/1] (0.00ns)   --->   "%state_completion_mem_execute_kind_load_1 = load i1 %state_completion_mem_execute_kind" [/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:833]   --->   Operation 24 'load' 'state_completion_mem_execute_kind_load_1' <Predicate = (!icmp_ln909 & state_completion_mem_execute_valid_load)> <Delay = 0.00>
+ST_2 : Operation 25 [2/2] (1.20ns)   --->   "%tmp_1 = call i1 @completion_is_valid, i1 1, i1 %state_completion_mem_execute_kind_load_1, i1 %state_rob_entries_valid, i32 %state_rob_entries_uop_queue_rob_allocation_id, i1 %state_rob_entries_busy" [/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:833]   --->   Operation 25 'call' 'tmp_1' <Predicate = (!icmp_ln909 & state_completion_mem_execute_valid_load)> <Delay = 1.20> <CoreType = "Generic">   --->   Core 0 '' <Latency = 0> <II = 1> <Delay = 1.00> <Generic> <Opcode : >
+ST_2 : Operation 26 [1/1] (0.00ns)   --->   "%state_completion_rob_completes_this_cycle_load = load i8 %state_completion_rob_completes_this_cycle" [/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:965]   --->   Operation 26 'load' 'state_completion_rob_completes_this_cycle_load' <Predicate = (icmp_ln909)> <Delay = 0.00>
+ST_2 : Operation 27 [1/1] (0.00ns)   --->   "%state_completion_peak_rob_completes_load = load i8 %state_completion_peak_rob_completes" [/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:965]   --->   Operation 27 'load' 'state_completion_peak_rob_completes_load' <Predicate = (icmp_ln909)> <Delay = 0.00>
+ST_2 : Operation 28 [1/1] (0.84ns)   --->   "%icmp_ln965 = icmp_ugt  i8 %state_completion_rob_completes_this_cycle_load, i8 %state_completion_peak_rob_completes_load" [/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:965]   --->   Operation 28 'icmp' 'icmp_ln965' <Predicate = (icmp_ln909)> <Delay = 0.84> <CoreInst = "Cmp">   --->   Core 9 'Cmp' <Latency = 0> <II = 1> <Delay = 0.84> <FuncUnit> <Opcode : 'icmp'> <InPorts = 2> <OutPorts = 1>
+ST_2 : Operation 29 [1/1] (0.00ns)   --->   "%br_ln965 = br i1 %icmp_ln965, void %._crit_edge88, void" [/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:965]   --->   Operation 29 'br' 'br_ln965' <Predicate = (icmp_ln909)> <Delay = 0.00>
+ST_2 : Operation 30 [1/1] (0.00ns)   --->   "%store_ln966 = store i8 %state_completion_rob_completes_this_cycle_load, i8 %state_completion_peak_rob_completes" [/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:966]   --->   Operation 30 'store' 'store_ln966' <Predicate = (icmp_ln909 & icmp_ln965)> <Delay = 0.00>
+ST_2 : Operation 31 [1/1] (0.00ns)   --->   "%br_ln966 = br void %._crit_edge88" [/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:966]   --->   Operation 31 'br' 'br_ln966' <Predicate = (icmp_ln909 & icmp_ln965)> <Delay = 0.00>
+ST_2 : Operation 32 [1/1] (0.00ns)   --->   "%ret_ln969 = ret" [/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:969]   --->   Operation 32 'ret' 'ret_ln969' <Predicate = (icmp_ln909)> <Delay = 0.00>
+
+State 3 <SV = 2> <Delay = 2.51>
+ST_3 : Operation 33 [1/2] (2.51ns)   --->   "%tmp_1 = call i1 @completion_is_valid, i1 1, i1 %state_completion_mem_execute_kind_load_1, i1 %state_rob_entries_valid, i32 %state_rob_entries_uop_queue_rob_allocation_id, i1 %state_rob_entries_busy" [/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:833]   --->   Operation 33 'call' 'tmp_1' <Predicate = (state_completion_mem_execute_valid_load)> <Delay = 2.51> <CoreType = "Generic">   --->   Core 0 '' <Latency = 0> <II = 1> <Delay = 1.00> <Generic> <Opcode : >
+ST_3 : Operation 34 [1/1] (0.00ns)   --->   "%br_ln832 = br i1 %tmp_1, void, void %._crit_edge20" [/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:832]   --->   Operation 34 'br' 'br_ln832' <Predicate = (state_completion_mem_execute_valid_load)> <Delay = 0.00>
+ST_3 : Operation 35 [1/1] (0.00ns)   --->   "%store_ln834 = store i1 0, i1 %state_completion_mem_execute_valid" [/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:834]   --->   Operation 35 'store' 'store_ln834' <Predicate = (state_completion_mem_execute_valid_load & !tmp_1)> <Delay = 0.00>
+ST_3 : Operation 36 [1/1] (0.00ns)   --->   "%store_ln834 = store i1 0, i1 %state_completion_mem_execute_kind" [/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:834]   --->   Operation 36 'store' 'store_ln834' <Predicate = (state_completion_mem_execute_valid_load & !tmp_1)> <Delay = 0.00>
+ST_3 : Operation 37 [1/1] (0.00ns)   --->   "%store_ln834 = store i1 0, i1 %state_completion_mem_execute_source" [/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:834]   --->   Operation 37 'store' 'store_ln834' <Predicate = (state_completion_mem_execute_valid_load & !tmp_1)> <Delay = 0.00>
+ST_3 : Operation 38 [1/1] (0.00ns)   --->   "%store_ln834 = store i1 0, i1 %state_completion_mem_execute_uop_branch_br_mask" [/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:834]   --->   Operation 38 'store' 'store_ln834' <Predicate = (state_completion_mem_execute_valid_load & !tmp_1)> <Delay = 0.00>
+ST_3 : Operation 39 [1/1] (0.00ns)   --->   "%br_ln834 = br void %._crit_edge20" [/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:834]   --->   Operation 39 'br' 'br_ln834' <Predicate = (state_completion_mem_execute_valid_load & !tmp_1)> <Delay = 0.00>
+ST_3 : Operation 40 [1/1] (0.00ns)   --->   "%state_completion_int_execute_valid_load = load i1 %state_completion_int_execute_valid" [/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:835]   --->   Operation 40 'load' 'state_completion_int_execute_valid_load' <Predicate = true> <Delay = 0.00>
+ST_3 : Operation 41 [1/1] (0.00ns)   --->   "%br_ln835 = br i1 %state_completion_int_execute_valid_load, void %._crit_edge23_ifconv, void" [/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:835]   --->   Operation 41 'br' 'br_ln835' <Predicate = true> <Delay = 0.00>
+
+State 4 <SV = 3> <Delay = 1.20>
+ST_4 : Operation 42 [1/1] (0.00ns)   --->   "%state_completion_int_execute_kind_load_1 = load i1 %state_completion_int_execute_kind" [/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:836]   --->   Operation 42 'load' 'state_completion_int_execute_kind_load_1' <Predicate = true> <Delay = 0.00>
+ST_4 : Operation 43 [2/2] (1.20ns)   --->   "%tmp_2 = call i1 @completion_is_valid, i1 1, i1 %state_completion_int_execute_kind_load_1, i1 %state_rob_entries_valid, i32 %state_rob_entries_uop_queue_rob_allocation_id, i1 %state_rob_entries_busy" [/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:836]   --->   Operation 43 'call' 'tmp_2' <Predicate = true> <Delay = 1.20> <CoreType = "Generic">   --->   Core 0 '' <Latency = 0> <II = 1> <Delay = 1.00> <Generic> <Opcode : >
+
+State 5 <SV = 4> <Delay = 2.51>
+ST_5 : Operation 44 [1/2] (2.51ns)   --->   "%tmp_2 = call i1 @completion_is_valid, i1 1, i1 %state_completion_int_execute_kind_load_1, i1 %state_rob_entries_valid, i32 %state_rob_entries_uop_queue_rob_allocation_id, i1 %state_rob_entries_busy" [/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:836]   --->   Operation 44 'call' 'tmp_2' <Predicate = true> <Delay = 2.51> <CoreType = "Generic">   --->   Core 0 '' <Latency = 0> <II = 1> <Delay = 1.00> <Generic> <Opcode : >
+ST_5 : Operation 45 [1/1] (0.00ns)   --->   "%br_ln835 = br i1 %tmp_2, void, void %._crit_edge23_ifconv" [/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:835]   --->   Operation 45 'br' 'br_ln835' <Predicate = true> <Delay = 0.00>
+ST_5 : Operation 46 [1/1] (0.00ns)   --->   "%store_ln837 = store i1 0, i1 %state_completion_int_execute_valid" [/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:837]   --->   Operation 46 'store' 'store_ln837' <Predicate = (!tmp_2)> <Delay = 0.00>
+ST_5 : Operation 47 [1/1] (0.00ns)   --->   "%store_ln837 = store i1 0, i1 %state_completion_int_execute_kind" [/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:837]   --->   Operation 47 'store' 'store_ln837' <Predicate = (!tmp_2)> <Delay = 0.00>
+ST_5 : Operation 48 [1/1] (0.00ns)   --->   "%store_ln837 = store i1 0, i1 %state_completion_int_execute_source" [/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:837]   --->   Operation 48 'store' 'store_ln837' <Predicate = (!tmp_2)> <Delay = 0.00>
+ST_5 : Operation 49 [1/1] (0.00ns)   --->   "%store_ln837 = store i1 0, i1 %state_completion_int_execute_uop_branch_br_mask" [/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:837]   --->   Operation 49 'store' 'store_ln837' <Predicate = (!tmp_2)> <Delay = 0.00>
+ST_5 : Operation 50 [1/1] (0.00ns)   --->   "%br_ln837 = br void %._crit_edge23_ifconv" [/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:837]   --->   Operation 50 'br' 'br_ln837' <Predicate = (!tmp_2)> <Delay = 0.00>
+
+State 6 <SV = 5> <Delay = 1.20>
+ST_6 : Operation 51 [2/2] (1.20ns)   --->   "%load_any = call i1 @completion_is_valid, i1 0, i1 0, i1 %state_rob_entries_valid, i32 %state_rob_entries_uop_queue_rob_allocation_id, i1 %state_rob_entries_busy" [/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:853]   --->   Operation 51 'call' 'load_any' <Predicate = true> <Delay = 1.20> <CoreType = "Generic">   --->   Core 0 '' <Latency = 0> <II = 1> <Delay = 1.00> <Generic> <Opcode : >
+
+State 7 <SV = 6> <Delay = 2.51>
+ST_7 : Operation 52 [1/2] (2.51ns)   --->   "%load_any = call i1 @completion_is_valid, i1 0, i1 0, i1 %state_rob_entries_valid, i32 %state_rob_entries_uop_queue_rob_allocation_id, i1 %state_rob_entries_busy" [/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:853]   --->   Operation 52 'call' 'load_any' <Predicate = true> <Delay = 2.51> <CoreType = "Generic">   --->   Core 0 '' <Latency = 0> <II = 1> <Delay = 1.00> <Generic> <Opcode : >
+
+State 8 <SV = 7> <Delay = 1.20>
+ST_8 : Operation 53 [1/1] (0.00ns)   --->   "%state_completion_mem_execute_valid_load_1 = load i1 %state_completion_mem_execute_valid" [/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:667]   --->   Operation 53 'load' 'state_completion_mem_execute_valid_load_1' <Predicate = true> <Delay = 0.00>
+ST_8 : Operation 54 [1/1] (0.00ns)   --->   "%state_completion_mem_execute_kind_load = load i1 %state_completion_mem_execute_kind" [/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:667]   --->   Operation 54 'load' 'state_completion_mem_execute_kind_load' <Predicate = true> <Delay = 0.00>
+ST_8 : Operation 55 [2/2] (1.20ns)   --->   "%mem_any = call i1 @completion_is_valid, i1 %state_completion_mem_execute_valid_load_1, i1 %state_completion_mem_execute_kind_load, i1 %state_rob_entries_valid, i32 %state_rob_entries_uop_queue_rob_allocation_id, i1 %state_rob_entries_busy" [/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:846]   --->   Operation 55 'call' 'mem_any' <Predicate = true> <Delay = 1.20> <CoreType = "Generic">   --->   Core 0 '' <Latency = 0> <II = 1> <Delay = 1.00> <Generic> <Opcode : >
+
+State 9 <SV = 8> <Delay = 2.51>
+ST_9 : Operation 56 [1/2] (2.51ns)   --->   "%mem_any = call i1 @completion_is_valid, i1 %state_completion_mem_execute_valid_load_1, i1 %state_completion_mem_execute_kind_load, i1 %state_rob_entries_valid, i32 %state_rob_entries_uop_queue_rob_allocation_id, i1 %state_rob_entries_busy" [/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:846]   --->   Operation 56 'call' 'mem_any' <Predicate = true> <Delay = 2.51> <CoreType = "Generic">   --->   Core 0 '' <Latency = 0> <II = 1> <Delay = 1.00> <Generic> <Opcode : >
+
+State 10 <SV = 9> <Delay = 1.20>
+ST_10 : Operation 57 [1/1] (0.00ns)   --->   "%state_completion_int_execute_valid_load_1 = load i1 %state_completion_int_execute_valid" [/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:668]   --->   Operation 57 'load' 'state_completion_int_execute_valid_load_1' <Predicate = true> <Delay = 0.00>
+ST_10 : Operation 58 [1/1] (0.00ns)   --->   "%state_completion_int_execute_kind_load = load i1 %state_completion_int_execute_kind" [/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:668]   --->   Operation 58 'load' 'state_completion_int_execute_kind_load' <Predicate = true> <Delay = 0.00>
+ST_10 : Operation 59 [2/2] (1.20ns)   --->   "%int_any = call i1 @completion_is_valid, i1 %state_completion_int_execute_valid_load_1, i1 %state_completion_int_execute_kind_load, i1 %state_rob_entries_valid, i32 %state_rob_entries_uop_queue_rob_allocation_id, i1 %state_rob_entries_busy" [/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:847]   --->   Operation 59 'call' 'int_any' <Predicate = true> <Delay = 1.20> <CoreType = "Generic">   --->   Core 0 '' <Latency = 0> <II = 1> <Delay = 1.00> <Generic> <Opcode : >
+
+State 11 <SV = 10> <Delay = 3.38>
+ST_11 : Operation 60 [1/2] (2.51ns)   --->   "%int_any = call i1 @completion_is_valid, i1 %state_completion_int_execute_valid_load_1, i1 %state_completion_int_execute_kind_load, i1 %state_rob_entries_valid, i32 %state_rob_entries_uop_queue_rob_allocation_id, i1 %state_rob_entries_busy" [/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:847]   --->   Operation 60 'call' 'int_any' <Predicate = true> <Delay = 2.51> <CoreType = "Generic">   --->   Core 0 '' <Latency = 0> <II = 1> <Delay = 1.00> <Generic> <Opcode : >
+ST_11 : Operation 61 [1/1] (0.00ns) (grouped into LUT with out node selected)   --->   "%xor_ln865 = xor i1 %load_any, i1 1" [/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:865]   --->   Operation 61 'xor' 'xor_ln865' <Predicate = true> <Delay = 0.00> <CoreInst = "LogicGate">   --->   Core 74 'LogicGate' <Latency = 0> <II = 1> <Delay = 0.28> <FuncUnit> <Opcode : 'and' 'or' 'xor'> <InPorts = 2> <OutPorts = 1>
+ST_11 : Operation 62 [1/1] (0.00ns) (grouped into LUT with out node selected_valid)   --->   "%or_ln884 = or i1 %int_any, i1 %load_any" [/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:884]   --->   Operation 62 'or' 'or_ln884' <Predicate = true> <Delay = 0.00> <CoreInst = "LogicGate">   --->   Core 74 'LogicGate' <Latency = 0> <II = 1> <Delay = 0.28> <FuncUnit> <Opcode : 'and' 'or' 'xor'> <InPorts = 2> <OutPorts = 1>
+ST_11 : Operation 63 [1/1] (0.28ns) (out node of the LUT)   --->   "%selected_valid = or i1 %or_ln884, i1 %mem_any" [/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:884]   --->   Operation 63 'or' 'selected_valid' <Predicate = true> <Delay = 0.28> <CoreInst = "LogicGate">   --->   Core 74 'LogicGate' <Latency = 0> <II = 1> <Delay = 0.28> <FuncUnit> <Opcode : 'and' 'or' 'xor'> <InPorts = 2> <OutPorts = 1>
+ST_11 : Operation 64 [1/1] (0.28ns) (out node of the LUT)   --->   "%selected = and i1 %mem_any, i1 %xor_ln865" [/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:891]   --->   Operation 64 'and' 'selected' <Predicate = true> <Delay = 0.28> <CoreInst = "LogicGate">   --->   Core 74 'LogicGate' <Latency = 0> <II = 1> <Delay = 0.28> <FuncUnit> <Opcode : 'and' 'or' 'xor'> <InPorts = 2> <OutPorts = 1>
+ST_11 : Operation 65 [1/1] (0.00ns)   --->   "%zext_ln885 = zext i1 %selected" [/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:885]   --->   Operation 65 'zext' 'zext_ln885' <Predicate = true> <Delay = 0.00>
+ST_11 : Operation 66 [1/1] (0.00ns) (grouped into LUT with out node select_ln847)   --->   "%or_ln900 = or i1 %load_any, i1 %mem_any" [/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:900]   --->   Operation 66 'or' 'or_ln900' <Predicate = true> <Delay = 0.00> <CoreInst = "LogicGate">   --->   Core 74 'LogicGate' <Latency = 0> <II = 1> <Delay = 0.28> <FuncUnit> <Opcode : 'and' 'or' 'xor'> <InPorts = 2> <OutPorts = 1>
+ST_11 : Operation 67 [1/1] (0.00ns) (grouped into LUT with out node select_ln847)   --->   "%select_ln900 = select i1 %or_ln900, i2 %zext_ln885, i2 2" [/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:900]   --->   Operation 67 'select' 'select_ln900' <Predicate = true> <Delay = 0.00> <CoreInst = "Sel">   --->   Core 73 'Sel' <Latency = 0> <II = 1> <Delay = 0.17> <FuncUnit> <Opcode : 'select'> <InPorts = 3> <OutPorts = 1>
+ST_11 : Operation 68 [1/1] (0.28ns) (out node of the LUT)   --->   "%select_ln847 = select i1 %int_any, i2 %select_ln900, i2 %zext_ln885" [/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:847]   --->   Operation 68 'select' 'select_ln847' <Predicate = true> <Delay = 0.28> <CoreInst = "Sel">   --->   Core 73 'Sel' <Latency = 0> <II = 1> <Delay = 0.17> <FuncUnit> <Opcode : 'select'> <InPorts = 3> <OutPorts = 1>
+ST_11 : Operation 69 [1/1] (0.00ns)   --->   "%br_ln918 = br i1 %selected_valid, void %._crit_edge39, void" [/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:918]   --->   Operation 69 'br' 'br_ln918' <Predicate = true> <Delay = 0.00>
+ST_11 : Operation 70 [1/1] (0.58ns)   --->   "%switch_ln922 = switch i2 %select_ln847, void %._crit_edge66, i2 0, void, i2 1, void %._crit_edge52" [/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:922]   --->   Operation 70 'switch' 'switch_ln922' <Predicate = (selected_valid)> <Delay = 0.58>
+ST_11 : Operation 71 [1/1] (0.00ns)   --->   "%br_ln623 = br i1 %mem_any, void %._crit_edge39, void %.thread14" [/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:623]   --->   Operation 71 'br' 'br_ln623' <Predicate = (selected_valid & select_ln847 == 1)> <Delay = 0.00>
+ST_11 : Operation 72 [1/1] (0.00ns)   --->   "%br_ln623 = br i1 %load_any, void %._crit_edge39, void %.thread9" [/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:623]   --->   Operation 72 'br' 'br_ln623' <Predicate = (selected_valid & select_ln847 == 0)> <Delay = 0.00>
+ST_11 : Operation 73 [1/1] (0.00ns)   --->   "%state_completion_rob_completes_this_cycle_load_1 = load i8 %state_completion_rob_completes_this_cycle" [/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:955]   --->   Operation 73 'load' 'state_completion_rob_completes_this_cycle_load_1' <Predicate = (selected_valid & select_ln847 == 0 & load_any)> <Delay = 0.00>
+ST_11 : Operation 74 [1/1] (0.76ns)   --->   "%add_ln955 = add i8 %state_completion_rob_completes_this_cycle_load_1, i8 1" [/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:955]   --->   Operation 74 'add' 'add_ln955' <Predicate = (selected_valid & select_ln847 == 0 & load_any)> <Delay = 0.76> <CoreInst = "Adder">   --->   Core 1 'Adder' <Latency = 0> <II = 1> <Delay = 0.54> <FuncUnit> <Opcode : 'add' 'sub'> <InPorts = 2> <OutPorts = 1>
+ST_11 : Operation 75 [1/1] (0.42ns)   --->   "%store_ln955 = store i8 %add_ln955, i8 %state_completion_rob_completes_this_cycle" [/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:955]   --->   Operation 75 'store' 'store_ln955' <Predicate = (selected_valid & select_ln847 == 0 & load_any)> <Delay = 0.42>
+ST_11 : Operation 76 [1/1] (0.00ns)   --->   "%state_completion_total_rob_completes_load = load i64 %state_completion_total_rob_completes" [/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:956]   --->   Operation 76 'load' 'state_completion_total_rob_completes_load' <Predicate = (selected_valid & select_ln847 == 0 & load_any)> <Delay = 0.00>
+ST_11 : Operation 77 [1/1] (1.08ns)   --->   "%add_ln956 = add i64 %state_completion_total_rob_completes_load, i64 1" [/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:956]   --->   Operation 77 'add' 'add_ln956' <Predicate = (selected_valid & select_ln847 == 0 & load_any)> <Delay = 1.08> <CoreInst = "Adder">   --->   Core 1 'Adder' <Latency = 0> <II = 1> <Delay = 0.54> <FuncUnit> <Opcode : 'add' 'sub'> <InPorts = 2> <OutPorts = 1>
+ST_11 : Operation 78 [1/1] (0.42ns)   --->   "%store_ln956 = store i64 %add_ln956, i64 %state_completion_total_rob_completes" [/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:956]   --->   Operation 78 'store' 'store_ln956' <Predicate = (selected_valid & select_ln847 == 0 & load_any)> <Delay = 0.42>
+ST_11 : Operation 79 [1/1] (0.00ns)   --->   "%br_ln623 = br i1 %int_any, void %._crit_edge39, void %.thread17" [/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:623]   --->   Operation 79 'br' 'br_ln623' <Predicate = (selected_valid & select_ln847 != 0 & select_ln847 != 1)> <Delay = 0.00>
+
+State 12 <SV = 11> <Delay = 1.51>
+ST_12 : Operation 80 [1/1] (0.67ns)   --->   "%store_ln640 = store i1 0, i1 0" [/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:640]   --->   Operation 80 'store' 'store_ln640' <Predicate = (selected_valid & select_ln847 == 1 & mem_any)> <Delay = 0.67> <CoreInst = "RAM">   --->   Core 83 'RAM' <Latency = 1> <II = 1> <Delay = 0.67> <Storage> <Opcode : 'load' 'store'> <Ports = 2> <Width = 1> <Depth = 32> <RAM>
+ST_12 : Operation 81 [1/1] (0.00ns)   --->   "%store_ln940 = store i1 0, i1 %state_completion_mem_execute_valid" [/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:940]   --->   Operation 81 'store' 'store_ln940' <Predicate = (selected_valid & select_ln847 == 1 & mem_any)> <Delay = 0.00>
+ST_12 : Operation 82 [1/1] (0.00ns)   --->   "%store_ln940 = store i1 0, i1 %state_completion_mem_execute_kind" [/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:940]   --->   Operation 82 'store' 'store_ln940' <Predicate = (selected_valid & select_ln847 == 1 & mem_any)> <Delay = 0.00>
+ST_12 : Operation 83 [1/1] (0.00ns)   --->   "%store_ln940 = store i1 0, i1 %state_completion_mem_execute_source" [/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:940]   --->   Operation 83 'store' 'store_ln940' <Predicate = (selected_valid & select_ln847 == 1 & mem_any)> <Delay = 0.00>
+ST_12 : Operation 84 [1/1] (0.00ns)   --->   "%store_ln940 = store i1 0, i1 %state_completion_mem_execute_uop_branch_br_mask" [/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:940]   --->   Operation 84 'store' 'store_ln940' <Predicate = (selected_valid & select_ln847 == 1 & mem_any)> <Delay = 0.00>
+ST_12 : Operation 85 [1/1] (0.00ns)   --->   "%store_ln941 = store i1 0, i1 %state_completion_wakeup_sent_1" [/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:941]   --->   Operation 85 'store' 'store_ln941' <Predicate = (selected_valid & select_ln847 == 1 & mem_any)> <Delay = 0.00>
+ST_12 : Operation 86 [1/1] (0.00ns)   --->   "%br_ln954 = br void %._crit_edge80" [/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:954]   --->   Operation 86 'br' 'br_ln954' <Predicate = (selected_valid & select_ln847 == 1 & mem_any)> <Delay = 0.00>
+ST_12 : Operation 87 [1/1] (0.67ns)   --->   "%store_ln640 = store i1 0, i1 0" [/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:640]   --->   Operation 87 'store' 'store_ln640' <Predicate = (selected_valid & select_ln847 == 0 & load_any)> <Delay = 0.67> <CoreInst = "RAM">   --->   Core 83 'RAM' <Latency = 1> <II = 1> <Delay = 0.67> <Storage> <Opcode : 'load' 'store'> <Ports = 2> <Width = 1> <Depth = 32> <RAM>
+ST_12 : Operation 88 [1/1] (0.00ns)   --->   "%store_ln932 = store i1 0, i1 %state_completion_wakeup_sent_0" [/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:932]   --->   Operation 88 'store' 'store_ln932' <Predicate = (selected_valid & select_ln847 == 0 & load_any)> <Delay = 0.00>
+ST_12 : Operation 89 [1/1] (0.00ns)   --->   "%br_ln958 = br void %._crit_edge39" [/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:958]   --->   Operation 89 'br' 'br_ln958' <Predicate = (selected_valid & select_ln847 == 0 & load_any)> <Delay = 0.00>
+ST_12 : Operation 90 [1/1] (0.67ns)   --->   "%store_ln640 = store i1 0, i1 0" [/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:640]   --->   Operation 90 'store' 'store_ln640' <Predicate = (selected_valid & select_ln847 != 0 & select_ln847 != 1 & int_any)> <Delay = 0.67> <CoreInst = "RAM">   --->   Core 83 'RAM' <Latency = 1> <II = 1> <Delay = 0.67> <Storage> <Opcode : 'load' 'store'> <Ports = 2> <Width = 1> <Depth = 32> <RAM>
+ST_12 : Operation 91 [1/1] (0.00ns)   --->   "%store_ln949 = store i1 0, i1 %state_completion_int_execute_valid" [/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:949]   --->   Operation 91 'store' 'store_ln949' <Predicate = (selected_valid & select_ln847 != 0 & select_ln847 != 1 & int_any)> <Delay = 0.00>
+ST_12 : Operation 92 [1/1] (0.00ns)   --->   "%store_ln949 = store i1 0, i1 %state_completion_int_execute_kind" [/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:949]   --->   Operation 92 'store' 'store_ln949' <Predicate = (selected_valid & select_ln847 != 0 & select_ln847 != 1 & int_any)> <Delay = 0.00>
+ST_12 : Operation 93 [1/1] (0.00ns)   --->   "%store_ln949 = store i1 0, i1 %state_completion_int_execute_source" [/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:949]   --->   Operation 93 'store' 'store_ln949' <Predicate = (selected_valid & select_ln847 != 0 & select_ln847 != 1 & int_any)> <Delay = 0.00>
+ST_12 : Operation 94 [1/1] (0.00ns)   --->   "%store_ln949 = store i1 0, i1 %state_completion_int_execute_uop_branch_br_mask" [/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:949]   --->   Operation 94 'store' 'store_ln949' <Predicate = (selected_valid & select_ln847 != 0 & select_ln847 != 1 & int_any)> <Delay = 0.00>
+ST_12 : Operation 95 [1/1] (0.00ns)   --->   "%store_ln950 = store i1 0, i1 %state_completion_wakeup_sent_2" [/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:950]   --->   Operation 95 'store' 'store_ln950' <Predicate = (selected_valid & select_ln847 != 0 & select_ln847 != 1 & int_any)> <Delay = 0.00>
+ST_12 : Operation 96 [1/1] (0.00ns)   --->   "%br_ln954 = br void %._crit_edge80" [/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:954]   --->   Operation 96 'br' 'br_ln954' <Predicate = (selected_valid & select_ln847 != 0 & select_ln847 != 1 & int_any)> <Delay = 0.00>
+ST_12 : Operation 97 [1/1] (0.00ns)   --->   "%state_completion_rob_completes_this_cycle_load_2 = load i8 %state_completion_rob_completes_this_cycle" [/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:955]   --->   Operation 97 'load' 'state_completion_rob_completes_this_cycle_load_2' <Predicate = (selected_valid & select_ln847 != 0 & select_ln847 != 1 & int_any) | (selected_valid & select_ln847 != 0 & select_ln847 == 1 & mem_any)> <Delay = 0.00>
+ST_12 : Operation 98 [1/1] (0.76ns)   --->   "%add_ln955_1 = add i8 %state_completion_rob_completes_this_cycle_load_2, i8 1" [/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:955]   --->   Operation 98 'add' 'add_ln955_1' <Predicate = (selected_valid & select_ln847 != 0 & select_ln847 != 1 & int_any) | (selected_valid & select_ln847 != 0 & select_ln847 == 1 & mem_any)> <Delay = 0.76> <CoreInst = "Adder">   --->   Core 1 'Adder' <Latency = 0> <II = 1> <Delay = 0.54> <FuncUnit> <Opcode : 'add' 'sub'> <InPorts = 2> <OutPorts = 1>
+ST_12 : Operation 99 [1/1] (0.42ns)   --->   "%store_ln955 = store i8 %add_ln955_1, i8 %state_completion_rob_completes_this_cycle" [/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:955]   --->   Operation 99 'store' 'store_ln955' <Predicate = (selected_valid & select_ln847 != 0 & select_ln847 != 1 & int_any) | (selected_valid & select_ln847 != 0 & select_ln847 == 1 & mem_any)> <Delay = 0.42>
+ST_12 : Operation 100 [1/1] (0.00ns)   --->   "%state_completion_total_rob_completes_load_1 = load i64 %state_completion_total_rob_completes" [/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:956]   --->   Operation 100 'load' 'state_completion_total_rob_completes_load_1' <Predicate = (selected_valid & select_ln847 != 0 & select_ln847 != 1 & int_any) | (selected_valid & select_ln847 != 0 & select_ln847 == 1 & mem_any)> <Delay = 0.00>
+ST_12 : Operation 101 [1/1] (1.08ns)   --->   "%add_ln956_1 = add i64 %state_completion_total_rob_completes_load_1, i64 1" [/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:956]   --->   Operation 101 'add' 'add_ln956_1' <Predicate = (selected_valid & select_ln847 != 0 & select_ln847 != 1 & int_any) | (selected_valid & select_ln847 != 0 & select_ln847 == 1 & mem_any)> <Delay = 1.08> <CoreInst = "Adder">   --->   Core 1 'Adder' <Latency = 0> <II = 1> <Delay = 0.54> <FuncUnit> <Opcode : 'add' 'sub'> <InPorts = 2> <OutPorts = 1>
+ST_12 : Operation 102 [1/1] (0.42ns)   --->   "%store_ln956 = store i64 %add_ln956_1, i64 %state_completion_total_rob_completes" [/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:956]   --->   Operation 102 'store' 'store_ln956' <Predicate = (selected_valid & select_ln847 != 0 & select_ln847 != 1 & int_any) | (selected_valid & select_ln847 != 0 & select_ln847 == 1 & mem_any)> <Delay = 0.42>
+ST_12 : Operation 103 [1/1] (0.00ns)   --->   "%br_ln958 = br void %._crit_edge39" [/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:958]   --->   Operation 103 'br' 'br_ln958' <Predicate = (selected_valid & select_ln847 != 0 & select_ln847 != 1 & int_any) | (selected_valid & select_ln847 != 0 & select_ln847 == 1 & mem_any)> <Delay = 0.00>
+ST_12 : Operation 104 [1/1] (0.42ns)   --->   "%store_ln909 = store i2 %service_2, i2 %service" [/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:909]   --->   Operation 104 'store' 'store_ln909' <Predicate = true> <Delay = 0.42>
+ST_12 : Operation 105 [1/1] (0.00ns)   --->   "%br_ln0 = br void"   --->   Operation 105 'br' 'br_ln0' <Predicate = true> <Delay = 0.00>
+
+
+============================================================
++ Verbose Summary: Binding
+============================================================
+STG Binding: 
+---------------- STG Properties BEGIN ----------------
+- Is combinational: 0
+- Is one-state seq: 0
+- Is datapath-only: 0
+- Is pipelined: 0
+- Is top level: 0
+Port [ Return ] is wired: 1; IO mode=ap_ctrl_hs:ce=0
+Port [ state_completion_mem_execute_valid]:  wired=1; compound=0; hidden=0; nouse=0; global=1; static=1; extern=0; dir=2; type=0; pingpong=0; private_global=0; IO mode=ap_ovld:ce=0
+Port [ state_completion_mem_execute_kind]:  wired=1; compound=0; hidden=0; nouse=0; global=1; static=1; extern=0; dir=2; type=0; pingpong=0; private_global=0; IO mode=ap_ovld:ce=0
+Port [ state_rob_entries_valid]:  wired=1; compound=1; hidden=0; nouse=0; global=1; static=1; extern=0; dir=0; type=1; pingpong=0; private_global=0; MemPort=[13]; IO mode=ap_memory:ce=0
+Port [ state_rob_entries_uop_queue_rob_allocation_id]:  wired=1; compound=1; hidden=0; nouse=0; global=1; static=1; extern=0; dir=0; type=1; pingpong=0; private_global=0; MemPort=[13]; IO mode=ap_memory:ce=0
+Port [ state_rob_entries_busy]:  wired=1; compound=1; hidden=0; nouse=0; global=1; static=1; extern=0; dir=2; type=1; pingpong=0; private_global=0; MemPort=[23]; IO mode=ap_memory:ce=0
+Port [ state_completion_mem_execute_source]:  wired=1; compound=0; hidden=0; nouse=0; global=1; static=1; extern=0; dir=1; type=0; pingpong=0; private_global=0; IO mode=ap_vld:ce=0
+Port [ state_completion_mem_execute_uop_branch_br_mask]:  wired=1; compound=0; hidden=0; nouse=0; global=1; static=1; extern=0; dir=1; type=0; pingpong=0; private_global=0; IO mode=ap_vld:ce=0
+Port [ state_completion_int_execute_valid]:  wired=1; compound=0; hidden=0; nouse=0; global=1; static=1; extern=0; dir=2; type=0; pingpong=0; private_global=0; IO mode=ap_ovld:ce=0
+Port [ state_completion_int_execute_kind]:  wired=1; compound=0; hidden=0; nouse=0; global=1; static=1; extern=0; dir=2; type=0; pingpong=0; private_global=0; IO mode=ap_ovld:ce=0
+Port [ state_completion_int_execute_source]:  wired=1; compound=0; hidden=0; nouse=0; global=1; static=1; extern=0; dir=1; type=0; pingpong=0; private_global=0; IO mode=ap_vld:ce=0
+Port [ state_completion_int_execute_uop_branch_br_mask]:  wired=1; compound=0; hidden=0; nouse=0; global=1; static=1; extern=0; dir=1; type=0; pingpong=0; private_global=0; IO mode=ap_vld:ce=0
+Port [ state_completion_wakeup_sent_0]:  wired=1; compound=0; hidden=0; nouse=0; global=1; static=1; extern=0; dir=1; type=0; pingpong=0; private_global=0; IO mode=ap_vld:ce=0
+Port [ state_completion_rob_completes_this_cycle]:  wired=1; compound=0; hidden=0; nouse=0; global=1; static=1; extern=0; dir=2; type=0; pingpong=0; private_global=0; IO mode=ap_ovld:ce=0
+Port [ state_completion_total_rob_completes]:  wired=1; compound=0; hidden=0; nouse=0; global=1; static=1; extern=0; dir=2; type=0; pingpong=0; private_global=0; IO mode=ap_ovld:ce=0
+Port [ state_completion_wakeup_sent_1]:  wired=1; compound=0; hidden=0; nouse=0; global=1; static=1; extern=0; dir=1; type=0; pingpong=0; private_global=0; IO mode=ap_vld:ce=0
+Port [ state_completion_wakeup_sent_2]:  wired=1; compound=0; hidden=0; nouse=0; global=1; static=1; extern=0; dir=1; type=0; pingpong=0; private_global=0; IO mode=ap_vld:ce=0
+Port [ state_completion_peak_rob_completes]:  wired=1; compound=0; hidden=0; nouse=0; global=1; static=1; extern=0; dir=2; type=0; pingpong=0; private_global=0; IO mode=ap_ovld:ce=0
+---------------- STG Properties END ------------------
+
+---------------- Datapath Model BEGIN ----------------
+
+<LifeTime>
+<method=bitvector/>
+service                                          (alloca           ) [ 0111111111111]
+store_ln909                                      (store            ) [ 0000000000000]
+br_ln909                                         (br               ) [ 0000000000000]
+service_1                                        (load             ) [ 0000000000000]
+icmp_ln909                                       (icmp             ) [ 0011111111111]
+empty                                            (speclooptripcount) [ 0000000000000]
+service_2                                        (add              ) [ 0001111111111]
+br_ln909                                         (br               ) [ 0000000000000]
+specloopname_ln909                               (specloopname     ) [ 0000000000000]
+state_completion_mem_execute_valid_load          (load             ) [ 0011111111111]
+br_ln832                                         (br               ) [ 0000000000000]
+state_completion_mem_execute_kind_load_1         (load             ) [ 0001000000000]
+state_completion_rob_completes_this_cycle_load   (load             ) [ 0000000000000]
+state_completion_peak_rob_completes_load         (load             ) [ 0000000000000]
+icmp_ln965                                       (icmp             ) [ 0011111111111]
+br_ln965                                         (br               ) [ 0000000000000]
+store_ln966                                      (store            ) [ 0000000000000]
+br_ln966                                         (br               ) [ 0000000000000]
+ret_ln969                                        (ret              ) [ 0000000000000]
+tmp_1                                            (call             ) [ 0011111111111]
+br_ln832                                         (br               ) [ 0000000000000]
+store_ln834                                      (store            ) [ 0000000000000]
+store_ln834                                      (store            ) [ 0000000000000]
+store_ln834                                      (store            ) [ 0000000000000]
+store_ln834                                      (store            ) [ 0000000000000]
+br_ln834                                         (br               ) [ 0000000000000]
+state_completion_int_execute_valid_load          (load             ) [ 0011111111111]
+br_ln835                                         (br               ) [ 0000000000000]
+state_completion_int_execute_kind_load_1         (load             ) [ 0000010000000]
+tmp_2                                            (call             ) [ 0011111111111]
+br_ln835                                         (br               ) [ 0000000000000]
+store_ln837                                      (store            ) [ 0000000000000]
+store_ln837                                      (store            ) [ 0000000000000]
+store_ln837                                      (store            ) [ 0000000000000]
+store_ln837                                      (store            ) [ 0000000000000]
+br_ln837                                         (br               ) [ 0000000000000]
+load_any                                         (call             ) [ 0000000011111]
+state_completion_mem_execute_valid_load_1        (load             ) [ 0000000001000]
+state_completion_mem_execute_kind_load           (load             ) [ 0000000001000]
+mem_any                                          (call             ) [ 0000000000111]
+state_completion_int_execute_valid_load_1        (load             ) [ 0000000000010]
+state_completion_int_execute_kind_load           (load             ) [ 0000000000010]
+int_any                                          (call             ) [ 0000000000001]
+xor_ln865                                        (xor              ) [ 0000000000000]
+or_ln884                                         (or               ) [ 0000000000000]
+selected_valid                                   (or               ) [ 0011111111111]
+selected                                         (and              ) [ 0000000000000]
+zext_ln885                                       (zext             ) [ 0000000000000]
+or_ln900                                         (or               ) [ 0000000000000]
+select_ln900                                     (select           ) [ 0000000000000]
+select_ln847                                     (select           ) [ 0011111111111]
+br_ln918                                         (br               ) [ 0000000000000]
+switch_ln922                                     (switch           ) [ 0000000000000]
+br_ln623                                         (br               ) [ 0000000000000]
+br_ln623                                         (br               ) [ 0000000000000]
+state_completion_rob_completes_this_cycle_load_1 (load             ) [ 0000000000000]
+add_ln955                                        (add              ) [ 0000000000000]
+store_ln955                                      (store            ) [ 0000000000000]
+state_completion_total_rob_completes_load        (load             ) [ 0000000000000]
+add_ln956                                        (add              ) [ 0000000000000]
+store_ln956                                      (store            ) [ 0000000000000]
+br_ln623                                         (br               ) [ 0000000000000]
+store_ln640                                      (store            ) [ 0000000000000]
+store_ln940                                      (store            ) [ 0000000000000]
+store_ln940                                      (store            ) [ 0000000000000]
+store_ln940                                      (store            ) [ 0000000000000]
+store_ln940                                      (store            ) [ 0000000000000]
+store_ln941                                      (store            ) [ 0000000000000]
+br_ln954                                         (br               ) [ 0000000000000]
+store_ln640                                      (store            ) [ 0000000000000]
+store_ln932                                      (store            ) [ 0000000000000]
+br_ln958                                         (br               ) [ 0000000000000]
+store_ln640                                      (store            ) [ 0000000000000]
+store_ln949                                      (store            ) [ 0000000000000]
+store_ln949                                      (store            ) [ 0000000000000]
+store_ln949                                      (store            ) [ 0000000000000]
+store_ln949                                      (store            ) [ 0000000000000]
+store_ln950                                      (store            ) [ 0000000000000]
+br_ln954                                         (br               ) [ 0000000000000]
+state_completion_rob_completes_this_cycle_load_2 (load             ) [ 0000000000000]
+add_ln955_1                                      (add              ) [ 0000000000000]
+store_ln955                                      (store            ) [ 0000000000000]
+state_completion_total_rob_completes_load_1      (load             ) [ 0000000000000]
+add_ln956_1                                      (add              ) [ 0000000000000]
+store_ln956                                      (store            ) [ 0000000000000]
+br_ln958                                         (br               ) [ 0000000000000]
+store_ln909                                      (store            ) [ 0000000000000]
+br_ln0                                           (br               ) [ 0000000000000]
+</LifeTime>
+
+<model>
+
+<comp_list>
+<comp id="0" class="1000" name="state_completion_mem_execute_valid">
+<pin_list>
+<pin id="1" dir="1" index="0" bw="1" slack="0"/>
+</pin_list>
+<bind>
+<StgValue><ssdm name="state_completion_mem_execute_valid"/></StgValue>
+</bind>
+</comp>
+
+<comp id="2" class="1000" name="state_completion_mem_execute_kind">
+<pin_list>
+<pin id="3" dir="1" index="0" bw="1" slack="0"/>
+</pin_list>
+<bind>
+<StgValue><ssdm name="state_completion_mem_execute_kind"/></StgValue>
+</bind>
+</comp>
+
+<comp id="4" class="1000" name="state_rob_entries_valid">
+<pin_list>
+<pin id="5" dir="1" index="0" bw="1" slack="0"/>
+</pin_list>
+<bind>
+<StgValue><ssdm name="state_rob_entries_valid"/><MemPortTyVec>1 3 </MemPortTyVec>
+</StgValue>
+</bind>
+</comp>
+
+<comp id="6" class="1000" name="state_rob_entries_uop_queue_rob_allocation_id">
+<pin_list>
+<pin id="7" dir="1" index="0" bw="1" slack="0"/>
+</pin_list>
+<bind>
+<StgValue><ssdm name="state_rob_entries_uop_queue_rob_allocation_id"/><MemPortTyVec>1 3 </MemPortTyVec>
+</StgValue>
+</bind>
+</comp>
+
+<comp id="8" class="1000" name="state_rob_entries_busy">
+<pin_list>
+<pin id="9" dir="1" index="0" bw="1" slack="0"/>
+</pin_list>
+<bind>
+<StgValue><ssdm name="state_rob_entries_busy"/><MemPortTyVec>2 3 </MemPortTyVec>
+</StgValue>
+</bind>
+</comp>
+
+<comp id="10" class="1000" name="state_completion_mem_execute_source">
+<pin_list>
+<pin id="11" dir="1" index="0" bw="1" slack="0"/>
+</pin_list>
+<bind>
+<StgValue><ssdm name="state_completion_mem_execute_source"/></StgValue>
+</bind>
+</comp>
+
+<comp id="12" class="1000" name="state_completion_mem_execute_uop_branch_br_mask">
+<pin_list>
+<pin id="13" dir="1" index="0" bw="1" slack="0"/>
+</pin_list>
+<bind>
+<StgValue><ssdm name="state_completion_mem_execute_uop_branch_br_mask"/></StgValue>
+</bind>
+</comp>
+
+<comp id="14" class="1000" name="state_completion_int_execute_valid">
+<pin_list>
+<pin id="15" dir="1" index="0" bw="1" slack="0"/>
+</pin_list>
+<bind>
+<StgValue><ssdm name="state_completion_int_execute_valid"/></StgValue>
+</bind>
+</comp>
+
+<comp id="16" class="1000" name="state_completion_int_execute_kind">
+<pin_list>
+<pin id="17" dir="1" index="0" bw="1" slack="0"/>
+</pin_list>
+<bind>
+<StgValue><ssdm name="state_completion_int_execute_kind"/></StgValue>
+</bind>
+</comp>
+
+<comp id="18" class="1000" name="state_completion_int_execute_source">
+<pin_list>
+<pin id="19" dir="1" index="0" bw="1" slack="0"/>
+</pin_list>
+<bind>
+<StgValue><ssdm name="state_completion_int_execute_source"/></StgValue>
+</bind>
+</comp>
+
+<comp id="20" class="1000" name="state_completion_int_execute_uop_branch_br_mask">
+<pin_list>
+<pin id="21" dir="1" index="0" bw="1" slack="0"/>
+</pin_list>
+<bind>
+<StgValue><ssdm name="state_completion_int_execute_uop_branch_br_mask"/></StgValue>
+</bind>
+</comp>
+
+<comp id="22" class="1000" name="state_completion_wakeup_sent_0">
+<pin_list>
+<pin id="23" dir="1" index="0" bw="1" slack="0"/>
+</pin_list>
+<bind>
+<StgValue><ssdm name="state_completion_wakeup_sent_0"/></StgValue>
+</bind>
+</comp>
+
+<comp id="24" class="1000" name="state_completion_rob_completes_this_cycle">
+<pin_list>
+<pin id="25" dir="1" index="0" bw="1" slack="0"/>
+</pin_list>
+<bind>
+<StgValue><ssdm name="state_completion_rob_completes_this_cycle"/></StgValue>
+</bind>
+</comp>
+
+<comp id="26" class="1000" name="state_completion_total_rob_completes">
+<pin_list>
+<pin id="27" dir="1" index="0" bw="1" slack="0"/>
+</pin_list>
+<bind>
+<StgValue><ssdm name="state_completion_total_rob_completes"/></StgValue>
+</bind>
+</comp>
+
+<comp id="28" class="1000" name="state_completion_wakeup_sent_1">
+<pin_list>
+<pin id="29" dir="1" index="0" bw="1" slack="0"/>
+</pin_list>
+<bind>
+<StgValue><ssdm name="state_completion_wakeup_sent_1"/></StgValue>
+</bind>
+</comp>
+
+<comp id="30" class="1000" name="state_completion_wakeup_sent_2">
+<pin_list>
+<pin id="31" dir="1" index="0" bw="1" slack="0"/>
+</pin_list>
+<bind>
+<StgValue><ssdm name="state_completion_wakeup_sent_2"/></StgValue>
+</bind>
+</comp>
+
+<comp id="32" class="1000" name="state_completion_peak_rob_completes">
+<pin_list>
+<pin id="33" dir="1" index="0" bw="1" slack="0"/>
+</pin_list>
+<bind>
+<StgValue><ssdm name="state_completion_peak_rob_completes"/></StgValue>
+</bind>
+</comp>
+
+<comp id="34" class="1001" name="const_34">
+<pin_list>
+<pin id="35" dir="1" index="0" bw="1" slack="0"/>
+</pin_list>
+<bind>
+<StgValue><ssdm name=""/></StgValue>
+</bind>
+</comp>
+
+<comp id="36" class="1001" name="const_36">
+<pin_list>
+<pin id="37" dir="1" index="0" bw="1" slack="0"/>
+</pin_list>
+<bind>
+<StgValue><ssdm name=""/></StgValue>
+</bind>
+</comp>
+
+<comp id="38" class="1001" name="const_38">
+<pin_list>
+<pin id="39" dir="1" index="0" bw="1" slack="0"/>
+</pin_list>
+<bind>
+<StgValue><ssdm name=""/></StgValue>
+</bind>
+</comp>
+
+<comp id="40" class="1001" name="const_40">
+<pin_list>
+<pin id="41" dir="1" index="0" bw="1" slack="2147483647"/>
+</pin_list>
+<bind>
+<StgValue><ssdm name="_ssdm_op_SpecLoopTripCount"/></StgValue>
+</bind>
+</comp>
+
+<comp id="42" class="1001" name="const_42">
+<pin_list>
+<pin id="43" dir="1" index="0" bw="1" slack="2147483647"/>
+</pin_list>
+<bind>
+<StgValue><ssdm name=""/></StgValue>
+</bind>
+</comp>
+
+<comp id="44" class="1001" name="const_44">
+<pin_list>
+<pin id="45" dir="1" index="0" bw="1" slack="0"/>
+</pin_list>
+<bind>
+<StgValue><ssdm name=""/></StgValue>
+</bind>
+</comp>
+
+<comp id="46" class="1001" name="const_46">
+<pin_list>
+<pin id="47" dir="1" index="0" bw="1" slack="2147483647"/>
+</pin_list>
+<bind>
+<StgValue><ssdm name="_ssdm_op_SpecLoopName"/></StgValue>
+</bind>
+</comp>
+
+<comp id="48" class="1001" name="const_48">
+<pin_list>
+<pin id="49" dir="1" index="0" bw="1" slack="2147483647"/>
+</pin_list>
+<bind>
+<StgValue><ssdm name="empty_8"/></StgValue>
+</bind>
+</comp>
+
+<comp id="50" class="1001" name="const_50">
+<pin_list>
+<pin id="51" dir="1" index="0" bw="1" slack="0"/>
+</pin_list>
+<bind>
+<StgValue><ssdm name="completion_is_valid"/></StgValue>
+</bind>
+</comp>
+
+<comp id="52" class="1001" name="const_52">
+<pin_list>
+<pin id="53" dir="1" index="0" bw="1" slack="0"/>
+</pin_list>
+<bind>
+<StgValue><ssdm name=""/></StgValue>
+</bind>
+</comp>
+
+<comp id="54" class="1001" name="const_54">
+<pin_list>
+<pin id="55" dir="1" index="0" bw="1" slack="0"/>
+</pin_list>
+<bind>
+<StgValue><ssdm name=""/></StgValue>
+</bind>
+</comp>
+
+<comp id="56" class="1001" name="const_56">
+<pin_list>
+<pin id="57" dir="1" index="0" bw="1" slack="0"/>
+</pin_list>
+<bind>
+<StgValue><ssdm name=""/></StgValue>
+</bind>
+</comp>
+
+<comp id="58" class="1001" name="const_58">
+<pin_list>
+<pin id="59" dir="1" index="0" bw="1" slack="0"/>
+</pin_list>
+<bind>
+<StgValue><ssdm name=""/></StgValue>
+</bind>
+</comp>
+
+<comp id="60" class="1001" name="const_60">
+<pin_list>
+<pin id="61" dir="1" index="0" bw="1" slack="0"/>
+</pin_list>
+<bind>
+<StgValue><ssdm name=""/></StgValue>
+</bind>
+</comp>
+
+<comp id="62" class="1001" name="const_62">
+<pin_list>
+<pin id="63" dir="1" index="0" bw="1" slack="0"/>
+</pin_list>
+<bind>
+<StgValue><ssdm name=""/></StgValue>
+</bind>
+</comp>
+
+<comp id="64" class="1004" name="service_fu_64">
+<pin_list>
+<pin id="65" dir="0" index="0" bw="1" slack="0"/>
+<pin id="66" dir="1" index="1" bw="2" slack="0"/>
+</pin_list>
+<bind>
+<opcode="alloca(26) " fcode="alloca"/>
+<opset="service/1 "/>
+</bind>
+</comp>
+
+<comp id="68" class="1004" name="grp_access_fu_68">
+<pin_list>
+<pin id="69" dir="0" index="0" bw="1" slack="0"/>
+<pin id="70" dir="0" index="1" bw="1" slack="0"/>
+<pin id="71" dir="0" index="2" bw="0" slack="2147483647"/>
+<pin id="72" dir="1" index="3" bw="1" slack="2147483647"/>
+</pin_list>
+<bind>
+<opcode="store(28) " fcode="store"/>
+<opset="store_ln640/12 store_ln640/12 store_ln640/12 "/>
+</bind>
+</comp>
+
+<comp id="75" class="1004" name="grp_completion_is_valid_fu_75">
+<pin_list>
+<pin id="76" dir="0" index="0" bw="1" slack="0"/>
+<pin id="77" dir="0" index="1" bw="1" slack="0"/>
+<pin id="78" dir="0" index="2" bw="1" slack="0"/>
+<pin id="79" dir="0" index="3" bw="1" slack="0"/>
+<pin id="80" dir="0" index="4" bw="32" slack="0"/>
+<pin id="81" dir="0" index="5" bw="1" slack="0"/>
+<pin id="82" dir="1" index="6" bw="1" slack="0"/>
+</pin_list>
+<bind>
+<opcode="call(48) " fcode="call"/>
+<opset="tmp_1/2 tmp_2/4 load_any/6 mem_any/8 int_any/10 "/>
+</bind>
+</comp>
+
+<comp id="90" class="1004" name="grp_load_fu_90">
+<pin_list>
+<pin id="91" dir="0" index="0" bw="1" slack="0"/>
+<pin id="92" dir="1" index="1" bw="1" slack="0"/>
+</pin_list>
+<bind>
+<opcode="load(27) " fcode="load"/>
+<opset="state_completion_mem_execute_valid_load/2 state_completion_mem_execute_valid_load_1/8 "/>
+</bind>
+</comp>
+
+<comp id="95" class="1004" name="grp_load_fu_95">
+<pin_list>
+<pin id="96" dir="0" index="0" bw="1" slack="0"/>
+<pin id="97" dir="1" index="1" bw="1" slack="0"/>
+</pin_list>
+<bind>
+<opcode="load(27) " fcode="load"/>
+<opset="state_completion_mem_execute_kind_load_1/2 state_completion_mem_execute_kind_load/8 "/>
+</bind>
+</comp>
+
+<comp id="100" class="1004" name="grp_load_fu_100">
+<pin_list>
+<pin id="101" dir="0" index="0" bw="8" slack="0"/>
+<pin id="102" dir="1" index="1" bw="8" slack="0"/>
+</pin_list>
+<bind>
+<opcode="load(27) " fcode="load"/>
+<opset="state_completion_rob_completes_this_cycle_load/2 state_completion_rob_completes_this_cycle_load_1/11 state_completion_rob_completes_this_cycle_load_2/12 "/>
+</bind>
+</comp>
+
+<comp id="104" class="1004" name="grp_load_fu_104">
+<pin_list>
+<pin id="105" dir="0" index="0" bw="1" slack="0"/>
+<pin id="106" dir="1" index="1" bw="1" slack="0"/>
+</pin_list>
+<bind>
+<opcode="load(27) " fcode="load"/>
+<opset="state_completion_int_execute_valid_load/3 state_completion_int_execute_valid_load_1/10 "/>
+</bind>
+</comp>
+
+<comp id="109" class="1004" name="grp_load_fu_109">
+<pin_list>
+<pin id="110" dir="0" index="0" bw="1" slack="0"/>
+<pin id="111" dir="1" index="1" bw="1" slack="0"/>
+</pin_list>
+<bind>
+<opcode="load(27) " fcode="load"/>
+<opset="state_completion_int_execute_kind_load_1/4 state_completion_int_execute_kind_load/10 "/>
+</bind>
+</comp>
+
+<comp id="114" class="1004" name="grp_fu_114">
+<pin_list>
+<pin id="115" dir="0" index="0" bw="8" slack="0"/>
+<pin id="116" dir="0" index="1" bw="1" slack="0"/>
+<pin id="117" dir="1" index="2" bw="8" slack="0"/>
+</pin_list>
+<bind>
+<opcode="add(8) " fcode="add"/>
+<opset="add_ln955/11 add_ln955_1/12 "/>
+</bind>
+</comp>
+
+<comp id="120" class="1004" name="grp_load_fu_120">
+<pin_list>
+<pin id="121" dir="0" index="0" bw="64" slack="0"/>
+<pin id="122" dir="1" index="1" bw="64" slack="0"/>
+</pin_list>
+<bind>
+<opcode="load(27) " fcode="load"/>
+<opset="state_completion_total_rob_completes_load/11 state_completion_total_rob_completes_load_1/12 "/>
+</bind>
+</comp>
+
+<comp id="124" class="1004" name="grp_fu_124">
+<pin_list>
+<pin id="125" dir="0" index="0" bw="64" slack="0"/>
+<pin id="126" dir="0" index="1" bw="1" slack="0"/>
+<pin id="127" dir="1" index="2" bw="64" slack="0"/>
+</pin_list>
+<bind>
+<opcode="add(8) " fcode="add"/>
+<opset="add_ln956/11 add_ln956_1/12 "/>
+</bind>
+</comp>
+
+<comp id="130" class="1004" name="store_ln909_store_fu_130">
+<pin_list>
+<pin id="131" dir="0" index="0" bw="1" slack="0"/>
+<pin id="132" dir="0" index="1" bw="2" slack="0"/>
+<pin id="133" dir="1" index="2" bw="0" slack="2147483647"/>
+</pin_list>
+<bind>
+<opcode="store(28) " fcode="store"/>
+<opset="store_ln909/1 "/>
+</bind>
+</comp>
+
+<comp id="135" class="1004" name="service_1_load_fu_135">
+<pin_list>
+<pin id="136" dir="0" index="0" bw="2" slack="1"/>
+<pin id="137" dir="1" index="1" bw="2" slack="0"/>
+</pin_list>
+<bind>
+<opcode="load(27) " fcode="load"/>
+<opset="service_1/2 "/>
+</bind>
+</comp>
+
+<comp id="138" class="1004" name="icmp_ln909_fu_138">
+<pin_list>
+<pin id="139" dir="0" index="0" bw="2" slack="0"/>
+<pin id="140" dir="0" index="1" bw="1" slack="0"/>
+<pin id="141" dir="1" index="2" bw="1" slack="2147483647"/>
+</pin_list>
+<bind>
+<opcode="icmp(45) " fcode="icmp"/>
+<opset="icmp_ln909/2 "/>
+</bind>
+</comp>
+
+<comp id="144" class="1004" name="service_2_fu_144">
+<pin_list>
+<pin id="145" dir="0" index="0" bw="2" slack="0"/>
+<pin id="146" dir="0" index="1" bw="1" slack="0"/>
+<pin id="147" dir="1" index="2" bw="2" slack="10"/>
+</pin_list>
+<bind>
+<opcode="add(8) " fcode="add"/>
+<opset="service_2/2 "/>
+</bind>
+</comp>
+
+<comp id="150" class="1004" name="state_completion_peak_rob_completes_load_load_fu_150">
+<pin_list>
+<pin id="151" dir="0" index="0" bw="8" slack="0"/>
+<pin id="152" dir="1" index="1" bw="8" slack="0"/>
+</pin_list>
+<bind>
+<opcode="load(27) " fcode="load"/>
+<opset="state_completion_peak_rob_completes_load/2 "/>
+</bind>
+</comp>
+
+<comp id="154" class="1004" name="icmp_ln965_fu_154">
+<pin_list>
+<pin id="155" dir="0" index="0" bw="8" slack="0"/>
+<pin id="156" dir="0" index="1" bw="8" slack="0"/>
+<pin id="157" dir="1" index="2" bw="1" slack="2147483647"/>
+</pin_list>
+<bind>
+<opcode="icmp(45) " fcode="icmp"/>
+<opset="icmp_ln965/2 "/>
+</bind>
+</comp>
+
+<comp id="160" class="1004" name="store_ln966_store_fu_160">
+<pin_list>
+<pin id="161" dir="0" index="0" bw="8" slack="0"/>
+<pin id="162" dir="0" index="1" bw="8" slack="0"/>
+<pin id="163" dir="1" index="2" bw="0" slack="2147483647"/>
+</pin_list>
+<bind>
+<opcode="store(28) " fcode="store"/>
+<opset="store_ln966/2 "/>
+</bind>
+</comp>
+
+<comp id="166" class="1004" name="store_ln834_store_fu_166">
+<pin_list>
+<pin id="167" dir="0" index="0" bw="1" slack="0"/>
+<pin id="168" dir="0" index="1" bw="1" slack="0"/>
+<pin id="169" dir="1" index="2" bw="0" slack="2147483647"/>
+</pin_list>
+<bind>
+<opcode="store(28) " fcode="store"/>
+<opset="store_ln834/3 "/>
+</bind>
+</comp>
+
+<comp id="172" class="1004" name="store_ln834_store_fu_172">
+<pin_list>
+<pin id="173" dir="0" index="0" bw="1" slack="0"/>
+<pin id="174" dir="0" index="1" bw="1" slack="0"/>
+<pin id="175" dir="1" index="2" bw="0" slack="2147483647"/>
+</pin_list>
+<bind>
+<opcode="store(28) " fcode="store"/>
+<opset="store_ln834/3 "/>
+</bind>
+</comp>
+
+<comp id="178" class="1004" name="store_ln834_store_fu_178">
+<pin_list>
+<pin id="179" dir="0" index="0" bw="1" slack="0"/>
+<pin id="180" dir="0" index="1" bw="1" slack="0"/>
+<pin id="181" dir="1" index="2" bw="0" slack="2147483647"/>
+</pin_list>
+<bind>
+<opcode="store(28) " fcode="store"/>
+<opset="store_ln834/3 "/>
+</bind>
+</comp>
+
+<comp id="184" class="1004" name="store_ln834_store_fu_184">
+<pin_list>
+<pin id="185" dir="0" index="0" bw="1" slack="0"/>
+<pin id="186" dir="0" index="1" bw="1" slack="0"/>
+<pin id="187" dir="1" index="2" bw="0" slack="2147483647"/>
+</pin_list>
+<bind>
+<opcode="store(28) " fcode="store"/>
+<opset="store_ln834/3 "/>
+</bind>
+</comp>
+
+<comp id="190" class="1004" name="store_ln837_store_fu_190">
+<pin_list>
+<pin id="191" dir="0" index="0" bw="1" slack="0"/>
+<pin id="192" dir="0" index="1" bw="1" slack="0"/>
+<pin id="193" dir="1" index="2" bw="0" slack="2147483647"/>
+</pin_list>
+<bind>
+<opcode="store(28) " fcode="store"/>
+<opset="store_ln837/5 "/>
+</bind>
+</comp>
+
+<comp id="196" class="1004" name="store_ln837_store_fu_196">
+<pin_list>
+<pin id="197" dir="0" index="0" bw="1" slack="0"/>
+<pin id="198" dir="0" index="1" bw="1" slack="0"/>
+<pin id="199" dir="1" index="2" bw="0" slack="2147483647"/>
+</pin_list>
+<bind>
+<opcode="store(28) " fcode="store"/>
+<opset="store_ln837/5 "/>
+</bind>
+</comp>
+
+<comp id="202" class="1004" name="store_ln837_store_fu_202">
+<pin_list>
+<pin id="203" dir="0" index="0" bw="1" slack="0"/>
+<pin id="204" dir="0" index="1" bw="1" slack="0"/>
+<pin id="205" dir="1" index="2" bw="0" slack="2147483647"/>
+</pin_list>
+<bind>
+<opcode="store(28) " fcode="store"/>
+<opset="store_ln837/5 "/>
+</bind>
+</comp>
+
+<comp id="208" class="1004" name="store_ln837_store_fu_208">
+<pin_list>
+<pin id="209" dir="0" index="0" bw="1" slack="0"/>
+<pin id="210" dir="0" index="1" bw="1" slack="0"/>
+<pin id="211" dir="1" index="2" bw="0" slack="2147483647"/>
+</pin_list>
+<bind>
+<opcode="store(28) " fcode="store"/>
+<opset="store_ln837/5 "/>
+</bind>
+</comp>
+
+<comp id="214" class="1004" name="xor_ln865_fu_214">
+<pin_list>
+<pin id="215" dir="0" index="0" bw="1" slack="4"/>
+<pin id="216" dir="0" index="1" bw="1" slack="0"/>
+<pin id="217" dir="1" index="2" bw="1" slack="0"/>
+</pin_list>
+<bind>
+<opcode="xor(25) " fcode="xor"/>
+<opset="xor_ln865/11 "/>
+</bind>
+</comp>
+
+<comp id="219" class="1004" name="or_ln884_fu_219">
+<pin_list>
+<pin id="220" dir="0" index="0" bw="1" slack="0"/>
+<pin id="221" dir="0" index="1" bw="1" slack="4"/>
+<pin id="222" dir="1" index="2" bw="1" slack="0"/>
+</pin_list>
+<bind>
+<opcode="or(24) " fcode="or"/>
+<opset="or_ln884/11 "/>
+</bind>
+</comp>
+
+<comp id="224" class="1004" name="selected_valid_fu_224">
+<pin_list>
+<pin id="225" dir="0" index="0" bw="1" slack="0"/>
+<pin id="226" dir="0" index="1" bw="1" slack="2"/>
+<pin id="227" dir="1" index="2" bw="1" slack="1"/>
+</pin_list>
+<bind>
+<opcode="or(24) " fcode="or"/>
+<opset="selected_valid/11 "/>
+</bind>
+</comp>
+
+<comp id="229" class="1004" name="selected_fu_229">
+<pin_list>
+<pin id="230" dir="0" index="0" bw="1" slack="2"/>
+<pin id="231" dir="0" index="1" bw="1" slack="0"/>
+<pin id="232" dir="1" index="2" bw="1" slack="0"/>
+</pin_list>
+<bind>
+<opcode="and(23) " fcode="and"/>
+<opset="selected/11 "/>
+</bind>
+</comp>
+
+<comp id="234" class="1004" name="zext_ln885_fu_234">
+<pin_list>
+<pin id="235" dir="0" index="0" bw="1" slack="0"/>
+<pin id="236" dir="1" index="1" bw="2" slack="0"/>
+</pin_list>
+<bind>
+<opcode="zext(34) " fcode="zext"/>
+<opset="zext_ln885/11 "/>
+</bind>
+</comp>
+
+<comp id="238" class="1004" name="or_ln900_fu_238">
+<pin_list>
+<pin id="239" dir="0" index="0" bw="1" slack="4"/>
+<pin id="240" dir="0" index="1" bw="1" slack="2"/>
+<pin id="241" dir="1" index="2" bw="1" slack="0"/>
+</pin_list>
+<bind>
+<opcode="or(24) " fcode="or"/>
+<opset="or_ln900/11 "/>
+</bind>
+</comp>
+
+<comp id="242" class="1004" name="select_ln900_fu_242">
+<pin_list>
+<pin id="243" dir="0" index="0" bw="1" slack="0"/>
+<pin id="244" dir="0" index="1" bw="1" slack="0"/>
+<pin id="245" dir="0" index="2" bw="2" slack="0"/>
+<pin id="246" dir="1" index="3" bw="2" slack="0"/>
+</pin_list>
+<bind>
+<opcode="select(49) " fcode="select"/>
+<opset="select_ln900/11 "/>
+</bind>
+</comp>
+
+<comp id="250" class="1004" name="select_ln847_fu_250">
+<pin_list>
+<pin id="251" dir="0" index="0" bw="1" slack="0"/>
+<pin id="252" dir="0" index="1" bw="2" slack="0"/>
+<pin id="253" dir="0" index="2" bw="1" slack="0"/>
+<pin id="254" dir="1" index="3" bw="2" slack="1"/>
+</pin_list>
+<bind>
+<opcode="select(49) " fcode="select"/>
+<opset="select_ln847/11 "/>
+</bind>
+</comp>
+
+<comp id="258" class="1004" name="store_ln955_store_fu_258">
+<pin_list>
+<pin id="259" dir="0" index="0" bw="8" slack="0"/>
+<pin id="260" dir="0" index="1" bw="8" slack="0"/>
+<pin id="261" dir="1" index="2" bw="0" slack="2147483647"/>
+</pin_list>
+<bind>
+<opcode="store(28) " fcode="store"/>
+<opset="store_ln955/11 "/>
+</bind>
+</comp>
+
+<comp id="264" class="1004" name="store_ln956_store_fu_264">
+<pin_list>
+<pin id="265" dir="0" index="0" bw="64" slack="0"/>
+<pin id="266" dir="0" index="1" bw="64" slack="0"/>
+<pin id="267" dir="1" index="2" bw="0" slack="2147483647"/>
+</pin_list>
+<bind>
+<opcode="store(28) " fcode="store"/>
+<opset="store_ln956/11 "/>
+</bind>
+</comp>
+
+<comp id="270" class="1004" name="store_ln940_store_fu_270">
+<pin_list>
+<pin id="271" dir="0" index="0" bw="1" slack="0"/>
+<pin id="272" dir="0" index="1" bw="1" slack="0"/>
+<pin id="273" dir="1" index="2" bw="0" slack="2147483647"/>
+</pin_list>
+<bind>
+<opcode="store(28) " fcode="store"/>
+<opset="store_ln940/12 "/>
+</bind>
+</comp>
+
+<comp id="276" class="1004" name="store_ln940_store_fu_276">
+<pin_list>
+<pin id="277" dir="0" index="0" bw="1" slack="0"/>
+<pin id="278" dir="0" index="1" bw="1" slack="0"/>
+<pin id="279" dir="1" index="2" bw="0" slack="2147483647"/>
+</pin_list>
+<bind>
+<opcode="store(28) " fcode="store"/>
+<opset="store_ln940/12 "/>
+</bind>
+</comp>
+
+<comp id="282" class="1004" name="store_ln940_store_fu_282">
+<pin_list>
+<pin id="283" dir="0" index="0" bw="1" slack="0"/>
+<pin id="284" dir="0" index="1" bw="1" slack="0"/>
+<pin id="285" dir="1" index="2" bw="0" slack="2147483647"/>
+</pin_list>
+<bind>
+<opcode="store(28) " fcode="store"/>
+<opset="store_ln940/12 "/>
+</bind>
+</comp>
+
+<comp id="288" class="1004" name="store_ln940_store_fu_288">
+<pin_list>
+<pin id="289" dir="0" index="0" bw="1" slack="0"/>
+<pin id="290" dir="0" index="1" bw="1" slack="0"/>
+<pin id="291" dir="1" index="2" bw="0" slack="2147483647"/>
+</pin_list>
+<bind>
+<opcode="store(28) " fcode="store"/>
+<opset="store_ln940/12 "/>
+</bind>
+</comp>
+
+<comp id="294" class="1004" name="store_ln941_store_fu_294">
+<pin_list>
+<pin id="295" dir="0" index="0" bw="1" slack="0"/>
+<pin id="296" dir="0" index="1" bw="1" slack="0"/>
+<pin id="297" dir="1" index="2" bw="0" slack="2147483647"/>
+</pin_list>
+<bind>
+<opcode="store(28) " fcode="store"/>
+<opset="store_ln941/12 "/>
+</bind>
+</comp>
+
+<comp id="300" class="1004" name="store_ln932_store_fu_300">
+<pin_list>
+<pin id="301" dir="0" index="0" bw="1" slack="0"/>
+<pin id="302" dir="0" index="1" bw="1" slack="0"/>
+<pin id="303" dir="1" index="2" bw="0" slack="2147483647"/>
+</pin_list>
+<bind>
+<opcode="store(28) " fcode="store"/>
+<opset="store_ln932/12 "/>
+</bind>
+</comp>
+
+<comp id="306" class="1004" name="store_ln949_store_fu_306">
+<pin_list>
+<pin id="307" dir="0" index="0" bw="1" slack="0"/>
+<pin id="308" dir="0" index="1" bw="1" slack="0"/>
+<pin id="309" dir="1" index="2" bw="0" slack="2147483647"/>
+</pin_list>
+<bind>
+<opcode="store(28) " fcode="store"/>
+<opset="store_ln949/12 "/>
+</bind>
+</comp>
+
+<comp id="312" class="1004" name="store_ln949_store_fu_312">
+<pin_list>
+<pin id="313" dir="0" index="0" bw="1" slack="0"/>
+<pin id="314" dir="0" index="1" bw="1" slack="0"/>
+<pin id="315" dir="1" index="2" bw="0" slack="2147483647"/>
+</pin_list>
+<bind>
+<opcode="store(28) " fcode="store"/>
+<opset="store_ln949/12 "/>
+</bind>
+</comp>
+
+<comp id="318" class="1004" name="store_ln949_store_fu_318">
+<pin_list>
+<pin id="319" dir="0" index="0" bw="1" slack="0"/>
+<pin id="320" dir="0" index="1" bw="1" slack="0"/>
+<pin id="321" dir="1" index="2" bw="0" slack="2147483647"/>
+</pin_list>
+<bind>
+<opcode="store(28) " fcode="store"/>
+<opset="store_ln949/12 "/>
+</bind>
+</comp>
+
+<comp id="324" class="1004" name="store_ln949_store_fu_324">
+<pin_list>
+<pin id="325" dir="0" index="0" bw="1" slack="0"/>
+<pin id="326" dir="0" index="1" bw="1" slack="0"/>
+<pin id="327" dir="1" index="2" bw="0" slack="2147483647"/>
+</pin_list>
+<bind>
+<opcode="store(28) " fcode="store"/>
+<opset="store_ln949/12 "/>
+</bind>
+</comp>
+
+<comp id="330" class="1004" name="store_ln950_store_fu_330">
+<pin_list>
+<pin id="331" dir="0" index="0" bw="1" slack="0"/>
+<pin id="332" dir="0" index="1" bw="1" slack="0"/>
+<pin id="333" dir="1" index="2" bw="0" slack="2147483647"/>
+</pin_list>
+<bind>
+<opcode="store(28) " fcode="store"/>
+<opset="store_ln950/12 "/>
+</bind>
+</comp>
+
+<comp id="336" class="1004" name="store_ln955_store_fu_336">
+<pin_list>
+<pin id="337" dir="0" index="0" bw="8" slack="0"/>
+<pin id="338" dir="0" index="1" bw="8" slack="0"/>
+<pin id="339" dir="1" index="2" bw="0" slack="2147483647"/>
+</pin_list>
+<bind>
+<opcode="store(28) " fcode="store"/>
+<opset="store_ln955/12 "/>
+</bind>
+</comp>
+
+<comp id="342" class="1004" name="store_ln956_store_fu_342">
+<pin_list>
+<pin id="343" dir="0" index="0" bw="64" slack="0"/>
+<pin id="344" dir="0" index="1" bw="64" slack="0"/>
+<pin id="345" dir="1" index="2" bw="0" slack="2147483647"/>
+</pin_list>
+<bind>
+<opcode="store(28) " fcode="store"/>
+<opset="store_ln956/12 "/>
+</bind>
+</comp>
+
+<comp id="348" class="1004" name="store_ln909_store_fu_348">
+<pin_list>
+<pin id="349" dir="0" index="0" bw="2" slack="10"/>
+<pin id="350" dir="0" index="1" bw="2" slack="11"/>
+<pin id="351" dir="1" index="2" bw="0" slack="2147483647"/>
+</pin_list>
+<bind>
+<opcode="store(28) " fcode="store"/>
+<opset="store_ln909/12 "/>
+</bind>
+</comp>
+
+<comp id="352" class="1005" name="service_reg_352">
+<pin_list>
+<pin id="353" dir="0" index="0" bw="2" slack="0"/>
+<pin id="354" dir="1" index="1" bw="2" slack="0"/>
+</pin_list>
+<bind>
+<opset="service "/>
+</bind>
+</comp>
+
+<comp id="362" class="1005" name="service_2_reg_362">
+<pin_list>
+<pin id="363" dir="0" index="0" bw="2" slack="10"/>
+<pin id="364" dir="1" index="1" bw="2" slack="10"/>
+</pin_list>
+<bind>
+<opset="service_2 "/>
+</bind>
+</comp>
+
+<comp id="367" class="1005" name="state_completion_mem_execute_valid_load_reg_367">
+<pin_list>
+<pin id="368" dir="0" index="0" bw="1" slack="1"/>
+<pin id="369" dir="1" index="1" bw="1" slack="2147483647"/>
+</pin_list>
+<bind>
+<opset="state_completion_mem_execute_valid_load "/>
+</bind>
+</comp>
+
+<comp id="371" class="1005" name="state_completion_mem_execute_kind_load_1_reg_371">
+<pin_list>
+<pin id="372" dir="0" index="0" bw="1" slack="1"/>
+<pin id="373" dir="1" index="1" bw="1" slack="1"/>
+</pin_list>
+<bind>
+<opset="state_completion_mem_execute_kind_load_1 "/>
+</bind>
+</comp>
+
+<comp id="385" class="1005" name="state_completion_int_execute_kind_load_1_reg_385">
+<pin_list>
+<pin id="386" dir="0" index="0" bw="1" slack="1"/>
+<pin id="387" dir="1" index="1" bw="1" slack="1"/>
+</pin_list>
+<bind>
+<opset="state_completion_int_execute_kind_load_1 "/>
+</bind>
+</comp>
+
+<comp id="393" class="1005" name="load_any_reg_393">
+<pin_list>
+<pin id="394" dir="0" index="0" bw="1" slack="4"/>
+<pin id="395" dir="1" index="1" bw="1" slack="4"/>
+</pin_list>
+<bind>
+<opset="load_any "/>
+</bind>
+</comp>
+
+<comp id="400" class="1005" name="state_completion_mem_execute_valid_load_1_reg_400">
+<pin_list>
+<pin id="401" dir="0" index="0" bw="1" slack="1"/>
+<pin id="402" dir="1" index="1" bw="1" slack="1"/>
+</pin_list>
+<bind>
+<opset="state_completion_mem_execute_valid_load_1 "/>
+</bind>
+</comp>
+
+<comp id="405" class="1005" name="state_completion_mem_execute_kind_load_reg_405">
+<pin_list>
+<pin id="406" dir="0" index="0" bw="1" slack="1"/>
+<pin id="407" dir="1" index="1" bw="1" slack="1"/>
+</pin_list>
+<bind>
+<opset="state_completion_mem_execute_kind_load "/>
+</bind>
+</comp>
+
+<comp id="410" class="1005" name="mem_any_reg_410">
+<pin_list>
+<pin id="411" dir="0" index="0" bw="1" slack="2"/>
+<pin id="412" dir="1" index="1" bw="1" slack="2"/>
+</pin_list>
+<bind>
+<opset="mem_any "/>
+</bind>
+</comp>
+
+<comp id="417" class="1005" name="state_completion_int_execute_valid_load_1_reg_417">
+<pin_list>
+<pin id="418" dir="0" index="0" bw="1" slack="1"/>
+<pin id="419" dir="1" index="1" bw="1" slack="1"/>
+</pin_list>
+<bind>
+<opset="state_completion_int_execute_valid_load_1 "/>
+</bind>
+</comp>
+
+<comp id="422" class="1005" name="state_completion_int_execute_kind_load_reg_422">
+<pin_list>
+<pin id="423" dir="0" index="0" bw="1" slack="1"/>
+<pin id="424" dir="1" index="1" bw="1" slack="1"/>
+</pin_list>
+<bind>
+<opset="state_completion_int_execute_kind_load "/>
+</bind>
+</comp>
+
+<comp id="427" class="1005" name="int_any_reg_427">
+<pin_list>
+<pin id="428" dir="0" index="0" bw="1" slack="1"/>
+<pin id="429" dir="1" index="1" bw="1" slack="2147483647"/>
+</pin_list>
+<bind>
+<opset="int_any "/>
+</bind>
+</comp>
+
+<comp id="431" class="1005" name="selected_valid_reg_431">
+<pin_list>
+<pin id="432" dir="0" index="0" bw="1" slack="1"/>
+<pin id="433" dir="1" index="1" bw="1" slack="2147483647"/>
+</pin_list>
+<bind>
+<opset="selected_valid "/>
+</bind>
+</comp>
+
+<comp id="435" class="1005" name="select_ln847_reg_435">
+<pin_list>
+<pin id="436" dir="0" index="0" bw="2" slack="1"/>
+<pin id="437" dir="1" index="1" bw="2" slack="2147483647"/>
+</pin_list>
+<bind>
+<opset="select_ln847 "/>
+</bind>
+</comp>
+
+</comp_list>
+
+<net_list>
+<net id="67"><net_src comp="34" pin="0"/><net_sink comp="64" pin=0"/></net>
+
+<net id="73"><net_src comp="54" pin="0"/><net_sink comp="68" pin=1"/></net>
+
+<net id="74"><net_src comp="62" pin="0"/><net_sink comp="68" pin=0"/></net>
+
+<net id="83"><net_src comp="50" pin="0"/><net_sink comp="75" pin=0"/></net>
+
+<net id="84"><net_src comp="52" pin="0"/><net_sink comp="75" pin=1"/></net>
+
+<net id="85"><net_src comp="4" pin="0"/><net_sink comp="75" pin=3"/></net>
+
+<net id="86"><net_src comp="6" pin="0"/><net_sink comp="75" pin=4"/></net>
+
+<net id="87"><net_src comp="8" pin="0"/><net_sink comp="75" pin=5"/></net>
+
+<net id="88"><net_src comp="54" pin="0"/><net_sink comp="75" pin=1"/></net>
+
+<net id="89"><net_src comp="54" pin="0"/><net_sink comp="75" pin=2"/></net>
+
+<net id="93"><net_src comp="0" pin="0"/><net_sink comp="90" pin=0"/></net>
+
+<net id="94"><net_src comp="90" pin="1"/><net_sink comp="75" pin=1"/></net>
+
+<net id="98"><net_src comp="2" pin="0"/><net_sink comp="95" pin=0"/></net>
+
+<net id="99"><net_src comp="95" pin="1"/><net_sink comp="75" pin=2"/></net>
+
+<net id="103"><net_src comp="24" pin="0"/><net_sink comp="100" pin=0"/></net>
+
+<net id="107"><net_src comp="14" pin="0"/><net_sink comp="104" pin=0"/></net>
+
+<net id="108"><net_src comp="104" pin="1"/><net_sink comp="75" pin=1"/></net>
+
+<net id="112"><net_src comp="16" pin="0"/><net_sink comp="109" pin=0"/></net>
+
+<net id="113"><net_src comp="109" pin="1"/><net_sink comp="75" pin=2"/></net>
+
+<net id="118"><net_src comp="100" pin="1"/><net_sink comp="114" pin=0"/></net>
+
+<net id="119"><net_src comp="58" pin="0"/><net_sink comp="114" pin=1"/></net>
+
+<net id="123"><net_src comp="26" pin="0"/><net_sink comp="120" pin=0"/></net>
+
+<net id="128"><net_src comp="120" pin="1"/><net_sink comp="124" pin=0"/></net>
+
+<net id="129"><net_src comp="60" pin="0"/><net_sink comp="124" pin=1"/></net>
+
+<net id="134"><net_src comp="36" pin="0"/><net_sink comp="130" pin=0"/></net>
+
+<net id="142"><net_src comp="135" pin="1"/><net_sink comp="138" pin=0"/></net>
+
+<net id="143"><net_src comp="38" pin="0"/><net_sink comp="138" pin=1"/></net>
+
+<net id="148"><net_src comp="135" pin="1"/><net_sink comp="144" pin=0"/></net>
+
+<net id="149"><net_src comp="44" pin="0"/><net_sink comp="144" pin=1"/></net>
+
+<net id="153"><net_src comp="32" pin="0"/><net_sink comp="150" pin=0"/></net>
+
+<net id="158"><net_src comp="100" pin="1"/><net_sink comp="154" pin=0"/></net>
+
+<net id="159"><net_src comp="150" pin="1"/><net_sink comp="154" pin=1"/></net>
+
+<net id="164"><net_src comp="100" pin="1"/><net_sink comp="160" pin=0"/></net>
+
+<net id="165"><net_src comp="32" pin="0"/><net_sink comp="160" pin=1"/></net>
+
+<net id="170"><net_src comp="54" pin="0"/><net_sink comp="166" pin=0"/></net>
+
+<net id="171"><net_src comp="0" pin="0"/><net_sink comp="166" pin=1"/></net>
+
+<net id="176"><net_src comp="54" pin="0"/><net_sink comp="172" pin=0"/></net>
+
+<net id="177"><net_src comp="2" pin="0"/><net_sink comp="172" pin=1"/></net>
+
+<net id="182"><net_src comp="54" pin="0"/><net_sink comp="178" pin=0"/></net>
+
+<net id="183"><net_src comp="10" pin="0"/><net_sink comp="178" pin=1"/></net>
+
+<net id="188"><net_src comp="54" pin="0"/><net_sink comp="184" pin=0"/></net>
+
+<net id="189"><net_src comp="12" pin="0"/><net_sink comp="184" pin=1"/></net>
+
+<net id="194"><net_src comp="54" pin="0"/><net_sink comp="190" pin=0"/></net>
+
+<net id="195"><net_src comp="14" pin="0"/><net_sink comp="190" pin=1"/></net>
+
+<net id="200"><net_src comp="54" pin="0"/><net_sink comp="196" pin=0"/></net>
+
+<net id="201"><net_src comp="16" pin="0"/><net_sink comp="196" pin=1"/></net>
+
+<net id="206"><net_src comp="54" pin="0"/><net_sink comp="202" pin=0"/></net>
+
+<net id="207"><net_src comp="18" pin="0"/><net_sink comp="202" pin=1"/></net>
+
+<net id="212"><net_src comp="54" pin="0"/><net_sink comp="208" pin=0"/></net>
+
+<net id="213"><net_src comp="20" pin="0"/><net_sink comp="208" pin=1"/></net>
+
+<net id="218"><net_src comp="52" pin="0"/><net_sink comp="214" pin=1"/></net>
+
+<net id="223"><net_src comp="75" pin="6"/><net_sink comp="219" pin=0"/></net>
+
+<net id="228"><net_src comp="219" pin="2"/><net_sink comp="224" pin=0"/></net>
+
+<net id="233"><net_src comp="214" pin="2"/><net_sink comp="229" pin=1"/></net>
+
+<net id="237"><net_src comp="229" pin="2"/><net_sink comp="234" pin=0"/></net>
+
+<net id="247"><net_src comp="238" pin="2"/><net_sink comp="242" pin=0"/></net>
+
+<net id="248"><net_src comp="234" pin="1"/><net_sink comp="242" pin=1"/></net>
+
+<net id="249"><net_src comp="56" pin="0"/><net_sink comp="242" pin=2"/></net>
+
+<net id="255"><net_src comp="75" pin="6"/><net_sink comp="250" pin=0"/></net>
+
+<net id="256"><net_src comp="242" pin="3"/><net_sink comp="250" pin=1"/></net>
+
+<net id="257"><net_src comp="234" pin="1"/><net_sink comp="250" pin=2"/></net>
+
+<net id="262"><net_src comp="114" pin="2"/><net_sink comp="258" pin=0"/></net>
+
+<net id="263"><net_src comp="24" pin="0"/><net_sink comp="258" pin=1"/></net>
+
+<net id="268"><net_src comp="124" pin="2"/><net_sink comp="264" pin=0"/></net>
+
+<net id="269"><net_src comp="26" pin="0"/><net_sink comp="264" pin=1"/></net>
+
+<net id="274"><net_src comp="54" pin="0"/><net_sink comp="270" pin=0"/></net>
+
+<net id="275"><net_src comp="0" pin="0"/><net_sink comp="270" pin=1"/></net>
+
+<net id="280"><net_src comp="54" pin="0"/><net_sink comp="276" pin=0"/></net>
+
+<net id="281"><net_src comp="2" pin="0"/><net_sink comp="276" pin=1"/></net>
+
+<net id="286"><net_src comp="54" pin="0"/><net_sink comp="282" pin=0"/></net>
+
+<net id="287"><net_src comp="10" pin="0"/><net_sink comp="282" pin=1"/></net>
+
+<net id="292"><net_src comp="54" pin="0"/><net_sink comp="288" pin=0"/></net>
+
+<net id="293"><net_src comp="12" pin="0"/><net_sink comp="288" pin=1"/></net>
+
+<net id="298"><net_src comp="54" pin="0"/><net_sink comp="294" pin=0"/></net>
+
+<net id="299"><net_src comp="28" pin="0"/><net_sink comp="294" pin=1"/></net>
+
+<net id="304"><net_src comp="54" pin="0"/><net_sink comp="300" pin=0"/></net>
+
+<net id="305"><net_src comp="22" pin="0"/><net_sink comp="300" pin=1"/></net>
+
+<net id="310"><net_src comp="54" pin="0"/><net_sink comp="306" pin=0"/></net>
+
+<net id="311"><net_src comp="14" pin="0"/><net_sink comp="306" pin=1"/></net>
+
+<net id="316"><net_src comp="54" pin="0"/><net_sink comp="312" pin=0"/></net>
+
+<net id="317"><net_src comp="16" pin="0"/><net_sink comp="312" pin=1"/></net>
+
+<net id="322"><net_src comp="54" pin="0"/><net_sink comp="318" pin=0"/></net>
+
+<net id="323"><net_src comp="18" pin="0"/><net_sink comp="318" pin=1"/></net>
+
+<net id="328"><net_src comp="54" pin="0"/><net_sink comp="324" pin=0"/></net>
+
+<net id="329"><net_src comp="20" pin="0"/><net_sink comp="324" pin=1"/></net>
+
+<net id="334"><net_src comp="54" pin="0"/><net_sink comp="330" pin=0"/></net>
+
+<net id="335"><net_src comp="30" pin="0"/><net_sink comp="330" pin=1"/></net>
+
+<net id="340"><net_src comp="114" pin="2"/><net_sink comp="336" pin=0"/></net>
+
+<net id="341"><net_src comp="24" pin="0"/><net_sink comp="336" pin=1"/></net>
+
+<net id="346"><net_src comp="124" pin="2"/><net_sink comp="342" pin=0"/></net>
+
+<net id="347"><net_src comp="26" pin="0"/><net_sink comp="342" pin=1"/></net>
+
+<net id="355"><net_src comp="64" pin="1"/><net_sink comp="352" pin=0"/></net>
+
+<net id="356"><net_src comp="352" pin="1"/><net_sink comp="130" pin=1"/></net>
+
+<net id="357"><net_src comp="352" pin="1"/><net_sink comp="135" pin=0"/></net>
+
+<net id="358"><net_src comp="352" pin="1"/><net_sink comp="348" pin=1"/></net>
+
+<net id="365"><net_src comp="144" pin="2"/><net_sink comp="362" pin=0"/></net>
+
+<net id="366"><net_src comp="362" pin="1"/><net_sink comp="348" pin=0"/></net>
+
+<net id="370"><net_src comp="90" pin="1"/><net_sink comp="367" pin=0"/></net>
+
+<net id="374"><net_src comp="95" pin="1"/><net_sink comp="371" pin=0"/></net>
+
+<net id="375"><net_src comp="371" pin="1"/><net_sink comp="75" pin=2"/></net>
+
+<net id="388"><net_src comp="109" pin="1"/><net_sink comp="385" pin=0"/></net>
+
+<net id="389"><net_src comp="385" pin="1"/><net_sink comp="75" pin=2"/></net>
+
+<net id="396"><net_src comp="75" pin="6"/><net_sink comp="393" pin=0"/></net>
+
+<net id="397"><net_src comp="393" pin="1"/><net_sink comp="214" pin=0"/></net>
+
+<net id="398"><net_src comp="393" pin="1"/><net_sink comp="219" pin=1"/></net>
+
+<net id="399"><net_src comp="393" pin="1"/><net_sink comp="238" pin=0"/></net>
+
+<net id="403"><net_src comp="90" pin="1"/><net_sink comp="400" pin=0"/></net>
+
+<net id="404"><net_src comp="400" pin="1"/><net_sink comp="75" pin=1"/></net>
+
+<net id="408"><net_src comp="95" pin="1"/><net_sink comp="405" pin=0"/></net>
+
+<net id="409"><net_src comp="405" pin="1"/><net_sink comp="75" pin=2"/></net>
+
+<net id="413"><net_src comp="75" pin="6"/><net_sink comp="410" pin=0"/></net>
+
+<net id="414"><net_src comp="410" pin="1"/><net_sink comp="224" pin=1"/></net>
+
+<net id="415"><net_src comp="410" pin="1"/><net_sink comp="229" pin=0"/></net>
+
+<net id="416"><net_src comp="410" pin="1"/><net_sink comp="238" pin=1"/></net>
+
+<net id="420"><net_src comp="104" pin="1"/><net_sink comp="417" pin=0"/></net>
+
+<net id="421"><net_src comp="417" pin="1"/><net_sink comp="75" pin=1"/></net>
+
+<net id="425"><net_src comp="109" pin="1"/><net_sink comp="422" pin=0"/></net>
+
+<net id="426"><net_src comp="422" pin="1"/><net_sink comp="75" pin=2"/></net>
+
+<net id="430"><net_src comp="75" pin="6"/><net_sink comp="427" pin=0"/></net>
+
+<net id="434"><net_src comp="224" pin="2"/><net_sink comp="431" pin=0"/></net>
+
+<net id="438"><net_src comp="250" pin="3"/><net_sink comp="435" pin=0"/></net>
+
+</net_list>
+
+</model> 
+---------------- Datapath Model END ------------------
+
+* FSMD analyzer results:
+  - Output states:
+	Port: state_completion_mem_execute_valid | {3 12 }
+	Port: state_completion_mem_execute_kind | {3 12 }
+	Port: state_rob_entries_busy | {12 }
+	Port: state_completion_mem_execute_source | {3 12 }
+	Port: state_completion_mem_execute_uop_branch_br_mask | {3 12 }
+	Port: state_completion_int_execute_valid | {5 12 }
+	Port: state_completion_int_execute_kind | {5 12 }
+	Port: state_completion_int_execute_source | {5 12 }
+	Port: state_completion_int_execute_uop_branch_br_mask | {5 12 }
+	Port: state_completion_wakeup_sent_0 | {12 }
+	Port: state_completion_rob_completes_this_cycle | {11 12 }
+	Port: state_completion_total_rob_completes | {11 12 }
+	Port: state_completion_wakeup_sent_1 | {12 }
+	Port: state_completion_wakeup_sent_2 | {12 }
+	Port: state_completion_peak_rob_completes | {2 }
+ - Input state : 
+	Port: service_pending : state_completion_mem_execute_valid | {2 8 }
+	Port: service_pending : state_completion_mem_execute_kind | {2 8 }
+	Port: service_pending : state_rob_entries_valid | {2 3 4 5 6 7 8 9 10 11 }
+	Port: service_pending : state_rob_entries_uop_queue_rob_allocation_id | {2 3 4 5 6 7 8 9 10 11 }
+	Port: service_pending : state_rob_entries_busy | {2 3 4 5 6 7 8 9 10 11 }
+	Port: service_pending : state_completion_int_execute_valid | {3 10 }
+	Port: service_pending : state_completion_int_execute_kind | {4 10 }
+	Port: service_pending : state_completion_rob_completes_this_cycle | {2 11 12 }
+	Port: service_pending : state_completion_total_rob_completes | {11 12 }
+	Port: service_pending : state_completion_peak_rob_completes | {2 }
+  - Chain level:
+	State 1
+		store_ln909 : 1
+	State 2
+		icmp_ln909 : 1
+		service_2 : 1
+		br_ln909 : 2
+		br_ln832 : 1
+		tmp_1 : 1
+		icmp_ln965 : 1
+		br_ln965 : 2
+		store_ln966 : 1
+	State 3
+		br_ln832 : 1
+		br_ln835 : 1
+	State 4
+		tmp_2 : 1
+	State 5
+		br_ln835 : 1
+	State 6
+	State 7
+	State 8
+		mem_any : 1
+	State 9
+	State 10
+		int_any : 1
+	State 11
+		or_ln884 : 1
+		selected_valid : 1
+		select_ln900 : 1
+		select_ln847 : 2
+		br_ln918 : 1
+		switch_ln922 : 3
+		add_ln955 : 1
+		store_ln955 : 2
+		add_ln956 : 1
+		store_ln956 : 2
+		br_ln623 : 1
+	State 12
+		add_ln955_1 : 1
+		store_ln955 : 2
+		add_ln956_1 : 1
+		store_ln956 : 2
+
+
+============================================================
++ Verbose Summary: Datapath Resource usage 
+============================================================
+
+* Functional unit list:
+|----------|-------------------------------|---------|---------|
+| Operation|        Functional Unit        |    FF   |   LUT   |
+|----------|-------------------------------|---------|---------|
+|          |           grp_fu_114          |    0    |    15   |
+|    add   |           grp_fu_124          |    0    |    71   |
+|          |        service_2_fu_144       |    0    |    9    |
+|----------|-------------------------------|---------|---------|
+|   call   | grp_completion_is_valid_fu_75 |    0    |    28   |
+|----------|-------------------------------|---------|---------|
+|   icmp   |       icmp_ln909_fu_138       |    0    |    8    |
+|          |       icmp_ln965_fu_154       |    0    |    11   |
+|----------|-------------------------------|---------|---------|
+|          |        or_ln884_fu_219        |    0    |    2    |
+|    or    |     selected_valid_fu_224     |    0    |    2    |
+|          |        or_ln900_fu_238        |    0    |    2    |
+|----------|-------------------------------|---------|---------|
+|  select  |      select_ln900_fu_242      |    0    |    2    |
+|          |      select_ln847_fu_250      |    0    |    2    |
+|----------|-------------------------------|---------|---------|
+|    xor   |        xor_ln865_fu_214       |    0    |    2    |
+|----------|-------------------------------|---------|---------|
+|    and   |        selected_fu_229        |    0    |    2    |
+|----------|-------------------------------|---------|---------|
+|   zext   |       zext_ln885_fu_234       |    0    |    0    |
+|----------|-------------------------------|---------|---------|
+|   Total  |                               |    0    |   156   |
+|----------|-------------------------------|---------|---------|
+
+Memories:
+N/A
+
+* Register list:
++-------------------------------------------------+--------+
+|                                                 |   FF   |
++-------------------------------------------------+--------+
+|                 int_any_reg_427                 |    1   |
+|                 load_any_reg_393                |    1   |
+|                 mem_any_reg_410                 |    1   |
+|               select_ln847_reg_435              |    2   |
+|              selected_valid_reg_431             |    1   |
+|                service_2_reg_362                |    2   |
+|                 service_reg_352                 |    2   |
+| state_completion_int_execute_kind_load_1_reg_385|    1   |
+|  state_completion_int_execute_kind_load_reg_422 |    1   |
+|state_completion_int_execute_valid_load_1_reg_417|    1   |
+| state_completion_mem_execute_kind_load_1_reg_371|    1   |
+|  state_completion_mem_execute_kind_load_reg_405 |    1   |
+|state_completion_mem_execute_valid_load_1_reg_400|    1   |
+| state_completion_mem_execute_valid_load_reg_367 |    1   |
++-------------------------------------------------+--------+
+|                      Total                      |   17   |
++-------------------------------------------------+--------+
+
+* Multiplexer (MUX) list: 
+|-------------------------------|------|------|------|--------||---------||---------|
+|              Comp             |  Pin | Size |  BW  | S x BW ||  Delay  ||   LUT   |
+|-------------------------------|------|------|------|--------||---------||---------|
+| grp_completion_is_valid_fu_75 |  p1  |   6  |   1  |    6   ||    26   |
+| grp_completion_is_valid_fu_75 |  p2  |   7  |   1  |    7   ||    37   |
+|-------------------------------|------|------|------|--------||---------||---------|
+|             Total             |      |      |      |   13   ||  1.295  ||    63   |
+|-------------------------------|------|------|------|--------||---------||---------|
+
+
+
+* Summary:
++-----------+--------+--------+--------+
+|           |  Delay |   FF   |   LUT  |
++-----------+--------+--------+--------+
+|  Function |    -   |    0   |   156  |
+|   Memory  |    -   |    -   |    -   |
+|Multiplexer|    1   |    -   |   63   |
+|  Register |    -   |   17   |    -   |
++-----------+--------+--------+--------+
+|   Total   |    1   |   17   |   219  |
++-----------+--------+--------+--------+

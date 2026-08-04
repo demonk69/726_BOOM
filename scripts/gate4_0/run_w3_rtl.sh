@@ -21,7 +21,7 @@ BRANCH_KILL_RTL_DIR="$BRANCH_KILL_PROJECT/$SOLUTION/syn/verilog"
 STAGE_DIR="$BUILD_DIR/report_stage"
 HLS_TCL="$BUILD_DIR/run_w3_csynth.tcl"
 WRAPPER_TEST="$ROOT/tb/differential/w3_rtl_wrapper_tests.cpp"
-REPORT_DIR="$ROOT/reports/gate4_0/w3"
+REPORT_DIR=${W3_RTL_REPORT_DIR:-"$ROOT/reports/gate4_0/w3"}
 LOG_DIR="$REPORT_DIR/rtl_logs"
 MATRIX="$REPORT_DIR/rtl_test_matrix.csv"
 
@@ -53,10 +53,11 @@ COMMON=(
     "$ROOT/src/boom_core_step.cpp" "$ROOT/src/frontend.cpp" "$ROOT/src/decode.cpp"
     "$ROOT/src/rename.cpp" "$ROOT/src/rob.cpp" "$ROOT/src/issue.cpp"
     "$ROOT/src/execute.cpp" "$ROOT/src/branch.cpp" "$ROOT/src/lsu.cpp"
-    "$ROOT/src/commit.cpp" "$ROOT/src/csr.cpp" "$ROOT/src/reset.cpp"
+    "$ROOT/src/completion.cpp" "$ROOT/src/commit.cpp" "$ROOT/src/csr.cpp" "$ROOT/src/reset.cpp"
     "$ROOT/src/synth_module_tops.cpp"
 )
-g++ -std=c++11 -I"$ROOT/include" "${COMMON[@]}" "$WRAPPER_TEST" \
+g++ -std=c++11 -DBOOM_HLS_W3_DIAGNOSTIC -DBOOM_HLS_W4A_COMPLETION_DIAGNOSTIC \
+    -I"$ROOT/include" "${COMMON[@]}" "$WRAPPER_TEST" \
     -o "$BUILD_DIR/w3_rtl_wrapper_tests" > "$BUILD_DIR/wrapper_compile.log" 2>&1 &&
     "$BUILD_DIR/w3_rtl_wrapper_tests" > "$BUILD_DIR/wrapper_cpp.log" 2>&1 || {
     printf '%s\n' "ERROR: W3 C++ wrapper oracle failed; see $BUILD_DIR/wrapper_cpp.log" >&2
@@ -68,7 +69,7 @@ if [[ ${W3_REUSE_RTL:-0} != 1 ]]; then
     cd "$BUILD_DIR" || exit 1
     BOOM_HLS_GATE=gate4_0_w3 BOOM_HLS_TOP=synth_w3_diagnostic_top \
     BOOM_HLS_PROJECT=hls_project BOOM_HLS_SOLUTION="$SOLUTION" \
-    BOOM_HLS_CFLAGS_EXTRA=-DBOOM_HLS_W3_DIAGNOSTIC \
+    BOOM_HLS_CFLAGS_EXTRA="-DBOOM_HLS_W3_DIAGNOSTIC -DBOOM_HLS_W4A_COMPLETION_DIAGNOSTIC" \
     FPGA_PART=${FPGA_PART:-xczu7ev-ffvc1156-2-e} CLOCK_PERIOD=${CLOCK_PERIOD:-10} \
     "$VITIS_HLS_BIN" -f "$HLS_TCL"
 ) > "$BUILD_DIR/hls.log" 2>&1 || {
@@ -80,7 +81,7 @@ if [[ ${W3_REUSE_RTL:-0} != 1 ]]; then
     cd "$BUILD_DIR" || exit 1
     BOOM_HLS_GATE=gate4_0_w3 BOOM_HLS_TOP=synth_w3_completion_diagnostic_top \
     BOOM_HLS_PROJECT=hls_completion_project BOOM_HLS_SOLUTION="$SOLUTION" \
-    BOOM_HLS_CFLAGS_EXTRA=-DBOOM_HLS_W3_DIAGNOSTIC \
+    BOOM_HLS_CFLAGS_EXTRA="-DBOOM_HLS_W3_DIAGNOSTIC -DBOOM_HLS_W4A_COMPLETION_DIAGNOSTIC" \
     FPGA_PART=${FPGA_PART:-xczu7ev-ffvc1156-2-e} CLOCK_PERIOD=${CLOCK_PERIOD:-10} \
     "$VITIS_HLS_BIN" -f "$HLS_TCL"
 ) > "$BUILD_DIR/hls_completion.log" 2>&1 || {
@@ -96,7 +97,7 @@ for spec in "synth_w3_dual_pending_top:hls_dual_pending_project:hls_dual_pending
         cd "$BUILD_DIR" || exit 1
         BOOM_HLS_GATE=gate4_0_w3 BOOM_HLS_TOP="$extra_top" \
         BOOM_HLS_PROJECT="$extra_project" BOOM_HLS_SOLUTION="$SOLUTION" \
-        BOOM_HLS_CFLAGS_EXTRA=-DBOOM_HLS_W3_DIAGNOSTIC \
+        BOOM_HLS_CFLAGS_EXTRA="-DBOOM_HLS_W3_DIAGNOSTIC -DBOOM_HLS_W4A_COMPLETION_DIAGNOSTIC" \
         FPGA_PART=${FPGA_PART:-xczu7ev-ffvc1156-2-e} CLOCK_PERIOD=${CLOCK_PERIOD:-10} \
         "$VITIS_HLS_BIN" -f "$HLS_TCL"
     ) > "$BUILD_DIR/$extra_log" 2>&1 || {
@@ -106,7 +107,10 @@ for spec in "synth_w3_dual_pending_top:hls_dual_pending_project:hls_dual_pending
 done
 fi
 
-cp "$RTL_DIR"/*.dat "$BUILD_DIR/xsim"/ 2>/dev/null || true
+for generated_dir in "$RTL_DIR" "$COMPLETION_RTL_DIR" "$DUAL_PENDING_RTL_DIR" \
+                     "$ROB_WRAP_RTL_DIR" "$BRANCH_KILL_RTL_DIR"; do
+    cp "$generated_dir"/*.dat "$BUILD_DIR/xsim"/ 2>/dev/null || true
+done
 mapfile -t RTL_FILES < <(printf '%s\n' "$RTL_DIR"/*.v "$COMPLETION_RTL_DIR"/*.v \
     "$DUAL_PENDING_RTL_DIR"/*.v "$ROB_WRAP_RTL_DIR"/*.v | sort)
 RTL_FILES+=("$BRANCH_KILL_RTL_DIR"/*.v)
@@ -163,7 +167,7 @@ PY
         overall=1
     fi
     printf '%s,%s,"%s",%s,%s,%s,%s\n' "$name" "$scenario" "$requirement" \
-        "$status" "$expected" "$observed" "reports/gate4_0/w3/rtl_logs/$name.log" \
+        "$status" "$expected" "$observed" "${LOG_DIR#$ROOT/}/$name.log" \
         >> "$STAGE_DIR/rtl_test_matrix.csv"
     printf '%-32s %s expected=%s observed=%s\n' "$name" "$status" "$expected" "$observed"
 done

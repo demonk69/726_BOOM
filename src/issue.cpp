@@ -2,6 +2,7 @@
 #include "boom_types.hpp"
 #include "boom_state.hpp"
 #include "issue.hpp"
+#include "completion.hpp"
 
 IssuePortClass classify_issue_port(const MicroOp& uop) {
     if (uop.exception) return ISSUE_PORT_UNSUPPORTED;
@@ -27,6 +28,17 @@ static bool preg_busy(const BoomCoreState& state, uint8_t preg) {
     return preg != 0 && preg < INT_PHYS_REGS && state.rename.int_free_list.busy_table[preg];
 }
 
+static bool resolve_operand(const BoomCoreState& state, uint8_t prs,
+                            uint64_t& data) {
+#pragma HLS INLINE
+    if (prs == 0) { data = 0; return true; }
+    bool conflict = false;
+    if (boom::wakeup_lookup(state, prs, data, conflict)) return true;
+    if (conflict || preg_busy(state, prs)) return false;
+    data = prf_read(state, prs);
+    return true;
+}
+
 static void compact_iq(IssueQueueState& iq) {
     IssueSlotEntry temp[ISSUE_QUEUE_ALU_DEPTH];
     int w=0;
@@ -47,6 +59,7 @@ void issue_module(BoomCoreState& state) {
 
     for (int i=0; i<ISSUE_WIDTH; i++) {
         iss.grants[i]=IssueGrant(); iss.issued_valids[i]=false; iss.issued_uops[i]=MicroOp();
+        iss.issued_prs1_data[i]=iss.issued_prs2_data[i]=iss.issued_prs3_data[i]=0;
     }
     iss.grants_generated=0; iss.grants_accepted=0; iss.grants_retained=0; iss.grants_dropped=0;
 
@@ -69,15 +82,17 @@ void issue_module(BoomCoreState& state) {
             continue;
         }
         if (state.brupdate.valid) s.uop.branch.br_mask &= (uint8_t)~state.brupdate.resolve_mask;
-        if (s.uop.rename.prs1 != 0) s.prs1_busy = preg_busy(state, s.uop.rename.prs1);
-        if (s.uop.rename.prs2 != 0) s.prs2_busy = preg_busy(state, s.uop.rename.prs2);
+        s.prs1_busy = !resolve_operand(state, s.uop.rename.prs1, s.prs1_data);
+        s.prs2_busy = !resolve_operand(state, s.uop.rename.prs2, s.prs2_data);
+        s.prs3_busy = !resolve_operand(state, s.uop.rename.prs3, s.prs3_data);
     }
     compact_iq(iss.alu_iq);
 
     int mem_index=-1, int_index=-1;
     for (int i=0; i<ISSUE_QUEUE_ALU_DEPTH; i++) {
         IssueSlotEntry& s = iss.alu_iq.entries[i];
-        if (!s.valid || !s.request || s.killed || s.prs1_busy || s.prs2_busy || s.pdst_busy) continue;
+        if (!s.valid || !s.request || s.killed || s.prs1_busy || s.prs2_busy ||
+            s.prs3_busy || s.pdst_busy) continue;
         IssuePortClass port=classify_issue_port(s.uop);
         if (port==ISSUE_PORT_MEM && mem_index<0) mem_index=i;
         else if (port==ISSUE_PORT_INT && int_index<0) int_index=i;
@@ -104,8 +119,10 @@ void issue_module(BoomCoreState& state) {
         dispatch_pending=!dispatch_uop.exception;
         IssuePortClass port=classify_issue_port(dispatch_uop);
         int lane=(port==ISSUE_PORT_MEM) ? MEM_ISSUE_LANE : (port==ISSUE_PORT_INT ? INT_ISSUE_LANE : -1);
-        bool dispatch_ready=!preg_busy(state, dispatch_uop.rename.prs1) &&
-                            !preg_busy(state, dispatch_uop.rename.prs2);
+        uint64_t dispatch_data1=0, dispatch_data2=0, dispatch_data3=0;
+        bool dispatch_ready=resolve_operand(state, dispatch_uop.rename.prs1, dispatch_data1) &&
+                            resolve_operand(state, dispatch_uop.rename.prs2, dispatch_data2) &&
+                            resolve_operand(state, dispatch_uop.rename.prs3, dispatch_data3);
         bool old_grant_can_accept=false;
         for (int old_lane=0; old_lane<INTEGER_ISSUE_PORTS; old_lane++)
             old_grant_can_accept |= iss.grants[old_lane].valid && iss.port_ready[old_lane];
@@ -146,11 +163,17 @@ void issue_module(BoomCoreState& state) {
         grant.accepted=true; iss.grants_accepted++;
         iss.issued_valids[lane]=true; iss.issued_uops[lane]=grant.uop;
         if (grant.from_dispatch) {
+            resolve_operand(state, grant.uop.rename.prs1, iss.issued_prs1_data[lane]);
+            resolve_operand(state, grant.uop.rename.prs2, iss.issued_prs2_data[lane]);
+            resolve_operand(state, grant.uop.rename.prs3, iss.issued_prs3_data[lane]);
             dispatch_pending=false;
             dispatch_packet = RenameDispatchPacket();
         }
         else {
             IssueSlotEntry& selected=iss.alu_iq.entries[grant.entry_index];
+            iss.issued_prs1_data[lane]=selected.prs1_data;
+            iss.issued_prs2_data[lane]=selected.prs2_data;
+            iss.issued_prs3_data[lane]=selected.prs3_data;
             selected.granted=true; selected.request=false;
         }
     }
@@ -162,8 +185,11 @@ void issue_module(BoomCoreState& state) {
     if (dispatch_pending && iss.alu_iq.count<ISSUE_QUEUE_ALU_DEPTH) {
         IssueSlotEntry& slot=iss.alu_iq.entries[iss.alu_iq.tail];
         slot.valid=true; slot.request=true; slot.granted=false; slot.killed=false;
-        slot.uop=dispatch_uop; slot.prs1_busy=preg_busy(state, dispatch_uop.rename.prs1);
-        slot.prs2_busy=preg_busy(state, dispatch_uop.rename.prs2); slot.pdst_busy=false;
+        slot.uop=dispatch_uop;
+        slot.prs1_busy=!resolve_operand(state, dispatch_uop.rename.prs1, slot.prs1_data);
+        slot.prs2_busy=!resolve_operand(state, dispatch_uop.rename.prs2, slot.prs2_data);
+        slot.prs3_busy=!resolve_operand(state, dispatch_uop.rename.prs3, slot.prs3_data);
+        slot.pdst_busy=false;
         iss.alu_iq.tail=(iss.alu_iq.tail+1)%ISSUE_QUEUE_ALU_DEPTH; iss.alu_iq.count++;
         dispatch_packet = RenameDispatchPacket();
     }

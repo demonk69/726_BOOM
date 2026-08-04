@@ -42,8 +42,8 @@ static void t08() { TEST("full STQ does not block load lane"); BoomCoreState s; 
     CHECK(s.issue.grants[0].accepted && s.issue.grants[1].accepted,"unrelated STQ blocked load"); PASS(); }
 static void t09() { TEST("execute fills fixed persistent slots"); BoomCoreState s; dual(s); s.rob.entries[1].valid=s.rob.entries[2].valid=true; boom::issue_module(s); boom::execute_module(s);
     CHECK(s.execute.alu_results[0].valid && s.execute.alu_results[0].is_load && s.execute.alu_results[1].valid && !s.execute.alu_results[1].memory_valid,"execute slot mapping wrong"); PASS(); }
-static void t10() { TEST("execute does not write integer RF immediately"); BoomCoreState s; seed(s,0,ISSUE_PORT_INT,2,3); s.int_rf[3]=99; boom::issue_module(s); boom::execute_module(s);
-    CHECK(s.int_rf[3]==99 && s.rename.int_free_list.busy_table[3]==false,"execute wrote RF"); PASS(); }
+static void t10() { TEST("execute does not write integer RF immediately"); BoomCoreState s; seed(s,0,ISSUE_PORT_INT,2,3); boom::prf_seed(s,3,99); boom::issue_module(s); boom::execute_module(s);
+    CHECK(boom::prf_read(s,3)==99 && s.rename.int_free_list.busy_table[3]==false,"execute wrote RF"); PASS(); }
 static void t11() { TEST("execute never overwrites valid INT slot"); BoomCoreState s; s.execute.alu_results[1].valid=true; s.execute.alu_results[1].result=0x55; s.issue.issued_valids[1]=true; s.issue.issued_uops[1]=uop(ISSUE_PORT_INT,2,3); boom::execute_module(s);
     CHECK(s.execute.alu_results[1].result==0x55,"held completion overwritten"); PASS(); }
 static void t12() { TEST("execute never overwrites valid MEM slot"); BoomCoreState s; s.execute.alu_results[0].valid=true; s.execute.alu_results[0].result=0x66; s.issue.issued_valids[0]=true; s.issue.issued_uops[0]=uop(ISSUE_PORT_MEM,1); boom::execute_module(s);

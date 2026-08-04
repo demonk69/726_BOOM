@@ -86,9 +86,9 @@ void run_program(const char* name, IdealMem& mem, int max_cycles, int expected_x
         uint8_t p1 = state.rename.int_map_table.committed_map_table[1];
         uint8_t p2 = state.rename.int_map_table.committed_map_table[2];
         uint8_t p3 = state.rename.int_map_table.committed_map_table[3];
-        uint64_t x1 = (p1>0) ? state.int_rf[p1] : 0;
-        uint64_t x2 = (p2>0) ? state.int_rf[p2] : 0;
-        uint64_t x3 = (p3>0) ? state.int_rf[p3] : 0;
+        uint64_t x1 = boom::prf_read(state, p1);
+        uint64_t x2 = boom::prf_read(state, p2);
+        uint64_t x3 = boom::prf_read(state, p3);
         if (x1 != (uint64_t)expected_x1) { FAIL("x1 mismatch"); return; }
         if (x2 != (uint64_t)expected_x2) { FAIL("x2 mismatch"); return; }
         if (x3 != (uint64_t)expected_x3) { FAIL("x3 mismatch"); return; }

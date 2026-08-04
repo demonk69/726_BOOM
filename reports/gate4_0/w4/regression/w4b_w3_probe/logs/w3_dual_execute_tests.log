@@ -1,0 +1,17 @@
+=== W3 Core Dual Execute Tests ===
+  [W3 dual] fixed MEM and INT lanes both accept                  ... PASS
+  [W3 dual] accepted dual entries both leave IQ                  ... PASS
+  [W3 dual] issued uops retain fixed lane identity               ... PASS
+  [W3 dual] lane 2 remains invalid                               ... PASS
+  [W3 dual] blocked MEM preserves entry while INT accepts        ... PASS
+  [W3 dual] blocked INT preserves entry while MEM accepts        ... PASS
+  [W3 dual] full LDQ blocks only load lane                       ... PASS
+  [W3 dual] full STQ does not block load lane                    ... PASS
+  [W3 dual] execute fills fixed persistent slots                 ... PASS
+  [W3 dual] execute does not write integer RF immediately        ... PASS
+  [W3 dual] execute never overwrites valid INT slot              ... PASS
+  [W3 dual] execute never overwrites valid MEM slot              ... PASS
+  [W3 dual] dispatch readiness consults current busy table       ... PASS
+  [W3 dual] empty completion slot enables corresponding lane     ... PASS
+  [W3 dual] valid held slot backpressures only its lane          ... PASS
+W3 dual execute: 15 passed, 0 failed

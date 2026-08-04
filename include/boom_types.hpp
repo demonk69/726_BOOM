@@ -22,6 +22,22 @@ enum RobState : uint8_t { ROB_INIT=0, ROB_NORMAL=1, ROB_FLUSH=2, ROB_EXCEPTION=3
 enum PrivilegeMode : uint8_t { PRV_U=0, PRV_S=1, PRV_H=2, PRV_M=3 };
 enum DmemCommand : uint8_t { DMEM_LOAD=0, DMEM_STORE=1 };
 
+enum CompletionKind : uint8_t {
+    COMPLETION_NONE = 0, COMPLETION_EXECUTE = 1,
+    COMPLETION_MEMORY_ADDRESS = 2, COMPLETION_STORE = 3,
+    COMPLETION_LOAD_RESPONSE = 4, COMPLETION_BRANCH = 5
+};
+enum CompletionSourceId : uint8_t {
+    COMPLETION_SOURCE_LSU_LOAD = 0, COMPLETION_SOURCE_MEM_EXECUTE = 1,
+    COMPLETION_SOURCE_INT_EXECUTE = 2, COMPLETION_SOURCE_COUNT = 3
+};
+enum RobCompletePortId : uint8_t {
+    ROB_COMPLETE_PORT_LSU_LOAD = 0,
+    ROB_COMPLETE_PORT_MEM_EXECUTE = 1,
+    ROB_COMPLETE_PORT_INT_EXECUTE = 2,
+    ROB_COMPLETE_PORT_UNSUPPORTED = 3
+};
+
 struct DecodeControl {
     uint8_t br_type, op1_sel, op2_sel, imm_sel, op_fcn, fcn_dw, csr_cmd;
     bool is_load, is_sta, is_std;
@@ -69,6 +85,68 @@ struct MicroOp {
         is_sys_pc2epc=is_unique=flush_on_commit=false; exc={}; debug={}; }
 };
 
+// Fixed-size completion payload. Arrays of this type are only accessed at
+// constant port indices in W4B to avoid aggregate mux synthesis artifacts.
+struct RobCompleteEvent {
+    bool valid;
+    CompletionKind kind;
+    CompletionSourceId source;
+    MicroOp uop;
+    bool writes_prf, mispredict, control_resolved;
+    uint64_t redirect_pc, value;
+    bool exception;
+    uint64_t exc_cause;
+    bool memory_valid, is_load, is_store, signed_load;
+    uint64_t memory_address, store_data;
+    uint8_t memory_mask, memory_size;
+    uint32_t transaction_id;
+    RobCompleteEvent() : valid(false), kind(COMPLETION_NONE),
+        source(COMPLETION_SOURCE_LSU_LOAD), uop(), writes_prf(false),
+        mispredict(false), control_resolved(false), redirect_pc(0), value(0), exception(false),
+        exc_cause(0), memory_valid(false), is_load(false), is_store(false),
+        signed_load(false), memory_address(0), store_data(0), memory_mask(0),
+        memory_size(0), transaction_id(0) {}
+};
+
+typedef RobCompleteEvent CompletionEvent;
+
+struct WritebackEvent {
+    bool valid;
+    uint8_t pdst;
+    uint64_t value;
+    uint8_t rob_idx;
+    uint32_t rob_allocation_id;
+    CompletionSourceId source;
+    WritebackEvent() : valid(false), pdst(0), value(0), rob_idx(0),
+        rob_allocation_id(0), source(COMPLETION_SOURCE_LSU_LOAD) {}
+};
+
+struct WakeupEvent {
+    bool valid;
+    uint8_t pdst;
+    uint64_t value;
+    uint8_t rob_idx;
+    uint32_t rob_allocation_id;
+    uint8_t branch_mask;
+    CompletionSourceId source;
+    WakeupEvent() : valid(false), pdst(0), value(0), rob_idx(0),
+        rob_allocation_id(0), branch_mask(0),
+        source(COMPLETION_SOURCE_LSU_LOAD) {}
+};
+
+struct BypassEvent {
+    bool valid;
+    uint8_t pdst;
+    uint64_t value;
+    uint8_t rob_idx;
+    uint32_t rob_allocation_id;
+    uint8_t branch_mask;
+    CompletionSourceId source;
+    BypassEvent() : valid(false), pdst(0), value(0), rob_idx(0),
+        rob_allocation_id(0), branch_mask(0),
+        source(COMPLETION_SOURCE_LSU_LOAD) {}
+};
+
 struct IssueGrant {
     bool valid, accepted, from_dispatch;
     uint8_t entry_index, port_class;
@@ -78,14 +156,15 @@ struct IssueGrant {
 };
 
 struct RobEntry {
-    bool valid, busy, unsafe, exception;
+    bool valid, busy, unsafe, exception, exception_reported;
     MicroOp uop;
     bool memory_valid, is_load, is_store, signed_load;
     bool memory_request_sent, memory_completed;
     uint64_t memory_address, memory_data;
     uint8_t memory_mask, memory_size;
     uint32_t memory_transaction_id;
-    RobEntry() : valid(false), busy(false), unsafe(false), exception(false), uop(),
+    RobEntry() : valid(false), busy(false), unsafe(false), exception(false),
+        exception_reported(false), uop(),
         memory_valid(false), is_load(false), is_store(false), signed_load(false),
         memory_request_sent(false), memory_completed(false), memory_address(0),
         memory_data(0), memory_mask(0), memory_size(0), memory_transaction_id(0) {}

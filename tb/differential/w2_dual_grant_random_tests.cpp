@@ -138,10 +138,9 @@ RefResult reference_step(const BoomCoreState& before) {
         if (entry.uop.exception) continue;
         if (before.brupdate.valid)
             entry.uop.branch.br_mask &= static_cast<uint8_t>(~before.brupdate.resolve_mask);
-        if (entry.uop.rename.prs1 != 0)
-            entry.prs1_busy = ref_preg_busy(before, entry.uop.rename.prs1);
-        if (entry.uop.rename.prs2 != 0)
-            entry.prs2_busy = ref_preg_busy(before, entry.uop.rename.prs2);
+        entry.prs1_busy = ref_preg_busy(before, entry.uop.rename.prs1);
+        entry.prs2_busy = ref_preg_busy(before, entry.uop.rename.prs2);
+        entry.prs3_busy = ref_preg_busy(before, entry.uop.rename.prs3);
         if (!entry.granted) work.push_back(entry);
     }
 

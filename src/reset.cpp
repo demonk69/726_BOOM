@@ -26,6 +26,9 @@ void boom_core_reset_step(BoomCoreState& state, ResetControllerState& reset_ctrl
         for (int i = 0; i < ISSUE_WIDTH; i++) {
             state.issue.grants[i] = IssueGrant();
             state.issue.port_ready[i] = (i != FP_ISSUE_LANE);
+            state.issue.issued_prs1_data[i] = 0;
+            state.issue.issued_prs2_data[i] = 0;
+            state.issue.issued_prs3_data[i] = 0;
         }
         state.issue.grants_generated = 0;
         state.issue.grants_accepted = 0;
@@ -41,6 +44,7 @@ void boom_core_reset_step(BoomCoreState& state, ResetControllerState& reset_ctrl
         state.issue.execute_acceptance_stalls = 0;
         state.issue.dropped_grants = 0;
         state.rob.commit_valid = false;
+        state.completion = CompletionPendingState();
         for (int i=0; i<EXECUTE_RESULT_LANES; i++) state.execute.alu_results[i]=ExecuteState::AluResult();
         advance_reset(reset_ctrl, RESET_FRONTEND);
         break;
@@ -213,7 +217,7 @@ RESET_ROB_INIT:
         break;
 
     case RESET_OUTPUTS:
-        state.int_rf[0] = 0;
+        boom::prf_force_x0(state);
         state.fp_rf[0] = 0;
         reset_ctrl.phase = RESET_DONE;
         reset_ctrl.index = 0;

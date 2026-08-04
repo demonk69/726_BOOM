@@ -1,0 +1,28 @@
+#include "completion.hpp"
+#include "reset.hpp"
+#include <cstdio>
+
+namespace boom { void execute_module(BoomCoreState&); }
+static int passed, failed;
+static uint8_t observed_peak_bypass, observed_peak_prf;
+#define TEST(n) std::printf("  [W4C bypass] %-42s ... ", n)
+#define CHECK(c,m) do { if (!(c)) { std::printf("FAIL: %s\n",m); failed++; return; } } while (0)
+#define PASS() do { std::printf("PASS\n"); passed++; } while (0)
+
+static void bypass(BoomCoreState& s,int port,uint8_t pdst,uint64_t value){ s.completion.bypass[port].valid=true; s.completion.bypass[port].pdst=pdst; s.completion.bypass[port].value=value; s.rename.int_free_list.busy_table[pdst]=true; }
+static ExecuteState::AluResult run(BoomCoreState& s,uint8_t uopc,uint8_t port,uint8_t p1,uint8_t p2=0,uint8_t fu=FU_ALU){ MicroOp& u=s.issue.issued_uops[port]; u=MicroOp(); u.uopc=uopc; u.iq_type=port==MEM_ISSUE_LANE?IQ_MEM:IQ_ALU; u.fu_code=fu; u.rename.prs1=p1; u.rename.prs2=p2; s.issue.issued_valids[port]=true; boom::execute_module(s); return s.execute.alu_results[port]; }
+static void t01(){TEST("x0 precedes bypass and PRF");BoomCoreState s;bypass(s,0,1,9);boom::prf_force_x0(s);ExecuteState::AluResult r=run(s,1,INT_ISSUE_LANE,0,1);CHECK(r.result==9,"x0 was not zero");PASS();}
+static void t02(){TEST("ALU to ALU");BoomCoreState s;bypass(s,0,4,40);bypass(s,1,5,2);ExecuteState::AluResult r=run(s,1,INT_ISSUE_LANE,4,5);CHECK(r.result==42,"ALU bypass failed");PASS();}
+static void t03(){TEST("ALU to branch");BoomCoreState s;bypass(s,0,4,7);bypass(s,1,5,7);ExecuteState::AluResult r=run(s,31,INT_ISSUE_LANE,4,5);CHECK(r.mispredict,"branch operands not bypassed");PASS();}
+static void t04(){TEST("ALU to MEM address and data");BoomCoreState s;bypass(s,0,4,0x100);bypass(s,1,5,0x55);ExecuteState::AluResult r=run(s,46,MEM_ISSUE_LANE,4,5,FU_MEM);CHECK(r.memory_address==0x100 && r.store_data==0x55,"MEM operands not bypassed");PASS();}
+static void t05(){TEST("load to ALU");BoomCoreState s;bypass(s,0,6,0x20);ExecuteState::AluResult r=run(s,1,INT_ISSUE_LANE,6,0);CHECK(r.result==0x20,"load result not bypassed to ALU");PASS();}
+static void t06(){TEST("load to branch");BoomCoreState s;bypass(s,0,6,3);bypass(s,1,7,4);ExecuteState::AluResult r=run(s,33,INT_ISSUE_LANE,6,7);CHECK(r.mispredict,"load result not bypassed to branch");PASS();}
+static void t07(){TEST("MUL to ALU and ALU to MUL");BoomCoreState s;bypass(s,0,8,6);bypass(s,1,9,7);ExecuteState::AluResult m=run(s,16,INT_ISSUE_LANE,8,9,FU_MUL);CHECK(m.result==42,"MUL input bypass failed");s.execute.alu_results[INT_ISSUE_LANE]=ExecuteState::AluResult();s.issue.issued_valids[INT_ISSUE_LANE]=false;s.completion.bypass[0].value=m.result;ExecuteState::AluResult a=run(s,1,INT_ISSUE_LANE,8,0);CHECK(a.result==42,"MUL result bypass failed");PASS();}
+static void t08(){TEST("same-source duplicate must agree");BoomCoreState s;bypass(s,0,10,1);bypass(s,1,10,1);uint64_t v=0;bool c=false;CHECK(boom::bypass_lookup(s,10,v,c)&&v==1&&!c,"identical hits rejected");s.completion.bypass[1].value=2;CHECK(!boom::bypass_lookup(s,10,v,c)&&c,"conflicting hits accepted");PASS();}
+static void t09(){TEST("invalid and stale completion filtered");BoomCoreState s;s.rob.entries[1].valid=s.rob.entries[1].busy=true;s.rob.entries[1].uop.queue.rob_idx=1;s.rob.entries[1].uop.queue.rob_allocation_id=2;s.execute.alu_results[1].valid=true;s.execute.alu_results[1].uop=s.rob.entries[1].uop;s.execute.alu_results[1].uop.queue.rob_allocation_id=1;s.execute.alu_results[1].uop.rename.pdst=11;s.execute.alu_results[1].uop.rename.dst_rtype=DST_INT;boom::completion_service_execute(s);CHECK(s.completion.bypass_this_cycle==0,"stale value bypassed");PASS();}
+static void t10(){TEST("peak two bypass with dual PRF");BoomCoreState s;for(int i=0;i<2;i++){RobEntry& e=s.rob.entries[i+1];e.valid=e.busy=true;e.uop.queue.rob_idx=i+1;e.uop.queue.rob_allocation_id=i+1;e.uop.rename.pdst=20+i;e.uop.rename.dst_rtype=DST_INT;s.rename.int_free_list.busy_table[20+i]=true;ExecuteState::AluResult& r=s.execute.alu_results[i];r.valid=true;r.uop=e.uop;r.result=20+i;}boom::completion_service_execute(s);observed_peak_bypass=s.completion.peak_bypass;observed_peak_prf=s.completion.peak_prf_writes;CHECK(s.completion.peak_bypass>=2 && s.completion.prf_writes_this_cycle==2,"bypass peak or PRF guard failed");PASS();}
+static void t11(){TEST("reset clears bypass ports");BoomCoreState s;bypass(s,0,3,3);ResetControllerState r;boom_core_reset_step(s,r);CHECK(!s.completion.bypass[0].valid && s.completion.peak_bypass==0,"reset retained bypass");PASS();}
+static void t12(){TEST("load to MEM address and data");BoomCoreState s;bypass(s,0,12,0x240);bypass(s,1,13,0x66);ExecuteState::AluResult r=run(s,46,MEM_ISSUE_LANE,12,13,FU_MEM);CHECK(r.memory_address==0x240&&r.store_data==0x66,"load-to-MEM bypass failed");PASS();}
+static void t13(){TEST("MUL to branch");BoomCoreState s;bypass(s,0,14,8);bypass(s,1,15,8);ExecuteState::AluResult r=run(s,31,INT_ISSUE_LANE,14,15);CHECK(r.mispredict,"MUL-to-branch bypass failed");PASS();}
+static void t14(){TEST("MUL to MEM address and data");BoomCoreState s;bypass(s,0,16,0x280);bypass(s,1,17,0x77);ExecuteState::AluResult r=run(s,46,MEM_ISSUE_LANE,16,17,FU_MEM);CHECK(r.memory_address==0x280&&r.store_data==0x77,"MUL-to-MEM bypass failed");PASS();}
+int main(){std::printf("=== Gate 4.0 W4D Bypass Tests ===\n");t01();t02();t03();t04();t05();t06();t07();t08();t09();t10();t11();t12();t13();t14();std::printf("W4D bypass: %d passed, %d failed\n",passed,failed);std::printf("W4D_BYPASS_METRICS peak_bypass=%u peak_prf_writes=%u conflicts_checked=%u\n",observed_peak_bypass,observed_peak_prf,failed?0:1);return failed?1:0;}

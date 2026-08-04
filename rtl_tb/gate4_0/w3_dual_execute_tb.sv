@@ -28,6 +28,7 @@ module w3_dual_execute_tb;
     reg rob_wrap_start = 0;
     reg [31:0] allocation_base = 0;
     reg branch_kill_start = 0;
+    reg [7:0] branch_control = 8'h3f;
     wire branch_kill_done;
     wire branch_kill_observable_ap_vld;
     wire [63:0] branch_kill_observable;
@@ -40,6 +41,7 @@ module w3_dual_execute_tb;
     );
 
     synth_w3_dual_pending_top dual_pending_dut (
+        .ap_clk(ap_clk), .ap_rst(ap_rst),
         .ap_start(dual_pending_start),
         .allocation_base(allocation_base),
         .observable(dual_pending_observable),
@@ -47,6 +49,7 @@ module w3_dual_execute_tb;
     );
 
     synth_w3_rob_wrap_top rob_wrap_dut (
+        .ap_clk(ap_clk), .ap_rst(ap_rst),
         .ap_start(rob_wrap_start),
         .allocation_base(allocation_base),
         .observable(rob_wrap_observable),
@@ -56,6 +59,7 @@ module w3_dual_execute_tb;
     synth_w3_branch_kill_top branch_kill_dut (
         .ap_clk(ap_clk), .ap_rst(ap_rst), .ap_start(branch_kill_start),
         .allocation_base(allocation_base),
+        .control(branch_control),
         .observable(branch_kill_observable),
         .observable_ap_vld(branch_kill_observable_ap_vld), .ap_done(branch_kill_done)
     );

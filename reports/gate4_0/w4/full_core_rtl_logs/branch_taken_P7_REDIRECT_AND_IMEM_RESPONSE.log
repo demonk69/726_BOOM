@@ -1,0 +1,22 @@
+#-----------------------------------------------------------
+# xsim v2021.2 (64-bit)
+# SW Build 3367213 on Tue Oct 19 02:47:39 MDT 2021
+# IP Build 3369179 on Thu Oct 21 08:25:16 MDT 2021
+# Start of session at: Tue Aug  4 01:06:27 2026
+# Process ID: 186505
+# Current directory: /home/lab_726/boom/hls_boom/reports/gate4_0/w4/full_core_rtl/xsim
+# Command line: xsim -log /home/lab_726/boom/hls_boom/reports/gate4_0/w4/full_core_rtl_logs/branch_taken_P7_REDIRECT_AND_IMEM_RESPONSE.log -mode tcl -source {xsim.dir/gate3_9_snapshot/xsim_script.tcl}
+# Log file: /home/lab_726/boom/hls_boom/reports/gate4_0/w4/full_core_rtl_logs/branch_taken_P7_REDIRECT_AND_IMEM_RESPONSE.log
+# Journal file: /home/lab_726/boom/hls_boom/reports/gate4_0/w4/full_core_rtl/xsim/xsim.jou
+# Running On: 726, OS: Linux, CPU Frequency: 5300.000 MHz, CPU Physical cores: 14, Host memory: 67148 MB
+#-----------------------------------------------------------
+source xsim.dir/gate3_9_snapshot/xsim_script.tcl
+# xsim {gate3_9_snapshot} -testplusarg PROGRAM=/home/lab_726/boom/hls_boom/reports/gate4_0/w4/full_core_rtl/xsim/branch_taken.readmemh -testplusarg PROGRAM_NAME=branch_taken -testplusarg SCENARIO=P7_REDIRECT_AND_IMEM_RESPONSE -testplusarg MAX_CYCLES=50000 -testplusarg TRACE=/home/lab_726/boom/hls_boom/reference/rtl_traces/w4/full_core/branch_taken_P7_REDIRECT_AND_IMEM_RESPONSE.jsonl -autoloadwcfg -runall -onerror quit
+Time resolution is 1 ps
+run -all
+GATE3_8_IMEM program=/home/lab_726/boom/hls_boom/reports/gate4_0/w4/full_core_rtl/xsim/branch_taken.readmemh
+GATE3_8_START scenario=P7_REDIRECT_AND_IMEM_RESPONSE code=47 program=branch_taken max_cycles=50000
+GATE3_8_PASS scenario=P7_REDIRECT_AND_IMEM_RESPONSE cycles=26217 commits=13 resets=1 imem=14 dmem=1 loads=0 stores=1 tohost=0000000000000001
+$finish called at time : 262215 ns : File "/home/lab_726/boom/hls_boom/rtl_tb/boom_core_rtl_tb.sv" Line 282
+exit
+INFO: [Common 17-206] Exiting xsim at Tue Aug  4 01:06:33 2026...

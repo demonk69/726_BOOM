@@ -16,6 +16,7 @@ add_files -cflags "-std=c++11 -I$root/include" "$root/src/issue.cpp"
 add_files -cflags "-std=c++11 -I$root/include" "$root/src/execute.cpp"
 add_files -cflags "-std=c++11 -I$root/include" "$root/src/branch.cpp"
 add_files -cflags "-std=c++11 -I$root/include" "$root/src/lsu.cpp"
+add_files -cflags "-std=c++11 -I$root/include" "$root/src/completion.cpp"
 add_files -cflags "-std=c++11 -I$root/include" "$root/src/commit.cpp"
 add_files -cflags "-std=c++11 -I$root/include" "$root/src/csr.cpp"
 

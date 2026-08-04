@@ -16,6 +16,7 @@ cat > "$OUT" << 'HEAD'
 #include "boom_interfaces.hpp"
 #include "issue.hpp"
 #include "reset.hpp"
+#include "completion.hpp"
 #include <cstdint>
 
 #define UOPC_MERGED_NOP 0
@@ -33,6 +34,9 @@ grep -v '#include' "$BASE/src/decode.cpp" >> "$OUT"
 echo "" >> "$OUT"
 echo "// ==== rename.cpp ====" >> "$OUT"
 grep -v '#include' "$BASE/src/rename.cpp" >> "$OUT"
+echo "" >> "$OUT"
+echo "// ==== completion.cpp ====" >> "$OUT"
+grep -v '#include' "$BASE/src/completion.cpp" >> "$OUT"
 echo "" >> "$OUT"
 echo "// ==== rob.cpp ====" >> "$OUT"
 grep -v '#include' "$BASE/src/rob.cpp" >> "$OUT"

@@ -5,7 +5,8 @@ void synth_w3_diagnostic_top(uint8_t scenario, uint64_t& observable);
 void synth_w3_completion_diagnostic_top(uint8_t scenario, uint64_t& observable);
 void synth_w3_dual_pending_top(uint32_t allocation_base, uint64_t& observable);
 void synth_w3_rob_wrap_top(uint32_t allocation_base, uint64_t& observable);
-void synth_w3_branch_kill_top(uint32_t allocation_base, uint64_t& observable);
+void synth_w3_branch_kill_top(uint32_t allocation_base, uint8_t control,
+                              uint64_t& observable);
 
 struct WrapperCase {
     const char* name;
@@ -31,7 +32,8 @@ int main() {
     int checked = 0;
     for (unsigned i = 0; i < sizeof(cases) / sizeof(cases[0]); i++) {
 #ifdef __VITIS_HLS__
-        if (cases[i].scenario != 2 && cases[i].scenario != 3 && cases[i].scenario != 9)
+        if (cases[i].scenario != 2 && cases[i].scenario != 3 &&
+            cases[i].scenario != 4 && cases[i].scenario != 9)
             continue;
 #else
         if (cases[i].scenario == 7 || cases[i].scenario == 8) {
@@ -45,7 +47,7 @@ int main() {
         else if (cases[i].scenario == 9)
             synth_w3_rob_wrap_top(91, observed);
         else if (cases[i].scenario == 4)
-            synth_w3_branch_kill_top(41, observed);
+            synth_w3_branch_kill_top(41, 0x3f, observed);
         else if (cases[i].scenario == 10)
             synth_w3_completion_diagnostic_top(cases[i].scenario, observed);
         else
@@ -61,7 +63,7 @@ int main() {
         checked++;
     }
 #ifdef __VITIS_HLS__
-    if (checked != 3) return 2;
+    if (checked != 4) return 2;
 #else
     if (checked != 11) return 2;
 #endif

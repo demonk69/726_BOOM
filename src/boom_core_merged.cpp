@@ -7,6 +7,7 @@
 #include "boom_interfaces.hpp"
 #include "issue.hpp"
 #include "reset.hpp"
+#include "completion.hpp"
 #include <cstdint>
 
 #define UOPC_MERGED_NOP 0
@@ -421,10 +422,12 @@ void rename_module(BoomCoreState& state) {
 
         uop.rename.prs1 = mt.map_table[uop.rename.lrs1];
         uop.rename.prs2 = mt.map_table[uop.rename.lrs2];
+        uop.rename.prs3 = mt.map_table[uop.rename.lrs3];
         uop.rename.stale_pdst = mt.map_table[uop.rename.ldst];
 
         uop.rename.prs1_busy = (uop.rename.prs1 != 0) && fl.busy_table[uop.rename.prs1];
         uop.rename.prs2_busy = (uop.rename.prs2 != 0) && fl.busy_table[uop.rename.prs2];
+        uop.rename.prs3_busy = (uop.rename.prs3 != 0) && fl.busy_table[uop.rename.prs3];
 
         if (allocates_dst) {
             uint8_t pdst = 0;
@@ -454,34 +457,871 @@ void rename_module(BoomCoreState& state) {
 
 }
 
-// ==== rob.cpp ====
+// ==== completion.cpp ====
+
 namespace boom {
 
-extern void branch_complete(BoomCoreState& state, const ExecuteState::AluResult& result);
-extern bool lsu_accept_completion(BoomCoreState& state, const ExecuteState::AluResult& result);
+extern void branch_complete_event(BoomCoreState& state, const MicroOp& uop,
+                                  bool mispredict, uint64_t redirect_pc);
+extern bool lsu_accept_completion(BoomCoreState& state, const MicroOp& uop,
+                                  bool is_load, bool is_store, bool signed_load,
+                                  uint64_t memory_address, uint64_t store_data,
+                                  uint8_t memory_mask, uint8_t memory_size);
+extern bool lsu_finish_load_response(BoomCoreState& state, uint8_t rob_idx,
+                                     uint32_t allocation_id,
+                                     uint32_t transaction_id);
 
-static void complete_selected(BoomCoreState& state, ExecuteState::AluResult& result) {
+static bool is_branch(const MicroOp& uop) {
+    return uop.branch.is_br || uop.branch.is_jal || uop.branch.is_jalr;
+}
+
+static uint64_t sign_extend(uint64_t value, uint8_t bits) {
+    if (bits >= 64) return value;
+    uint64_t sign = 1ULL << (bits - 1);
+    return (value ^ sign) - sign;
+}
+
+static uint64_t load_value(uint64_t data, uint64_t address, uint8_t size,
+                           bool signed_load) {
+    uint8_t bytes = (uint8_t)(1u << (size & 0x3));
+    uint8_t bits = (uint8_t)(bytes * 8);
+    uint8_t shift = (uint8_t)((address & 0x7) * 8);
+    uint64_t mask = bits >= 64 ? ~0ULL : ((1ULL << bits) - 1ULL);
+    uint64_t value = (data >> shift) & mask;
+    return signed_load ? sign_extend(value, bits) : value;
+}
+
+void completion_from_execute(const ExecuteState::AluResult& result,
+                             CompletionSourceId source,
+                             CompletionEvent& event) {
 #pragma HLS INLINE
-    uint8_t ridx=result.uop.queue.rob_idx;
-    if (result.uop.branch.is_br || result.uop.branch.is_jal || result.uop.branch.is_jalr)
-        branch_complete(state, result);
-    if (!state.rob.entries[ridx].valid ||
-        state.rob.entries[ridx].uop.queue.rob_allocation_id != result.uop.queue.rob_allocation_id) {
-        result=ExecuteState::AluResult();
+    event.valid = result.valid;
+    event.source = source;
+    event.kind = is_branch(result.uop) ? COMPLETION_BRANCH :
+        (result.is_store ? COMPLETION_STORE :
+         ((result.memory_valid || result.is_load) ? COMPLETION_MEMORY_ADDRESS :
+          COMPLETION_EXECUTE));
+    event.uop = result.uop;
+    event.writes_prf = event.kind != COMPLETION_MEMORY_ADDRESS &&
+                       event.kind != COMPLETION_STORE &&
+                       result.uop.rename.dst_rtype == DST_INT &&
+                       result.uop.rename.pdst != 0;
+    event.control_resolved = false;
+    event.mispredict = result.mispredict;
+    event.redirect_pc = result.redirect_pc;
+    event.value = result.result;
+    event.exception = result.exception;
+    event.exc_cause = result.exc_cause;
+    event.memory_valid = result.memory_valid;
+    event.is_load = result.is_load;
+    event.is_store = result.is_store;
+    event.signed_load = result.signed_load;
+    event.memory_address = result.memory_address;
+    event.store_data = result.store_data;
+    event.memory_mask = result.memory_mask;
+    event.memory_size = result.memory_size;
+    event.transaction_id = 0;
+}
+
+void completion_from_load_response(const BoomCoreState& state,
+                                   const DmemResponse& response,
+                                   CompletionEvent& event) {
+#pragma HLS INLINE
+    event.valid = false;
+    event.kind = COMPLETION_LOAD_RESPONSE;
+    event.source = COMPLETION_SOURCE_LSU_LOAD;
+    event.transaction_id = response.transaction_id;
+    event.writes_prf = false;
+    if (!state.lsu.load_response_pending ||
+        response.transaction_id != state.lsu.pending_load_transaction_id ||
+        state.lsu.pending_load_rob_idx >= ROB_DEPTH) return;
+
+    const RobEntry& entry = state.rob.entries[state.lsu.pending_load_rob_idx];
+    if (!entry.valid || !entry.busy || !entry.is_load ||
+        !entry.memory_request_sent || entry.memory_completed ||
+        entry.uop.queue.rob_allocation_id != state.lsu.pending_load_allocation_id ||
+        entry.memory_transaction_id != response.transaction_id) return;
+    bool owns_ldq = false;
+LOAD_RESPONSE_LDQ_SCAN:
+    for (int i = 0; i < LDQ_DEPTH; i++)
+        if (state.lsu.ldq[i].valid &&
+            state.lsu.ldq[i].rob_idx == state.lsu.pending_load_rob_idx &&
+            state.lsu.ldq[i].rob_allocation_id == state.lsu.pending_load_allocation_id)
+            owns_ldq = true;
+    if (!owns_ldq) return;
+
+    event.valid = true;
+    event.uop = entry.uop;
+    event.mispredict = false;
+    event.redirect_pc = 0;
+    event.exception = response.exception;
+    event.exc_cause = response.exception_cause ? response.exception_cause : response.exc_cause;
+    event.memory_valid = true;
+    event.is_load = true;
+    event.is_store = false;
+    event.signed_load = entry.signed_load;
+    event.memory_address = entry.memory_address;
+    event.store_data = 0;
+    event.memory_size = entry.memory_size;
+    event.memory_mask = entry.memory_mask;
+    uint64_t data = response.read_data ? response.read_data : response.data;
+    event.value = load_value(data, entry.memory_address, entry.memory_size,
+                             entry.signed_load);
+    event.writes_prf = !event.exception && entry.uop.rename.dst_rtype == DST_INT &&
+                       entry.uop.rename.pdst != 0;
+}
+
+bool completion_has_rob_owner(const BoomCoreState& state,
+                              const CompletionEvent& event) {
+    uint8_t index = event.uop.queue.rob_idx;
+    return index < ROB_DEPTH && state.rob.entries[index].valid &&
+        state.rob.entries[index].uop.queue.rob_allocation_id ==
+            event.uop.queue.rob_allocation_id;
+}
+
+bool completion_is_valid(const BoomCoreState& state,
+                         const CompletionEvent& event) {
+    if (!event.valid || event.kind == COMPLETION_NONE ||
+        event.source >= COMPLETION_SOURCE_COUNT ||
+        !completion_has_rob_owner(state, event)) return false;
+
+    const RobEntry& entry = state.rob.entries[event.uop.queue.rob_idx];
+    if (!entry.busy) return false;
+    if (event.kind == COMPLETION_MEMORY_ADDRESS)
+        return !entry.memory_valid && !entry.memory_completed;
+    if (event.kind == COMPLETION_STORE)
+        return !entry.memory_completed;
+    if (event.kind == COMPLETION_LOAD_RESPONSE)
+        return entry.is_load && entry.memory_request_sent &&
+            !entry.memory_completed &&
+            entry.memory_transaction_id == event.transaction_id;
+    return true;
+}
+
+static uint8_t completion_age(const BoomCoreState& state,
+                              const CompletionEvent& event) {
+    return (uint8_t)((event.uop.queue.rob_idx + ROB_DEPTH - state.rob.head) % ROB_DEPTH);
+}
+
+CompletionSourceId select_completion_serial(const BoomCoreState& state,
+                                            const CompletionEvent& mem_event,
+                                            const CompletionEvent& int_event,
+                                            bool& selected_valid) {
+#pragma HLS INLINE
+    bool mem_valid = completion_is_valid(state, mem_event);
+    bool int_valid = completion_is_valid(state, int_event);
+    selected_valid = mem_valid || int_valid;
+    if (!mem_valid) return COMPLETION_SOURCE_INT_EXECUTE;
+    if (!int_valid) return COMPLETION_SOURCE_MEM_EXECUTE;
+    uint8_t mem_age = completion_age(state, mem_event);
+    uint8_t int_age = completion_age(state, int_event);
+    return mem_age <= int_age ? COMPLETION_SOURCE_MEM_EXECUTE :
+                                COMPLETION_SOURCE_INT_EXECUTE;
+}
+
+static bool completion_writes_integer(const CompletionEvent& event) {
+#pragma HLS INLINE
+    bool completes_rob = event.kind != COMPLETION_MEMORY_ADDRESS || !event.is_load;
+    return completes_rob && event.writes_prf &&
+        !(event.kind == COMPLETION_LOAD_RESPONSE && event.exception);
+}
+
+static bool apply_completion_selected(BoomCoreState& state,
+                                      const CompletionEvent& event,
+                                      bool writer_selected,
+                                      bool physical_write) {
+#pragma HLS INLINE
+    if (!completion_is_valid(state, event)) return false;
+    bool completes_rob = event.kind != COMPLETION_MEMORY_ADDRESS || !event.is_load;
+    bool writes_integer = completion_writes_integer(event);
+    if (writes_integer && !writer_selected) return false;
+    uint8_t index = event.uop.queue.rob_idx;
+
+    if (event.kind == COMPLETION_MEMORY_ADDRESS || event.kind == COMPLETION_STORE)
+        if (!lsu_accept_completion(state, event.uop, event.is_load,
+                                   event.is_store, event.signed_load,
+                                   event.memory_address, event.store_data,
+                                   event.memory_mask, event.memory_size)) return false;
+
+    RobEntry& entry = state.rob.entries[index];
+    if (completes_rob) entry.busy = false;
+    if (event.exception) {
+        entry.exception = true;
+        entry.uop.exception = true;
+        entry.uop.exc_cause = event.exc_cause;
+    }
+
+    if (writes_integer && physical_write) {
+        prf_seed(state, event.uop.rename.pdst, event.value);
+    }
+    if (writes_integer) {
+        state.rename.int_free_list.busy_table[event.uop.rename.pdst] = false;
+    }
+    if (event.kind == COMPLETION_LOAD_RESPONSE) {
+        entry.memory_completed = true;
+        if (!event.exception) entry.memory_data = event.value;
+    }
+    return true;
+}
+
+bool apply_completion(BoomCoreState& state, const CompletionEvent& event) {
+#ifndef __SYNTHESIS__
+    CompletionEvent resolved = event;
+    if (event.kind == COMPLETION_BRANCH && !event.control_resolved) {
+        branch_complete_event(state, event.uop, event.mispredict,
+                              event.redirect_pc);
+        if (!completion_has_rob_owner(state, event)) return true;
+        resolved.control_resolved = true;
+    }
+    return apply_completion_selected(state, resolved, true, true);
+#else
+    return apply_completion_selected(state, event, true, true);
+#endif
+}
+
+void build_rob_complete_ports(const BoomCoreState& state,
+                              RobCompleteEvent ports[NUM_ROB_COMPLETE_PORTS]) {
+#pragma HLS INLINE
+    // Fixed HLS completion interface: load response, MEM execute/LSU sideband,
+    // and INT execute. The fourth generated response class is FP-only here.
+    ports[ROB_COMPLETE_PORT_LSU_LOAD] = state.completion.load_response;
+    ports[ROB_COMPLETE_PORT_MEM_EXECUTE] = state.completion.mem_execute;
+    ports[ROB_COMPLETE_PORT_INT_EXECUTE] = state.completion.int_execute;
+    ports[ROB_COMPLETE_PORT_UNSUPPORTED] = RobCompleteEvent();
+}
+
+static bool result_can_forward(const BoomCoreState& state,
+                               const RobCompleteEvent& event) {
+#pragma HLS INLINE
+    return completion_is_valid(state, event) && event.writes_prf &&
+        !event.exception && event.uop.rename.pdst != 0 &&
+        event.uop.rename.pdst < INT_PHYS_REGS;
+}
+
+static bool oldest_precise_exception(
+        const BoomCoreState& state,
+        const RobCompleteEvent ports[NUM_ROB_COMPLETE_PORTS],
+        uint8_t& exception_age) {
+#pragma HLS INLINE
+    bool valid = false;
+    exception_age = ROB_DEPTH;
+    for (int i=0; i<COMPLETION_PENDING_SLOTS; i++) {
+        if (!completion_is_valid(state, ports[i]) || !ports[i].exception)
+            continue;
+        uint8_t age = completion_age(state, ports[i]);
+        if (!valid || age < exception_age) {
+            valid = true;
+            exception_age = age;
+        }
+    }
+    for (int i=0; i<ROB_DEPTH; i++) {
+        const RobEntry& entry = state.rob.entries[i];
+        if (!entry.valid || !entry.exception ||
+            entry.uop.queue.rob_idx != i) continue;
+        uint8_t age = (uint8_t)((i + ROB_DEPTH - state.rob.head) % ROB_DEPTH);
+        if (!valid || age < exception_age) {
+            valid = true;
+            exception_age = age;
+        }
+    }
+    return valid;
+}
+
+static void clear_pending_pdst(BoomCoreState& state, uint8_t pdst) {
+#pragma HLS INLINE
+    if (state.completion.load_response.valid &&
+        state.completion.load_response.uop.rename.pdst == pdst)
+        state.completion.load_response = RobCompleteEvent();
+    if (state.completion.mem_execute.valid &&
+        state.completion.mem_execute.uop.rename.pdst == pdst)
+        state.completion.mem_execute = RobCompleteEvent();
+    if (state.completion.int_execute.valid &&
+        state.completion.int_execute.uop.rename.pdst == pdst)
+        state.completion.int_execute = RobCompleteEvent();
+}
+
+static void raise_writeback_validation_fault(
+        BoomCoreState& state,
+        const RobCompleteEvent ports[NUM_ROB_COMPLETE_PORTS], uint8_t pdst) {
+#pragma HLS INLINE
+    int fault_port = -1;
+    uint8_t fault_age = ROB_DEPTH;
+    uint8_t participants = 0;
+    for (int i=0; i<COMPLETION_PENDING_SLOTS; i++) {
+        if (!completion_is_valid(state, ports[i]) ||
+            !completion_writes_integer(ports[i]) ||
+            ports[i].uop.rename.pdst != pdst) continue;
+        participants++;
+        uint8_t age = completion_age(state, ports[i]);
+        if (fault_port < 0 || age < fault_age ||
+            (age == fault_age && i < fault_port)) {
+            fault_port = i;
+            fault_age = age;
+        }
+    }
+    if (fault_port < 0) return;
+
+    for (int i=0; i<COMPLETION_PENDING_SLOTS; i++) {
+        if (!completion_is_valid(state, ports[i]) ||
+            !completion_writes_integer(ports[i]) ||
+            ports[i].uop.rename.pdst != pdst) continue;
+        RobEntry& entry = state.rob.entries[ports[i].uop.queue.rob_idx];
+        entry.busy = false;
+        entry.exception = true;
+        entry.uop.exception = true;
+        entry.uop.exc_cause = WRITEBACK_VALIDATION_FAULT_CAUSE;
+    }
+    const RobCompleteEvent& fault = ports[fault_port];
+    state.completion.writeback_conflict = true;
+    state.completion.writeback_fault_valid = true;
+    state.completion.writeback_fault_pdst = pdst;
+    state.completion.writeback_fault_rob_idx = fault.uop.queue.rob_idx;
+    state.completion.writeback_fault_allocation_id =
+        fault.uop.queue.rob_allocation_id;
+    state.completion.writeback_fault_cause = WRITEBACK_VALIDATION_FAULT_CAUSE;
+    state.completion.validation_fault_this_cycle = true;
+    state.completion.writeback_conflicts++;
+    state.completion.writeback_validation_faults++;
+    state.completion.writeback_fault_events += participants;
+    state.completion.wakeup_conflicts++;
+    state.completion.bypass_conflicts++;
+    clear_pending_pdst(state, pdst);
+}
+
+void build_wakeup_bypass_ports(BoomCoreState& state) {
+#pragma HLS INLINE
+    RobCompleteEvent ports[NUM_ROB_COMPLETE_PORTS];
+    build_rob_complete_ports(state, ports);
+    for (int i=0; i<NUM_INT_WAKEUP_PORTS; i++)
+        state.completion.wakeups[i] = WakeupEvent();
+    for (int i=0; i<NUM_INT_BYPASS_PORTS; i++)
+        state.completion.bypass[i] = BypassEvent();
+    if (state.completion.validation_fault_this_cycle) {
+        state.completion.wakeups_this_cycle = 0;
+        state.completion.bypass_this_cycle = 0;
         return;
     }
-    if ((result.memory_valid || result.is_load || result.is_store) &&
-        !lsu_accept_completion(state, result)) return;
 
-    RobEntry& entry=state.rob.entries[ridx];
-    if (!result.is_load) entry.busy=false;
-    if (result.exception) { entry.exception=true; entry.uop.exception=true; entry.uop.exc_cause=result.exc_cause; }
-    if (!result.is_load && result.uop.rename.dst_rtype==DST_INT && result.uop.rename.pdst!=0) {
-        state.int_rf[result.uop.rename.pdst]=result.result;
-        state.rename.int_free_list.busy_table[result.uop.rename.pdst]=false;
+    bool usable[COMPLETION_PENDING_SLOTS];
+    for (int i=0; i<COMPLETION_PENDING_SLOTS; i++) {
+        usable[i] = result_can_forward(state, ports[i]);
+        if (!usable[i]) state.completion.wakeup_sent[i] = false;
     }
-    result=ExecuteState::AluResult();
+    uint8_t exception_age = ROB_DEPTH;
+    bool exception_fence = oldest_precise_exception(state, ports, exception_age);
+    if (exception_fence)
+        for (int i=0; i<COMPLETION_PENDING_SLOTS; i++)
+            if (usable[i] && completion_age(state, ports[i]) > exception_age)
+                usable[i] = false;
+    bool precise_valid = false;
+    uint8_t precise_age = ROB_DEPTH;
+    for (int i=0; i<COMPLETION_PENDING_SLOTS; i++) {
+        if (!completion_is_valid(state, ports[i])) continue;
+        bool precise = ports[i].kind == COMPLETION_BRANCH;
+        uint8_t age = completion_age(state, ports[i]);
+        if (precise && (!precise_valid || age < precise_age)) {
+            precise_valid = true;
+            precise_age = age;
+        }
+    }
+    if (precise_valid)
+        for (int i=0; i<COMPLETION_PENDING_SLOTS; i++)
+            if (usable[i] && completion_age(state, ports[i]) > precise_age)
+                usable[i] = false;
+    bool conflict_seen = false;
+    uint8_t conflict_pdst = 0;
+    for (int i=0; i<COMPLETION_PENDING_SLOTS; i++) {
+        if (!usable[i]) continue;
+        for (int j=i+1; j<COMPLETION_PENDING_SLOTS; j++) {
+            if (!usable[j] || ports[i].uop.rename.pdst != ports[j].uop.rename.pdst)
+                continue;
+            if (ports[i].value != ports[j].value) {
+                usable[i] = false;
+                usable[j] = false;
+                conflict_seen = true;
+                conflict_pdst = ports[i].uop.rename.pdst;
+            } else {
+                usable[j] = false;
+                state.completion.wakeup_sent[j] = true;
+                state.completion.writeback_deduplications++;
+            }
+        }
+    }
+    if (conflict_seen) {
+        raise_writeback_validation_fault(state, ports, conflict_pdst);
+        state.completion.wakeups_this_cycle = 0;
+        state.completion.bypass_this_cycle = 0;
+        return;
+    }
+
+    uint8_t output = 0;
+    for (int i=0; i<COMPLETION_PENDING_SLOTS; i++) {
+        if (!usable[i] || output >= NUM_INT_WAKEUP_PORTS) continue;
+        const RobCompleteEvent& event = ports[i];
+        WakeupEvent& wakeup = state.completion.wakeups[output];
+        wakeup.valid = true;
+        wakeup.pdst = event.uop.rename.pdst;
+        wakeup.value = event.value;
+        wakeup.rob_idx = event.uop.queue.rob_idx;
+        wakeup.rob_allocation_id = event.uop.queue.rob_allocation_id;
+        wakeup.branch_mask = event.uop.branch.br_mask;
+        wakeup.source = event.source;
+        BypassEvent& bypass = state.completion.bypass[output];
+        bypass.valid = true;
+        bypass.pdst = wakeup.pdst;
+        bypass.value = wakeup.value;
+        bypass.rob_idx = wakeup.rob_idx;
+        bypass.rob_allocation_id = wakeup.rob_allocation_id;
+        bypass.branch_mask = wakeup.branch_mask;
+        bypass.source = wakeup.source;
+        if (!state.completion.wakeup_sent[i]) {
+            state.completion.total_wakeups++;
+            state.completion.total_bypass++;
+            state.completion.wakeup_sent[i] = true;
+        }
+        output++;
+    }
+    state.completion.wakeups_this_cycle = output;
+    state.completion.bypass_this_cycle = output;
+    if (output > state.completion.peak_wakeups)
+        state.completion.peak_wakeups = output;
+    if (output > state.completion.peak_bypass)
+        state.completion.peak_bypass = output;
 }
+
+bool wakeup_lookup(const BoomCoreState& state, uint8_t prs, uint64_t& value,
+                   bool& conflict) {
+#pragma HLS INLINE
+    conflict = false;
+    if (prs == 0) { value = 0; return true; }
+    bool hit = false;
+    for (int i=0; i<NUM_INT_WAKEUP_PORTS; i++) {
+        const WakeupEvent& event = state.completion.wakeups[i];
+        if (!event.valid || event.pdst != prs) continue;
+        if (hit && value != event.value) conflict = true;
+        if (!hit) value = event.value;
+        hit = true;
+    }
+    return hit && !conflict;
+}
+
+bool bypass_lookup(const BoomCoreState& state, uint8_t prs, uint64_t& value,
+                   bool& conflict) {
+#pragma HLS INLINE
+    conflict = false;
+    if (prs == 0) { value = 0; return true; }
+    bool hit = false;
+    for (int i=0; i<NUM_INT_BYPASS_PORTS; i++) {
+        const BypassEvent& event = state.completion.bypass[i];
+        if (!event.valid || event.pdst != prs) continue;
+        if (hit && value != event.value) conflict = true;
+        if (!hit) value = event.value;
+        hit = true;
+    }
+    return hit && !conflict;
+}
+
+static void capture_execute_events(BoomCoreState& state) {
+#pragma HLS INLINE
+    if (state.completion.mem_execute.valid &&
+        state.execute.alu_results[MEM_ISSUE_LANE].valid &&
+        state.completion.mem_execute.uop.queue.rob_idx ==
+            state.execute.alu_results[MEM_ISSUE_LANE].uop.queue.rob_idx &&
+        state.completion.mem_execute.uop.queue.rob_allocation_id ==
+            state.execute.alu_results[MEM_ISSUE_LANE].uop.queue.rob_allocation_id) {
+        state.completion.dropped_completions++;
+        state.execute.alu_results[MEM_ISSUE_LANE] = ExecuteState::AluResult();
+    }
+    if (!state.completion.mem_execute.valid &&
+        state.execute.alu_results[MEM_ISSUE_LANE].valid) {
+        completion_from_execute(state.execute.alu_results[MEM_ISSUE_LANE],
+                                COMPLETION_SOURCE_MEM_EXECUTE,
+                                state.completion.mem_execute);
+        state.execute.alu_results[MEM_ISSUE_LANE] = ExecuteState::AluResult();
+    }
+    if (state.completion.int_execute.valid &&
+        state.execute.alu_results[INT_ISSUE_LANE].valid &&
+        state.completion.int_execute.uop.queue.rob_idx ==
+            state.execute.alu_results[INT_ISSUE_LANE].uop.queue.rob_idx &&
+        state.completion.int_execute.uop.queue.rob_allocation_id ==
+            state.execute.alu_results[INT_ISSUE_LANE].uop.queue.rob_allocation_id) {
+        state.completion.dropped_completions++;
+        state.execute.alu_results[INT_ISSUE_LANE] = ExecuteState::AluResult();
+    }
+    if (!state.completion.int_execute.valid &&
+        state.execute.alu_results[INT_ISSUE_LANE].valid) {
+        completion_from_execute(state.execute.alu_results[INT_ISSUE_LANE],
+                                COMPLETION_SOURCE_INT_EXECUTE,
+                                state.completion.int_execute);
+        state.execute.alu_results[INT_ISSUE_LANE] = ExecuteState::AluResult();
+    }
+    // Lane 2 is not a canonical integer completion source.
+    state.execute.alu_results[FP_ISSUE_LANE] = ExecuteState::AluResult();
+}
+
+static void discard_invalid_pending(BoomCoreState& state) {
+#pragma HLS INLINE
+    if (state.completion.load_response.valid &&
+        !completion_is_valid(state, state.completion.load_response)) {
+        if (completion_has_rob_owner(state, state.completion.load_response) &&
+            !state.rob.entries[state.completion.load_response.uop.queue.rob_idx].busy)
+            state.completion.dropped_completions++;
+        state.completion.load_response = RobCompleteEvent();
+    }
+    if (state.completion.mem_execute.valid &&
+        !completion_is_valid(state, state.completion.mem_execute)) {
+        if (completion_has_rob_owner(state, state.completion.mem_execute) &&
+            !state.rob.entries[state.completion.mem_execute.uop.queue.rob_idx].busy)
+            state.completion.dropped_completions++;
+        state.completion.mem_execute = RobCompleteEvent();
+    }
+    if (state.completion.int_execute.valid &&
+        !completion_is_valid(state, state.completion.int_execute)) {
+        if (completion_has_rob_owner(state, state.completion.int_execute) &&
+            !state.rob.entries[state.completion.int_execute.uop.queue.rob_idx].busy)
+            state.completion.dropped_completions++;
+        state.completion.int_execute = RobCompleteEvent();
+    }
+}
+
+static void mark_control_resolved(BoomCoreState& state,
+                                  CompletionSourceId source) {
+#pragma HLS INLINE
+    if (source == COMPLETION_SOURCE_LSU_LOAD &&
+        state.completion.load_response.valid)
+        state.completion.load_response.control_resolved = true;
+    else if (source == COMPLETION_SOURCE_MEM_EXECUTE &&
+             state.completion.mem_execute.valid)
+        state.completion.mem_execute.control_resolved = true;
+    else if (source == COMPLETION_SOURCE_INT_EXECUTE &&
+             state.completion.int_execute.valid)
+        state.completion.int_execute.control_resolved = true;
+}
+
+static void resolve_oldest_pending_branch(BoomCoreState& state) {
+#pragma HLS INLINE
+    RobCompleteEvent ports[NUM_ROB_COMPLETE_PORTS];
+    build_rob_complete_ports(state, ports);
+    int selected = -1;
+    uint8_t selected_age = ROB_DEPTH;
+    for (int i=0; i<COMPLETION_PENDING_SLOTS; i++) {
+        if (!completion_is_valid(state, ports[i]) ||
+            ports[i].kind != COMPLETION_BRANCH || ports[i].control_resolved)
+            continue;
+        uint8_t age = completion_age(state, ports[i]);
+        if (selected < 0 || age < selected_age ||
+            (age == selected_age && i < selected)) {
+            selected = i;
+            selected_age = age;
+        }
+    }
+    if (selected < 0) return;
+    branch_complete_event(state, ports[selected].uop, ports[selected].mispredict,
+                          ports[selected].redirect_pc);
+    mark_control_resolved(state, ports[selected].source);
+}
+
+static void validate_surviving_writers(BoomCoreState& state) {
+#pragma HLS INLINE
+    RobCompleteEvent ports[NUM_ROB_COMPLETE_PORTS];
+    build_rob_complete_ports(state, ports);
+    for (int i=0; i<COMPLETION_PENDING_SLOTS; i++) {
+        if (!result_can_forward(state, ports[i])) continue;
+        for (int j=i+1; j<COMPLETION_PENDING_SLOTS; j++) {
+            if (!result_can_forward(state, ports[j]) ||
+                ports[i].uop.rename.pdst != ports[j].uop.rename.pdst ||
+                ports[i].value == ports[j].value) continue;
+            raise_writeback_validation_fault(state, ports,
+                                             ports[i].uop.rename.pdst);
+            return;
+        }
+    }
+}
+
+static bool write_conflicts(const BoomCoreState& state,
+                            const RobCompleteEvent ports[NUM_ROB_COMPLETE_PORTS],
+                            int candidate) {
+#pragma HLS INLINE
+    if (!completion_writes_integer(ports[candidate])) return false;
+    for (int i=0; i<COMPLETION_PENDING_SLOTS; i++) {
+        if (i == candidate || !completion_is_valid(state, ports[i]) ||
+            !completion_writes_integer(ports[i])) continue;
+        if (ports[i].uop.rename.pdst == ports[candidate].uop.rename.pdst &&
+            ports[i].value != ports[candidate].value) return true;
+    }
+    return false;
+}
+
+static void apply_writeback_ports(BoomCoreState& state) {
+#pragma HLS PIPELINE II=1
+    bool duplicate = state.completion.writebacks[0].valid &&
+        state.completion.writebacks[1].valid &&
+        state.completion.writebacks[0].pdst == state.completion.writebacks[1].pdst;
+    if (duplicate) {
+        state.completion.duplicate_writebacks++;
+        state.completion.dropped_writebacks += 2;
+    }
+    uint64_t latest = state.int_rf_latest_bank;
+    if (state.completion.writebacks[0].valid && !duplicate) {
+        uint8_t pdst = state.completion.writebacks[0].pdst;
+        state.int_rf_bank0[pdst] = state.completion.writebacks[0].value;
+        latest &= ~(1ULL << pdst);
+    }
+    if (state.completion.writebacks[1].valid && !duplicate) {
+        uint8_t pdst = state.completion.writebacks[1].pdst;
+        state.int_rf_bank1[pdst] = state.completion.writebacks[1].value;
+        latest |= 1ULL << pdst;
+    }
+    state.int_rf_latest_bank = latest;
+}
+
+static void service_pending(BoomCoreState& state) {
+    uint8_t write_count = 0;
+    bool exception_fence = false;
+    uint8_t exception_age = ROB_DEPTH;
+    for (int i=0; i<NUM_INT_WRITEBACK_PORTS; i++)
+        state.completion.writebacks[i] = WritebackEvent();
+    if (state.completion.validation_fault_this_cycle) return;
+    {
+        RobCompleteEvent initial[NUM_ROB_COMPLETE_PORTS];
+        build_rob_complete_ports(state, initial);
+        exception_fence = oldest_precise_exception(state, initial,
+                                                     exception_age);
+    }
+SERVICE_FIXED_PENDING:
+    for (int service = 0; service < COMPLETION_PENDING_SLOTS; service++) {
+        discard_invalid_pending(state);
+        RobCompleteEvent ports[NUM_ROB_COMPLETE_PORTS];
+        build_rob_complete_ports(state, ports);
+        int selected_port = -1;
+        uint8_t selected_age = ROB_DEPTH;
+        bool precise_valid = false;
+        uint8_t precise_age = ROB_DEPTH;
+        for (int i=0; i<COMPLETION_PENDING_SLOTS; i++) {
+            if (!completion_is_valid(state, ports[i])) continue;
+            uint8_t age = completion_age(state, ports[i]);
+            if (ports[i].kind == COMPLETION_BRANCH &&
+                (!precise_valid || age < precise_age)) {
+                precise_valid = true;
+                precise_age = age;
+            }
+        }
+        bool selected_duplicate = false;
+        for (int i=0; i<COMPLETION_PENDING_SLOTS; i++) {
+            if (!completion_is_valid(state, ports[i])) continue;
+            uint8_t age = completion_age(state, ports[i]);
+            if (exception_fence && age > exception_age) continue;
+            if (precise_valid && age > precise_age) continue;
+            bool duplicate = false;
+            bool write_eligible = true;
+            bool candidate_writes = completion_writes_integer(ports[i]);
+            if (candidate_writes) {
+                if (ports[i].uop.rename.pdst == 0 || write_conflicts(state, ports, i))
+                    write_eligible = false;
+                for (int w=0; w<NUM_INT_WRITEBACK_PORTS; w++)
+                    if (state.completion.writebacks[w].valid &&
+                        state.completion.writebacks[w].pdst == ports[i].uop.rename.pdst &&
+                        state.completion.writebacks[w].value == ports[i].value)
+                        duplicate = true;
+                if (!duplicate && write_count >= NUM_INT_WRITEBACK_PORTS)
+                    write_eligible = false;
+            }
+            if (!write_eligible) continue;
+            if (selected_port < 0 || age < selected_age ||
+                (age == selected_age && i < selected_port)) {
+                selected_port = i;
+                selected_age = age;
+                selected_duplicate = duplicate;
+            }
+        }
+        if (selected_port < 0) break;
+        CompletionSourceId selected = ports[selected_port].source;
+        bool accepted = false;
+        bool writes_prf = completion_writes_integer(ports[selected_port]);
+        bool completes_rob = false;
+        if (selected == COMPLETION_SOURCE_LSU_LOAD) {
+            completes_rob = true;
+            uint8_t rob_idx = ports[0].uop.queue.rob_idx;
+            uint32_t allocation = ports[0].uop.queue.rob_allocation_id;
+            uint32_t transaction = ports[0].transaction_id;
+            accepted = apply_completion_selected(state, ports[0], true, false);
+            if (accepted) {
+                lsu_finish_load_response(state, rob_idx, allocation, transaction);
+                state.completion.load_response = RobCompleteEvent();
+                state.completion.wakeup_sent[ROB_COMPLETE_PORT_LSU_LOAD] = false;
+            }
+        } else if (selected == COMPLETION_SOURCE_MEM_EXECUTE) {
+            completes_rob = ports[1].kind != COMPLETION_MEMORY_ADDRESS ||
+                            !ports[1].is_load;
+            accepted = apply_completion_selected(state, ports[1], true, false);
+            if (accepted) {
+                state.completion.mem_execute = RobCompleteEvent();
+                state.completion.wakeup_sent[ROB_COMPLETE_PORT_MEM_EXECUTE] = false;
+            }
+        } else {
+            completes_rob = ports[2].kind != COMPLETION_MEMORY_ADDRESS ||
+                            !ports[2].is_load;
+            accepted = apply_completion_selected(state, ports[2], true, false);
+            if (accepted) {
+                state.completion.int_execute = RobCompleteEvent();
+                state.completion.wakeup_sent[ROB_COMPLETE_PORT_INT_EXECUTE] = false;
+            }
+        }
+        if (accepted) {
+            state.completion.completion_accepts_this_cycle++;
+            state.completion.total_completion_accepts++;
+            if (completes_rob) {
+                state.completion.rob_completes_this_cycle++;
+                state.completion.total_rob_completes++;
+            }
+            if (writes_prf && !selected_duplicate) {
+                if (write_count >= NUM_INT_WRITEBACK_PORTS) {
+                    state.completion.dropped_writebacks++;
+                } else {
+                    WritebackEvent& wb = state.completion.writebacks[write_count];
+                    wb.valid = true;
+                    wb.pdst = ports[selected_port].uop.rename.pdst;
+                    wb.value = ports[selected_port].value;
+                    wb.rob_idx = ports[selected_port].uop.queue.rob_idx;
+                    wb.rob_allocation_id = ports[selected_port].uop.queue.rob_allocation_id;
+                    wb.source = ports[selected_port].source;
+                    write_count++;
+                    state.completion.prf_writes_this_cycle++;
+                    state.completion.total_prf_writes++;
+                }
+            }
+            if (ports[selected_port].exception ||
+                ports[selected_port].kind == COMPLETION_BRANCH)
+                break;
+        }
+    }
+    apply_writeback_ports(state);
+    if (state.completion.completion_accepts_this_cycle > state.completion.peak_completion_accepts)
+        state.completion.peak_completion_accepts = state.completion.completion_accepts_this_cycle;
+    if (state.completion.rob_completes_this_cycle > state.completion.peak_rob_completes)
+        state.completion.peak_rob_completes = state.completion.rob_completes_this_cycle;
+    if (state.completion.prf_writes_this_cycle > state.completion.peak_prf_writes)
+        state.completion.peak_prf_writes = state.completion.prf_writes_this_cycle;
+}
+
+static void begin_completion_cycle(BoomCoreState& state) {
+    state.completion.completion_accepts_this_cycle = 0;
+    state.completion.rob_completes_this_cycle = 0;
+    state.completion.prf_writes_this_cycle = 0;
+    state.completion.wakeups_this_cycle = 0;
+    state.completion.validation_fault_this_cycle = false;
+    capture_execute_events(state);
+    resolve_oldest_pending_branch(state);
+    validate_surviving_writers(state);
+    build_wakeup_bypass_ports(state);
+    service_pending(state);
+}
+
+#ifdef BOOM_HLS_W4A_COMPLETION_DIAGNOSTIC
+static void record_w4a_completion(BoomCoreState& state,
+                                  const CompletionEvent& event) {
+    bool completes_rob = event.kind != COMPLETION_MEMORY_ADDRESS || !event.is_load;
+    if (completes_rob) {
+        state.completion.rob_completes_this_cycle++;
+        state.completion.total_rob_completes++;
+    }
+    if (event.writes_prf) {
+        state.completion.prf_writes_this_cycle++;
+        state.completion.wakeups_this_cycle++;
+        state.completion.total_prf_writes++;
+        state.completion.total_wakeups++;
+    }
+    if (state.completion.rob_completes_this_cycle > state.completion.peak_rob_completes)
+        state.completion.peak_rob_completes = state.completion.rob_completes_this_cycle;
+    if (state.completion.prf_writes_this_cycle > state.completion.peak_prf_writes)
+        state.completion.peak_prf_writes = state.completion.prf_writes_this_cycle;
+    if (state.completion.wakeups_this_cycle > state.completion.peak_wakeups)
+        state.completion.peak_wakeups = state.completion.wakeups_this_cycle;
+}
+
+static void completion_service_execute_w4a(BoomCoreState& state) {
+    state.completion.rob_completes_this_cycle = 0;
+    state.completion.prf_writes_this_cycle = 0;
+    state.completion.wakeups_this_cycle = 0;
+    CompletionEvent mem_event;
+    CompletionEvent int_event;
+    completion_from_execute(state.execute.alu_results[MEM_ISSUE_LANE],
+                            COMPLETION_SOURCE_MEM_EXECUTE, mem_event);
+    completion_from_execute(state.execute.alu_results[INT_ISSUE_LANE],
+                            COMPLETION_SOURCE_INT_EXECUTE, int_event);
+    if (mem_event.valid && !completion_is_valid(state, mem_event))
+        state.execute.alu_results[MEM_ISSUE_LANE] = ExecuteState::AluResult();
+    if (int_event.valid && !completion_is_valid(state, int_event))
+        state.execute.alu_results[INT_ISSUE_LANE] = ExecuteState::AluResult();
+    bool selected_valid = false;
+    CompletionSourceId selected = select_completion_serial(
+        state, mem_event, int_event, selected_valid);
+    if (!selected_valid) return;
+    if (selected == COMPLETION_SOURCE_MEM_EXECUTE) {
+        if (apply_completion(state, mem_event)) {
+            state.execute.alu_results[MEM_ISSUE_LANE] = ExecuteState::AluResult();
+            record_w4a_completion(state, mem_event);
+        }
+    } else if (apply_completion(state, int_event)) {
+        state.execute.alu_results[INT_ISSUE_LANE] = ExecuteState::AluResult();
+        record_w4a_completion(state, int_event);
+    }
+}
+#endif
+
+void completion_service_execute(BoomCoreState& state) {
+#ifdef BOOM_HLS_W4A_COMPLETION_DIAGNOSTIC
+    completion_service_execute_w4a(state);
+#else
+    state.completion.completion_accepts_this_cycle = 0;
+    state.completion.rob_completes_this_cycle = 0;
+    state.completion.prf_writes_this_cycle = 0;
+    state.completion.wakeups_this_cycle = 0;
+    begin_completion_cycle(state);
+#endif
+}
+
+void completion_service_cycle(BoomCoreState& state, PipeSignals& pipe) {
+#ifndef BOOM_HLS_W4A_COMPLETION_DIAGNOSTIC
+    state.completion.completion_accepts_this_cycle = 0;
+    state.completion.rob_completes_this_cycle = 0;
+    state.completion.prf_writes_this_cycle = 0;
+    state.completion.wakeups_this_cycle = 0;
+    state.completion.validation_fault_this_cycle = false;
+    if (!state.completion.load_response.valid && !pipe.dmem_resp.empty()) {
+        DmemResponse response = pipe.dmem_resp.read();
+        completion_from_load_response(state, response,
+                                      state.completion.load_response);
+    }
+    capture_execute_events(state);
+    resolve_oldest_pending_branch(state);
+    validate_surviving_writers(state);
+    build_wakeup_bypass_ports(state);
+    service_pending(state);
+#else
+    if (pipe.dmem_resp.empty()) {
+        completion_service_execute_w4a(state);
+        return;
+    }
+    state.completion.rob_completes_this_cycle = 0;
+    state.completion.prf_writes_this_cycle = 0;
+    state.completion.wakeups_this_cycle = 0;
+    DmemResponse response = pipe.dmem_resp.read();
+    CompletionEvent event;
+    completion_from_load_response(state, response, event);
+    if (apply_completion(state, event)) {
+        lsu_finish_load_response(state, event.uop.queue.rob_idx,
+                                 event.uop.queue.rob_allocation_id,
+                                 event.transaction_id);
+        record_w4a_completion(state, event);
+    }
+#endif
+}
+
+}
+
+// ==== rob.cpp ====
+namespace boom {
 
 void rob_flush(BoomCoreState& state) {
     RobInternalState& rob = state.rob;
@@ -501,25 +1341,7 @@ void rob_complete(BoomCoreState& state) {
 #ifdef BOOM_HLS_W3_DIAGNOSTIC
 #pragma HLS INLINE
 #endif
-    ExecuteState::AluResult& mem_result=state.execute.alu_results[MEM_ISSUE_LANE];
-    ExecuteState::AluResult& int_result=state.execute.alu_results[INT_ISSUE_LANE];
-    uint8_t mem_idx=mem_result.uop.queue.rob_idx;
-    uint8_t int_idx=int_result.uop.queue.rob_idx;
-    bool mem_valid=mem_result.valid && mem_idx<ROB_DEPTH && state.rob.entries[mem_idx].valid &&
-        state.rob.entries[mem_idx].uop.queue.rob_allocation_id==mem_result.uop.queue.rob_allocation_id;
-    bool int_valid=int_result.valid && int_idx<ROB_DEPTH && state.rob.entries[int_idx].valid &&
-        state.rob.entries[int_idx].uop.queue.rob_allocation_id==int_result.uop.queue.rob_allocation_id;
-    if (mem_result.valid && !mem_valid) mem_result=ExecuteState::AluResult();
-    if (int_result.valid && !int_valid) int_result=ExecuteState::AluResult();
-    if (!mem_valid && !int_valid) return;
-
-    uint8_t mem_age=(uint8_t)((mem_idx+ROB_DEPTH-state.rob.head)%ROB_DEPTH);
-    uint8_t int_age=(uint8_t)((int_idx+ROB_DEPTH-state.rob.head)%ROB_DEPTH);
-    uint8_t selected_lane=(mem_valid && (!int_valid || mem_age<=int_age)) ?
-        MEM_ISSUE_LANE : INT_ISSUE_LANE;
-
-    if (selected_lane==MEM_ISSUE_LANE) complete_selected(state, mem_result);
-    else complete_selected(state, int_result);
+    completion_service_execute(state);
 }
 
 void rob_allocate(BoomCoreState& state) {
@@ -577,6 +1399,17 @@ static bool preg_busy(const BoomCoreState& state, uint8_t preg) {
     return preg != 0 && preg < INT_PHYS_REGS && state.rename.int_free_list.busy_table[preg];
 }
 
+static bool resolve_operand(const BoomCoreState& state, uint8_t prs,
+                            uint64_t& data) {
+#pragma HLS INLINE
+    if (prs == 0) { data = 0; return true; }
+    bool conflict = false;
+    if (boom::wakeup_lookup(state, prs, data, conflict)) return true;
+    if (conflict || preg_busy(state, prs)) return false;
+    data = prf_read(state, prs);
+    return true;
+}
+
 static void compact_iq(IssueQueueState& iq) {
     IssueSlotEntry temp[ISSUE_QUEUE_ALU_DEPTH];
     int w=0;
@@ -597,6 +1430,7 @@ void issue_module(BoomCoreState& state) {
 
     for (int i=0; i<ISSUE_WIDTH; i++) {
         iss.grants[i]=IssueGrant(); iss.issued_valids[i]=false; iss.issued_uops[i]=MicroOp();
+        iss.issued_prs1_data[i]=iss.issued_prs2_data[i]=iss.issued_prs3_data[i]=0;
     }
     iss.grants_generated=0; iss.grants_accepted=0; iss.grants_retained=0; iss.grants_dropped=0;
 
@@ -619,15 +1453,17 @@ void issue_module(BoomCoreState& state) {
             continue;
         }
         if (state.brupdate.valid) s.uop.branch.br_mask &= (uint8_t)~state.brupdate.resolve_mask;
-        if (s.uop.rename.prs1 != 0) s.prs1_busy = preg_busy(state, s.uop.rename.prs1);
-        if (s.uop.rename.prs2 != 0) s.prs2_busy = preg_busy(state, s.uop.rename.prs2);
+        s.prs1_busy = !resolve_operand(state, s.uop.rename.prs1, s.prs1_data);
+        s.prs2_busy = !resolve_operand(state, s.uop.rename.prs2, s.prs2_data);
+        s.prs3_busy = !resolve_operand(state, s.uop.rename.prs3, s.prs3_data);
     }
     compact_iq(iss.alu_iq);
 
     int mem_index=-1, int_index=-1;
     for (int i=0; i<ISSUE_QUEUE_ALU_DEPTH; i++) {
         IssueSlotEntry& s = iss.alu_iq.entries[i];
-        if (!s.valid || !s.request || s.killed || s.prs1_busy || s.prs2_busy || s.pdst_busy) continue;
+        if (!s.valid || !s.request || s.killed || s.prs1_busy || s.prs2_busy ||
+            s.prs3_busy || s.pdst_busy) continue;
         IssuePortClass port=classify_issue_port(s.uop);
         if (port==ISSUE_PORT_MEM && mem_index<0) mem_index=i;
         else if (port==ISSUE_PORT_INT && int_index<0) int_index=i;
@@ -654,8 +1490,10 @@ void issue_module(BoomCoreState& state) {
         dispatch_pending=!dispatch_uop.exception;
         IssuePortClass port=classify_issue_port(dispatch_uop);
         int lane=(port==ISSUE_PORT_MEM) ? MEM_ISSUE_LANE : (port==ISSUE_PORT_INT ? INT_ISSUE_LANE : -1);
-        bool dispatch_ready=!preg_busy(state, dispatch_uop.rename.prs1) &&
-                            !preg_busy(state, dispatch_uop.rename.prs2);
+        uint64_t dispatch_data1=0, dispatch_data2=0, dispatch_data3=0;
+        bool dispatch_ready=resolve_operand(state, dispatch_uop.rename.prs1, dispatch_data1) &&
+                            resolve_operand(state, dispatch_uop.rename.prs2, dispatch_data2) &&
+                            resolve_operand(state, dispatch_uop.rename.prs3, dispatch_data3);
         bool old_grant_can_accept=false;
         for (int old_lane=0; old_lane<INTEGER_ISSUE_PORTS; old_lane++)
             old_grant_can_accept |= iss.grants[old_lane].valid && iss.port_ready[old_lane];
@@ -696,11 +1534,17 @@ void issue_module(BoomCoreState& state) {
         grant.accepted=true; iss.grants_accepted++;
         iss.issued_valids[lane]=true; iss.issued_uops[lane]=grant.uop;
         if (grant.from_dispatch) {
+            resolve_operand(state, grant.uop.rename.prs1, iss.issued_prs1_data[lane]);
+            resolve_operand(state, grant.uop.rename.prs2, iss.issued_prs2_data[lane]);
+            resolve_operand(state, grant.uop.rename.prs3, iss.issued_prs3_data[lane]);
             dispatch_pending=false;
             dispatch_packet = RenameDispatchPacket();
         }
         else {
             IssueSlotEntry& selected=iss.alu_iq.entries[grant.entry_index];
+            iss.issued_prs1_data[lane]=selected.prs1_data;
+            iss.issued_prs2_data[lane]=selected.prs2_data;
+            iss.issued_prs3_data[lane]=selected.prs3_data;
             selected.granted=true; selected.request=false;
         }
     }
@@ -712,8 +1556,11 @@ void issue_module(BoomCoreState& state) {
     if (dispatch_pending && iss.alu_iq.count<ISSUE_QUEUE_ALU_DEPTH) {
         IssueSlotEntry& slot=iss.alu_iq.entries[iss.alu_iq.tail];
         slot.valid=true; slot.request=true; slot.granted=false; slot.killed=false;
-        slot.uop=dispatch_uop; slot.prs1_busy=preg_busy(state, dispatch_uop.rename.prs1);
-        slot.prs2_busy=preg_busy(state, dispatch_uop.rename.prs2); slot.pdst_busy=false;
+        slot.uop=dispatch_uop;
+        slot.prs1_busy=!resolve_operand(state, dispatch_uop.rename.prs1, slot.prs1_data);
+        slot.prs2_busy=!resolve_operand(state, dispatch_uop.rename.prs2, slot.prs2_data);
+        slot.prs3_busy=!resolve_operand(state, dispatch_uop.rename.prs3, slot.prs3_data);
+        slot.pdst_busy=false;
         iss.alu_iq.tail=(iss.alu_iq.tail+1)%ISSUE_QUEUE_ALU_DEPTH; iss.alu_iq.count++;
         dispatch_packet = RenameDispatchPacket();
     }
@@ -727,6 +1574,20 @@ namespace boom {
 
 static uint64_t sext32(int64_t v) { return (uint64_t)((int32_t)(v&0xFFFFFFFF)); }
 static uint8_t mask_for_size(uint8_t size) { return (uint8_t)((size>=3) ? 0xFF : ((1u << (1u << size)) - 1u)); }
+
+static uint64_t execute_operand(const BoomCoreState& state, uint8_t lane,
+                                uint8_t prs, uint64_t issued_data) {
+#pragma HLS INLINE
+    if (prs == 0) return 0;
+    if (prs >= INT_PHYS_REGS) return 0;
+    uint64_t value = 0;
+    bool conflict = false;
+    if (boom::bypass_lookup(state, prs, value, conflict)) return value;
+    if (conflict) return 0;
+    if (!state.rename.int_free_list.busy_table[prs]) return prf_read(state, prs);
+    (void)lane;
+    return issued_data;
+}
 
 void execute_module(BoomCoreState& state) {
 #ifdef BOOM_HLS_W3_DIAGNOSTIC
@@ -745,8 +1606,10 @@ void execute_module(BoomCoreState& state) {
         if (state.brupdate.valid && state.brupdate.mispredict &&
             ((uop.branch.br_mask & state.brupdate.mispredict_mask) != 0)) continue;
 
-        uint64_t rs1 = (uop.rename.prs1!=0) ? state.int_rf[uop.rename.prs1] : 0;
-        uint64_t rs2 = (uop.rename.prs2!=0) ? state.int_rf[uop.rename.prs2] : 0;
+        uint64_t rs1 = execute_operand(state, (uint8_t)i, uop.rename.prs1,
+                                       iss.issued_prs1_data[i]);
+        uint64_t rs2 = execute_operand(state, (uint8_t)i, uop.rename.prs2,
+                                       iss.issued_prs2_data[i]);
         uint64_t pc = uop.debug_pc;
 
         int64_t op1=(int64_t)rs1, op2=(int64_t)rs2;
@@ -872,6 +1735,16 @@ static void clear_resolved_masks_in_state(BoomCoreState& state, uint8_t resolve_
     for (int i=0; i<ISSUE_WIDTH; i++) clear_resolved_mask(state.issue.issued_uops[i], resolve_mask);
     for (int i=0; i<ISSUE_QUEUE_ALU_DEPTH; i++) clear_resolved_mask(state.issue.alu_iq.entries[i].uop, resolve_mask);
     for (int i=0; i<ROB_DEPTH; i++) clear_resolved_mask(state.rob.entries[i].uop, resolve_mask);
+    if (state.completion.load_response.valid)
+        clear_resolved_mask(state.completion.load_response.uop, resolve_mask);
+    if (state.completion.mem_execute.valid)
+        clear_resolved_mask(state.completion.mem_execute.uop, resolve_mask);
+    if (state.completion.int_execute.valid)
+        clear_resolved_mask(state.completion.int_execute.uop, resolve_mask);
+    for (int i=0; i<NUM_INT_WAKEUP_PORTS; i++)
+        state.completion.wakeups[i].branch_mask &= (uint8_t)~resolve_mask;
+    for (int i=0; i<NUM_INT_BYPASS_PORTS; i++)
+        state.completion.bypass[i].branch_mask &= (uint8_t)~resolve_mask;
     for (int i=0; i<LDQ_DEPTH; i++) state.lsu.ldq[i].branch_mask &= (uint8_t)~resolve_mask;
     for (int i=0; i<STQ_DEPTH; i++) state.lsu.stq[i].branch_mask &= (uint8_t)~resolve_mask;
 }
@@ -912,6 +1785,23 @@ static void kill_execute_state(BoomCoreState& state, uint8_t mispredict_mask) {
             state.execute.alu_results[i] = ExecuteState::AluResult();
         }
     }
+    if (state.completion.load_response.valid &&
+        killed_by_mask(state.completion.load_response.uop, mispredict_mask))
+        state.completion.load_response = RobCompleteEvent();
+    if (state.completion.mem_execute.valid &&
+        killed_by_mask(state.completion.mem_execute.uop, mispredict_mask))
+        state.completion.mem_execute = RobCompleteEvent();
+    if (state.completion.int_execute.valid &&
+        killed_by_mask(state.completion.int_execute.uop, mispredict_mask))
+        state.completion.int_execute = RobCompleteEvent();
+    for (int i=0; i<NUM_INT_WAKEUP_PORTS; i++)
+        if (state.completion.wakeups[i].valid &&
+            (state.completion.wakeups[i].branch_mask & mispredict_mask) != 0)
+            state.completion.wakeups[i] = WakeupEvent();
+    for (int i=0; i<NUM_INT_BYPASS_PORTS; i++)
+        if (state.completion.bypass[i].valid &&
+            (state.completion.bypass[i].branch_mask & mispredict_mask) != 0)
+            state.completion.bypass[i] = BypassEvent();
 }
 
 static void kill_lsu_state(BoomCoreState& state, uint8_t mispredict_mask) {
@@ -1061,22 +1951,27 @@ static void release_resolved_branch(BoomCoreState& state, uint8_t tag, uint8_t r
     clear_resolved_masks_in_state(state, resolve_mask);
 }
 
-void branch_complete(BoomCoreState& state, const ExecuteState::AluResult& r) {
-    uint8_t rob_idx = r.uop.queue.rob_idx;
+void branch_complete_event(BoomCoreState& state, const MicroOp& uop,
+                           bool mispredict, uint64_t redirect_pc) {
+    uint8_t rob_idx = uop.queue.rob_idx;
     if (rob_idx >= ROB_DEPTH || !state.rob.entries[rob_idx].valid ||
-        state.rob.entries[rob_idx].uop.queue.rob_allocation_id != r.uop.queue.rob_allocation_id) return;
-    uint8_t tag = r.uop.branch.br_tag;
+        state.rob.entries[rob_idx].uop.queue.rob_allocation_id != uop.queue.rob_allocation_id) return;
+    uint8_t tag = uop.branch.br_tag;
     uint8_t resolve_mask = branch_tag_bit(tag);
     state.brupdate.valid = true;
-    state.brupdate.mispredict = r.mispredict;
-    state.brupdate.jalr_target = r.redirect_pc;
+    state.brupdate.mispredict = mispredict;
+    state.brupdate.jalr_target = redirect_pc;
     state.brupdate.resolve_mask = resolve_mask;
-    state.brupdate.mispredict_mask = r.mispredict ? resolve_mask : 0;
+    state.brupdate.mispredict_mask = mispredict ? resolve_mask : 0;
     state.brupdate.br_tag = tag;
-    state.brupdate.uop = r.uop;
-    state.brupdate.taken = r.mispredict;
-    if (r.mispredict) recover_mispredict(state, state.brupdate);
+    state.brupdate.uop = uop;
+    state.brupdate.taken = mispredict;
+    if (mispredict) recover_mispredict(state, state.brupdate);
     else release_resolved_branch(state, tag, resolve_mask);
+}
+
+void branch_complete(BoomCoreState& state, const ExecuteState::AluResult& r) {
+    branch_complete_event(state, r.uop, r.mispredict, r.redirect_pc);
 }
 
 void branch_module(BoomCoreState& state) {
@@ -1096,22 +1991,9 @@ void branch_module(BoomCoreState& state) {
 
 namespace boom {
 
-static uint8_t bytes_for_size(uint8_t size) { return (uint8_t)(1u << (size & 0x3)); }
-static void enqueue_load(BoomCoreState& state, const ExecuteState::AluResult& result, RobEntry& entry);
-
-static uint64_t sign_extend(uint64_t value, uint8_t bits) {
-    if (bits >= 64) return value;
-    uint64_t mask = 1ULL << (bits - 1);
-    return (value ^ mask) - mask;
-}
-
-static uint64_t load_value(uint64_t data, uint64_t address, uint8_t size, bool signed_load) {
-    uint8_t shift = (uint8_t)((address & 0x7) * 8);
-    uint8_t bits = (uint8_t)(bytes_for_size(size) * 8);
-    uint64_t mask = (bits >= 64) ? ~0ULL : ((1ULL << bits) - 1ULL);
-    uint64_t value = (data >> shift) & mask;
-    return signed_load ? sign_extend(value, bits) : value;
-}
+static void enqueue_load(BoomCoreState& state, const MicroOp& uop,
+                         bool signed_load, uint64_t address,
+                         uint8_t mask, uint8_t size, RobEntry& entry);
 
 static bool older_store_in_rob(const BoomCoreState& state, uint8_t rob_idx) {
     const RobInternalState& rob = state.rob;
@@ -1166,45 +2048,51 @@ static bool try_issue_load(BoomCoreState& state, PipeSignals& pipe, uint8_t rob_
     return true;
 }
 
-static void enqueue_store(BoomCoreState& state, const ExecuteState::AluResult& result, RobEntry& entry) {
+static void enqueue_store(BoomCoreState& state, const MicroOp& uop,
+                          uint64_t address, uint64_t data,
+                          uint8_t mask, uint8_t size, RobEntry& entry) {
     entry.memory_valid = true;
     entry.is_store = true;
     entry.is_load = false;
     entry.memory_completed = true;
-    entry.memory_address = result.memory_address;
-    entry.memory_data = result.store_data;
-    entry.memory_mask = result.memory_mask;
-    entry.memory_size = result.memory_size;
-    entry.busy = false;
+    entry.memory_address = address;
+    entry.memory_data = data;
+    entry.memory_mask = mask;
+    entry.memory_size = size;
 
     LsuState& lsu = state.lsu;
     if (lsu.stq_count < STQ_DEPTH) {
         StoreQueueEntry& stq = lsu.stq[lsu.stq_tail];
         stq.valid = true;
-        stq.rob_idx = result.uop.queue.rob_idx;
-        stq.rob_allocation_id = result.uop.queue.rob_allocation_id;
+        stq.rob_idx = uop.queue.rob_idx;
+        stq.rob_allocation_id = uop.queue.rob_allocation_id;
         stq.address_valid = true;
-        stq.address = result.memory_address;
+        stq.address = address;
         stq.data_valid = true;
-        stq.data = result.store_data;
-        stq.mask = result.memory_mask;
-        stq.size = result.memory_size;
-        stq.branch_mask = result.uop.branch.br_mask;
+        stq.data = data;
+        stq.mask = mask;
+        stq.size = size;
+        stq.branch_mask = uop.branch.br_mask;
         lsu.stq_tail = (lsu.stq_tail + 1) % STQ_DEPTH;
         lsu.stq_count++;
     }
 }
 
-bool lsu_accept_completion(BoomCoreState& state, const ExecuteState::AluResult& result) {
-    uint8_t rob_idx=result.uop.queue.rob_idx;
+bool lsu_accept_completion(BoomCoreState& state, const MicroOp& uop,
+                           bool is_load, bool is_store, bool signed_load,
+                           uint64_t memory_address, uint64_t store_data,
+                           uint8_t memory_mask, uint8_t memory_size) {
+    uint8_t rob_idx=uop.queue.rob_idx;
     if (rob_idx>=ROB_DEPTH || !state.rob.entries[rob_idx].valid ||
-        state.rob.entries[rob_idx].uop.queue.rob_allocation_id != result.uop.queue.rob_allocation_id) return true;
-    if (result.is_store) {
+        state.rob.entries[rob_idx].uop.queue.rob_allocation_id != uop.queue.rob_allocation_id) return true;
+    if (is_store) {
         if (state.lsu.stq_count>=STQ_DEPTH) return false;
-        enqueue_store(state, result, state.rob.entries[rob_idx]);
-    } else if (result.is_load) {
+        enqueue_store(state, uop, memory_address, store_data, memory_mask,
+                      memory_size, state.rob.entries[rob_idx]);
+    } else if (is_load) {
         if (state.lsu.ldq_count>=LDQ_DEPTH) return false;
-        enqueue_load(state, result, state.rob.entries[rob_idx]);
+        enqueue_load(state, uop, signed_load, memory_address, memory_mask,
+                     memory_size, state.rob.entries[rob_idx]);
     }
     return true;
 }
@@ -1220,6 +2108,28 @@ static void reclaim_ldq(BoomCoreState& state, uint8_t rob_idx, uint32_t allocati
     state.lsu.ldq_head=0; state.lsu.ldq_tail=(uint8_t)(count%LDQ_DEPTH); state.lsu.ldq_count=(uint8_t)count;
 }
 
+bool lsu_finish_load_response(BoomCoreState& state, uint8_t rob_idx,
+                              uint32_t allocation_id,
+                              uint32_t transaction_id) {
+    if (!state.lsu.load_response_pending ||
+        state.lsu.pending_load_transaction_id != transaction_id ||
+        state.lsu.pending_load_rob_idx != rob_idx ||
+        state.lsu.pending_load_allocation_id != allocation_id) return false;
+    bool owns_ldq = false;
+LSU_RESPONSE_OWNERSHIP_SCAN:
+    for (int i = 0; i < LDQ_DEPTH; i++)
+        if (state.lsu.ldq[i].valid && state.lsu.ldq[i].rob_idx == rob_idx &&
+            state.lsu.ldq[i].rob_allocation_id == allocation_id)
+            owns_ldq = true;
+    if (!owns_ldq) return false;
+    state.lsu.load_response_pending = false;
+    state.lsu.pending_load_transaction_id = 0;
+    state.lsu.pending_load_rob_idx = 0;
+    state.lsu.pending_load_allocation_id = 0;
+    reclaim_ldq(state, rob_idx, allocation_id);
+    return true;
+}
+
 void lsu_reclaim_store(BoomCoreState& state, uint8_t rob_idx, uint32_t allocation_id) {
     StoreQueueEntry compacted[STQ_DEPTH];
     int count=0;
@@ -1231,25 +2141,27 @@ void lsu_reclaim_store(BoomCoreState& state, uint8_t rob_idx, uint32_t allocatio
     state.lsu.stq_head=0; state.lsu.stq_tail=(uint8_t)(count%STQ_DEPTH); state.lsu.stq_count=(uint8_t)count;
 }
 
-static void enqueue_load(BoomCoreState& state, const ExecuteState::AluResult& result, RobEntry& entry) {
+static void enqueue_load(BoomCoreState& state, const MicroOp& uop,
+                         bool signed_load, uint64_t address,
+                         uint8_t mask, uint8_t size, RobEntry& entry) {
     entry.memory_valid = true;
     entry.is_load = true;
     entry.is_store = false;
-    entry.signed_load = result.signed_load;
-    entry.memory_address = result.memory_address;
-    entry.memory_mask = result.memory_mask;
-    entry.memory_size = result.memory_size;
+    entry.signed_load = signed_load;
+    entry.memory_address = address;
+    entry.memory_mask = mask;
+    entry.memory_size = size;
 
     LsuState& lsu = state.lsu;
     if (lsu.ldq_count < LDQ_DEPTH) {
         LoadQueueEntry& ldq = lsu.ldq[lsu.ldq_tail];
         ldq.valid = true;
-        ldq.rob_idx = result.uop.queue.rob_idx;
-        ldq.rob_allocation_id = result.uop.queue.rob_allocation_id;
-        ldq.address = result.memory_address;
-        ldq.size = result.memory_size;
-        ldq.signed_load = result.signed_load;
-        ldq.branch_mask = result.uop.branch.br_mask;
+        ldq.rob_idx = uop.queue.rob_idx;
+        ldq.rob_allocation_id = uop.queue.rob_allocation_id;
+        ldq.address = address;
+        ldq.size = size;
+        ldq.signed_load = signed_load;
+        ldq.branch_mask = uop.branch.br_mask;
         lsu.ldq_tail = (lsu.ldq_tail + 1) % LDQ_DEPTH;
         lsu.ldq_count++;
     }
@@ -1259,42 +2171,6 @@ void lsu_module(BoomCoreState& state, PipeSignals& pipe) {
     if (state.global_flush) {
         clear_lsu_queues(state.lsu);
         return;
-    }
-
-    if (!pipe.dmem_resp.empty()) {
-        DmemResponse resp = pipe.dmem_resp.read();
-        uint32_t resp_tx = resp.transaction_id;
-        if (state.lsu.load_response_pending && resp_tx == state.lsu.pending_load_transaction_id) {
-            uint8_t rob_idx = state.lsu.pending_load_rob_idx;
-            uint32_t allocation_id = state.lsu.pending_load_allocation_id;
-            if (rob_idx < ROB_DEPTH) {
-                RobEntry& entry = state.rob.entries[rob_idx];
-                if (entry.valid && entry.is_load && entry.memory_request_sent &&
-                    entry.uop.queue.rob_allocation_id == allocation_id &&
-                    entry.memory_transaction_id == resp_tx) {
-                    if (resp.exception) {
-                        entry.exception = true;
-                        entry.uop.exception = true;
-                        entry.uop.exc_cause = resp.exception_cause ? resp.exception_cause : resp.exc_cause;
-                    } else {
-                        uint64_t data = resp.read_data ? resp.read_data : resp.data;
-                        uint64_t value = load_value(data, entry.memory_address, entry.memory_size, entry.signed_load);
-                        if (entry.uop.rename.pdst != 0) {
-                            state.int_rf[entry.uop.rename.pdst] = value;
-                            state.rename.int_free_list.busy_table[entry.uop.rename.pdst] = false;
-                        }
-                        entry.memory_data = value;
-                    }
-                    entry.memory_completed = true;
-                    entry.busy = false;
-                }
-            }
-            state.lsu.load_response_pending = false;
-            state.lsu.pending_load_transaction_id = 0;
-            state.lsu.pending_load_rob_idx = 0;
-            state.lsu.pending_load_allocation_id = 0;
-            reclaim_ldq(state, rob_idx, allocation_id);
-        }
     }
 
 LSU_LOAD_ISSUE_SCAN:
@@ -1349,11 +2225,28 @@ void rob_commit_module(BoomCoreState& state, PipeSignals& pipe) {
         if (he.exception) {
             if (uop.uopc == 65) {
                 uint8_t a0_pdst = state.rename.int_map_table.map_table[10];
-                uint64_t a0_val = (a0_pdst!=0) ? state.int_rf[a0_pdst] : 0;
+                uint64_t a0_val = prf_read(state, a0_pdst);
                 if (a0_val==0) state.io_success = true;
                 else state.io_trap = true;
                 he.valid=false; rob.head=(rob.head+1)%ROB_DEPTH; rob.maybe_full=false;
-            } else { rob.state = ROB_EXCEPTION; state.io_trap = true; }
+            } else {
+                if (!he.exception_reported) {
+                    if (pipe.commit_trace.full()) return;
+                    CommitEntry ce;
+                    ce.valid = true;
+                    ce.pc = uop.debug_pc;
+                    ce.inst = uop.inst;
+                    ce.priv = state.csr.priv;
+                    ce.exception = true;
+                    ce.exc_cause = uop.exc_cause;
+                    pipe.commit_trace.write(ce);
+                    rob.last_commit = ce;
+                    rob.commit_valid = true;
+                    he.exception_reported = true;
+                }
+                rob.state = ROB_EXCEPTION;
+                state.io_trap = true;
+            }
         } else {
             if ((uop.ctrl.is_load || he.is_load) && !he.memory_completed) return;
             if (pipe.commit_trace.full()) return;
@@ -1387,7 +2280,7 @@ void rob_commit_module(BoomCoreState& state, PipeSignals& pipe) {
             ce.rd_valid=(uop.rename.dst_rtype==DST_INT && uop.rename.pdst!=0);
             ce.rd=uop.rename.ldst; ce.priv=state.csr.priv;
             ce.exception=false; ce.branch_mispredict=false;
-            ce.rd_value=ce.rd_valid ? state.int_rf[uop.rename.pdst] : 0;
+            ce.rd_value=ce.rd_valid ? prf_read(state, uop.rename.pdst) : 0;
             ce.memory_valid = he.memory_valid;
             ce.is_store = he.is_store;
             ce.memory_address = he.memory_address;
@@ -1446,8 +2339,8 @@ void boom_core_step(BoomCoreState& state, PipeSignals& pipe) {
     state.brupdate.valid = state.brupdate.mispredict = false;
 
     boom::csr_module(state);
-    // A load response owns the single writeback opportunity for this cycle.
-    if (pipe.dmem_resp.empty()) boom::rob_complete(state);
+    // A queued load response retains W3 ownership of the serial completion path.
+    boom::completion_service_cycle(state, pipe);
     boom::lsu_module(state, pipe);
     boom::rob_commit_module(state, pipe);
     boom::frontend_module(state, pipe);
@@ -1489,6 +2382,9 @@ void boom_core_reset_step(BoomCoreState& state, ResetControllerState& reset_ctrl
         for (int i = 0; i < ISSUE_WIDTH; i++) {
             state.issue.grants[i] = IssueGrant();
             state.issue.port_ready[i] = (i != FP_ISSUE_LANE);
+            state.issue.issued_prs1_data[i] = 0;
+            state.issue.issued_prs2_data[i] = 0;
+            state.issue.issued_prs3_data[i] = 0;
         }
         state.issue.grants_generated = 0;
         state.issue.grants_accepted = 0;
@@ -1504,6 +2400,7 @@ void boom_core_reset_step(BoomCoreState& state, ResetControllerState& reset_ctrl
         state.issue.execute_acceptance_stalls = 0;
         state.issue.dropped_grants = 0;
         state.rob.commit_valid = false;
+        state.completion = CompletionPendingState();
         for (int i=0; i<EXECUTE_RESULT_LANES; i++) state.execute.alu_results[i]=ExecuteState::AluResult();
         advance_reset(reset_ctrl, RESET_FRONTEND);
         break;
@@ -1676,7 +2573,7 @@ RESET_ROB_INIT:
         break;
 
     case RESET_OUTPUTS:
-        state.int_rf[0] = 0;
+        boom::prf_force_x0(state);
         state.fp_rf[0] = 0;
         reset_ctrl.phase = RESET_DONE;
         reset_ctrl.index = 0;
@@ -1789,12 +2686,12 @@ void boom_core_top(hls::stream<ImemRequest>&  imem_req_out,
                    hls::stream<DmemRequest>&  dmem_req_out,
                    hls::stream<DmemResponse>& dmem_resp_in,
                    hls::stream<CommitEntry>&  commit_trace_out,
-                   bool& io_success,
-                   bool& io_halted,
-                   bool& io_trap,
-                   bool& io_cycle_valid,
-                   uint64_t& io_cycle,
-                   uint64_t& io_instret) {
+                    volatile bool* io_success,
+                    volatile bool* io_halted,
+                    volatile bool* io_trap,
+                    volatile bool* io_cycle_valid,
+                    volatile uint64_t* io_cycle,
+                    volatile uint64_t* io_instret) {
 #pragma HLS INTERFACE ap_ctrl_none port=return
 #pragma HLS INTERFACE axis port=imem_req_out
 #pragma HLS INTERFACE axis port=imem_resp_in
@@ -1813,6 +2710,8 @@ void boom_core_top(hls::stream<ImemRequest>&  imem_req_out,
 #pragma HLS RESET variable=reset_ctrl
 
     PipeSignals pipe;
+    bool success, halted, trap, cycle_valid;
+    uint64_t cycle, instret;
 
 CORE_CYCLE:
     while (true) {
@@ -1822,8 +2721,14 @@ CORE_CYCLE:
         boom_core_cycle_or_reset(state, reset_ctrl, pipe,
                                  imem_req_out, imem_resp_in,
                                  dmem_req_out, dmem_resp_in, commit_trace_out,
-                                 io_success, io_halted, io_trap,
-                                 io_cycle_valid, io_cycle, io_instret);
+                                 success, halted, trap,
+                                 cycle_valid, cycle, instret);
+        *io_success = success;
+        *io_halted = halted;
+        *io_trap = trap;
+        *io_cycle_valid = cycle_valid;
+        *io_cycle = cycle;
+        *io_instret = instret;
     }
 }
 
@@ -1832,12 +2737,12 @@ void boom_core_step_top(hls::stream<ImemRequest>&  imem_req_out,
                         hls::stream<DmemRequest>&  dmem_req_out,
                         hls::stream<DmemResponse>& dmem_resp_in,
                         hls::stream<CommitEntry>&  commit_trace_out,
-                        bool& io_success,
-                        bool& io_halted,
-                        bool& io_trap,
-                        bool& io_cycle_valid,
-                        uint64_t& io_cycle,
-                        uint64_t& io_instret) {
+                         volatile bool* io_success,
+                         volatile bool* io_halted,
+                         volatile bool* io_trap,
+                         volatile bool* io_cycle_valid,
+                         volatile uint64_t* io_cycle,
+                         volatile uint64_t* io_instret) {
 #pragma HLS INTERFACE ap_ctrl_none port=return
 #pragma HLS INTERFACE axis port=imem_req_out
 #pragma HLS INTERFACE axis port=imem_resp_in
@@ -1856,11 +2761,19 @@ void boom_core_step_top(hls::stream<ImemRequest>&  imem_req_out,
 #pragma HLS RESET variable=reset_ctrl
 
     PipeSignals pipe;
+    bool success, halted, trap, cycle_valid;
+    uint64_t cycle, instret;
     boom_core_cycle_or_reset(state, reset_ctrl, pipe,
                              imem_req_out, imem_resp_in,
                              dmem_req_out, dmem_resp_in, commit_trace_out,
-                             io_success, io_halted, io_trap,
-                             io_cycle_valid, io_cycle, io_instret);
+                             success, halted, trap,
+                             cycle_valid, cycle, instret);
+    *io_success = success;
+    *io_halted = halted;
+    *io_trap = trap;
+    *io_cycle_valid = cycle_valid;
+    *io_cycle = cycle;
+    *io_instret = instret;
 }
 
 #define BOOM_NCYCLE_INTERFACES() \
@@ -1883,20 +2796,25 @@ void NAME(hls::stream<ImemRequest>& imem_req_out, \
           hls::stream<DmemRequest>& dmem_req_out, \
           hls::stream<DmemResponse>& dmem_resp_in, \
           hls::stream<CommitEntry>& commit_trace_out, \
-          bool& io_success, bool& io_halted, bool& io_trap, \
-          bool& io_cycle_valid, uint64_t& io_cycle, uint64_t& io_instret) { \
+          volatile bool* io_success, volatile bool* io_halted, volatile bool* io_trap, \
+          volatile bool* io_cycle_valid, volatile uint64_t* io_cycle, volatile uint64_t* io_instret) { \
     BOOM_NCYCLE_INTERFACES(); \
     static BoomCoreState state; \
     static ResetControllerState reset_ctrl; \
     _Pragma("HLS RESET variable=reset_ctrl") \
     PipeSignals pipe; \
+    bool success, halted, trap, cycle_valid; \
+    uint64_t cycle_value, instret_value; \
     for (int cycle = 0; cycle < CYCLES; cycle++) { \
         boom_core_cycle_or_reset(state, reset_ctrl, pipe, \
                                  imem_req_out, imem_resp_in, \
                                  dmem_req_out, dmem_resp_in, commit_trace_out, \
-                                 io_success, io_halted, io_trap, \
-                                 io_cycle_valid, io_cycle, io_instret); \
+                                 success, halted, trap, \
+                                 cycle_valid, cycle_value, instret_value); \
     } \
+    *io_success = success; *io_halted = halted; *io_trap = trap; \
+    *io_cycle_valid = cycle_valid; *io_cycle = cycle_value; \
+    *io_instret = instret_value; \
 }
 
 DEFINE_BOOM_NCYCLE_TOP(boom_core_ncycle_n1_top, 1)
@@ -1920,6 +2838,8 @@ extern void rob_complete(BoomCoreState& state);
 extern void issue_module(BoomCoreState& state);
 extern void execute_module(BoomCoreState& state);
 extern void branch_module(BoomCoreState& state);
+extern void branch_complete_event(BoomCoreState& state, const MicroOp& uop,
+                                  bool mispredict, uint64_t redirect_pc);
 extern void lsu_module(BoomCoreState& state, PipeSignals& pipe);
 extern void rob_commit_module(BoomCoreState& state, PipeSignals& pipe);
 }
@@ -2028,10 +2948,49 @@ void synth_execute_top(uint8_t seed_uopc, uint64_t seed_rs1, uint64_t seed_rs2, 
     state.issue.issued_uops[INT_ISSUE_LANE].rename.prs2 = 2;
     state.issue.issued_uops[INT_ISSUE_LANE].rename.pdst = 3;
     state.issue.issued_uops[INT_ISSUE_LANE].rename.dst_rtype = DST_INT;
-    state.int_rf[1] = seed_rs1;
-    state.int_rf[2] = seed_rs2;
+    boom::prf_seed(state, 1, seed_rs1);
+    boom::prf_seed(state, 2, seed_rs2);
     boom::execute_module(state);
     observable = state.execute.alu_results[INT_ISSUE_LANE].result;
+}
+
+void synth_completion_top(uint8_t seed_sources, uint8_t seed_head,
+                           uint64_t seed_value, uint64_t& observable) {
+    static BoomCoreState state;
+    state.rob.head = (uint8_t)(seed_head % ROB_DEPTH);
+    uint8_t mem_idx = (uint8_t)((state.rob.head + 1) % ROB_DEPTH);
+    uint8_t int_idx = state.rob.head;
+    state.rob.entries[mem_idx].valid = true;
+    state.rob.entries[mem_idx].busy = true;
+    state.rob.entries[mem_idx].uop.queue.rob_idx = mem_idx;
+    state.rob.entries[mem_idx].uop.queue.rob_allocation_id = 1;
+    state.rob.entries[int_idx].valid = true;
+    state.rob.entries[int_idx].busy = true;
+    state.rob.entries[int_idx].uop.queue.rob_idx = int_idx;
+    state.rob.entries[int_idx].uop.queue.rob_allocation_id = 2;
+
+    if (seed_sources & 1) {
+        ExecuteState::AluResult& result = state.execute.alu_results[MEM_ISSUE_LANE];
+        result.valid = true;
+        result.uop = state.rob.entries[mem_idx].uop;
+        result.uop.rename.pdst = 3;
+        result.uop.rename.dst_rtype = DST_INT;
+        result.result = seed_value;
+    }
+    if (seed_sources & 2) {
+        ExecuteState::AluResult& result = state.execute.alu_results[INT_ISSUE_LANE];
+        result.valid = true;
+        result.uop = state.rob.entries[int_idx].uop;
+        result.uop.rename.pdst = 4;
+        result.uop.rename.dst_rtype = DST_INT;
+        result.result = seed_value + 1;
+    }
+    boom::completion_service_execute(state);
+    observable = state.execute.alu_results[MEM_ISSUE_LANE].valid;
+    observable |= (uint64_t)state.execute.alu_results[INT_ISSUE_LANE].valid << 1;
+    observable |= (uint64_t)state.rob.entries[mem_idx].busy << 2;
+    observable |= (uint64_t)state.rob.entries[int_idx].busy << 3;
+    observable |= (boom::prf_read(state, 3) ^ boom::prf_read(state, 4)) << 8;
 }
 
 void synth_lsu_top(hls::stream<DmemRequest>& dmem_req_out,
@@ -2564,21 +3523,430 @@ void synth_w3_rob_wrap_top(uint32_t allocation_base, uint64_t& observable) {
     observable = w3_pack_observable(state, 31, 0, false, false);
 }
 
-void synth_w3_branch_kill_top(uint32_t allocation_base, uint64_t& observable) {
+void synth_w3_branch_kill_top(uint32_t allocation_base, uint8_t control,
+                              uint64_t& observable) {
     BoomCoreState state;
     w3_seed_rob(state, 1, allocation_base);
     w3_seed_rob(state, 2, allocation_base + 1);
     state.rob.head = 1;
     state.rob.tail = 3;
-    state.branch_state.active_mask = 1;
-    state.branch_state.tag_valid[0] = true;
-    state.branch_state.snapshot_valid[0] = true;
+    state.branch_state.active_mask = (control & 1) ? 1 : 0;
+    state.branch_state.tag_valid[0] = (control & 2) != 0;
+    state.branch_state.snapshot_valid[0] = (control & 4) != 0;
     state.execute.alu_results[MEM_ISSUE_LANE] = w3_result(2, allocation_base + 1);
-    state.execute.alu_results[MEM_ISSUE_LANE].uop.branch.br_mask = 1;
+    state.execute.alu_results[MEM_ISSUE_LANE].uop.branch.br_mask =
+        (control & 8) ? 1 : 0;
     state.execute.alu_results[INT_ISSUE_LANE] = w3_result(1, allocation_base);
-    state.execute.alu_results[INT_ISSUE_LANE].uop.branch.is_br = true;
+    state.execute.alu_results[INT_ISSUE_LANE].uop.branch.is_br =
+        (control & 16) != 0;
     state.execute.alu_results[INT_ISSUE_LANE].uop.branch.br_tag = 0;
-    state.execute.alu_results[INT_ISSUE_LANE].mispredict = true;
+    state.execute.alu_results[INT_ISSUE_LANE].mispredict =
+        (control & 32) != 0;
+    if ((control & 16) != 0) {
+        boom::branch_complete_event(
+            state, state.execute.alu_results[INT_ISSUE_LANE].uop,
+            (control & 32) != 0, 0);
+        // Production resolves control before completion service. Avoid asking
+        // the legacy W3 serial service to resolve the same branch again.
+        state.execute.alu_results[INT_ISSUE_LANE].uop.branch.is_br = false;
+        state.execute.alu_results[INT_ISSUE_LANE].mispredict = false;
+    }
     boom::rob_complete(state);
     observable = w3_pack_observable(state, 1, 2, false, false);
+}
+
+static void w4d_oracle_owner(BoomCoreState& state, uint8_t index,
+                             uint32_t allocation, uint8_t pdst) {
+#pragma HLS INLINE
+    RobEntry& entry = state.rob.entries[index];
+    entry = RobEntry();
+    entry.valid = true;
+    entry.busy = true;
+    entry.uop.uopc = 1;
+    entry.uop.queue.rob_idx = index;
+    entry.uop.queue.rob_allocation_id = allocation;
+    entry.uop.rename.pdst = pdst;
+    entry.uop.rename.dst_rtype = pdst ? DST_INT : DST_N;
+    if (pdst) state.rename.int_free_list.busy_table[pdst] = true;
+}
+
+static ExecuteState::AluResult w4d_oracle_result(
+        const BoomCoreState& state, uint8_t index, uint64_t value) {
+#pragma HLS INLINE
+    ExecuteState::AluResult result;
+    result.valid = true;
+    result.uop = state.rob.entries[index].uop;
+    result.result = value;
+    return result;
+}
+
+// Scenario wrapper retained for an independent generated-RTL oracle. Bit 7
+// continues retained state; otherwise each call starts from a clean machine.
+void synth_w4d_oracle_top(uint8_t scenario, uint64_t* observable) {
+#pragma HLS INTERFACE ap_ctrl_none port=return
+#pragma HLS INTERFACE ap_none port=scenario
+#pragma HLS INTERFACE ap_vld port=observable
+    static BoomCoreState state;
+    bool production_retained = false;
+    bool production_first_limits = false;
+    bool production_single_reset = false;
+    bool production_consumed = false;
+    bool production_values = false;
+    bool production_peaks = false;
+    if ((scenario & 0x80) == 0) {
+        state = BoomCoreState();
+        state.rob.head = 1;
+        uint8_t operation = scenario & 0x7f;
+        if (operation == 0) {
+        w4d_oracle_owner(state, 1, 101, 10);
+        w4d_oracle_owner(state, 2, 102, 11);
+        state.execute.alu_results[MEM_ISSUE_LANE] = w4d_oracle_result(state, 1, 10);
+        state.execute.alu_results[INT_ISSUE_LANE] = w4d_oracle_result(state, 2, 11);
+        } else if (operation == 1) {
+        w4d_oracle_owner(state, 1, 201, 12);
+        w4d_oracle_owner(state, 2, 202, 12);
+        state.rob.tail = 3;
+        state.execute.alu_results[MEM_ISSUE_LANE] = w4d_oracle_result(state, 1, 12);
+        state.execute.alu_results[INT_ISSUE_LANE] = w4d_oracle_result(state, 2, 13);
+        } else if (operation == 2) {
+        w4d_oracle_owner(state, 1, 301, 0);
+        w4d_oracle_owner(state, 2, 302, 13);
+        state.branch_state.active_mask = 1;
+        state.branch_state.tag_valid[0] = true;
+        state.execute.alu_results[INT_ISSUE_LANE] = w4d_oracle_result(state, 1, 0);
+        state.execute.alu_results[INT_ISSUE_LANE].uop.branch.is_br = true;
+        state.execute.alu_results[INT_ISSUE_LANE].uop.branch.br_tag = 0;
+        state.execute.alu_results[MEM_ISSUE_LANE] = w4d_oracle_result(state, 2, 13);
+        } else if (operation == 3) {
+        w4d_oracle_owner(state, 1, 401, 14);
+        w4d_oracle_owner(state, 2, 402, 15);
+        w4d_oracle_owner(state, 3, 403, 16);
+        state.completion.load_response.valid = true;
+        state.completion.load_response.kind = COMPLETION_EXECUTE;
+        state.completion.load_response.source = COMPLETION_SOURCE_LSU_LOAD;
+        state.completion.load_response.uop = state.rob.entries[1].uop;
+        state.completion.load_response.writes_prf = true;
+        state.completion.load_response.value = 14;
+        state.execute.alu_results[MEM_ISSUE_LANE] = w4d_oracle_result(state, 2, 15);
+        state.execute.alu_results[INT_ISSUE_LANE] = w4d_oracle_result(state, 3, 16);
+        } else if (operation == 4 || operation == 6) {
+        w4d_oracle_owner(state, 1, 501, 24);
+        w4d_oracle_owner(state, 2, 502, 0);
+        w4d_oracle_owner(state, 3, 503, 24);
+        state.rob.tail = 4;
+        state.branch_state.active_mask = 1;
+        state.branch_state.tag_valid[0] = true;
+        state.branch_state.snapshot_valid[0] = true;
+        state.completion.load_response.valid = true;
+        state.completion.load_response.kind = COMPLETION_EXECUTE;
+        state.completion.load_response.source = COMPLETION_SOURCE_LSU_LOAD;
+        state.completion.load_response.uop = state.rob.entries[1].uop;
+        state.completion.load_response.writes_prf = true;
+        state.completion.load_response.value = 1;
+        state.execute.alu_results[INT_ISSUE_LANE] = w4d_oracle_result(state, 2, 0);
+        state.execute.alu_results[INT_ISSUE_LANE].uop.branch.is_br = true;
+        state.execute.alu_results[INT_ISSUE_LANE].uop.branch.br_tag = 0;
+        state.execute.alu_results[INT_ISSUE_LANE].mispredict = operation == 6;
+        state.execute.alu_results[MEM_ISSUE_LANE] = w4d_oracle_result(state, 3, 2);
+        state.execute.alu_results[MEM_ISSUE_LANE].uop.branch.br_mask = 1;
+        } else if (operation == 5) {
+        w4d_oracle_owner(state, 1, 601, 17);
+        w4d_oracle_owner(state, 2, 602, 17);
+        w4d_oracle_owner(state, 3, 603, 18);
+        state.completion.load_response.valid = true;
+        state.completion.load_response.kind = COMPLETION_EXECUTE;
+        state.completion.load_response.source = COMPLETION_SOURCE_LSU_LOAD;
+        state.completion.load_response.uop = state.rob.entries[1].uop;
+        state.completion.load_response.writes_prf = true;
+        state.completion.load_response.value = 1;
+        state.execute.alu_results[MEM_ISSUE_LANE] = w4d_oracle_result(state, 2, 2);
+        state.execute.alu_results[INT_ISSUE_LANE] = w4d_oracle_result(state, 3, 3);
+        } else if (operation == 7) {
+        w4d_oracle_owner(state, 1, 701, 19);
+        w4d_oracle_owner(state, 2, 702, 19);
+        w4d_oracle_owner(state, 3, 703, 20);
+        state.completion.load_response.valid = true;
+        state.completion.load_response.kind = COMPLETION_EXECUTE;
+        state.completion.load_response.source = COMPLETION_SOURCE_LSU_LOAD;
+        state.completion.load_response.uop = state.rob.entries[1].uop;
+        state.completion.load_response.writes_prf = true;
+        state.completion.load_response.value = 1;
+        state.execute.alu_results[MEM_ISSUE_LANE] = w4d_oracle_result(state, 2, 2);
+        state.execute.alu_results[INT_ISSUE_LANE] = w4d_oracle_result(state, 3, 3);
+        boom::completion_service_execute(state);
+        boom::completion_service_execute(state);
+        } else if (operation >= 8 && operation <= 13) {
+        w4d_oracle_owner(state, 1, 801, 21);
+        w4d_oracle_owner(state, 2, 802, operation == 9 ? 0 : 22);
+        state.rob.tail = 3;
+        if (operation == 8 || operation == 9) {
+            state.completion.load_response.valid = true;
+            state.completion.load_response.kind = COMPLETION_EXECUTE;
+            state.completion.load_response.source = COMPLETION_SOURCE_LSU_LOAD;
+            state.completion.load_response.uop = state.rob.entries[1].uop;
+            state.completion.load_response.writes_prf = true;
+            state.completion.load_response.value = 21;
+        } else {
+            state.execute.alu_results[MEM_ISSUE_LANE] = w4d_oracle_result(state, 1, 21);
+            state.execute.alu_results[MEM_ISSUE_LANE].memory_valid = true;
+            state.execute.alu_results[MEM_ISSUE_LANE].is_store = true;
+        }
+        state.execute.alu_results[INT_ISSUE_LANE] = w4d_oracle_result(state, 2, 22);
+        if (operation == 9) {
+            state.branch_state.active_mask = 1;
+            state.branch_state.tag_valid[0] = true;
+            state.execute.alu_results[INT_ISSUE_LANE].uop.branch.is_br = true;
+            state.execute.alu_results[INT_ISSUE_LANE].uop.branch.br_tag = 0;
+        }
+        if (operation == 13)
+            state.execute.alu_results[MEM_ISSUE_LANE] = ExecuteState::AluResult();
+        } else if (operation == 14) {
+        state.tohost = 1;
+        state.rob.commit_valid = true;
+        } else if (operation == 15) {
+        w4d_oracle_owner(state, 1, 1001, 25);
+        w4d_oracle_owner(state, 2, 1002, 26);
+        state.execute.alu_results[MEM_ISSUE_LANE] = w4d_oracle_result(state, 1, 25);
+        state.execute.alu_results[INT_ISSUE_LANE] = w4d_oracle_result(state, 2, 26);
+        boom::completion_service_execute(state);
+        w4d_oracle_owner(state, 3, 1003, 27);
+        w4d_oracle_owner(state, 4, 1004, 28);
+        state.execute.alu_results[MEM_ISSUE_LANE] = w4d_oracle_result(state, 3, 27);
+        state.execute.alu_results[INT_ISSUE_LANE] = w4d_oracle_result(state, 4, 28);
+        } else if (operation == 16) {
+        state.rob.tail = 5;
+        w4d_oracle_owner(state, 1, 1101, 14);
+        w4d_oracle_owner(state, 2, 1102, 15);
+        w4d_oracle_owner(state, 3, 1103, 16);
+        w4d_oracle_owner(state, 4, 1104, 17);
+        state.completion.load_response.valid = true;
+        state.completion.load_response.kind = COMPLETION_EXECUTE;
+        state.completion.load_response.source = COMPLETION_SOURCE_LSU_LOAD;
+        state.completion.load_response.uop = state.rob.entries[1].uop;
+        state.completion.load_response.writes_prf = true;
+        state.completion.load_response.value = 0x1414;
+        state.execute.alu_results[MEM_ISSUE_LANE] = w4d_oracle_result(state, 2, 0x1515);
+        state.execute.alu_results[INT_ISSUE_LANE] = w4d_oracle_result(state, 3, 0x1616);
+        RobEntry& load = state.rob.entries[4];
+        load.is_load = load.memory_valid = load.memory_request_sent = true;
+        load.memory_size = 3; load.memory_mask = 0xff; load.memory_transaction_id = 77;
+        state.lsu.load_response_pending = true;
+        state.lsu.pending_load_transaction_id = 77;
+        state.lsu.pending_load_rob_idx = 4;
+        state.lsu.pending_load_allocation_id = 1104;
+        state.lsu.ldq_count = 1; state.lsu.ldq_tail = 1; state.lsu.ldq[0].valid = true;
+        state.lsu.ldq[0].rob_idx = 4; state.lsu.ldq[0].rob_allocation_id = 1104;
+        DmemResponse response; response.transaction_id = 77;
+        response.data = response.read_data = 0x1717;
+        state.completion.total_completion_accepts = 40;
+        state.completion.total_prf_writes = 40;
+        state.completion.total_wakeups = 40;
+        boom::completion_service_execute(state);
+        production_retained = !state.completion.load_response.valid &&
+                              state.completion.int_execute.valid;
+        production_first_limits = state.completion.prf_writes_this_cycle == 2 &&
+                                  state.completion.wakeups_this_cycle == 3;
+        production_single_reset = state.completion.total_completion_accepts == 42 &&
+                                  state.completion.total_prf_writes == 42 &&
+                                  state.completion.total_wakeups == 43;
+        boom::completion_from_load_response(state, response,
+                                            state.completion.load_response);
+        boom::completion_service_execute(state);
+        production_consumed = !state.completion.load_response.valid &&
+                              !state.completion.int_execute.valid &&
+                              !state.lsu.load_response_pending &&
+                              state.completion.completion_accepts_this_cycle == 2 &&
+                              state.completion.prf_writes_this_cycle == 2;
+        production_values = boom::prf_read(state, 14) == 0x1414 &&
+                            boom::prf_read(state, 15) == 0x1515 &&
+                            boom::prf_read(state, 16) == 0x1616 &&
+                            boom::prf_read(state, 17) == 0x1717;
+        production_peaks = state.completion.peak_prf_writes == 2 &&
+                           state.completion.peak_wakeups == 3;
+        }
+    }
+    uint8_t operation = scenario & 0x7f;
+    if (operation == 16) {
+        *observable = production_retained |
+            (uint64_t)production_first_limits << 1 |
+            (uint64_t)production_single_reset << 2 |
+            (uint64_t)production_consumed << 3 |
+            (uint64_t)production_values << 4 |
+            (uint64_t)production_peaks << 5;
+        return;
+    }
+    boom::completion_service_execute(state);
+    uint8_t physical_writes = state.completion.writebacks[0].valid +
+                              state.completion.writebacks[1].valid;
+    uint8_t physical_wakeups = 0;
+    for (int i = 0; i < NUM_INT_WAKEUP_PORTS; i++)
+        physical_wakeups += state.completion.wakeups[i].valid;
+    uint64_t packed = physical_writes;
+    packed |= (uint64_t)physical_wakeups << 4;
+    packed |= (uint64_t)state.completion.writeback_fault_valid << 8;
+    packed |= (uint64_t)state.io_trap << 9;
+    packed |= (uint64_t)state.completion.mem_execute.valid << 10;
+    packed |= (uint64_t)state.completion.int_execute.valid << 11;
+    packed |= (uint64_t)state.completion.load_response.valid << 12;
+    packed |= (uint64_t)state.rob.entries[2].busy << 13;
+    packed |= (uint64_t)(boom::prf_read(state, 10) == 10) << 16;
+    packed |= (uint64_t)(boom::prf_read(state, 11) == 11) << 17;
+    packed |= (uint64_t)(boom::prf_read(state, 13) == 13) << 18;
+    packed |= (uint64_t)(boom::prf_read(state, 14) == 14) << 19;
+    packed |= (uint64_t)(boom::prf_read(state, 15) == 15) << 20;
+    packed |= (uint64_t)(boom::prf_read(state, 16) == 16) << 21;
+    packed |= (uint64_t)state.brupdate.valid << 22;
+    packed |= (uint64_t)state.brupdate.mispredict << 23;
+    packed |= (uint64_t)(boom::prf_read(state, 24) == 1) << 24;
+    packed |= (uint64_t)state.rob.entries[3].valid << 25;
+    packed |= (uint64_t)(state.completion.total_wakeups == 0) << 26;
+    packed |= (uint64_t)(state.completion.total_bypass == 0) << 27;
+    packed |= (uint64_t)state.rob.entries[3].busy << 28;
+    packed |= (uint64_t)(boom::prf_read(state, 20) == 0) << 29;
+    packed |= (uint64_t)(boom::prf_read(state, 21) == 21) << 30;
+    packed |= (uint64_t)(boom::prf_read(state, 22) == 22) << 31;
+    uint64_t lookup_value = 0;
+    bool lookup_conflict = false;
+    if (operation == 11)
+        packed |= (uint64_t)boom::wakeup_lookup(state, 22, lookup_value,
+                                                lookup_conflict) << 32;
+    if (operation == 12)
+        packed |= (uint64_t)boom::bypass_lookup(state, 22, lookup_value,
+                                                lookup_conflict) << 33;
+    packed |= (uint64_t)(state.completion.rob_completes_this_cycle & 3) << 34;
+    packed |= (uint64_t)(state.tohost == 1) << 36;
+    packed |= (uint64_t)state.rob.commit_valid << 37;
+    packed |= (uint64_t)(state.completion.total_rob_completes == 4) << 38;
+    packed |= (uint64_t)(state.completion.total_prf_writes == 4) << 39;
+    *observable = packed;
+}
+
+static uint64_t w4_retention_read_prf(const BoomCoreState& state,
+                                      uint8_t pdst) {
+#pragma HLS INLINE off
+    return boom::prf_read(state, pdst);
+}
+
+void synth_w4_core_step_retention_top(uint8_t seed, uint8_t phase,
+                                      uint64_t& observable) {
+    static BoomCoreState state;
+    static PipeSignals pipe;
+    static uint64_t staged_observable;
+    static uint64_t staged_value;
+    static uint8_t staged_first_pdst;
+#pragma HLS STREAM variable=pipe.dmem_resp depth=2
+#pragma HLS STREAM variable=pipe.imem_resp depth=2
+#pragma HLS STREAM variable=pipe.imem_req depth=2
+#pragma HLS STREAM variable=pipe.dmem_req depth=2
+#pragma HLS STREAM variable=pipe.commit_trace depth=2
+    if (phase != 0) {
+        uint64_t read0 = w4_retention_read_prf(state, staged_first_pdst);
+        uint64_t read1 = w4_retention_read_prf(state, staged_first_pdst + 1);
+        uint64_t read2 = w4_retention_read_prf(state, staged_first_pdst + 2);
+        uint64_t read3 = w4_retention_read_prf(state, staged_first_pdst + 3);
+        bool values = read0 == staged_value + 1 && read1 == staged_value + 2 &&
+                      read2 == staged_value + 3 && read3 == staged_value + 4;
+        observable = staged_observable | (uint64_t)values << 7;
+        return;
+    }
+
+    state = BoomCoreState();
+    uint32_t allocation = 1200 + seed;
+    uint64_t value = 0x2000 + seed;
+
+    state.rob.head = 0;
+    state.rob.tail = 5;
+    w4d_oracle_owner(state, 0, allocation, 0);
+    w4d_oracle_owner(state, 1, allocation + 1, 14);
+    w4d_oracle_owner(state, 2, allocation + 2, 15);
+    w4d_oracle_owner(state, 3, allocation + 3, 16);
+    w4d_oracle_owner(state, 4, allocation + 4, 17);
+
+    state.completion.load_response.valid = true;
+    state.completion.load_response.kind = COMPLETION_LOAD_RESPONSE;
+    state.completion.load_response.source = COMPLETION_SOURCE_LSU_LOAD;
+    state.completion.load_response.uop = state.rob.entries[1].uop;
+    state.completion.load_response.writes_prf = true;
+    state.completion.load_response.value = value + 1;
+    state.completion.load_response.transaction_id = 70 + seed;
+    state.rob.entries[1].is_load = true;
+    state.rob.entries[1].memory_valid = true;
+    state.rob.entries[1].memory_request_sent = true;
+    state.rob.entries[1].memory_size = 3;
+    state.rob.entries[1].memory_mask = 0xff;
+    state.rob.entries[1].memory_transaction_id = 70 + seed;
+    state.execute.alu_results[MEM_ISSUE_LANE] =
+        w4d_oracle_result(state, 2, value + 2);
+    state.execute.alu_results[INT_ISSUE_LANE] =
+        w4d_oracle_result(state, 3, value + 3);
+
+    state.rob.entries[4].is_load = true;
+    state.rob.entries[4].memory_valid = true;
+    state.rob.entries[4].memory_request_sent = true;
+    state.rob.entries[4].memory_size = 3;
+    state.rob.entries[4].memory_mask = 0xff;
+    state.rob.entries[4].memory_transaction_id = 80 + seed;
+    state.lsu.load_response_pending = true;
+    state.lsu.pending_load_transaction_id = 80 + seed;
+    state.lsu.pending_load_rob_idx = 4;
+    state.lsu.pending_load_allocation_id = allocation + 4;
+    state.lsu.ldq_count = 1;
+    state.lsu.ldq_tail = 1;
+    state.lsu.ldq[0].valid = true;
+    state.lsu.ldq[0].rob_idx = 4;
+    state.lsu.ldq[0].rob_allocation_id = allocation + 4;
+
+    DmemResponse queued;
+    queued.transaction_id = 80 + seed;
+    queued.data = queued.read_data = value + 4;
+    pipe.dmem_resp.write(queued);
+    ImemResponse ignored_imem;
+    ignored_imem.fetch_id = 0xff;
+    ignored_imem.address = RESET_VECTOR;
+    pipe.imem_resp.write(ignored_imem);
+    pipe.imem_resp.write(ignored_imem);
+
+    boom_core_step(state, pipe);
+    bool first_limits = state.completion.completion_accepts_this_cycle == 2 &&
+                        state.completion.rob_completes_this_cycle == 2 &&
+                        state.completion.prf_writes_this_cycle == 2;
+    bool first_queued = !pipe.dmem_resp.empty();
+    bool first_retained = state.completion.int_execute.valid &&
+                          !state.completion.load_response.valid;
+    bool first_lsu_owned = state.lsu.load_response_pending;
+    bool first_wakeups = state.completion.wakeups_this_cycle == 3;
+    if (!pipe.imem_req.empty()) pipe.imem_req.read();
+    if (!pipe.dmem_req.empty()) pipe.dmem_req.read();
+    if (!pipe.commit_trace.empty()) pipe.commit_trace.read();
+
+    boom_core_step(state, pipe);
+    bool second_consumed = pipe.dmem_resp.empty() &&
+                           !state.completion.load_response.valid &&
+                           !state.completion.mem_execute.valid &&
+                           !state.completion.int_execute.valid &&
+                           !state.lsu.load_response_pending;
+    bool second_limits = state.completion.completion_accepts_this_cycle == 2 &&
+                         state.completion.rob_completes_this_cycle == 2 &&
+                         state.completion.prf_writes_this_cycle == 2;
+    bool totals = state.completion.total_completion_accepts == 4 &&
+                  state.completion.total_rob_completes == 4 &&
+                  state.completion.total_prf_writes == 4;
+    bool integrity = state.completion.dropped_completions == 0 &&
+                     state.completion.dropped_writebacks == 0 &&
+                     state.completion.duplicate_writebacks == 0;
+    bool second_wakeups = state.completion.wakeups_this_cycle == 2;
+
+    staged_value = value;
+    staged_first_pdst = 13 + (seed & 1);
+    staged_observable = first_limits |
+        (uint64_t)first_queued << 1 |
+        (uint64_t)first_retained << 2 |
+        (uint64_t)first_lsu_owned << 3 |
+        (uint64_t)first_wakeups << 4 |
+        (uint64_t)second_consumed << 5 |
+        (uint64_t)second_limits << 6 |
+        (uint64_t)totals << 8 |
+        (uint64_t)integrity << 9 |
+        (uint64_t)second_wakeups << 10;
+    observable = staged_observable;
 }

@@ -91,6 +91,8 @@ struct IssueState {
     IssueGrant grants[ISSUE_WIDTH];
     MicroOp issued_uops[ISSUE_WIDTH];
     bool    issued_valids[ISSUE_WIDTH];
+    uint64_t issued_prs1_data[ISSUE_WIDTH], issued_prs2_data[ISSUE_WIDTH];
+    uint64_t issued_prs3_data[ISSUE_WIDTH];
     bool    port_ready[ISSUE_WIDTH];
     uint8_t grants_generated, grants_accepted, grants_retained, grants_dropped;
     uint64_t cycles_with_0_grant, cycles_with_1_grant, cycles_with_2_grants;
@@ -102,6 +104,7 @@ struct IssueState {
         execute_acceptance_stalls(0), dropped_grants(0) {
         for (int i=0; i<ISSUE_WIDTH; i++) {
             grants[i]=IssueGrant(); issued_uops[i]=MicroOp(); issued_valids[i]=false;
+            issued_prs1_data[i]=issued_prs2_data[i]=issued_prs3_data[i]=0;
             port_ready[i]=(i != FP_ISSUE_LANE);
         }
     }
@@ -181,6 +184,51 @@ struct LsuState {
         pending_load_rob_idx(0), pending_load_allocation_id(0) {}
 };
 
+struct CompletionPendingState {
+    RobCompleteEvent load_response;
+    RobCompleteEvent mem_execute;
+    RobCompleteEvent int_execute;
+    WritebackEvent writebacks[2];
+    WakeupEvent wakeups[NUM_INT_WAKEUP_PORTS];
+    BypassEvent bypass[NUM_INT_BYPASS_PORTS];
+    bool wakeup_sent[COMPLETION_PENDING_SLOTS];
+    uint8_t completion_accepts_this_cycle, rob_completes_this_cycle;
+    uint8_t prf_writes_this_cycle, wakeups_this_cycle;
+    uint8_t bypass_this_cycle;
+    uint8_t peak_completion_accepts, peak_rob_completes, peak_prf_writes;
+    uint8_t peak_wakeups, peak_bypass;
+    uint64_t total_completion_accepts, total_rob_completes, total_prf_writes;
+    uint64_t total_wakeups, total_bypass;
+    bool writeback_conflict;
+    bool writeback_fault_valid;
+    bool validation_fault_this_cycle;
+    uint8_t writeback_fault_pdst, writeback_fault_rob_idx;
+    uint32_t writeback_fault_allocation_id;
+    uint64_t writeback_fault_cause;
+    uint64_t writeback_conflicts, writeback_validation_faults;
+    uint64_t writeback_fault_events, writeback_deduplications;
+    uint64_t dropped_completions, dropped_writebacks, duplicate_writebacks;
+    uint64_t wakeup_conflicts, bypass_conflicts;
+    CompletionPendingState() : load_response(), mem_execute(), int_execute(),
+        completion_accepts_this_cycle(0), rob_completes_this_cycle(0), prf_writes_this_cycle(0),
+        wakeups_this_cycle(0), bypass_this_cycle(0), peak_completion_accepts(0),
+        peak_rob_completes(0), peak_prf_writes(0), peak_wakeups(0), peak_bypass(0),
+        total_completion_accepts(0), total_rob_completes(0), total_prf_writes(0), total_wakeups(0),
+        total_bypass(0), writeback_conflict(false), writeback_fault_valid(false),
+        validation_fault_this_cycle(false),
+        writeback_fault_pdst(0), writeback_fault_rob_idx(0),
+        writeback_fault_allocation_id(0), writeback_fault_cause(0),
+        writeback_conflicts(0), writeback_validation_faults(0),
+        writeback_fault_events(0), writeback_deduplications(0),
+        dropped_completions(0), dropped_writebacks(0), duplicate_writebacks(0),
+        wakeup_conflicts(0), bypass_conflicts(0) {
+        for (int i=0; i<NUM_INT_WRITEBACK_PORTS; i++) writebacks[i]=WritebackEvent();
+        for (int i=0; i<COMPLETION_PENDING_SLOTS; i++) wakeup_sent[i]=false;
+        for (int i=0; i<NUM_INT_WAKEUP_PORTS; i++) wakeups[i]=WakeupEvent();
+        for (int i=0; i<NUM_INT_BYPASS_PORTS; i++) bypass[i]=BypassEvent();
+    }
+};
+
 struct BoomCoreState {
     uint64_t        cycle_count;
     FrontendState   frontend;
@@ -191,8 +239,11 @@ struct BoomCoreState {
     RobInternalState rob;
     CsrState        csr;
     LsuState        lsu;
+    CompletionPendingState completion;
     BranchRecoveryState branch_state;
-    uint64_t        int_rf[INT_PHYS_REGS];
+    uint64_t        int_rf_bank0[INT_PHYS_REGS];
+    uint64_t        int_rf_bank1[INT_PHYS_REGS];
+    uint64_t        int_rf_latest_bank;
     uint64_t        fp_rf[FP_PHYS_REGS];
     BranchUpdate    brupdate;
     bool            global_flush;
@@ -201,12 +252,41 @@ struct BoomCoreState {
     bool            io_trap;
     uint64_t        tohost;
 
-    BoomCoreState() : cycle_count(0), brupdate(), global_flush(false),
+    BoomCoreState() : cycle_count(0), int_rf_latest_bank(0), brupdate(), global_flush(false),
         io_success(false), io_halted(false), io_trap(false), tohost(0) {
-        for (int i=0; i<INT_PHYS_REGS; i++) int_rf[i]=0;
+        for (int i=0; i<INT_PHYS_REGS; i++) {
+            int_rf_bank0[i]=0;
+            int_rf_bank1[i]=0;
+        }
         for (int i=0; i<FP_PHYS_REGS; i++) fp_rf[i]=0;
-        int_rf[0]=0; fp_rf[0]=0;
+        int_rf_bank0[0]=0; int_rf_bank1[0]=0; fp_rf[0]=0;
     }
 };
+
+namespace boom {
+
+inline uint64_t prf_read(const BoomCoreState& state, uint8_t pdst) {
+#pragma HLS INLINE
+    if (pdst == 0 || pdst >= INT_PHYS_REGS) return 0;
+    return ((state.int_rf_latest_bank >> pdst) & 1ULL) ?
+        state.int_rf_bank1[pdst] : state.int_rf_bank0[pdst];
+}
+
+inline void prf_seed(BoomCoreState& state, uint8_t pdst, uint64_t value) {
+#pragma HLS INLINE
+    if (pdst == 0 || pdst >= INT_PHYS_REGS) return;
+    state.int_rf_bank0[pdst] = value;
+    state.int_rf_bank1[pdst] = value;
+    state.int_rf_latest_bank &= ~(1ULL << pdst);
+}
+
+inline void prf_force_x0(BoomCoreState& state) {
+#pragma HLS INLINE
+    state.int_rf_bank0[0] = 0;
+    state.int_rf_bank1[0] = 0;
+    state.int_rf_latest_bank &= ~1ULL;
+}
+
+}
 
 #endif

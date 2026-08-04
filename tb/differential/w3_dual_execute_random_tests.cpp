@@ -2,6 +2,7 @@
 #include "boom_interfaces.hpp"
 #include "boom_state.hpp"
 #include "reset.hpp"
+#include "completion.hpp"
 
 #include <cstdint>
 #include <cstdio>
@@ -41,6 +42,9 @@ struct Metrics {
     uint64_t stale_responses, stale_completion_ids, branch_resolves, branch_mispredicts;
     uint64_t branch_kills, resets, reset_kills, trace_backpressure, dmem_backpressure;
     uint64_t commits, consumed, killed, dropped, duplicates;
+    uint64_t product_rob_completes, product_prf_writes, product_wakeups;
+    uint64_t execute_events;
+    uint8_t product_peak_rob, product_peak_prf, product_peak_wakeup;
     uint64_t ready_masks[4], completion_masks[4];
     Metrics() : seeds(kSeeds), random_cycles(kSeeds*kCycles), generated(0), rob_allocations(0),
         rob_index_reuses(0), rob_index_wraps(0), allocation_id_wraps(0), dispatch_retries(0),
@@ -50,7 +54,9 @@ struct Metrics {
         response_delay_cycles(0), stale_responses(0), stale_completion_ids(0),
         branch_resolves(0), branch_mispredicts(0), branch_kills(0), resets(0),
         reset_kills(0), trace_backpressure(0), dmem_backpressure(0), commits(0),
-        consumed(0), killed(0), dropped(0), duplicates(0) {
+        consumed(0), killed(0), dropped(0), duplicates(0),
+        product_rob_completes(0), product_prf_writes(0), product_wakeups(0), execute_events(0),
+        product_peak_rob(0), product_peak_prf(0), product_peak_wakeup(0) {
         for (int i=0;i<4;i++) ready_masks[i]=completion_masks[i]=0;
     }
 };
@@ -222,8 +228,8 @@ const char* compare_issue(const RefIssue& r, const BoomCoreState& a) {
 
 ExecuteState::AluResult ref_execute_one(const BoomCoreState& before, const MicroOp& u) {
     ExecuteState::AluResult r; r.valid=true; r.uop=u;
-    uint64_t rs1=u.rename.prs1?before.int_rf[u.rename.prs1]:0;
-    uint64_t rs2=u.rename.prs2?before.int_rf[u.rename.prs2]:0;
+    uint64_t rs1=boom::prf_read(before,u.rename.prs1);
+    uint64_t rs2=boom::prf_read(before,u.rename.prs2);
     if (u.uopc>=39&&u.uopc<=45) {
         r.memory_valid=true; r.is_load=true; r.signed_load=u.mem.mem_signed;
         r.memory_size=u.mem.mem_size; r.memory_address=rs1+(int64_t)(int32_t)u.imm_packed;
@@ -269,7 +275,7 @@ RefCompletion ref_complete(const BoomCoreState& in) {
     RefCompletion r;
     for (int l=0;l<2;l++) r.slots[l]=in.execute.alu_results[l];
     for (int i=0;i<ROB_DEPTH;i++) r.rob_busy[i]=in.rob.entries[i].busy;
-    for (int i=0;i<INT_PHYS_REGS;i++) { r.rf[i]=in.int_rf[i]; r.preg_busy[i]=in.rename.int_free_list.busy_table[i]; }
+    for (int i=0;i<INT_PHYS_REGS;i++) { r.rf[i]=boom::prf_read(in,i); r.preg_busy[i]=in.rename.int_free_list.busy_table[i]; }
     r.ldq_count=in.lsu.ldq_count; r.stq_count=in.lsu.stq_count;
     int selected=-1; unsigned age=ROB_DEPTH;
     for (int l=0;l<2;l++) {
@@ -302,7 +308,7 @@ const char* compare_completion(const RefCompletion& r, const BoomCoreState& a) {
     for (int l=0;l<2;l++) { const char* why=compare_result(r.slots[l],a.execute.alu_results[l]); if (why) return why; }
     for (int i=0;i<ROB_DEPTH;i++) if (a.rob.entries[i].busy!=r.rob_busy[i]) return "ROB busy";
     for (int i=1;i<INT_PHYS_REGS;i++) {
-        if (a.int_rf[i]!=r.rf[i]) return "writeback value";
+        if (boom::prf_read(a,i)!=r.rf[i]) return "writeback value";
         if (a.rename.int_free_list.busy_table[i]!=r.preg_busy[i]) return "busy-table wakeup";
     }
     if (a.lsu.ldq_count!=r.ldq_count||a.lsu.stq_count!=r.stq_count) return "LSU admission";
@@ -369,7 +375,7 @@ struct Harness {
         for (int i=0;i<ROB_DEPTH;i++) last_index_id[i]=0;
         dut.rob.state=ROB_NORMAL;
         dut.rob.next_allocation_id=(seed&1)?0xfffffff8u:(1u+rng.range(100000));
-        dut.int_rf[1]=0x1000+(seed&0xff); dut.int_rf[2]=0x80+(seed&0x3f);
+        boom::prf_seed(dut,1,0x1000+(seed&0xff)); boom::prf_seed(dut,2,0x80+(seed&0x3f));
     }
 
     bool check(bool condition, int cycle, const char* phase, const char* why) {
@@ -431,28 +437,24 @@ struct Harness {
         stale.uop.rename.pdst=7; stale.result=0xdeadbeef;
         dut.rename.int_free_list.busy_table[7]=true;
         bool busy=dut.rob.entries[tr.rob_idx].busy; uint8_t stq=dut.lsu.stq_count;
-        uint64_t rf=dut.int_rf[7]; bool br=dut.brupdate.valid;
+        uint64_t rf=boom::prf_read(dut,7); bool br=dut.brupdate.valid;
         dut.execute.alu_results[MEM_ISSUE_LANE]=stale;
         boom::rob_complete(dut); m.stale_completion_ids++;
         return check(!dut.execute.alu_results[MEM_ISSUE_LANE].valid&&dut.rob.entries[tr.rob_idx].busy==busy&&
-            dut.lsu.stq_count==stq&&dut.int_rf[7]==rf&&dut.brupdate.valid==br&&
+            dut.lsu.stq_count==stq&&boom::prf_read(dut,7)==rf&&dut.brupdate.valid==br&&
             dut.rename.int_free_list.busy_table[7],cycle,"stale-completion","mismatched allocation ID had side effects");
     }
 
     bool stale_response_probe(int cycle, uint32_t tx) {
         bool pending=dut.lsu.load_response_pending; uint32_t pending_tx=dut.lsu.pending_load_transaction_id;
-        uint8_t ldq=dut.lsu.ldq_count; uint64_t rf[INT_PHYS_REGS]; bool busy[ROB_DEPTH];
-        for (int i=0;i<INT_PHYS_REGS;i++) rf[i]=dut.int_rf[i];
-        for (int i=0;i<ROB_DEPTH;i++) busy[i]=dut.rob.entries[i].busy;
-        fill_dmem(pipe);
+        uint8_t ldq=dut.lsu.ldq_count;
         DmemResponse d; d.transaction_id=tx; d.data=d.read_data=0xf00dbaad;
-        pipe.dmem_resp.write(d); boom::lsu_module(dut,pipe);
-        std::vector<DmemRequest> ignored; drain_dmem(pipe,ignored);
+        CompletionEvent event;
+        boom::completion_from_load_response(dut,d,event);
         bool same=pending==dut.lsu.load_response_pending&&pending_tx==dut.lsu.pending_load_transaction_id&&ldq==dut.lsu.ldq_count;
-        for (int i=0;i<INT_PHYS_REGS;i++) same&=rf[i]==dut.int_rf[i];
-        for (int i=0;i<ROB_DEPTH;i++) same&=busy[i]==dut.rob.entries[i].busy;
+        same&=!event.valid;
         m.stale_responses++;
-        return check(same,cycle,"stale-response","mismatched transaction ID had side effects");
+        return check(same,cycle,"stale-response","mismatched transaction ID produced an event");
     }
 
     void generate(int cycle, bool draining) {
@@ -560,28 +562,8 @@ struct Harness {
         uint64_t unallocated_dispatch=0;
         if (dut.rename.dispatch_packets[0].valid&&!dut.rename.dispatch_packets[0].rob_allocated)
             unallocated_dispatch=token_of(dut.rename.dispatch_packets[0].uop);
-        RefCompletion rc;
+        BoomCoreState before_completion=dut;
         bool did_complete=false;
-        if (!sent_response&&pipe.dmem_resp.empty()) {
-            BoomCoreState before=dut; rc=ref_complete(before); boom::rob_complete(dut); did_complete=true;
-            const char* why=compare_completion(rc,dut);
-            if (why&&!check(false,cycle,"completion",why)) return false;
-            if (rc.branch) {
-                if (!check(dut.brupdate.valid,cycle,"branch","branch completion did not resolve")) return false;
-                m.branch_resolves++; if (dut.brupdate.mispredict) m.branch_mispredicts++;
-                mark_disappeared(before_complete,false,cycle);
-                if (unallocated_dispatch&&!dut.rename.dispatch_packets[0].valid&&tokens[unallocated_dispatch].end==LIVE) {
-                    tokens[unallocated_dispatch].end=KILLED; m.killed++; m.branch_kills++;
-                }
-            } else {
-                m.completion_consumed+=rc.consumed;
-                if (!rc.consumed&&(before.execute.alu_results[0].valid||before.execute.alu_results[1].valid)) m.held_completion_cycles++;
-            }
-            for (int l=0;l<2;l++) if (before.execute.alu_results[l].valid&&!dut.execute.alu_results[l].valid) {
-                uint64_t t=token_of(before.execute.alu_results[l].uop);
-                if (tokens.count(t)&&tokens[t].end==LIVE&&before_complete.count(t)) tokens[t].completions++;
-            }
-        }
 
         uint8_t old_ldq=dut.lsu.ldq_count, old_stq=dut.lsu.stq_count;
         bool had_pending=dut.lsu.load_response_pending; uint32_t pending_tx=dut.lsu.pending_load_transaction_id;
@@ -595,14 +577,57 @@ struct Harness {
                 expected_pdst=e.uop.rename.pdst; expect_match=true;
             }
         }
+        boom::completion_service_cycle(dut,pipe); did_complete=true;
         boom::lsu_module(dut,pipe);
+        m.product_rob_completes+=dut.completion.rob_completes_this_cycle;
+        m.product_prf_writes+=dut.completion.prf_writes_this_cycle;
+        m.product_wakeups+=dut.completion.wakeups_this_cycle;
+        if (dut.completion.rob_completes_this_cycle>m.product_peak_rob)
+            m.product_peak_rob=dut.completion.rob_completes_this_cycle;
+        if (dut.completion.prf_writes_this_cycle>m.product_peak_prf)
+            m.product_peak_prf=dut.completion.prf_writes_this_cycle;
+        if (dut.completion.wakeups_this_cycle>m.product_peak_wakeup)
+            m.product_peak_wakeup=dut.completion.wakeups_this_cycle;
         if (expect_match) {
-            if (!check((!dut.lsu.load_response_pending||dut.lsu.pending_load_transaction_id!=pending_tx)&&
+            bool applied=(!dut.lsu.load_response_pending||dut.lsu.pending_load_transaction_id!=pending_tx)&&
                 !dut.rob.entries[pending_idx].busy&&
-                (!expected_pdst||dut.int_rf[expected_pdst]==expected_value),cycle,"load-response","matching response not applied")) return false;
+                (!expected_pdst||boom::prf_read(dut,expected_pdst)==expected_value);
+            bool retained=dut.completion.load_response.valid&&
+                dut.completion.load_response.transaction_id==pending_tx&&
+                dut.completion.load_response.uop.queue.rob_idx==pending_idx&&
+                dut.completion.load_response.uop.queue.rob_allocation_id==pending_id&&
+                dut.rob.entries[pending_idx].busy;
+            if (!check(applied||retained,cycle,"load-response","matching response neither applied nor retained")) return false;
             m.load_responses++;
         } else if (sent_response) m.stale_responses++;
         if (dut.lsu.ldq_count<old_ldq) m.ldq_drains+=old_ldq-dut.lsu.ldq_count;
+
+        uint64_t completed_now=0;
+        for (int i=0;i<ROB_DEPTH;i++) {
+            const RobEntry& before=before_completion.rob.entries[i];
+            const RobEntry& after=dut.rob.entries[i];
+            if (!before.valid||!before.busy||!after.valid||
+                before.uop.queue.rob_allocation_id!=after.uop.queue.rob_allocation_id) continue;
+            bool accepted=(!after.busy)||(after.memory_valid&&!before.memory_valid);
+            if (accepted) {
+                uint64_t t=token_of(before.uop);
+                if (tokens.count(t)&&tokens[t].end==LIVE&&tokens[t].completions==0)
+                    tokens[t].completions++;
+                completed_now++;
+            }
+        }
+        m.completion_consumed+=completed_now;
+        if (!completed_now&&(before_completion.execute.alu_results[0].valid||
+            before_completion.execute.alu_results[1].valid||
+            before_completion.completion.mem_execute.valid||
+            before_completion.completion.int_execute.valid)) m.held_completion_cycles++;
+        if (dut.brupdate.valid) {
+            m.branch_resolves++; if (dut.brupdate.mispredict) m.branch_mispredicts++;
+            mark_disappeared(before_complete,false,cycle);
+            if (unallocated_dispatch&&!dut.rename.dispatch_packets[0].valid&&tokens[unallocated_dispatch].end==LIVE) {
+                tokens[unallocated_dispatch].end=KILLED; m.killed++; m.branch_kills++;
+            }
+        }
 
         std::vector<DmemRequest> reqs; drain_dmem(pipe,reqs);
         for (size_t i=0;i<reqs.size();i++) if (!reqs[i].is_store) {
@@ -653,7 +678,10 @@ struct Harness {
         for (int lane=0;lane<2;lane++) if (ri.grant[lane].accepted&&!expected[lane].valid) {
             const MicroOp& u=ri.grant[lane].uop;
             if (!(before_issue.brupdate.valid&&before_issue.brupdate.mispredict&&
-                (u.branch.br_mask&before_issue.brupdate.mispredict_mask))) expected[lane]=ref_execute_one(before_issue,u);
+                (u.branch.br_mask&before_issue.brupdate.mispredict_mask))) {
+                expected[lane]=ref_execute_one(before_issue,u);
+                m.execute_events++;
+            }
         }
         boom::execute_module(dut);
         bool held_this_cycle=false;
@@ -718,11 +746,16 @@ int main() {
     std::printf("W3 persistent dual issue/execute/ROB/LSU random differential: PASS\n");
     metric("random_seeds",m.seeds); metric("cycles_per_seed",kCycles); metric("total_random_cycles",m.random_cycles);
     metric("generated_tokens",m.generated); metric("rob_allocations",m.rob_allocations);
+    metric("execute_events",m.execute_events);
     metric("rob_index_reuses",m.rob_index_reuses); metric("rob_index_wraps",m.rob_index_wraps);
     metric("allocation_id_wraps",m.allocation_id_wraps); metric("dispatch_retries",m.dispatch_retries);
     metric("iq_occupancy_samples",m.iq_entries); metric("accepted_uops",m.accepted);
     metric("dual_accept_cycles",m.dual_accepts); metric("retained_grants",m.retained);
     metric("completion_consumed",m.completion_consumed); metric("held_completion_cycles",m.held_completion_cycles);
+    metric("product_rob_completes",m.product_rob_completes);
+    metric("product_prf_writes",m.product_prf_writes); metric("product_wakeups",m.product_wakeups);
+    metric("product_peak_rob_completes",m.product_peak_rob);
+    metric("product_peak_prf_writes",m.product_peak_prf); metric("product_peak_wakeups",m.product_peak_wakeup);
     metric("random_loads",m.loads); metric("random_stores",m.stores);
     metric("ldq_full_cycles",m.ldq_full_cycles); metric("stq_full_cycles",m.stq_full_cycles);
     metric("ldq_drains",m.ldq_drains); metric("stq_drains",m.stq_drains);

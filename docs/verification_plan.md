@@ -19,6 +19,7 @@
 | Gate 3.8 generated RTL | FAIL: `RTL_RESET_MISMATCH` | XSim 42/45; all tested AXIS backpressure passes, three mid-run reset interactions fail |
 | Gate 3.9 generated RTL | PASS: `RTL_RESET_VERIFIED` | XSim 49/49; reset architecture 14/14; M014 verified |
 | Gate 3.10 local pipeline | COMPLETE: no accepted candidate | R1 II=1 and XSim 49/49, rejected latency/cycles; L1-L5 illegal |
+| Gate 4.0 W4E | PASS | directed 95/95, random 128/128, focused RTL 20/20+11/11, full-core 49/49, source-bound final csynth 7/7, two independent bank writes, final II=1 |
 | Official Gate 3 | BLOCKED | original Chipyard/FESVR/DRAMSim path unavailable |
 
 ## Trace Format
@@ -93,6 +94,19 @@ Gate 3.8 remains failed until the last two requirements pass. See `reports/gate3
 - [ ] boom_core_top compiles with g++
 - [ ] Vitis HLS csim_design passes
 - [ ] Vitis HLS csynth_design passes
+
+### Gate 4.0 W4 Final
+- [x] Regenerate merged source and bind current hashes
+- [x] Software/random conservation and concurrency gates
+- [x] Focused and full-core generated RTL matrices
+- [x] No-partition diagnostic executes two real `boom_core_step` calls and retains/drains an occupied-slot response
+- [x] Seven final Vitis HLS 2021.2 csynth targets at 10 ns
+- [x] Two generated PRF write enables and three wakeup/bypass publications
+- [x] `CORE_CYCLE` remains unpipelined
+- [x] No DATAFLOW or explicit complete partition
+- [x] Remove the explicit PRF false-dependence pragma without a replacement waiver or complete partition
+- [x] Implement and verify two physical PRF bank writes under the waiver-free constraints
+- [ ] Obtain official external full-system evidence and strict BOOM cycle equivalence
 
 ### Gate M1
 - [ ] All decode unit tests pass

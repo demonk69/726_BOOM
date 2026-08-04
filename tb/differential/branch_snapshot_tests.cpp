@@ -272,9 +272,9 @@ void t19_wrong_path_writeback_no_prf() { TEST("wrong-path writeback cannot pollu
     CHECK(rename_one(s, make_add(1), wrong), "wrong rename failed");
     s.brupdate.valid=true; s.brupdate.mispredict=true; s.brupdate.mispredict_mask=bit(br.branch.br_tag);
     s.issue.issued_valids[0]=true; s.issue.issued_uops[0]=wrong;
-    s.int_rf[wrong.rename.pdst]=0;
+    boom::prf_seed(s,wrong.rename.pdst,0);
     boom::execute_module(s);
-    CHECK(s.int_rf[wrong.rename.pdst] == 0, "wrong-path PRF write occurred"); PASS(); }
+    CHECK(boom::prf_read(s,wrong.rename.pdst) == 0, "wrong-path PRF write occurred"); PASS(); }
 
 void t20_wrong_path_cannot_commit() { TEST("wrong-path ROB entry cannot commit");
     BoomCoreState s; PipeSignals p; MicroOp br,wrong;
@@ -311,9 +311,9 @@ void t23_mispredict_with_writeback() { TEST("mispredict masks simultaneous young
     CHECK(rename_one(s, make_add(1), wrong), "wrong rename failed");
     s.brupdate.valid=true; s.brupdate.mispredict=true; s.brupdate.mispredict_mask=bit(br.branch.br_tag);
     s.issue.issued_valids[0]=true; s.issue.issued_uops[0]=wrong;
-    s.int_rf[wrong.rename.pdst]=0;
+    boom::prf_seed(s,wrong.rename.pdst,0);
     boom::execute_module(s);
-    CHECK(s.int_rf[wrong.rename.pdst] == 0, "younger writeback polluted PRF"); PASS(); }
+    CHECK(boom::prf_read(s,wrong.rename.pdst) == 0, "younger writeback polluted PRF"); PASS(); }
 
 void t24_mispredict_with_exception() { TEST("mispredict kills younger exception before trap");
     BoomCoreState s; MicroOp br,exc;

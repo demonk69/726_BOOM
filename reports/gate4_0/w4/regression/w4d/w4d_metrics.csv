@@ -1,0 +1,14 @@
+metric,observed,requirement,status
+peak_completion_accepts,2,>=2,PASS
+peak_rob_completes,2,>=2,PASS
+peak_prf_writes,2,=2,PASS
+peak_wakeups,3,>=2,PASS
+bounded_wait_cycles,2,<=2,PASS
+dropped_completions,0,=0,PASS
+dropped_writebacks,0,=0,PASS
+duplicate_writebacks,0,=0,PASS
+writeback_conflicts,1,>=1,PASS
+validation_faults,1,>=1,PASS
+fault_events,2,>=2,PASS
+deduplications,1,>=1,PASS
+injected_hold_violation_probe,1,=1,PASS

@@ -3,6 +3,7 @@
 #include "boom_state.hpp"
 #include "boom_interfaces.hpp"
 #include "reset.hpp"
+#include "completion.hpp"
 
 extern void boom_core_step(BoomCoreState& state, PipeSignals& pipe);
 
@@ -15,6 +16,8 @@ extern void rob_complete(BoomCoreState& state);
 extern void issue_module(BoomCoreState& state);
 extern void execute_module(BoomCoreState& state);
 extern void branch_module(BoomCoreState& state);
+extern void branch_complete_event(BoomCoreState& state, const MicroOp& uop,
+                                  bool mispredict, uint64_t redirect_pc);
 extern void lsu_module(BoomCoreState& state, PipeSignals& pipe);
 extern void rob_commit_module(BoomCoreState& state, PipeSignals& pipe);
 }
@@ -123,10 +126,49 @@ void synth_execute_top(uint8_t seed_uopc, uint64_t seed_rs1, uint64_t seed_rs2, 
     state.issue.issued_uops[INT_ISSUE_LANE].rename.prs2 = 2;
     state.issue.issued_uops[INT_ISSUE_LANE].rename.pdst = 3;
     state.issue.issued_uops[INT_ISSUE_LANE].rename.dst_rtype = DST_INT;
-    state.int_rf[1] = seed_rs1;
-    state.int_rf[2] = seed_rs2;
+    boom::prf_seed(state, 1, seed_rs1);
+    boom::prf_seed(state, 2, seed_rs2);
     boom::execute_module(state);
     observable = state.execute.alu_results[INT_ISSUE_LANE].result;
+}
+
+void synth_completion_top(uint8_t seed_sources, uint8_t seed_head,
+                           uint64_t seed_value, uint64_t& observable) {
+    static BoomCoreState state;
+    state.rob.head = (uint8_t)(seed_head % ROB_DEPTH);
+    uint8_t mem_idx = (uint8_t)((state.rob.head + 1) % ROB_DEPTH);
+    uint8_t int_idx = state.rob.head;
+    state.rob.entries[mem_idx].valid = true;
+    state.rob.entries[mem_idx].busy = true;
+    state.rob.entries[mem_idx].uop.queue.rob_idx = mem_idx;
+    state.rob.entries[mem_idx].uop.queue.rob_allocation_id = 1;
+    state.rob.entries[int_idx].valid = true;
+    state.rob.entries[int_idx].busy = true;
+    state.rob.entries[int_idx].uop.queue.rob_idx = int_idx;
+    state.rob.entries[int_idx].uop.queue.rob_allocation_id = 2;
+
+    if (seed_sources & 1) {
+        ExecuteState::AluResult& result = state.execute.alu_results[MEM_ISSUE_LANE];
+        result.valid = true;
+        result.uop = state.rob.entries[mem_idx].uop;
+        result.uop.rename.pdst = 3;
+        result.uop.rename.dst_rtype = DST_INT;
+        result.result = seed_value;
+    }
+    if (seed_sources & 2) {
+        ExecuteState::AluResult& result = state.execute.alu_results[INT_ISSUE_LANE];
+        result.valid = true;
+        result.uop = state.rob.entries[int_idx].uop;
+        result.uop.rename.pdst = 4;
+        result.uop.rename.dst_rtype = DST_INT;
+        result.result = seed_value + 1;
+    }
+    boom::completion_service_execute(state);
+    observable = state.execute.alu_results[MEM_ISSUE_LANE].valid;
+    observable |= (uint64_t)state.execute.alu_results[INT_ISSUE_LANE].valid << 1;
+    observable |= (uint64_t)state.rob.entries[mem_idx].busy << 2;
+    observable |= (uint64_t)state.rob.entries[int_idx].busy << 3;
+    observable |= (boom::prf_read(state, 3) ^ boom::prf_read(state, 4)) << 8;
 }
 
 void synth_lsu_top(hls::stream<DmemRequest>& dmem_req_out,
@@ -659,21 +701,430 @@ void synth_w3_rob_wrap_top(uint32_t allocation_base, uint64_t& observable) {
     observable = w3_pack_observable(state, 31, 0, false, false);
 }
 
-void synth_w3_branch_kill_top(uint32_t allocation_base, uint64_t& observable) {
+void synth_w3_branch_kill_top(uint32_t allocation_base, uint8_t control,
+                              uint64_t& observable) {
     BoomCoreState state;
     w3_seed_rob(state, 1, allocation_base);
     w3_seed_rob(state, 2, allocation_base + 1);
     state.rob.head = 1;
     state.rob.tail = 3;
-    state.branch_state.active_mask = 1;
-    state.branch_state.tag_valid[0] = true;
-    state.branch_state.snapshot_valid[0] = true;
+    state.branch_state.active_mask = (control & 1) ? 1 : 0;
+    state.branch_state.tag_valid[0] = (control & 2) != 0;
+    state.branch_state.snapshot_valid[0] = (control & 4) != 0;
     state.execute.alu_results[MEM_ISSUE_LANE] = w3_result(2, allocation_base + 1);
-    state.execute.alu_results[MEM_ISSUE_LANE].uop.branch.br_mask = 1;
+    state.execute.alu_results[MEM_ISSUE_LANE].uop.branch.br_mask =
+        (control & 8) ? 1 : 0;
     state.execute.alu_results[INT_ISSUE_LANE] = w3_result(1, allocation_base);
-    state.execute.alu_results[INT_ISSUE_LANE].uop.branch.is_br = true;
+    state.execute.alu_results[INT_ISSUE_LANE].uop.branch.is_br =
+        (control & 16) != 0;
     state.execute.alu_results[INT_ISSUE_LANE].uop.branch.br_tag = 0;
-    state.execute.alu_results[INT_ISSUE_LANE].mispredict = true;
+    state.execute.alu_results[INT_ISSUE_LANE].mispredict =
+        (control & 32) != 0;
+    if ((control & 16) != 0) {
+        boom::branch_complete_event(
+            state, state.execute.alu_results[INT_ISSUE_LANE].uop,
+            (control & 32) != 0, 0);
+        // Production resolves control before completion service. Avoid asking
+        // the legacy W3 serial service to resolve the same branch again.
+        state.execute.alu_results[INT_ISSUE_LANE].uop.branch.is_br = false;
+        state.execute.alu_results[INT_ISSUE_LANE].mispredict = false;
+    }
     boom::rob_complete(state);
     observable = w3_pack_observable(state, 1, 2, false, false);
+}
+
+static void w4d_oracle_owner(BoomCoreState& state, uint8_t index,
+                             uint32_t allocation, uint8_t pdst) {
+#pragma HLS INLINE
+    RobEntry& entry = state.rob.entries[index];
+    entry = RobEntry();
+    entry.valid = true;
+    entry.busy = true;
+    entry.uop.uopc = 1;
+    entry.uop.queue.rob_idx = index;
+    entry.uop.queue.rob_allocation_id = allocation;
+    entry.uop.rename.pdst = pdst;
+    entry.uop.rename.dst_rtype = pdst ? DST_INT : DST_N;
+    if (pdst) state.rename.int_free_list.busy_table[pdst] = true;
+}
+
+static ExecuteState::AluResult w4d_oracle_result(
+        const BoomCoreState& state, uint8_t index, uint64_t value) {
+#pragma HLS INLINE
+    ExecuteState::AluResult result;
+    result.valid = true;
+    result.uop = state.rob.entries[index].uop;
+    result.result = value;
+    return result;
+}
+
+// Scenario wrapper retained for an independent generated-RTL oracle. Bit 7
+// continues retained state; otherwise each call starts from a clean machine.
+void synth_w4d_oracle_top(uint8_t scenario, uint64_t* observable) {
+#pragma HLS INTERFACE ap_ctrl_none port=return
+#pragma HLS INTERFACE ap_none port=scenario
+#pragma HLS INTERFACE ap_vld port=observable
+    static BoomCoreState state;
+    bool production_retained = false;
+    bool production_first_limits = false;
+    bool production_single_reset = false;
+    bool production_consumed = false;
+    bool production_values = false;
+    bool production_peaks = false;
+    if ((scenario & 0x80) == 0) {
+        state = BoomCoreState();
+        state.rob.head = 1;
+        uint8_t operation = scenario & 0x7f;
+        if (operation == 0) {
+        w4d_oracle_owner(state, 1, 101, 10);
+        w4d_oracle_owner(state, 2, 102, 11);
+        state.execute.alu_results[MEM_ISSUE_LANE] = w4d_oracle_result(state, 1, 10);
+        state.execute.alu_results[INT_ISSUE_LANE] = w4d_oracle_result(state, 2, 11);
+        } else if (operation == 1) {
+        w4d_oracle_owner(state, 1, 201, 12);
+        w4d_oracle_owner(state, 2, 202, 12);
+        state.rob.tail = 3;
+        state.execute.alu_results[MEM_ISSUE_LANE] = w4d_oracle_result(state, 1, 12);
+        state.execute.alu_results[INT_ISSUE_LANE] = w4d_oracle_result(state, 2, 13);
+        } else if (operation == 2) {
+        w4d_oracle_owner(state, 1, 301, 0);
+        w4d_oracle_owner(state, 2, 302, 13);
+        state.branch_state.active_mask = 1;
+        state.branch_state.tag_valid[0] = true;
+        state.execute.alu_results[INT_ISSUE_LANE] = w4d_oracle_result(state, 1, 0);
+        state.execute.alu_results[INT_ISSUE_LANE].uop.branch.is_br = true;
+        state.execute.alu_results[INT_ISSUE_LANE].uop.branch.br_tag = 0;
+        state.execute.alu_results[MEM_ISSUE_LANE] = w4d_oracle_result(state, 2, 13);
+        } else if (operation == 3) {
+        w4d_oracle_owner(state, 1, 401, 14);
+        w4d_oracle_owner(state, 2, 402, 15);
+        w4d_oracle_owner(state, 3, 403, 16);
+        state.completion.load_response.valid = true;
+        state.completion.load_response.kind = COMPLETION_EXECUTE;
+        state.completion.load_response.source = COMPLETION_SOURCE_LSU_LOAD;
+        state.completion.load_response.uop = state.rob.entries[1].uop;
+        state.completion.load_response.writes_prf = true;
+        state.completion.load_response.value = 14;
+        state.execute.alu_results[MEM_ISSUE_LANE] = w4d_oracle_result(state, 2, 15);
+        state.execute.alu_results[INT_ISSUE_LANE] = w4d_oracle_result(state, 3, 16);
+        } else if (operation == 4 || operation == 6) {
+        w4d_oracle_owner(state, 1, 501, 24);
+        w4d_oracle_owner(state, 2, 502, 0);
+        w4d_oracle_owner(state, 3, 503, 24);
+        state.rob.tail = 4;
+        state.branch_state.active_mask = 1;
+        state.branch_state.tag_valid[0] = true;
+        state.branch_state.snapshot_valid[0] = true;
+        state.completion.load_response.valid = true;
+        state.completion.load_response.kind = COMPLETION_EXECUTE;
+        state.completion.load_response.source = COMPLETION_SOURCE_LSU_LOAD;
+        state.completion.load_response.uop = state.rob.entries[1].uop;
+        state.completion.load_response.writes_prf = true;
+        state.completion.load_response.value = 1;
+        state.execute.alu_results[INT_ISSUE_LANE] = w4d_oracle_result(state, 2, 0);
+        state.execute.alu_results[INT_ISSUE_LANE].uop.branch.is_br = true;
+        state.execute.alu_results[INT_ISSUE_LANE].uop.branch.br_tag = 0;
+        state.execute.alu_results[INT_ISSUE_LANE].mispredict = operation == 6;
+        state.execute.alu_results[MEM_ISSUE_LANE] = w4d_oracle_result(state, 3, 2);
+        state.execute.alu_results[MEM_ISSUE_LANE].uop.branch.br_mask = 1;
+        } else if (operation == 5) {
+        w4d_oracle_owner(state, 1, 601, 17);
+        w4d_oracle_owner(state, 2, 602, 17);
+        w4d_oracle_owner(state, 3, 603, 18);
+        state.completion.load_response.valid = true;
+        state.completion.load_response.kind = COMPLETION_EXECUTE;
+        state.completion.load_response.source = COMPLETION_SOURCE_LSU_LOAD;
+        state.completion.load_response.uop = state.rob.entries[1].uop;
+        state.completion.load_response.writes_prf = true;
+        state.completion.load_response.value = 1;
+        state.execute.alu_results[MEM_ISSUE_LANE] = w4d_oracle_result(state, 2, 2);
+        state.execute.alu_results[INT_ISSUE_LANE] = w4d_oracle_result(state, 3, 3);
+        } else if (operation == 7) {
+        w4d_oracle_owner(state, 1, 701, 19);
+        w4d_oracle_owner(state, 2, 702, 19);
+        w4d_oracle_owner(state, 3, 703, 20);
+        state.completion.load_response.valid = true;
+        state.completion.load_response.kind = COMPLETION_EXECUTE;
+        state.completion.load_response.source = COMPLETION_SOURCE_LSU_LOAD;
+        state.completion.load_response.uop = state.rob.entries[1].uop;
+        state.completion.load_response.writes_prf = true;
+        state.completion.load_response.value = 1;
+        state.execute.alu_results[MEM_ISSUE_LANE] = w4d_oracle_result(state, 2, 2);
+        state.execute.alu_results[INT_ISSUE_LANE] = w4d_oracle_result(state, 3, 3);
+        boom::completion_service_execute(state);
+        boom::completion_service_execute(state);
+        } else if (operation >= 8 && operation <= 13) {
+        w4d_oracle_owner(state, 1, 801, 21);
+        w4d_oracle_owner(state, 2, 802, operation == 9 ? 0 : 22);
+        state.rob.tail = 3;
+        if (operation == 8 || operation == 9) {
+            state.completion.load_response.valid = true;
+            state.completion.load_response.kind = COMPLETION_EXECUTE;
+            state.completion.load_response.source = COMPLETION_SOURCE_LSU_LOAD;
+            state.completion.load_response.uop = state.rob.entries[1].uop;
+            state.completion.load_response.writes_prf = true;
+            state.completion.load_response.value = 21;
+        } else {
+            state.execute.alu_results[MEM_ISSUE_LANE] = w4d_oracle_result(state, 1, 21);
+            state.execute.alu_results[MEM_ISSUE_LANE].memory_valid = true;
+            state.execute.alu_results[MEM_ISSUE_LANE].is_store = true;
+        }
+        state.execute.alu_results[INT_ISSUE_LANE] = w4d_oracle_result(state, 2, 22);
+        if (operation == 9) {
+            state.branch_state.active_mask = 1;
+            state.branch_state.tag_valid[0] = true;
+            state.execute.alu_results[INT_ISSUE_LANE].uop.branch.is_br = true;
+            state.execute.alu_results[INT_ISSUE_LANE].uop.branch.br_tag = 0;
+        }
+        if (operation == 13)
+            state.execute.alu_results[MEM_ISSUE_LANE] = ExecuteState::AluResult();
+        } else if (operation == 14) {
+        state.tohost = 1;
+        state.rob.commit_valid = true;
+        } else if (operation == 15) {
+        w4d_oracle_owner(state, 1, 1001, 25);
+        w4d_oracle_owner(state, 2, 1002, 26);
+        state.execute.alu_results[MEM_ISSUE_LANE] = w4d_oracle_result(state, 1, 25);
+        state.execute.alu_results[INT_ISSUE_LANE] = w4d_oracle_result(state, 2, 26);
+        boom::completion_service_execute(state);
+        w4d_oracle_owner(state, 3, 1003, 27);
+        w4d_oracle_owner(state, 4, 1004, 28);
+        state.execute.alu_results[MEM_ISSUE_LANE] = w4d_oracle_result(state, 3, 27);
+        state.execute.alu_results[INT_ISSUE_LANE] = w4d_oracle_result(state, 4, 28);
+        } else if (operation == 16) {
+        state.rob.tail = 5;
+        w4d_oracle_owner(state, 1, 1101, 14);
+        w4d_oracle_owner(state, 2, 1102, 15);
+        w4d_oracle_owner(state, 3, 1103, 16);
+        w4d_oracle_owner(state, 4, 1104, 17);
+        state.completion.load_response.valid = true;
+        state.completion.load_response.kind = COMPLETION_EXECUTE;
+        state.completion.load_response.source = COMPLETION_SOURCE_LSU_LOAD;
+        state.completion.load_response.uop = state.rob.entries[1].uop;
+        state.completion.load_response.writes_prf = true;
+        state.completion.load_response.value = 0x1414;
+        state.execute.alu_results[MEM_ISSUE_LANE] = w4d_oracle_result(state, 2, 0x1515);
+        state.execute.alu_results[INT_ISSUE_LANE] = w4d_oracle_result(state, 3, 0x1616);
+        RobEntry& load = state.rob.entries[4];
+        load.is_load = load.memory_valid = load.memory_request_sent = true;
+        load.memory_size = 3; load.memory_mask = 0xff; load.memory_transaction_id = 77;
+        state.lsu.load_response_pending = true;
+        state.lsu.pending_load_transaction_id = 77;
+        state.lsu.pending_load_rob_idx = 4;
+        state.lsu.pending_load_allocation_id = 1104;
+        state.lsu.ldq_count = 1; state.lsu.ldq_tail = 1; state.lsu.ldq[0].valid = true;
+        state.lsu.ldq[0].rob_idx = 4; state.lsu.ldq[0].rob_allocation_id = 1104;
+        DmemResponse response; response.transaction_id = 77;
+        response.data = response.read_data = 0x1717;
+        state.completion.total_completion_accepts = 40;
+        state.completion.total_prf_writes = 40;
+        state.completion.total_wakeups = 40;
+        boom::completion_service_execute(state);
+        production_retained = !state.completion.load_response.valid &&
+                              state.completion.int_execute.valid;
+        production_first_limits = state.completion.prf_writes_this_cycle == 2 &&
+                                  state.completion.wakeups_this_cycle == 3;
+        production_single_reset = state.completion.total_completion_accepts == 42 &&
+                                  state.completion.total_prf_writes == 42 &&
+                                  state.completion.total_wakeups == 43;
+        boom::completion_from_load_response(state, response,
+                                            state.completion.load_response);
+        boom::completion_service_execute(state);
+        production_consumed = !state.completion.load_response.valid &&
+                              !state.completion.int_execute.valid &&
+                              !state.lsu.load_response_pending &&
+                              state.completion.completion_accepts_this_cycle == 2 &&
+                              state.completion.prf_writes_this_cycle == 2;
+        production_values = boom::prf_read(state, 14) == 0x1414 &&
+                            boom::prf_read(state, 15) == 0x1515 &&
+                            boom::prf_read(state, 16) == 0x1616 &&
+                            boom::prf_read(state, 17) == 0x1717;
+        production_peaks = state.completion.peak_prf_writes == 2 &&
+                           state.completion.peak_wakeups == 3;
+        }
+    }
+    uint8_t operation = scenario & 0x7f;
+    if (operation == 16) {
+        *observable = production_retained |
+            (uint64_t)production_first_limits << 1 |
+            (uint64_t)production_single_reset << 2 |
+            (uint64_t)production_consumed << 3 |
+            (uint64_t)production_values << 4 |
+            (uint64_t)production_peaks << 5;
+        return;
+    }
+    boom::completion_service_execute(state);
+    uint8_t physical_writes = state.completion.writebacks[0].valid +
+                              state.completion.writebacks[1].valid;
+    uint8_t physical_wakeups = 0;
+    for (int i = 0; i < NUM_INT_WAKEUP_PORTS; i++)
+        physical_wakeups += state.completion.wakeups[i].valid;
+    uint64_t packed = physical_writes;
+    packed |= (uint64_t)physical_wakeups << 4;
+    packed |= (uint64_t)state.completion.writeback_fault_valid << 8;
+    packed |= (uint64_t)state.io_trap << 9;
+    packed |= (uint64_t)state.completion.mem_execute.valid << 10;
+    packed |= (uint64_t)state.completion.int_execute.valid << 11;
+    packed |= (uint64_t)state.completion.load_response.valid << 12;
+    packed |= (uint64_t)state.rob.entries[2].busy << 13;
+    packed |= (uint64_t)(boom::prf_read(state, 10) == 10) << 16;
+    packed |= (uint64_t)(boom::prf_read(state, 11) == 11) << 17;
+    packed |= (uint64_t)(boom::prf_read(state, 13) == 13) << 18;
+    packed |= (uint64_t)(boom::prf_read(state, 14) == 14) << 19;
+    packed |= (uint64_t)(boom::prf_read(state, 15) == 15) << 20;
+    packed |= (uint64_t)(boom::prf_read(state, 16) == 16) << 21;
+    packed |= (uint64_t)state.brupdate.valid << 22;
+    packed |= (uint64_t)state.brupdate.mispredict << 23;
+    packed |= (uint64_t)(boom::prf_read(state, 24) == 1) << 24;
+    packed |= (uint64_t)state.rob.entries[3].valid << 25;
+    packed |= (uint64_t)(state.completion.total_wakeups == 0) << 26;
+    packed |= (uint64_t)(state.completion.total_bypass == 0) << 27;
+    packed |= (uint64_t)state.rob.entries[3].busy << 28;
+    packed |= (uint64_t)(boom::prf_read(state, 20) == 0) << 29;
+    packed |= (uint64_t)(boom::prf_read(state, 21) == 21) << 30;
+    packed |= (uint64_t)(boom::prf_read(state, 22) == 22) << 31;
+    uint64_t lookup_value = 0;
+    bool lookup_conflict = false;
+    if (operation == 11)
+        packed |= (uint64_t)boom::wakeup_lookup(state, 22, lookup_value,
+                                                lookup_conflict) << 32;
+    if (operation == 12)
+        packed |= (uint64_t)boom::bypass_lookup(state, 22, lookup_value,
+                                                lookup_conflict) << 33;
+    packed |= (uint64_t)(state.completion.rob_completes_this_cycle & 3) << 34;
+    packed |= (uint64_t)(state.tohost == 1) << 36;
+    packed |= (uint64_t)state.rob.commit_valid << 37;
+    packed |= (uint64_t)(state.completion.total_rob_completes == 4) << 38;
+    packed |= (uint64_t)(state.completion.total_prf_writes == 4) << 39;
+    *observable = packed;
+}
+
+static uint64_t w4_retention_read_prf(const BoomCoreState& state,
+                                      uint8_t pdst) {
+#pragma HLS INLINE off
+    return boom::prf_read(state, pdst);
+}
+
+void synth_w4_core_step_retention_top(uint8_t seed, uint8_t phase,
+                                      uint64_t& observable) {
+    static BoomCoreState state;
+    static PipeSignals pipe;
+    static uint64_t staged_observable;
+    static uint64_t staged_value;
+    static uint8_t staged_first_pdst;
+#pragma HLS STREAM variable=pipe.dmem_resp depth=2
+#pragma HLS STREAM variable=pipe.imem_resp depth=2
+#pragma HLS STREAM variable=pipe.imem_req depth=2
+#pragma HLS STREAM variable=pipe.dmem_req depth=2
+#pragma HLS STREAM variable=pipe.commit_trace depth=2
+    if (phase != 0) {
+        uint64_t read0 = w4_retention_read_prf(state, staged_first_pdst);
+        uint64_t read1 = w4_retention_read_prf(state, staged_first_pdst + 1);
+        uint64_t read2 = w4_retention_read_prf(state, staged_first_pdst + 2);
+        uint64_t read3 = w4_retention_read_prf(state, staged_first_pdst + 3);
+        bool values = read0 == staged_value + 1 && read1 == staged_value + 2 &&
+                      read2 == staged_value + 3 && read3 == staged_value + 4;
+        observable = staged_observable | (uint64_t)values << 7;
+        return;
+    }
+
+    state = BoomCoreState();
+    uint32_t allocation = 1200 + seed;
+    uint64_t value = 0x2000 + seed;
+
+    state.rob.head = 0;
+    state.rob.tail = 5;
+    w4d_oracle_owner(state, 0, allocation, 0);
+    w4d_oracle_owner(state, 1, allocation + 1, 14);
+    w4d_oracle_owner(state, 2, allocation + 2, 15);
+    w4d_oracle_owner(state, 3, allocation + 3, 16);
+    w4d_oracle_owner(state, 4, allocation + 4, 17);
+
+    state.completion.load_response.valid = true;
+    state.completion.load_response.kind = COMPLETION_LOAD_RESPONSE;
+    state.completion.load_response.source = COMPLETION_SOURCE_LSU_LOAD;
+    state.completion.load_response.uop = state.rob.entries[1].uop;
+    state.completion.load_response.writes_prf = true;
+    state.completion.load_response.value = value + 1;
+    state.completion.load_response.transaction_id = 70 + seed;
+    state.rob.entries[1].is_load = true;
+    state.rob.entries[1].memory_valid = true;
+    state.rob.entries[1].memory_request_sent = true;
+    state.rob.entries[1].memory_size = 3;
+    state.rob.entries[1].memory_mask = 0xff;
+    state.rob.entries[1].memory_transaction_id = 70 + seed;
+    state.execute.alu_results[MEM_ISSUE_LANE] =
+        w4d_oracle_result(state, 2, value + 2);
+    state.execute.alu_results[INT_ISSUE_LANE] =
+        w4d_oracle_result(state, 3, value + 3);
+
+    state.rob.entries[4].is_load = true;
+    state.rob.entries[4].memory_valid = true;
+    state.rob.entries[4].memory_request_sent = true;
+    state.rob.entries[4].memory_size = 3;
+    state.rob.entries[4].memory_mask = 0xff;
+    state.rob.entries[4].memory_transaction_id = 80 + seed;
+    state.lsu.load_response_pending = true;
+    state.lsu.pending_load_transaction_id = 80 + seed;
+    state.lsu.pending_load_rob_idx = 4;
+    state.lsu.pending_load_allocation_id = allocation + 4;
+    state.lsu.ldq_count = 1;
+    state.lsu.ldq_tail = 1;
+    state.lsu.ldq[0].valid = true;
+    state.lsu.ldq[0].rob_idx = 4;
+    state.lsu.ldq[0].rob_allocation_id = allocation + 4;
+
+    DmemResponse queued;
+    queued.transaction_id = 80 + seed;
+    queued.data = queued.read_data = value + 4;
+    pipe.dmem_resp.write(queued);
+    ImemResponse ignored_imem;
+    ignored_imem.fetch_id = 0xff;
+    ignored_imem.address = RESET_VECTOR;
+    pipe.imem_resp.write(ignored_imem);
+    pipe.imem_resp.write(ignored_imem);
+
+    boom_core_step(state, pipe);
+    bool first_limits = state.completion.completion_accepts_this_cycle == 2 &&
+                        state.completion.rob_completes_this_cycle == 2 &&
+                        state.completion.prf_writes_this_cycle == 2;
+    bool first_queued = !pipe.dmem_resp.empty();
+    bool first_retained = state.completion.int_execute.valid &&
+                          !state.completion.load_response.valid;
+    bool first_lsu_owned = state.lsu.load_response_pending;
+    bool first_wakeups = state.completion.wakeups_this_cycle == 3;
+    if (!pipe.imem_req.empty()) pipe.imem_req.read();
+    if (!pipe.dmem_req.empty()) pipe.dmem_req.read();
+    if (!pipe.commit_trace.empty()) pipe.commit_trace.read();
+
+    boom_core_step(state, pipe);
+    bool second_consumed = pipe.dmem_resp.empty() &&
+                           !state.completion.load_response.valid &&
+                           !state.completion.mem_execute.valid &&
+                           !state.completion.int_execute.valid &&
+                           !state.lsu.load_response_pending;
+    bool second_limits = state.completion.completion_accepts_this_cycle == 2 &&
+                         state.completion.rob_completes_this_cycle == 2 &&
+                         state.completion.prf_writes_this_cycle == 2;
+    bool totals = state.completion.total_completion_accepts == 4 &&
+                  state.completion.total_rob_completes == 4 &&
+                  state.completion.total_prf_writes == 4;
+    bool integrity = state.completion.dropped_completions == 0 &&
+                     state.completion.dropped_writebacks == 0 &&
+                     state.completion.duplicate_writebacks == 0;
+    bool second_wakeups = state.completion.wakeups_this_cycle == 2;
+
+    staged_value = value;
+    staged_first_pdst = 13 + (seed & 1);
+    staged_observable = first_limits |
+        (uint64_t)first_queued << 1 |
+        (uint64_t)first_retained << 2 |
+        (uint64_t)first_lsu_owned << 3 |
+        (uint64_t)first_wakeups << 4 |
+        (uint64_t)second_consumed << 5 |
+        (uint64_t)second_limits << 6 |
+        (uint64_t)totals << 8 |
+        (uint64_t)integrity << 9 |
+        (uint64_t)second_wakeups << 10;
+    observable = staged_observable;
 }

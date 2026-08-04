@@ -1,6 +1,6 @@
 # Gate 4.0 Wide-Issue Boundary
 
-Gate 4.0 starts from the current W3 fixed-lane implementation. The checked-in source does not yet implement W4 or full wide issue. This document defines the present boundary without assigning a final gate status.
+Gate 4.0 uses the source-bound W4E fixed-lane implementation as its canonical final configuration. It adds two physical integer PRF writes to W4C multi-wakeup/bypass, but it does not implement full wide issue or wide commit.
 
 ## Current baseline
 
@@ -20,8 +20,8 @@ Despite that dual-lane behavior, the surrounding machine remains narrow:
 | ROB allocation | At most one packet per current cycle |
 | IQ grant | At most one MEM plus one INT |
 | Execute result storage | One persistent slot per active lane |
-| Execute completion service | At most one slot per cycle, oldest by ROB age |
-| Load response writeback | Owns the cycle's writeback opportunity when present |
+| Execute completion service | Up to three validated results may wake; up to two distinct destinations write PRF |
+| Load response writeback | Participates in the age-ordered two-write arbitration |
 | Commit | One ROB head entry (`COMMIT_WIDTH == 1`) |
 
 ## Ordering and identity baseline
@@ -32,9 +32,9 @@ DMEM loads and committed stores use a shared incrementing 32-bit transaction-ID 
 
 ## Recovery and writeback baseline
 
-Completion arbitration selects one matching result by wrap-safe ROB age. A branch selected for completion resolves before ordinary writeback; mispredict recovery removes matching younger state, including held completions, before those completions can update the register file. Reset sequencing has top-level priority and runs instead of a normal core cycle.
+Completion arbitration selects results by wrap-safe ROB age and fixed source priority. Up to three validated retained values publish fixed wakeup/bypass snapshots; the busy table is cleared only when one of two selected writes occurs or a same-value write is safely coalesced. A branch selected for completion resolves before ordinary writeback; mispredict recovery removes matching younger pending and transient forwarding state before issue. Reset sequencing has top-level priority and runs instead of a normal core cycle.
 
-Writeback remains deliberately conservative. Execute only fills a completion slot. The selected completion performs non-load integer writeback after ROB identity validation; load data writes back only after a matching response. A present DMEM response suppresses normal execute-completion service for that cycle, so the implementation does not provide two simultaneous integer writeback services.
+Execute only fills a completion slot. Up to two selected completions perform integer writeback after ROB identity validation; load data writes back only after a matching response. A third writer is retained. Same-destination/different-value events fail-stop with explicit conflict state and no write.
 
 ## What Gate 4.0 does not currently provide
 
@@ -42,10 +42,11 @@ Writeback remains deliberately conservative. Execute only fills a completion slo
 - Two ROB allocations from two new dispatch packets in one cycle.
 - Two MEM grants, two INT grants, or fungible steering across execution lanes.
 - More than one pending completion per active lane.
-- Two execute-completion services or general multiport register-file writeback in one cycle.
 - Wide commit.
 - Active FP issue/execute support.
 
-Accordingly, the current source should be described as fixed MEM/INT dual issue and execute with serialized completion, not W4 and not full wide issue. Any future Gate 4.0 claim must distinguish expansion of frontend/rename/ROB width, lane steering, completion bandwidth, writeback ports, and commit width rather than inferring wide issue from two independent W3 grants.
+Accordingly, the current source is fixed MEM/INT dual issue and execute with source-bound W4E two-port integer writeback, not full wide issue. Any wider claim must distinguish frontend/rename/ROB width, lane steering, completion bandwidth, writeback ports, and commit width.
 
-No final `VERIFIED` designation, regression total, synthesis result, or acceptance decision is claimed here.
+W4D phase evidence is recorded in `reports/gate4_0/w4/w4d_stage_results.md`. Waiver-free W4E software/random, focused RTL, 49-case full-core comparisons, and seven-target final csynth pass. The final two-bank LVT PRF closes W4 multiwrite, but decode, dispatch, and commit remain width one, so this is still fixed MEM/INT partial-width execution rather than full wide issue.
+
+`READY_FOR_FRONTEND_IMPLEMENTATION=false`: decode, dispatch, and commit are still width one and strict BOOM cycle equivalence is absent; the W4 directive guardrail itself is closed. `READY_FOR_FULL_LSU_IMPLEMENTATION=false`: the current LSU is intentionally minimal and lacks cache/MMU/TLB/PTW/replay/ordering prerequisites.

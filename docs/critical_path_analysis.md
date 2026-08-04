@@ -11,9 +11,9 @@ Gate 3.7 preserves the conservative accepted baseline while characterizing the o
 ## Current Status
 
 - Target clock: 10.00 ns (100 MHz)
-- Latest accepted baseline estimated period: 5.898 ns
-- Latest accepted baseline status: PASS for `boom_core_top`
-- Latest accepted baseline resources: 83286 LUT, 16611 FF, 16 BRAM_18K, 3 DSP
+- Gate 3 accepted baseline estimated period: 5.898 ns
+- Gate 3 accepted baseline status: PASS for `boom_core_top`
+- Gate 3 accepted baseline resources: 83286 LUT, 16611 FF, 16 BRAM_18K, 3 DSP
 - Gate 3.4 attribution baseline runtime: 69.33 seconds, 1521180 KB peak memory
 - Gate 3.5 best unaccepted variant: D4_LOCAL_KILL_BITMAP, 82789 LUT, 17041 FF, 16 BRAM_18K, 3 DSP, 5.898 ns; rejected because reduction is only 0.60%
 - Finite step-top status: PASS for `boom_core_step_top`, 69.78 seconds, 1521136 KB peak memory, 83353 LUT, 16808 FF, 16 BRAM_18K, 3 DSP
@@ -50,3 +50,9 @@ Do not apply these until strict trace evidence exists for the target behavior:
 - Additional full `CORE_CYCLE` pipeline II experiments remain closed after P1 no-II timed out before scheduling. Do not bypass the report gate with II=1 or false-dependence directives.
 
 Cycle equivalence remains INSUFFICIENT_EVIDENCE. Gate 3.7 status is `CORE_CYCLE_PIPELINE_TRANSFORMATION_TIMEOUT_NO_SYNTHESIS_CANDIDATE`; Gate 3.3 remains the accepted PPA configuration.
+
+## Gate 4.0 W4E Final
+
+The final W4E product estimate is 6.025 ns for both step and product tops. Verbose scheduling localizes the longest state to `execute_module` state 8 at 6.02 ns: selected source readiness, parallel 52x64 replicated-bank reads, LVT selection, operand/opcode selection, and execute result/control generation. Completion service is secondary. Canonical verbose evidence is under `reports/gate4_0/w4/csynth_final/{synth_core_step_top,boom_core_top}/verbose/`.
+
+All tops are reported unpipelined and `CORE_CYCLE` has no `PipelineII`. The source has no DATAFLOW, false-dependence, or explicit complete-partition pragma. Waiver-free `apply_writeback_ports` reaches target/final II=1 and maps independent bank write enables. The LVT bank-select read cone moves `execute_module` state 8 to 6.02 ns; final product estimate is 6.025 ns.

@@ -32,7 +32,9 @@ Gate 4.0 W1 update: fixed three-lane issue and execute-result interfaces are ver
 
 Gate 4.0 W2 update: the shared implemented IQ can generate one oldest-ready MEM grant and one oldest-ready INT grant in the same cycle. Independent lane backpressure retains unaccepted grants, but conservative execute intake remains one. Status is `W2_DUAL_SELECTION_VERIFIED`, not dual execution.
 
-Gate 4.0 W3 update: fixed MEM/INT lanes accept and execute concurrently, retain two pending completions, and serialize completion/writeback with allocation-identity, branch-kill, reset, and blocked-dispatch safeguards. Status is `W3_DUAL_EXECUTE_ACCEPTANCE_VERIFIED`; no W4 implementation is present.
+Gate 4.0 W3 update: fixed MEM/INT lanes accept and execute concurrently, retain two pending completions, and serialize completion/writeback with allocation-identity, branch-kill, reset, and blocked-dispatch safeguards. Status is `W3_DUAL_EXECUTE_ACCEPTANCE_VERIFIED`.
+
+Gate 4.0 W4 update: the false-dependence pragma is removed and replaced by a two-replica, 52-bit-LVT logical integer PRF. Software/random and RTL matrices pass, including the no-partition two-real-`boom_core_step` diagnostic; source-bound W4E final csynth passes all seven requested tops, both bank write enables are generated, and the write stage reaches II=1. `W4_MULTI_WRITEBACK_VERIFIED=true`, `READY_FOR_COMPLETE_M_EXTENSION=true`, `READY_FOR_FRONTEND_IMPLEMENTATION=false`, and `READY_FOR_FULL_LSU_IMPLEMENTATION=false`.
 
 Gate 4.0 W3 source scope: acceptance covers the modular `src/*.cpp` implementation plus generated `src/boom_core_merged.cpp` and public `src/boom_core_top.cpp` only. `src/boom_all.cpp` is a legacy, non-canonical, unreferenced monolithic snapshot; active build, test, RTL-generation, and csynth scripts do not consume it. It is excluded from source manifests and acceptance without deletion or rewrite. Pre-existing dirty tracked logs and backup logs are excluded non-deliverables and are not evidence.
 
@@ -44,7 +46,7 @@ Gate 4.0 W3 source scope: acceptance covers the modular `src/*.cpp` implementati
 - Integer rename map/free-list/stale-pdst commit release for single dispatch lane.
 - ROB allocate, complete, commit, full backpressure, and wrap behavior for current tests.
 - Shared implemented issue queue dispatch/select/compact with fixed MEM/INT selection lanes and up to two accepted execute inputs.
-- Two retained fixed-lane completion slots with oldest-first serialized completion/writeback service.
+- Three retained completion slots (LSU load, MEM execute, INT execute) with oldest-first service, up to three ROB completions/wakeups, and two PRF writes.
 - CSR cycle/instret and ECALL success/trap subset.
 - Commit trace output for directed tests.
 - Minimal integer LSU path for LB/LBU/LH/LHU/LW/LWU/LD and SB/SH/SW/SD in the current conservative single-lane path.
@@ -56,7 +58,7 @@ Gate 4.0 W3 source scope: acceptance covers the modular `src/*.cpp` implementati
 - Branch recovery is implemented for the supported HLS subset, but strict BOOM event/cycle timing is not verified and the original Chisel source checkout is unavailable for direct inspection.
 - M004 JALR redirect is verified only as a concrete Gate 1 functional test; Gate 3.3 branch recovery is tracked separately under M009.
 - Full BOOM IssueWidth=3 execution is not implemented; W3 supports fixed MEM/INT dual acceptance only, and the FP lane remains unsupported.
-- Busy-table wakeup is simplified and not equivalent to BOOM's full bypass/wakeup network; Gate 3.3 recovery rebuilds busy state functionally from still-valid busy ROB entries.
+- The three-port busy-table wakeup/bypass network is verified for the supported subset but is not equivalent to BOOM's full speculative/replay network; recovery rebuilds busy state from still-valid busy ROB entries.
 - Exception and flush handling are coarse compared with BOOM.
 - Cycle timing is not verified against BOOM.
 - Conservative no-pipeline csynth remains stable. Gate 3.7 confirms the full-cycle pipeline transformation still fails to close even without an II target; no pipelined schedule or minimum II is available.
@@ -121,4 +123,8 @@ Gate 4.0 W3 source scope: acceptance covers the modular `src/*.cpp` implementati
 - Gate 4.0 W3 software: 15/15 suites, 400/400 checks, and 100x64 persistent random PASS with 0 dropped and 0 duplicate tokens.
 - Gate 4.0 W3 generated RTL: focused dual-execute RTL 11/11 PASS; full-core XSim, normalized trace, and architecture comparison 49/49 PASS.
 - Gate 4.0 W3 csynth: all five canonical targets PASS; `boom_core_top` is 68055 LUT, 16149 FF, 15 BRAM_18K, 3 DSP, and 5.898 ns. Values are HLS estimates, not post-route timing or accepted product PPA.
-- Gate 4.0 W3 readiness: `READY_FOR_W4_MULTI_WAKEUP_WRITEBACK=true`, `READY_FOR_OFFICIAL_GATE_3=false`, M009 `PARTIALLY_VERIFIED`, and M014 `VERIFIED`. No W4 implementation is present; Chipyard/FESVR/DRAMSim full-system validation remains externally blocked.
+- At the Gate 4.0 W3 checkpoint, `READY_FOR_W4_MULTI_WAKEUP_WRITEBACK=true`, `READY_FOR_OFFICIAL_GATE_3=false`, M009 `PARTIALLY_VERIFIED`, and M014 `VERIFIED`; W4 was not yet present at that historical checkpoint.
+- Gate 4.0 W4E software/random: 95/95 cumulative W4 directed checks, 128/128 seeds, 16,384 cycles, peak 3 completion sources, 2 writes, 3 wakeups, and 3 bypasses; zero dropped/duplicate/stale-side-effect/unexplained tokens.
+- Gate 4.0 W4 RTL: focused W4 20/20, current W3 11/11, and full-core XSim/normalized architecture 49/49 PASS. The added diagnostic uses two real core steps without complete partitioning; modular product source and preserved product RTL hashes are unchanged.
+- Gate 4.0 W4E source-bound csynth: 7/7 PASS at 10 ns on `xczu7ev-ffvc1156-2-e`; `boom_core_top` is 111869 LUT, 25094 FF, 16 BRAM_18K, 3 DSP, and 6.025 ns. `CORE_CYCLE` has no pipeline II; writeback target/final II=1.
+- Gate 4.0 final statuses: `M009=PARTIALLY_VERIFIED`, `M014=VERIFIED`, `READY_FOR_OFFICIAL_GATE_3=false`. Strict BOOM cycle equivalence is not claimed; official Chipyard/FESVR/DRAMSim validation remains externally unavailable.
