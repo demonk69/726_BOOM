@@ -17,6 +17,10 @@ cat > "$OUT" << 'HEAD'
 #include "issue.hpp"
 #include "reset.hpp"
 #include "completion.hpp"
+#include "mul.hpp"
+#if defined(BOOM_USE_AP_INT) || defined(__SYNTHESIS__)
+#include <ap_int.h>
+#endif
 #include <cstdint>
 
 #define UOPC_MERGED_NOP 0
@@ -43,6 +47,9 @@ grep -v '#include' "$BASE/src/rob.cpp" >> "$OUT"
 echo "" >> "$OUT"
 echo "// ==== issue.cpp ====" >> "$OUT"
 grep -v '#include' "$BASE/src/issue.cpp" >> "$OUT"
+echo "" >> "$OUT"
+echo "// ==== mul.cpp ====" >> "$OUT"
+grep -v '#include' "$BASE/src/mul.cpp" >> "$OUT"
 echo "" >> "$OUT"
 echo "// ==== execute.cpp ====" >> "$OUT"
 grep -v '#include' "$BASE/src/execute.cpp" >> "$OUT"

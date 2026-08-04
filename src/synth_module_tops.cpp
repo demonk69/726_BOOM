@@ -4,6 +4,7 @@
 #include "boom_interfaces.hpp"
 #include "reset.hpp"
 #include "completion.hpp"
+#include "mul.hpp"
 
 extern void boom_core_step(BoomCoreState& state, PipeSignals& pipe);
 
@@ -130,6 +131,18 @@ void synth_execute_top(uint8_t seed_uopc, uint64_t seed_rs1, uint64_t seed_rs2, 
     boom::prf_seed(state, 2, seed_rs2);
     boom::execute_module(state);
     observable = state.execute.alu_results[INT_ISSUE_LANE].result;
+}
+
+void synth_mul_top(uint8_t operation, uint64_t lhs, uint64_t rhs,
+                   uint64_t& result, bool& valid) {
+    boom::MulRequest request;
+    request.valid = true;
+    request.operation = (boom::MulOperation)operation;
+    request.lhs = lhs;
+    request.rhs = rhs;
+    const boom::MulResponse response = boom::execute_mul(request);
+    result = response.result;
+    valid = response.valid;
 }
 
 void synth_completion_top(uint8_t seed_sources, uint8_t seed_head,
