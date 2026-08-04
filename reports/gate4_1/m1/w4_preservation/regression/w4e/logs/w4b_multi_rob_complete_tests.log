@@ -1,0 +1,20 @@
+=== Gate 4.0 W4B Multi ROB Complete Tests ===
+  [W4B multi ROB] four ports, canonical integer subset only      ... PASS
+  [W4B multi ROB] branch and store complete together             ... PASS
+  [W4B multi ROB] two nonwriting entries complete                ... PASS
+  [W4B multi ROB] duplicate same ROB allocation rejected         ... PASS
+  [W4B multi ROB] stale and branch-killed events rejected        ... PASS
+  [W4B multi ROB] ROB wrap age orders two writers                ... PASS
+  [W4B multi ROB] trace backpressure independent of completion   ... PASS
+  [W4B multi ROB] two writing completions use two PRF slots      ... PASS
+  [W4B multi ROB] lane 2 is invalid and cannot complete          ... PASS
+  [W4B multi ROB] load response plus two execute completions     ... PASS
+  [W4B multi ROB] reset clears all retained completions          ... PASS
+  [W4B multi ROB] branch recovery precedes exception and kill    ... PASS
+  [W4B multi ROB] older writing JAL fences younger store         ... PASS
+  [W4B multi ROB] older writing JALR fences younger store        ... PASS
+  [W4B multi ROB] older precise exception fences younger store   ... PASS
+  [W4B multi ROB] resolved mask clears retained completion       ... PASS
+  [W4B multi ROB] load AGU never consumes PRF or wakeup          ... PASS
+W4B multi ROB complete: 17 passed, 0 failed
+W4B_METRICS peak_rob_complete=3 peak_prf_writes=2 peak_wakeups=2 total_rob_complete=28 total_prf_writes=14 total_wakeups=13

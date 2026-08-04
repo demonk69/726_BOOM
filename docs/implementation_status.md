@@ -36,6 +36,8 @@ Gate 4.0 W3 update: fixed MEM/INT lanes accept and execute concurrently, retain 
 
 Gate 4.0 W4 update: the false-dependence pragma is removed and replaced by a two-replica, 52-bit-LVT logical integer PRF. Software/random and RTL matrices pass, including the no-partition two-real-`boom_core_step` diagnostic; source-bound W4E final csynth passes all seven requested tops, both bank write enables are generated, and the write stage reaches II=1. `W4_MULTI_WRITEBACK_VERIFIED=true`, `READY_FOR_COMPLETE_M_EXTENSION=true`, `READY_FOR_FRONTEND_IMPLEMENTATION=false`, and `READY_FOR_FULL_LSU_IMPLEMENTATION=false`.
 
+Gate 4.1 M1 update: exact decode and INT-compatible issue classification are verified for all 13 RV64M operations. Required legal, `rd=x0`, illegal near-miss, and base OP/OP-32 collision vectors pass 42/42. W3/W4 software, random, frozen trace, architecture, and partial-order preservation pass; conservative csynth passes 3/3 with `boom_core_top` at 6.025 ns and `CORE_CYCLE` unpipelined. `M1_RV64M_DECODE_VERIFIED=true` and `READY_FOR_M2_MUL_FAMILY=true`; arithmetic execution is not yet implemented or claimed.
+
 Gate 4.0 W3 source scope: acceptance covers the modular `src/*.cpp` implementation plus generated `src/boom_core_merged.cpp` and public `src/boom_core_top.cpp` only. `src/boom_all.cpp` is a legacy, non-canonical, unreferenced monolithic snapshot; active build, test, RTL-generation, and csynth scripts do not consume it. It is excluded from source manifests and acceptance without deletion or rewrite. Pre-existing dirty tracked logs and backup logs are excluded non-deliverables and are not evidence.
 
 ## Implemented And Tested
@@ -127,4 +129,5 @@ Gate 4.0 W3 source scope: acceptance covers the modular `src/*.cpp` implementati
 - Gate 4.0 W4E software/random: 95/95 cumulative W4 directed checks, 128/128 seeds, 16,384 cycles, peak 3 completion sources, 2 writes, 3 wakeups, and 3 bypasses; zero dropped/duplicate/stale-side-effect/unexplained tokens.
 - Gate 4.0 W4 RTL: focused W4 20/20, current W3 11/11, and full-core XSim/normalized architecture 49/49 PASS. The added diagnostic uses two real core steps without complete partitioning; modular product source and preserved product RTL hashes are unchanged.
 - Gate 4.0 W4E source-bound csynth: 7/7 PASS at 10 ns on `xczu7ev-ffvc1156-2-e`; `boom_core_top` is 111869 LUT, 25094 FF, 16 BRAM_18K, 3 DSP, and 6.025 ns. `CORE_CYCLE` has no pipeline II; writeback target/final II=1.
+- Gate 4.1 M1 decode: 42/42 focused vectors, W3 400/400, W4 directed 95/95, reset 14/14, W4 random 128/128, frozen traces 14/14 byte-identical, full-program diff 10/10, and conservative csynth 3/3 PASS. `boom_core_top` is 114088 LUT, 25719 FF, 16 BRAM_18K, 3 DSP, and 6.025 ns.
 - Gate 4.0 final statuses: `M009=PARTIALLY_VERIFIED`, `M014=VERIFIED`, `READY_FOR_OFFICIAL_GATE_3=false`. Strict BOOM cycle equivalence is not claimed; official Chipyard/FESVR/DRAMSim validation remains externally unavailable.

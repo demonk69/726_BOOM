@@ -7,10 +7,10 @@
 | boom_core_step | src/boom_core_step.cpp | PARTIAL | PASS_W4E_FINAL_CSYNTH | Owns exactly one completion service; no-partition two-step diagnostic PASS; final step top 105121 LUT and 6.025 ns |
 | boom_core_ncycle_n1/n2/n4/n8_top | src/boom_core_top.cpp | ANALYSIS_ONLY | PASS_ATTRIBUTION_CSYNTH | Gate 3.6 fixed-trip controls; one retained cycle wrapper, no pipeline/unroll, flat resources; not product replacements |
 | frontend | src/frontend.cpp | PARTIAL | PASS_MODULE_CSYNTH | Ideal imem request/response subset; no ICache/FetchBuffer/BP |
-| decode | src/decode.cpp | PARTIAL | PASS_MODULE_CSYNTH | DecodeUnit subset; no full decode/RVC coverage |
+| decode | src/decode.cpp | PARTIAL_M1_RV64M_VERIFIED | PASS_M1_CSYNTH | Exact decode for all 13 RV64M operations and strict OP/OP-32 legality; arithmetic, RVC, and full decode coverage remain incomplete |
 | rename | src/rename.cpp | PARTIAL | PASS_MODULE_CSYNTH | Integer RenameMapTable + FreeList subset; Gate 3.3 branch tag allocation, masks, snapshots, and allocation-list tracking implemented for supported subset |
 | rob | src/rob.cpp | PARTIAL | PASS_W4E_FINAL_CSYNTH | 32-entry ROB allocation/flush subset; up to three completion sources validated |
-| issue | src/issue.cpp | PARTIAL | PASS_W4E_FINAL_CSYNTH | Fixed MEM/INT grants and three wakeup/bypass lookups; FP lane inactive |
+| issue | src/issue.cpp | PARTIAL | PASS_M1_CSYNTH | Fixed MEM/INT grants; RV64M `FU_MUL`/`FU_DIV` classify INT-compatible; FP lane inactive and M arithmetic remains later work |
 | execute | src/execute.cpp | PARTIAL | PASS_W4E_FINAL_CSYNTH | Concurrent fixed MEM/INT lanes; no active FPU/muldiv timing model |
 | completion | src/completion.cpp | PARTIAL | PASS_W4E_FINAL_CSYNTH | Three named pending slots, three publications, and waiver-free two-bank/LVT PRF writeback at II=1 |
 | branch | src/branch.cpp | PARTIAL | COVERED_BY_STEP_TOP_CSYNTH | Gate 3.3 branch resolution/release, mispredict snapshot restore, free-list rollback, busy rebuild, mask clear, and younger-state kill implemented for supported subset; no predictor metadata |

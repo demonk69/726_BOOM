@@ -20,6 +20,7 @@
 | Gate 3.9 generated RTL | PASS: `RTL_RESET_VERIFIED` | XSim 49/49; reset architecture 14/14; M014 verified |
 | Gate 3.10 local pipeline | COMPLETE: no accepted candidate | R1 II=1 and XSim 49/49, rejected latency/cycles; L1-L5 illegal |
 | Gate 4.0 W4E | PASS | directed 95/95, random 128/128, focused RTL 20/20+11/11, full-core 49/49, source-bound final csynth 7/7, two independent bank writes, final II=1 |
+| Gate 4.1 M1 RV64M decode | PASS | focused 42/42, W3 400/400, W4 95/95+128/128, frozen traces 14/14 byte-identical, csynth 3/3 |
 | Official Gate 3 | BLOCKED | original Chipyard/FESVR/DRAMSim path unavailable |
 
 ## Trace Format
@@ -114,6 +115,17 @@ Gate 3.8 remains failed until the last two requirements pass. See `reports/gate3
 - [ ] 100 random RV64I instructions produce correct results
 - [ ] Vitis HLS csim_design passes
 - [ ] Vitis HLS csynth_design passes
+
+### Gate 4.1 M1 RV64M Decode
+- [x] Decode all 13 legal RV64M OP/OP-32 operations
+- [x] Reject reserved M and invalid base-ALU near-miss encodings
+- [x] Preserve legal base OP/OP-32 decode
+- [x] Route `FU_MUL` and `FU_DIV` only to the INT-compatible lane
+- [x] Preserve W3/W4 software, random, reset, trace, architecture, and partial-order evidence
+- [x] Complete conservative decode, step, and product csynth
+- [x] Keep `CORE_CYCLE` unpipelined
+- [ ] Implement multiply arithmetic in M2
+- [ ] Implement persistent divide arithmetic in M3-M5
 
 ### Gate M2
 - [ ] Rename unit tests pass (map, free list, busy table, snapshots)

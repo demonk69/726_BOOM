@@ -1,0 +1,14 @@
+instruction,opcode,funct7,funct3,uopc,fu,status,baseline_behavior
+MUL,0x33,0x01,0,16,FU_MUL,PARTIAL,legal but execute semantics are only a narrow placeholder
+MULH,0x33,0x01,1,17,FU_MUL,NOT_DECODED,illegal
+MULHSU,0x33,0x01,2,18,FU_MUL,NOT_DECODED,illegal
+MULHU,0x33,0x01,3,19,FU_MUL,NOT_DECODED,illegal
+DIV,0x33,0x01,4,21,FU_DIV,NOT_DECODED,illegal
+DIVU,0x33,0x01,5,22,FU_DIV,NOT_DECODED,illegal
+REM,0x33,0x01,6,23,FU_DIV,NOT_DECODED,illegal
+REMU,0x33,0x01,7,24,FU_DIV,NOT_DECODED,illegal
+MULW,0x3b,0x01,0,20,FU_MUL,MISDECODED,decoded as ADDW
+DIVW,0x3b,0x01,4,25,FU_DIV,NOT_DECODED,illegal
+DIVUW,0x3b,0x01,5,26,FU_DIV,MISDECODED,decoded as SRLW
+REMW,0x3b,0x01,6,27,FU_DIV,NOT_DECODED,illegal
+REMUW,0x3b,0x01,7,28,FU_DIV,NOT_DECODED,illegal

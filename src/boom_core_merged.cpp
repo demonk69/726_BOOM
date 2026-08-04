@@ -201,6 +201,14 @@ static uint32_t extract_imm_j(uint32_t inst) {
     int32_t v=((inst>>21)&0x3FF)<<1; v|=((inst>>20)&0x1)<<11; v|=((inst>>12)&0xFF)<<12; v|=((inst>>31)&0x1)<<20;
     if(v&0x100000) v|=0xFFE00000; return (uint32_t)v; }
 
+static void mark_illegal_r_type(MicroOp& uop) {
+    uop.uopc = UOPC_ILLEGAL;
+    uop.fu_code = FU_ALU;
+    uop.rename.dst_rtype = DST_N;
+    uop.exception = true;
+    uop.exc_cause = 2;
+}
+
 void decode_module(BoomCoreState& state) {
     DecodeState& dec = state.decode;
 
@@ -291,22 +299,53 @@ void decode_module(BoomCoreState& state) {
             case 5:uop.uopc=(f7==0)?UOPC_SRLIW:UOPC_SRAIW;break;
             default:uop.uopc=UOPC_ILLEGAL;uop.exception=true;break;} break;
         case 0x33: uop.iq_type=IQ_ALU; uop.ctrl.op1_sel=OP1_RS1; uop.ctrl.op2_sel=OP2_RS2;
-            if (f7==1) { uop.fu_code= FU_MUL; uop.rename.dst_rtype=DST_INT;
-                switch(f3) { case 0:uop.uopc=UOPC_MUL;break;
-                default:uop.uopc=UOPC_ILLEGAL;uop.exception=true;break;}}
-            else { uop.fu_code= FU_ALU; uop.rename.dst_rtype=DST_INT;
-                switch(f3) { case 0:uop.uopc=(f7==0x20)?UOPC_SUB:UOPC_ADD;break;
-                case 1:uop.uopc=UOPC_SLL;break; case 2:uop.uopc=UOPC_SLT;break;
-                case 3:uop.uopc=UOPC_SLTU;break; case 4:uop.uopc=UOPC_XOR;break;
-                case 5:uop.uopc=(f7==0x20)?UOPC_SRA:UOPC_SRL;break;
-                case 6:uop.uopc=UOPC_OR;break; case 7:uop.uopc=UOPC_AND;break;
-                default:uop.uopc=UOPC_ILLEGAL;uop.exception=true;break;}} break;
+            uop.rename.dst_rtype=DST_INT;
+            if (f7==0x01) {
+                uop.ctrl.op_fcn=f3;
+                switch(f3) {
+                case 0:uop.uopc=UOPC_MUL;uop.fu_code=FU_MUL;break;
+                case 1:uop.uopc=UOPC_MULH;uop.fu_code=FU_MUL;break;
+                case 2:uop.uopc=UOPC_MULHSU;uop.fu_code=FU_MUL;break;
+                case 3:uop.uopc=UOPC_MULHU;uop.fu_code=FU_MUL;break;
+                case 4:uop.uopc=UOPC_DIV;uop.fu_code=FU_DIV;break;
+                case 5:uop.uopc=UOPC_DIVU;uop.fu_code=FU_DIV;break;
+                case 6:uop.uopc=UOPC_REM;uop.fu_code=FU_DIV;break;
+                case 7:uop.uopc=UOPC_REMU;uop.fu_code=FU_DIV;break;
+                }
+            } else {
+                uop.fu_code=FU_ALU;
+                switch(f3) {
+                case 0:if(f7==0x00)uop.uopc=UOPC_ADD;else if(f7==0x20)uop.uopc=UOPC_SUB;else mark_illegal_r_type(uop);break;
+                case 1:if(f7==0x00)uop.uopc=UOPC_SLL;else mark_illegal_r_type(uop);break;
+                case 2:if(f7==0x00)uop.uopc=UOPC_SLT;else mark_illegal_r_type(uop);break;
+                case 3:if(f7==0x00)uop.uopc=UOPC_SLTU;else mark_illegal_r_type(uop);break;
+                case 4:if(f7==0x00)uop.uopc=UOPC_XOR;else mark_illegal_r_type(uop);break;
+                case 5:if(f7==0x00)uop.uopc=UOPC_SRL;else if(f7==0x20)uop.uopc=UOPC_SRA;else mark_illegal_r_type(uop);break;
+                case 6:if(f7==0x00)uop.uopc=UOPC_OR;else mark_illegal_r_type(uop);break;
+                case 7:if(f7==0x00)uop.uopc=UOPC_AND;else mark_illegal_r_type(uop);break;
+                }
+            } break;
         case 0x3B: uop.iq_type=IQ_ALU; uop.ctrl.op1_sel=OP1_RS1; uop.ctrl.op2_sel=OP2_RS2;
-            uop.fu_code= FU_ALU; uop.rename.dst_rtype=DST_INT; uop.ctrl.fcn_dw=1;
-            switch(f3) { case 0:uop.uopc=(f7==0x20)?UOPC_SUBW:UOPC_ADDW;break;
-            case 1:uop.uopc=UOPC_SLLW;break;
-            case 5:uop.uopc=(f7==0x20)?UOPC_SRAW:UOPC_SRLW;break;
-            default:uop.uopc=UOPC_ILLEGAL;uop.exception=true;break;} break;
+            uop.rename.dst_rtype=DST_INT; uop.ctrl.fcn_dw=1;
+            if (f7==0x01) {
+                uop.ctrl.op_fcn=f3;
+                switch(f3) {
+                case 0:uop.uopc=UOPC_MULW;uop.fu_code=FU_MUL;break;
+                case 4:uop.uopc=UOPC_DIVW;uop.fu_code=FU_DIV;break;
+                case 5:uop.uopc=UOPC_DIVUW;uop.fu_code=FU_DIV;break;
+                case 6:uop.uopc=UOPC_REMW;uop.fu_code=FU_DIV;break;
+                case 7:uop.uopc=UOPC_REMUW;uop.fu_code=FU_DIV;break;
+                default:mark_illegal_r_type(uop);break;
+                }
+            } else {
+                uop.fu_code=FU_ALU;
+                switch(f3) {
+                case 0:if(f7==0x00)uop.uopc=UOPC_ADDW;else if(f7==0x20)uop.uopc=UOPC_SUBW;else mark_illegal_r_type(uop);break;
+                case 1:if(f7==0x00)uop.uopc=UOPC_SLLW;else mark_illegal_r_type(uop);break;
+                case 5:if(f7==0x00)uop.uopc=UOPC_SRLW;else if(f7==0x20)uop.uopc=UOPC_SRAW;else mark_illegal_r_type(uop);break;
+                default:mark_illegal_r_type(uop);break;
+                }
+            } break;
         case 0x0F: uop.uopc=UOPC_FENCE; uop.iq_type=IQ_MEM; uop.fu_code= FU_MEM;
             uop.rename.dst_rtype=DST_N; break;
         case 0x73: if(f3==0) { if(rd==0&&(inst>>20)==0) {uop.uopc=UOPC_ECALL;
@@ -1380,7 +1419,10 @@ IssuePortClass classify_issue_port(const MicroOp& uop) {
     if (uop.iq_type == IQ_MEM && uop.fu_code == FU_MEM && uop.uopc >= 39 && uop.uopc <= 49)
         return ISSUE_PORT_MEM;
     if (uop.iq_type != IQ_ALU) return ISSUE_PORT_UNSUPPORTED;
-    if (uop.fu_code == FU_MUL) return uop.uopc == 16 ? ISSUE_PORT_INT : ISSUE_PORT_UNSUPPORTED;
+    if (uop.fu_code == FU_MUL)
+        return uop.uopc >= 16 && uop.uopc <= 20 ? ISSUE_PORT_INT : ISSUE_PORT_UNSUPPORTED;
+    if (uop.fu_code == FU_DIV)
+        return uop.uopc >= 21 && uop.uopc <= 28 ? ISSUE_PORT_INT : ISSUE_PORT_UNSUPPORTED;
     if (uop.fu_code != FU_ALU) return ISSUE_PORT_UNSUPPORTED;
     if ((uop.uopc >= 1 && uop.uopc <= 13) || uop.uopc == 15 ||
         (uop.uopc >= 29 && uop.uopc <= 38) ||

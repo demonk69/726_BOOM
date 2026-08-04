@@ -35,7 +35,9 @@ RefClass ref_classify(const MicroOp& uop) {
         return REF_MEM;
     if (uop.iq_type != IQ_ALU) return REF_UNSUPPORTED;
     if (uop.fu_code == FU_MUL)
-        return uop.uopc == 16 ? REF_INT : REF_UNSUPPORTED;
+        return uop.uopc >= 16 && uop.uopc <= 20 ? REF_INT : REF_UNSUPPORTED;
+    if (uop.fu_code == FU_DIV)
+        return uop.uopc >= 21 && uop.uopc <= 28 ? REF_INT : REF_UNSUPPORTED;
     if (uop.fu_code != FU_ALU) return REF_UNSUPPORTED;
     if ((uop.uopc >= 1 && uop.uopc <= 13) || uop.uopc == 15 ||
         (uop.uopc >= 29 && uop.uopc <= 38) ||

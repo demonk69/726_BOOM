@@ -115,7 +115,8 @@ RefPort ref_port(const MicroOp& u) {
     if (u.exception) return RP_NONE;
     if (u.iq_type==IQ_MEM && u.fu_code==FU_MEM && u.uopc>=39 && u.uopc<=49) return RP_MEM;
     if (u.iq_type!=IQ_ALU) return RP_NONE;
-    if (u.fu_code==FU_MUL) return u.uopc==16 ? RP_INT : RP_NONE;
+    if (u.fu_code==FU_MUL) return u.uopc>=16&&u.uopc<=20 ? RP_INT : RP_NONE;
+    if (u.fu_code==FU_DIV) return u.uopc>=21&&u.uopc<=28 ? RP_INT : RP_NONE;
     if (u.fu_code!=FU_ALU) return RP_NONE;
     if ((u.uopc>=1&&u.uopc<=13)||u.uopc==15||(u.uopc>=29&&u.uopc<=38)||
         (u.uopc>=50&&u.uopc<=60)||u.uopc==62) return RP_INT;

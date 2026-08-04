@@ -9,7 +9,10 @@ IssuePortClass classify_issue_port(const MicroOp& uop) {
     if (uop.iq_type == IQ_MEM && uop.fu_code == FU_MEM && uop.uopc >= 39 && uop.uopc <= 49)
         return ISSUE_PORT_MEM;
     if (uop.iq_type != IQ_ALU) return ISSUE_PORT_UNSUPPORTED;
-    if (uop.fu_code == FU_MUL) return uop.uopc == 16 ? ISSUE_PORT_INT : ISSUE_PORT_UNSUPPORTED;
+    if (uop.fu_code == FU_MUL)
+        return uop.uopc >= 16 && uop.uopc <= 20 ? ISSUE_PORT_INT : ISSUE_PORT_UNSUPPORTED;
+    if (uop.fu_code == FU_DIV)
+        return uop.uopc >= 21 && uop.uopc <= 28 ? ISSUE_PORT_INT : ISSUE_PORT_UNSUPPORTED;
     if (uop.fu_code != FU_ALU) return ISSUE_PORT_UNSUPPORTED;
     if ((uop.uopc >= 1 && uop.uopc <= 13) || uop.uopc == 15 ||
         (uop.uopc >= 29 && uop.uopc <= 38) ||
