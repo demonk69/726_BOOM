@@ -6,7 +6,7 @@ VITIS_HLS_BIN=${VITIS_HLS:-/home/lab_726/Xilinx/Vitis_HLS/2021.2/bin/vitis_hls}
 XVLOG=${XVLOG:-/home/lab_726/Xilinx/Vivado/2021.2/bin/xvlog}
 XELAB=${XELAB:-/home/lab_726/Xilinx/Vivado/2021.2/bin/xelab}
 XSIM=${XSIM:-/home/lab_726/Xilinx/Vivado/2021.2/bin/xsim}
-REPORT="$ROOT/reports/gate4_0/w4"
+REPORT=${W4_RTL_REPORT_DIR:-"$ROOT/reports/gate4_0/w4"}
 BUILD=${W4_RTL_BUILD_DIR:-"$ROOT/build/gate4_0/w4_rtl"}
 PROJECT="$BUILD/hls_project"
 SOLUTION=solution_w4_rtl
@@ -15,7 +15,7 @@ RETENTION_PROJECT="$BUILD/hls_core_step_retention_project"
 RETENTION_RTL="$RETENTION_PROJECT/$SOLUTION/syn/verilog"
 WORK="$BUILD/xsim"
 LOGS="$REPORT/rtl_logs"
-TRACES="$ROOT/reference/rtl_traces/w4"
+TRACES=${W4_RTL_TRACE_DIR:-"$ROOT/reference/rtl_traces/w4"}
 MATRIX="$REPORT/rtl_test_matrix.csv"
 
 for tool in "$VITIS_HLS_BIN" "$XVLOG" "$XELAB" "$XSIM"; do
@@ -83,7 +83,8 @@ EOF
 COMMON=(
   "$ROOT/src/boom_core_step.cpp" "$ROOT/src/frontend.cpp" "$ROOT/src/decode.cpp"
   "$ROOT/src/rename.cpp" "$ROOT/src/rob.cpp" "$ROOT/src/issue.cpp"
-  "$ROOT/src/execute.cpp" "$ROOT/src/branch.cpp" "$ROOT/src/lsu.cpp"
+  "$ROOT/src/mul.cpp" "$ROOT/src/divider.cpp" "$ROOT/src/execute.cpp"
+  "$ROOT/src/branch.cpp" "$ROOT/src/lsu.cpp"
   "$ROOT/src/completion.cpp" "$ROOT/src/commit.cpp" "$ROOT/src/csr.cpp"
   "$ROOT/src/reset.cpp" "$ROOT/src/synth_module_tops.cpp"
 )
@@ -190,7 +191,7 @@ overall=$w3_suite_status
 for item in "${CASES[@]}"; do
   IFS=: read -r name source scenario expected requirement <<< "$item"
   log="$LOGS/$name.log"
-  matrix_log="reports/gate4_0/w4/rtl_logs/$name.log"
+  matrix_log="${LOGS#$ROOT/}/$name.log"
   stdout="$LOGS/$name.stdout.log"
   if [[ "$source" == w4 ]]; then
     (cd "$WORK" && "$XSIM" w4_completion_diagnostic_snapshot --runall --onerror quit \
@@ -240,7 +241,7 @@ path.write_text(json.dumps({"case": sys.argv[2], "scenario": int(sys.argv[3]),
 PY
   printf '%s,%s,%s,"%s",%s,%s,%s,%s,%s\n' "$name" "$source" "$scenario" \
     "$requirement" "$status" "$expected" "$observed" \
-    "$matrix_log" "reference/rtl_traces/w4/$name.jsonl" >> "$MATRIX"
+    "$matrix_log" "${TRACES#$ROOT/}/$name.jsonl" >> "$MATRIX"
 done
 
 python3 - "$ROOT" "$REPORT" "$RTL" "$RETENTION_RTL" "$MATRIX" <<'PY'

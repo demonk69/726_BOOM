@@ -1,0 +1,50 @@
+#-----------------------------------------------------------
+# xsim v2021.2 (64-bit)
+# SW Build 3367213 on Tue Oct 19 02:47:39 MDT 2021
+# IP Build 3369179 on Thu Oct 21 08:25:16 MDT 2021
+# Start of session at: Wed Aug  5 20:04:19 2026
+# Process ID: 43000
+# Current directory: /home/lab_726/boom/hls_boom/build/gate4_1/m3c_rv64m_rtl/xsim
+# Command line: xsim -log /home/lab_726/boom/hls_boom/reports/gate4_1/m3/m3c/rtl/logs/xsim.log -mode tcl -source {xsim.dir/rv64m_full_rtl_snapshot/xsim_script.tcl}
+# Log file: /home/lab_726/boom/hls_boom/reports/gate4_1/m3/m3c/rtl/logs/xsim.log
+# Journal file: /home/lab_726/boom/hls_boom/build/gate4_1/m3c_rv64m_rtl/xsim/xsim.jou
+# Running On: 726, OS: Linux, CPU Frequency: 2192.361 MHz, CPU Physical cores: 14, Host memory: 67148 MB
+#-----------------------------------------------------------
+source xsim.dir/rv64m_full_rtl_snapshot/xsim_script.tcl
+# xsim {rv64m_full_rtl_snapshot} -autoloadwcfg -runall -onerror quit
+Time resolution is 1 ps
+run -all
+CASE_PASS,MUL,exact arithmetic result and one writeback/wakeup/bypass/ROB complete
+CASE_PASS,MULH,exact arithmetic result and one writeback/wakeup/bypass/ROB complete
+CASE_PASS,MULHSU,exact arithmetic result and one writeback/wakeup/bypass/ROB complete
+CASE_PASS,MULHU,exact arithmetic result and one writeback/wakeup/bypass/ROB complete
+CASE_PASS,MULW,exact arithmetic result and one writeback/wakeup/bypass/ROB complete
+CASE_PASS,DIV,exact arithmetic result and one writeback/wakeup/bypass/ROB complete
+CASE_PASS,DIVU,exact arithmetic result and one writeback/wakeup/bypass/ROB complete
+CASE_PASS,REM,exact arithmetic result and one writeback/wakeup/bypass/ROB complete
+CASE_PASS,REMU,exact arithmetic result and one writeback/wakeup/bypass/ROB complete
+CASE_PASS,DIVW,exact arithmetic result and one writeback/wakeup/bypass/ROB complete
+CASE_PASS,DIVUW,exact arithmetic result and one writeback/wakeup/bypass/ROB complete
+CASE_PASS,REMW,exact arithmetic result and one writeback/wakeup/bypass/ROB complete
+CASE_PASS,REMUW,exact arithmetic result and one writeback/wakeup/bypass/ROB complete
+CASE_PASS,divider_busy_MUL,multiply completed through INT lane while divider remained busy
+CASE_PASS,divider_busy_MULH,multiply completed through INT lane while divider remained busy
+CASE_PASS,divider_busy_MULHSU,multiply completed through INT lane while divider remained busy
+CASE_PASS,divider_busy_MULHU,multiply completed through INT lane while divider remained busy
+CASE_PASS,divider_busy_MULW,multiply completed through INT lane while divider remained busy
+CASE_PASS,DIV_by_zero,exact arithmetic result and one writeback/wakeup/bypass/ROB complete
+CASE_PASS,REM_by_zero,exact arithmetic result and one writeback/wakeup/bypass/ROB complete
+CASE_PASS,DIV_overflow,exact arithmetic result and one writeback/wakeup/bypass/ROB complete
+CASE_PASS,REM_overflow,exact arithmetic result and one writeback/wakeup/bypass/ROB complete
+CASE_PASS,DIVW_overflow,exact arithmetic result and one writeback/wakeup/bypass/ROB complete
+CASE_PASS,REMUW_signext,exact arithmetic result and one writeback/wakeup/bypass/ROB complete
+CASE_PASS,branch_kill,active divider was killed without publication
+CASE_PASS,reset_active_divide,reset cleared active divider state
+CASE_PASS,reset_pending_result,reset cleared terminal or pending divider result
+CASE_PASS,stale_allocation,allocation mismatch canceled divider without side effect
+CASE_PASS,rd_x0,x0 destination completed without PRF publication
+CASE_PASS,lane2_inactive,all RV64M requests remained on the INT lane
+M3C_RV64M_RTL_PASS cases=30
+$finish called at time : 1225850 ns : File "/home/lab_726/boom/hls_boom/rtl_tb/rv64m_full_rtl_tb.sv" Line 223
+exit
+INFO: [Common 17-206] Exiting xsim at Wed Aug  5 20:04:26 2026...

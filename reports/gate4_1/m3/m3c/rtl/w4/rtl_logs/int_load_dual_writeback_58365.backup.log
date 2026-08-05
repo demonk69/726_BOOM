@@ -1,0 +1,20 @@
+#-----------------------------------------------------------
+# xsim v2021.2 (64-bit)
+# SW Build 3367213 on Tue Oct 19 02:47:39 MDT 2021
+# IP Build 3369179 on Thu Oct 21 08:25:16 MDT 2021
+# Start of session at: Wed Aug  5 21:20:56 2026
+# Process ID: 58365
+# Current directory: /home/lab_726/boom/hls_boom/build/gate4_1/m3c_w4_rtl/xsim
+# Command line: xsim -log /home/lab_726/boom/hls_boom/reports/gate4_1/m3/m3c/rtl/w4/rtl_logs/int_load_dual_writeback.log -mode tcl -source {xsim.dir/w4_completion_diagnostic_snapshot/xsim_script.tcl}
+# Log file: /home/lab_726/boom/hls_boom/reports/gate4_1/m3/m3c/rtl/w4/rtl_logs/int_load_dual_writeback.log
+# Journal file: /home/lab_726/boom/hls_boom/build/gate4_1/m3c_w4_rtl/xsim/xsim.jou
+# Running On: 726, OS: Linux, CPU Frequency: 801.067 MHz, CPU Physical cores: 14, Host memory: 67148 MB
+#-----------------------------------------------------------
+source xsim.dir/w4_completion_diagnostic_snapshot/xsim_script.tcl
+# xsim {w4_completion_diagnostic_snapshot} -testplusarg SCENARIO=8 -testplusarg EXPECT=00000008e0000022 -autoloadwcfg -runall -onerror quit
+Time resolution is 1 ps
+run -all
+W4_RTL_PASS scenario=8 expected=00000008e0000022 observed=00000008e0000022
+$finish called at time : 16795 ns : File "/home/lab_726/boom/hls_boom/rtl_tb/gate4_0/w4_completion_diagnostic_tb.sv" Line 33
+exit
+INFO: [Common 17-206] Exiting xsim at Wed Aug  5 21:21:00 2026...

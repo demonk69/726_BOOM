@@ -1,0 +1,216 @@
+
+
+================================================================
+== Vitis HLS Report for 'divider_accept'
+================================================================
+* Date:           Wed Aug  5 20:03:58 2026
+
+* Version:        2021.2 (Build 3367213 on Tue Oct 19 02:47:39 MDT 2021)
+* Project:        synth_m3c_rv64m_top
+* Solution:       solution_gate4_1_m3c_rtl (Vivado IP Flow Target)
+* Product family: zynquplus
+* Target device:  xczu7ev-ffvc1156-2-e
+
+
+================================================================
+== Performance Estimates
+================================================================
++ Timing: 
+    * Summary: 
+    +--------+----------+----------+------------+
+    |  Clock |  Target  | Estimated| Uncertainty|
+    +--------+----------+----------+------------+
+    |ap_clk  |  10.00 ns|  5.734 ns|     2.70 ns|
+    +--------+----------+----------+------------+
+
++ Latency: 
+    * Summary: 
+    +---------+---------+----------+----------+-----+-----+---------+
+    |  Latency (cycles) |  Latency (absolute) |  Interval | Pipeline|
+    |   min   |   max   |    min   |    max   | min | max |   Type  |
+    +---------+---------+----------+----------+-----+-----+---------+
+    |        0|        0|      0 ns|      0 ns|    0|    0|       no|
+    +---------+---------+----------+----------+-----+-----+---------+
+
+    + Detail: 
+        * Instance: 
+        N/A
+
+        * Loop: 
+        N/A
+
+
+
+================================================================
+== Utilization Estimates
+================================================================
+* Summary: 
++-----------------+---------+------+--------+--------+-----+
+|       Name      | BRAM_18K|  DSP |   FF   |   LUT  | URAM|
++-----------------+---------+------+--------+--------+-----+
+|DSP              |        -|     -|       -|       -|    -|
+|Expression       |        -|     -|       0|    1976|    -|
+|FIFO             |        -|     -|       -|       -|    -|
+|Instance         |        -|     -|       -|       -|    -|
+|Memory           |        -|     -|       -|       -|    -|
+|Multiplexer      |        -|     -|       -|     192|    -|
+|Register         |        -|     -|       -|       -|    -|
++-----------------+---------+------+--------+--------+-----+
+|Total            |        0|     0|       0|    2168|    0|
++-----------------+---------+------+--------+--------+-----+
+|Available        |      624|  1728|  460800|  230400|   96|
++-----------------+---------+------+--------+--------+-----+
+|Utilization (%)  |        0|     0|       0|      ~0|    0|
++-----------------+---------+------+--------+--------+-----+
+
++ Detail: 
+    * Instance: 
+    N/A
+
+    * DSP: 
+    N/A
+
+    * Memory: 
+    N/A
+
+    * FIFO: 
+    N/A
+
+    * Expression: 
+    +----------------------------+----------+----+---+----+------------+------------+
+    |        Variable Name       | Operation| DSP| FF| LUT| Bitwidth P0| Bitwidth P1|
+    +----------------------------+----------+----+---+----+------------+------------+
+    |sub_ln1747_2_fu_553_p2      |         -|   0|  0|  71|           1|          64|
+    |sub_ln1747_3_fu_654_p2      |         -|   0|  0|  71|           1|          64|
+    |sub_ln1747_fu_539_p2        |         -|   0|  0|  71|           1|          64|
+    |and_ln1809_fu_513_p2        |       and|   0|  0|  64|          64|          64|
+    |and_ln1810_fu_526_p2        |       and|   0|  0|  64|          64|          64|
+    |and_ln1813_fu_545_p2        |       and|   0|  0|  64|          64|          64|
+    |and_ln1815_fu_559_p2        |       and|   0|  0|  64|          64|          64|
+    |and_ln1826_1_fu_630_p2      |       and|   0|  0|   2|           1|           1|
+    |and_ln1826_fu_624_p2        |       and|   0|  0|   2|           1|           1|
+    |and_ln1842_fu_660_p2        |       and|   0|  0|  64|          64|          64|
+    |ap_condition_443            |       and|   0|  0|   2|           1|           1|
+    |ap_condition_447            |       and|   0|  0|   2|           1|           1|
+    |ap_condition_451            |       and|   0|  0|   2|           1|           1|
+    |ap_condition_59             |       and|   0|  0|   2|           1|           1|
+    |dividend_fu_439_p2          |       and|   0|  0|  64|          64|          64|
+    |divisor_fu_452_p2           |       and|   0|  0|  64|          64|          64|
+    |divisor_negative_fu_532_p2  |      icmp|   0|  0|  29|          64|           1|
+    |empty_149_fu_347_p2         |      icmp|   0|  0|  10|           6|           2|
+    |empty_150_fu_465_p2         |      icmp|   0|  0|  10|           6|           3|
+    |empty_151_fu_471_p2         |      icmp|   0|  0|  10|           6|           3|
+    |empty_153_fu_483_p2         |      icmp|   0|  0|  10|           6|           2|
+    |empty_155_fu_495_p2         |      icmp|   0|  0|  10|           6|           1|
+    |empty_fu_341_p2             |      icmp|   0|  0|  10|           6|           3|
+    |grp_fu_315_p2               |      icmp|   0|  0|  10|           6|           2|
+    |grp_fu_321_p2               |      icmp|   0|  0|  10|           6|           3|
+    |icmp_ln1752_fu_793_p2       |      icmp|   0|  0|  20|          32|           1|
+    |icmp_ln1788_fu_363_p2       |      icmp|   0|  0|   8|           3|           1|
+    |icmp_ln1809_fu_519_p2       |      icmp|   0|  0|  29|          64|           1|
+    |icmp_ln1819_fu_606_p2       |      icmp|   0|  0|  29|          64|           1|
+    |icmp_ln1826_fu_612_p2       |      icmp|   0|  0|  29|          64|          64|
+    |icmp_ln1827_fu_618_p2       |      icmp|   0|  0|  29|          64|          64|
+    |icmp_ln1833_fu_636_p2       |      icmp|   0|  0|  29|          64|           1|
+    |icmp_ln1838_fu_642_p2       |      icmp|   0|  0|  29|          64|           1|
+    |empty_152_fu_477_p2         |        or|   0|  0|   2|           1|           1|
+    |empty_154_fu_489_p2         |        or|   0|  0|   2|           1|           1|
+    |empty_156_fu_501_p2         |        or|   0|  0|   2|           1|           1|
+    |or_ln1742_10_fu_678_p2      |        or|   0|  0|   2|           1|           1|
+    |or_ln1742_3_fu_834_p2       |        or|   0|  0|   2|           1|           1|
+    |or_ln1742_4_fu_840_p2       |        or|   0|  0|   2|           1|           1|
+    |or_ln1742_5_fu_763_p2       |        or|   0|  0|   2|           1|           1|
+    |or_ln1742_6_fu_769_p2       |        or|   0|  0|   2|           1|           1|
+    |or_ln1742_7_fu_775_p2       |        or|   0|  0|   2|           1|           1|
+    |or_ln1742_8_fu_666_p2       |        or|   0|  0|   2|           1|           1|
+    |or_ln1742_9_fu_672_p2       |        or|   0|  0|   2|           1|           1|
+    |or_ln1742_fu_828_p2         |        or|   0|  0|   2|           1|           1|
+    |or_ln1752_1_fu_799_p2       |        or|   0|  0|  64|          64|          34|
+    |or_ln1752_2_fu_728_p2       |        or|   0|  0|  64|          64|          34|
+    |or_ln1752_fu_870_p2         |        or|   0|  0|  64|          64|          34|
+    |or_ln1783_fu_335_p2         |        or|   0|  0|   2|           1|           1|
+    |or_ln1816_fu_698_p2         |        or|   0|  0|   2|           1|           1|
+    |operand_mask_fu_407_p3      |    select|   0|  0|  32|           1|          32|
+    |result_1_fu_781_p3          |    select|   0|  0|  64|           1|           1|
+    |result_2_fu_704_p3          |    select|   0|  0|  64|           1|          64|
+    |result_fu_846_p3            |    select|   0|  0|  64|           1|          64|
+    |select_ln1742_fu_684_p3     |    select|   0|  0|  64|           1|           1|
+    |select_ln1752_1_fu_805_p3   |    select|   0|  0|  64|           1|          64|
+    |select_ln1752_2_fu_734_p3   |    select|   0|  0|  64|           1|          64|
+    |select_ln1752_fu_876_p3     |    select|   0|  0|  64|           1|          64|
+    |select_ln1756_1_fu_813_p3   |    select|   0|  0|  64|           1|          64|
+    |select_ln1756_2_fu_742_p3   |    select|   0|  0|  64|           1|          64|
+    |select_ln1756_fu_884_p3     |    select|   0|  0|  64|           1|          64|
+    |select_ln1803_1_fu_419_p3   |    select|   0|  0|  32|           1|          32|
+    |sign_mask_fu_427_p3         |    select|   0|  0|  64|           1|          32|
+    |xor_ln1816_1_fu_692_p2      |       xor|   0|  0|   2|           1|           2|
+    |xor_ln1816_fu_588_p2        |       xor|   0|  0|   2|           1|           1|
+    +----------------------------+----------+----+---+----+------------+------------+
+    |Total                       |          |   0|  0|1976|        1209|        1529|
+    +----------------------------+----------+----+---+----+------------+------------+
+
+    * Multiplexer: 
+    +------------------------------------------------------------------------------------+----+-----------+-----+-----------+
+    |                                        Name                                        | LUT| Input Size| Bits| Total Bits|
+    +------------------------------------------------------------------------------------+----+-----------+-----+-----------+
+    |ap_phi_mux_empty_157_phi_fu_115_p4                                                  |  14|          3|   64|        192|
+    |ap_phi_mux_empty_158_phi_fu_124_p8                                                  |  20|          4|   64|        256|
+    |ap_phi_mux_empty_159_phi_fu_138_p8                                                  |  20|          4|    1|          4|
+    |ap_phi_mux_empty_160_phi_fu_154_p8                                                  |  14|          3|    1|          3|
+    |ap_phi_mux_empty_161_phi_fu_223_p8                                                  |  14|          3|    1|          3|
+    |ap_phi_mux_empty_162_phi_fu_239_p8                                                  |  14|          3|   64|        192|
+    |ap_phi_mux_state_execute_divider_arithmetic_original_dividend_new_0_phi_fu_298_p12  |  31|          6|   64|        384|
+    |ap_phi_mux_state_execute_divider_arithmetic_result_pending_flag_0_phi_fu_252_p12    |  14|          3|    1|          3|
+    |ap_phi_mux_state_execute_divider_arithmetic_result_pending_new_0_phi_fu_275_p12     |  14|          3|    1|          3|
+    |state_execute_divider_arithmetic_busy_o                                             |  14|          3|    1|          3|
+    |state_execute_divider_arithmetic_dividend_magnitude                                 |  14|          3|   64|        192|
+    |state_execute_divider_arithmetic_result_pending_o                                   |   9|          2|    1|          2|
+    +------------------------------------------------------------------------------------+----+-----------+-----+-----------+
+    |Total                                                                               | 192|         40|  327|       1237|
+    +------------------------------------------------------------------------------------+----+-----------+-----+-----------+
+
+    * Register: 
+    N/A
+
+
+
+================================================================
+== Interface
+================================================================
+* Summary: 
++------------------------------------------------------------+-----+-----+------------+-----------------------------------------------------+--------------+
+|                          RTL Ports                         | Dir | Bits|  Protocol  |                    Source Object                    |    C Type    |
++------------------------------------------------------------+-----+-----+------------+-----------------------------------------------------+--------------+
+|ap_ready                                                    |  out|    1|  ap_ctrl_hs|                                       divider_accept|  return value|
+|ap_return                                                   |  out|    1|  ap_ctrl_hs|                                       divider_accept|  return value|
+|p_read                                                      |   in|    6|     ap_none|                                               p_read|        scalar|
+|p_read1                                                     |   in|   64|     ap_none|                                              p_read1|        scalar|
+|p_read2                                                     |   in|   64|     ap_none|                                              p_read2|        scalar|
+|state_execute_divider_arithmetic_busy_i                     |   in|    1|     ap_ovld|                state_execute_divider_arithmetic_busy|       pointer|
+|state_execute_divider_arithmetic_busy_o                     |  out|    1|     ap_ovld|                state_execute_divider_arithmetic_busy|       pointer|
+|state_execute_divider_arithmetic_busy_o_ap_vld              |  out|    1|     ap_ovld|                state_execute_divider_arithmetic_busy|       pointer|
+|state_execute_divider_arithmetic_result_pending_i           |   in|    1|     ap_ovld|      state_execute_divider_arithmetic_result_pending|       pointer|
+|state_execute_divider_arithmetic_result_pending_o           |  out|    1|     ap_ovld|      state_execute_divider_arithmetic_result_pending|       pointer|
+|state_execute_divider_arithmetic_result_pending_o_ap_vld    |  out|    1|     ap_ovld|      state_execute_divider_arithmetic_result_pending|       pointer|
+|state_execute_divider_arithmetic_operation                  |  out|    6|      ap_vld|           state_execute_divider_arithmetic_operation|       pointer|
+|state_execute_divider_arithmetic_operation_ap_vld           |  out|    1|      ap_vld|           state_execute_divider_arithmetic_operation|       pointer|
+|state_execute_divider_arithmetic_word_operation             |  out|    1|      ap_vld|      state_execute_divider_arithmetic_word_operation|       pointer|
+|state_execute_divider_arithmetic_word_operation_ap_vld      |  out|    1|      ap_vld|      state_execute_divider_arithmetic_word_operation|       pointer|
+|state_execute_divider_arithmetic_iteration                  |  out|    8|      ap_vld|           state_execute_divider_arithmetic_iteration|       pointer|
+|state_execute_divider_arithmetic_iteration_ap_vld           |  out|    1|      ap_vld|           state_execute_divider_arithmetic_iteration|       pointer|
+|state_execute_divider_arithmetic_quotient                   |  out|   63|      ap_vld|            state_execute_divider_arithmetic_quotient|       pointer|
+|state_execute_divider_arithmetic_quotient_ap_vld            |  out|    1|      ap_vld|            state_execute_divider_arithmetic_quotient|       pointer|
+|state_execute_divider_arithmetic_remainder                  |  out|   64|      ap_vld|           state_execute_divider_arithmetic_remainder|       pointer|
+|state_execute_divider_arithmetic_remainder_ap_vld           |  out|    1|      ap_vld|           state_execute_divider_arithmetic_remainder|       pointer|
+|state_execute_divider_arithmetic_dividend_magnitude         |  out|   64|      ap_vld|  state_execute_divider_arithmetic_dividend_magnitude|       pointer|
+|state_execute_divider_arithmetic_dividend_magnitude_ap_vld  |  out|    1|      ap_vld|  state_execute_divider_arithmetic_dividend_magnitude|       pointer|
+|state_execute_divider_arithmetic_divisor_magnitude          |  out|   64|      ap_vld|   state_execute_divider_arithmetic_divisor_magnitude|       pointer|
+|state_execute_divider_arithmetic_divisor_magnitude_ap_vld   |  out|    1|      ap_vld|   state_execute_divider_arithmetic_divisor_magnitude|       pointer|
+|state_execute_divider_arithmetic_quotient_negative          |  out|    1|      ap_vld|   state_execute_divider_arithmetic_quotient_negative|       pointer|
+|state_execute_divider_arithmetic_quotient_negative_ap_vld   |  out|    1|      ap_vld|   state_execute_divider_arithmetic_quotient_negative|       pointer|
+|state_execute_divider_arithmetic_remainder_negative         |  out|    1|      ap_vld|  state_execute_divider_arithmetic_remainder_negative|       pointer|
+|state_execute_divider_arithmetic_remainder_negative_ap_vld  |  out|    1|      ap_vld|  state_execute_divider_arithmetic_remainder_negative|       pointer|
+|state_execute_divider_arithmetic_original_dividend          |  out|   64|      ap_vld|   state_execute_divider_arithmetic_original_dividend|       pointer|
+|state_execute_divider_arithmetic_original_dividend_ap_vld   |  out|    1|      ap_vld|   state_execute_divider_arithmetic_original_dividend|       pointer|
++------------------------------------------------------------+-----+-----+------------+-----------------------------------------------------+--------------+
+

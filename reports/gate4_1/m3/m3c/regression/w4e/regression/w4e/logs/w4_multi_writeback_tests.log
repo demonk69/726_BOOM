@@ -1,0 +1,16 @@
+=== Gate 4.0 W4D Multi Writeback Tests ===
+  [W4D writeback] fixed two-port topology                    ... PASS
+  [W4D writeback] same-parity destinations use independent replica ports ... PASS
+  [W4D writeback] INT plus load dual writeback               ... PASS
+  [W4D writeback] same pdst same value de-duplicates         ... PASS
+  [W4D writeback] same pdst conflict becomes precise fault   ... PASS
+  [W4D writeback] fault persistently suppresses younger publication ... PASS
+  [W4D writeback] x0 never writes                            ... PASS
+  [W4D writeback] ROB wrap deterministic age                 ... PASS
+  [W4D writeback] three writers retain bounded oldest        ... PASS
+  [W4D writeback] lane2 invalid and reset clears evidence    ... PASS
+  [W4D writeback] correct branch preserves cross-boundary conflict ... PASS
+  [W4D writeback] mispredict kills younger false conflict    ... PASS
+  [W4D writeback] duplicate held source increments drop invariant ... PASS
+W4D multi writeback: 13 passed, 0 failed
+W4D_WRITEBACK_METRICS peak_completion_accepts=2 peak_rob_completes=2 peak_prf_writes=2 peak_wakeups=3 bounded_wait=2 completion_drops=0 writeback_drops=0 duplicate_writes=0 conflicts=1 validation_faults=1 fault_events=2 deduplications=1 hold_violation_probe=1

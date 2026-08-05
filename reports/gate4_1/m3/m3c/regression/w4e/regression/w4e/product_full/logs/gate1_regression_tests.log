@@ -1,0 +1,17 @@
+=== BOOM-HLS Gate 1 Regression Tests ===
+
+  [GATE1] WAR chain preserves old source mapping                     ... PASS
+  [GATE1] multiple WAW commits newest architectural value            ... PASS
+  [GATE1] RAW chain forwards through renamed physical regs           ... PASS
+  [GATE1] stale physical registers recycle under WAW pressure        ... PASS
+  [GATE1] taken branch after WAW allocations skips wrong path        ... PASS
+  [GATE1] back-to-back taken branches clear wrong paths              ... PASS
+  [GATE1] branch commit and redirect preserve event order            ... PASS
+  [GATE1] IQ grants only implemented ALU execute port                ... PASS
+  [GATE1] IQ selects oldest ready entry and keeps older blocked      ... PASS
+  [GATE1] IQ dispatch can issue in same core cycle                   ... PASS
+  [GATE1] flush clears all IQ entries                                ... PASS
+  [GATE1] frontend drops stale imem response fetch_id                ... PASS
+  [GATE1] SmallBoom HLS build is single-lane rename/dispatch         ... PASS
+
+=== 13 passed, 0 failed ===

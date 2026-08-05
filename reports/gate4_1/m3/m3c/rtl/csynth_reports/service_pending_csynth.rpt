@@ -1,0 +1,883 @@
+
+
+================================================================
+== Vitis HLS Report for 'service_pending'
+================================================================
+* Date:           Wed Aug  5 20:04:02 2026
+
+* Version:        2021.2 (Build 3367213 on Tue Oct 19 02:47:39 MDT 2021)
+* Project:        synth_m3c_rv64m_top
+* Solution:       solution_gate4_1_m3c_rtl (Vivado IP Flow Target)
+* Product family: zynquplus
+* Target device:  xczu7ev-ffvc1156-2-e
+
+
+================================================================
+== Performance Estimates
+================================================================
++ Timing: 
+    * Summary: 
+    +--------+----------+----------+------------+
+    |  Clock |  Target  | Estimated| Uncertainty|
+    +--------+----------+----------+------------+
+    |ap_clk  |  10.00 ns|  5.905 ns|     2.70 ns|
+    +--------+----------+----------+------------+
+
++ Latency: 
+    * Summary: 
+    +---------+---------+-----------+----------+-----+-----+---------+
+    |  Latency (cycles) |  Latency (absolute)  |  Interval | Pipeline|
+    |   min   |   max   |    min    |    max   | min | max |   Type  |
+    +---------+---------+-----------+----------+-----+-----+---------+
+    |        4|      376|  40.000 ns|  3.760 us|    4|  376|       no|
+    +---------+---------+-----------+----------+-----+-----+---------+
+
+    + Detail: 
+        * Instance: 
+        +------------------------------------------+-----------------------+---------+---------+-----------+-----------+-----+-----+---------+
+        |                                          |                       |  Latency (cycles) |   Latency (absolute)  |  Interval | Pipeline|
+        |                 Instance                 |         Module        |   min   |   max   |    min    |    max    | min | max |   Type  |
+        +------------------------------------------+-----------------------+---------+---------+-----------+-----------+-----+-----+---------+
+        |grp_completion_is_valid_fu_797            |completion_is_valid    |        1|        1|  10.000 ns|  10.000 ns|    1|    1|       no|
+        |grp_lsu_accept_completion_fu_833          |lsu_accept_completion  |        1|        2|  10.000 ns|  20.000 ns|    1|    2|       no|
+        |call_ln1242_apply_writeback_ports_fu_897  |apply_writeback_ports  |        0|        0|       0 ns|       0 ns|    1|    1|      yes|
+        +------------------------------------------+-----------------------+---------+---------+-----------+-----------+-----+-----+---------+
+
+        * Loop: 
+        +-------------------------+---------+---------+----------+-----------+-----------+-------+----------+
+        |                         |  Latency (cycles) | Iteration|  Initiation Interval  |  Trip |          |
+        |        Loop Name        |   min   |   max   |  Latency |  achieved |   target  | Count | Pipelined|
+        +-------------------------+---------+---------+----------+-----------+-----------+-------+----------+
+        |- VITIS_LOOP_1126_1      |        2|        2|         1|          -|          -|      2|        no|
+        |- VITIS_LOOP_752_1       |        3|        3|         1|          -|          -|      3|        no|
+        |- VITIS_LOOP_761_2       |       64|       64|         2|          -|          -|     32|        no|
+        |- SERVICE_FIXED_PENDING  |       33|      300|   33 ~ 94|          -|          -|  1 ~ 3|        no|
+        | + VITIS_LOOP_1144_2     |       12|       12|         4|          -|          -|      3|        no|
+        | + VITIS_LOOP_1154_3     |       12|       57|    4 ~ 19|          -|          -|      3|        no|
+        |  ++ VITIS_LOOP_1090_1   |        2|       10|     2 ~ 3|          -|          -|  1 ~ 3|        no|
+        |  ++ VITIS_LOOP_1165_4   |        2|        2|         1|          -|          -|      2|        no|
+        +-------------------------+---------+---------+----------+-----------+-----------+-------+----------+
+
+
+
+================================================================
+== Utilization Estimates
+================================================================
+* Summary: 
++-----------------+---------+------+--------+--------+-----+
+|       Name      | BRAM_18K|  DSP |   FF   |   LUT  | URAM|
++-----------------+---------+------+--------+--------+-----+
+|DSP              |        -|     -|       -|       -|    -|
+|Expression       |        -|     -|       0|    1237|    -|
+|FIFO             |        -|     -|       -|       -|    -|
+|Instance         |        -|     -|      19|    1677|    -|
+|Memory           |        -|     -|       -|       -|    -|
+|Multiplexer      |        -|     -|       -|    2219|    -|
+|Register         |        -|     -|     779|       -|    -|
++-----------------+---------+------+--------+--------+-----+
+|Total            |        0|     0|     798|    5133|    0|
++-----------------+---------+------+--------+--------+-----+
+|Available        |      624|  1728|  460800|  230400|   96|
++-----------------+---------+------+--------+--------+-----+
+|Utilization (%)  |        0|     0|      ~0|       2|    0|
++-----------------+---------+------+--------+--------+-----+
+
++ Detail: 
+    * Instance: 
+    +------------------------------------------+-----------------------+---------+----+----+-----+-----+
+    |                 Instance                 |         Module        | BRAM_18K| DSP| FF | LUT | URAM|
+    +------------------------------------------+-----------------------+---------+----+----+-----+-----+
+    |call_ln1242_apply_writeback_ports_fu_897  |apply_writeback_ports  |        0|   0|   0|  768|    0|
+    |grp_completion_is_valid_fu_797            |completion_is_valid    |        0|   0|   4|  194|    0|
+    |grp_lsu_accept_completion_fu_833          |lsu_accept_completion  |        0|   0|  15|  215|    0|
+    |mux_42_1_1_1_U1118                        |mux_42_1_1_1           |        0|   0|   0|   20|    0|
+    |mux_42_1_1_1_U1119                        |mux_42_1_1_1           |        0|   0|   0|   20|    0|
+    |mux_42_1_1_1_U1120                        |mux_42_1_1_1           |        0|   0|   0|   20|    0|
+    |mux_42_1_1_1_U1128                        |mux_42_1_1_1           |        0|   0|   0|   20|    0|
+    |mux_42_2_1_1_U1109                        |mux_42_2_1_1           |        0|   0|   0|   20|    0|
+    |mux_42_2_1_1_U1113                        |mux_42_2_1_1           |        0|   0|   0|   20|    0|
+    |mux_42_2_1_1_U1122                        |mux_42_2_1_1           |        0|   0|   0|   20|    0|
+    |mux_42_32_1_1_U1107                       |mux_42_32_1_1          |        0|   0|   0|   20|    0|
+    |mux_42_32_1_1_U1111                       |mux_42_32_1_1          |        0|   0|   0|   20|    0|
+    |mux_42_32_1_1_U1115                       |mux_42_32_1_1          |        0|   0|   0|   20|    0|
+    |mux_42_32_1_1_U1124                       |mux_42_32_1_1          |        0|   0|   0|   20|    0|
+    |mux_42_3_1_1_U1108                        |mux_42_3_1_1           |        0|   0|   0|   20|    0|
+    |mux_42_3_1_1_U1112                        |mux_42_3_1_1           |        0|   0|   0|   20|    0|
+    |mux_42_3_1_1_U1121                        |mux_42_3_1_1           |        0|   0|   0|   20|    0|
+    |mux_42_64_1_1_U1127                       |mux_42_64_1_1          |        0|   0|   0|   20|    0|
+    |mux_42_8_1_1_U1104                        |mux_42_8_1_1           |        0|   0|   0|   20|    0|
+    |mux_42_8_1_1_U1105                        |mux_42_8_1_1           |        0|   0|   0|   20|    0|
+    |mux_42_8_1_1_U1106                        |mux_42_8_1_1           |        0|   0|   0|   20|    0|
+    |mux_42_8_1_1_U1110                        |mux_42_8_1_1           |        0|   0|   0|   20|    0|
+    |mux_42_8_1_1_U1114                        |mux_42_8_1_1           |        0|   0|   0|   20|    0|
+    |mux_42_8_1_1_U1116                        |mux_42_8_1_1           |        0|   0|   0|   20|    0|
+    |mux_42_8_1_1_U1117                        |mux_42_8_1_1           |        0|   0|   0|   20|    0|
+    |mux_42_8_1_1_U1123                        |mux_42_8_1_1           |        0|   0|   0|   20|    0|
+    |mux_42_8_1_1_U1125                        |mux_42_8_1_1           |        0|   0|   0|   20|    0|
+    |mux_42_8_1_1_U1126                        |mux_42_8_1_1           |        0|   0|   0|   20|    0|
+    +------------------------------------------+-----------------------+---------+----+----+-----+-----+
+    |Total                                     |                       |        0|   0|  19| 1677|    0|
+    +------------------------------------------+-----------------------+---------+----+----+-----+-----+
+
+    * DSP: 
+    N/A
+
+    * Memory: 
+    N/A
+
+    * FIFO: 
+    N/A
+
+    * Expression: 
+    +----------------------------------+----------+----+---+----+------------+------------+
+    |           Variable Name          | Operation| DSP| FF| LUT| Bitwidth P0| Bitwidth P1|
+    +----------------------------------+----------+----+---+----+------------+------------+
+    |add_ln1090_fu_2203_p2             |         +|   0|  0|   9|           2|           1|
+    |add_ln1126_fu_1053_p2             |         +|   0|  0|   9|           2|           1|
+    |add_ln1144_fu_1749_p2             |         +|   0|  0|   9|           2|           1|
+    |add_ln1154_fu_1944_p2             |         +|   0|  0|   9|           2|           1|
+    |add_ln1165_fu_2332_p2             |         +|   0|  0|   9|           2|           1|
+    |add_ln1218_fu_2695_p2             |         +|   0|  0|  15|           8|           1|
+    |add_ln1219_fu_2711_p2             |         +|   0|  0|  71|          64|           1|
+    |add_ln1223_fu_2878_p2             |         +|   0|  0|  71|          64|           1|
+    |add_ln1233_fu_2841_p2             |         +|   0|  0|  15|           8|           1|
+    |add_ln1234_fu_2857_p2             |         +|   0|  0|  71|          64|           1|
+    |add_ln752_fu_1146_p2              |         +|   0|  0|   9|           2|           1|
+    |add_ln761_fu_1237_p2              |         +|   0|  0|  13|           6|           1|
+    |grp_fu_1009_p2                    |         +|   0|  0|  71|          64|           1|
+    |grp_fu_968_p2                     |         +|   0|  0|  71|          64|           1|
+    |grp_fu_999_p2                     |         +|   0|  0|  15|           8|           1|
+    |service_2_fu_1343_p2              |         +|   0|  0|   9|           2|           1|
+    |write_count_1_fu_2835_p2          |         +|   0|  0|  15|           8|           1|
+    |and_ln1147_fu_1907_p2             |       and|   0|  0|   2|           1|           1|
+    |and_ln1157_fu_2101_p2             |       and|   0|  0|   2|           1|           1|
+    |and_ln1158_fu_2113_p2             |       and|   0|  0|   2|           1|           1|
+    |and_ln1166_1_fu_2377_p2           |       and|   0|  0|   2|           1|           1|
+    |and_ln1166_fu_2371_p2             |       and|   0|  0|   2|           1|           1|
+    |and_ln1175_fu_2421_p2             |       and|   0|  0|   2|           1|           1|
+    |and_ln668_1_fu_2298_p2            |       and|   0|  0|   2|           1|           1|
+    |and_ln668_fu_2148_p2              |       and|   0|  0|   2|           1|           1|
+    |and_ln669_fu_2173_p2              |       and|   0|  0|   2|           1|           1|
+    |and_ln764_1_fu_1309_p2            |       and|   0|  0|   2|           1|           1|
+    |and_ln764_fu_1303_p2              |       and|   0|  0|   2|           1|           1|
+    |ap_block_state24_on_subcall_done  |       and|   0|  0|   2|           1|           1|
+    |ap_condition_2764                 |       and|   0|  0|   2|           1|           1|
+    |ap_condition_2769                 |       and|   0|  0|   2|           1|           1|
+    |ap_condition_760                  |       and|   0|  0|   2|           1|           1|
+    |ap_condition_838                  |       and|   0|  0|   2|           1|           1|
+    |ap_predicate_op421_call_state24   |       and|   0|  0|   2|           1|           1|
+    |write_eligible_fu_2394_p2         |       and|   0|  0|   2|           1|           1|
+    |icmp34_fu_1765_p2                 |      icmp|   0|  0|  10|           7|           1|
+    |icmp_ln1090_fu_2197_p2            |      icmp|   0|  0|   8|           2|           2|
+    |icmp_ln1091_fu_2209_p2            |      icmp|   0|  0|   8|           2|           2|
+    |icmp_ln1093_fu_2315_p2            |      icmp|   0|  0|  11|           8|           8|
+    |icmp_ln1094_fu_2320_p2            |      icmp|   0|  0|  29|          64|          64|
+    |icmp_ln1126_fu_1047_p2            |      icmp|   0|  0|   8|           2|           3|
+    |icmp_ln1136_fu_1337_p2            |      icmp|   0|  0|   8|           2|           2|
+    |icmp_ln1144_fu_1743_p2            |      icmp|   0|  0|   8|           2|           2|
+    |icmp_ln1147_fu_1865_p2            |      icmp|   0|  0|   8|           3|           3|
+    |icmp_ln1148_fu_1880_p2            |      icmp|   0|  0|  11|           8|           8|
+    |icmp_ln1154_fu_1938_p2            |      icmp|   0|  0|   8|           2|           2|
+    |icmp_ln1157_fu_2095_p2            |      icmp|   0|  0|  11|           8|           8|
+    |icmp_ln1158_fu_2107_p2            |      icmp|   0|  0|  11|           8|           8|
+    |icmp_ln1163_fu_2185_p2            |      icmp|   0|  0|  11|           8|           1|
+    |icmp_ln1165_fu_2326_p2            |      icmp|   0|  0|   8|           2|           3|
+    |icmp_ln1167_fu_2354_p2            |      icmp|   0|  0|  11|           8|           8|
+    |icmp_ln1168_fu_2365_p2            |      icmp|   0|  0|  29|          64|          64|
+    |icmp_ln1174_fu_2400_p2            |      icmp|   0|  0|  11|           8|           8|
+    |icmp_ln1175_1_fu_2416_p2          |      icmp|   0|  0|  20|          32|          32|
+    |icmp_ln1175_fu_2411_p2            |      icmp|   0|  0|  11|           8|           8|
+    |icmp_ln1198_fu_2427_p2            |      icmp|   0|  0|   8|           2|           3|
+    |icmp_ln1206_fu_2741_p2            |      icmp|   0|  0|   8|           2|           3|
+    |icmp_ln1238_fu_2903_p2            |      icmp|   0|  0|  11|           8|           3|
+    |icmp_ln1243_fu_2922_p2            |      icmp|   0|  0|  11|           8|           8|
+    |icmp_ln1245_fu_2938_p2            |      icmp|   0|  0|  11|           8|           8|
+    |icmp_ln1247_fu_2954_p2            |      icmp|   0|  0|  11|           8|           8|
+    |icmp_ln621_fu_1500_p2             |      icmp|   0|  0|   8|           3|           1|
+    |icmp_ln622_1_fu_1511_p2           |      icmp|   0|  0|  20|          32|          32|
+    |icmp_ln622_fu_1373_p2             |      icmp|   0|  0|  20|          32|          32|
+    |icmp_ln668_1_fu_2125_p2           |      icmp|   0|  0|   8|           3|           2|
+    |icmp_ln668_2_fu_2275_p2           |      icmp|   0|  0|   8|           3|           2|
+    |icmp_ln668_3_fu_2130_p2           |      icmp|   0|  0|   8|           2|           1|
+    |icmp_ln668_4_fu_2142_p2           |      icmp|   0|  0|   8|           2|           1|
+    |icmp_ln668_5_fu_2280_p2           |      icmp|   0|  0|   8|           2|           1|
+    |icmp_ln668_6_fu_2292_p2           |      icmp|   0|  0|   8|           2|           1|
+    |icmp_ln668_fu_2042_p2             |      icmp|   0|  0|  11|           8|           2|
+    |icmp_ln669_1_fu_2167_p2           |      icmp|   0|  0|   8|           2|           1|
+    |icmp_ln669_fu_2154_p2             |      icmp|   0|  0|   8|           2|           1|
+    |icmp_ln670_fu_2072_p2             |      icmp|   0|  0|  11|           8|           3|
+    |icmp_ln752_fu_1140_p2             |      icmp|   0|  0|   8|           2|           2|
+    |icmp_ln761_fu_1231_p2             |      icmp|   0|  0|  10|           6|           7|
+    |icmp_ln764_fu_1262_p2             |      icmp|   0|  0|  11|           8|           8|
+    |icmp_ln766_fu_1276_p2             |      icmp|   0|  0|  11|           8|           8|
+    |ap_block_state31_on_subcall_done  |        or|   0|  0|   2|           1|           1|
+    |ap_condition_1208                 |        or|   0|  0|   2|           1|           1|
+    |ap_condition_1216                 |        or|   0|  0|   2|           1|           1|
+    |ap_condition_1524                 |        or|   0|  0|   2|           1|           1|
+    |ap_condition_1541                 |        or|   0|  0|   2|           1|           1|
+    |ap_predicate_op500_call_state31   |        or|   0|  0|   2|           1|           1|
+    |ap_predicate_op539_call_state31   |        or|   0|  0|   2|           1|           1|
+    |completes_rob_1_fu_2437_p2        |        or|   0|  0|   2|           1|           1|
+    |completes_rob_fu_2751_p2          |        or|   0|  0|   2|           1|           1|
+    |duplicate_fu_2383_p2              |        or|   0|  0|   2|           1|           1|
+    |or_ln1147_fu_1886_p2              |        or|   0|  0|   2|           1|           1|
+    |or_ln1157_fu_2119_p2              |        or|   0|  0|   2|           1|           1|
+    |or_ln1170_fu_2389_p2              |        or|   0|  0|   2|           1|           1|
+    |or_ln1174_fu_2405_p2              |        or|   0|  0|   2|           1|           1|
+    |or_ln1221_fu_2764_p2              |        or|   0|  0|   2|           1|           1|
+    |or_ln1237_fu_2908_p2              |        or|   0|  0|   2|           1|           1|
+    |or_ln766_fu_1282_p2               |        or|   0|  0|   2|           1|           1|
+    |precise_valid_1_fu_1928_p2        |        or|   0|  0|   2|           1|           1|
+    |valid_1_fu_1323_p2                |        or|   0|  0|   2|           1|           1|
+    |exception_age_2_fu_1315_p3        |    select|   0|  0|   8|           1|           8|
+    |grp_fu_990_p3                     |    select|   0|  0|  64|           1|          64|
+    |precise_age_2_fu_1920_p3          |    select|   0|  0|   8|           1|           8|
+    |select_ln1147_fu_1912_p3          |    select|   0|  0|   8|           1|           8|
+    |select_ln1148_fu_1896_p3          |    select|   0|  0|   5|           1|           5|
+    |select_ln1163_fu_2179_p3          |    select|   0|  0|   8|           1|           8|
+    |select_ln1166_fu_2342_p3          |    select|   0|  0|   2|           1|           1|
+    |select_ln1167_fu_2348_p3          |    select|   0|  0|   8|           1|           8|
+    |select_ln1168_fu_2359_p3          |    select|   0|  0|  64|           1|          64|
+    |select_ln668_1_fu_2191_p3         |    select|   0|  0|   2|           1|           1|
+    |select_ln668_2_fu_2286_p3         |    select|   0|  0|   2|           1|           1|
+    |select_ln668_fu_2136_p3           |    select|   0|  0|   2|           1|           1|
+    |select_ln669_fu_2161_p3           |    select|   0|  0|   2|           1|           1|
+    |select_ln766_fu_1292_p3           |    select|   0|  0|   5|           1|           5|
+    |xor_ln1148_fu_1874_p2             |       xor|   0|  0|   2|           1|           2|
+    |xor_ln1170_fu_1771_p2             |       xor|   0|  0|   2|           1|           2|
+    |xor_ln1199_fu_2432_p2             |       xor|   0|  0|   2|           1|           2|
+    |xor_ln1207_fu_2746_p2             |       xor|   0|  0|   2|           1|           2|
+    |xor_ln766_fu_1270_p2              |       xor|   0|  0|   2|           1|           2|
+    +----------------------------------+----------+----+---+----+------------+------------+
+    |Total                             |          |   0|  0|1237|         837|         622|
+    +----------------------------------+----------+----+---+----+------------+------------+
+
+    * Multiplexer: 
+    +-----------------------------------------------------------------------+-----+-----------+-----+-----------+
+    |                                  Name                                 | LUT | Input Size| Bits| Total Bits|
+    +-----------------------------------------------------------------------+-----+-----------+-----+-----------+
+    |ap_NS_fsm                                                              |  173|         39|    1|         39|
+    |ap_phi_mux_duplicate_24_phi_fu_663_p4                                  |    9|          2|    1|          2|
+    |ap_phi_mux_empty_127_phi_fu_769_p4                                     |    9|          2|    1|          2|
+    |ap_phi_mux_empty_129_phi_fu_790_p4                                     |    9|          2|    1|          2|
+    |ap_phi_mux_phi_ln1094_phi_fu_611_p6                                    |   20|          4|   64|        256|
+    |ap_phi_mux_phi_ln669_phi_fu_602_p4                                     |   14|          3|    1|          3|
+    |ap_sig_allocacmp_index_4                                               |    9|          2|    8|         16|
+    |ap_sig_allocacmp_ports_is_load_2                                       |    9|          2|    1|          2|
+    |ap_sig_allocacmp_ports_kind_2                                          |    9|          2|    2|          4|
+    |ap_sig_allocacmp_ports_source_2                                        |    9|          2|    2|          4|
+    |ap_sig_allocacmp_ports_uop_queue_rob_allocation_id_2                   |    9|          2|   32|         64|
+    |ap_sig_allocacmp_ports_uop_rename_pdst_2                               |    9|          2|    8|         16|
+    |ap_sig_allocacmp_ports_valid_2                                         |    9|          2|    1|          2|
+    |ap_sig_allocacmp_ports_value_2                                         |    9|          2|   64|        128|
+    |ap_sig_allocacmp_ports_writes_prf_2                                    |    9|          2|    1|          2|
+    |ap_sig_allocacmp_state_completion_int_execute_is_store_load            |    9|          2|    1|          2|
+    |ap_sig_allocacmp_state_completion_int_execute_memory_address_load      |    9|          2|   64|        128|
+    |ap_sig_allocacmp_state_completion_int_execute_memory_mask_load         |    9|          2|    1|          2|
+    |ap_sig_allocacmp_state_completion_int_execute_store_data_load          |    9|          2|   64|        128|
+    |ap_sig_allocacmp_state_completion_int_execute_uop_branch_br_mask_load  |    9|          2|    8|         16|
+    |duplicate_1_reg_648                                                    |    9|          2|    1|          2|
+    |duplicate_24_reg_659                                                   |    9|          2|    1|          2|
+    |empty_126_reg_755                                                      |    9|          2|    1|          2|
+    |empty_127_reg_766                                                      |    9|          2|    1|          2|
+    |empty_128_reg_776                                                      |    9|          2|    1|          2|
+    |empty_129_reg_787                                                      |    9|          2|    1|          2|
+    |exception_age_fu_298                                                   |    9|          2|    8|         16|
+    |grp_completion_is_valid_fu_797_p_read                                  |   43|          8|    1|          8|
+    |grp_completion_is_valid_fu_797_p_read1                                 |   49|          9|    8|         72|
+    |grp_completion_is_valid_fu_797_p_read2                                 |   49|          9|    8|         72|
+    |grp_completion_is_valid_fu_797_p_read3                                 |   43|          8|    8|         64|
+    |grp_completion_is_valid_fu_797_p_read4                                 |   43|          8|   32|        256|
+    |grp_fu_981_p1                                                          |   14|          3|   32|         96|
+    |grp_fu_990_p0                                                          |   14|          3|    1|          3|
+    |grp_load_fu_939_p1                                                     |   14|          3|    2|          6|
+    |grp_load_fu_943_p1                                                     |   14|          3|    2|          6|
+    |grp_load_fu_947_p1                                                     |   14|          3|    8|         24|
+    |grp_load_fu_952_p1                                                     |   14|          3|   32|         96|
+    |grp_load_fu_974_p1                                                     |   14|          3|    1|          3|
+    |grp_lsu_accept_completion_fu_833_is_load                               |   14|          3|    1|          3|
+    |grp_lsu_accept_completion_fu_833_is_store                              |   14|          3|    1|          3|
+    |grp_lsu_accept_completion_fu_833_memory_address                        |   14|          3|   64|        192|
+    |grp_lsu_accept_completion_fu_833_memory_mask                           |   14|          3|    1|          3|
+    |grp_lsu_accept_completion_fu_833_p_read                                |   14|          3|    8|         24|
+    |grp_lsu_accept_completion_fu_833_p_read1                               |   14|          3|    8|         24|
+    |grp_lsu_accept_completion_fu_833_p_read2                               |   14|          3|   32|         96|
+    |grp_lsu_accept_completion_fu_833_store_data                            |   14|          3|   64|        192|
+    |i_17_fu_294                                                            |    9|          2|    2|          4|
+    |i_18_fu_302                                                            |    9|          2|    6|         12|
+    |i_37_reg_463                                                           |    9|          2|    2|          4|
+    |i_39_reg_574                                                           |    9|          2|    2|          4|
+    |i_40_reg_513                                                           |    9|          2|    2|          4|
+    |i_fu_290                                                               |    9|          2|    2|          4|
+    |phi_ln1091_reg_586                                                     |   14|          3|    1|          3|
+    |phi_ln1145_reg_499                                                     |   14|          3|    1|          3|
+    |phi_ln1155_reg_561                                                     |   14|          3|    1|          3|
+    |phi_ln1221_reg_736                                                     |   14|          3|    1|          3|
+    |precise_age_reg_487                                                    |    9|          2|    8|         16|
+    |precise_valid_reg_475                                                  |    9|          2|    1|          2|
+    |selected_age_2_reg_694                                                 |    9|          2|    8|         16|
+    |selected_age_reg_537                                                   |    9|          2|    8|         16|
+    |selected_duplicate_2_reg_672                                           |    9|          2|    1|          2|
+    |selected_duplicate_reg_549                                             |    9|          2|    1|          2|
+    |selected_port_2_reg_715                                                |    9|          2|   32|         64|
+    |selected_port_reg_525                                                  |    9|          2|   32|         64|
+    |service_fu_306                                                         |    9|          2|    2|          4|
+    |state_completion_completion_accepts_this_cycle_o                       |    9|          2|    8|         16|
+    |state_completion_dropped_completions_o                                 |    9|          2|   64|        128|
+    |state_completion_dropped_writebacks_o                                  |   14|          3|   64|        192|
+    |state_completion_dropped_writebacks_o_ap_vld                           |   14|          3|    1|          3|
+    |state_completion_duplicate_writebacks_o                                |    9|          2|   64|        128|
+    |state_completion_int_execute_is_load_o                                 |    9|          2|    1|          2|
+    |state_completion_int_execute_is_store_o                                |    9|          2|    1|          2|
+    |state_completion_int_execute_kind_o                                    |    9|          2|    2|          4|
+    |state_completion_int_execute_memory_address_o                          |    9|          2|   64|        128|
+    |state_completion_int_execute_memory_mask_o                             |    9|          2|    1|          2|
+    |state_completion_int_execute_source_o                                  |    9|          2|    2|          4|
+    |state_completion_int_execute_store_data_o                              |    9|          2|   64|        128|
+    |state_completion_int_execute_uop_branch_br_mask_o                      |    9|          2|    8|         16|
+    |state_completion_int_execute_uop_queue_rob_allocation_id_o             |    9|          2|   32|         64|
+    |state_completion_int_execute_uop_queue_rob_idx_o                       |    9|          2|    8|         16|
+    |state_completion_int_execute_uop_rename_pdst_o                         |    9|          2|    8|         16|
+    |state_completion_int_execute_valid_o                                   |    9|          2|    1|          2|
+    |state_completion_int_execute_value_o                                   |    9|          2|   64|        128|
+    |state_completion_int_execute_writes_prf_o                              |    9|          2|    1|          2|
+    |state_completion_mem_execute_is_load_o                                 |    9|          2|    1|          2|
+    |state_completion_mem_execute_is_store_o                                |    9|          2|    1|          2|
+    |state_completion_mem_execute_kind_o                                    |    9|          2|    2|          4|
+    |state_completion_mem_execute_memory_address_o                          |    9|          2|    1|          2|
+    |state_completion_mem_execute_memory_mask_o                             |    9|          2|    1|          2|
+    |state_completion_mem_execute_source_o                                  |    9|          2|    1|          2|
+    |state_completion_mem_execute_store_data_o                              |    9|          2|    1|          2|
+    |state_completion_mem_execute_uop_branch_br_mask_o                      |    9|          2|    8|         16|
+    |state_completion_mem_execute_uop_queue_rob_allocation_id_o             |    9|          2|    1|          2|
+    |state_completion_mem_execute_uop_queue_rob_idx_o                       |    9|          2|    1|          2|
+    |state_completion_mem_execute_uop_rename_pdst_o                         |    9|          2|    1|          2|
+    |state_completion_mem_execute_valid_o                                   |    9|          2|    1|          2|
+    |state_completion_mem_execute_value_o                                   |    9|          2|    1|          2|
+    |state_completion_mem_execute_writes_prf_o                              |    9|          2|    1|          2|
+    |state_completion_peak_completion_accepts_o                             |    9|          2|    8|         16|
+    |state_completion_peak_prf_writes_o                                     |    9|          2|    8|         16|
+    |state_completion_peak_rob_completes_o                                  |    9|          2|    8|         16|
+    |state_completion_prf_writes_this_cycle_o                               |    9|          2|    8|         16|
+    |state_completion_rob_completes_this_cycle_o                            |    9|          2|    8|         16|
+    |state_completion_total_completion_accepts_o                            |    9|          2|   64|        128|
+    |state_completion_total_prf_writes_o                                    |    9|          2|   64|        128|
+    |state_completion_total_rob_completes_o                                 |    9|          2|   64|        128|
+    |state_completion_writebacks_pdst_0_o                                   |   14|          3|    8|         24|
+    |state_completion_writebacks_pdst_1_o                                   |   14|          3|    8|         24|
+    |state_completion_writebacks_valid_0_o                                  |   14|          3|    1|          3|
+    |state_completion_writebacks_valid_1_o                                  |   14|          3|    1|          3|
+    |state_completion_writebacks_value_0_o                                  |   14|          3|   64|        192|
+    |state_completion_writebacks_value_1_o                                  |   14|          3|   64|        192|
+    |state_int_rf_latest_bank_o                                             |    9|          2|   64|        128|
+    |state_lsu_ldq_address_ce0                                              |    9|          2|    1|          2|
+    |state_lsu_ldq_address_we0                                              |    9|          2|    1|          2|
+    |state_lsu_ldq_branch_mask_ce0                                          |    9|          2|    1|          2|
+    |state_lsu_ldq_branch_mask_we0                                          |    9|          2|    1|          2|
+    |state_lsu_ldq_count_o                                                  |    9|          2|    8|         16|
+    |state_lsu_ldq_count_o_ap_vld                                           |    9|          2|    1|          2|
+    |state_lsu_ldq_rob_allocation_id_ce0                                    |    9|          2|    1|          2|
+    |state_lsu_ldq_rob_allocation_id_we0                                    |    9|          2|    1|          2|
+    |state_lsu_ldq_rob_idx_ce0                                              |    9|          2|    1|          2|
+    |state_lsu_ldq_rob_idx_we0                                              |    9|          2|    1|          2|
+    |state_lsu_ldq_signed_load_ce0                                          |    9|          2|    1|          2|
+    |state_lsu_ldq_signed_load_we0                                          |    9|          2|    1|          2|
+    |state_lsu_ldq_size_ce0                                                 |    9|          2|    1|          2|
+    |state_lsu_ldq_size_we0                                                 |    9|          2|    1|          2|
+    |state_lsu_ldq_tail_o                                                   |    9|          2|    3|          6|
+    |state_lsu_ldq_tail_o_ap_vld                                            |    9|          2|    1|          2|
+    |state_lsu_ldq_valid_ce0                                                |    9|          2|    1|          2|
+    |state_lsu_ldq_valid_we0                                                |    9|          2|    1|          2|
+    |state_lsu_stq_address_ce0                                              |    9|          2|    1|          2|
+    |state_lsu_stq_address_valid_ce0                                        |    9|          2|    1|          2|
+    |state_lsu_stq_address_valid_we0                                        |    9|          2|    1|          2|
+    |state_lsu_stq_address_we0                                              |    9|          2|    1|          2|
+    |state_lsu_stq_branch_mask_ce0                                          |    9|          2|    1|          2|
+    |state_lsu_stq_branch_mask_we0                                          |    9|          2|    1|          2|
+    |state_lsu_stq_count_o                                                  |    9|          2|    8|         16|
+    |state_lsu_stq_count_o_ap_vld                                           |    9|          2|    1|          2|
+    |state_lsu_stq_data_ce0                                                 |    9|          2|    1|          2|
+    |state_lsu_stq_data_valid_ce0                                           |    9|          2|    1|          2|
+    |state_lsu_stq_data_valid_we0                                           |    9|          2|    1|          2|
+    |state_lsu_stq_data_we0                                                 |    9|          2|    1|          2|
+    |state_lsu_stq_mask_ce0                                                 |    9|          2|    1|          2|
+    |state_lsu_stq_mask_we0                                                 |    9|          2|    1|          2|
+    |state_lsu_stq_rob_allocation_id_ce0                                    |    9|          2|    1|          2|
+    |state_lsu_stq_rob_allocation_id_we0                                    |    9|          2|    1|          2|
+    |state_lsu_stq_rob_idx_ce0                                              |    9|          2|    1|          2|
+    |state_lsu_stq_rob_idx_we0                                              |    9|          2|    1|          2|
+    |state_lsu_stq_size_ce0                                                 |    9|          2|    1|          2|
+    |state_lsu_stq_size_we0                                                 |    9|          2|    1|          2|
+    |state_lsu_stq_tail_o                                                   |    9|          2|    3|          6|
+    |state_lsu_stq_tail_o_ap_vld                                            |    9|          2|    1|          2|
+    |state_lsu_stq_valid_ce0                                                |    9|          2|    1|          2|
+    |state_lsu_stq_valid_we0                                                |    9|          2|    1|          2|
+    |state_rename_int_free_list_busy_table_address0                         |   14|          3|    6|         18|
+    |state_rob_entries_busy_address0                                        |   37|          7|    5|         35|
+    |state_rob_entries_busy_ce0                                             |   14|          3|    1|          3|
+    |state_rob_entries_is_load_address0                                     |   14|          3|    5|         15|
+    |state_rob_entries_is_load_ce0                                          |   14|          3|    1|          3|
+    |state_rob_entries_is_load_we0                                          |    9|          2|    1|          2|
+    |state_rob_entries_memory_completed_address0                            |   14|          3|    5|         15|
+    |state_rob_entries_memory_completed_ce0                                 |   14|          3|    1|          3|
+    |state_rob_entries_memory_completed_we0                                 |    9|          2|    1|          2|
+    |state_rob_entries_memory_request_sent_ce0                              |    9|          2|    1|          2|
+    |state_rob_entries_memory_transaction_id_ce0                            |    9|          2|    1|          2|
+    |state_rob_entries_memory_valid_address0                                |   14|          3|    5|         15|
+    |state_rob_entries_memory_valid_ce0                                     |   14|          3|    1|          3|
+    |state_rob_entries_memory_valid_we0                                     |    9|          2|    1|          2|
+    |state_rob_entries_uop_queue_rob_allocation_id_address0                 |   26|          5|    5|         25|
+    |state_rob_entries_uop_queue_rob_allocation_id_ce0                      |   20|          4|    1|          4|
+    |state_rob_entries_valid_address0                                       |   31|          6|    5|         30|
+    |state_rob_entries_valid_ce0                                            |   20|          4|    1|          4|
+    |valid_reg_451                                                          |    9|          2|    1|          2|
+    |w_reg_637                                                              |    9|          2|    2|          4|
+    |write_count_fu_310                                                     |    9|          2|    8|         16|
+    +-----------------------------------------------------------------------+-----+-----------+-----+-----------+
+    |Total                                                                  | 2219|        477| 1807|       4699|
+    +-----------------------------------------------------------------------+-----+-----------+-----+-----------+
+
+    * Register: 
+    +---------------------------------------------------------------+----+----+-----+-----------+
+    |                              Name                             | FF | LUT| Bits| Const Bits|
+    +---------------------------------------------------------------+----+----+-----+-----------+
+    |add_ln1090_reg_3629                                            |   2|   0|    2|          0|
+    |add_ln1144_reg_3429                                            |   2|   0|    2|          0|
+    |add_ln1154_reg_3511                                            |   2|   0|    2|          0|
+    |age_reg_3536                                                   |   5|   0|    5|          0|
+    |and_ln668_reg_3600                                             |   1|   0|    1|          0|
+    |and_ln669_reg_3609                                             |   1|   0|    1|          0|
+    |ap_CS_fsm                                                      |  38|   0|   38|          0|
+    |completes_rob_1_reg_3700                                       |   1|   0|    1|          0|
+    |completes_rob_reg_3721                                         |   1|   0|    1|          0|
+    |duplicate_1_reg_648                                            |   1|   0|    1|          0|
+    |duplicate_24_reg_659                                           |   1|   0|    1|          0|
+    |empty_126_reg_755                                              |   1|   0|    1|          0|
+    |empty_127_reg_766                                              |   1|   0|    1|          0|
+    |empty_128_reg_776                                              |   1|   0|    1|          0|
+    |empty_129_reg_787                                              |   1|   0|    1|          0|
+    |exception_age_3_reg_3060                                       |   5|   0|    5|          0|
+    |exception_age_fu_298                                           |   8|   0|    8|          0|
+    |grp_completion_is_valid_fu_797_ap_start_reg                    |   1|   0|    1|          0|
+    |grp_lsu_accept_completion_fu_833_ap_start_reg                  |   1|   0|    1|          0|
+    |i_17_fu_294                                                    |   2|   0|    2|          0|
+    |i_18_fu_302                                                    |   6|   0|    6|          0|
+    |i_37_reg_463                                                   |   2|   0|    2|          0|
+    |i_39_reg_574                                                   |   2|   0|    2|          0|
+    |i_40_reg_513                                                   |   2|   0|    2|          0|
+    |i_fu_290                                                       |   2|   0|    2|          0|
+    |icmp34_reg_3434                                                |   1|   0|    1|          0|
+    |icmp_ln1091_reg_3634                                           |   1|   0|    1|          0|
+    |icmp_ln1136_reg_3086                                           |   1|   0|    1|          0|
+    |icmp_ln1147_reg_3487                                           |   1|   0|    1|          0|
+    |icmp_ln1163_reg_3619                                           |   1|   0|    1|          0|
+    |icmp_ln621_reg_3179                                            |   1|   0|    1|          0|
+    |icmp_ln622_1_reg_3203                                          |   1|   0|    1|          0|
+    |icmp_ln622_reg_3149                                            |   1|   0|    1|          0|
+    |icmp_ln668_1_reg_3596                                          |   1|   0|    1|          0|
+    |icmp_ln669_reg_3604                                            |   1|   0|    1|          0|
+    |index_5_reg_3258                                               |   1|   0|    1|          0|
+    |index_reg_3109                                                 |   1|   0|    1|          0|
+    |phi_ln1091_1_reg_3638                                          |   3|   0|    3|          0|
+    |phi_ln1091_3_reg_3653                                          |   8|   0|    8|          0|
+    |phi_ln1091_4_reg_3658                                          |  32|   0|   32|          0|
+    |phi_ln1091_reg_586                                             |   1|   0|    1|          0|
+    |phi_ln1145_3_reg_3471                                          |   8|   0|    8|          0|
+    |phi_ln1145_4_reg_3482                                          |  32|   0|   32|          0|
+    |phi_ln1145_reg_499                                             |   1|   0|    1|          0|
+    |phi_ln1155_1_reg_3516                                          |   3|   0|    3|          0|
+    |phi_ln1155_3_reg_3531                                          |   8|   0|    8|          0|
+    |phi_ln1155_4_reg_3541                                          |  32|   0|   32|          0|
+    |phi_ln1155_reg_561                                             |   1|   0|    1|          0|
+    |phi_ln1221_reg_736                                             |   1|   0|    1|          0|
+    |ports_is_load_2_reg_3396                                       |   1|   0|    1|          0|
+    |ports_kind_1_reg_3223                                          |   2|   0|    2|          0|
+    |ports_kind_2_reg_3328                                          |   2|   0|    2|          0|
+    |ports_source_2_reg_3350                                        |   2|   0|    2|          0|
+    |ports_uop_rename_pdst_2_reg_3371                               |   8|   0|    8|          0|
+    |ports_valid_1_reg_3215                                         |   1|   0|    1|          0|
+    |ports_valid_2_reg_3320                                         |   1|   0|    1|          0|
+    |ports_value_2_reg_3389                                         |  64|   0|   64|          0|
+    |ports_writes_prf_2_reg_3380                                    |   1|   0|    1|          0|
+    |precise_age_3_reg_3476                                         |   5|   0|    5|          0|
+    |precise_age_reg_487                                            |   8|   0|    8|          0|
+    |precise_valid_reg_475                                          |   1|   0|    1|          0|
+    |reg_1023                                                       |   8|   0|    8|          0|
+    |reg_1029                                                       |  32|   0|   32|          0|
+    |reg_1035                                                       |  64|   0|   64|          0|
+    |select_ln1163_reg_3613                                         |   8|   0|    8|          0|
+    |selected_age_2_reg_694                                         |   8|   0|    8|          0|
+    |selected_age_reg_537                                           |   8|   0|    8|          0|
+    |selected_duplicate_2_reg_672                                   |   1|   0|    1|          0|
+    |selected_duplicate_reg_549                                     |   1|   0|    1|          0|
+    |selected_port_2_reg_715                                        |  32|   0|   32|          0|
+    |selected_port_reg_525                                          |  32|   0|   32|          0|
+    |selected_reg_3557                                              |   8|   0|    8|          0|
+    |service_2_reg_3090                                             |   2|   0|    2|          0|
+    |service_fu_306                                                 |   2|   0|    2|          0|
+    |state_completion_int_execute_is_store_load_reg_3406            |   1|   0|    1|          0|
+    |state_completion_int_execute_memory_address_load_reg_3411      |  64|   0|   64|          0|
+    |state_completion_int_execute_memory_mask_load_reg_3421         |   1|   0|    1|          0|
+    |state_completion_int_execute_store_data_load_reg_3416          |  64|   0|   64|          0|
+    |state_completion_int_execute_uop_branch_br_mask_load_reg_3366  |   8|   0|    8|          0|
+    |state_completion_int_execute_valid_load_reg_3161               |   1|   0|    1|          0|
+    |state_completion_mem_execute_valid_load_reg_3095               |   1|   0|    1|          0|
+    |state_rob_entries_valid_load_1_reg_3140                        |   1|   0|    1|          0|
+    |state_rob_entries_valid_load_2_reg_3194                        |   1|   0|    1|          0|
+    |tmp_18_reg_3546                                                |   1|   0|    1|          0|
+    |tmp_19_reg_3729                                                |   1|   0|    1|          0|
+    |tmp_20_reg_3708                                                |   1|   0|    1|          0|
+    |tmp_2_reg_3125                                                 |   1|   0|    1|          0|
+    |tmp_3_reg_3175                                                 |   1|   0|    1|          0|
+    |tmp_7_reg_3725                                                 |   1|   0|    1|          0|
+    |tmp_8_reg_3704                                                 |   1|   0|    1|          0|
+    |tmp_reg_3561                                                   |   8|   0|    8|          0|
+    |trunc_ln1182_reg_3550                                          |   2|   0|    2|          0|
+    |valid_reg_451                                                  |   1|   0|    1|          0|
+    |w_reg_637                                                      |   2|   0|    2|          0|
+    |write_count_fu_310                                             |   8|   0|    8|          0|
+    |write_eligible_1_reg_620                                       |   1|   0|    1|          0|
+    |xor_ln1170_reg_3438                                            |   1|   0|    1|          0|
+    |zext_ln1016_1_reg_3104                                         |   1|   0|    8|          7|
+    |zext_ln1016_2_reg_3114                                         |   1|   0|    8|          7|
+    |zext_ln1016_3_reg_3119                                         |   1|   0|   32|         31|
+    |zext_ln1016_reg_3099                                           |   2|   0|    8|          6|
+    |zext_ln1023_1_reg_3170                                         |   2|   0|    8|          6|
+    |zext_ln1023_reg_3165                                           |   2|   0|    8|          6|
+    |zext_ln1091_1_reg_3648                                         |   2|   0|    8|          6|
+    |zext_ln1091_reg_3643                                           |   3|   0|    8|          5|
+    |zext_ln1145_1_reg_3466                                         |   2|   0|    8|          6|
+    |zext_ln1145_reg_3461                                           |   3|   0|    8|          5|
+    |zext_ln1154_reg_3502                                           |   2|   0|   32|         30|
+    |zext_ln1155_1_reg_3526                                         |   2|   0|    8|          6|
+    |zext_ln1155_reg_3521                                           |   3|   0|    8|          5|
+    |zext_ln1156_reg_3586                                           |   5|   0|    8|          3|
+    |zext_ln621_1_reg_3183                                          |   8|   0|   64|         56|
+    |zext_ln621_reg_3129                                            |   1|   0|   64|         63|
+    |zext_ln682_reg_3263                                            |   1|   0|    8|          7|
+    |zext_ln732_10_reg_3294                                         |   1|   0|   64|         63|
+    |zext_ln732_11_reg_3307                                         |   1|   0|   64|         63|
+    |zext_ln732_12_reg_3312                                         |   1|   0|   64|         63|
+    |zext_ln732_1_reg_2995                                          |   1|   0|    8|          7|
+    |zext_ln732_2_reg_3236                                          |   2|   0|    8|          6|
+    |zext_ln732_3_reg_3242                                          |   1|   0|    2|          1|
+    |zext_ln732_4_reg_3249                                          |   1|   0|    8|          7|
+    |zext_ln732_5_reg_3000                                          |   1|   0|    8|          7|
+    |zext_ln732_6_reg_3005                                          |   1|   0|   32|         31|
+    |zext_ln732_7_reg_3229                                          |   2|   0|    3|          1|
+    |zext_ln732_8_reg_3272                                          |   1|   0|   32|         31|
+    |zext_ln732_9_reg_3284                                          |   1|   0|    8|          7|
+    |zext_ln732_reg_2990                                            |   2|   0|    8|          6|
+    |zext_ln733_1_reg_3015                                          |   2|   0|    8|          6|
+    |zext_ln733_2_reg_3344                                          |   2|   0|    8|          6|
+    |zext_ln733_3_reg_3360                                          |   2|   0|    8|          6|
+    |zext_ln733_4_reg_3334                                          |   2|   0|    3|          1|
+    |zext_ln733_reg_3010                                            |   2|   0|    8|          6|
+    |zext_ln761_1_reg_3037                                          |   6|   0|    8|          2|
+    +---------------------------------------------------------------+----+----+-----+-----------+
+    |Total                                                          | 779|   0| 1354|        575|
+    +---------------------------------------------------------------+----+----+-----+-----------+
+
+
+
+================================================================
+== Interface
+================================================================
+* Summary: 
++-------------------------------------------------------------------+-----+-----+------------+----------------------------------------------------------+--------------+
+|                             RTL Ports                             | Dir | Bits|  Protocol  |                       Source Object                      |    C Type    |
++-------------------------------------------------------------------+-----+-----+------------+----------------------------------------------------------+--------------+
+|ap_clk                                                             |   in|    1|  ap_ctrl_hs|                                           service_pending|  return value|
+|ap_rst                                                             |   in|    1|  ap_ctrl_hs|                                           service_pending|  return value|
+|ap_start                                                           |   in|    1|  ap_ctrl_hs|                                           service_pending|  return value|
+|ap_done                                                            |  out|    1|  ap_ctrl_hs|                                           service_pending|  return value|
+|ap_idle                                                            |  out|    1|  ap_ctrl_hs|                                           service_pending|  return value|
+|ap_ready                                                           |  out|    1|  ap_ctrl_hs|                                           service_pending|  return value|
+|state_completion_validation_fault_this_cycle                       |   in|    1|     ap_none|              state_completion_validation_fault_this_cycle|       pointer|
+|state_completion_mem_execute_kind_i                                |   in|    2|     ap_ovld|                         state_completion_mem_execute_kind|       pointer|
+|state_completion_mem_execute_kind_o                                |  out|    2|     ap_ovld|                         state_completion_mem_execute_kind|       pointer|
+|state_completion_mem_execute_kind_o_ap_vld                         |  out|    1|     ap_ovld|                         state_completion_mem_execute_kind|       pointer|
+|state_completion_mem_execute_source_i                              |   in|    1|     ap_ovld|                       state_completion_mem_execute_source|       pointer|
+|state_completion_mem_execute_source_o                              |  out|    1|     ap_ovld|                       state_completion_mem_execute_source|       pointer|
+|state_completion_mem_execute_source_o_ap_vld                       |  out|    1|     ap_ovld|                       state_completion_mem_execute_source|       pointer|
+|state_completion_mem_execute_uop_queue_rob_idx_i                   |   in|    1|     ap_ovld|            state_completion_mem_execute_uop_queue_rob_idx|       pointer|
+|state_completion_mem_execute_uop_queue_rob_idx_o                   |  out|    1|     ap_ovld|            state_completion_mem_execute_uop_queue_rob_idx|       pointer|
+|state_completion_mem_execute_uop_queue_rob_idx_o_ap_vld            |  out|    1|     ap_ovld|            state_completion_mem_execute_uop_queue_rob_idx|       pointer|
+|state_completion_mem_execute_uop_queue_rob_allocation_id_i         |   in|    1|     ap_ovld|  state_completion_mem_execute_uop_queue_rob_allocation_id|       pointer|
+|state_completion_mem_execute_uop_queue_rob_allocation_id_o         |  out|    1|     ap_ovld|  state_completion_mem_execute_uop_queue_rob_allocation_id|       pointer|
+|state_completion_mem_execute_uop_queue_rob_allocation_id_o_ap_vld  |  out|    1|     ap_ovld|  state_completion_mem_execute_uop_queue_rob_allocation_id|       pointer|
+|state_completion_int_execute_kind_i                                |   in|    2|     ap_ovld|                         state_completion_int_execute_kind|       pointer|
+|state_completion_int_execute_kind_o                                |  out|    2|     ap_ovld|                         state_completion_int_execute_kind|       pointer|
+|state_completion_int_execute_kind_o_ap_vld                         |  out|    1|     ap_ovld|                         state_completion_int_execute_kind|       pointer|
+|state_completion_int_execute_source_i                              |   in|    2|     ap_ovld|                       state_completion_int_execute_source|       pointer|
+|state_completion_int_execute_source_o                              |  out|    2|     ap_ovld|                       state_completion_int_execute_source|       pointer|
+|state_completion_int_execute_source_o_ap_vld                       |  out|    1|     ap_ovld|                       state_completion_int_execute_source|       pointer|
+|state_completion_int_execute_uop_queue_rob_idx_i                   |   in|    8|     ap_ovld|            state_completion_int_execute_uop_queue_rob_idx|       pointer|
+|state_completion_int_execute_uop_queue_rob_idx_o                   |  out|    8|     ap_ovld|            state_completion_int_execute_uop_queue_rob_idx|       pointer|
+|state_completion_int_execute_uop_queue_rob_idx_o_ap_vld            |  out|    1|     ap_ovld|            state_completion_int_execute_uop_queue_rob_idx|       pointer|
+|state_completion_int_execute_uop_queue_rob_allocation_id_i         |   in|   32|     ap_ovld|  state_completion_int_execute_uop_queue_rob_allocation_id|       pointer|
+|state_completion_int_execute_uop_queue_rob_allocation_id_o         |  out|   32|     ap_ovld|  state_completion_int_execute_uop_queue_rob_allocation_id|       pointer|
+|state_completion_int_execute_uop_queue_rob_allocation_id_o_ap_vld  |  out|    1|     ap_ovld|  state_completion_int_execute_uop_queue_rob_allocation_id|       pointer|
+|state_rob_entries_valid_address0                                   |  out|    5|   ap_memory|                                   state_rob_entries_valid|         array|
+|state_rob_entries_valid_ce0                                        |  out|    1|   ap_memory|                                   state_rob_entries_valid|         array|
+|state_rob_entries_valid_q0                                         |   in|    1|   ap_memory|                                   state_rob_entries_valid|         array|
+|state_rob_entries_exception_address0                               |  out|    5|   ap_memory|                               state_rob_entries_exception|         array|
+|state_rob_entries_exception_ce0                                    |  out|    1|   ap_memory|                               state_rob_entries_exception|         array|
+|state_rob_entries_exception_q0                                     |   in|    1|   ap_memory|                               state_rob_entries_exception|         array|
+|state_rob_entries_uop_queue_rob_idx_address0                       |  out|    5|   ap_memory|                       state_rob_entries_uop_queue_rob_idx|         array|
+|state_rob_entries_uop_queue_rob_idx_ce0                            |  out|    1|   ap_memory|                       state_rob_entries_uop_queue_rob_idx|         array|
+|state_rob_entries_uop_queue_rob_idx_q0                             |   in|    8|   ap_memory|                       state_rob_entries_uop_queue_rob_idx|         array|
+|state_completion_mem_execute_valid_i                               |   in|    1|     ap_ovld|                        state_completion_mem_execute_valid|       pointer|
+|state_completion_mem_execute_valid_o                               |  out|    1|     ap_ovld|                        state_completion_mem_execute_valid|       pointer|
+|state_completion_mem_execute_valid_o_ap_vld                        |  out|    1|     ap_ovld|                        state_completion_mem_execute_valid|       pointer|
+|state_rob_entries_uop_queue_rob_allocation_id_address0             |  out|    5|   ap_memory|             state_rob_entries_uop_queue_rob_allocation_id|         array|
+|state_rob_entries_uop_queue_rob_allocation_id_ce0                  |  out|    1|   ap_memory|             state_rob_entries_uop_queue_rob_allocation_id|         array|
+|state_rob_entries_uop_queue_rob_allocation_id_q0                   |   in|   32|   ap_memory|             state_rob_entries_uop_queue_rob_allocation_id|         array|
+|state_rob_entries_busy_address0                                    |  out|    5|   ap_memory|                                    state_rob_entries_busy|         array|
+|state_rob_entries_busy_ce0                                         |  out|    1|   ap_memory|                                    state_rob_entries_busy|         array|
+|state_rob_entries_busy_we0                                         |  out|    1|   ap_memory|                                    state_rob_entries_busy|         array|
+|state_rob_entries_busy_d0                                          |  out|    1|   ap_memory|                                    state_rob_entries_busy|         array|
+|state_rob_entries_busy_q0                                          |   in|    1|   ap_memory|                                    state_rob_entries_busy|         array|
+|state_rob_entries_memory_valid_address0                            |  out|    5|   ap_memory|                            state_rob_entries_memory_valid|         array|
+|state_rob_entries_memory_valid_ce0                                 |  out|    1|   ap_memory|                            state_rob_entries_memory_valid|         array|
+|state_rob_entries_memory_valid_we0                                 |  out|    1|   ap_memory|                            state_rob_entries_memory_valid|         array|
+|state_rob_entries_memory_valid_d0                                  |  out|    1|   ap_memory|                            state_rob_entries_memory_valid|         array|
+|state_rob_entries_memory_valid_q0                                  |   in|    1|   ap_memory|                            state_rob_entries_memory_valid|         array|
+|state_rob_entries_memory_completed_address0                        |  out|    5|   ap_memory|                        state_rob_entries_memory_completed|         array|
+|state_rob_entries_memory_completed_ce0                             |  out|    1|   ap_memory|                        state_rob_entries_memory_completed|         array|
+|state_rob_entries_memory_completed_we0                             |  out|    1|   ap_memory|                        state_rob_entries_memory_completed|         array|
+|state_rob_entries_memory_completed_d0                              |  out|    1|   ap_memory|                        state_rob_entries_memory_completed|         array|
+|state_rob_entries_memory_completed_q0                              |   in|    1|   ap_memory|                        state_rob_entries_memory_completed|         array|
+|state_rob_entries_is_load_address0                                 |  out|    5|   ap_memory|                                 state_rob_entries_is_load|         array|
+|state_rob_entries_is_load_ce0                                      |  out|    1|   ap_memory|                                 state_rob_entries_is_load|         array|
+|state_rob_entries_is_load_we0                                      |  out|    1|   ap_memory|                                 state_rob_entries_is_load|         array|
+|state_rob_entries_is_load_d0                                       |  out|    1|   ap_memory|                                 state_rob_entries_is_load|         array|
+|state_rob_entries_is_load_q0                                       |   in|    1|   ap_memory|                                 state_rob_entries_is_load|         array|
+|state_rob_entries_memory_request_sent_address0                     |  out|    5|   ap_memory|                     state_rob_entries_memory_request_sent|         array|
+|state_rob_entries_memory_request_sent_ce0                          |  out|    1|   ap_memory|                     state_rob_entries_memory_request_sent|         array|
+|state_rob_entries_memory_request_sent_q0                           |   in|    1|   ap_memory|                     state_rob_entries_memory_request_sent|         array|
+|state_rob_entries_memory_transaction_id_address0                   |  out|    5|   ap_memory|                   state_rob_entries_memory_transaction_id|         array|
+|state_rob_entries_memory_transaction_id_ce0                        |  out|    1|   ap_memory|                   state_rob_entries_memory_transaction_id|         array|
+|state_rob_entries_memory_transaction_id_q0                         |   in|    1|   ap_memory|                   state_rob_entries_memory_transaction_id|         array|
+|state_completion_dropped_completions_i                             |   in|   64|     ap_ovld|                      state_completion_dropped_completions|       pointer|
+|state_completion_dropped_completions_o                             |  out|   64|     ap_ovld|                      state_completion_dropped_completions|       pointer|
+|state_completion_dropped_completions_o_ap_vld                      |  out|    1|     ap_ovld|                      state_completion_dropped_completions|       pointer|
+|state_completion_mem_execute_uop_branch_br_mask_i                  |   in|    8|     ap_ovld|           state_completion_mem_execute_uop_branch_br_mask|       pointer|
+|state_completion_mem_execute_uop_branch_br_mask_o                  |  out|    8|     ap_ovld|           state_completion_mem_execute_uop_branch_br_mask|       pointer|
+|state_completion_mem_execute_uop_branch_br_mask_o_ap_vld           |  out|    1|     ap_ovld|           state_completion_mem_execute_uop_branch_br_mask|       pointer|
+|state_completion_mem_execute_uop_rename_pdst_i                     |   in|    1|     ap_ovld|              state_completion_mem_execute_uop_rename_pdst|       pointer|
+|state_completion_mem_execute_uop_rename_pdst_o                     |  out|    1|     ap_ovld|              state_completion_mem_execute_uop_rename_pdst|       pointer|
+|state_completion_mem_execute_uop_rename_pdst_o_ap_vld              |  out|    1|     ap_ovld|              state_completion_mem_execute_uop_rename_pdst|       pointer|
+|state_completion_mem_execute_writes_prf_i                          |   in|    1|     ap_ovld|                   state_completion_mem_execute_writes_prf|       pointer|
+|state_completion_mem_execute_writes_prf_o                          |  out|    1|     ap_ovld|                   state_completion_mem_execute_writes_prf|       pointer|
+|state_completion_mem_execute_writes_prf_o_ap_vld                   |  out|    1|     ap_ovld|                   state_completion_mem_execute_writes_prf|       pointer|
+|state_completion_mem_execute_mispredict                            |  out|    1|      ap_vld|                   state_completion_mem_execute_mispredict|       pointer|
+|state_completion_mem_execute_mispredict_ap_vld                     |  out|    1|      ap_vld|                   state_completion_mem_execute_mispredict|       pointer|
+|state_completion_mem_execute_control_resolved                      |  out|    1|      ap_vld|             state_completion_mem_execute_control_resolved|       pointer|
+|state_completion_mem_execute_control_resolved_ap_vld               |  out|    1|      ap_vld|             state_completion_mem_execute_control_resolved|       pointer|
+|state_completion_mem_execute_value_i                               |   in|    1|     ap_ovld|                        state_completion_mem_execute_value|       pointer|
+|state_completion_mem_execute_value_o                               |  out|    1|     ap_ovld|                        state_completion_mem_execute_value|       pointer|
+|state_completion_mem_execute_value_o_ap_vld                        |  out|    1|     ap_ovld|                        state_completion_mem_execute_value|       pointer|
+|state_completion_mem_execute_is_load_i                             |   in|    1|     ap_ovld|                      state_completion_mem_execute_is_load|       pointer|
+|state_completion_mem_execute_is_load_o                             |  out|    1|     ap_ovld|                      state_completion_mem_execute_is_load|       pointer|
+|state_completion_mem_execute_is_load_o_ap_vld                      |  out|    1|     ap_ovld|                      state_completion_mem_execute_is_load|       pointer|
+|state_completion_mem_execute_is_store_i                            |   in|    1|     ap_ovld|                     state_completion_mem_execute_is_store|       pointer|
+|state_completion_mem_execute_is_store_o                            |  out|    1|     ap_ovld|                     state_completion_mem_execute_is_store|       pointer|
+|state_completion_mem_execute_is_store_o_ap_vld                     |  out|    1|     ap_ovld|                     state_completion_mem_execute_is_store|       pointer|
+|state_completion_mem_execute_memory_address_i                      |   in|    1|     ap_ovld|               state_completion_mem_execute_memory_address|       pointer|
+|state_completion_mem_execute_memory_address_o                      |  out|    1|     ap_ovld|               state_completion_mem_execute_memory_address|       pointer|
+|state_completion_mem_execute_memory_address_o_ap_vld               |  out|    1|     ap_ovld|               state_completion_mem_execute_memory_address|       pointer|
+|state_completion_mem_execute_store_data_i                          |   in|    1|     ap_ovld|                   state_completion_mem_execute_store_data|       pointer|
+|state_completion_mem_execute_store_data_o                          |  out|    1|     ap_ovld|                   state_completion_mem_execute_store_data|       pointer|
+|state_completion_mem_execute_store_data_o_ap_vld                   |  out|    1|     ap_ovld|                   state_completion_mem_execute_store_data|       pointer|
+|state_completion_mem_execute_memory_mask_i                         |   in|    1|     ap_ovld|                  state_completion_mem_execute_memory_mask|       pointer|
+|state_completion_mem_execute_memory_mask_o                         |  out|    1|     ap_ovld|                  state_completion_mem_execute_memory_mask|       pointer|
+|state_completion_mem_execute_memory_mask_o_ap_vld                  |  out|    1|     ap_ovld|                  state_completion_mem_execute_memory_mask|       pointer|
+|state_completion_int_execute_valid_i                               |   in|    1|     ap_ovld|                        state_completion_int_execute_valid|       pointer|
+|state_completion_int_execute_valid_o                               |  out|    1|     ap_ovld|                        state_completion_int_execute_valid|       pointer|
+|state_completion_int_execute_valid_o_ap_vld                        |  out|    1|     ap_ovld|                        state_completion_int_execute_valid|       pointer|
+|state_completion_int_execute_uop_branch_br_mask_i                  |   in|    8|     ap_ovld|           state_completion_int_execute_uop_branch_br_mask|       pointer|
+|state_completion_int_execute_uop_branch_br_mask_o                  |  out|    8|     ap_ovld|           state_completion_int_execute_uop_branch_br_mask|       pointer|
+|state_completion_int_execute_uop_branch_br_mask_o_ap_vld           |  out|    1|     ap_ovld|           state_completion_int_execute_uop_branch_br_mask|       pointer|
+|state_completion_int_execute_uop_rename_pdst_i                     |   in|    8|     ap_ovld|              state_completion_int_execute_uop_rename_pdst|       pointer|
+|state_completion_int_execute_uop_rename_pdst_o                     |  out|    8|     ap_ovld|              state_completion_int_execute_uop_rename_pdst|       pointer|
+|state_completion_int_execute_uop_rename_pdst_o_ap_vld              |  out|    1|     ap_ovld|              state_completion_int_execute_uop_rename_pdst|       pointer|
+|state_completion_int_execute_writes_prf_i                          |   in|    1|     ap_ovld|                   state_completion_int_execute_writes_prf|       pointer|
+|state_completion_int_execute_writes_prf_o                          |  out|    1|     ap_ovld|                   state_completion_int_execute_writes_prf|       pointer|
+|state_completion_int_execute_writes_prf_o_ap_vld                   |  out|    1|     ap_ovld|                   state_completion_int_execute_writes_prf|       pointer|
+|state_completion_int_execute_mispredict                            |  out|    1|      ap_vld|                   state_completion_int_execute_mispredict|       pointer|
+|state_completion_int_execute_mispredict_ap_vld                     |  out|    1|      ap_vld|                   state_completion_int_execute_mispredict|       pointer|
+|state_completion_int_execute_control_resolved                      |  out|    1|      ap_vld|             state_completion_int_execute_control_resolved|       pointer|
+|state_completion_int_execute_control_resolved_ap_vld               |  out|    1|      ap_vld|             state_completion_int_execute_control_resolved|       pointer|
+|state_completion_int_execute_value_i                               |   in|   64|     ap_ovld|                        state_completion_int_execute_value|       pointer|
+|state_completion_int_execute_value_o                               |  out|   64|     ap_ovld|                        state_completion_int_execute_value|       pointer|
+|state_completion_int_execute_value_o_ap_vld                        |  out|    1|     ap_ovld|                        state_completion_int_execute_value|       pointer|
+|state_completion_int_execute_is_load_i                             |   in|    1|     ap_ovld|                      state_completion_int_execute_is_load|       pointer|
+|state_completion_int_execute_is_load_o                             |  out|    1|     ap_ovld|                      state_completion_int_execute_is_load|       pointer|
+|state_completion_int_execute_is_load_o_ap_vld                      |  out|    1|     ap_ovld|                      state_completion_int_execute_is_load|       pointer|
+|state_completion_int_execute_is_store_i                            |   in|    1|     ap_ovld|                     state_completion_int_execute_is_store|       pointer|
+|state_completion_int_execute_is_store_o                            |  out|    1|     ap_ovld|                     state_completion_int_execute_is_store|       pointer|
+|state_completion_int_execute_is_store_o_ap_vld                     |  out|    1|     ap_ovld|                     state_completion_int_execute_is_store|       pointer|
+|state_completion_int_execute_memory_address_i                      |   in|   64|     ap_ovld|               state_completion_int_execute_memory_address|       pointer|
+|state_completion_int_execute_memory_address_o                      |  out|   64|     ap_ovld|               state_completion_int_execute_memory_address|       pointer|
+|state_completion_int_execute_memory_address_o_ap_vld               |  out|    1|     ap_ovld|               state_completion_int_execute_memory_address|       pointer|
+|state_completion_int_execute_store_data_i                          |   in|   64|     ap_ovld|                   state_completion_int_execute_store_data|       pointer|
+|state_completion_int_execute_store_data_o                          |  out|   64|     ap_ovld|                   state_completion_int_execute_store_data|       pointer|
+|state_completion_int_execute_store_data_o_ap_vld                   |  out|    1|     ap_ovld|                   state_completion_int_execute_store_data|       pointer|
+|state_completion_int_execute_memory_mask_i                         |   in|    1|     ap_ovld|                  state_completion_int_execute_memory_mask|       pointer|
+|state_completion_int_execute_memory_mask_o                         |  out|    1|     ap_ovld|                  state_completion_int_execute_memory_mask|       pointer|
+|state_completion_int_execute_memory_mask_o_ap_vld                  |  out|    1|     ap_ovld|                  state_completion_int_execute_memory_mask|       pointer|
+|state_completion_writebacks_valid_0_i                              |   in|    1|     ap_ovld|                       state_completion_writebacks_valid_0|       pointer|
+|state_completion_writebacks_valid_0_o                              |  out|    1|     ap_ovld|                       state_completion_writebacks_valid_0|       pointer|
+|state_completion_writebacks_valid_0_o_ap_vld                       |  out|    1|     ap_ovld|                       state_completion_writebacks_valid_0|       pointer|
+|state_completion_writebacks_valid_1_i                              |   in|    1|     ap_ovld|                       state_completion_writebacks_valid_1|       pointer|
+|state_completion_writebacks_valid_1_o                              |  out|    1|     ap_ovld|                       state_completion_writebacks_valid_1|       pointer|
+|state_completion_writebacks_valid_1_o_ap_vld                       |  out|    1|     ap_ovld|                       state_completion_writebacks_valid_1|       pointer|
+|state_completion_writebacks_pdst_0_i                               |   in|    8|     ap_ovld|                        state_completion_writebacks_pdst_0|       pointer|
+|state_completion_writebacks_pdst_0_o                               |  out|    8|     ap_ovld|                        state_completion_writebacks_pdst_0|       pointer|
+|state_completion_writebacks_pdst_0_o_ap_vld                        |  out|    1|     ap_ovld|                        state_completion_writebacks_pdst_0|       pointer|
+|state_completion_writebacks_pdst_1_i                               |   in|    8|     ap_ovld|                        state_completion_writebacks_pdst_1|       pointer|
+|state_completion_writebacks_pdst_1_o                               |  out|    8|     ap_ovld|                        state_completion_writebacks_pdst_1|       pointer|
+|state_completion_writebacks_pdst_1_o_ap_vld                        |  out|    1|     ap_ovld|                        state_completion_writebacks_pdst_1|       pointer|
+|state_completion_writebacks_value_0_i                              |   in|   64|     ap_ovld|                       state_completion_writebacks_value_0|       pointer|
+|state_completion_writebacks_value_0_o                              |  out|   64|     ap_ovld|                       state_completion_writebacks_value_0|       pointer|
+|state_completion_writebacks_value_0_o_ap_vld                       |  out|    1|     ap_ovld|                       state_completion_writebacks_value_0|       pointer|
+|state_completion_writebacks_value_1_i                              |   in|   64|     ap_ovld|                       state_completion_writebacks_value_1|       pointer|
+|state_completion_writebacks_value_1_o                              |  out|   64|     ap_ovld|                       state_completion_writebacks_value_1|       pointer|
+|state_completion_writebacks_value_1_o_ap_vld                       |  out|    1|     ap_ovld|                       state_completion_writebacks_value_1|       pointer|
+|state_completion_wakeup_sent_0                                     |  out|    1|      ap_vld|                            state_completion_wakeup_sent_0|       pointer|
+|state_completion_wakeup_sent_0_ap_vld                              |  out|    1|      ap_vld|                            state_completion_wakeup_sent_0|       pointer|
+|state_completion_completion_accepts_this_cycle_i                   |   in|    8|     ap_ovld|            state_completion_completion_accepts_this_cycle|       pointer|
+|state_completion_completion_accepts_this_cycle_o                   |  out|    8|     ap_ovld|            state_completion_completion_accepts_this_cycle|       pointer|
+|state_completion_completion_accepts_this_cycle_o_ap_vld            |  out|    1|     ap_ovld|            state_completion_completion_accepts_this_cycle|       pointer|
+|state_completion_total_completion_accepts_i                        |   in|   64|     ap_ovld|                 state_completion_total_completion_accepts|       pointer|
+|state_completion_total_completion_accepts_o                        |  out|   64|     ap_ovld|                 state_completion_total_completion_accepts|       pointer|
+|state_completion_total_completion_accepts_o_ap_vld                 |  out|    1|     ap_ovld|                 state_completion_total_completion_accepts|       pointer|
+|state_lsu_stq_count_i                                              |   in|    8|     ap_ovld|                                       state_lsu_stq_count|       pointer|
+|state_lsu_stq_count_o                                              |  out|    8|     ap_ovld|                                       state_lsu_stq_count|       pointer|
+|state_lsu_stq_count_o_ap_vld                                       |  out|    1|     ap_ovld|                                       state_lsu_stq_count|       pointer|
+|state_lsu_stq_tail_i                                               |   in|    3|     ap_ovld|                                        state_lsu_stq_tail|       pointer|
+|state_lsu_stq_tail_o                                               |  out|    3|     ap_ovld|                                        state_lsu_stq_tail|       pointer|
+|state_lsu_stq_tail_o_ap_vld                                        |  out|    1|     ap_ovld|                                        state_lsu_stq_tail|       pointer|
+|state_lsu_stq_valid_address0                                       |  out|    3|   ap_memory|                                       state_lsu_stq_valid|         array|
+|state_lsu_stq_valid_ce0                                            |  out|    1|   ap_memory|                                       state_lsu_stq_valid|         array|
+|state_lsu_stq_valid_we0                                            |  out|    1|   ap_memory|                                       state_lsu_stq_valid|         array|
+|state_lsu_stq_valid_d0                                             |  out|    1|   ap_memory|                                       state_lsu_stq_valid|         array|
+|state_lsu_stq_rob_idx_address0                                     |  out|    3|   ap_memory|                                     state_lsu_stq_rob_idx|         array|
+|state_lsu_stq_rob_idx_ce0                                          |  out|    1|   ap_memory|                                     state_lsu_stq_rob_idx|         array|
+|state_lsu_stq_rob_idx_we0                                          |  out|    1|   ap_memory|                                     state_lsu_stq_rob_idx|         array|
+|state_lsu_stq_rob_idx_d0                                           |  out|    8|   ap_memory|                                     state_lsu_stq_rob_idx|         array|
+|state_lsu_stq_rob_allocation_id_address0                           |  out|    3|   ap_memory|                           state_lsu_stq_rob_allocation_id|         array|
+|state_lsu_stq_rob_allocation_id_ce0                                |  out|    1|   ap_memory|                           state_lsu_stq_rob_allocation_id|         array|
+|state_lsu_stq_rob_allocation_id_we0                                |  out|    1|   ap_memory|                           state_lsu_stq_rob_allocation_id|         array|
+|state_lsu_stq_rob_allocation_id_d0                                 |  out|   32|   ap_memory|                           state_lsu_stq_rob_allocation_id|         array|
+|state_lsu_stq_address_valid_address0                               |  out|    3|   ap_memory|                               state_lsu_stq_address_valid|         array|
+|state_lsu_stq_address_valid_ce0                                    |  out|    1|   ap_memory|                               state_lsu_stq_address_valid|         array|
+|state_lsu_stq_address_valid_we0                                    |  out|    1|   ap_memory|                               state_lsu_stq_address_valid|         array|
+|state_lsu_stq_address_valid_d0                                     |  out|    1|   ap_memory|                               state_lsu_stq_address_valid|         array|
+|state_lsu_stq_address_address0                                     |  out|    3|   ap_memory|                                     state_lsu_stq_address|         array|
+|state_lsu_stq_address_ce0                                          |  out|    1|   ap_memory|                                     state_lsu_stq_address|         array|
+|state_lsu_stq_address_we0                                          |  out|    1|   ap_memory|                                     state_lsu_stq_address|         array|
+|state_lsu_stq_address_d0                                           |  out|   64|   ap_memory|                                     state_lsu_stq_address|         array|
+|state_lsu_stq_data_valid_address0                                  |  out|    3|   ap_memory|                                  state_lsu_stq_data_valid|         array|
+|state_lsu_stq_data_valid_ce0                                       |  out|    1|   ap_memory|                                  state_lsu_stq_data_valid|         array|
+|state_lsu_stq_data_valid_we0                                       |  out|    1|   ap_memory|                                  state_lsu_stq_data_valid|         array|
+|state_lsu_stq_data_valid_d0                                        |  out|    1|   ap_memory|                                  state_lsu_stq_data_valid|         array|
+|state_lsu_stq_data_address0                                        |  out|    3|   ap_memory|                                        state_lsu_stq_data|         array|
+|state_lsu_stq_data_ce0                                             |  out|    1|   ap_memory|                                        state_lsu_stq_data|         array|
+|state_lsu_stq_data_we0                                             |  out|    1|   ap_memory|                                        state_lsu_stq_data|         array|
+|state_lsu_stq_data_d0                                              |  out|   64|   ap_memory|                                        state_lsu_stq_data|         array|
+|state_lsu_stq_mask_address0                                        |  out|    3|   ap_memory|                                        state_lsu_stq_mask|         array|
+|state_lsu_stq_mask_ce0                                             |  out|    1|   ap_memory|                                        state_lsu_stq_mask|         array|
+|state_lsu_stq_mask_we0                                             |  out|    1|   ap_memory|                                        state_lsu_stq_mask|         array|
+|state_lsu_stq_mask_d0                                              |  out|    8|   ap_memory|                                        state_lsu_stq_mask|         array|
+|state_lsu_stq_size_address0                                        |  out|    3|   ap_memory|                                        state_lsu_stq_size|         array|
+|state_lsu_stq_size_ce0                                             |  out|    1|   ap_memory|                                        state_lsu_stq_size|         array|
+|state_lsu_stq_size_we0                                             |  out|    1|   ap_memory|                                        state_lsu_stq_size|         array|
+|state_lsu_stq_size_d0                                              |  out|    8|   ap_memory|                                        state_lsu_stq_size|         array|
+|state_lsu_stq_branch_mask_address0                                 |  out|    3|   ap_memory|                                 state_lsu_stq_branch_mask|         array|
+|state_lsu_stq_branch_mask_ce0                                      |  out|    1|   ap_memory|                                 state_lsu_stq_branch_mask|         array|
+|state_lsu_stq_branch_mask_we0                                      |  out|    1|   ap_memory|                                 state_lsu_stq_branch_mask|         array|
+|state_lsu_stq_branch_mask_d0                                       |  out|    8|   ap_memory|                                 state_lsu_stq_branch_mask|         array|
+|state_lsu_ldq_count_i                                              |   in|    8|     ap_ovld|                                       state_lsu_ldq_count|       pointer|
+|state_lsu_ldq_count_o                                              |  out|    8|     ap_ovld|                                       state_lsu_ldq_count|       pointer|
+|state_lsu_ldq_count_o_ap_vld                                       |  out|    1|     ap_ovld|                                       state_lsu_ldq_count|       pointer|
+|state_lsu_ldq_tail_i                                               |   in|    3|     ap_ovld|                                        state_lsu_ldq_tail|       pointer|
+|state_lsu_ldq_tail_o                                               |  out|    3|     ap_ovld|                                        state_lsu_ldq_tail|       pointer|
+|state_lsu_ldq_tail_o_ap_vld                                        |  out|    1|     ap_ovld|                                        state_lsu_ldq_tail|       pointer|
+|state_lsu_ldq_valid_address0                                       |  out|    3|   ap_memory|                                       state_lsu_ldq_valid|         array|
+|state_lsu_ldq_valid_ce0                                            |  out|    1|   ap_memory|                                       state_lsu_ldq_valid|         array|
+|state_lsu_ldq_valid_we0                                            |  out|    1|   ap_memory|                                       state_lsu_ldq_valid|         array|
+|state_lsu_ldq_valid_d0                                             |  out|    1|   ap_memory|                                       state_lsu_ldq_valid|         array|
+|state_lsu_ldq_rob_idx_address0                                     |  out|    3|   ap_memory|                                     state_lsu_ldq_rob_idx|         array|
+|state_lsu_ldq_rob_idx_ce0                                          |  out|    1|   ap_memory|                                     state_lsu_ldq_rob_idx|         array|
+|state_lsu_ldq_rob_idx_we0                                          |  out|    1|   ap_memory|                                     state_lsu_ldq_rob_idx|         array|
+|state_lsu_ldq_rob_idx_d0                                           |  out|    8|   ap_memory|                                     state_lsu_ldq_rob_idx|         array|
+|state_lsu_ldq_rob_allocation_id_address0                           |  out|    3|   ap_memory|                           state_lsu_ldq_rob_allocation_id|         array|
+|state_lsu_ldq_rob_allocation_id_ce0                                |  out|    1|   ap_memory|                           state_lsu_ldq_rob_allocation_id|         array|
+|state_lsu_ldq_rob_allocation_id_we0                                |  out|    1|   ap_memory|                           state_lsu_ldq_rob_allocation_id|         array|
+|state_lsu_ldq_rob_allocation_id_d0                                 |  out|   32|   ap_memory|                           state_lsu_ldq_rob_allocation_id|         array|
+|state_lsu_ldq_address_address0                                     |  out|    3|   ap_memory|                                     state_lsu_ldq_address|         array|
+|state_lsu_ldq_address_ce0                                          |  out|    1|   ap_memory|                                     state_lsu_ldq_address|         array|
+|state_lsu_ldq_address_we0                                          |  out|    1|   ap_memory|                                     state_lsu_ldq_address|         array|
+|state_lsu_ldq_address_d0                                           |  out|   64|   ap_memory|                                     state_lsu_ldq_address|         array|
+|state_lsu_ldq_size_address0                                        |  out|    3|   ap_memory|                                        state_lsu_ldq_size|         array|
+|state_lsu_ldq_size_ce0                                             |  out|    1|   ap_memory|                                        state_lsu_ldq_size|         array|
+|state_lsu_ldq_size_we0                                             |  out|    1|   ap_memory|                                        state_lsu_ldq_size|         array|
+|state_lsu_ldq_size_d0                                              |  out|    8|   ap_memory|                                        state_lsu_ldq_size|         array|
+|state_lsu_ldq_signed_load_address0                                 |  out|    3|   ap_memory|                                 state_lsu_ldq_signed_load|         array|
+|state_lsu_ldq_signed_load_ce0                                      |  out|    1|   ap_memory|                                 state_lsu_ldq_signed_load|         array|
+|state_lsu_ldq_signed_load_we0                                      |  out|    1|   ap_memory|                                 state_lsu_ldq_signed_load|         array|
+|state_lsu_ldq_signed_load_d0                                       |  out|    1|   ap_memory|                                 state_lsu_ldq_signed_load|         array|
+|state_lsu_ldq_branch_mask_address0                                 |  out|    3|   ap_memory|                                 state_lsu_ldq_branch_mask|         array|
+|state_lsu_ldq_branch_mask_ce0                                      |  out|    1|   ap_memory|                                 state_lsu_ldq_branch_mask|         array|
+|state_lsu_ldq_branch_mask_we0                                      |  out|    1|   ap_memory|                                 state_lsu_ldq_branch_mask|         array|
+|state_lsu_ldq_branch_mask_d0                                       |  out|    8|   ap_memory|                                 state_lsu_ldq_branch_mask|         array|
+|state_rename_int_free_list_busy_table_address0                     |  out|    6|   ap_memory|                     state_rename_int_free_list_busy_table|         array|
+|state_rename_int_free_list_busy_table_ce0                          |  out|    1|   ap_memory|                     state_rename_int_free_list_busy_table|         array|
+|state_rename_int_free_list_busy_table_we0                          |  out|    1|   ap_memory|                     state_rename_int_free_list_busy_table|         array|
+|state_rename_int_free_list_busy_table_d0                           |  out|    1|   ap_memory|                     state_rename_int_free_list_busy_table|         array|
+|state_completion_wakeup_sent_2                                     |  out|    1|      ap_vld|                            state_completion_wakeup_sent_2|       pointer|
+|state_completion_wakeup_sent_2_ap_vld                              |  out|    1|      ap_vld|                            state_completion_wakeup_sent_2|       pointer|
+|state_completion_wakeup_sent_1                                     |  out|    1|      ap_vld|                            state_completion_wakeup_sent_1|       pointer|
+|state_completion_wakeup_sent_1_ap_vld                              |  out|    1|      ap_vld|                            state_completion_wakeup_sent_1|       pointer|
+|state_completion_rob_completes_this_cycle_i                        |   in|    8|     ap_ovld|                 state_completion_rob_completes_this_cycle|       pointer|
+|state_completion_rob_completes_this_cycle_o                        |  out|    8|     ap_ovld|                 state_completion_rob_completes_this_cycle|       pointer|
+|state_completion_rob_completes_this_cycle_o_ap_vld                 |  out|    1|     ap_ovld|                 state_completion_rob_completes_this_cycle|       pointer|
+|state_completion_total_rob_completes_i                             |   in|   64|     ap_ovld|                      state_completion_total_rob_completes|       pointer|
+|state_completion_total_rob_completes_o                             |  out|   64|     ap_ovld|                      state_completion_total_rob_completes|       pointer|
+|state_completion_total_rob_completes_o_ap_vld                      |  out|    1|     ap_ovld|                      state_completion_total_rob_completes|       pointer|
+|state_completion_dropped_writebacks_i                              |   in|   64|     ap_ovld|                       state_completion_dropped_writebacks|       pointer|
+|state_completion_dropped_writebacks_o                              |  out|   64|     ap_ovld|                       state_completion_dropped_writebacks|       pointer|
+|state_completion_dropped_writebacks_o_ap_vld                       |  out|    1|     ap_ovld|                       state_completion_dropped_writebacks|       pointer|
+|state_completion_prf_writes_this_cycle_i                           |   in|    8|     ap_ovld|                    state_completion_prf_writes_this_cycle|       pointer|
+|state_completion_prf_writes_this_cycle_o                           |  out|    8|     ap_ovld|                    state_completion_prf_writes_this_cycle|       pointer|
+|state_completion_prf_writes_this_cycle_o_ap_vld                    |  out|    1|     ap_ovld|                    state_completion_prf_writes_this_cycle|       pointer|
+|state_completion_total_prf_writes_i                                |   in|   64|     ap_ovld|                         state_completion_total_prf_writes|       pointer|
+|state_completion_total_prf_writes_o                                |  out|   64|     ap_ovld|                         state_completion_total_prf_writes|       pointer|
+|state_completion_total_prf_writes_o_ap_vld                         |  out|    1|     ap_ovld|                         state_completion_total_prf_writes|       pointer|
+|state_int_rf_latest_bank_i                                         |   in|   64|     ap_ovld|                                  state_int_rf_latest_bank|       pointer|
+|state_int_rf_latest_bank_o                                         |  out|   64|     ap_ovld|                                  state_int_rf_latest_bank|       pointer|
+|state_int_rf_latest_bank_o_ap_vld                                  |  out|    1|     ap_ovld|                                  state_int_rf_latest_bank|       pointer|
+|state_completion_duplicate_writebacks_i                            |   in|   64|     ap_ovld|                     state_completion_duplicate_writebacks|       pointer|
+|state_completion_duplicate_writebacks_o                            |  out|   64|     ap_ovld|                     state_completion_duplicate_writebacks|       pointer|
+|state_completion_duplicate_writebacks_o_ap_vld                     |  out|    1|     ap_ovld|                     state_completion_duplicate_writebacks|       pointer|
+|state_int_rf_bank0_address0                                        |  out|    6|   ap_memory|                                        state_int_rf_bank0|         array|
+|state_int_rf_bank0_ce0                                             |  out|    1|   ap_memory|                                        state_int_rf_bank0|         array|
+|state_int_rf_bank0_we0                                             |  out|    1|   ap_memory|                                        state_int_rf_bank0|         array|
+|state_int_rf_bank0_d0                                              |  out|   64|   ap_memory|                                        state_int_rf_bank0|         array|
+|state_int_rf_bank1_address0                                        |  out|    6|   ap_memory|                                        state_int_rf_bank1|         array|
+|state_int_rf_bank1_ce0                                             |  out|    1|   ap_memory|                                        state_int_rf_bank1|         array|
+|state_int_rf_bank1_we0                                             |  out|    1|   ap_memory|                                        state_int_rf_bank1|         array|
+|state_int_rf_bank1_d0                                              |  out|   64|   ap_memory|                                        state_int_rf_bank1|         array|
+|state_completion_peak_completion_accepts_i                         |   in|    8|     ap_ovld|                  state_completion_peak_completion_accepts|       pointer|
+|state_completion_peak_completion_accepts_o                         |  out|    8|     ap_ovld|                  state_completion_peak_completion_accepts|       pointer|
+|state_completion_peak_completion_accepts_o_ap_vld                  |  out|    1|     ap_ovld|                  state_completion_peak_completion_accepts|       pointer|
+|state_completion_peak_rob_completes_i                              |   in|    8|     ap_ovld|                       state_completion_peak_rob_completes|       pointer|
+|state_completion_peak_rob_completes_o                              |  out|    8|     ap_ovld|                       state_completion_peak_rob_completes|       pointer|
+|state_completion_peak_rob_completes_o_ap_vld                       |  out|    1|     ap_ovld|                       state_completion_peak_rob_completes|       pointer|
+|state_completion_peak_prf_writes_i                                 |   in|    8|     ap_ovld|                          state_completion_peak_prf_writes|       pointer|
+|state_completion_peak_prf_writes_o                                 |  out|    8|     ap_ovld|                          state_completion_peak_prf_writes|       pointer|
+|state_completion_peak_prf_writes_o_ap_vld                          |  out|    1|     ap_ovld|                          state_completion_peak_prf_writes|       pointer|
++-------------------------------------------------------------------+-----+-----+------------+----------------------------------------------------------+--------------+
+

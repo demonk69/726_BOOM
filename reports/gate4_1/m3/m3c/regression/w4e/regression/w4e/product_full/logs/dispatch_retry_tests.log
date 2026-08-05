@@ -1,0 +1,14 @@
+=== BOOM-HLS W3 Stage 1 Dispatch Retry Tests ===
+  [RETRY] 01 constructor clears persistent packet                  ... PASS
+  [RETRY] 02 reset clears valid, uop, and ROB ownership            ... PASS
+  [RETRY] 03 retry does not repeat physical-register allocation    ... PASS
+  [RETRY] 04 ROB-full retry retains stable packet                  ... PASS
+  [RETRY] 05 repeated ROB stage allocates exactly once             ... PASS
+  [RETRY] 06 accepted direct bypass consumes packet                ... PASS
+  [RETRY] 07 successful IQ insertion consumes packet               ... PASS
+  [RETRY] 08 blocked full IQ retains ROB-owned packet              ... PASS
+  [RETRY] 09 exception waits until ROB owns it                     ... PASS
+  [RETRY] 10 pending packet stalls frontend and decode             ... PASS
+  [RETRY] 11 correct branch resolve clears packet mask             ... PASS
+  [RETRY] 12 mispredict kills matching pending packet              ... PASS
+Dispatch retry: 12 passed, 0 failed

@@ -1,0 +1,210 @@
+
+
+================================================================
+== Vitis HLS Report for 'kill_rob_younger_than'
+================================================================
+* Date:           Wed Aug  5 20:04:01 2026
+
+* Version:        2021.2 (Build 3367213 on Tue Oct 19 02:47:39 MDT 2021)
+* Project:        synth_m3c_rv64m_top
+* Solution:       solution_gate4_1_m3c_rtl (Vivado IP Flow Target)
+* Product family: zynquplus
+* Target device:  xczu7ev-ffvc1156-2-e
+
+
+================================================================
+== Performance Estimates
+================================================================
++ Timing: 
+    * Summary: 
+    +--------+----------+----------+------------+
+    |  Clock |  Target  | Estimated| Uncertainty|
+    +--------+----------+----------+------------+
+    |ap_clk  |  10.00 ns|  2.763 ns|     2.70 ns|
+    +--------+----------+----------+------------+
+
++ Latency: 
+    * Summary: 
+    +---------+---------+----------+----------+-----+-----+---------+
+    |  Latency (cycles) |  Latency (absolute) |  Interval | Pipeline|
+    |   min   |   max   |    min   |    max   | min | max |   Type  |
+    +---------+---------+----------+----------+-----+-----+---------+
+    |       97|       97|  0.970 us|  0.970 us|   97|   97|       no|
+    +---------+---------+----------+----------+-----+-----+---------+
+
+    + Detail: 
+        * Instance: 
+        N/A
+
+        * Loop: 
+        +---------------------+---------+---------+----------+-----------+-----------+------+----------+
+        |                     |  Latency (cycles) | Iteration|  Initiation Interval  | Trip |          |
+        |      Loop Name      |   min   |   max   |  Latency |  achieved |   target  | Count| Pipelined|
+        +---------------------+---------+---------+----------+-----------+-----------+------+----------+
+        |- VITIS_LOOP_2274_1  |       96|       96|         3|          -|          -|    32|        no|
+        +---------------------+---------+---------+----------+-----------+-----------+------+----------+
+
+
+
+================================================================
+== Utilization Estimates
+================================================================
+* Summary: 
++-----------------+---------+------+--------+--------+-----+
+|       Name      | BRAM_18K|  DSP |   FF   |   LUT  | URAM|
++-----------------+---------+------+--------+--------+-----+
+|DSP              |        -|     -|       -|       -|    -|
+|Expression       |        -|     -|       0|      67|    -|
+|FIFO             |        -|     -|       -|       -|    -|
+|Instance         |        -|     -|       -|       -|    -|
+|Memory           |        -|     -|       -|       -|    -|
+|Multiplexer      |        -|     -|       -|     218|    -|
+|Register         |        -|     -|      41|       -|    -|
++-----------------+---------+------+--------+--------+-----+
+|Total            |        0|     0|      41|     285|    0|
++-----------------+---------+------+--------+--------+-----+
+|Available        |      624|  1728|  460800|  230400|   96|
++-----------------+---------+------+--------+--------+-----+
+|Utilization (%)  |        0|     0|      ~0|      ~0|    0|
++-----------------+---------+------+--------+--------+-----+
+
++ Detail: 
+    * Instance: 
+    N/A
+
+    * DSP: 
+    N/A
+
+    * Memory: 
+    N/A
+
+    * FIFO: 
+    N/A
+
+    * Expression: 
+    +-----------------------+----------+----+---+----+------------+------------+
+    |     Variable Name     | Operation| DSP| FF| LUT| Bitwidth P0| Bitwidth P1|
+    +-----------------------+----------+----+---+----+------------+------------+
+    |i_46_fu_367_p2         |         +|   0|  0|  13|           6|           1|
+    |idx_3_fu_411_p2        |         +|   0|  0|  12|           5|           1|
+    |and_ln2094_fu_400_p2   |       and|   0|  0|   8|           8|           8|
+    |and_ln2276_fu_387_p2   |       and|   0|  0|   2|           1|           1|
+    |icmp_ln2094_fu_405_p2  |      icmp|   0|  0|  11|           8|           1|
+    |icmp_ln2274_fu_361_p2  |      icmp|   0|  0|  10|           6|           7|
+    |icmp_ln2276_fu_382_p2  |      icmp|   0|  0|  11|           8|           8|
+    +-----------------------+----------+----+---+----+------------+------------+
+    |Total                  |          |   0|  0|  67|          42|          27|
+    +-----------------------+----------+----+---+----+------------+------------+
+
+    * Multiplexer: 
+    +--------------------------------------------------------+----+-----------+-----+-----------+
+    |                          Name                          | LUT| Input Size| Bits| Total Bits|
+    +--------------------------------------------------------+----+-----------+-----+-----------+
+    |ap_NS_fsm                                               |  26|          5|    1|          5|
+    |i_fu_64                                                 |   9|          2|    6|         12|
+    |idx_fu_60                                               |   9|          2|    5|         10|
+    |state_rob_entries_busy_address0                         |  14|          3|    5|         15|
+    |state_rob_entries_exception_address0                    |  14|          3|    5|         15|
+    |state_rob_entries_is_load_address0                      |  14|          3|    5|         15|
+    |state_rob_entries_memory_completed_address0             |  14|          3|    5|         15|
+    |state_rob_entries_memory_request_sent_address0          |  14|          3|    5|         15|
+    |state_rob_entries_memory_transaction_id_address0        |  14|          3|    5|         15|
+    |state_rob_entries_memory_valid_address0                 |  14|          3|    5|         15|
+    |state_rob_entries_uop_branch_br_mask_address0           |  20|          4|    5|         20|
+    |state_rob_entries_uop_queue_rob_allocation_id_address0  |  14|          3|    5|         15|
+    |state_rob_entries_uop_queue_rob_idx_address0            |  14|          3|    5|         15|
+    |state_rob_entries_uop_rename_pdst_address0              |  14|          3|    5|         15|
+    |state_rob_entries_valid_address0                        |  14|          3|    5|         15|
+    +--------------------------------------------------------+----+-----------+-----+-----------+
+    |Total                                                   | 218|         46|   72|        212|
+    +--------------------------------------------------------+----+-----------+-----+-----------+
+
+    * Register: 
+    +--------------------------------------+---+----+-----+-----------+
+    |                 Name                 | FF| LUT| Bits| Const Bits|
+    +--------------------------------------+---+----+-----+-----------+
+    |and_ln2276_reg_505                    |  1|   0|    1|          0|
+    |ap_CS_fsm                             |  4|   0|    4|          0|
+    |found_branch_fu_68                    |  1|   0|    1|          0|
+    |found_branch_load_reg_509             |  1|   0|    1|          0|
+    |i_46_reg_460                          |  6|   0|    6|          0|
+    |i_fu_64                               |  6|   0|    6|          0|
+    |icmp_ln2276_reg_496                   |  1|   0|    1|          0|
+    |idx_fu_60                             |  5|   0|    5|          0|
+    |state_rob_entries_valid_addr_reg_491  |  5|   0|    5|          0|
+    |state_rob_entries_valid_load_reg_501  |  1|   0|    1|          0|
+    |uop_branch_br_mask_reg_513            |  5|   0|    5|          0|
+    |zext_ln2275_reg_465                   |  5|   0|   64|         59|
+    +--------------------------------------+---+----+-----+-----------+
+    |Total                                 | 41|   0|  100|         59|
+    +--------------------------------------+---+----+-----+-----------+
+
+
+
+================================================================
+== Interface
+================================================================
+* Summary: 
++--------------------------------------------------------+-----+-----+------------+-----------------------------------------------+--------------+
+|                        RTL Ports                       | Dir | Bits|  Protocol  |                 Source Object                 |    C Type    |
++--------------------------------------------------------+-----+-----+------------+-----------------------------------------------+--------------+
+|ap_clk                                                  |   in|    1|  ap_ctrl_hs|                          kill_rob_younger_than|  return value|
+|ap_rst                                                  |   in|    1|  ap_ctrl_hs|                          kill_rob_younger_than|  return value|
+|ap_start                                                |   in|    1|  ap_ctrl_hs|                          kill_rob_younger_than|  return value|
+|ap_done                                                 |  out|    1|  ap_ctrl_hs|                          kill_rob_younger_than|  return value|
+|ap_idle                                                 |  out|    1|  ap_ctrl_hs|                          kill_rob_younger_than|  return value|
+|ap_ready                                                |  out|    1|  ap_ctrl_hs|                          kill_rob_younger_than|  return value|
+|branch_rob_idx                                          |   in|    8|     ap_none|                                 branch_rob_idx|        scalar|
+|mispredict_mask                                         |   in|    8|     ap_none|                                mispredict_mask|        scalar|
+|state_rob_entries_valid_address0                        |  out|    5|   ap_memory|                        state_rob_entries_valid|         array|
+|state_rob_entries_valid_ce0                             |  out|    1|   ap_memory|                        state_rob_entries_valid|         array|
+|state_rob_entries_valid_we0                             |  out|    1|   ap_memory|                        state_rob_entries_valid|         array|
+|state_rob_entries_valid_d0                              |  out|    1|   ap_memory|                        state_rob_entries_valid|         array|
+|state_rob_entries_valid_q0                              |   in|    1|   ap_memory|                        state_rob_entries_valid|         array|
+|state_rob_entries_busy_address0                         |  out|    5|   ap_memory|                         state_rob_entries_busy|         array|
+|state_rob_entries_busy_ce0                              |  out|    1|   ap_memory|                         state_rob_entries_busy|         array|
+|state_rob_entries_busy_we0                              |  out|    1|   ap_memory|                         state_rob_entries_busy|         array|
+|state_rob_entries_busy_d0                               |  out|    1|   ap_memory|                         state_rob_entries_busy|         array|
+|state_rob_entries_exception_address0                    |  out|    5|   ap_memory|                    state_rob_entries_exception|         array|
+|state_rob_entries_exception_ce0                         |  out|    1|   ap_memory|                    state_rob_entries_exception|         array|
+|state_rob_entries_exception_we0                         |  out|    1|   ap_memory|                    state_rob_entries_exception|         array|
+|state_rob_entries_exception_d0                          |  out|    1|   ap_memory|                    state_rob_entries_exception|         array|
+|state_rob_entries_uop_branch_br_mask_address0           |  out|    5|   ap_memory|           state_rob_entries_uop_branch_br_mask|         array|
+|state_rob_entries_uop_branch_br_mask_ce0                |  out|    1|   ap_memory|           state_rob_entries_uop_branch_br_mask|         array|
+|state_rob_entries_uop_branch_br_mask_we0                |  out|    1|   ap_memory|           state_rob_entries_uop_branch_br_mask|         array|
+|state_rob_entries_uop_branch_br_mask_d0                 |  out|    8|   ap_memory|           state_rob_entries_uop_branch_br_mask|         array|
+|state_rob_entries_uop_branch_br_mask_q0                 |   in|    8|   ap_memory|           state_rob_entries_uop_branch_br_mask|         array|
+|state_rob_entries_uop_queue_rob_idx_address0            |  out|    5|   ap_memory|            state_rob_entries_uop_queue_rob_idx|         array|
+|state_rob_entries_uop_queue_rob_idx_ce0                 |  out|    1|   ap_memory|            state_rob_entries_uop_queue_rob_idx|         array|
+|state_rob_entries_uop_queue_rob_idx_we0                 |  out|    1|   ap_memory|            state_rob_entries_uop_queue_rob_idx|         array|
+|state_rob_entries_uop_queue_rob_idx_d0                  |  out|    8|   ap_memory|            state_rob_entries_uop_queue_rob_idx|         array|
+|state_rob_entries_uop_queue_rob_allocation_id_address0  |  out|    5|   ap_memory|  state_rob_entries_uop_queue_rob_allocation_id|         array|
+|state_rob_entries_uop_queue_rob_allocation_id_ce0       |  out|    1|   ap_memory|  state_rob_entries_uop_queue_rob_allocation_id|         array|
+|state_rob_entries_uop_queue_rob_allocation_id_we0       |  out|    1|   ap_memory|  state_rob_entries_uop_queue_rob_allocation_id|         array|
+|state_rob_entries_uop_queue_rob_allocation_id_d0        |  out|   32|   ap_memory|  state_rob_entries_uop_queue_rob_allocation_id|         array|
+|state_rob_entries_uop_rename_pdst_address0              |  out|    5|   ap_memory|              state_rob_entries_uop_rename_pdst|         array|
+|state_rob_entries_uop_rename_pdst_ce0                   |  out|    1|   ap_memory|              state_rob_entries_uop_rename_pdst|         array|
+|state_rob_entries_uop_rename_pdst_we0                   |  out|    1|   ap_memory|              state_rob_entries_uop_rename_pdst|         array|
+|state_rob_entries_uop_rename_pdst_d0                    |  out|    8|   ap_memory|              state_rob_entries_uop_rename_pdst|         array|
+|state_rob_entries_memory_valid_address0                 |  out|    5|   ap_memory|                 state_rob_entries_memory_valid|         array|
+|state_rob_entries_memory_valid_ce0                      |  out|    1|   ap_memory|                 state_rob_entries_memory_valid|         array|
+|state_rob_entries_memory_valid_we0                      |  out|    1|   ap_memory|                 state_rob_entries_memory_valid|         array|
+|state_rob_entries_memory_valid_d0                       |  out|    1|   ap_memory|                 state_rob_entries_memory_valid|         array|
+|state_rob_entries_is_load_address0                      |  out|    5|   ap_memory|                      state_rob_entries_is_load|         array|
+|state_rob_entries_is_load_ce0                           |  out|    1|   ap_memory|                      state_rob_entries_is_load|         array|
+|state_rob_entries_is_load_we0                           |  out|    1|   ap_memory|                      state_rob_entries_is_load|         array|
+|state_rob_entries_is_load_d0                            |  out|    1|   ap_memory|                      state_rob_entries_is_load|         array|
+|state_rob_entries_memory_request_sent_address0          |  out|    5|   ap_memory|          state_rob_entries_memory_request_sent|         array|
+|state_rob_entries_memory_request_sent_ce0               |  out|    1|   ap_memory|          state_rob_entries_memory_request_sent|         array|
+|state_rob_entries_memory_request_sent_we0               |  out|    1|   ap_memory|          state_rob_entries_memory_request_sent|         array|
+|state_rob_entries_memory_request_sent_d0                |  out|    1|   ap_memory|          state_rob_entries_memory_request_sent|         array|
+|state_rob_entries_memory_completed_address0             |  out|    5|   ap_memory|             state_rob_entries_memory_completed|         array|
+|state_rob_entries_memory_completed_ce0                  |  out|    1|   ap_memory|             state_rob_entries_memory_completed|         array|
+|state_rob_entries_memory_completed_we0                  |  out|    1|   ap_memory|             state_rob_entries_memory_completed|         array|
+|state_rob_entries_memory_completed_d0                   |  out|    1|   ap_memory|             state_rob_entries_memory_completed|         array|
+|state_rob_entries_memory_transaction_id_address0        |  out|    5|   ap_memory|        state_rob_entries_memory_transaction_id|         array|
+|state_rob_entries_memory_transaction_id_ce0             |  out|    1|   ap_memory|        state_rob_entries_memory_transaction_id|         array|
+|state_rob_entries_memory_transaction_id_we0             |  out|    1|   ap_memory|        state_rob_entries_memory_transaction_id|         array|
+|state_rob_entries_memory_transaction_id_d0              |  out|    1|   ap_memory|        state_rob_entries_memory_transaction_id|         array|
++--------------------------------------------------------+-----+-----+------------+-----------------------------------------------+--------------+
+

@@ -1,0 +1,18 @@
+
+****** xsim v2021.2 (64-bit)
+  **** SW Build 3367213 on Tue Oct 19 02:47:39 MDT 2021
+  **** IP Build 3369179 on Thu Oct 21 08:25:16 MDT 2021
+    ** Copyright 1986-2021 Xilinx, Inc. All Rights Reserved.
+
+source xsim.dir/gate3_9_snapshot/xsim_script.tcl
+# xsim {gate3_9_snapshot} -testplusarg PROGRAM=/home/lab_726/boom/hls_boom/build/gate4_1/m3c_full_core_rtl/base_m3b/xsim/rv64m_rob_wrap.readmemh -testplusarg PROGRAM_NAME=rv64m_rob_wrap -testplusarg SCENARIO=N0_NORMAL_INDEPENDENT_ALU -testplusarg MAX_CYCLES=1000000 -testplusarg TRACE=/home/lab_726/boom/hls_boom/reports/gate4_1/m3/m3c/full_core_rtl/traces/rv64m_rob_wrap.jsonl -autoloadwcfg -runall -onerror quit
+Time resolution is 1 ps
+run -all
+GATE3_8_IMEM program=/home/lab_726/boom/hls_boom/build/gate4_1/m3c_full_core_rtl/base_m3b/xsim/rv64m_rob_wrap.readmemh
+GATE3_8_START scenario=N0_NORMAL_INDEPENDENT_ALU code=0 program=rv64m_rob_wrap max_cycles=1000000
+GATE3_8_PASS scenario=N0_NORMAL_INDEPENDENT_ALU cycles=145353 commits=52 resets=1 imem=82 dmem=1 loads=0 stores=1 tohost=0000000000000001
+$finish called at time : 1453575 ns : File "/home/lab_726/boom/hls_boom/rtl_tb/boom_core_rtl_tb.sv" Line 282
+run: Time (s): cpu = 00:00:00.37 ; elapsed = 00:00:13 . Memory (MB): peak = 2685.672 ; gain = 0.000 ; free physical = 23863 ; free virtual = 58122
+exit
+INFO: xsimkernel Simulation Memory Usage: 143692 KB (Peak: 197068 KB), Simulation CPU Usage: 13210 ms
+INFO: [Common 17-206] Exiting xsim at Wed Aug  5 20:53:19 2026...

@@ -1,0 +1,17 @@
+=== Gate 3.9 Fine-Grain Reset Architecture Tests ===
+  [RESET] empty core reset completes in the specified steps          ... PASS
+  [RESET] nonempty ROB becomes logically empty                       ... PASS
+  [RESET] nonempty IQ and issued slots become invalid                ... PASS
+  [RESET] pending load transaction becomes invisible                 ... PASS
+  [RESET] pending store transaction becomes invisible                ... PASS
+  [RESET] branch recovery state releases every tag                   ... PASS
+  [RESET] pending commit/trace ownership is cleared                  ... PASS
+  [RESET] two consecutive runtime reset sequences complete           ... PASS
+  [RESET] reset core restarts and commits a complete program         ... PASS
+  [RESET] free list restores physical registers 1 through 51         ... PASS
+  [RESET] speculative and committed maps both restore to p0          ... PASS
+  [RESET] new branch allocation starts with an empty tag pool        ... PASS
+  [RESET] pre-reset execute result cannot write back                 ... PASS
+  [RESET] pre-reset LSU state emits no memory request                ... PASS
+
+=== 14 passed, 0 failed ===

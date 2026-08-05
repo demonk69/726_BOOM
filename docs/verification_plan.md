@@ -139,6 +139,16 @@ Gate 3.8 remains failed until the last two requirements pass. See `reports/gate3
 - [x] Preserve the Gate 3.9 49-case XSim matrix and added divider reset cases
 - [x] Complete all eight canonical M3B csynth targets
 
+### Gate 4.1 M3C RV64M Final Verification
+
+- [x] Pass joint RV64M directed and persistent random verification
+- [x] Pass native, Vitis csim, focused RTL, and full-core RTL verification
+- [x] Preserve M1/M2/M3A/M3B and W3/W4 regressions
+- [x] Preserve the Gate 3.9 49-case generated-RTL matrix
+- [x] Complete eight canonical csynth targets and PPA guardrails
+- [x] Keep `CORE_CYCLE` unpipelined and exclude `src/boom_all.cpp`
+- [x] Complete independent read-only review and evidence manifests
+
 ### Gate M2
 - [ ] Rename unit tests pass (map, free list, busy table, snapshots)
 - [ ] ROB unit tests pass (empty, full, allocate+commit, wrap, flush, exception)

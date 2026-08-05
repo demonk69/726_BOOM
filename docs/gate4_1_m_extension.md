@@ -41,3 +41,9 @@
 The software integration checkpoint maps all eight DIV/REM uopcs through the existing INT lane into one persistent `ExecuteState` divider and publishes only through `completion.int_execute`. Directed integration passes 167 checks, persistent random passes 128 fixed seeds by 1024 cycles with zero drop, duplicate, stale side effect, or response instability, and ten native full-core real-machine-code programs pass. Ordinary ALU/MUL/branch execution continues while arithmetic is busy; a pending response reserves the next available INT execute slot. Completion sources remain 3 and PRF write/wakeup/bypass/ROB-complete topology remains 2/3/3/3.
 
 `M3B_INT_DIVIDER_INTEGRATION_VERIFIED=true` and `READY_FOR_M3C_RV64M_FINAL=true`. Focused generated RTL passes 26/26, full-core generated RTL programs pass 10/10, the Gate 3.9 matrix remains 49/49, and canonical csynth completes 8/8. Both full-core tops remain at 6.341 ns with 3 DSP, so `M3B_PPA_BLOCKER=false`. `GATE4_1_RV64M_VERIFIED` remains false pending M3C.
+
+## M3C RV64M Final Verification
+
+`GATE4_1_RV64M_VERIFIED=true`. Joint directed testing passes 1458 checks, persistent random testing passes 256 fixed seeds x 2048 cycles, and native/csim/generated-RTL full-core programs pass 15/15 each. Focused RV64M RTL passes 30/30, Gate 3.9 remains 49/49, W3 remains 400/400 software and 11/11 RTL, and W4 remains 95/95 directed, 128/128 random, and 20/20 RTL.
+
+Canonical csynth completes 8/8. Both full-core tops remain at 6.341 ns, 3 DSP, and 16 BRAM with `PipelineType=no`, so `M3B_PPA_BLOCKER=false`. `src/boom_all.cpp` and raw `boom_core_step` product synthesis remain excluded, `CORE_CYCLE` remains unpipelined, frozen expected artifacts are unchanged, and neither Frontend nor Full LSU readiness is claimed.

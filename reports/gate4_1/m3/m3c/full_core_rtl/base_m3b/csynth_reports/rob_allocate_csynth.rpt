@@ -1,0 +1,275 @@
+
+
+================================================================
+== Vitis HLS Report for 'rob_allocate'
+================================================================
+* Date:           Wed Aug  5 20:47:55 2026
+
+* Version:        2021.2 (Build 3367213 on Tue Oct 19 02:47:39 MDT 2021)
+* Project:        boom_core_top
+* Solution:       solution_gate4_1_m3b_full_core_rtl (Vivado IP Flow Target)
+* Product family: zynquplus
+* Target device:  xczu7ev-ffvc1156-2-e
+
+
+================================================================
+== Performance Estimates
+================================================================
++ Timing: 
+    * Summary: 
+    +--------+----------+----------+------------+
+    |  Clock |  Target  | Estimated| Uncertainty|
+    +--------+----------+----------+------------+
+    |ap_clk  |  10.00 ns|  2.677 ns|     2.70 ns|
+    +--------+----------+----------+------------+
+
++ Latency: 
+    * Summary: 
+    +---------+---------+----------+----------+-----+-----+---------+
+    |  Latency (cycles) |  Latency (absolute) |  Interval | Pipeline|
+    |   min   |   max   |    min   |    max   | min | max |   Type  |
+    +---------+---------+----------+----------+-----+-----+---------+
+    |        0|        0|      0 ns|      0 ns|    0|    0|       no|
+    +---------+---------+----------+----------+-----+-----+---------+
+
+    + Detail: 
+        * Instance: 
+        N/A
+
+        * Loop: 
+        N/A
+
+
+
+================================================================
+== Utilization Estimates
+================================================================
+* Summary: 
++-----------------+---------+------+--------+--------+-----+
+|       Name      | BRAM_18K|  DSP |   FF   |   LUT  | URAM|
++-----------------+---------+------+--------+--------+-----+
+|DSP              |        -|     -|       -|       -|    -|
+|Expression       |        -|     -|       0|     174|    -|
+|FIFO             |        -|     -|       -|       -|    -|
+|Instance         |        -|     -|       -|       -|    -|
+|Memory           |        -|     -|       -|       -|    -|
+|Multiplexer      |        -|     -|       -|      45|    -|
+|Register         |        -|     -|       -|       -|    -|
++-----------------+---------+------+--------+--------+-----+
+|Total            |        0|     0|       0|     219|    0|
++-----------------+---------+------+--------+--------+-----+
+|Available        |      624|  1728|  460800|  230400|   96|
++-----------------+---------+------+--------+--------+-----+
+|Utilization (%)  |        0|     0|       0|      ~0|    0|
++-----------------+---------+------+--------+--------+-----+
+
++ Detail: 
+    * Instance: 
+    N/A
+
+    * DSP: 
+    N/A
+
+    * Memory: 
+    N/A
+
+    * FIFO: 
+    N/A
+
+    * Expression: 
+    +---------------------------+----------+----+---+----+------------+------------+
+    |       Variable Name       | Operation| DSP| FF| LUT| Bitwidth P0| Bitwidth P1|
+    +---------------------------+----------+----+---+----+------------+------------+
+    |add_ln1403_fu_634_p2       |         +|   0|  0|  39|          32|           1|
+    |add_ln1414_fu_727_p2       |         +|   0|  0|  12|           5|           1|
+    |icmp_ln1393_fu_516_p2      |      icmp|   0|  0|   8|           2|           1|
+    |icmp_ln1399_fu_545_p2      |      icmp|   0|  0|   9|           5|           5|
+    |icmp_ln1402_fu_624_p2      |      icmp|   0|  0|  11|           8|           1|
+    |icmp_ln1404_fu_640_p2      |      icmp|   0|  0|  20|          32|           1|
+    |icmp_ln1415_fu_739_p2      |      icmp|   0|  0|   9|           5|           5|
+    |allocation_id_2_fu_660_p3  |    select|   0|  0|  32|           1|           1|
+    |select_ln1404_fu_646_p3    |    select|   0|  0|  32|           1|           2|
+    |state_rob_entries_busy_d0  |       xor|   0|  0|   2|           1|           2|
+    +---------------------------+----------+----+---+----+------------+------------+
+    |Total                      |          |   0|  0| 174|          92|          20|
+    +---------------------------+----------+----+---+----+------------+------------+
+
+    * Multiplexer: 
+    +-------------------------------------------------+----+-----------+-----+-----------+
+    |                       Name                      | LUT| Input Size| Bits| Total Bits|
+    +-------------------------------------------------+----+-----------+-----+-----------+
+    |state_rename_dispatch_packets_rob_allocated_0_o  |   9|          2|    1|          2|
+    |state_rob_maybe_full_o                           |   9|          2|    1|          2|
+    |state_rob_next_allocation_id_o                   |   9|          2|   32|         64|
+    |state_rob_state_o                                |   9|          2|    2|          4|
+    |state_rob_tail_o                                 |   9|          2|    5|         10|
+    +-------------------------------------------------+----+-----------+-----+-----------+
+    |Total                                            |  45|         10|   41|         82|
+    +-------------------------------------------------+----+-----------+-----+-----------+
+
+    * Register: 
+    N/A
+
+
+
+================================================================
+== Interface
+================================================================
+* Summary: 
++--------------------------------------------------------------------+-----+-----+------------+-------------------------------------------------------------+--------------+
+|                              RTL Ports                             | Dir | Bits|  Protocol  |                        Source Object                        |    C Type    |
++--------------------------------------------------------------------+-----+-----+------------+-------------------------------------------------------------+--------------+
+|ap_start                                                            |   in|    1|  ap_ctrl_hs|                                                 rob_allocate|  return value|
+|ap_ready                                                            |  out|    1|  ap_ctrl_hs|                                                 rob_allocate|  return value|
+|state_rob_state_i                                                   |   in|    2|     ap_ovld|                                              state_rob_state|       pointer|
+|state_rob_state_o                                                   |  out|    2|     ap_ovld|                                              state_rob_state|       pointer|
+|state_rob_state_o_ap_vld                                            |  out|    1|     ap_ovld|                                              state_rob_state|       pointer|
+|state_rename_dispatch_packets_valid_0                               |   in|    1|     ap_none|                        state_rename_dispatch_packets_valid_0|       pointer|
+|state_rename_dispatch_packets_rob_allocated_0_i                     |   in|    1|     ap_ovld|                state_rename_dispatch_packets_rob_allocated_0|       pointer|
+|state_rename_dispatch_packets_rob_allocated_0_o                     |  out|    1|     ap_ovld|                state_rename_dispatch_packets_rob_allocated_0|       pointer|
+|state_rename_dispatch_packets_rob_allocated_0_o_ap_vld              |  out|    1|     ap_ovld|                state_rename_dispatch_packets_rob_allocated_0|       pointer|
+|state_rob_head                                                      |   in|    5|     ap_none|                                               state_rob_head|       pointer|
+|state_rob_tail_i                                                    |   in|    5|     ap_ovld|                                               state_rob_tail|       pointer|
+|state_rob_tail_o                                                    |  out|    5|     ap_ovld|                                               state_rob_tail|       pointer|
+|state_rob_tail_o_ap_vld                                             |  out|    1|     ap_ovld|                                               state_rob_tail|       pointer|
+|state_rob_maybe_full_i                                              |   in|    1|     ap_ovld|                                         state_rob_maybe_full|       pointer|
+|state_rob_maybe_full_o                                              |  out|    1|     ap_ovld|                                         state_rob_maybe_full|       pointer|
+|state_rob_maybe_full_o_ap_vld                                       |  out|    1|     ap_ovld|                                         state_rob_maybe_full|       pointer|
+|state_rename_dispatch_packets_uop_uopc_0                            |   in|    8|     ap_none|                     state_rename_dispatch_packets_uop_uopc_0|       pointer|
+|state_rename_dispatch_packets_uop_inst_0                            |   in|   32|     ap_none|                     state_rename_dispatch_packets_uop_inst_0|       pointer|
+|state_rename_dispatch_packets_uop_debug_pc_0                        |   in|   64|     ap_none|                 state_rename_dispatch_packets_uop_debug_pc_0|       pointer|
+|state_rename_dispatch_packets_uop_ctrl_is_load_0                    |   in|    1|     ap_none|             state_rename_dispatch_packets_uop_ctrl_is_load_0|       pointer|
+|state_rename_dispatch_packets_uop_ctrl_is_sta_0                     |   in|    1|     ap_none|              state_rename_dispatch_packets_uop_ctrl_is_sta_0|       pointer|
+|state_rename_dispatch_packets_uop_branch_br_mask_0                  |   in|    8|     ap_none|           state_rename_dispatch_packets_uop_branch_br_mask_0|       pointer|
+|state_rename_dispatch_packets_uop_branch_br_tag_0                   |   in|    3|     ap_none|            state_rename_dispatch_packets_uop_branch_br_tag_0|       pointer|
+|state_rename_dispatch_packets_uop_rename_ldst_0                     |   in|    5|     ap_none|              state_rename_dispatch_packets_uop_rename_ldst_0|       pointer|
+|state_rename_dispatch_packets_uop_rename_pdst_0                     |   in|    8|     ap_none|              state_rename_dispatch_packets_uop_rename_pdst_0|       pointer|
+|state_rename_dispatch_packets_uop_rename_stale_pdst_0               |   in|    8|     ap_none|        state_rename_dispatch_packets_uop_rename_stale_pdst_0|       pointer|
+|state_rename_dispatch_packets_uop_rename_dst_rtype_0                |   in|    2|     ap_none|         state_rename_dispatch_packets_uop_rename_dst_rtype_0|       pointer|
+|state_rename_dispatch_packets_uop_exception_0                       |   in|    1|     ap_none|                state_rename_dispatch_packets_uop_exception_0|       pointer|
+|state_rename_dispatch_packets_uop_exc_cause_0                       |   in|    4|     ap_none|                state_rename_dispatch_packets_uop_exc_cause_0|       pointer|
+|state_rob_next_allocation_id_i                                      |   in|   32|     ap_ovld|                                 state_rob_next_allocation_id|       pointer|
+|state_rob_next_allocation_id_o                                      |  out|   32|     ap_ovld|                                 state_rob_next_allocation_id|       pointer|
+|state_rob_next_allocation_id_o_ap_vld                               |  out|    1|     ap_ovld|                                 state_rob_next_allocation_id|       pointer|
+|state_rob_entries_exception_reported_address0                       |  out|    5|   ap_memory|                         state_rob_entries_exception_reported|         array|
+|state_rob_entries_exception_reported_ce0                            |  out|    1|   ap_memory|                         state_rob_entries_exception_reported|         array|
+|state_rob_entries_exception_reported_we0                            |  out|    1|   ap_memory|                         state_rob_entries_exception_reported|         array|
+|state_rob_entries_exception_reported_d0                             |  out|    1|   ap_memory|                         state_rob_entries_exception_reported|         array|
+|state_rob_entries_memory_valid_address0                             |  out|    5|   ap_memory|                               state_rob_entries_memory_valid|         array|
+|state_rob_entries_memory_valid_ce0                                  |  out|    1|   ap_memory|                               state_rob_entries_memory_valid|         array|
+|state_rob_entries_memory_valid_we0                                  |  out|    1|   ap_memory|                               state_rob_entries_memory_valid|         array|
+|state_rob_entries_memory_valid_d0                                   |  out|    1|   ap_memory|                               state_rob_entries_memory_valid|         array|
+|state_rob_entries_is_load_address0                                  |  out|    5|   ap_memory|                                    state_rob_entries_is_load|         array|
+|state_rob_entries_is_load_ce0                                       |  out|    1|   ap_memory|                                    state_rob_entries_is_load|         array|
+|state_rob_entries_is_load_we0                                       |  out|    1|   ap_memory|                                    state_rob_entries_is_load|         array|
+|state_rob_entries_is_load_d0                                        |  out|    1|   ap_memory|                                    state_rob_entries_is_load|         array|
+|state_rob_entries_is_store_address0                                 |  out|    5|   ap_memory|                                   state_rob_entries_is_store|         array|
+|state_rob_entries_is_store_ce0                                      |  out|    1|   ap_memory|                                   state_rob_entries_is_store|         array|
+|state_rob_entries_is_store_we0                                      |  out|    1|   ap_memory|                                   state_rob_entries_is_store|         array|
+|state_rob_entries_is_store_d0                                       |  out|    1|   ap_memory|                                   state_rob_entries_is_store|         array|
+|state_rob_entries_signed_load_address0                              |  out|    5|   ap_memory|                                state_rob_entries_signed_load|         array|
+|state_rob_entries_signed_load_ce0                                   |  out|    1|   ap_memory|                                state_rob_entries_signed_load|         array|
+|state_rob_entries_signed_load_we0                                   |  out|    1|   ap_memory|                                state_rob_entries_signed_load|         array|
+|state_rob_entries_signed_load_d0                                    |  out|    1|   ap_memory|                                state_rob_entries_signed_load|         array|
+|state_rob_entries_memory_request_sent_address0                      |  out|    5|   ap_memory|                        state_rob_entries_memory_request_sent|         array|
+|state_rob_entries_memory_request_sent_ce0                           |  out|    1|   ap_memory|                        state_rob_entries_memory_request_sent|         array|
+|state_rob_entries_memory_request_sent_we0                           |  out|    1|   ap_memory|                        state_rob_entries_memory_request_sent|         array|
+|state_rob_entries_memory_request_sent_d0                            |  out|    1|   ap_memory|                        state_rob_entries_memory_request_sent|         array|
+|state_rob_entries_memory_completed_address0                         |  out|    5|   ap_memory|                           state_rob_entries_memory_completed|         array|
+|state_rob_entries_memory_completed_ce0                              |  out|    1|   ap_memory|                           state_rob_entries_memory_completed|         array|
+|state_rob_entries_memory_completed_we0                              |  out|    1|   ap_memory|                           state_rob_entries_memory_completed|         array|
+|state_rob_entries_memory_completed_d0                               |  out|    1|   ap_memory|                           state_rob_entries_memory_completed|         array|
+|state_rob_entries_memory_address_address0                           |  out|    5|   ap_memory|                             state_rob_entries_memory_address|         array|
+|state_rob_entries_memory_address_ce0                                |  out|    1|   ap_memory|                             state_rob_entries_memory_address|         array|
+|state_rob_entries_memory_address_we0                                |  out|    1|   ap_memory|                             state_rob_entries_memory_address|         array|
+|state_rob_entries_memory_address_d0                                 |  out|   64|   ap_memory|                             state_rob_entries_memory_address|         array|
+|state_rob_entries_memory_data_address0                              |  out|    5|   ap_memory|                                state_rob_entries_memory_data|         array|
+|state_rob_entries_memory_data_ce0                                   |  out|    1|   ap_memory|                                state_rob_entries_memory_data|         array|
+|state_rob_entries_memory_data_we0                                   |  out|    1|   ap_memory|                                state_rob_entries_memory_data|         array|
+|state_rob_entries_memory_data_d0                                    |  out|   64|   ap_memory|                                state_rob_entries_memory_data|         array|
+|state_rob_entries_memory_mask_address0                              |  out|    5|   ap_memory|                                state_rob_entries_memory_mask|         array|
+|state_rob_entries_memory_mask_ce0                                   |  out|    1|   ap_memory|                                state_rob_entries_memory_mask|         array|
+|state_rob_entries_memory_mask_we0                                   |  out|    1|   ap_memory|                                state_rob_entries_memory_mask|         array|
+|state_rob_entries_memory_mask_d0                                    |  out|    8|   ap_memory|                                state_rob_entries_memory_mask|         array|
+|state_rob_entries_memory_size_address0                              |  out|    5|   ap_memory|                                state_rob_entries_memory_size|         array|
+|state_rob_entries_memory_size_ce0                                   |  out|    1|   ap_memory|                                state_rob_entries_memory_size|         array|
+|state_rob_entries_memory_size_we0                                   |  out|    1|   ap_memory|                                state_rob_entries_memory_size|         array|
+|state_rob_entries_memory_size_d0                                    |  out|    8|   ap_memory|                                state_rob_entries_memory_size|         array|
+|state_rob_entries_memory_transaction_id_address0                    |  out|    5|   ap_memory|                      state_rob_entries_memory_transaction_id|         array|
+|state_rob_entries_memory_transaction_id_ce0                         |  out|    1|   ap_memory|                      state_rob_entries_memory_transaction_id|         array|
+|state_rob_entries_memory_transaction_id_we0                         |  out|    1|   ap_memory|                      state_rob_entries_memory_transaction_id|         array|
+|state_rob_entries_memory_transaction_id_d0                          |  out|   32|   ap_memory|                      state_rob_entries_memory_transaction_id|         array|
+|state_rob_entries_valid_address0                                    |  out|    5|   ap_memory|                                      state_rob_entries_valid|         array|
+|state_rob_entries_valid_ce0                                         |  out|    1|   ap_memory|                                      state_rob_entries_valid|         array|
+|state_rob_entries_valid_we0                                         |  out|    1|   ap_memory|                                      state_rob_entries_valid|         array|
+|state_rob_entries_valid_d0                                          |  out|    1|   ap_memory|                                      state_rob_entries_valid|         array|
+|state_rob_entries_busy_address0                                     |  out|    5|   ap_memory|                                       state_rob_entries_busy|         array|
+|state_rob_entries_busy_ce0                                          |  out|    1|   ap_memory|                                       state_rob_entries_busy|         array|
+|state_rob_entries_busy_we0                                          |  out|    1|   ap_memory|                                       state_rob_entries_busy|         array|
+|state_rob_entries_busy_d0                                           |  out|    1|   ap_memory|                                       state_rob_entries_busy|         array|
+|state_rob_entries_exception_address0                                |  out|    5|   ap_memory|                                  state_rob_entries_exception|         array|
+|state_rob_entries_exception_ce0                                     |  out|    1|   ap_memory|                                  state_rob_entries_exception|         array|
+|state_rob_entries_exception_we0                                     |  out|    1|   ap_memory|                                  state_rob_entries_exception|         array|
+|state_rob_entries_exception_d0                                      |  out|    1|   ap_memory|                                  state_rob_entries_exception|         array|
+|state_rob_entries_uop_uopc_address0                                 |  out|    5|   ap_memory|                                   state_rob_entries_uop_uopc|         array|
+|state_rob_entries_uop_uopc_ce0                                      |  out|    1|   ap_memory|                                   state_rob_entries_uop_uopc|         array|
+|state_rob_entries_uop_uopc_we0                                      |  out|    1|   ap_memory|                                   state_rob_entries_uop_uopc|         array|
+|state_rob_entries_uop_uopc_d0                                       |  out|    8|   ap_memory|                                   state_rob_entries_uop_uopc|         array|
+|state_rob_entries_uop_inst_address0                                 |  out|    5|   ap_memory|                                   state_rob_entries_uop_inst|         array|
+|state_rob_entries_uop_inst_ce0                                      |  out|    1|   ap_memory|                                   state_rob_entries_uop_inst|         array|
+|state_rob_entries_uop_inst_we0                                      |  out|    1|   ap_memory|                                   state_rob_entries_uop_inst|         array|
+|state_rob_entries_uop_inst_d0                                       |  out|   32|   ap_memory|                                   state_rob_entries_uop_inst|         array|
+|state_rob_entries_uop_debug_pc_address0                             |  out|    5|   ap_memory|                               state_rob_entries_uop_debug_pc|         array|
+|state_rob_entries_uop_debug_pc_ce0                                  |  out|    1|   ap_memory|                               state_rob_entries_uop_debug_pc|         array|
+|state_rob_entries_uop_debug_pc_we0                                  |  out|    1|   ap_memory|                               state_rob_entries_uop_debug_pc|         array|
+|state_rob_entries_uop_debug_pc_d0                                   |  out|   64|   ap_memory|                               state_rob_entries_uop_debug_pc|         array|
+|state_rob_entries_uop_ctrl_is_load_address0                         |  out|    5|   ap_memory|                           state_rob_entries_uop_ctrl_is_load|         array|
+|state_rob_entries_uop_ctrl_is_load_ce0                              |  out|    1|   ap_memory|                           state_rob_entries_uop_ctrl_is_load|         array|
+|state_rob_entries_uop_ctrl_is_load_we0                              |  out|    1|   ap_memory|                           state_rob_entries_uop_ctrl_is_load|         array|
+|state_rob_entries_uop_ctrl_is_load_d0                               |  out|    1|   ap_memory|                           state_rob_entries_uop_ctrl_is_load|         array|
+|state_rob_entries_uop_ctrl_is_sta_address0                          |  out|    5|   ap_memory|                            state_rob_entries_uop_ctrl_is_sta|         array|
+|state_rob_entries_uop_ctrl_is_sta_ce0                               |  out|    1|   ap_memory|                            state_rob_entries_uop_ctrl_is_sta|         array|
+|state_rob_entries_uop_ctrl_is_sta_we0                               |  out|    1|   ap_memory|                            state_rob_entries_uop_ctrl_is_sta|         array|
+|state_rob_entries_uop_ctrl_is_sta_d0                                |  out|    1|   ap_memory|                            state_rob_entries_uop_ctrl_is_sta|         array|
+|state_rob_entries_uop_branch_br_mask_address0                       |  out|    5|   ap_memory|                         state_rob_entries_uop_branch_br_mask|         array|
+|state_rob_entries_uop_branch_br_mask_ce0                            |  out|    1|   ap_memory|                         state_rob_entries_uop_branch_br_mask|         array|
+|state_rob_entries_uop_branch_br_mask_we0                            |  out|    1|   ap_memory|                         state_rob_entries_uop_branch_br_mask|         array|
+|state_rob_entries_uop_branch_br_mask_d0                             |  out|    8|   ap_memory|                         state_rob_entries_uop_branch_br_mask|         array|
+|state_rob_entries_uop_branch_br_tag_address0                        |  out|    5|   ap_memory|                          state_rob_entries_uop_branch_br_tag|         array|
+|state_rob_entries_uop_branch_br_tag_ce0                             |  out|    1|   ap_memory|                          state_rob_entries_uop_branch_br_tag|         array|
+|state_rob_entries_uop_branch_br_tag_we0                             |  out|    1|   ap_memory|                          state_rob_entries_uop_branch_br_tag|         array|
+|state_rob_entries_uop_branch_br_tag_d0                              |  out|    3|   ap_memory|                          state_rob_entries_uop_branch_br_tag|         array|
+|state_rob_entries_uop_queue_rob_idx_address0                        |  out|    5|   ap_memory|                          state_rob_entries_uop_queue_rob_idx|         array|
+|state_rob_entries_uop_queue_rob_idx_ce0                             |  out|    1|   ap_memory|                          state_rob_entries_uop_queue_rob_idx|         array|
+|state_rob_entries_uop_queue_rob_idx_we0                             |  out|    1|   ap_memory|                          state_rob_entries_uop_queue_rob_idx|         array|
+|state_rob_entries_uop_queue_rob_idx_d0                              |  out|    5|   ap_memory|                          state_rob_entries_uop_queue_rob_idx|         array|
+|state_rob_entries_uop_queue_rob_allocation_id_address0              |  out|    5|   ap_memory|                state_rob_entries_uop_queue_rob_allocation_id|         array|
+|state_rob_entries_uop_queue_rob_allocation_id_ce0                   |  out|    1|   ap_memory|                state_rob_entries_uop_queue_rob_allocation_id|         array|
+|state_rob_entries_uop_queue_rob_allocation_id_we0                   |  out|    1|   ap_memory|                state_rob_entries_uop_queue_rob_allocation_id|         array|
+|state_rob_entries_uop_queue_rob_allocation_id_d0                    |  out|   32|   ap_memory|                state_rob_entries_uop_queue_rob_allocation_id|         array|
+|state_rob_entries_uop_rename_ldst_address0                          |  out|    5|   ap_memory|                            state_rob_entries_uop_rename_ldst|         array|
+|state_rob_entries_uop_rename_ldst_ce0                               |  out|    1|   ap_memory|                            state_rob_entries_uop_rename_ldst|         array|
+|state_rob_entries_uop_rename_ldst_we0                               |  out|    1|   ap_memory|                            state_rob_entries_uop_rename_ldst|         array|
+|state_rob_entries_uop_rename_ldst_d0                                |  out|    5|   ap_memory|                            state_rob_entries_uop_rename_ldst|         array|
+|state_rob_entries_uop_rename_pdst_address0                          |  out|    5|   ap_memory|                            state_rob_entries_uop_rename_pdst|         array|
+|state_rob_entries_uop_rename_pdst_ce0                               |  out|    1|   ap_memory|                            state_rob_entries_uop_rename_pdst|         array|
+|state_rob_entries_uop_rename_pdst_we0                               |  out|    1|   ap_memory|                            state_rob_entries_uop_rename_pdst|         array|
+|state_rob_entries_uop_rename_pdst_d0                                |  out|    8|   ap_memory|                            state_rob_entries_uop_rename_pdst|         array|
+|state_rob_entries_uop_rename_stale_pdst_address0                    |  out|    5|   ap_memory|                      state_rob_entries_uop_rename_stale_pdst|         array|
+|state_rob_entries_uop_rename_stale_pdst_ce0                         |  out|    1|   ap_memory|                      state_rob_entries_uop_rename_stale_pdst|         array|
+|state_rob_entries_uop_rename_stale_pdst_we0                         |  out|    1|   ap_memory|                      state_rob_entries_uop_rename_stale_pdst|         array|
+|state_rob_entries_uop_rename_stale_pdst_d0                          |  out|    8|   ap_memory|                      state_rob_entries_uop_rename_stale_pdst|         array|
+|state_rob_entries_uop_rename_dst_rtype_address0                     |  out|    5|   ap_memory|                       state_rob_entries_uop_rename_dst_rtype|         array|
+|state_rob_entries_uop_rename_dst_rtype_ce0                          |  out|    1|   ap_memory|                       state_rob_entries_uop_rename_dst_rtype|         array|
+|state_rob_entries_uop_rename_dst_rtype_we0                          |  out|    1|   ap_memory|                       state_rob_entries_uop_rename_dst_rtype|         array|
+|state_rob_entries_uop_rename_dst_rtype_d0                           |  out|    2|   ap_memory|                       state_rob_entries_uop_rename_dst_rtype|         array|
+|state_rob_entries_uop_exc_cause_address0                            |  out|    5|   ap_memory|                              state_rob_entries_uop_exc_cause|         array|
+|state_rob_entries_uop_exc_cause_ce0                                 |  out|    1|   ap_memory|                              state_rob_entries_uop_exc_cause|         array|
+|state_rob_entries_uop_exc_cause_we0                                 |  out|    1|   ap_memory|                              state_rob_entries_uop_exc_cause|         array|
+|state_rob_entries_uop_exc_cause_d0                                  |  out|   64|   ap_memory|                              state_rob_entries_uop_exc_cause|         array|
+|state_rename_dispatch_packets_uop_queue_rob_idx_0                   |  out|    5|      ap_vld|            state_rename_dispatch_packets_uop_queue_rob_idx_0|       pointer|
+|state_rename_dispatch_packets_uop_queue_rob_idx_0_ap_vld            |  out|    1|      ap_vld|            state_rename_dispatch_packets_uop_queue_rob_idx_0|       pointer|
+|state_rename_dispatch_packets_uop_queue_rob_allocation_id_0         |  out|   32|      ap_vld|  state_rename_dispatch_packets_uop_queue_rob_allocation_id_0|       pointer|
+|state_rename_dispatch_packets_uop_queue_rob_allocation_id_0_ap_vld  |  out|    1|      ap_vld|  state_rename_dispatch_packets_uop_queue_rob_allocation_id_0|       pointer|
++--------------------------------------------------------------------+-----+-----+------------+-------------------------------------------------------------+--------------+
+

@@ -1,0 +1,40 @@
+
+****** xsim v2021.2 (64-bit)
+  **** SW Build 3367213 on Tue Oct 19 02:47:39 MDT 2021
+  **** IP Build 3369179 on Thu Oct 21 08:25:16 MDT 2021
+    ** Copyright 1986-2021 Xilinx, Inc. All Rights Reserved.
+
+source xsim.dir/divider_core_rtl_snapshot/xsim_script.tcl
+# xsim {divider_core_rtl_snapshot} -autoloadwcfg -runall -onerror quit
+Time resolution is 1 ps
+run -all
+CASE_PASS,normal_div_signed,accepted operation produced exact result and one observed writeback/ROB completion
+CASE_PASS,normal_div_unsigned,accepted operation produced exact result and one observed writeback/ROB completion
+CASE_PASS,normal_rem_signed,accepted operation produced exact result and one observed writeback/ROB completion
+CASE_PASS,normal_rem_unsigned,accepted operation produced exact result and one observed writeback/ROB completion
+CASE_PASS,normal_divw_signed,accepted operation produced exact result and one observed writeback/ROB completion
+CASE_PASS,normal_divw_unsigned,accepted operation produced exact result and one observed writeback/ROB completion
+CASE_PASS,normal_remw_signed,accepted operation produced exact result and one observed writeback/ROB completion
+CASE_PASS,normal_remw_unsigned,accepted operation produced exact result and one observed writeback/ROB completion
+CASE_PASS,divide_zero_quotient,accepted operation produced exact result and one observed writeback/ROB completion
+CASE_PASS,divide_zero_remainder,accepted operation produced exact result and one observed writeback/ROB completion
+CASE_PASS,signed_overflow_quotient,accepted operation produced exact result and one observed writeback/ROB completion
+CASE_PASS,signed_overflow_remainder,accepted operation produced exact result and one observed writeback/ROB completion
+CASE_PASS,response_hold,pending divider response held with ownership while INT result occupied
+CASE_PASS,existing_source_collision,pending divider coexisted with an existing INT-source result
+CASE_PASS,alu_collision,ALU collision completed first and retained divider response
+CASE_PASS,dependent_writeback_observation,held divider result became observable on writeback and ROB complete
+CASE_PASS,no_duplicate_complete,cycle after consumption had no duplicate completion or writeback
+CASE_PASS,reset_active,runtime reset discarded an active divider without side effect
+CASE_PASS,reset_pending,modeled reset discarded a pending response and ownership token
+CASE_PASS,reset_post_reexecute,a fresh divider token completed after runtime reset
+CASE_PASS,double_runtime_reset_divider,two runtime resets independently discarded divider work
+CASE_PASS,reset_stale_completion,post-reset stale allocation could not produce completion
+CASE_PASS,branch_kill,matching mispredict mask canceled active divider without completion
+CASE_PASS,stale_allocation,stale ROB allocation ownership canceled without architectural side effect
+CASE_PASS,alu_while_divider_busy,ALU result occupied INT source while iterative divider remained active
+CASE_PASS,mul_collision,MUL result occupied INT source while iterative divider remained active
+M3B_DIVIDER_RTL_PASS cases=26 modeled_cycles=644
+$finish called at time : 1351460 ns : File "/home/lab_726/boom/hls_boom/rtl_tb/divider_core_rtl_tb.sv" Line 318
+exit
+INFO: [Common 17-206] Exiting xsim at Wed Aug  5 20:57:11 2026...

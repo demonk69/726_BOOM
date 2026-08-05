@@ -1,0 +1,25 @@
+#-----------------------------------------------------------
+# xsim v2021.2 (64-bit)
+# SW Build 3367213 on Tue Oct 19 02:47:39 MDT 2021
+# IP Build 3369179 on Thu Oct 21 08:25:16 MDT 2021
+# Start of session at: Wed Aug  5 20:40:24 2026
+# Process ID: 48228
+# Current directory: /home/lab_726/boom/hls_boom/build/gate4_1/m3c_fix_probe/xsim
+# Command line: xsim -log /home/lab_726/boom/hls_boom/reports/gate4_1/m3/m3c/fix_probe/mul_div_dependency.log -mode tcl -source {xsim.dir/gate3_9_snapshot/xsim_script.tcl}
+# Log file: /home/lab_726/boom/hls_boom/reports/gate4_1/m3/m3c/fix_probe/mul_div_dependency.log
+# Journal file: /home/lab_726/boom/hls_boom/build/gate4_1/m3c_fix_probe/xsim/xsim.jou
+# Running On: 726, OS: Linux, CPU Frequency: 2076.853 MHz, CPU Physical cores: 14, Host memory: 67148 MB
+#-----------------------------------------------------------
+source xsim.dir/gate3_9_snapshot/xsim_script.tcl
+# xsim {gate3_9_snapshot} -testplusarg PROGRAM=/home/lab_726/boom/hls_boom/build/gate4_1/m3c_fix_probe/xsim/mul_div_dependency.readmemh -testplusarg PROGRAM_NAME=mul_div_dependency -testplusarg SCENARIO=N0_NORMAL_INDEPENDENT_ALU -testplusarg MAX_CYCLES=1000000 -testplusarg TRACE=/home/lab_726/boom/hls_boom/reports/gate4_1/m3/m3c/fix_probe/mul_div_dependency.jsonl -autoloadwcfg -runall -onerror quit
+Time resolution is 1 ps
+run -all
+GATE3_8_IMEM program=/home/lab_726/boom/hls_boom/build/gate4_1/m3c_fix_probe/xsim/mul_div_dependency.readmemh
+GATE3_8_START scenario=N0_NORMAL_INDEPENDENT_ALU code=0 program=mul_div_dependency max_cycles=1000000
+Fatal: GATE3_8_TIMEOUT scenario=N0_NORMAL_INDEPENDENT_ALU cycles=1000000 commits=320 imem=354 dmem=0 resets=1
+Time: 10000045 ns  Iteration: 0  Process: /boom_core_rtl_tb/Initial159_10147  Scope: boom_core_rtl_tb  File: /home/lab_726/boom/hls_boom/rtl_tb/boom_core_rtl_tb.sv Line: 253
+$finish called at time : 10000045 ns
+run: Time (s): cpu = 00:00:00.38 ; elapsed = 00:01:25 . Memory (MB): peak = 2685.672 ; gain = 0.000 ; free physical = 23883 ; free virtual = 58141
+exit
+INFO: xsimkernel Simulation Memory Usage: 143300 KB (Peak: 196676 KB), Simulation CPU Usage: 85240 ms
+INFO: [Common 17-206] Exiting xsim at Wed Aug  5 20:41:53 2026...
