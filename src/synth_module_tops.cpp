@@ -5,6 +5,7 @@
 #include "reset.hpp"
 #include "completion.hpp"
 #include "mul.hpp"
+#include "divider.hpp"
 
 extern void boom_core_step(BoomCoreState& state, PipeSignals& pipe);
 
@@ -144,6 +145,32 @@ void synth_mul_top(uint8_t operation, uint64_t lhs, uint64_t rhs,
     const boom::MulResponse response = boom::execute_mul(request);
     result = response.result;
     valid = response.valid;
+}
+
+void synth_divider_top(bool reset, bool request_valid, uint8_t operation,
+                       uint64_t dividend, uint64_t divisor,
+                       bool response_ready, bool& request_ready,
+                       bool& response_valid, uint64_t& result, bool& busy) {
+    static boom::DividerState state;
+    bool accepted = false;
+    if (reset) {
+        boom::divider_reset(state);
+    } else {
+        if (response_ready && boom::divider_response(state).valid)
+            boom::divider_consume_response(state);
+        boom::DividerRequest request;
+        request.valid = request_valid;
+        request.operation = static_cast<boom::DivideOperation>(operation);
+        request.dividend = dividend;
+        request.divisor = divisor;
+        accepted = boom::divider_accept(state, request);
+        if (!accepted) boom::divider_step(state);
+    }
+    const boom::DividerResponse response = boom::divider_response(state);
+    request_ready = boom::divider_request_ready(state);
+    response_valid = response.valid;
+    result = response.result;
+    busy = state.busy;
 }
 
 void synth_completion_top(uint8_t seed_sources, uint8_t seed_head,

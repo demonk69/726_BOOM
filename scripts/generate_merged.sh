@@ -18,6 +18,7 @@ cat > "$OUT" << 'HEAD'
 #include "reset.hpp"
 #include "completion.hpp"
 #include "mul.hpp"
+#include "divider.hpp"
 #if defined(BOOM_USE_AP_INT) || defined(__SYNTHESIS__)
 #include <ap_int.h>
 #endif
@@ -50,6 +51,9 @@ grep -v '#include' "$BASE/src/issue.cpp" >> "$OUT"
 echo "" >> "$OUT"
 echo "// ==== mul.cpp ====" >> "$OUT"
 grep -v '#include' "$BASE/src/mul.cpp" >> "$OUT"
+echo "" >> "$OUT"
+echo "// ==== divider.cpp ====" >> "$OUT"
+grep -v '#include' "$BASE/src/divider.cpp" >> "$OUT"
 echo "" >> "$OUT"
 echo "// ==== execute.cpp ====" >> "$OUT"
 grep -v '#include' "$BASE/src/execute.cpp" >> "$OUT"

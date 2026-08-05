@@ -19,3 +19,14 @@ M1 verifies this metadata only. It does not establish correct arithmetic executi
 Division must use persistent fixed-iteration radix-2 state, not synthesizable C++ `/` or `%`. Signed division truncates toward zero and signed remainder has the dividend sign. Divide by zero, signed minimum divided by -1, and all word sign-extension cases must follow the RISC-V specification.
 
 The terminal result must enter the existing INT execute result and W4 completion/writeback path. Reset, branch kill, response retention, and ROB allocation identity remain mandatory.
+
+## M3A Standalone Divide Semantics
+
+M3A implements arithmetic and a persistent request/response protocol, but does not perform the later execute or W4 integration.
+
+- DIV and DIVW are signed, truncate toward zero, and return the all-ones quotient for division by zero.
+- DIVU and DIVUW are unsigned and return the all-ones quotient for division by zero.
+- REM and REMW use the dividend sign and return the dividend for division by zero.
+- REMU and REMUW are unsigned and return the dividend for division by zero.
+- Minimum signed value divided by minus one returns the minimum value; its remainder is zero.
+- Every W operation truncates inputs to 32 bits and sign-extends the low 32 result bits, including unsigned W operations.

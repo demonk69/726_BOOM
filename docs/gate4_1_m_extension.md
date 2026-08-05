@@ -25,3 +25,13 @@
 `M2B_INT_INTEGRATION_FUNCTIONALLY_VERIFIED=true`. Uopcs 16-20 call the M2A arithmetic through the existing INT execute result slot. Directed execute checks pass 30/30, persistent random checking covers 131072 vectors and 16384 held-result probes with zero mismatch, canonical W3/W4 software preservation passes, and generated RTL passes 10/10 focused plus 2/2 full-core program scenarios.
 
 `M2B_PPA_BLOCKER=true`. The integrated `synth_execute_top` result is 7.201 ns and `synth_core_step_top` is 7.257 ns, above the 6.5 ns threshold. The requested raw `boom_core_step` top also exceeds Vitis HLS 2021.2's 4096-bit aggregate-interface limit before scheduling. No directive or PPA optimization was attempted, so `M2_MUL_FAMILY_VERIFIED=false` and later multiply work is not released by M2B.
+
+## M2C Multiply PPA Closure
+
+`M2_MUL_FAMILY_VERIFIED=true`, `M2B_PPA_BLOCKER=false`, and `READY_FOR_M3_DIVIDER_CORE=true`. The accepted single shared multiplier configuration reaches 6.341 ns for both canonical full-core tops with 3 DSP. Canonical csynth is 8/8 PASS, focused RTL is 10/10 PASS, and full-core RTL is 2/2 PASS.
+
+## M3A Standalone Divider
+
+`M3A_STANDALONE_DIVIDER_VERIFIED=true`. Restoring radix-2 arithmetic covers all eight DIV/REM operations in 64 full-width or 32 word steps, with specified fast returns. Directed tests pass 104 cases, 65536 arithmetic random operations have zero mismatch, and 65536 persistent protocol cycles have zero mismatch. Standalone `synth_divider_top` reports 3429 LUT, 344 FF, 0 BRAM, 0 DSP, 5.734 ns, and `PipelineType=no`; operator reports contain no division or remainder core.
+
+`READY_FOR_M3B_INT_DIVIDER_INTEGRATION=true`. Execute, completion, ROB, LSU, issue, frontend, W4 topology, and `src/boom_all.cpp` are unchanged by M3A. No full-core RTL or csynth was run, so neither `GATE4_1_RV64M_VERIFIED` nor any M4/frontend readiness is claimed.

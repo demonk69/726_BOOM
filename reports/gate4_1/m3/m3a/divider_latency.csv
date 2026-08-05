@@ -1,0 +1,41 @@
+operation,case,iterations,request_to_response_cycles,notes
+DIV,normal,64,64,restoring radix-2
+DIV,divisor_zero,0,0,quotient UINT64_MAX
+DIV,signed_overflow,0,0,INT64_MIN
+DIV,dividend_zero,0,0,zero
+DIV,divisor_one,0,0,dividend
+DIV,signed_divisor_minus_one,0,0,negated dividend except overflow
+DIVU,normal,64,64,restoring radix-2
+DIVU,divisor_zero,0,0,quotient UINT64_MAX
+DIVU,dividend_zero,0,0,zero
+DIVU,divisor_one,0,0,dividend
+REM,normal,64,64,restoring radix-2
+REM,divisor_zero,0,0,original dividend
+REM,signed_overflow,0,0,zero
+REM,dividend_zero,0,0,zero
+REM,divisor_one,0,0,zero
+REM,signed_divisor_minus_one,0,0,zero
+REMU,normal,64,64,restoring radix-2
+REMU,divisor_zero,0,0,original dividend
+REMU,dividend_zero,0,0,zero
+REMU,divisor_one,0,0,zero
+DIVW,normal,32,32,inputs truncated and output sign-extended
+DIVW,divisor_zero,0,0,sign-extended UINT32_MAX
+DIVW,signed_overflow,0,0,sign-extended INT32_MIN
+DIVW,dividend_zero,0,0,zero
+DIVW,divisor_one,0,0,sign-extended dividend
+DIVW,signed_divisor_minus_one,0,0,sign-extended negated dividend except overflow
+DIVUW,normal,32,32,unsigned operands and sign-extended output
+DIVUW,divisor_zero,0,0,sign-extended UINT32_MAX
+DIVUW,dividend_zero,0,0,zero
+DIVUW,divisor_one,0,0,sign-extended dividend
+REMW,normal,32,32,inputs truncated and output sign-extended
+REMW,divisor_zero,0,0,sign-extended low dividend word
+REMW,signed_overflow,0,0,zero
+REMW,dividend_zero,0,0,zero
+REMW,divisor_one,0,0,zero
+REMW,signed_divisor_minus_one,0,0,zero
+REMUW,normal,32,32,unsigned operands and sign-extended output
+REMUW,divisor_zero,0,0,sign-extended low dividend word
+REMUW,dividend_zero,0,0,zero
+REMUW,divisor_one,0,0,zero

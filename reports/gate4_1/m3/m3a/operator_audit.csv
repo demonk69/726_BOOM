@@ -1,0 +1,10 @@
+scope,operator,bit_width,count,status,evidence
+divider_source,division,64,0,PASS,src/divider.cpp contains no slash operator
+divider_source,remainder,64,0,PASS,src/divider.cpp contains no percent operator
+synth_bind,sdiv,64,0,PASS,csynth/synth_divider_top.verbose.bind.rpt
+synth_bind,udiv,64,0,PASS,csynth/synth_divider_top.verbose.bind.rpt
+synth_bind,srem,64,0,PASS,csynth/synth_divider_top.verbose.bind.rpt
+synth_bind,urem,64,0,PASS,csynth/synth_divider_top.verbose.bind.rpt
+synth_expression,compare,64,1,PASS,synth_divider_top_csynth.rpt icmp_ln1850
+synth_expression,subtract,64,3,PASS,synth_divider_top_csynth.rpt
+synth_resources,DSP,all,0,PASS,synth_divider_top_csynth.rpt
