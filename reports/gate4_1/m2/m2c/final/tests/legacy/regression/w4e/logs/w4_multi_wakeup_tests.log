@@ -1,0 +1,17 @@
+=== Gate 4.0 W4C Multi Wakeup Tests ===
+  [W4C wakeup] fixed real topology                        ... PASS
+  [W4C wakeup] two producers wake and dual-write PRF      ... PASS
+  [W4C wakeup] identical pdst/value de-duplicates         ... PASS
+  [W4C wakeup] conflicting same pdst faults without wakeup ... PASS
+  [W4C wakeup] two producers to two consumers             ... PASS
+  [W4C wakeup] one producer wakes many consumers          ... PASS
+  [W4C wakeup] prs1 prs2 prs3 and x0                      ... PASS
+  [W4C wakeup] late dispatch sees completed second write  ... PASS
+  [W4C wakeup] stale allocation produces no wakeup        ... PASS
+  [W4C wakeup] mispredict kills younger transient ports   ... PASS
+  [W4C wakeup] three writers drain without starvation     ... PASS
+  [W4C wakeup] reset clears transient and sent state      ... PASS
+  [W4C wakeup] precise fence blocks younger wakeup        ... PASS
+  [W4C wakeup] resolved branch defers younger wake/write  ... PASS
+W4C multi wakeup: 14 passed, 0 failed
+W4C_WAKEUP_METRICS peak_wakeups=3 peak_prf_writes=2 bounded_wait=2

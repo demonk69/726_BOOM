@@ -7,6 +7,7 @@
 namespace boom {
 
 MulResponse execute_mul(const MulRequest& request) {
+#pragma HLS ALLOCATION operation instances=mul limit=1
     MulResponse response;
     if (!request.valid) return response;
 
@@ -22,12 +23,10 @@ MulResponse execute_mul(const MulRequest& request) {
         response.result = (uint64_t)unsigned_product.range(63, 0);
         break;
     case MUL_OP_HIGH_SS: {
-        const ap_int<64> lhs_s = request.lhs;
-        const ap_int<64> rhs_s = request.rhs;
-        const ap_int<128> lhs_wide = lhs_s;
-        const ap_int<128> rhs_wide = rhs_s;
-        const ap_int<128> product = lhs_wide * rhs_wide;
-        response.result = (uint64_t)product.range(127, 64);
+        uint64_t high = (uint64_t)unsigned_product.range(127, 64);
+        if ((request.lhs >> 63) != 0) high -= request.rhs;
+        if ((request.rhs >> 63) != 0) high -= request.lhs;
+        response.result = high;
         break;
     }
     case MUL_OP_HIGH_SU: {
@@ -61,9 +60,10 @@ MulResponse execute_mul(const MulRequest& request) {
         response.result = (uint64_t)unsigned_product;
         break;
     case MUL_OP_HIGH_SS: {
-        const __int128 product = (__int128)(int64_t)request.lhs *
-                                 (__int128)(int64_t)request.rhs;
-        response.result = (uint64_t)((unsigned __int128)product >> 64);
+        uint64_t high = (uint64_t)(unsigned_product >> 64);
+        if ((request.lhs >> 63) != 0) high -= request.rhs;
+        if ((request.rhs >> 63) != 0) high -= request.lhs;
+        response.result = high;
         break;
     }
     case MUL_OP_HIGH_SU: {

@@ -1,0 +1,8 @@
+experiment,single_variable,mul_period_ns,mul_lut,mul_ff,mul_dsp,core_period_ns,core_lut,core_ff,core_dsp,decision
+M2B_baseline,none,6.463,612,7,33,7.257,107681,25381,33,REJECT_PPA
+signed_high_correction,replace_signed_product_with_unsigned_high_correction,4.717,701,264,18,,,,,RETAIN
+mulw_reuse_64x64,reuse_unsigned_product_low_32,6.488,681,260,15,6.765,107750,25507,15,REJECT_TIMING
+bind_op_dsp,bind_unsigned_product_to_DSP,6.717,702,7,18,,,,,REJECT_TIMING
+bind_op_fabric,bind_unsigned_product_to_fabric,7.090,4915,7,3,,,,,REJECT_TIMING_LUT
+allocation_mul_1,limit_mul_operations_to_one_instance,4.717,709,264,3,6.341,107783,25509,3,ACCEPT
+inline_off,disable_execute_mul_inlining,6.463,659,141,18,,,,,REJECT_DSP

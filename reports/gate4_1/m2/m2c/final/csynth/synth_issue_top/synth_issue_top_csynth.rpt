@@ -1,0 +1,738 @@
+
+
+================================================================
+== Vitis HLS Report for 'synth_issue_top'
+================================================================
+* Date:           Wed Aug  5 09:52:34 2026
+
+* Version:        2021.2 (Build 3367213 on Tue Oct 19 02:47:39 MDT 2021)
+* Project:        synth_issue_top
+* Solution:       solution_gate4_1_m2c (Vivado IP Flow Target)
+* Product family: zynquplus
+* Target device:  xczu7ev-ffvc1156-2-e
+
+
+================================================================
+== Performance Estimates
+================================================================
++ Timing: 
+    * Summary: 
+    +--------+----------+----------+------------+
+    |  Clock |  Target  | Estimated| Uncertainty|
+    +--------+----------+----------+------------+
+    |ap_clk  |  10.00 ns|  5.019 ns|     2.70 ns|
+    +--------+----------+----------+------------+
+
++ Latency: 
+    * Summary: 
+    +---------+---------+----------+----------+-----+-----+---------+
+    |  Latency (cycles) |  Latency (absolute) |  Interval | Pipeline|
+    |   min   |   max   |    min   |    max   | min | max |   Type  |
+    +---------+---------+----------+----------+-----+-----+---------+
+    |        ?|        ?|         ?|         ?|    ?|    ?|       no|
+    +---------+---------+----------+----------+-----+-----+---------+
+
+    + Detail: 
+        * Instance: 
+        +--------------------------+--------------+---------+---------+----------+----------+-----+-----+---------+
+        |                          |              |  Latency (cycles) |  Latency (absolute) |  Interval | Pipeline|
+        |         Instance         |    Module    |   min   |   max   |    min   |    max   | min | max |   Type  |
+        +--------------------------+--------------+---------+---------+----------+----------+-----+-----+---------+
+        |grp_issue_module_fu_3403  |issue_module  |        ?|        ?|         ?|         ?|    ?|    ?|       no|
+        +--------------------------+--------------+---------+---------+----------+----------+-----+-----+---------+
+
+        * Loop: 
+        +---------------------+---------+---------+----------+-----------+-----------+------+----------+
+        |                     |  Latency (cycles) | Iteration|  Initiation Interval  | Trip |          |
+        |      Loop Name      |   min   |   max   |  Latency |  achieved |   target  | Count| Pipelined|
+        +---------------------+---------+---------+----------+-----------+-----------+------+----------+
+        |- VITIS_LOOP_49_1    |       52|       52|         1|          -|          -|    52|        no|
+        |- Loop 2             |        8|        8|         1|          -|          -|     8|        no|
+        |- VITIS_LOOP_86_1    |        8|        8|         1|          -|          -|     8|        no|
+        |- Loop 4             |        3|        3|         1|          -|          -|     3|        no|
+        |- Loop 5             |        3|        3|         1|          -|          -|     3|        no|
+        |- VITIS_LOOP_105_1   |        3|        3|         1|          -|          -|     3|        no|
+        |- VITIS_LOOP_257_1   |       52|       52|         1|          -|          -|    52|        no|
+        |- VITIS_LOOP_3044_1  |        8|        8|         1|          -|          -|     8|        no|
+        +---------------------+---------+---------+----------+-----------+-----------+------+----------+
+
+
+
+================================================================
+== Utilization Estimates
+================================================================
+* Summary: 
++-----------------+---------+------+--------+--------+-----+
+|       Name      | BRAM_18K|  DSP |   FF   |   LUT  | URAM|
++-----------------+---------+------+--------+--------+-----+
+|DSP              |        -|     -|       -|       -|    -|
+|Expression       |        -|     -|       0|     279|    -|
+|FIFO             |        -|     -|       -|       -|    -|
+|Instance         |        0|     -|    2266|    9887|    0|
+|Memory           |        0|     -|    1920|     162|    0|
+|Multiplexer      |        -|     -|       -|    7034|    -|
+|Register         |        -|     -|     635|       -|    -|
++-----------------+---------+------+--------+--------+-----+
+|Total            |        0|     0|    4821|   17362|    0|
++-----------------+---------+------+--------+--------+-----+
+|Available        |      624|  1728|  460800|  230400|   96|
++-----------------+---------+------+--------+--------+-----+
+|Utilization (%)  |        0|     0|       1|       7|    0|
++-----------------+---------+------+--------+--------+-----+
+
++ Detail: 
+    * Instance: 
+    +--------------------------+--------------+---------+----+------+------+-----+
+    |         Instance         |    Module    | BRAM_18K| DSP|  FF  |  LUT | URAM|
+    +--------------------------+--------------+---------+----+------+------+-----+
+    |grp_issue_module_fu_3403  |issue_module  |        0|   0|  2266|  9887|    0|
+    +--------------------------+--------------+---------+----+------+------+-----+
+    |Total                     |              |        0|   0|  2266|  9887|    0|
+    +--------------------------+--------------+---------+----+------+------+-----+
+
+    * DSP: 
+    N/A
+
+    * Memory: 
+    +----------------------------------------------------------+-------------------------------------------------------+---------+-----+----+-----+------+-----+------+-------------+
+    |                          Memory                          |                         Module                        | BRAM_18K|  FF | LUT| URAM| Words| Bits| Banks| W*Bits*Banks|
+    +----------------------------------------------------------+-------------------------------------------------------+---------+-----+----+-----+------+-----+------+-------------+
+    |state_issue_alu_iq_entries_uop_csr_addr_U                 |state_issue_alu_iq_entries_uop_csr_addr_RAM_AUTO_1R1W  |        0|   32|   2|    0|     8|   16|     1|          128|
+    |state_issue_alu_iq_entries_uop_debug_pc_U                 |state_issue_alu_iq_entries_uop_debug_pc_RAM_AUTO_1R1W  |        0|  128|   8|    0|     8|   64|     1|          512|
+    |state_issue_alu_iq_entries_uop_exc_cause_U                |state_issue_alu_iq_entries_uop_debug_pc_RAM_AUTO_1R1W  |        0|  128|   8|    0|     8|   64|     1|          512|
+    |state_issue_alu_iq_entries_uop_exc_exc_cause_U            |state_issue_alu_iq_entries_uop_debug_pc_RAM_AUTO_1R1W  |        0|  128|   8|    0|     8|   64|     1|          512|
+    |state_issue_alu_iq_entries_uop_debug_debug_pc_U           |state_issue_alu_iq_entries_uop_debug_pc_RAM_AUTO_1R1W  |        0|  128|   8|    0|     8|   64|     1|          512|
+    |state_issue_alu_iq_entries_prs1_data_U                    |state_issue_alu_iq_entries_uop_debug_pc_RAM_AUTO_1R1W  |        0|  128|   8|    0|     8|   64|     1|          512|
+    |state_issue_alu_iq_entries_prs2_data_U                    |state_issue_alu_iq_entries_uop_debug_pc_RAM_AUTO_1R1W  |        0|  128|   8|    0|     8|   64|     1|          512|
+    |state_issue_alu_iq_entries_prs3_data_U                    |state_issue_alu_iq_entries_uop_debug_pc_RAM_AUTO_1R1W  |        0|  128|   8|    0|     8|   64|     1|          512|
+    |state_issue_alu_iq_entries_uop_inst_U                     |state_issue_alu_iq_entries_uop_inst_RAM_AUTO_1R1W      |        0|   64|   4|    0|     8|   32|     1|          256|
+    |state_issue_alu_iq_entries_uop_debug_inst_U               |state_issue_alu_iq_entries_uop_inst_RAM_AUTO_1R1W      |        0|   64|   4|    0|     8|   32|     1|          256|
+    |state_issue_alu_iq_entries_uop_imm_packed_U               |state_issue_alu_iq_entries_uop_inst_RAM_AUTO_1R1W      |        0|   64|   4|    0|     8|   32|     1|          256|
+    |state_issue_alu_iq_entries_uop_queue_rob_allocation_id_U  |state_issue_alu_iq_entries_uop_inst_RAM_AUTO_1R1W      |        0|   64|   4|    0|     8|   32|     1|          256|
+    |state_issue_alu_iq_entries_uop_debug_debug_inst_U         |state_issue_alu_iq_entries_uop_inst_RAM_AUTO_1R1W      |        0|   64|   4|    0|     8|   32|     1|          256|
+    |state_issue_alu_iq_entries_uop_uopc_U                     |state_issue_alu_iq_entries_uop_uopc_RAM_AUTO_1R1W      |        0|   16|   1|    0|     8|    8|     1|           64|
+    |state_issue_alu_iq_entries_uop_iq_type_U                  |state_issue_alu_iq_entries_uop_uopc_RAM_AUTO_1R1W      |        0|   16|   1|    0|     8|    8|     1|           64|
+    |state_issue_alu_iq_entries_uop_fu_code_U                  |state_issue_alu_iq_entries_uop_uopc_RAM_AUTO_1R1W      |        0|   16|   1|    0|     8|    8|     1|           64|
+    |state_issue_alu_iq_entries_uop_ctrl_br_type_U             |state_issue_alu_iq_entries_uop_uopc_RAM_AUTO_1R1W      |        0|   16|   1|    0|     8|    8|     1|           64|
+    |state_issue_alu_iq_entries_uop_ctrl_op1_sel_U             |state_issue_alu_iq_entries_uop_uopc_RAM_AUTO_1R1W      |        0|   16|   1|    0|     8|    8|     1|           64|
+    |state_issue_alu_iq_entries_uop_ctrl_op2_sel_U             |state_issue_alu_iq_entries_uop_uopc_RAM_AUTO_1R1W      |        0|   16|   1|    0|     8|    8|     1|           64|
+    |state_issue_alu_iq_entries_uop_ctrl_imm_sel_U             |state_issue_alu_iq_entries_uop_uopc_RAM_AUTO_1R1W      |        0|   16|   1|    0|     8|    8|     1|           64|
+    |state_issue_alu_iq_entries_uop_ctrl_op_fcn_U              |state_issue_alu_iq_entries_uop_uopc_RAM_AUTO_1R1W      |        0|   16|   1|    0|     8|    8|     1|           64|
+    |state_issue_alu_iq_entries_uop_ctrl_fcn_dw_U              |state_issue_alu_iq_entries_uop_uopc_RAM_AUTO_1R1W      |        0|   16|   1|    0|     8|    8|     1|           64|
+    |state_issue_alu_iq_entries_uop_ctrl_csr_cmd_U             |state_issue_alu_iq_entries_uop_uopc_RAM_AUTO_1R1W      |        0|   16|   1|    0|     8|    8|     1|           64|
+    |state_issue_alu_iq_entries_uop_iw_state_U                 |state_issue_alu_iq_entries_uop_uopc_RAM_AUTO_1R1W      |        0|   16|   1|    0|     8|    8|     1|           64|
+    |state_issue_alu_iq_entries_uop_branch_br_mask_U           |state_issue_alu_iq_entries_uop_uopc_RAM_AUTO_1R1W      |        0|   16|   1|    0|     8|    8|     1|           64|
+    |state_issue_alu_iq_entries_uop_branch_br_tag_U            |state_issue_alu_iq_entries_uop_uopc_RAM_AUTO_1R1W      |        0|   16|   1|    0|     8|    8|     1|           64|
+    |state_issue_alu_iq_entries_uop_branch_ftq_idx_U           |state_issue_alu_iq_entries_uop_uopc_RAM_AUTO_1R1W      |        0|   16|   1|    0|     8|    8|     1|           64|
+    |state_issue_alu_iq_entries_uop_branch_pc_lob_U            |state_issue_alu_iq_entries_uop_uopc_RAM_AUTO_1R1W      |        0|   16|   1|    0|     8|    8|     1|           64|
+    |state_issue_alu_iq_entries_uop_queue_rob_idx_U            |state_issue_alu_iq_entries_uop_uopc_RAM_AUTO_1R1W      |        0|   16|   1|    0|     8|    8|     1|           64|
+    |state_issue_alu_iq_entries_uop_queue_ldq_idx_U            |state_issue_alu_iq_entries_uop_uopc_RAM_AUTO_1R1W      |        0|   16|   1|    0|     8|    8|     1|           64|
+    |state_issue_alu_iq_entries_uop_queue_stq_idx_U            |state_issue_alu_iq_entries_uop_uopc_RAM_AUTO_1R1W      |        0|   16|   1|    0|     8|    8|     1|           64|
+    |state_issue_alu_iq_entries_uop_queue_rxq_idx_U            |state_issue_alu_iq_entries_uop_uopc_RAM_AUTO_1R1W      |        0|   16|   1|    0|     8|    8|     1|           64|
+    |state_issue_alu_iq_entries_uop_rename_ldst_U              |state_issue_alu_iq_entries_uop_uopc_RAM_AUTO_1R1W      |        0|   16|   1|    0|     8|    8|     1|           64|
+    |state_issue_alu_iq_entries_uop_rename_lrs1_U              |state_issue_alu_iq_entries_uop_uopc_RAM_AUTO_1R1W      |        0|   16|   1|    0|     8|    8|     1|           64|
+    |state_issue_alu_iq_entries_uop_rename_lrs2_U              |state_issue_alu_iq_entries_uop_uopc_RAM_AUTO_1R1W      |        0|   16|   1|    0|     8|    8|     1|           64|
+    |state_issue_alu_iq_entries_uop_rename_lrs3_U              |state_issue_alu_iq_entries_uop_uopc_RAM_AUTO_1R1W      |        0|   16|   1|    0|     8|    8|     1|           64|
+    |state_issue_alu_iq_entries_uop_rename_pdst_U              |state_issue_alu_iq_entries_uop_uopc_RAM_AUTO_1R1W      |        0|   16|   1|    0|     8|    8|     1|           64|
+    |state_issue_alu_iq_entries_uop_rename_prs1_U              |state_issue_alu_iq_entries_uop_uopc_RAM_AUTO_1R1W      |        0|   16|   1|    0|     8|    8|     1|           64|
+    |state_issue_alu_iq_entries_uop_rename_prs2_U              |state_issue_alu_iq_entries_uop_uopc_RAM_AUTO_1R1W      |        0|   16|   1|    0|     8|    8|     1|           64|
+    |state_issue_alu_iq_entries_uop_rename_prs3_U              |state_issue_alu_iq_entries_uop_uopc_RAM_AUTO_1R1W      |        0|   16|   1|    0|     8|    8|     1|           64|
+    |state_issue_alu_iq_entries_uop_rename_ppred_U             |state_issue_alu_iq_entries_uop_uopc_RAM_AUTO_1R1W      |        0|   16|   1|    0|     8|    8|     1|           64|
+    |state_issue_alu_iq_entries_uop_rename_stale_pdst_U        |state_issue_alu_iq_entries_uop_uopc_RAM_AUTO_1R1W      |        0|   16|   1|    0|     8|    8|     1|           64|
+    |state_issue_alu_iq_entries_uop_rename_dst_rtype_U         |state_issue_alu_iq_entries_uop_uopc_RAM_AUTO_1R1W      |        0|   16|   1|    0|     8|    8|     1|           64|
+    |state_issue_alu_iq_entries_uop_rename_lrs1_rtype_U        |state_issue_alu_iq_entries_uop_uopc_RAM_AUTO_1R1W      |        0|   16|   1|    0|     8|    8|     1|           64|
+    |state_issue_alu_iq_entries_uop_rename_lrs2_rtype_U        |state_issue_alu_iq_entries_uop_uopc_RAM_AUTO_1R1W      |        0|   16|   1|    0|     8|    8|     1|           64|
+    |state_issue_alu_iq_entries_uop_mem_mem_cmd_U              |state_issue_alu_iq_entries_uop_uopc_RAM_AUTO_1R1W      |        0|   16|   1|    0|     8|    8|     1|           64|
+    |state_issue_alu_iq_entries_uop_mem_mem_size_U             |state_issue_alu_iq_entries_uop_uopc_RAM_AUTO_1R1W      |        0|   16|   1|    0|     8|    8|     1|           64|
+    |state_issue_alu_iq_entries_uop_debug_debug_fsrc_U         |state_issue_alu_iq_entries_uop_uopc_RAM_AUTO_1R1W      |        0|   16|   1|    0|     8|    8|     1|           64|
+    |state_issue_alu_iq_entries_uop_debug_debug_tsrc_U         |state_issue_alu_iq_entries_uop_uopc_RAM_AUTO_1R1W      |        0|   16|   1|    0|     8|    8|     1|           64|
+    |state_issue_alu_iq_entries_valid_U                        |state_issue_alu_iq_entries_valid_RAM_AUTO_1R1W         |        0|    2|   1|    0|     8|    1|     1|            8|
+    |state_issue_alu_iq_entries_request_U                      |state_issue_alu_iq_entries_valid_RAM_AUTO_1R1W         |        0|    2|   1|    0|     8|    1|     1|            8|
+    |state_issue_alu_iq_entries_granted_U                      |state_issue_alu_iq_entries_valid_RAM_AUTO_1R1W         |        0|    2|   1|    0|     8|    1|     1|            8|
+    |state_issue_alu_iq_entries_killed_U                       |state_issue_alu_iq_entries_valid_RAM_AUTO_1R1W         |        0|    2|   1|    0|     8|    1|     1|            8|
+    |state_issue_alu_iq_entries_pdst_busy_U                    |state_issue_alu_iq_entries_valid_RAM_AUTO_1R1W         |        0|    2|   1|    0|     8|    1|     1|            8|
+    |state_issue_alu_iq_entries_prs1_busy_U                    |state_issue_alu_iq_entries_valid_RAM_AUTO_1R1W         |        0|    2|   1|    0|     8|    1|     1|            8|
+    |state_issue_alu_iq_entries_prs2_busy_U                    |state_issue_alu_iq_entries_valid_RAM_AUTO_1R1W         |        0|    2|   1|    0|     8|    1|     1|            8|
+    |state_issue_alu_iq_entries_prs3_busy_U                    |state_issue_alu_iq_entries_valid_RAM_AUTO_1R1W         |        0|    2|   1|    0|     8|    1|     1|            8|
+    |state_issue_alu_iq_entries_uop_is_rvc_U                   |state_issue_alu_iq_entries_valid_RAM_AUTO_1R1W         |        0|    2|   1|    0|     8|    1|     1|            8|
+    |state_issue_alu_iq_entries_uop_ctrl_is_load_U             |state_issue_alu_iq_entries_valid_RAM_AUTO_1R1W         |        0|    2|   1|    0|     8|    1|     1|            8|
+    |state_issue_alu_iq_entries_uop_ctrl_is_sta_U              |state_issue_alu_iq_entries_valid_RAM_AUTO_1R1W         |        0|    2|   1|    0|     8|    1|     1|            8|
+    |state_issue_alu_iq_entries_uop_ctrl_is_std_U              |state_issue_alu_iq_entries_valid_RAM_AUTO_1R1W         |        0|    2|   1|    0|     8|    1|     1|            8|
+    |state_issue_alu_iq_entries_uop_iw_p2_poisoned_U           |state_issue_alu_iq_entries_valid_RAM_AUTO_1R1W         |        0|    2|   1|    0|     8|    1|     1|            8|
+    |state_issue_alu_iq_entries_uop_iw_p1_poisoned_U           |state_issue_alu_iq_entries_valid_RAM_AUTO_1R1W         |        0|    2|   1|    0|     8|    1|     1|            8|
+    |state_issue_alu_iq_entries_uop_branch_edge_inst_U         |state_issue_alu_iq_entries_valid_RAM_AUTO_1R1W         |        0|    2|   1|    0|     8|    1|     1|            8|
+    |state_issue_alu_iq_entries_uop_branch_taken_U             |state_issue_alu_iq_entries_valid_RAM_AUTO_1R1W         |        0|    2|   1|    0|     8|    1|     1|            8|
+    |state_issue_alu_iq_entries_uop_branch_is_br_U             |state_issue_alu_iq_entries_valid_RAM_AUTO_1R1W         |        0|    2|   1|    0|     8|    1|     1|            8|
+    |state_issue_alu_iq_entries_uop_branch_is_jalr_U           |state_issue_alu_iq_entries_valid_RAM_AUTO_1R1W         |        0|    2|   1|    0|     8|    1|     1|            8|
+    |state_issue_alu_iq_entries_uop_branch_is_jal_U            |state_issue_alu_iq_entries_valid_RAM_AUTO_1R1W         |        0|    2|   1|    0|     8|    1|     1|            8|
+    |state_issue_alu_iq_entries_uop_branch_is_sfb_U            |state_issue_alu_iq_entries_valid_RAM_AUTO_1R1W         |        0|    2|   1|    0|     8|    1|     1|            8|
+    |state_issue_alu_iq_entries_uop_rename_prs1_busy_U         |state_issue_alu_iq_entries_valid_RAM_AUTO_1R1W         |        0|    2|   1|    0|     8|    1|     1|            8|
+    |state_issue_alu_iq_entries_uop_rename_prs2_busy_U         |state_issue_alu_iq_entries_valid_RAM_AUTO_1R1W         |        0|    2|   1|    0|     8|    1|     1|            8|
+    |state_issue_alu_iq_entries_uop_rename_prs3_busy_U         |state_issue_alu_iq_entries_valid_RAM_AUTO_1R1W         |        0|    2|   1|    0|     8|    1|     1|            8|
+    |state_issue_alu_iq_entries_uop_rename_ppred_busy_U        |state_issue_alu_iq_entries_valid_RAM_AUTO_1R1W         |        0|    2|   1|    0|     8|    1|     1|            8|
+    |state_issue_alu_iq_entries_uop_rename_frs3_en_U           |state_issue_alu_iq_entries_valid_RAM_AUTO_1R1W         |        0|    2|   1|    0|     8|    1|     1|            8|
+    |state_issue_alu_iq_entries_uop_rename_fp_val_U            |state_issue_alu_iq_entries_valid_RAM_AUTO_1R1W         |        0|    2|   1|    0|     8|    1|     1|            8|
+    |state_issue_alu_iq_entries_uop_rename_fp_single_U         |state_issue_alu_iq_entries_valid_RAM_AUTO_1R1W         |        0|    2|   1|    0|     8|    1|     1|            8|
+    |state_issue_alu_iq_entries_uop_exception_U                |state_issue_alu_iq_entries_valid_RAM_AUTO_1R1W         |        0|    2|   1|    0|     8|    1|     1|            8|
+    |state_issue_alu_iq_entries_uop_bypassable_U               |state_issue_alu_iq_entries_valid_RAM_AUTO_1R1W         |        0|    2|   1|    0|     8|    1|     1|            8|
+    |state_issue_alu_iq_entries_uop_mem_mem_signed_U           |state_issue_alu_iq_entries_valid_RAM_AUTO_1R1W         |        0|    2|   1|    0|     8|    1|     1|            8|
+    |state_issue_alu_iq_entries_uop_mem_is_fence_U             |state_issue_alu_iq_entries_valid_RAM_AUTO_1R1W         |        0|    2|   1|    0|     8|    1|     1|            8|
+    |state_issue_alu_iq_entries_uop_mem_is_fencei_U            |state_issue_alu_iq_entries_valid_RAM_AUTO_1R1W         |        0|    2|   1|    0|     8|    1|     1|            8|
+    |state_issue_alu_iq_entries_uop_mem_is_amo_U               |state_issue_alu_iq_entries_valid_RAM_AUTO_1R1W         |        0|    2|   1|    0|     8|    1|     1|            8|
+    |state_issue_alu_iq_entries_uop_mem_uses_ldq_U             |state_issue_alu_iq_entries_valid_RAM_AUTO_1R1W         |        0|    2|   1|    0|     8|    1|     1|            8|
+    |state_issue_alu_iq_entries_uop_mem_uses_stq_U             |state_issue_alu_iq_entries_valid_RAM_AUTO_1R1W         |        0|    2|   1|    0|     8|    1|     1|            8|
+    |state_issue_alu_iq_entries_uop_mem_ldst_is_rs1_U          |state_issue_alu_iq_entries_valid_RAM_AUTO_1R1W         |        0|    2|   1|    0|     8|    1|     1|            8|
+    |state_issue_alu_iq_entries_uop_mem_ldst_val_U             |state_issue_alu_iq_entries_valid_RAM_AUTO_1R1W         |        0|    2|   1|    0|     8|    1|     1|            8|
+    |state_issue_alu_iq_entries_uop_flush_on_commit_U          |state_issue_alu_iq_entries_valid_RAM_AUTO_1R1W         |        0|    2|   1|    0|     8|    1|     1|            8|
+    |state_issue_alu_iq_entries_uop_is_unique_U                |state_issue_alu_iq_entries_valid_RAM_AUTO_1R1W         |        0|    2|   1|    0|     8|    1|     1|            8|
+    |state_issue_alu_iq_entries_uop_is_sys_pc2epc_U            |state_issue_alu_iq_entries_valid_RAM_AUTO_1R1W         |        0|    2|   1|    0|     8|    1|     1|            8|
+    |state_issue_alu_iq_entries_uop_exc_exception_U            |state_issue_alu_iq_entries_valid_RAM_AUTO_1R1W         |        0|    2|   1|    0|     8|    1|     1|            8|
+    |state_issue_alu_iq_entries_uop_exc_xcpt_pf_if_U           |state_issue_alu_iq_entries_valid_RAM_AUTO_1R1W         |        0|    2|   1|    0|     8|    1|     1|            8|
+    |state_issue_alu_iq_entries_uop_exc_xcpt_ae_if_U           |state_issue_alu_iq_entries_valid_RAM_AUTO_1R1W         |        0|    2|   1|    0|     8|    1|     1|            8|
+    |state_issue_alu_iq_entries_uop_exc_xcpt_ma_if_U           |state_issue_alu_iq_entries_valid_RAM_AUTO_1R1W         |        0|    2|   1|    0|     8|    1|     1|            8|
+    |state_issue_alu_iq_entries_uop_exc_bp_debug_if_U          |state_issue_alu_iq_entries_valid_RAM_AUTO_1R1W         |        0|    2|   1|    0|     8|    1|     1|            8|
+    |state_issue_alu_iq_entries_uop_exc_bp_xcpt_if_U           |state_issue_alu_iq_entries_valid_RAM_AUTO_1R1W         |        0|    2|   1|    0|     8|    1|     1|            8|
+    |state_rename_int_free_list_busy_table_U                   |state_rename_int_free_list_busy_table_RAM_AUTO_1R1W    |        0|    2|   1|    0|    52|    1|     1|           52|
+    |state_int_rf_bank0_U                                      |state_rename_int_free_list_busy_table_RAM_AUTO_1R1W    |        0|    2|   1|    0|    52|    1|     1|           52|
+    +----------------------------------------------------------+-------------------------------------------------------+---------+-----+----+-----+------+-----+------+-------------+
+    |Total                                                     |                                                       |        0| 1920| 162|    0|   864|  960|    97|         7768|
+    +----------------------------------------------------------+-------------------------------------------------------+---------+-----+----+-----+------+-----+------+-------------+
+
+    * FIFO: 
+    N/A
+
+    * Expression: 
+    +--------------------------+----------+----+---+----+------------+------------+
+    |       Variable Name      | Operation| DSP| FF| LUT| Bitwidth P0| Bitwidth P1|
+    +--------------------------+----------+----+---+----+------------+------------+
+    |add_ln101_1_fu_4024_p2    |         +|   0|  0|   9|           2|           1|
+    |add_ln101_fu_3951_p2      |         +|   0|  0|   9|           2|           1|
+    |add_ln105_fu_4133_p2      |         +|   0|  0|   9|           2|           1|
+    |add_ln257_fu_4229_p2      |         +|   0|  0|  13|           6|           1|
+    |add_ln3044_fu_4359_p2     |         +|   0|  0|  12|           4|           1|
+    |add_ln3061_fu_4457_p2     |         +|   0|  0|  71|          64|           3|
+    |add_ln49_fu_3684_p2       |         +|   0|  0|  13|           6|           1|
+    |add_ln85_fu_3703_p2       |         +|   0|  0|  10|           3|           1|
+    |add_ln86_fu_3932_p2       |         +|   0|  0|  12|           4|           1|
+    |icmp_ln101_1_fu_4042_p2   |      icmp|   0|  0|   8|           2|           3|
+    |icmp_ln101_fu_4005_p2     |      icmp|   0|  0|   8|           2|           3|
+    |icmp_ln105_fu_4127_p2     |      icmp|   0|  0|   8|           2|           2|
+    |icmp_ln106_fu_4187_p2     |      icmp|   0|  0|   8|           2|           1|
+    |icmp_ln257_fu_4223_p2     |      icmp|   0|  0|  10|           6|           5|
+    |icmp_ln3044_fu_4353_p2    |      icmp|   0|  0|   9|           4|           5|
+    |icmp_ln49_fu_3678_p2      |      icmp|   0|  0|  10|           6|           5|
+    |icmp_ln84_fu_4030_p2      |      icmp|   0|  0|   8|           2|           1|
+    |icmp_ln85_fu_3808_p2      |      icmp|   0|  0|   8|           3|           2|
+    |icmp_ln86_fu_3926_p2      |      icmp|   0|  0|   9|           4|           5|
+    |or_ln3080_fu_4535_p2      |        or|   0|  0|   2|           1|           1|
+    |or_ln3082_fu_4547_p2      |        or|   0|  0|   2|           1|           1|
+    |count_1_fu_4438_p3        |    select|   0|  0|   3|           1|           3|
+    |retained_rob_fu_4569_p3   |    select|   0|  0|   8|           1|           8|
+    |select_ln3082_fu_4557_p3  |    select|   0|  0|   8|           1|           1|
+    |select_ln3085_fu_4585_p3  |    select|   0|  0|   8|           1|           8|
+    |xor_ln3080_fu_4529_p2     |       xor|   0|  0|   2|           1|           2|
+    |xor_ln3082_fu_4541_p2     |       xor|   0|  0|   2|           1|           2|
+    +--------------------------+----------+----+---+----+------------+------------+
+    |Total                     |          |   0|  0| 279|         134|          69|
+    +--------------------------+----------+----+---+----+------------+------------+
+
+    * Multiplexer: 
+    +-----------------------------------------------------------------+----+-----------+-----+-----------+
+    |                               Name                              | LUT| Input Size| Bits| Total Bits|
+    +-----------------------------------------------------------------+----+-----------+-----+-----------+
+    |ap_NS_fsm                                                        |  65|         14|    1|         14|
+    |ap_phi_mux_count_phi_fu_3385_p4                                  |  14|          3|    1|          3|
+    |count_2_reg_3394                                                 |   9|          2|    2|          4|
+    |i_1_fu_386                                                       |   9|          2|    4|          8|
+    |i_2_fu_398                                                       |   9|          2|    2|          4|
+    |i_3_fu_402                                                       |   9|          2|    6|         12|
+    |i_4_fu_406                                                       |   9|          2|    4|          8|
+    |i_fu_378                                                         |   9|          2|    6|         12|
+    |indvar4_i_i_fu_394                                               |   9|          2|    2|          4|
+    |indvar_i_i_fu_390                                                |   9|          2|    2|          4|
+    |indvar_i_i_i_fu_382                                              |   9|          2|    3|          6|
+    |state_int_rf_bank0_address0                                      |  20|          4|    6|         24|
+    |state_int_rf_bank0_ce0                                           |  14|          3|    1|          3|
+    |state_issue_alu_iq_count                                         |   9|          2|    8|         16|
+    |state_issue_alu_iq_entries_granted_address0                      |  26|          5|    3|         15|
+    |state_issue_alu_iq_entries_granted_ce0                           |  14|          3|    1|          3|
+    |state_issue_alu_iq_entries_granted_d0                            |  14|          3|    1|          3|
+    |state_issue_alu_iq_entries_granted_we0                           |  14|          3|    1|          3|
+    |state_issue_alu_iq_entries_killed_address0                       |  26|          5|    3|         15|
+    |state_issue_alu_iq_entries_killed_ce0                            |  14|          3|    1|          3|
+    |state_issue_alu_iq_entries_killed_d0                             |  14|          3|    1|          3|
+    |state_issue_alu_iq_entries_killed_we0                            |  14|          3|    1|          3|
+    |state_issue_alu_iq_entries_pdst_busy_address0                    |  26|          5|    3|         15|
+    |state_issue_alu_iq_entries_pdst_busy_ce0                         |  14|          3|    1|          3|
+    |state_issue_alu_iq_entries_pdst_busy_d0                          |  14|          3|    1|          3|
+    |state_issue_alu_iq_entries_pdst_busy_we0                         |  14|          3|    1|          3|
+    |state_issue_alu_iq_entries_prs1_busy_address0                    |  26|          5|    3|         15|
+    |state_issue_alu_iq_entries_prs1_busy_ce0                         |  14|          3|    1|          3|
+    |state_issue_alu_iq_entries_prs1_busy_d0                          |  14|          3|    1|          3|
+    |state_issue_alu_iq_entries_prs1_busy_we0                         |  14|          3|    1|          3|
+    |state_issue_alu_iq_entries_prs1_data_address0                    |  26|          5|    3|         15|
+    |state_issue_alu_iq_entries_prs1_data_ce0                         |  14|          3|    1|          3|
+    |state_issue_alu_iq_entries_prs1_data_d0                          |  14|          3|   64|        192|
+    |state_issue_alu_iq_entries_prs1_data_we0                         |  14|          3|    1|          3|
+    |state_issue_alu_iq_entries_prs2_busy_address0                    |  26|          5|    3|         15|
+    |state_issue_alu_iq_entries_prs2_busy_ce0                         |  14|          3|    1|          3|
+    |state_issue_alu_iq_entries_prs2_busy_d0                          |  14|          3|    1|          3|
+    |state_issue_alu_iq_entries_prs2_busy_we0                         |  14|          3|    1|          3|
+    |state_issue_alu_iq_entries_prs2_data_address0                    |  26|          5|    3|         15|
+    |state_issue_alu_iq_entries_prs2_data_ce0                         |  14|          3|    1|          3|
+    |state_issue_alu_iq_entries_prs2_data_d0                          |  14|          3|   64|        192|
+    |state_issue_alu_iq_entries_prs2_data_we0                         |  14|          3|    1|          3|
+    |state_issue_alu_iq_entries_prs3_busy_address0                    |  26|          5|    3|         15|
+    |state_issue_alu_iq_entries_prs3_busy_ce0                         |  14|          3|    1|          3|
+    |state_issue_alu_iq_entries_prs3_busy_d0                          |  14|          3|    1|          3|
+    |state_issue_alu_iq_entries_prs3_busy_we0                         |  14|          3|    1|          3|
+    |state_issue_alu_iq_entries_prs3_data_address0                    |  26|          5|    3|         15|
+    |state_issue_alu_iq_entries_prs3_data_ce0                         |  14|          3|    1|          3|
+    |state_issue_alu_iq_entries_prs3_data_d0                          |  14|          3|   64|        192|
+    |state_issue_alu_iq_entries_prs3_data_we0                         |  14|          3|    1|          3|
+    |state_issue_alu_iq_entries_request_address0                      |  37|          7|    3|         21|
+    |state_issue_alu_iq_entries_request_ce0                           |  14|          3|    1|          3|
+    |state_issue_alu_iq_entries_request_d0                            |  20|          4|    1|          4|
+    |state_issue_alu_iq_entries_request_we0                           |  14|          3|    1|          3|
+    |state_issue_alu_iq_entries_uop_branch_br_mask_address0           |  31|          6|    3|         18|
+    |state_issue_alu_iq_entries_uop_branch_br_mask_ce0                |  14|          3|    1|          3|
+    |state_issue_alu_iq_entries_uop_branch_br_mask_d0                 |  20|          4|    8|         32|
+    |state_issue_alu_iq_entries_uop_branch_br_mask_we0                |  14|          3|    1|          3|
+    |state_issue_alu_iq_entries_uop_branch_br_tag_address0            |  26|          5|    3|         15|
+    |state_issue_alu_iq_entries_uop_branch_br_tag_ce0                 |  14|          3|    1|          3|
+    |state_issue_alu_iq_entries_uop_branch_br_tag_d0                  |  14|          3|    8|         24|
+    |state_issue_alu_iq_entries_uop_branch_br_tag_we0                 |  14|          3|    1|          3|
+    |state_issue_alu_iq_entries_uop_branch_edge_inst_address0         |  26|          5|    3|         15|
+    |state_issue_alu_iq_entries_uop_branch_edge_inst_ce0              |  14|          3|    1|          3|
+    |state_issue_alu_iq_entries_uop_branch_edge_inst_d0               |  14|          3|    1|          3|
+    |state_issue_alu_iq_entries_uop_branch_edge_inst_we0              |  14|          3|    1|          3|
+    |state_issue_alu_iq_entries_uop_branch_ftq_idx_address0           |  26|          5|    3|         15|
+    |state_issue_alu_iq_entries_uop_branch_ftq_idx_ce0                |  14|          3|    1|          3|
+    |state_issue_alu_iq_entries_uop_branch_ftq_idx_d0                 |  14|          3|    8|         24|
+    |state_issue_alu_iq_entries_uop_branch_ftq_idx_we0                |  14|          3|    1|          3|
+    |state_issue_alu_iq_entries_uop_branch_is_br_address0             |  26|          5|    3|         15|
+    |state_issue_alu_iq_entries_uop_branch_is_br_ce0                  |  14|          3|    1|          3|
+    |state_issue_alu_iq_entries_uop_branch_is_br_d0                   |  14|          3|    1|          3|
+    |state_issue_alu_iq_entries_uop_branch_is_br_we0                  |  14|          3|    1|          3|
+    |state_issue_alu_iq_entries_uop_branch_is_jal_address0            |  26|          5|    3|         15|
+    |state_issue_alu_iq_entries_uop_branch_is_jal_ce0                 |  14|          3|    1|          3|
+    |state_issue_alu_iq_entries_uop_branch_is_jal_d0                  |  14|          3|    1|          3|
+    |state_issue_alu_iq_entries_uop_branch_is_jal_we0                 |  14|          3|    1|          3|
+    |state_issue_alu_iq_entries_uop_branch_is_jalr_address0           |  26|          5|    3|         15|
+    |state_issue_alu_iq_entries_uop_branch_is_jalr_ce0                |  14|          3|    1|          3|
+    |state_issue_alu_iq_entries_uop_branch_is_jalr_d0                 |  14|          3|    1|          3|
+    |state_issue_alu_iq_entries_uop_branch_is_jalr_we0                |  14|          3|    1|          3|
+    |state_issue_alu_iq_entries_uop_branch_is_sfb_address0            |  26|          5|    3|         15|
+    |state_issue_alu_iq_entries_uop_branch_is_sfb_ce0                 |  14|          3|    1|          3|
+    |state_issue_alu_iq_entries_uop_branch_is_sfb_d0                  |  14|          3|    1|          3|
+    |state_issue_alu_iq_entries_uop_branch_is_sfb_we0                 |  14|          3|    1|          3|
+    |state_issue_alu_iq_entries_uop_branch_pc_lob_address0            |  26|          5|    3|         15|
+    |state_issue_alu_iq_entries_uop_branch_pc_lob_ce0                 |  14|          3|    1|          3|
+    |state_issue_alu_iq_entries_uop_branch_pc_lob_d0                  |  14|          3|    8|         24|
+    |state_issue_alu_iq_entries_uop_branch_pc_lob_we0                 |  14|          3|    1|          3|
+    |state_issue_alu_iq_entries_uop_branch_taken_address0             |  26|          5|    3|         15|
+    |state_issue_alu_iq_entries_uop_branch_taken_ce0                  |  14|          3|    1|          3|
+    |state_issue_alu_iq_entries_uop_branch_taken_d0                   |  14|          3|    1|          3|
+    |state_issue_alu_iq_entries_uop_branch_taken_we0                  |  14|          3|    1|          3|
+    |state_issue_alu_iq_entries_uop_bypassable_address0               |  26|          5|    3|         15|
+    |state_issue_alu_iq_entries_uop_bypassable_ce0                    |  14|          3|    1|          3|
+    |state_issue_alu_iq_entries_uop_bypassable_d0                     |  14|          3|    1|          3|
+    |state_issue_alu_iq_entries_uop_bypassable_we0                    |  14|          3|    1|          3|
+    |state_issue_alu_iq_entries_uop_csr_addr_address0                 |  26|          5|    3|         15|
+    |state_issue_alu_iq_entries_uop_csr_addr_ce0                      |  14|          3|    1|          3|
+    |state_issue_alu_iq_entries_uop_csr_addr_d0                       |  14|          3|   16|         48|
+    |state_issue_alu_iq_entries_uop_csr_addr_we0                      |  14|          3|    1|          3|
+    |state_issue_alu_iq_entries_uop_ctrl_br_type_address0             |  26|          5|    3|         15|
+    |state_issue_alu_iq_entries_uop_ctrl_br_type_ce0                  |  14|          3|    1|          3|
+    |state_issue_alu_iq_entries_uop_ctrl_br_type_d0                   |  14|          3|    8|         24|
+    |state_issue_alu_iq_entries_uop_ctrl_br_type_we0                  |  14|          3|    1|          3|
+    |state_issue_alu_iq_entries_uop_ctrl_csr_cmd_address0             |  26|          5|    3|         15|
+    |state_issue_alu_iq_entries_uop_ctrl_csr_cmd_ce0                  |  14|          3|    1|          3|
+    |state_issue_alu_iq_entries_uop_ctrl_csr_cmd_d0                   |  14|          3|    8|         24|
+    |state_issue_alu_iq_entries_uop_ctrl_csr_cmd_we0                  |  14|          3|    1|          3|
+    |state_issue_alu_iq_entries_uop_ctrl_fcn_dw_address0              |  26|          5|    3|         15|
+    |state_issue_alu_iq_entries_uop_ctrl_fcn_dw_ce0                   |  14|          3|    1|          3|
+    |state_issue_alu_iq_entries_uop_ctrl_fcn_dw_d0                    |  14|          3|    8|         24|
+    |state_issue_alu_iq_entries_uop_ctrl_fcn_dw_we0                   |  14|          3|    1|          3|
+    |state_issue_alu_iq_entries_uop_ctrl_imm_sel_address0             |  26|          5|    3|         15|
+    |state_issue_alu_iq_entries_uop_ctrl_imm_sel_ce0                  |  14|          3|    1|          3|
+    |state_issue_alu_iq_entries_uop_ctrl_imm_sel_d0                   |  14|          3|    8|         24|
+    |state_issue_alu_iq_entries_uop_ctrl_imm_sel_we0                  |  14|          3|    1|          3|
+    |state_issue_alu_iq_entries_uop_ctrl_is_load_address0             |  26|          5|    3|         15|
+    |state_issue_alu_iq_entries_uop_ctrl_is_load_ce0                  |  14|          3|    1|          3|
+    |state_issue_alu_iq_entries_uop_ctrl_is_load_d0                   |  14|          3|    1|          3|
+    |state_issue_alu_iq_entries_uop_ctrl_is_load_we0                  |  14|          3|    1|          3|
+    |state_issue_alu_iq_entries_uop_ctrl_is_sta_address0              |  26|          5|    3|         15|
+    |state_issue_alu_iq_entries_uop_ctrl_is_sta_ce0                   |  14|          3|    1|          3|
+    |state_issue_alu_iq_entries_uop_ctrl_is_sta_d0                    |  14|          3|    1|          3|
+    |state_issue_alu_iq_entries_uop_ctrl_is_sta_we0                   |  14|          3|    1|          3|
+    |state_issue_alu_iq_entries_uop_ctrl_is_std_address0              |  26|          5|    3|         15|
+    |state_issue_alu_iq_entries_uop_ctrl_is_std_ce0                   |  14|          3|    1|          3|
+    |state_issue_alu_iq_entries_uop_ctrl_is_std_d0                    |  14|          3|    1|          3|
+    |state_issue_alu_iq_entries_uop_ctrl_is_std_we0                   |  14|          3|    1|          3|
+    |state_issue_alu_iq_entries_uop_ctrl_op1_sel_address0             |  26|          5|    3|         15|
+    |state_issue_alu_iq_entries_uop_ctrl_op1_sel_ce0                  |  14|          3|    1|          3|
+    |state_issue_alu_iq_entries_uop_ctrl_op1_sel_d0                   |  14|          3|    8|         24|
+    |state_issue_alu_iq_entries_uop_ctrl_op1_sel_we0                  |  14|          3|    1|          3|
+    |state_issue_alu_iq_entries_uop_ctrl_op2_sel_address0             |  26|          5|    3|         15|
+    |state_issue_alu_iq_entries_uop_ctrl_op2_sel_ce0                  |  14|          3|    1|          3|
+    |state_issue_alu_iq_entries_uop_ctrl_op2_sel_d0                   |  14|          3|    8|         24|
+    |state_issue_alu_iq_entries_uop_ctrl_op2_sel_we0                  |  14|          3|    1|          3|
+    |state_issue_alu_iq_entries_uop_ctrl_op_fcn_address0              |  26|          5|    3|         15|
+    |state_issue_alu_iq_entries_uop_ctrl_op_fcn_ce0                   |  14|          3|    1|          3|
+    |state_issue_alu_iq_entries_uop_ctrl_op_fcn_d0                    |  14|          3|    8|         24|
+    |state_issue_alu_iq_entries_uop_ctrl_op_fcn_we0                   |  14|          3|    1|          3|
+    |state_issue_alu_iq_entries_uop_debug_debug_fsrc_address0         |  26|          5|    3|         15|
+    |state_issue_alu_iq_entries_uop_debug_debug_fsrc_ce0              |  14|          3|    1|          3|
+    |state_issue_alu_iq_entries_uop_debug_debug_fsrc_d0               |  14|          3|    8|         24|
+    |state_issue_alu_iq_entries_uop_debug_debug_fsrc_we0              |  14|          3|    1|          3|
+    |state_issue_alu_iq_entries_uop_debug_debug_inst_address0         |  26|          5|    3|         15|
+    |state_issue_alu_iq_entries_uop_debug_debug_inst_ce0              |  14|          3|    1|          3|
+    |state_issue_alu_iq_entries_uop_debug_debug_inst_d0               |  14|          3|   32|         96|
+    |state_issue_alu_iq_entries_uop_debug_debug_inst_we0              |  14|          3|    1|          3|
+    |state_issue_alu_iq_entries_uop_debug_debug_pc_address0           |  26|          5|    3|         15|
+    |state_issue_alu_iq_entries_uop_debug_debug_pc_ce0                |  14|          3|    1|          3|
+    |state_issue_alu_iq_entries_uop_debug_debug_pc_d0                 |  14|          3|   64|        192|
+    |state_issue_alu_iq_entries_uop_debug_debug_pc_we0                |  14|          3|    1|          3|
+    |state_issue_alu_iq_entries_uop_debug_debug_tsrc_address0         |  26|          5|    3|         15|
+    |state_issue_alu_iq_entries_uop_debug_debug_tsrc_ce0              |  14|          3|    1|          3|
+    |state_issue_alu_iq_entries_uop_debug_debug_tsrc_d0               |  14|          3|    8|         24|
+    |state_issue_alu_iq_entries_uop_debug_debug_tsrc_we0              |  14|          3|    1|          3|
+    |state_issue_alu_iq_entries_uop_debug_inst_address0               |  26|          5|    3|         15|
+    |state_issue_alu_iq_entries_uop_debug_inst_ce0                    |  14|          3|    1|          3|
+    |state_issue_alu_iq_entries_uop_debug_inst_d0                     |  14|          3|   32|         96|
+    |state_issue_alu_iq_entries_uop_debug_inst_we0                    |  14|          3|    1|          3|
+    |state_issue_alu_iq_entries_uop_debug_pc_address0                 |  37|          7|    3|         21|
+    |state_issue_alu_iq_entries_uop_debug_pc_ce0                      |  14|          3|    1|          3|
+    |state_issue_alu_iq_entries_uop_debug_pc_d0                       |  26|          5|   64|        320|
+    |state_issue_alu_iq_entries_uop_debug_pc_we0                      |  14|          3|    1|          3|
+    |state_issue_alu_iq_entries_uop_exc_bp_debug_if_address0          |  26|          5|    3|         15|
+    |state_issue_alu_iq_entries_uop_exc_bp_debug_if_ce0               |  14|          3|    1|          3|
+    |state_issue_alu_iq_entries_uop_exc_bp_debug_if_d0                |  14|          3|    1|          3|
+    |state_issue_alu_iq_entries_uop_exc_bp_debug_if_we0               |  14|          3|    1|          3|
+    |state_issue_alu_iq_entries_uop_exc_bp_xcpt_if_address0           |  26|          5|    3|         15|
+    |state_issue_alu_iq_entries_uop_exc_bp_xcpt_if_ce0                |  14|          3|    1|          3|
+    |state_issue_alu_iq_entries_uop_exc_bp_xcpt_if_d0                 |  14|          3|    1|          3|
+    |state_issue_alu_iq_entries_uop_exc_bp_xcpt_if_we0                |  14|          3|    1|          3|
+    |state_issue_alu_iq_entries_uop_exc_cause_address0                |  26|          5|    3|         15|
+    |state_issue_alu_iq_entries_uop_exc_cause_ce0                     |  14|          3|    1|          3|
+    |state_issue_alu_iq_entries_uop_exc_cause_d0                      |  14|          3|   64|        192|
+    |state_issue_alu_iq_entries_uop_exc_cause_we0                     |  14|          3|    1|          3|
+    |state_issue_alu_iq_entries_uop_exc_exc_cause_address0            |  26|          5|    3|         15|
+    |state_issue_alu_iq_entries_uop_exc_exc_cause_ce0                 |  14|          3|    1|          3|
+    |state_issue_alu_iq_entries_uop_exc_exc_cause_d0                  |  14|          3|   64|        192|
+    |state_issue_alu_iq_entries_uop_exc_exc_cause_we0                 |  14|          3|    1|          3|
+    |state_issue_alu_iq_entries_uop_exc_exception_address0            |  26|          5|    3|         15|
+    |state_issue_alu_iq_entries_uop_exc_exception_ce0                 |  14|          3|    1|          3|
+    |state_issue_alu_iq_entries_uop_exc_exception_d0                  |  14|          3|    1|          3|
+    |state_issue_alu_iq_entries_uop_exc_exception_we0                 |  14|          3|    1|          3|
+    |state_issue_alu_iq_entries_uop_exc_xcpt_ae_if_address0           |  26|          5|    3|         15|
+    |state_issue_alu_iq_entries_uop_exc_xcpt_ae_if_ce0                |  14|          3|    1|          3|
+    |state_issue_alu_iq_entries_uop_exc_xcpt_ae_if_d0                 |  14|          3|    1|          3|
+    |state_issue_alu_iq_entries_uop_exc_xcpt_ae_if_we0                |  14|          3|    1|          3|
+    |state_issue_alu_iq_entries_uop_exc_xcpt_ma_if_address0           |  26|          5|    3|         15|
+    |state_issue_alu_iq_entries_uop_exc_xcpt_ma_if_ce0                |  14|          3|    1|          3|
+    |state_issue_alu_iq_entries_uop_exc_xcpt_ma_if_d0                 |  14|          3|    1|          3|
+    |state_issue_alu_iq_entries_uop_exc_xcpt_ma_if_we0                |  14|          3|    1|          3|
+    |state_issue_alu_iq_entries_uop_exc_xcpt_pf_if_address0           |  26|          5|    3|         15|
+    |state_issue_alu_iq_entries_uop_exc_xcpt_pf_if_ce0                |  14|          3|    1|          3|
+    |state_issue_alu_iq_entries_uop_exc_xcpt_pf_if_d0                 |  14|          3|    1|          3|
+    |state_issue_alu_iq_entries_uop_exc_xcpt_pf_if_we0                |  14|          3|    1|          3|
+    |state_issue_alu_iq_entries_uop_exception_address0                |  26|          5|    3|         15|
+    |state_issue_alu_iq_entries_uop_exception_ce0                     |  14|          3|    1|          3|
+    |state_issue_alu_iq_entries_uop_exception_d0                      |  14|          3|    1|          3|
+    |state_issue_alu_iq_entries_uop_exception_we0                     |  14|          3|    1|          3|
+    |state_issue_alu_iq_entries_uop_flush_on_commit_address0          |  26|          5|    3|         15|
+    |state_issue_alu_iq_entries_uop_flush_on_commit_ce0               |  14|          3|    1|          3|
+    |state_issue_alu_iq_entries_uop_flush_on_commit_d0                |  14|          3|    1|          3|
+    |state_issue_alu_iq_entries_uop_flush_on_commit_we0               |  14|          3|    1|          3|
+    |state_issue_alu_iq_entries_uop_fu_code_address0                  |  37|          7|    3|         21|
+    |state_issue_alu_iq_entries_uop_fu_code_ce0                       |  14|          3|    1|          3|
+    |state_issue_alu_iq_entries_uop_fu_code_d0                        |  20|          4|    8|         32|
+    |state_issue_alu_iq_entries_uop_fu_code_we0                       |  14|          3|    1|          3|
+    |state_issue_alu_iq_entries_uop_imm_packed_address0               |  26|          5|    3|         15|
+    |state_issue_alu_iq_entries_uop_imm_packed_ce0                    |  14|          3|    1|          3|
+    |state_issue_alu_iq_entries_uop_imm_packed_d0                     |  14|          3|   32|         96|
+    |state_issue_alu_iq_entries_uop_imm_packed_we0                    |  14|          3|    1|          3|
+    |state_issue_alu_iq_entries_uop_inst_address0                     |  26|          5|    3|         15|
+    |state_issue_alu_iq_entries_uop_inst_ce0                          |  14|          3|    1|          3|
+    |state_issue_alu_iq_entries_uop_inst_d0                           |  14|          3|   32|         96|
+    |state_issue_alu_iq_entries_uop_inst_we0                          |  14|          3|    1|          3|
+    |state_issue_alu_iq_entries_uop_iq_type_address0                  |  37|          7|    3|         21|
+    |state_issue_alu_iq_entries_uop_iq_type_ce0                       |  14|          3|    1|          3|
+    |state_issue_alu_iq_entries_uop_iq_type_d0                        |  20|          4|    8|         32|
+    |state_issue_alu_iq_entries_uop_iq_type_we0                       |  14|          3|    1|          3|
+    |state_issue_alu_iq_entries_uop_is_rvc_address0                   |  26|          5|    3|         15|
+    |state_issue_alu_iq_entries_uop_is_rvc_ce0                        |  14|          3|    1|          3|
+    |state_issue_alu_iq_entries_uop_is_rvc_d0                         |  14|          3|    1|          3|
+    |state_issue_alu_iq_entries_uop_is_rvc_we0                        |  14|          3|    1|          3|
+    |state_issue_alu_iq_entries_uop_is_sys_pc2epc_address0            |  26|          5|    3|         15|
+    |state_issue_alu_iq_entries_uop_is_sys_pc2epc_ce0                 |  14|          3|    1|          3|
+    |state_issue_alu_iq_entries_uop_is_sys_pc2epc_d0                  |  14|          3|    1|          3|
+    |state_issue_alu_iq_entries_uop_is_sys_pc2epc_we0                 |  14|          3|    1|          3|
+    |state_issue_alu_iq_entries_uop_is_unique_address0                |  26|          5|    3|         15|
+    |state_issue_alu_iq_entries_uop_is_unique_ce0                     |  14|          3|    1|          3|
+    |state_issue_alu_iq_entries_uop_is_unique_d0                      |  14|          3|    1|          3|
+    |state_issue_alu_iq_entries_uop_is_unique_we0                     |  14|          3|    1|          3|
+    |state_issue_alu_iq_entries_uop_iw_p1_poisoned_address0           |  26|          5|    3|         15|
+    |state_issue_alu_iq_entries_uop_iw_p1_poisoned_ce0                |  14|          3|    1|          3|
+    |state_issue_alu_iq_entries_uop_iw_p1_poisoned_d0                 |  14|          3|    1|          3|
+    |state_issue_alu_iq_entries_uop_iw_p1_poisoned_we0                |  14|          3|    1|          3|
+    |state_issue_alu_iq_entries_uop_iw_p2_poisoned_address0           |  26|          5|    3|         15|
+    |state_issue_alu_iq_entries_uop_iw_p2_poisoned_ce0                |  14|          3|    1|          3|
+    |state_issue_alu_iq_entries_uop_iw_p2_poisoned_d0                 |  14|          3|    1|          3|
+    |state_issue_alu_iq_entries_uop_iw_p2_poisoned_we0                |  14|          3|    1|          3|
+    |state_issue_alu_iq_entries_uop_iw_state_address0                 |  26|          5|    3|         15|
+    |state_issue_alu_iq_entries_uop_iw_state_ce0                      |  14|          3|    1|          3|
+    |state_issue_alu_iq_entries_uop_iw_state_d0                       |  14|          3|    8|         24|
+    |state_issue_alu_iq_entries_uop_iw_state_we0                      |  14|          3|    1|          3|
+    |state_issue_alu_iq_entries_uop_mem_is_amo_address0               |  26|          5|    3|         15|
+    |state_issue_alu_iq_entries_uop_mem_is_amo_ce0                    |  14|          3|    1|          3|
+    |state_issue_alu_iq_entries_uop_mem_is_amo_d0                     |  14|          3|    1|          3|
+    |state_issue_alu_iq_entries_uop_mem_is_amo_we0                    |  14|          3|    1|          3|
+    |state_issue_alu_iq_entries_uop_mem_is_fence_address0             |  26|          5|    3|         15|
+    |state_issue_alu_iq_entries_uop_mem_is_fence_ce0                  |  14|          3|    1|          3|
+    |state_issue_alu_iq_entries_uop_mem_is_fence_d0                   |  14|          3|    1|          3|
+    |state_issue_alu_iq_entries_uop_mem_is_fence_we0                  |  14|          3|    1|          3|
+    |state_issue_alu_iq_entries_uop_mem_is_fencei_address0            |  26|          5|    3|         15|
+    |state_issue_alu_iq_entries_uop_mem_is_fencei_ce0                 |  14|          3|    1|          3|
+    |state_issue_alu_iq_entries_uop_mem_is_fencei_d0                  |  14|          3|    1|          3|
+    |state_issue_alu_iq_entries_uop_mem_is_fencei_we0                 |  14|          3|    1|          3|
+    |state_issue_alu_iq_entries_uop_mem_ldst_is_rs1_address0          |  26|          5|    3|         15|
+    |state_issue_alu_iq_entries_uop_mem_ldst_is_rs1_ce0               |  14|          3|    1|          3|
+    |state_issue_alu_iq_entries_uop_mem_ldst_is_rs1_d0                |  14|          3|    1|          3|
+    |state_issue_alu_iq_entries_uop_mem_ldst_is_rs1_we0               |  14|          3|    1|          3|
+    |state_issue_alu_iq_entries_uop_mem_ldst_val_address0             |  26|          5|    3|         15|
+    |state_issue_alu_iq_entries_uop_mem_ldst_val_ce0                  |  14|          3|    1|          3|
+    |state_issue_alu_iq_entries_uop_mem_ldst_val_d0                   |  14|          3|    1|          3|
+    |state_issue_alu_iq_entries_uop_mem_ldst_val_we0                  |  14|          3|    1|          3|
+    |state_issue_alu_iq_entries_uop_mem_mem_cmd_address0              |  26|          5|    3|         15|
+    |state_issue_alu_iq_entries_uop_mem_mem_cmd_ce0                   |  14|          3|    1|          3|
+    |state_issue_alu_iq_entries_uop_mem_mem_cmd_d0                    |  14|          3|    8|         24|
+    |state_issue_alu_iq_entries_uop_mem_mem_cmd_we0                   |  14|          3|    1|          3|
+    |state_issue_alu_iq_entries_uop_mem_mem_signed_address0           |  26|          5|    3|         15|
+    |state_issue_alu_iq_entries_uop_mem_mem_signed_ce0                |  14|          3|    1|          3|
+    |state_issue_alu_iq_entries_uop_mem_mem_signed_d0                 |  14|          3|    1|          3|
+    |state_issue_alu_iq_entries_uop_mem_mem_signed_we0                |  14|          3|    1|          3|
+    |state_issue_alu_iq_entries_uop_mem_mem_size_address0             |  26|          5|    3|         15|
+    |state_issue_alu_iq_entries_uop_mem_mem_size_ce0                  |  14|          3|    1|          3|
+    |state_issue_alu_iq_entries_uop_mem_mem_size_d0                   |  14|          3|    8|         24|
+    |state_issue_alu_iq_entries_uop_mem_mem_size_we0                  |  14|          3|    1|          3|
+    |state_issue_alu_iq_entries_uop_mem_uses_ldq_address0             |  26|          5|    3|         15|
+    |state_issue_alu_iq_entries_uop_mem_uses_ldq_ce0                  |  14|          3|    1|          3|
+    |state_issue_alu_iq_entries_uop_mem_uses_ldq_d0                   |  14|          3|    1|          3|
+    |state_issue_alu_iq_entries_uop_mem_uses_ldq_we0                  |  14|          3|    1|          3|
+    |state_issue_alu_iq_entries_uop_mem_uses_stq_address0             |  26|          5|    3|         15|
+    |state_issue_alu_iq_entries_uop_mem_uses_stq_ce0                  |  14|          3|    1|          3|
+    |state_issue_alu_iq_entries_uop_mem_uses_stq_d0                   |  14|          3|    1|          3|
+    |state_issue_alu_iq_entries_uop_mem_uses_stq_we0                  |  14|          3|    1|          3|
+    |state_issue_alu_iq_entries_uop_queue_ldq_idx_address0            |  26|          5|    3|         15|
+    |state_issue_alu_iq_entries_uop_queue_ldq_idx_ce0                 |  14|          3|    1|          3|
+    |state_issue_alu_iq_entries_uop_queue_ldq_idx_d0                  |  14|          3|    8|         24|
+    |state_issue_alu_iq_entries_uop_queue_ldq_idx_we0                 |  14|          3|    1|          3|
+    |state_issue_alu_iq_entries_uop_queue_rob_allocation_id_address0  |  26|          5|    3|         15|
+    |state_issue_alu_iq_entries_uop_queue_rob_allocation_id_ce0       |  14|          3|    1|          3|
+    |state_issue_alu_iq_entries_uop_queue_rob_allocation_id_d0        |  14|          3|   32|         96|
+    |state_issue_alu_iq_entries_uop_queue_rob_allocation_id_we0       |  14|          3|    1|          3|
+    |state_issue_alu_iq_entries_uop_queue_rob_idx_address0            |  37|          7|    3|         21|
+    |state_issue_alu_iq_entries_uop_queue_rob_idx_ce0                 |  14|          3|    1|          3|
+    |state_issue_alu_iq_entries_uop_queue_rob_idx_d0                  |  26|          5|    8|         40|
+    |state_issue_alu_iq_entries_uop_queue_rob_idx_we0                 |  14|          3|    1|          3|
+    |state_issue_alu_iq_entries_uop_queue_rxq_idx_address0            |  26|          5|    3|         15|
+    |state_issue_alu_iq_entries_uop_queue_rxq_idx_ce0                 |  14|          3|    1|          3|
+    |state_issue_alu_iq_entries_uop_queue_rxq_idx_d0                  |  14|          3|    8|         24|
+    |state_issue_alu_iq_entries_uop_queue_rxq_idx_we0                 |  14|          3|    1|          3|
+    |state_issue_alu_iq_entries_uop_queue_stq_idx_address0            |  26|          5|    3|         15|
+    |state_issue_alu_iq_entries_uop_queue_stq_idx_ce0                 |  14|          3|    1|          3|
+    |state_issue_alu_iq_entries_uop_queue_stq_idx_d0                  |  14|          3|    8|         24|
+    |state_issue_alu_iq_entries_uop_queue_stq_idx_we0                 |  14|          3|    1|          3|
+    |state_issue_alu_iq_entries_uop_rename_dst_rtype_address0         |  26|          5|    3|         15|
+    |state_issue_alu_iq_entries_uop_rename_dst_rtype_ce0              |  14|          3|    1|          3|
+    |state_issue_alu_iq_entries_uop_rename_dst_rtype_d0               |  14|          3|    8|         24|
+    |state_issue_alu_iq_entries_uop_rename_dst_rtype_we0              |  14|          3|    1|          3|
+    |state_issue_alu_iq_entries_uop_rename_fp_single_address0         |  26|          5|    3|         15|
+    |state_issue_alu_iq_entries_uop_rename_fp_single_ce0              |  14|          3|    1|          3|
+    |state_issue_alu_iq_entries_uop_rename_fp_single_d0               |  14|          3|    1|          3|
+    |state_issue_alu_iq_entries_uop_rename_fp_single_we0              |  14|          3|    1|          3|
+    |state_issue_alu_iq_entries_uop_rename_fp_val_address0            |  26|          5|    3|         15|
+    |state_issue_alu_iq_entries_uop_rename_fp_val_ce0                 |  14|          3|    1|          3|
+    |state_issue_alu_iq_entries_uop_rename_fp_val_d0                  |  14|          3|    1|          3|
+    |state_issue_alu_iq_entries_uop_rename_fp_val_we0                 |  14|          3|    1|          3|
+    |state_issue_alu_iq_entries_uop_rename_frs3_en_address0           |  26|          5|    3|         15|
+    |state_issue_alu_iq_entries_uop_rename_frs3_en_ce0                |  14|          3|    1|          3|
+    |state_issue_alu_iq_entries_uop_rename_frs3_en_d0                 |  14|          3|    1|          3|
+    |state_issue_alu_iq_entries_uop_rename_frs3_en_we0                |  14|          3|    1|          3|
+    |state_issue_alu_iq_entries_uop_rename_ldst_address0              |  26|          5|    3|         15|
+    |state_issue_alu_iq_entries_uop_rename_ldst_ce0                   |  14|          3|    1|          3|
+    |state_issue_alu_iq_entries_uop_rename_ldst_d0                    |  14|          3|    8|         24|
+    |state_issue_alu_iq_entries_uop_rename_ldst_we0                   |  14|          3|    1|          3|
+    |state_issue_alu_iq_entries_uop_rename_lrs1_address0              |  26|          5|    3|         15|
+    |state_issue_alu_iq_entries_uop_rename_lrs1_ce0                   |  14|          3|    1|          3|
+    |state_issue_alu_iq_entries_uop_rename_lrs1_d0                    |  14|          3|    8|         24|
+    |state_issue_alu_iq_entries_uop_rename_lrs1_rtype_address0        |  26|          5|    3|         15|
+    |state_issue_alu_iq_entries_uop_rename_lrs1_rtype_ce0             |  14|          3|    1|          3|
+    |state_issue_alu_iq_entries_uop_rename_lrs1_rtype_d0              |  14|          3|    8|         24|
+    |state_issue_alu_iq_entries_uop_rename_lrs1_rtype_we0             |  14|          3|    1|          3|
+    |state_issue_alu_iq_entries_uop_rename_lrs1_we0                   |  14|          3|    1|          3|
+    |state_issue_alu_iq_entries_uop_rename_lrs2_address0              |  26|          5|    3|         15|
+    |state_issue_alu_iq_entries_uop_rename_lrs2_ce0                   |  14|          3|    1|          3|
+    |state_issue_alu_iq_entries_uop_rename_lrs2_d0                    |  14|          3|    8|         24|
+    |state_issue_alu_iq_entries_uop_rename_lrs2_rtype_address0        |  26|          5|    3|         15|
+    |state_issue_alu_iq_entries_uop_rename_lrs2_rtype_ce0             |  14|          3|    1|          3|
+    |state_issue_alu_iq_entries_uop_rename_lrs2_rtype_d0              |  14|          3|    8|         24|
+    |state_issue_alu_iq_entries_uop_rename_lrs2_rtype_we0             |  14|          3|    1|          3|
+    |state_issue_alu_iq_entries_uop_rename_lrs2_we0                   |  14|          3|    1|          3|
+    |state_issue_alu_iq_entries_uop_rename_lrs3_address0              |  26|          5|    3|         15|
+    |state_issue_alu_iq_entries_uop_rename_lrs3_ce0                   |  14|          3|    1|          3|
+    |state_issue_alu_iq_entries_uop_rename_lrs3_d0                    |  14|          3|    8|         24|
+    |state_issue_alu_iq_entries_uop_rename_lrs3_we0                   |  14|          3|    1|          3|
+    |state_issue_alu_iq_entries_uop_rename_pdst_address0              |  26|          5|    3|         15|
+    |state_issue_alu_iq_entries_uop_rename_pdst_ce0                   |  14|          3|    1|          3|
+    |state_issue_alu_iq_entries_uop_rename_pdst_d0                    |  14|          3|    8|         24|
+    |state_issue_alu_iq_entries_uop_rename_pdst_we0                   |  14|          3|    1|          3|
+    |state_issue_alu_iq_entries_uop_rename_ppred_address0             |  26|          5|    3|         15|
+    |state_issue_alu_iq_entries_uop_rename_ppred_busy_address0        |  26|          5|    3|         15|
+    |state_issue_alu_iq_entries_uop_rename_ppred_busy_ce0             |  14|          3|    1|          3|
+    |state_issue_alu_iq_entries_uop_rename_ppred_busy_d0              |  14|          3|    1|          3|
+    |state_issue_alu_iq_entries_uop_rename_ppred_busy_we0             |  14|          3|    1|          3|
+    |state_issue_alu_iq_entries_uop_rename_ppred_ce0                  |  14|          3|    1|          3|
+    |state_issue_alu_iq_entries_uop_rename_ppred_d0                   |  14|          3|    8|         24|
+    |state_issue_alu_iq_entries_uop_rename_ppred_we0                  |  14|          3|    1|          3|
+    |state_issue_alu_iq_entries_uop_rename_prs1_address0              |  26|          5|    3|         15|
+    |state_issue_alu_iq_entries_uop_rename_prs1_busy_address0         |  26|          5|    3|         15|
+    |state_issue_alu_iq_entries_uop_rename_prs1_busy_ce0              |  14|          3|    1|          3|
+    |state_issue_alu_iq_entries_uop_rename_prs1_busy_d0               |  14|          3|    1|          3|
+    |state_issue_alu_iq_entries_uop_rename_prs1_busy_we0              |  14|          3|    1|          3|
+    |state_issue_alu_iq_entries_uop_rename_prs1_ce0                   |  14|          3|    1|          3|
+    |state_issue_alu_iq_entries_uop_rename_prs1_d0                    |  14|          3|    8|         24|
+    |state_issue_alu_iq_entries_uop_rename_prs1_we0                   |  14|          3|    1|          3|
+    |state_issue_alu_iq_entries_uop_rename_prs2_address0              |  26|          5|    3|         15|
+    |state_issue_alu_iq_entries_uop_rename_prs2_busy_address0         |  26|          5|    3|         15|
+    |state_issue_alu_iq_entries_uop_rename_prs2_busy_ce0              |  14|          3|    1|          3|
+    |state_issue_alu_iq_entries_uop_rename_prs2_busy_d0               |  14|          3|    1|          3|
+    |state_issue_alu_iq_entries_uop_rename_prs2_busy_we0              |  14|          3|    1|          3|
+    |state_issue_alu_iq_entries_uop_rename_prs2_ce0                   |  14|          3|    1|          3|
+    |state_issue_alu_iq_entries_uop_rename_prs2_d0                    |  14|          3|    8|         24|
+    |state_issue_alu_iq_entries_uop_rename_prs2_we0                   |  14|          3|    1|          3|
+    |state_issue_alu_iq_entries_uop_rename_prs3_address0              |  26|          5|    3|         15|
+    |state_issue_alu_iq_entries_uop_rename_prs3_busy_address0         |  26|          5|    3|         15|
+    |state_issue_alu_iq_entries_uop_rename_prs3_busy_ce0              |  14|          3|    1|          3|
+    |state_issue_alu_iq_entries_uop_rename_prs3_busy_d0               |  14|          3|    1|          3|
+    |state_issue_alu_iq_entries_uop_rename_prs3_busy_we0              |  14|          3|    1|          3|
+    |state_issue_alu_iq_entries_uop_rename_prs3_ce0                   |  14|          3|    1|          3|
+    |state_issue_alu_iq_entries_uop_rename_prs3_d0                    |  14|          3|    8|         24|
+    |state_issue_alu_iq_entries_uop_rename_prs3_we0                   |  14|          3|    1|          3|
+    |state_issue_alu_iq_entries_uop_rename_stale_pdst_address0        |  26|          5|    3|         15|
+    |state_issue_alu_iq_entries_uop_rename_stale_pdst_ce0             |  14|          3|    1|          3|
+    |state_issue_alu_iq_entries_uop_rename_stale_pdst_d0              |  14|          3|    8|         24|
+    |state_issue_alu_iq_entries_uop_rename_stale_pdst_we0             |  14|          3|    1|          3|
+    |state_issue_alu_iq_entries_uop_uopc_address0                     |  37|          7|    3|         21|
+    |state_issue_alu_iq_entries_uop_uopc_ce0                          |  14|          3|    1|          3|
+    |state_issue_alu_iq_entries_uop_uopc_d0                           |  26|          5|    8|         40|
+    |state_issue_alu_iq_entries_uop_uopc_we0                          |  14|          3|    1|          3|
+    |state_issue_alu_iq_entries_valid_address0                        |  37|          7|    3|         21|
+    |state_issue_alu_iq_entries_valid_ce0                             |  14|          3|    1|          3|
+    |state_issue_alu_iq_entries_valid_d0                              |  20|          4|    1|          4|
+    |state_issue_alu_iq_entries_valid_we0                             |  14|          3|    1|          3|
+    |state_issue_cycles_with_0_grant                                  |   9|          2|   64|        128|
+    |state_issue_cycles_with_1_grant                                  |   9|          2|   64|        128|
+    |state_issue_cycles_with_2_grants                                 |   9|          2|   64|        128|
+    |state_issue_execute_acceptance_stalls                            |   9|          2|   64|        128|
+    |state_issue_grant_stalls                                         |   9|          2|   64|        128|
+    |state_issue_grants_accepted                                      |   9|          2|    8|         16|
+    |state_issue_grants_accepted_0                                    |   9|          2|    1|          2|
+    |state_issue_grants_accepted_1                                    |   9|          2|    1|          2|
+    |state_issue_grants_entry_index_0                                 |   9|          2|    3|          6|
+    |state_issue_grants_entry_index_1                                 |   9|          2|    3|          6|
+    |state_issue_grants_generated                                     |   9|          2|    8|         16|
+    |state_issue_grants_retained                                      |   9|          2|    8|         16|
+    |state_issue_grants_uop_queue_rob_idx_0                           |   9|          2|    8|         16|
+    |state_issue_grants_uop_queue_rob_idx_1                           |   9|          2|    8|         16|
+    |state_issue_grants_valid_0                                       |   9|          2|    1|          2|
+    |state_issue_grants_valid_1                                       |   9|          2|    1|          2|
+    |state_issue_int_grants                                           |   9|          2|   64|        128|
+    |state_issue_issued_uops_queue_rob_idx_0                          |   9|          2|    8|         16|
+    |state_issue_issued_valids_0                                      |   9|          2|    1|          2|
+    |state_issue_mem_grants                                           |   9|          2|   64|        128|
+    |state_issue_total_grants                                         |   9|          2|   64|        128|
+    |state_rename_int_free_list_busy_table_address0                   |  20|          4|    6|         24|
+    |state_rename_int_free_list_busy_table_ce0                        |  14|          3|    1|          3|
+    +-----------------------------------------------------------------+----+-----------+-----+-----------+
+    |Total                                                            |7034|       1449| 2059|       6391|
+    +-----------------------------------------------------------------+----+-----------+-----+-----------+
+
+    * Register: 
+    +-------------------------------------------------------------------------------------------------+----+----+-----+-----------+
+    |                                               Name                                              | FF | LUT| Bits| Const Bits|
+    +-------------------------------------------------------------------------------------------------+----+----+-----+-----------+
+    |ap_CS_fsm                                                                                        |  13|   0|   13|          0|
+    |count_2_reg_3394                                                                                 |   2|   0|    2|          0|
+    |count_reg_3382                                                                                   |   1|   0|    1|          0|
+    |empty_reg_4636                                                                                   |   1|   0|    1|          0|
+    |grp_issue_module_fu_3403_ap_start_reg                                                            |   1|   0|    1|          0|
+    |guard_variable_for_synth_issue_top_unsigned_int_unsigned_long_unsigned_long_state                |   1|   0|    1|          0|
+    |guard_variable_for_synth_issue_top_unsigned_int_unsigned_long_unsigned_long_state_load_reg_4640  |   1|   0|    1|          0|
+    |i_1_fu_386                                                                                       |   4|   0|    4|          0|
+    |i_2_fu_398                                                                                       |   2|   0|    2|          0|
+    |i_3_fu_402                                                                                       |   6|   0|    6|          0|
+    |i_4_fu_406                                                                                       |   4|   0|    4|          0|
+    |i_fu_378                                                                                         |   6|   0|    6|          0|
+    |indvar4_i_i_fu_394                                                                               |   2|   0|    2|          0|
+    |indvar_i_i_fu_390                                                                                |   2|   0|    2|          0|
+    |indvar_i_i_i_fu_382                                                                              |   3|   0|    3|          0|
+    |state_brupdate_mispredict                                                                        |   1|   0|    1|          0|
+    |state_brupdate_mispredict_mask                                                                   |   1|   0|    1|          0|
+    |state_brupdate_resolve_mask                                                                      |   1|   0|    1|          0|
+    |state_brupdate_valid                                                                             |   1|   0|    1|          0|
+    |state_issue_alu_iq_count                                                                         |   8|   0|    8|          0|
+    |state_issue_cycles_with_0_grant                                                                  |  64|   0|   64|          0|
+    |state_issue_cycles_with_1_grant                                                                  |  64|   0|   64|          0|
+    |state_issue_cycles_with_2_grants                                                                 |  64|   0|   64|          0|
+    |state_issue_execute_acceptance_stalls                                                            |  64|   0|   64|          0|
+    |state_issue_grant_stalls                                                                         |  64|   0|   64|          0|
+    |state_issue_grants_accepted                                                                      |   8|   0|    8|          0|
+    |state_issue_grants_accepted_0                                                                    |   1|   0|    1|          0|
+    |state_issue_grants_accepted_1                                                                    |   1|   0|    1|          0|
+    |state_issue_grants_entry_index_0                                                                 |   3|   0|    3|          0|
+    |state_issue_grants_entry_index_1                                                                 |   3|   0|    3|          0|
+    |state_issue_grants_generated                                                                     |   8|   0|    8|          0|
+    |state_issue_grants_retained                                                                      |   8|   0|    8|          0|
+    |state_issue_grants_uop_queue_rob_idx_0                                                           |   8|   0|    8|          0|
+    |state_issue_grants_uop_queue_rob_idx_1                                                           |   8|   0|    8|          0|
+    |state_issue_grants_valid_0                                                                       |   1|   0|    1|          0|
+    |state_issue_grants_valid_1                                                                       |   1|   0|    1|          0|
+    |state_issue_int_grants                                                                           |  64|   0|   64|          0|
+    |state_issue_issued_uops_queue_rob_idx_0                                                          |   8|   0|    8|          0|
+    |state_issue_issued_valids_0                                                                      |   1|   0|    1|          0|
+    |state_issue_mem_grants                                                                           |  64|   0|   64|          0|
+    |state_issue_port_ready_0                                                                         |   1|   0|    1|          0|
+    |state_issue_port_ready_1                                                                         |   1|   0|    1|          0|
+    |state_issue_total_grants                                                                         |  64|   0|   64|          0|
+    |tmp_2_reg_4736                                                                                   |   1|   0|    1|          0|
+    +-------------------------------------------------------------------------------------------------+----+----+-----+-----------+
+    |Total                                                                                            | 635|   0|  635|          0|
+    +-------------------------------------------------------------------------------------------------+----+----+-----+-----------+
+
+
+
+================================================================
+== Interface
+================================================================
+* Summary: 
++-------------------+-----+-----+------------+-----------------+--------------+
+|     RTL Ports     | Dir | Bits|  Protocol  |  Source Object  |    C Type    |
++-------------------+-----+-----+------------+-----------------+--------------+
+|ap_local_block     |  out|    1|  ap_ctrl_hs|  synth_issue_top|  return value|
+|ap_local_deadlock  |  out|    1|  ap_ctrl_hs|  synth_issue_top|  return value|
+|ap_clk             |   in|    1|  ap_ctrl_hs|  synth_issue_top|  return value|
+|ap_rst             |   in|    1|  ap_ctrl_hs|  synth_issue_top|  return value|
+|ap_start           |   in|    1|  ap_ctrl_hs|  synth_issue_top|  return value|
+|ap_done            |  out|    1|  ap_ctrl_hs|  synth_issue_top|  return value|
+|ap_idle            |  out|    1|  ap_ctrl_hs|  synth_issue_top|  return value|
+|ap_ready           |  out|    1|  ap_ctrl_hs|  synth_issue_top|  return value|
+|seed_inst          |   in|   32|     ap_none|        seed_inst|        scalar|
+|seed_pc            |   in|   64|     ap_none|          seed_pc|        scalar|
+|observable         |  out|   64|      ap_vld|       observable|       pointer|
+|observable_ap_vld  |  out|    1|      ap_vld|       observable|       pointer|
++-------------------+-----+-----+------------+-----------------+--------------+
+
