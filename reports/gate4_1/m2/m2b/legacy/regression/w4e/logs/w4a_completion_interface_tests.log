@@ -1,0 +1,21 @@
+=== Gate 4.0 W4A Completion Interface Tests ===
+  [W4A completion] fixed source IDs                                 ... PASS
+  [W4A completion] execute conversion                               ... PASS
+  [W4A completion] store conversion                                 ... PASS
+  [W4A completion] load address conversion                          ... PASS
+  [W4A completion] self-contained branch conversion                 ... PASS
+  [W4A completion] allocation ownership                             ... PASS
+  [W4A completion] stale allocation rejected                        ... PASS
+  [W4A completion] wrap-safe ROB age selection                      ... PASS
+  [W4A completion] source priority tie break                        ... PASS
+  [W4A completion] load response unified side effects               ... PASS
+  [W4A completion] duplicate event has no side effects              ... PASS
+  [W4A completion] stale load allocation does not reclaim           ... PASS
+  [W4A completion] stale load transaction does not reclaim          ... PASS
+  [W4A completion] killed owner rejects held event                  ... PASS
+  [W4A completion] exceptional execute preserves W3 writeback       ... PASS
+  [W4A completion] reset collision rejects stale response           ... PASS
+  [W4A completion] branch recovery precedes branch exception        ... PASS
+  [W4A completion] load response owns simultaneous execute cycle    ... PASS
+  [W4A completion] exceptional load suppresses PRF and wakeup       ... PASS
+W4A completion interfaces: 19 passed, 0 failed

@@ -1,0 +1,204 @@
+
+****** Vitis HLS - High-Level Synthesis from C, C++ and OpenCL v2021.2 (64-bit)
+  **** SW Build 3367213 on Tue Oct 19 02:47:39 MDT 2021
+  **** IP Build 3369179 on Thu Oct 21 08:25:16 MDT 2021
+    ** Copyright 1986-2021 Xilinx, Inc. All Rights Reserved.
+
+source /home/lab_726/Xilinx/Vitis_HLS/2021.2/scripts/vitis_hls/hls.tcl -notrace
+INFO: [HLS 200-10] Running '/home/lab_726/Xilinx/Vitis_HLS/2021.2/bin/unwrapped/lnx64.o/vitis_hls'
+INFO: [HLS 200-10] For user 'lab_726' on host '726' (Linux_x86_64 version 6.8.0-136-generic) on Tue Aug 04 23:51:06 CST 2026
+INFO: [HLS 200-10] On os Ubuntu 22.04.5 LTS
+INFO: [HLS 200-10] In directory '/home/lab_726/boom/hls_boom/build/gate4_1/m2b_csynth/projects'
+Sourcing Tcl script '/home/lab_726/boom/hls_boom/scripts/run_top_csynth.tcl'
+INFO: [HLS 200-1510] Running: open_project -reset boom_core_step 
+INFO: [HLS 200-10] Opening and resetting project '/home/lab_726/boom/hls_boom/build/gate4_1/m2b_csynth/projects/boom_core_step'.
+WARNING: [HLS 200-40] No /home/lab_726/boom/hls_boom/build/gate4_1/m2b_csynth/projects/boom_core_step/solution_gate4_1_m2b/solution_gate4_1_m2b.aps file found.
+INFO: [HLS 200-1510] Running: set_top boom_core_step 
+INFO: [HLS 200-1510] Running: add_files -cflags -std=c++11 -I/home/lab_726/boom/hls_boom/include  /home/lab_726/boom/hls_boom/src/boom_core_merged.cpp 
+INFO: [HLS 200-10] Adding design file '/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp' to the project
+INFO: [HLS 200-1510] Running: open_solution -reset solution_gate4_1_m2b 
+INFO: [HLS 200-10] Creating and opening solution '/home/lab_726/boom/hls_boom/build/gate4_1/m2b_csynth/projects/boom_core_step/solution_gate4_1_m2b'.
+INFO: [HLS 200-10] Cleaning up the solution database.
+WARNING: [HLS 200-40] No /home/lab_726/boom/hls_boom/build/gate4_1/m2b_csynth/projects/boom_core_step/solution_gate4_1_m2b/solution_gate4_1_m2b.aps file found.
+INFO: [HLS 200-1505] Using default flow_target 'vivado'
+Resolution: For help on HLS 200-1505 see www.xilinx.com/cgi-bin/docs/rdoc?v=2021.2;t=hls+guidance;d=200-1505.html
+INFO: [HLS 200-1510] Running: set_part xczu7ev-ffvc1156-2-e 
+INFO: [HLS 200-1611] Setting target device to 'xczu7ev-ffvc1156-2-e'
+INFO: [HLS 200-1510] Running: create_clock -period 10 -name default 
+INFO: [SYN 201-201] Setting up clock 'default' with a period of 10ns.
+INFO: [HLS 200-1510] Running: config_compile -pipeline_loops 0 
+INFO: [XFORM 203-1171] Pipeline the innermost loop with trip count more than 0 or its parent loop when its trip count is less than or equal 0.
+INFO: [HLS 200-1510] Running: csynth_design 
+INFO: [HLS 200-111] Finished File checks and directory preparation: CPU user time: 0.01 seconds. CPU system time: 0 seconds. Elapsed time: 0 seconds; current allocated memory: 1.321 GB.
+INFO: [HLS 200-10] Analyzing design file '/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp' ... 
+INFO: [HLS 200-111] Finished Source Code Analysis and Preprocessing: CPU user time: 2.46 seconds. CPU system time: 0.29 seconds. Elapsed time: 2.22 seconds; current allocated memory: 419.000 MB.
+INFO: [HLS 200-777] Using interface defaults for 'Vivado' flow target.
+INFO: [HLS 214-284] Auto array partition mode is set into default.
+INFO: [HLS 214-131] Inlining function 'boom::completion_from_execute(ExecuteState::AluResult const&, CompletionSourceId, RobCompleteEvent&)' into 'boom::capture_execute_events(BoomCoreState&)' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:980:9)
+INFO: [HLS 214-131] Inlining function 'boom::completion_from_execute(ExecuteState::AluResult const&, CompletionSourceId, RobCompleteEvent&)' into 'boom::capture_execute_events(BoomCoreState&)' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:996:9)
+INFO: [HLS 214-131] Inlining function 'boom::build_rob_complete_ports(BoomCoreState const&, RobCompleteEvent*)' into 'boom::resolve_oldest_pending_branch(BoomCoreState&)' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:1047:5)
+INFO: [HLS 214-131] Inlining function 'boom::mark_control_resolved(BoomCoreState&, CompletionSourceId)' into 'boom::resolve_oldest_pending_branch(BoomCoreState&)' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:1064:5)
+INFO: [HLS 214-131] Inlining function 'boom::completion_writes_integer(RobCompleteEvent const&)' into 'boom::raise_writeback_validation_fault(BoomCoreState&, RobCompleteEvent const*, unsigned char)' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:795:14)
+INFO: [HLS 214-131] Inlining function 'boom::clear_pending_pdst(BoomCoreState&, unsigned char)' into 'boom::raise_writeback_validation_fault(BoomCoreState&, RobCompleteEvent const*, unsigned char)' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:831:5)
+INFO: [HLS 214-131] Inlining function 'boom::completion_writes_integer(RobCompleteEvent const&)' into 'boom::raise_writeback_validation_fault(BoomCoreState&, RobCompleteEvent const*, unsigned char)' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:809:14)
+INFO: [HLS 214-131] Inlining function 'boom::build_rob_complete_ports(BoomCoreState const&, RobCompleteEvent*)' into 'boom::validate_surviving_writers(BoomCoreState&)' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:1070:5)
+INFO: [HLS 214-131] Inlining function 'boom::result_can_forward(BoomCoreState const&, RobCompleteEvent const&)' into 'boom::validate_surviving_writers(BoomCoreState&)' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:1072:14)
+INFO: [HLS 214-131] Inlining function 'boom::result_can_forward(BoomCoreState const&, RobCompleteEvent const&)' into 'boom::validate_surviving_writers(BoomCoreState&)' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:1074:18)
+INFO: [HLS 214-131] Inlining function 'boom::raise_writeback_validation_fault(BoomCoreState&, RobCompleteEvent const*, unsigned char)' into 'boom::validate_surviving_writers(BoomCoreState&)' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:1077:13)
+INFO: [HLS 214-131] Inlining function 'boom::build_rob_complete_ports(BoomCoreState const&, RobCompleteEvent*)' into 'boom::build_wakeup_bypass_ports(BoomCoreState&)' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:837:5)
+INFO: [HLS 214-131] Inlining function 'boom::result_can_forward(BoomCoreState const&, RobCompleteEvent const&)' into 'boom::build_wakeup_bypass_ports(BoomCoreState&)' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:850:21)
+INFO: [HLS 214-131] Inlining function 'boom::oldest_precise_exception(BoomCoreState const&, RobCompleteEvent const*, unsigned char&)' into 'boom::build_wakeup_bypass_ports(BoomCoreState&)' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:854:28)
+INFO: [HLS 214-131] Inlining function 'boom::raise_writeback_validation_fault(BoomCoreState&, RobCompleteEvent const*, unsigned char)' into 'boom::build_wakeup_bypass_ports(BoomCoreState&)' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:894:9)
+INFO: [HLS 214-131] Inlining function 'boom::completion_writes_integer(RobCompleteEvent const&)' into 'boom::write_conflicts(BoomCoreState const&, RobCompleteEvent const*, int)' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:1088:7)
+INFO: [HLS 214-131] Inlining function 'boom::completion_writes_integer(RobCompleteEvent const&)' into 'boom::write_conflicts(BoomCoreState const&, RobCompleteEvent const*, int)' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:1091:14)
+INFO: [HLS 214-131] Inlining function 'boom::completion_writes_integer(RobCompleteEvent const&)' into 'boom::apply_completion_selected(BoomCoreState&, RobCompleteEvent const&, bool, bool)' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:679:27)
+INFO: [HLS 214-131] Inlining function 'boom::prf_seed(BoomCoreState&, unsigned char, unsigned long)' into 'boom::apply_completion_selected(BoomCoreState&, RobCompleteEvent const&, bool, bool)' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:698:9)
+INFO: [HLS 214-131] Inlining function 'boom::build_rob_complete_ports(BoomCoreState const&, RobCompleteEvent*)' into 'boom::service_pending(BoomCoreState&)' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:1130:9)
+INFO: [HLS 214-131] Inlining function 'boom::oldest_precise_exception(BoomCoreState const&, RobCompleteEvent const*, unsigned char&)' into 'boom::service_pending(BoomCoreState&)' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:1131:27)
+INFO: [HLS 214-131] Inlining function 'boom::discard_invalid_pending(BoomCoreState&)' into 'boom::service_pending(BoomCoreState&)' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:1136:9)
+INFO: [HLS 214-131] Inlining function 'boom::build_rob_complete_ports(BoomCoreState const&, RobCompleteEvent*)' into 'boom::service_pending(BoomCoreState&)' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:1138:9)
+INFO: [HLS 214-131] Inlining function 'boom::completion_writes_integer(RobCompleteEvent const&)' into 'boom::service_pending(BoomCoreState&)' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:1160:37)
+INFO: [HLS 214-131] Inlining function 'boom::write_conflicts(BoomCoreState const&, RobCompleteEvent const*, int)' into 'boom::service_pending(BoomCoreState&)' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:1162:54)
+INFO: [HLS 214-131] Inlining function 'boom::completion_writes_integer(RobCompleteEvent const&)' into 'boom::service_pending(BoomCoreState&)' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:1183:27)
+INFO: [HLS 214-131] Inlining function 'boom::apply_completion_selected(BoomCoreState&, RobCompleteEvent const&, bool, bool)' into 'boom::service_pending(BoomCoreState&)' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:1190:24)
+INFO: [HLS 214-131] Inlining function 'boom::apply_completion_selected(BoomCoreState&, RobCompleteEvent const&, bool, bool)' into 'boom::service_pending(BoomCoreState&)' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:1199:24)
+INFO: [HLS 214-131] Inlining function 'boom::apply_completion_selected(BoomCoreState&, RobCompleteEvent const&, bool, bool)' into 'boom::service_pending(BoomCoreState&)' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:1207:24)
+INFO: [HLS 214-131] Inlining function 'boom::completion_from_load_response(BoomCoreState const&, DmemResponse const&, RobCompleteEvent&)' into 'boom::completion_service_cycle(BoomCoreState&, PipeSignals&)' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:1336:9)
+INFO: [HLS 214-131] Inlining function 'boom::capture_execute_events(BoomCoreState&)' into 'boom::completion_service_cycle(BoomCoreState&, PipeSignals&)' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:1339:5)
+INFO: [HLS 214-131] Inlining function 'boom::resolve_oldest_pending_branch(BoomCoreState&)' into 'boom::completion_service_cycle(BoomCoreState&, PipeSignals&)' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:1340:5)
+INFO: [HLS 214-131] Inlining function 'boom::validate_surviving_writers(BoomCoreState&)' into 'boom::completion_service_cycle(BoomCoreState&, PipeSignals&)' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:1341:5)
+INFO: [HLS 214-131] Inlining function 'boom::build_wakeup_bypass_ports(BoomCoreState&)' into 'boom::completion_service_cycle(BoomCoreState&, PipeSignals&)' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:1342:5)
+INFO: [HLS 214-131] Inlining function 'boom::prf_read(BoomCoreState const&, unsigned char)' into 'boom::rob_commit_module(BoomCoreState&, PipeSignals&)' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:2376:35)
+INFO: [HLS 214-131] Inlining function 'boom::prf_read(BoomCoreState const&, unsigned char)' into 'boom::rob_commit_module(BoomCoreState&, PipeSignals&)' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:2431:39)
+INFO: [HLS 214-131] Inlining function 'boom::wakeup_lookup(BoomCoreState const&, unsigned char, unsigned long&, bool&)' into 'boom::resolve_operand(BoomCoreState const&, unsigned char, unsigned long&)' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:1453:9)
+INFO: [HLS 214-131] Inlining function 'boom::prf_read(BoomCoreState const&, unsigned char)' into 'boom::resolve_operand(BoomCoreState const&, unsigned char, unsigned long&)' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:1455:12)
+INFO: [HLS 214-131] Inlining function 'boom::resolve_operand(BoomCoreState const&, unsigned char, unsigned long&)' into 'boom::issue_module(BoomCoreState&)' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:1502:24)
+INFO: [HLS 214-131] Inlining function 'boom::resolve_operand(BoomCoreState const&, unsigned char, unsigned long&)' into 'boom::issue_module(BoomCoreState&)' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:1503:24)
+INFO: [HLS 214-131] Inlining function 'boom::resolve_operand(BoomCoreState const&, unsigned char, unsigned long&)' into 'boom::issue_module(BoomCoreState&)' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:1504:24)
+INFO: [HLS 214-131] Inlining function 'boom::resolve_operand(BoomCoreState const&, unsigned char, unsigned long&)' into 'boom::issue_module(BoomCoreState&)' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:1540:29)
+INFO: [HLS 214-131] Inlining function 'boom::resolve_operand(BoomCoreState const&, unsigned char, unsigned long&)' into 'boom::issue_module(BoomCoreState&)' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:1541:29)
+INFO: [HLS 214-131] Inlining function 'boom::resolve_operand(BoomCoreState const&, unsigned char, unsigned long&)' into 'boom::issue_module(BoomCoreState&)' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:1542:29)
+INFO: [HLS 214-131] Inlining function 'boom::resolve_operand(BoomCoreState const&, unsigned char, unsigned long&)' into 'boom::issue_module(BoomCoreState&)' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:1583:13)
+INFO: [HLS 214-131] Inlining function 'boom::resolve_operand(BoomCoreState const&, unsigned char, unsigned long&)' into 'boom::issue_module(BoomCoreState&)' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:1584:13)
+INFO: [HLS 214-131] Inlining function 'boom::resolve_operand(BoomCoreState const&, unsigned char, unsigned long&)' into 'boom::issue_module(BoomCoreState&)' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:1585:13)
+INFO: [HLS 214-131] Inlining function 'boom::resolve_operand(BoomCoreState const&, unsigned char, unsigned long&)' into 'boom::issue_module(BoomCoreState&)' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:1606:25)
+INFO: [HLS 214-131] Inlining function 'boom::resolve_operand(BoomCoreState const&, unsigned char, unsigned long&)' into 'boom::issue_module(BoomCoreState&)' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:1607:25)
+INFO: [HLS 214-131] Inlining function 'boom::resolve_operand(BoomCoreState const&, unsigned char, unsigned long&)' into 'boom::issue_module(BoomCoreState&)' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:1608:25)
+INFO: [HLS 214-131] Inlining function 'boom::bypass_lookup(BoomCoreState const&, unsigned char, unsigned long&, bool&)' into 'boom::execute_operand(BoomCoreState const&, unsigned char, unsigned char, unsigned long)' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:1725:9)
+INFO: [HLS 214-131] Inlining function 'boom::prf_read(BoomCoreState const&, unsigned char)' into 'boom::execute_operand(BoomCoreState const&, unsigned char, unsigned char, unsigned long)' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:1727:61)
+INFO: [HLS 214-131] Inlining function 'boom::execute_operand(BoomCoreState const&, unsigned char, unsigned char, unsigned long)' into 'boom::execute_module(BoomCoreState&)' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:1749:24)
+INFO: [HLS 214-131] Inlining function 'boom::execute_operand(BoomCoreState const&, unsigned char, unsigned char, unsigned long)' into 'boom::execute_module(BoomCoreState&)' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:1751:24)
+INFO: [HLS 214-210] Disaggregating variable 'state'
+INFO: [HLS 214-210] Disaggregating variable 'state_rename'
+INFO: [HLS 214-210] Disaggregating variable 'pipe' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:2484:0)
+INFO: [HLS 214-178] Inlining function 'boom::sign_extend(unsigned long, unsigned char)' into 'boom::load_value(unsigned long, unsigned long, unsigned char, bool)' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:528:0)
+INFO: [HLS 214-178] Inlining function 'MicroOp::MicroOp() (.24.30.36.42.48.54.60.66)' into 'ExecuteState::AluResult::AluResult()' (/home/lab_726/boom/hls_boom/include/boom_state.hpp:124:0)
+INFO: [HLS 214-178] Inlining function 'MicroOp::MicroOp() (.24.30.36.42.48.54.60.66)' into 'RobCompleteEvent::RobCompleteEvent()' (/home/lab_726/boom/hls_boom/include/boom_types.hpp:108:0)
+INFO: [HLS 214-178] Inlining function 'boom::completion_has_rob_owner(BoomCoreState const&, RobCompleteEvent const&) (.79.94.115.139.163.187.211.235.259.662.756)' into 'boom::completion_is_valid(BoomCoreState const&, RobCompleteEvent const&) (.76.109.279.405.444)' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:626:0)
+INFO: [HLS 214-178] Inlining function 'MicroOp::MicroOp() (.24.30.36.42.48.54.60.66)' into 'IssueSlotEntry::IssueSlotEntry()' (/home/lab_726/boom/hls_boom/include/boom_types.hpp:179:0)
+INFO: [HLS 214-178] Inlining function 'IssueSlotEntry::IssueSlotEntry()' into 'boom::compact_issue_queue(IssueQueueState&)' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:1900:0)
+INFO: [HLS 214-178] Inlining function 'boom::killed_by_mask(MicroOp const&, unsigned char)' into 'boom::kill_issue_state(BoomCoreState&, unsigned char)' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:1913:0)
+INFO: [HLS 214-178] Inlining function 'boom::killed_by_mask(MicroOp const&, unsigned char)' into 'boom::kill_execute_state(BoomCoreState&, unsigned char)' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:1930:0)
+INFO: [HLS 214-178] Inlining function 'LoadQueueEntry::LoadQueueEntry()' into 'boom::kill_lsu_state(BoomCoreState&, unsigned char)' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:1955:0)
+INFO: [HLS 214-178] Inlining function 'StoreQueueEntry::StoreQueueEntry()' into 'boom::kill_lsu_state(BoomCoreState&, unsigned char)' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:1955:0)
+INFO: [HLS 214-178] Inlining function 'boom::killed_by_mask(MicroOp const&, unsigned char)' into 'boom::kill_rob_younger_than(BoomCoreState&, unsigned char, unsigned char)' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:1997:0)
+INFO: [HLS 214-178] Inlining function 'boom::branch_free_list_contains(RenameFreeListState const&, unsigned char)' into 'boom::branch_free_preg_unique(RenameFreeListState&, unsigned char)' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:1852:0)
+INFO: [HLS 214-178] Inlining function 'boom::preg_in_map(RenameMapTableState const&, unsigned char)' into 'boom::rollback_free_list(BoomCoreState&, unsigned char)' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:2036:0)
+INFO: [HLS 214-178] Inlining function 'boom::branch_free_preg_unique(RenameFreeListState&, unsigned char)' into 'boom::rollback_free_list(BoomCoreState&, unsigned char)' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:2036:0)
+INFO: [HLS 214-178] Inlining function 'boom::branch_tag_bit(unsigned char)' into 'boom::prune_recovered_tags(BoomCoreState&, unsigned char, unsigned char)' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:2055:0)
+INFO: [HLS 214-178] Inlining function 'boom::branch_clear_alloc_list(BranchRecoveryState&, unsigned char)' into 'boom::prune_recovered_tags(BoomCoreState&, unsigned char, unsigned char)' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:2055:0)
+INFO: [HLS 214-178] Inlining function 'boom::clear_resolved_mask(MicroOp&, unsigned char)' into 'boom::clear_resolved_masks_in_state(BoomCoreState&, unsigned char)' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:1876:0)
+INFO: [HLS 214-178] Inlining function 'boom::killed_by_mask(MicroOp const&, unsigned char)' into 'boom::recover_mispredict(BoomCoreState&, BranchUpdate const&)' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:2068:0)
+INFO: [HLS 214-178] Inlining function 'boom::restore_map_snapshot(BoomCoreState&, unsigned char)' into 'boom::recover_mispredict(BoomCoreState&, BranchUpdate const&)' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:2068:0)
+INFO: [HLS 214-178] Inlining function 'boom::rollback_free_list(BoomCoreState&, unsigned char)' into 'boom::recover_mispredict(BoomCoreState&, BranchUpdate const&)' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:2068:0)
+INFO: [HLS 214-178] Inlining function 'boom::prune_recovered_tags(BoomCoreState&, unsigned char, unsigned char)' into 'boom::recover_mispredict(BoomCoreState&, BranchUpdate const&)' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:2068:0)
+INFO: [HLS 214-178] Inlining function 'boom::rebuild_busy_after_recovery(BoomCoreState&)' into 'boom::recover_mispredict(BoomCoreState&, BranchUpdate const&)' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:2068:0)
+INFO: [HLS 214-178] Inlining function 'boom::branch_tag_bit(unsigned char)' into 'boom::release_tag(BoomCoreState&, unsigned char)' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:1866:0)
+INFO: [HLS 214-178] Inlining function 'boom::branch_clear_alloc_list(BranchRecoveryState&, unsigned char)' into 'boom::release_tag(BoomCoreState&, unsigned char)' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:1866:0)
+INFO: [HLS 214-178] Inlining function 'boom::release_tag(BoomCoreState&, unsigned char)' into 'boom::release_resolved_branch(BoomCoreState&, unsigned char, unsigned char)' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:2097:0)
+INFO: [HLS 214-178] Inlining function 'boom::branch_tag_bit(unsigned char)' into 'boom::branch_complete_event(BoomCoreState&, MicroOp const&, bool, unsigned long)' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:2103:0)
+INFO: [HLS 214-178] Inlining function 'boom::release_resolved_branch(BoomCoreState&, unsigned char, unsigned char)' into 'boom::branch_complete_event(BoomCoreState&, MicroOp const&, bool, unsigned long)' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:2103:0)
+INFO: [HLS 214-178] Inlining function 'boom::completion_has_rob_owner(BoomCoreState const&, RobCompleteEvent const&) (.694.749)' into 'boom::completion_is_valid(BoomCoreState const&, RobCompleteEvent const&)' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:626:0)
+INFO: [HLS 214-178] Inlining function 'boom::enqueue_store(BoomCoreState&, MicroOp const&, unsigned long, unsigned long, unsigned char, unsigned char, RobEntry&) (.107.124.148.172.196.220.244.268.689.765)' into 'boom::lsu_accept_completion(BoomCoreState&, MicroOp const&, bool, bool, bool, unsigned long, unsigned long, unsigned char, unsigned char)' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:2232:0)
+INFO: [HLS 214-178] Inlining function 'boom::enqueue_load(BoomCoreState&, MicroOp const&, bool, unsigned long, unsigned char, unsigned char, RobEntry&) (.104.121.145.169.193.217.241.265.686.762)' into 'boom::lsu_accept_completion(BoomCoreState&, MicroOp const&, bool, bool, bool, unsigned long, unsigned long, unsigned char, unsigned char)' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:2232:0)
+INFO: [HLS 214-178] Inlining function 'LoadQueueEntry::LoadQueueEntry()' into 'boom::reclaim_ldq(BoomCoreState&, unsigned char, unsigned int)' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:2248:0)
+INFO: [HLS 214-178] Inlining function 'boom::completion_age(BoomCoreState const&, RobCompleteEvent const&)' into 'boom::service_pending(BoomCoreState&)' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:1121:0)
+INFO: [HLS 214-178] Inlining function 'boom::completion_has_rob_owner(BoomCoreState const&, RobCompleteEvent const&) (.694.749)' into 'boom::service_pending(BoomCoreState&)' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:1121:0)
+INFO: [HLS 214-178] Inlining function 'boom::lsu_finish_load_response(BoomCoreState&, unsigned char, unsigned int, unsigned int)' into 'boom::service_pending(BoomCoreState&)' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:1121:0)
+INFO: [HLS 214-178] Inlining function 'DmemResponse::DmemResponse()' into 'boom::completion_service_cycle(BoomCoreState&, PipeSignals&)' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:1327:0)
+INFO: [HLS 214-178] Inlining function 'boom::load_value(unsigned long, unsigned long, unsigned char, bool)' into 'boom::completion_service_cycle(BoomCoreState&, PipeSignals&)' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:1327:0)
+INFO: [HLS 214-178] Inlining function 'boom::is_branch(MicroOp const&)' into 'boom::completion_service_cycle(BoomCoreState&, PipeSignals&)' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:1327:0)
+INFO: [HLS 214-178] Inlining function 'boom::completion_age(BoomCoreState const&, RobCompleteEvent const&)' into 'boom::completion_service_cycle(BoomCoreState&, PipeSignals&)' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:1327:0)
+INFO: [HLS 214-178] Inlining function 'WakeupEvent::WakeupEvent()' into 'boom::completion_service_cycle(BoomCoreState&, PipeSignals&)' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:1327:0)
+INFO: [HLS 214-178] Inlining function 'BypassEvent::BypassEvent()' into 'boom::completion_service_cycle(BoomCoreState&, PipeSignals&)' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:1327:0)
+INFO: [HLS 214-178] Inlining function 'boom::older_store_in_rob(BoomCoreState const&, unsigned char)' into 'boom::try_issue_load(BoomCoreState&, PipeSignals&, unsigned char)' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:2172:0)
+INFO: [HLS 214-178] Inlining function 'DmemRequest::DmemRequest()' into 'boom::try_issue_load(BoomCoreState&, PipeSignals&, unsigned char)' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:2172:0)
+INFO: [HLS 214-178] Inlining function 'boom::clear_lsu_queues(LsuState&)' into 'boom::lsu_module(BoomCoreState&, PipeSignals&)' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:2318:0)
+INFO: [HLS 214-178] Inlining function 'StoreQueueEntry::StoreQueueEntry()' into 'boom::lsu_reclaim_store(BoomCoreState&, unsigned char, unsigned int)' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:2281:0)
+INFO: [HLS 214-178] Inlining function 'boom::free_list_contains(RenameFreeListState const&, unsigned char)' into 'boom::free_preg_unique(RenameFreeListState&, unsigned char)' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:2353:0)
+INFO: [HLS 214-178] Inlining function 'CommitEntry::CommitEntry()' into 'boom::rob_commit_module(BoomCoreState&, PipeSignals&)' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:2363:0)
+INFO: [HLS 214-178] Inlining function 'DmemRequest::DmemRequest()' into 'boom::rob_commit_module(BoomCoreState&, PipeSignals&)' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:2363:0)
+INFO: [HLS 214-178] Inlining function 'boom::free_preg_unique(RenameFreeListState&, unsigned char)' into 'boom::rob_commit_module(BoomCoreState&, PipeSignals&)' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:2363:0)
+INFO: [HLS 214-178] Inlining function 'ImemRequest::ImemRequest()' into 'boom::frontend_module(BoomCoreState&, PipeSignals&)' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:26:0)
+INFO: [HLS 214-178] Inlining function 'ImemResponse::ImemResponse()' into 'boom::frontend_module(BoomCoreState&, PipeSignals&)' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:26:0)
+INFO: [HLS 214-178] Inlining function 'MicroOp::MicroOp() (.24.30.36.42.48.54.60.66)' into 'boom::frontend_module(BoomCoreState&, PipeSignals&)' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:26:0)
+INFO: [HLS 214-178] Inlining function 'MicroOp::MicroOp() (.24.30.36.42.48.54.60.66)' into 'boom::decode_module(BoomCoreState&)' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:216:0)
+INFO: [HLS 214-178] Inlining function 'boom::extract_imm_u(unsigned int)' into 'boom::decode_module(BoomCoreState&)' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:216:0)
+INFO: [HLS 214-178] Inlining function 'boom::extract_imm_j(unsigned int)' into 'boom::decode_module(BoomCoreState&)' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:216:0)
+INFO: [HLS 214-178] Inlining function 'boom::extract_imm_i(unsigned int)' into 'boom::decode_module(BoomCoreState&)' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:216:0)
+INFO: [HLS 214-178] Inlining function 'boom::extract_imm_b(unsigned int)' into 'boom::decode_module(BoomCoreState&)' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:216:0)
+INFO: [HLS 214-178] Inlining function 'boom::extract_imm_s(unsigned int)' into 'boom::decode_module(BoomCoreState&)' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:216:0)
+INFO: [HLS 214-178] Inlining function 'boom::mark_illegal_r_type(MicroOp&)' into 'boom::decode_module(BoomCoreState&)' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:216:0)
+INFO: [HLS 214-178] Inlining function 'boom::tag_bit(unsigned char)' into 'boom::allocate_branch_tag(BranchRecoveryState&, unsigned char&)' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:392:0)
+INFO: [HLS 214-178] Inlining function 'boom::tag_bit(unsigned char)' into 'boom::record_pdst_for_active_branches(BranchRecoveryState&, unsigned char, unsigned char)' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:423:0)
+INFO: [HLS 214-178] Inlining function 'boom::is_control_uop(MicroOp const&)' into 'boom::rename_module(BoomCoreState&)' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:437:0)
+INFO: [HLS 214-178] Inlining function 'boom::allocate_branch_tag(BranchRecoveryState&, unsigned char&)' into 'boom::rename_module(BoomCoreState&)' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:437:0)
+INFO: [HLS 214-178] Inlining function 'boom::allocate_preg(RenameFreeListState&, unsigned char&)' into 'boom::rename_module(BoomCoreState&)' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:437:0)
+INFO: [HLS 214-178] Inlining function 'boom::record_pdst_for_active_branches(BranchRecoveryState&, unsigned char, unsigned char)' into 'boom::rename_module(BoomCoreState&)' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:437:0)
+INFO: [HLS 214-178] Inlining function 'boom::clear_branch_alloc_list(BranchRecoveryState&, unsigned char)' into 'boom::rename_module(BoomCoreState&)' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:437:0)
+INFO: [HLS 214-178] Inlining function 'boom::save_map_snapshot(RenameMapTableState&, BranchRecoveryState&, unsigned char)' into 'boom::rename_module(BoomCoreState&)' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:437:0)
+INFO: [HLS 214-178] Inlining function 'boom::tag_bit(unsigned char)' into 'boom::rename_module(BoomCoreState&)' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:437:0)
+INFO: [HLS 214-178] Inlining function 'IssueSlotEntry::IssueSlotEntry()' into 'boom::compact_iq(IssueQueueState&)' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:1459:0)
+INFO: [HLS 214-178] Inlining function 'boom::killed_by_branch(MicroOp const&, unsigned char)' into 'boom::issue_module(BoomCoreState&)' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:1470:0)
+INFO: [HLS 214-178] Inlining function 'classify_issue_port(MicroOp const&)' into 'boom::issue_module(BoomCoreState&)' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:1470:0)
+INFO: [HLS 214-178] Inlining function 'MicroOp::MicroOp() (.24.30.36.42.48.54.60.66)' into 'boom::issue_module(BoomCoreState&)' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:1470:0)
+INFO: [HLS 214-178] Inlining function 'classify_issue_port(MicroOp const&) (.621)' into 'boom::issue_module(BoomCoreState&)' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:1470:0)
+INFO: [HLS 214-178] Inlining function 'boom::MulResponse::MulResponse()' into 'boom::execute_mul(boom::MulRequest const&)' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:1624:0)
+INFO: [HLS 214-178] Inlining function 'classify_issue_port(MicroOp const&)' into 'boom::execute_module(BoomCoreState&)' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:1732:0)
+INFO: [HLS 214-178] Inlining function 'boom::sext32(long)' into 'boom::execute_module(BoomCoreState&)' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:1732:0)
+INFO: [HLS 214-178] Inlining function 'boom::MulRequest::MulRequest()' into 'boom::execute_module(BoomCoreState&)' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:1732:0)
+INFO: [HLS 214-178] Inlining function 'boom::execute_mul(boom::MulRequest const&)' into 'boom::execute_module(BoomCoreState&)' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:1732:0)
+INFO: [HLS 214-178] Inlining function 'boom::mask_for_size(unsigned char)' into 'boom::execute_module(BoomCoreState&)' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:1732:0)
+INFO: [HLS 214-178] Inlining function 'boom::csr_module(BoomCoreState&)' into 'boom_core_step(BoomCoreState&, PipeSignals&)' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:2484:0)
+INFO: [HLS 214-178] Inlining function 'boom::lsu_module(BoomCoreState&, PipeSignals&)' into 'boom_core_step(BoomCoreState&, PipeSignals&)' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:2484:0)
+INFO: [HLS 214-241] Aggregating fifo (hls::stream) variable 'pipe_commit_trace' with compact=bit mode in 518-bits (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:2484:0)
+INFO: [HLS 214-241] Aggregating fifo (hls::stream) variable 'pipe_dmem_resp' with compact=bit mode in 289-bits (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:2484:0)
+INFO: [HLS 214-241] Aggregating fifo (hls::stream) variable 'pipe_dmem_req' with compact=bit mode in 283-bits (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:2484:0)
+INFO: [HLS 214-241] Aggregating fifo (hls::stream) variable 'pipe_imem_resp' with compact=bit mode in 193-bits (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:2484:0)
+INFO: [HLS 214-241] Aggregating fifo (hls::stream) variable 'pipe_imem_req' with compact=bit mode in 97-bits (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:2484:0)
+INFO: [HLS 214-241] Aggregating scalar variable 'state_brupdate' with compact=bit mode in 929-bits
+INFO: [HLS 214-241] Aggregating scalar variable 'state_branch_state' with compact=bit mode in 568-bits
+ERROR: [HLS 214-256] in function 'boom_core_step(BoomCoreState&, PipeSignals&)': Unsupported aggregate pragma/directive on variable 'state_completion' as the bit-width after aggregation (5563) is larger than 4096
+INFO: [HLS 214-241] Aggregating scalar variable 'state_lsu' with compact=bit mode in 3513-bits
+INFO: [HLS 214-241] Aggregating scalar variable 'state_csr' with compact=bit mode in 776-bits
+ERROR: [HLS 214-256] in function 'boom_core_step(BoomCoreState&, PipeSignals&)': Unsupported aggregate pragma/directive on variable 'state_rob' as the bit-width after aggregation (30824) is larger than 4096
+INFO: [HLS 214-241] Aggregating scalar variable 'state_execute' with compact=bit mode in 3303-bits
+ERROR: [HLS 214-256] in function 'boom_core_step(BoomCoreState&, PipeSignals&)': Unsupported aggregate pragma/directive on variable 'state_issue' as the bit-width after aggregation (13483) is larger than 4096
+INFO: [HLS 214-241] Aggregating bram variable 'state_rename_dispatch_packets' with compact=bit mode in 760-bits
+INFO: [HLS 214-241] Aggregating scalar variable 'state_rename_fp_free_list' with compact=bit mode in 492-bits
+INFO: [HLS 214-241] Aggregating scalar variable 'state_rename_int_free_list' with compact=bit mode in 492-bits
+INFO: [HLS 214-241] Aggregating scalar variable 'state_rename_fp_map_table' with compact=bit mode in 2560-bits
+INFO: [HLS 214-241] Aggregating scalar variable 'state_rename_int_map_table' with compact=bit mode in 2560-bits
+INFO: [HLS 214-241] Aggregating scalar variable 'state_decode' with compact=bit mode in 759-bits
+INFO: [HLS 214-241] Aggregating scalar variable 'state_frontend' with compact=bit mode in 1053-bits
+ERROR: [HLS 200-1715] Encountered problem during source synthesis
+INFO: [HLS 200-111] Finished Command csynth_design CPU user time: 9.61 seconds. CPU system time: 0.53 seconds. Elapsed time: 9.58 seconds; current allocated memory: -932.344 MB.
+Pre-synthesis failed.
+    while executing
+"source /home/lab_726/boom/hls_boom/scripts/run_top_csynth.tcl"
+    ("uplevel" body line 1)
+    invoked from within
+"uplevel \#0 [list source $arg] "
+
+INFO: [HLS 200-112] Total CPU user time: 10.91 seconds. Total CPU system time: 0.93 seconds. Total elapsed time: 10.63 seconds; peak allocated memory: 1.321 GB.
+INFO: [Common 17-206] Exiting vitis_hls at Tue Aug  4 23:51:17 2026...

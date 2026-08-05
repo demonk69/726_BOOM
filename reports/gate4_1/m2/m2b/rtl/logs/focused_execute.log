@@ -1,0 +1,30 @@
+#-----------------------------------------------------------
+# xsim v2021.2 (64-bit)
+# SW Build 3367213 on Tue Oct 19 02:47:39 MDT 2021
+# IP Build 3369179 on Thu Oct 21 08:25:16 MDT 2021
+# Start of session at: Tue Aug  4 23:38:15 2026
+# Process ID: 247871
+# Current directory: /home/lab_726/boom/hls_boom/build/gate4_1/m2b_rtl/focused_xsim
+# Command line: xsim -log /home/lab_726/boom/hls_boom/reports/gate4_1/m2/m2b/rtl/logs/focused_execute.log -mode tcl -source {xsim.dir/m2b_execute_snapshot/xsim_script.tcl}
+# Log file: /home/lab_726/boom/hls_boom/reports/gate4_1/m2/m2b/rtl/logs/focused_execute.log
+# Journal file: /home/lab_726/boom/hls_boom/build/gate4_1/m2b_rtl/focused_xsim/xsim.jou
+# Running On: 726, OS: Linux, CPU Frequency: 800.688 MHz, CPU Physical cores: 14, Host memory: 67148 MB
+#-----------------------------------------------------------
+source xsim.dir/m2b_execute_snapshot/xsim_script.tcl
+# xsim {m2b_execute_snapshot} -autoloadwcfg -runall -onerror quit
+Time resolution is 1 ps
+run -all
+M2B_RTL_PASS uopc=16 expected=ffffffffffffffeb observed=ffffffffffffffeb
+M2B_RTL_PASS uopc=17 expected=ffffffffffffffff observed=ffffffffffffffff
+M2B_RTL_PASS uopc=18 expected=ffffffffffffffff observed=ffffffffffffffff
+M2B_RTL_PASS uopc=19 expected=0000000000000006 observed=0000000000000006
+M2B_RTL_PASS uopc=20 expected=ffffffffffffffeb observed=ffffffffffffffeb
+M2B_RTL_PASS uopc=16 expected=236d88fe5618cf00 observed=236d88fe5618cf00
+M2B_RTL_PASS uopc=17 expected=0000000000000000 observed=0000000000000000
+M2B_RTL_PASS uopc=18 expected=8000000000000000 observed=8000000000000000
+M2B_RTL_PASS uopc=19 expected=fffffffffffffffe observed=fffffffffffffffe
+M2B_RTL_PASS uopc=20 expected=ffffffff80000000 observed=ffffffff80000000
+M2B_FOCUSED_RTL_PASS cases=10
+$finish called at time : 3255 ns : File "/home/lab_726/boom/hls_boom/rtl_tb/gate4_1/m2b_execute_tb.sv" Line 62
+exit
+INFO: [Common 17-206] Exiting xsim at Tue Aug  4 23:38:19 2026...

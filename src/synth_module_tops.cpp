@@ -122,7 +122,8 @@ void synth_execute_top(uint8_t seed_uopc, uint64_t seed_rs1, uint64_t seed_rs2, 
     state.issue.issued_valids[INT_ISSUE_LANE] = true;
     state.issue.issued_uops[INT_ISSUE_LANE].uopc = seed_uopc;
     state.issue.issued_uops[INT_ISSUE_LANE].iq_type = IQ_ALU;
-    state.issue.issued_uops[INT_ISSUE_LANE].fu_code = FU_ALU;
+    state.issue.issued_uops[INT_ISSUE_LANE].fu_code =
+        seed_uopc >= 16 && seed_uopc <= 20 ? FU_MUL : FU_ALU;
     state.issue.issued_uops[INT_ISSUE_LANE].rename.prs1 = 1;
     state.issue.issued_uops[INT_ISSUE_LANE].rename.prs2 = 2;
     state.issue.issued_uops[INT_ISSUE_LANE].rename.pdst = 3;

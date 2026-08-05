@@ -1,0 +1,19 @@
+# RV64M multiply family, load address 0x80000000, tohost 0x80000080
+# addi x1,-3; addi x2,7
+00700113ffd00093
+# mul x3,x1,x2; mulh x4,x1,x2
+02209233022081b3
+# mulhsu x5,x1,x2; mulhu x6,x1,x2
+0220b3330220a2b3
+# mulw x7,x1,x2; addi x8,x3,1
+00118413022083bb
+# addi x9,x4,1; addi x10,x5,1
+0012851300120493
+# addi x11,x6,1; addi x12,x7,1
+0013861300130593
+# auipc x13,0; addi x13,x13,0x50
+0506869300000697
+# addi x14,1; sd x14,0(x13)
+00e6b02300100713
+# jal x0,0
+000000000000006f

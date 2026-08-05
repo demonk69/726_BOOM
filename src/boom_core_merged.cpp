@@ -1776,7 +1776,15 @@ void execute_module(BoomCoreState& state) {
             case 12: r.result=sext32((int64_t)((int32_t)rs1-(int32_t)rs2)); break;
             case 13: case 60: r.result=sext32((int64_t)((int32_t)rs1<<((int32_t)(uop.imm_packed&0x1F)))); break;
             case 15: case 62: r.result=sext32((int64_t)((int32_t)rs1>>((int32_t)(uop.imm_packed&0x1F)))); break;
-            case 16: r.result=(int64_t)((int32_t)rs1)*(int64_t)((int32_t)rs2); break;
+            case 16: case 17: case 18: case 19: case 20: {
+                MulRequest request;
+                request.valid = true;
+                request.operation = (MulOperation)(uop.uopc - 16);
+                request.lhs = rs1;
+                request.rhs = rs2;
+                r.result = execute_mul(request).result;
+                break;
+            }
             case 29: r.result=pc+4; r.mispredict=true; r.redirect_pc=(uint64_t)((int64_t)pc+(int64_t)(int32_t)uop.imm_packed); break;
             case 30: r.result=pc+4; r.mispredict=true; r.redirect_pc=(rs1+(int64_t)(int32_t)uop.imm_packed)&~1ULL; break;
             case 31: r.mispredict=(rs1==rs2); r.redirect_pc=pc+(int64_t)(int32_t)uop.imm_packed; break;
@@ -3083,7 +3091,8 @@ void synth_execute_top(uint8_t seed_uopc, uint64_t seed_rs1, uint64_t seed_rs2, 
     state.issue.issued_valids[INT_ISSUE_LANE] = true;
     state.issue.issued_uops[INT_ISSUE_LANE].uopc = seed_uopc;
     state.issue.issued_uops[INT_ISSUE_LANE].iq_type = IQ_ALU;
-    state.issue.issued_uops[INT_ISSUE_LANE].fu_code = FU_ALU;
+    state.issue.issued_uops[INT_ISSUE_LANE].fu_code =
+        seed_uopc >= 16 && seed_uopc <= 20 ? FU_MUL : FU_ALU;
     state.issue.issued_uops[INT_ISSUE_LANE].rename.prs1 = 1;
     state.issue.issued_uops[INT_ISSUE_LANE].rename.prs2 = 2;
     state.issue.issued_uops[INT_ISSUE_LANE].rename.pdst = 3;

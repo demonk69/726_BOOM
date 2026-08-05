@@ -3,6 +3,7 @@
 #include "boom_state.hpp"
 #include "issue.hpp"
 #include "completion.hpp"
+#include "mul.hpp"
 
 namespace boom {
 
@@ -70,7 +71,15 @@ void execute_module(BoomCoreState& state) {
             case 12: r.result=sext32((int64_t)((int32_t)rs1-(int32_t)rs2)); break;
             case 13: case 60: r.result=sext32((int64_t)((int32_t)rs1<<((int32_t)(uop.imm_packed&0x1F)))); break;
             case 15: case 62: r.result=sext32((int64_t)((int32_t)rs1>>((int32_t)(uop.imm_packed&0x1F)))); break;
-            case 16: r.result=(int64_t)((int32_t)rs1)*(int64_t)((int32_t)rs2); break;
+            case 16: case 17: case 18: case 19: case 20: {
+                MulRequest request;
+                request.valid = true;
+                request.operation = (MulOperation)(uop.uopc - 16);
+                request.lhs = rs1;
+                request.rhs = rs2;
+                r.result = execute_mul(request).result;
+                break;
+            }
             case 29: r.result=pc+4; r.mispredict=true; r.redirect_pc=(uint64_t)((int64_t)pc+(int64_t)(int32_t)uop.imm_packed); break;
             case 30: r.result=pc+4; r.mispredict=true; r.redirect_pc=(rs1+(int64_t)(int32_t)uop.imm_packed)&~1ULL; break;
             case 31: r.mispredict=(rs1==rs2); r.redirect_pc=pc+(int64_t)(int32_t)uop.imm_packed; break;
