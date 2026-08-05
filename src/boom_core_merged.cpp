@@ -1457,6 +1457,18 @@ static bool resolve_operand(const BoomCoreState& state, uint8_t prs,
     return true;
 }
 
+static bool divider_uop_ready(const BoomCoreState& state, const MicroOp& uop) {
+#pragma HLS INLINE
+    if (uop.fu_code != FU_DIV) return true;
+    if (uop.uopc < 21 || uop.uopc > 28 || state.execute.divider.token_valid ||
+        !divider_request_ready(state.execute.divider.arithmetic)) return false;
+    uint8_t rob_idx = uop.queue.rob_idx;
+    return uop.queue.rob_allocation_id != 0 && rob_idx < ROB_DEPTH &&
+        state.rob.entries[rob_idx].valid && state.rob.entries[rob_idx].busy &&
+        state.rob.entries[rob_idx].uop.queue.rob_allocation_id ==
+            uop.queue.rob_allocation_id;
+}
+
 static void compact_iq(IssueQueueState& iq) {
     IssueSlotEntry temp[ISSUE_QUEUE_ALU_DEPTH];
     int w=0;
@@ -1513,7 +1525,7 @@ void issue_module(BoomCoreState& state) {
             s.prs3_busy || s.pdst_busy) continue;
         IssuePortClass port=classify_issue_port(s.uop);
         if (port==ISSUE_PORT_MEM && mem_index<0) mem_index=i;
-        else if (port==ISSUE_PORT_INT && int_index<0) int_index=i;
+        else if (port==ISSUE_PORT_INT && int_index<0 && divider_uop_ready(state, s.uop)) int_index=i;
     }
 
     if (mem_index>=0) {
@@ -1546,7 +1558,8 @@ void issue_module(BoomCoreState& state) {
             old_grant_can_accept |= iss.grants[old_lane].valid && iss.port_ready[old_lane];
         bool dispatch_can_be_preserved=iss.alu_iq.count<ISSUE_QUEUE_ALU_DEPTH ||
                                        (lane>=0 && iss.port_ready[lane]) || old_grant_can_accept;
-        if (lane>=0 && dispatch_ready && dispatch_can_be_preserved && !iss.grants[lane].valid) {
+        if (lane>=0 && dispatch_ready && divider_uop_ready(state, dispatch_uop) &&
+            dispatch_can_be_preserved && !iss.grants[lane].valid) {
             iss.grants[lane].valid=true; iss.grants[lane].from_dispatch=true;
             iss.grants[lane].entry_index=0xff; iss.grants[lane].port_class=(uint8_t)port;
             iss.grants[lane].uop=dispatch_uop;
@@ -1569,6 +1582,8 @@ void issue_module(BoomCoreState& state) {
     for (int lane=0; lane<INTEGER_ISSUE_PORTS; lane++) {
         IssueGrant& grant=iss.grants[lane];
         bool downstream_ready=iss.port_ready[lane];
+        if (lane==INT_ISSUE_LANE && grant.valid)
+            downstream_ready &= divider_uop_ready(state, grant.uop);
         if (lane==MEM_ISSUE_LANE && grant.valid) {
             bool is_load=grant.uop.ctrl.is_load || grant.uop.mem.uses_ldq ||
                          (grant.uop.uopc>=39 && grant.uop.uopc<=45);
@@ -1890,6 +1905,27 @@ namespace boom {
 static uint64_t sext32(int64_t v) { return (uint64_t)((int32_t)(v&0xFFFFFFFF)); }
 static uint8_t mask_for_size(uint8_t size) { return (uint8_t)((size>=3) ? 0xFF : ((1u << (1u << size)) - 1u)); }
 
+static void cancel_divider(ExecuteState& exe) {
+#pragma HLS INLINE
+    divider_reset(exe.divider.arithmetic);
+    exe.divider = DividerExecutionState();
+}
+
+static bool divider_owner_valid(const BoomCoreState& state) {
+#pragma HLS INLINE
+    const DividerExecutionState& div = state.execute.divider;
+    if (!div.token_valid || div.allocation_id == 0 || div.rob_idx >= ROB_DEPTH)
+        return false;
+    const RobEntry& owner = state.rob.entries[div.rob_idx];
+    return owner.valid && owner.busy &&
+        owner.uop.queue.rob_allocation_id == div.allocation_id;
+}
+
+static bool is_divider_uop(const MicroOp& uop) {
+#pragma HLS INLINE
+    return uop.fu_code == FU_DIV && uop.uopc >= 21 && uop.uopc <= 28;
+}
+
 static uint64_t execute_operand(const BoomCoreState& state, uint8_t lane,
                                 uint8_t prs, uint64_t issued_data) {
 #pragma HLS INLINE
@@ -1913,6 +1949,32 @@ void execute_module(BoomCoreState& state) {
 
     exe.alu_results[FP_ISSUE_LANE]=ExecuteState::AluResult();
 
+    if (state.global_flush) cancel_divider(exe);
+    if (exe.divider.token_valid && state.brupdate.valid) {
+        if (state.brupdate.mispredict &&
+            (exe.divider.branch_mask & state.brupdate.mispredict_mask) != 0) {
+            cancel_divider(exe);
+        } else {
+            exe.divider.branch_mask &= (uint8_t)~state.brupdate.resolve_mask;
+            exe.divider.uop.branch.br_mask = exe.divider.branch_mask;
+        }
+    }
+    if (exe.divider.token_valid && !divider_owner_valid(state)) cancel_divider(exe);
+
+    DividerResponse held_response = divider_response(exe.divider.arithmetic);
+    if (held_response.valid && exe.divider.token_valid &&
+        !exe.alu_results[INT_ISSUE_LANE].valid) {
+        ExecuteState::AluResult& result = exe.alu_results[INT_ISSUE_LANE];
+        result = ExecuteState::AluResult();
+        result.valid = true;
+        result.uop = exe.divider.uop;
+        result.result = held_response.result;
+        divider_consume_response(exe.divider.arithmetic);
+        exe.divider = DividerExecutionState();
+    }
+
+    bool divider_accepted = false;
+
     for (int i=0; i<INTEGER_ISSUE_PORTS; i++) {
         if (!iss.issued_valids[i]) continue;
         const MicroOp& uop = iss.issued_uops[i];
@@ -1926,6 +1988,30 @@ void execute_module(BoomCoreState& state) {
         uint64_t rs2 = execute_operand(state, (uint8_t)i, uop.rename.prs2,
                                        iss.issued_prs2_data[i]);
         uint64_t pc = uop.debug_pc;
+
+        if (is_divider_uop(uop)) {
+            DividerRequest request;
+            request.valid = true;
+            request.operation = (DivideOperation)(uop.uopc - 21);
+            request.dividend = rs1;
+            request.divisor = rs2;
+            if (!exe.divider.token_valid && divider_request_ready(exe.divider.arithmetic) &&
+                uop.queue.rob_allocation_id != 0 && uop.queue.rob_idx < ROB_DEPTH &&
+                state.rob.entries[uop.queue.rob_idx].valid &&
+                state.rob.entries[uop.queue.rob_idx].busy &&
+                state.rob.entries[uop.queue.rob_idx].uop.queue.rob_allocation_id ==
+                    uop.queue.rob_allocation_id &&
+                divider_accept(exe.divider.arithmetic, request)) {
+                exe.divider.token_valid = true;
+                exe.divider.uop = uop;
+                exe.divider.rob_idx = uop.queue.rob_idx;
+                exe.divider.pdst = uop.rename.pdst;
+                exe.divider.allocation_id = uop.queue.rob_allocation_id;
+                exe.divider.branch_mask = uop.branch.br_mask;
+                divider_accepted = true;
+            }
+            continue;
+        }
 
         int64_t op1=(int64_t)rs1, op2=(int64_t)rs2;
         if (uop.ctrl.op1_sel==OP1_PC) op1=(int64_t)pc;
@@ -1985,6 +2071,9 @@ void execute_module(BoomCoreState& state) {
         if (uop.exception) { r.exception=true; r.exc_cause=uop.exc_cause; }
 
     }
+
+    if (exe.divider.token_valid && exe.divider.arithmetic.busy &&
+        !divider_accepted) divider_step(exe.divider.arithmetic);
 }
 
 }
@@ -2055,6 +2144,10 @@ static void clear_resolved_masks_in_state(BoomCoreState& state, uint8_t resolve_
         clear_resolved_mask(state.rename.dispatch_packets[i].uop, resolve_mask);
     }
     for (int i=0; i<EXECUTE_RESULT_LANES; i++) clear_resolved_mask(state.execute.alu_results[i].uop, resolve_mask);
+    if (state.execute.divider.token_valid) {
+        clear_resolved_mask(state.execute.divider.uop, resolve_mask);
+        state.execute.divider.branch_mask &= (uint8_t)~resolve_mask;
+    }
     for (int i=0; i<ISSUE_WIDTH; i++) clear_resolved_mask(state.issue.issued_uops[i], resolve_mask);
     for (int i=0; i<ISSUE_QUEUE_ALU_DEPTH; i++) clear_resolved_mask(state.issue.alu_iq.entries[i].uop, resolve_mask);
     for (int i=0; i<ROB_DEPTH; i++) clear_resolved_mask(state.rob.entries[i].uop, resolve_mask);
@@ -2107,6 +2200,11 @@ static void kill_execute_state(BoomCoreState& state, uint8_t mispredict_mask) {
         if (state.execute.alu_results[i].valid && killed_by_mask(state.execute.alu_results[i].uop, mispredict_mask)) {
             state.execute.alu_results[i] = ExecuteState::AluResult();
         }
+    }
+    if (state.execute.divider.token_valid &&
+        (state.execute.divider.branch_mask & mispredict_mask) != 0) {
+        divider_reset(state.execute.divider.arithmetic);
+        state.execute.divider = DividerExecutionState();
     }
     if (state.completion.load_response.valid &&
         killed_by_mask(state.completion.load_response.uop, mispredict_mask))
@@ -2671,7 +2769,9 @@ void boom_core_step(BoomCoreState& state, PipeSignals& pipe) {
     boom::rename_module(state);
     boom::rob_allocate(state);
     state.issue.port_ready[MEM_ISSUE_LANE] = !state.execute.alu_results[MEM_ISSUE_LANE].valid;
-    state.issue.port_ready[INT_ISSUE_LANE] = !state.execute.alu_results[INT_ISSUE_LANE].valid;
+    state.issue.port_ready[INT_ISSUE_LANE] =
+        !state.execute.alu_results[INT_ISSUE_LANE].valid &&
+        !state.execute.divider.arithmetic.result_pending;
     state.issue.port_ready[FP_ISSUE_LANE] = false;
     boom::issue_module(state);
     boom::execute_module(state);
@@ -2725,6 +2825,13 @@ void boom_core_reset_step(BoomCoreState& state, ResetControllerState& reset_ctrl
         state.rob.commit_valid = false;
         state.completion = CompletionPendingState();
         for (int i=0; i<EXECUTE_RESULT_LANES; i++) state.execute.alu_results[i]=ExecuteState::AluResult();
+        boom::divider_reset(state.execute.divider.arithmetic);
+        state.execute.divider.token_valid = false;
+        state.execute.divider.uop = MicroOp();
+        state.execute.divider.rob_idx = 0;
+        state.execute.divider.pdst = 0;
+        state.execute.divider.allocation_id = 0;
+        state.execute.divider.branch_mask = 0;
         advance_reset(reset_ctrl, RESET_FRONTEND);
         break;
 
@@ -2850,6 +2957,13 @@ RESET_ROB_INIT:
             state.execute.alu_results[i].mispredict = false;
             state.execute.alu_results[i].memory_valid = false;
         }
+        boom::divider_reset(state.execute.divider.arithmetic);
+        state.execute.divider.token_valid = false;
+        state.execute.divider.uop = MicroOp();
+        state.execute.divider.rob_idx = 0;
+        state.execute.divider.pdst = 0;
+        state.execute.divider.allocation_id = 0;
+        state.execute.divider.branch_mask = 0;
         advance_reset(reset_ctrl, RESET_LSU);
         break;
 
@@ -3267,11 +3381,17 @@ void synth_execute_top(uint8_t seed_uopc, uint64_t seed_rs1, uint64_t seed_rs2, 
     state.issue.issued_uops[INT_ISSUE_LANE].uopc = seed_uopc;
     state.issue.issued_uops[INT_ISSUE_LANE].iq_type = IQ_ALU;
     state.issue.issued_uops[INT_ISSUE_LANE].fu_code =
-        seed_uopc >= 16 && seed_uopc <= 20 ? FU_MUL : FU_ALU;
+        seed_uopc >= 16 && seed_uopc <= 20 ? FU_MUL :
+        (seed_uopc >= 21 && seed_uopc <= 28 ? FU_DIV : FU_ALU);
     state.issue.issued_uops[INT_ISSUE_LANE].rename.prs1 = 1;
     state.issue.issued_uops[INT_ISSUE_LANE].rename.prs2 = 2;
     state.issue.issued_uops[INT_ISSUE_LANE].rename.pdst = 3;
     state.issue.issued_uops[INT_ISSUE_LANE].rename.dst_rtype = DST_INT;
+    state.issue.issued_uops[INT_ISSUE_LANE].queue.rob_idx = 1;
+    state.issue.issued_uops[INT_ISSUE_LANE].queue.rob_allocation_id = 1;
+    state.rob.entries[1].valid = true;
+    state.rob.entries[1].busy = true;
+    state.rob.entries[1].uop.queue.rob_allocation_id = 1;
     boom::prf_seed(state, 1, seed_rs1);
     boom::prf_seed(state, 2, seed_rs2);
     boom::execute_module(state);
@@ -3314,6 +3434,117 @@ void synth_divider_top(bool reset, bool request_valid, uint8_t operation,
     response_valid = response.valid;
     result = response.result;
     busy = state.busy;
+}
+
+void synth_m3b_divider_core_top(bool reset, bool request_valid, uint8_t operation,
+                                uint64_t dividend, uint64_t divisor,
+                                uint8_t rob_idx, uint32_t allocation_id,
+                                uint8_t pdst, uint8_t branch_mask,
+                                bool completion_ready, bool branch_kill,
+                                uint8_t kill_mask, bool stale_owner,
+                                uint8_t int_collision,
+                                bool& request_accepted, bool& busy,
+                                bool& response_pending, bool& token_valid,
+                                bool& int_result_valid, uint64_t& result,
+                                bool& writeback_valid, bool& rob_complete,
+                                uint32_t& active_allocation) {
+    static BoomCoreState state;
+    request_accepted = false;
+    if (reset) {
+        divider_reset(state.execute.divider.arithmetic);
+        state.execute.divider = DividerExecutionState();
+        state.execute.alu_results[INT_ISSUE_LANE] = ExecuteState::AluResult();
+        state.completion = CompletionPendingState();
+        for (int i=0; i<ROB_DEPTH; i++) state.rob.entries[i] = RobEntry();
+        for (int i=0; i<ISSUE_WIDTH; i++) {
+            state.issue.issued_valids[i] = false;
+            state.issue.issued_uops[i] = MicroOp();
+        }
+        for (int i=0; i<INT_PHYS_REGS; i++)
+            state.rename.int_free_list.busy_table[i] = false;
+    } else {
+        state.global_flush = false;
+        state.brupdate = BranchUpdate();
+        state.issue.issued_valids[INT_ISSUE_LANE] = false;
+        if (stale_owner && state.execute.divider.token_valid) {
+            uint8_t active_rob = state.execute.divider.rob_idx;
+            state.rob.entries[active_rob].uop.queue.rob_allocation_id =
+                state.execute.divider.allocation_id + 1;
+        }
+        if (branch_kill) {
+            state.brupdate.valid = true;
+            state.brupdate.mispredict = true;
+            state.brupdate.resolve_mask = kill_mask;
+            state.brupdate.mispredict_mask = kill_mask;
+        }
+        if (int_collision != 0 &&
+            !state.execute.alu_results[INT_ISSUE_LANE].valid) {
+            uint8_t collision_rob = (uint8_t)((rob_idx + 1) % ROB_DEPTH);
+            uint32_t collision_allocation = allocation_id + 1;
+            MicroOp collision;
+            collision.uopc = int_collision == 2 ? 16 : 1;
+            collision.fu_code = int_collision == 2 ? FU_MUL : FU_ALU;
+            collision.iq_type = IQ_ALU;
+            collision.rename.pdst = pdst == 51 ? 50 : (uint8_t)(pdst + 1);
+            collision.rename.dst_rtype = DST_INT;
+            collision.queue.rob_idx = collision_rob;
+            collision.queue.rob_allocation_id = collision_allocation;
+            state.rob.entries[collision_rob] = RobEntry();
+            state.rob.entries[collision_rob].valid = true;
+            state.rob.entries[collision_rob].busy = true;
+            state.rob.entries[collision_rob].uop = collision;
+            state.execute.alu_results[INT_ISSUE_LANE].valid = true;
+            state.execute.alu_results[INT_ISSUE_LANE].uop = collision;
+            state.execute.alu_results[INT_ISSUE_LANE].result =
+                int_collision == 2 ? dividend * divisor : dividend + divisor;
+        }
+        bool can_request = request_valid && operation < 8 && rob_idx < ROB_DEPTH &&
+            allocation_id != 0 && !state.execute.divider.token_valid &&
+            divider_request_ready(state.execute.divider.arithmetic) &&
+            !state.execute.alu_results[INT_ISSUE_LANE].valid;
+        if (can_request) {
+            MicroOp request;
+            request.uopc = (uint8_t)(21 + operation);
+            request.fu_code = FU_DIV;
+            request.iq_type = IQ_ALU;
+            request.rename.prs1 = 1;
+            request.rename.prs2 = 2;
+            request.rename.pdst = pdst;
+            request.rename.dst_rtype = pdst == 0 ? DST_X0 : DST_INT;
+            request.queue.rob_idx = rob_idx;
+            request.queue.rob_allocation_id = allocation_id;
+            request.branch.br_mask = branch_mask;
+            state.rob.entries[rob_idx] = RobEntry();
+            state.rob.entries[rob_idx].valid = true;
+            state.rob.entries[rob_idx].busy = true;
+            state.rob.entries[rob_idx].uop = request;
+            state.rename.int_free_list.busy_table[pdst] = pdst != 0;
+            boom::prf_seed(state, 1, dividend);
+            boom::prf_seed(state, 2, divisor);
+            state.issue.issued_valids[INT_ISSUE_LANE] = true;
+            state.issue.issued_uops[INT_ISSUE_LANE] = request;
+            request_accepted = true;
+        }
+        boom::execute_module(state);
+        if (completion_ready) boom::completion_service_execute(state);
+    }
+    const boom::DividerResponse response =
+        boom::divider_response(state.execute.divider.arithmetic);
+    busy = state.execute.divider.arithmetic.busy;
+    response_pending = response.valid;
+    token_valid = state.execute.divider.token_valid;
+    int_result_valid = state.execute.alu_results[INT_ISSUE_LANE].valid ||
+        state.completion.int_execute.valid;
+    result = state.execute.alu_results[INT_ISSUE_LANE].valid ?
+        state.execute.alu_results[INT_ISSUE_LANE].result :
+        (state.completion.int_execute.valid ? state.completion.int_execute.value :
+         (state.completion.writebacks[0].valid ? state.completion.writebacks[0].value :
+          (state.completion.writebacks[1].valid ? state.completion.writebacks[1].value : 0)));
+    writeback_valid = state.completion.writebacks[0].valid ||
+        state.completion.writebacks[1].valid;
+    rob_complete = state.completion.rob_completes_this_cycle != 0;
+    active_allocation = state.execute.divider.token_valid ?
+        state.execute.divider.allocation_id : 0;
 }
 
 void synth_completion_top(uint8_t seed_sources, uint8_t seed_head,

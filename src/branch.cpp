@@ -66,6 +66,10 @@ static void clear_resolved_masks_in_state(BoomCoreState& state, uint8_t resolve_
         clear_resolved_mask(state.rename.dispatch_packets[i].uop, resolve_mask);
     }
     for (int i=0; i<EXECUTE_RESULT_LANES; i++) clear_resolved_mask(state.execute.alu_results[i].uop, resolve_mask);
+    if (state.execute.divider.token_valid) {
+        clear_resolved_mask(state.execute.divider.uop, resolve_mask);
+        state.execute.divider.branch_mask &= (uint8_t)~resolve_mask;
+    }
     for (int i=0; i<ISSUE_WIDTH; i++) clear_resolved_mask(state.issue.issued_uops[i], resolve_mask);
     for (int i=0; i<ISSUE_QUEUE_ALU_DEPTH; i++) clear_resolved_mask(state.issue.alu_iq.entries[i].uop, resolve_mask);
     for (int i=0; i<ROB_DEPTH; i++) clear_resolved_mask(state.rob.entries[i].uop, resolve_mask);
@@ -118,6 +122,11 @@ static void kill_execute_state(BoomCoreState& state, uint8_t mispredict_mask) {
         if (state.execute.alu_results[i].valid && killed_by_mask(state.execute.alu_results[i].uop, mispredict_mask)) {
             state.execute.alu_results[i] = ExecuteState::AluResult();
         }
+    }
+    if (state.execute.divider.token_valid &&
+        (state.execute.divider.branch_mask & mispredict_mask) != 0) {
+        divider_reset(state.execute.divider.arithmetic);
+        state.execute.divider = DividerExecutionState();
     }
     if (state.completion.load_response.valid &&
         killed_by_mask(state.completion.load_response.uop, mispredict_mask))

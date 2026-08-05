@@ -34,7 +34,9 @@ void boom_core_step(BoomCoreState& state, PipeSignals& pipe) {
     boom::rename_module(state);
     boom::rob_allocate(state);
     state.issue.port_ready[MEM_ISSUE_LANE] = !state.execute.alu_results[MEM_ISSUE_LANE].valid;
-    state.issue.port_ready[INT_ISSUE_LANE] = !state.execute.alu_results[INT_ISSUE_LANE].valid;
+    state.issue.port_ready[INT_ISSUE_LANE] =
+        !state.execute.alu_results[INT_ISSUE_LANE].valid &&
+        !state.execute.divider.arithmetic.result_pending;
     state.issue.port_ready[FP_ISSUE_LANE] = false;
     boom::issue_module(state);
     boom::execute_module(state);

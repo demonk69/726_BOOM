@@ -1,0 +1,268 @@
+
+
+================================================================
+== Vitis HLS Report for 'synth_divider_top'
+================================================================
+* Date:           Wed Aug  5 16:31:53 2026
+
+* Version:        2021.2 (Build 3367213 on Tue Oct 19 02:47:39 MDT 2021)
+* Project:        synth_divider_top
+* Solution:       solution_gate4_1_m3b (Vivado IP Flow Target)
+* Product family: zynquplus
+* Target device:  xczu7ev-ffvc1156-2-e
+
+
+================================================================
+== Performance Estimates
+================================================================
++ Timing: 
+    * Summary: 
+    +--------+----------+----------+------------+
+    |  Clock |  Target  | Estimated| Uncertainty|
+    +--------+----------+----------+------------+
+    |ap_clk  |  10.00 ns|  5.734 ns|     2.70 ns|
+    +--------+----------+----------+------------+
+
++ Latency: 
+    * Summary: 
+    +---------+---------+-----------+-----------+-----+-----+---------+
+    |  Latency (cycles) |   Latency (absolute)  |  Interval | Pipeline|
+    |   min   |   max   |    min    |    max    | min | max |   Type  |
+    +---------+---------+-----------+-----------+-----+-----+---------+
+    |        1|        2|  10.000 ns|  20.000 ns|    2|    3|       no|
+    +---------+---------+-----------+-----------+-----+-----+---------+
+
+    + Detail: 
+        * Instance: 
+        N/A
+
+        * Loop: 
+        N/A
+
+============================================================
++ Verbose Summary: Synthesis Manager
+============================================================
+InlineROM: 1
+ExposeGlobal: 0
+============================================================
++ Verbose Summary: CDFG Model
+============================================================
+IsTopModel: 1
+ResetActiveHigh: 1
+IsCombinational: 0
+IsDatapathOnly: 0
+HasWiredReturn: 1
+HasMFsm: 0
+HasVarLatency: 1
+IsPipeline: 0
+IsRtlPipelined: 0
+IsInstanceOverlapped: 0
+IsDontTouch: 0
+HasImplIP: 0
+IsGatedGlobalClock: 0
+
+
+============================================================
++ Verbose Summary: Schedule
+============================================================
+* Number of FSM states : 3
+* Pipeline : 0
+* Dataflow Pipeline: 0
+
+* FSM state transitions: 
+1 --> 2 3 
+2 --> 3 
+3 --> 
+
+* FSM state operations: 
+
+State 1 <SV = 0> <Delay = 0.71>
+ST_1 : Operation 4 [1/1] (0.00ns)   --->   "%spectopmodule_ln0 = spectopmodule void @_ssdm_op_SpecTopModule, void @empty_1"   --->   Operation 4 'spectopmodule' 'spectopmodule_ln0' <Predicate = true> <Delay = 0.00>
+ST_1 : Operation 5 [1/1] (0.00ns)   --->   "%specbitsmap_ln0 = specbitsmap void @_ssdm_op_SpecBitsMap, i1 %reset"   --->   Operation 5 'specbitsmap' 'specbitsmap_ln0' <Predicate = true> <Delay = 0.00>
+ST_1 : Operation 6 [1/1] (0.00ns)   --->   "%specinterface_ln0 = specinterface void @_ssdm_op_SpecInterface, i1 %reset, void @empty, i32 0, i32 0, void @empty_0, i32 0, i32 0, void @empty_0, void @empty_0, void @empty_0, i32 0, i32 0, i32 0, i32 0, void @empty_0, void @empty_0"   --->   Operation 6 'specinterface' 'specinterface_ln0' <Predicate = true> <Delay = 0.00>
+ST_1 : Operation 7 [1/1] (0.00ns)   --->   "%specbitsmap_ln0 = specbitsmap void @_ssdm_op_SpecBitsMap, i1 %request_valid"   --->   Operation 7 'specbitsmap' 'specbitsmap_ln0' <Predicate = true> <Delay = 0.00>
+ST_1 : Operation 8 [1/1] (0.00ns)   --->   "%specinterface_ln0 = specinterface void @_ssdm_op_SpecInterface, i1 %request_valid, void @empty, i32 0, i32 0, void @empty_0, i32 0, i32 0, void @empty_0, void @empty_0, void @empty_0, i32 0, i32 0, i32 0, i32 0, void @empty_0, void @empty_0"   --->   Operation 8 'specinterface' 'specinterface_ln0' <Predicate = true> <Delay = 0.00>
+ST_1 : Operation 9 [1/1] (0.00ns)   --->   "%specbitsmap_ln0 = specbitsmap void @_ssdm_op_SpecBitsMap, i8 %operation"   --->   Operation 9 'specbitsmap' 'specbitsmap_ln0' <Predicate = true> <Delay = 0.00>
+ST_1 : Operation 10 [1/1] (0.00ns)   --->   "%specinterface_ln0 = specinterface void @_ssdm_op_SpecInterface, i8 %operation, void @empty, i32 0, i32 0, void @empty_0, i32 0, i32 0, void @empty_0, void @empty_0, void @empty_0, i32 0, i32 0, i32 0, i32 0, void @empty_0, void @empty_0"   --->   Operation 10 'specinterface' 'specinterface_ln0' <Predicate = true> <Delay = 0.00>
+ST_1 : Operation 11 [1/1] (0.00ns)   --->   "%specbitsmap_ln0 = specbitsmap void @_ssdm_op_SpecBitsMap, i64 %dividend"   --->   Operation 11 'specbitsmap' 'specbitsmap_ln0' <Predicate = true> <Delay = 0.00>
+ST_1 : Operation 12 [1/1] (0.00ns)   --->   "%specinterface_ln0 = specinterface void @_ssdm_op_SpecInterface, i64 %dividend, void @empty, i32 0, i32 0, void @empty_0, i32 0, i32 0, void @empty_0, void @empty_0, void @empty_0, i32 0, i32 0, i32 0, i32 0, void @empty_0, void @empty_0"   --->   Operation 12 'specinterface' 'specinterface_ln0' <Predicate = true> <Delay = 0.00>
+ST_1 : Operation 13 [1/1] (0.00ns)   --->   "%specbitsmap_ln0 = specbitsmap void @_ssdm_op_SpecBitsMap, i64 %divisor"   --->   Operation 13 'specbitsmap' 'specbitsmap_ln0' <Predicate = true> <Delay = 0.00>
+ST_1 : Operation 14 [1/1] (0.00ns)   --->   "%specinterface_ln0 = specinterface void @_ssdm_op_SpecInterface, i64 %divisor, void @empty, i32 0, i32 0, void @empty_0, i32 0, i32 0, void @empty_0, void @empty_0, void @empty_0, i32 0, i32 0, i32 0, i32 0, void @empty_0, void @empty_0"   --->   Operation 14 'specinterface' 'specinterface_ln0' <Predicate = true> <Delay = 0.00>
+ST_1 : Operation 15 [1/1] (0.00ns)   --->   "%specbitsmap_ln0 = specbitsmap void @_ssdm_op_SpecBitsMap, i1 %response_ready"   --->   Operation 15 'specbitsmap' 'specbitsmap_ln0' <Predicate = true> <Delay = 0.00>
+ST_1 : Operation 16 [1/1] (0.00ns)   --->   "%specinterface_ln0 = specinterface void @_ssdm_op_SpecInterface, i1 %response_ready, void @empty, i32 0, i32 0, void @empty_0, i32 0, i32 0, void @empty_0, void @empty_0, void @empty_0, i32 0, i32 0, i32 0, i32 0, void @empty_0, void @empty_0"   --->   Operation 16 'specinterface' 'specinterface_ln0' <Predicate = true> <Delay = 0.00>
+ST_1 : Operation 17 [1/1] (0.00ns)   --->   "%specbitsmap_ln0 = specbitsmap void @_ssdm_op_SpecBitsMap, i1 %request_ready"   --->   Operation 17 'specbitsmap' 'specbitsmap_ln0' <Predicate = true> <Delay = 0.00>
+ST_1 : Operation 18 [1/1] (0.00ns)   --->   "%specinterface_ln0 = specinterface void @_ssdm_op_SpecInterface, i1 %request_ready, void @empty, i32 0, i32 0, void @empty_0, i32 0, i32 0, void @empty_0, void @empty_0, void @empty_0, i32 0, i32 0, i32 0, i32 0, void @empty_0, void @empty_0"   --->   Operation 18 'specinterface' 'specinterface_ln0' <Predicate = true> <Delay = 0.00>
+ST_1 : Operation 19 [1/1] (0.00ns)   --->   "%specbitsmap_ln0 = specbitsmap void @_ssdm_op_SpecBitsMap, i1 %response_valid"   --->   Operation 19 'specbitsmap' 'specbitsmap_ln0' <Predicate = true> <Delay = 0.00>
+ST_1 : Operation 20 [1/1] (0.00ns)   --->   "%specinterface_ln0 = specinterface void @_ssdm_op_SpecInterface, i1 %response_valid, void @empty, i32 0, i32 0, void @empty_0, i32 0, i32 0, void @empty_0, void @empty_0, void @empty_0, i32 0, i32 0, i32 0, i32 0, void @empty_0, void @empty_0"   --->   Operation 20 'specinterface' 'specinterface_ln0' <Predicate = true> <Delay = 0.00>
+ST_1 : Operation 21 [1/1] (0.00ns)   --->   "%specbitsmap_ln0 = specbitsmap void @_ssdm_op_SpecBitsMap, i64 %result"   --->   Operation 21 'specbitsmap' 'specbitsmap_ln0' <Predicate = true> <Delay = 0.00>
+ST_1 : Operation 22 [1/1] (0.00ns)   --->   "%specinterface_ln0 = specinterface void @_ssdm_op_SpecInterface, i64 %result, void @empty, i32 0, i32 0, void @empty_0, i32 0, i32 0, void @empty_0, void @empty_0, void @empty_0, i32 0, i32 0, i32 0, i32 0, void @empty_0, void @empty_0"   --->   Operation 22 'specinterface' 'specinterface_ln0' <Predicate = true> <Delay = 0.00>
+ST_1 : Operation 23 [1/1] (0.00ns)   --->   "%specbitsmap_ln0 = specbitsmap void @_ssdm_op_SpecBitsMap, i1 %busy"   --->   Operation 23 'specbitsmap' 'specbitsmap_ln0' <Predicate = true> <Delay = 0.00>
+ST_1 : Operation 24 [1/1] (0.00ns)   --->   "%specinterface_ln0 = specinterface void @_ssdm_op_SpecInterface, i1 %busy, void @empty, i32 0, i32 0, void @empty_0, i32 0, i32 0, void @empty_0, void @empty_0, void @empty_0, i32 0, i32 0, i32 0, i32 0, void @empty_0, void @empty_0"   --->   Operation 24 'specinterface' 'specinterface_ln0' <Predicate = true> <Delay = 0.00>
+ST_1 : Operation 25 [1/1] (0.00ns)   --->   "%response_ready_read = read i1 @_ssdm_op_Read.ap_auto.i1, i1 %response_ready" [/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:3413]   --->   Operation 25 'read' 'response_ready_read' <Predicate = true> <Delay = 0.00>
+ST_1 : Operation 26 [1/1] (0.00ns)   --->   "%divisor_read = read i64 @_ssdm_op_Read.ap_auto.i64, i64 %divisor" [/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:3413]   --->   Operation 26 'read' 'divisor_read' <Predicate = true> <Delay = 0.00>
+ST_1 : Operation 27 [1/1] (0.00ns)   --->   "%dividend_read = read i64 @_ssdm_op_Read.ap_auto.i64, i64 %dividend" [/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:3413]   --->   Operation 27 'read' 'dividend_read' <Predicate = true> <Delay = 0.00>
+ST_1 : Operation 28 [1/1] (0.00ns)   --->   "%operation_read = read i8 @_ssdm_op_Read.ap_auto.i8, i8 %operation" [/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:3413]   --->   Operation 28 'read' 'operation_read' <Predicate = true> <Delay = 0.00>
+ST_1 : Operation 29 [1/1] (0.00ns)   --->   "%request_valid_read = read i1 @_ssdm_op_Read.ap_auto.i1, i1 %request_valid" [/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:3413]   --->   Operation 29 'read' 'request_valid_read' <Predicate = true> <Delay = 0.00>
+ST_1 : Operation 30 [1/1] (0.00ns)   --->   "%reset_read = read i1 @_ssdm_op_Read.ap_auto.i1, i1 %reset" [/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:3413]   --->   Operation 30 'read' 'reset_read' <Predicate = true> <Delay = 0.00>
+ST_1 : Operation 31 [1/1] (0.00ns)   --->   "%br_ln3419 = br i1 %reset_read, void, void" [/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:3419]   --->   Operation 31 'br' 'br_ln3419' <Predicate = true> <Delay = 0.00>
+ST_1 : Operation 32 [1/1] (0.00ns)   --->   "%br_ln3422 = br i1 %response_ready_read, void %.critedge, void" [/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:3422]   --->   Operation 32 'br' 'br_ln3422' <Predicate = (!reset_read)> <Delay = 0.00>
+ST_1 : Operation 33 [1/1] (0.00ns)   --->   "%response_valid_6 = load i1 %state_result_pending" [/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:1888]   --->   Operation 33 'load' 'response_valid_6' <Predicate = (!reset_read & response_ready_read)> <Delay = 0.00>
+ST_1 : Operation 34 [1/1] (0.00ns)   --->   "%br_ln3422 = br i1 %response_valid_6, void %.critedge, void %_ZN4boom24divider_consume_responseERNS_12DividerStateE.exit" [/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:3422]   --->   Operation 34 'br' 'br_ln3422' <Predicate = (!reset_read & response_ready_read)> <Delay = 0.00>
+ST_1 : Operation 35 [1/1] (0.42ns)   --->   "%store_ln1895 = store i1 0, i1 %state_result_pending" [/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:1895]   --->   Operation 35 'store' 'store_ln1895' <Predicate = (!reset_read & response_ready_read & response_valid_6)> <Delay = 0.42>
+ST_1 : Operation 36 [1/1] (0.42ns)   --->   "%store_ln1896 = store i64 0, i64 %state_original_dividend" [/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:1896]   --->   Operation 36 'store' 'store_ln1896' <Predicate = (!reset_read & response_ready_read & response_valid_6)> <Delay = 0.42>
+ST_1 : Operation 37 [1/1] (0.00ns)   --->   "%br_ln3423 = br void %.critedge" [/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:3423]   --->   Operation 37 'br' 'br_ln3423' <Predicate = (!reset_read & response_ready_read & response_valid_6)> <Delay = 0.00>
+ST_1 : Operation 38 [1/1] (0.00ns)   --->   "%store_ln1767 = store i1 0, i1 %state_busy" [/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:1767]   --->   Operation 38 'store' 'store_ln1767' <Predicate = (reset_read)> <Delay = 0.00>
+ST_1 : Operation 39 [1/1] (0.42ns)   --->   "%store_ln1768 = store i1 0, i1 %state_result_pending" [/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:1768]   --->   Operation 39 'store' 'store_ln1768' <Predicate = (reset_read)> <Delay = 0.42>
+ST_1 : Operation 40 [1/1] (0.00ns)   --->   "%store_ln1769 = store i8 0, i8 %state_operation" [/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:1769]   --->   Operation 40 'store' 'store_ln1769' <Predicate = (reset_read)> <Delay = 0.00>
+ST_1 : Operation 41 [1/1] (0.42ns)   --->   "%store_ln1770 = store i64 0, i64 %state_original_dividend" [/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:1770]   --->   Operation 41 'store' 'store_ln1770' <Predicate = (reset_read)> <Delay = 0.42>
+ST_1 : Operation 42 [1/1] (0.42ns)   --->   "%store_ln1772 = store i64 0, i64 %state_dividend_magnitude" [/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:1772]   --->   Operation 42 'store' 'store_ln1772' <Predicate = (reset_read)> <Delay = 0.42>
+ST_1 : Operation 43 [1/1] (0.00ns)   --->   "%store_ln1773 = store i64 0, i64 %state_divisor_magnitude" [/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:1773]   --->   Operation 43 'store' 'store_ln1773' <Predicate = (reset_read)> <Delay = 0.00>
+ST_1 : Operation 44 [1/1] (0.42ns)   --->   "%store_ln1774 = store i63 0, i63 %state_quotient" [/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:1774]   --->   Operation 44 'store' 'store_ln1774' <Predicate = (reset_read)> <Delay = 0.42>
+ST_1 : Operation 45 [1/1] (0.42ns)   --->   "%store_ln1775 = store i64 0, i64 %state_remainder" [/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:1775]   --->   Operation 45 'store' 'store_ln1775' <Predicate = (reset_read)> <Delay = 0.42>
+ST_1 : Operation 46 [1/1] (0.42ns)   --->   "%store_ln1776 = store i8 0, i8 %state_iteration" [/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:1776]   --->   Operation 46 'store' 'store_ln1776' <Predicate = (reset_read)> <Delay = 0.42>
+ST_1 : Operation 47 [1/1] (0.00ns)   --->   "%store_ln1777 = store i1 0, i1 %state_quotient_negative" [/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:1777]   --->   Operation 47 'store' 'store_ln1777' <Predicate = (reset_read)> <Delay = 0.00>
+ST_1 : Operation 48 [1/1] (0.00ns)   --->   "%store_ln1778 = store i1 0, i1 %state_remainder_negative" [/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:1778]   --->   Operation 48 'store' 'store_ln1778' <Predicate = (reset_read)> <Delay = 0.00>
+ST_1 : Operation 49 [1/1] (0.00ns)   --->   "%store_ln1779 = store i1 0, i1 %state_word_operation" [/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:1779]   --->   Operation 49 'store' 'store_ln1779' <Predicate = (reset_read)> <Delay = 0.00>
+ST_1 : Operation 50 [1/1] (0.00ns)   --->   "%br_ln3421 = br void %_ZN4boom21divider_request_readyERKNS_12DividerStateE.exit" [/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:3421]   --->   Operation 50 'br' 'br_ln3421' <Predicate = (reset_read)> <Delay = 0.00>
+
+State 2 <SV = 1> <Delay = 5.73>
+ST_2 : Operation 51 [1/1] (5.73ns)   --->   "%accepted = call i1 @divider_accept, i1 %request_valid_read, i8 %operation_read, i64 %dividend_read, i64 %divisor_read, i1 %state_busy, i1 %state_result_pending, i8 %state_operation, i1 %state_word_operation, i8 %state_iteration, i63 %state_quotient, i64 %state_remainder, i64 %state_dividend_magnitude, i64 %state_divisor_magnitude, i1 %state_quotient_negative, i1 %state_remainder_negative, i64 %state_original_dividend" [/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:3429]   --->   Operation 51 'call' 'accepted' <Predicate = true> <Delay = 5.73> <CoreType = "Generic">   --->   Core 0 '' <Latency = 0> <II = 1> <Delay = 1.00> <Generic> <Opcode : >
+ST_2 : Operation 52 [1/1] (0.00ns)   --->   "%br_ln3430 = br i1 %accepted, void, void %.critedge._crit_edge" [/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:3430]   --->   Operation 52 'br' 'br_ln3430' <Predicate = true> <Delay = 0.00>
+
+State 3 <SV = 2> <Delay = 5.22>
+ST_3 : Operation 53 [1/1] (0.00ns)   --->   "%state_busy_load = load i1 %state_busy" [/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:1854]   --->   Operation 53 'load' 'state_busy_load' <Predicate = (!reset_read & !accepted)> <Delay = 0.00>
+ST_3 : Operation 54 [1/1] (0.00ns)   --->   "%br_ln1854 = br i1 %state_busy_load, void %._crit_edge, void" [/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:1854]   --->   Operation 54 'br' 'br_ln1854' <Predicate = (!reset_read & !accepted)> <Delay = 0.00>
+ST_3 : Operation 55 [1/1] (0.00ns)   --->   "%state_result_pending_load = load i1 %state_result_pending" [/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:1854]   --->   Operation 55 'load' 'state_result_pending_load' <Predicate = (!reset_read & !accepted & state_busy_load)> <Delay = 0.00>
+ST_3 : Operation 56 [1/1] (0.00ns)   --->   "%br_ln1854 = br i1 %state_result_pending_load, void, void %._crit_edge" [/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:1854]   --->   Operation 56 'br' 'br_ln1854' <Predicate = (!reset_read & !accepted & state_busy_load)> <Delay = 0.00>
+ST_3 : Operation 57 [1/1] (0.00ns)   --->   "%state_word_operation_load = load i1 %state_word_operation" [/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:1856]   --->   Operation 57 'load' 'state_word_operation_load' <Predicate = (!reset_read & !accepted & state_busy_load & !state_result_pending_load)> <Delay = 0.00>
+ST_3 : Operation 58 [1/1] (0.00ns)   --->   "%state_dividend_magnitude_load = load i64 %state_dividend_magnitude" [/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:1858]   --->   Operation 58 'load' 'state_dividend_magnitude_load' <Predicate = (!reset_read & !accepted & state_busy_load & !state_result_pending_load)> <Delay = 0.00>
+ST_3 : Operation 59 [1/1] (0.00ns)   --->   "%tmp = bitselect i1 @_ssdm_op_BitSelect.i1.i64.i32, i64 %state_dividend_magnitude_load, i32 31" [/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:1858]   --->   Operation 59 'bitselect' 'tmp' <Predicate = (!reset_read & !accepted & state_busy_load & !state_result_pending_load)> <Delay = 0.00>
+ST_3 : Operation 60 [1/1] (0.00ns)   --->   "%tmp_1 = bitselect i1 @_ssdm_op_BitSelect.i1.i64.i32, i64 %state_dividend_magnitude_load, i32 63" [/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:1857]   --->   Operation 60 'bitselect' 'tmp_1' <Predicate = (!reset_read & !accepted & state_busy_load & !state_result_pending_load)> <Delay = 0.00>
+ST_3 : Operation 61 [1/1] (0.17ns)   --->   "%input_bit = select i1 %state_word_operation_load, i1 %tmp, i1 %tmp_1" [/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:1857]   --->   Operation 61 'select' 'input_bit' <Predicate = (!reset_read & !accepted & state_busy_load & !state_result_pending_load)> <Delay = 0.17> <CoreInst = "Sel">   --->   Core 73 'Sel' <Latency = 0> <II = 1> <Delay = 0.42> <FuncUnit> <Opcode : 'select'> <InPorts = 3> <OutPorts = 1>
+ST_3 : Operation 62 [1/1] (0.00ns)   --->   "%shl_ln1860 = shl i64 %state_dividend_magnitude_load, i64 1" [/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:1860]   --->   Operation 62 'shl' 'shl_ln1860' <Predicate = (!reset_read & !accepted & state_busy_load & !state_result_pending_load)> <Delay = 0.00>
+ST_3 : Operation 63 [1/1] (0.42ns)   --->   "%store_ln1860 = store i64 %shl_ln1860, i64 %state_dividend_magnitude" [/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:1860]   --->   Operation 63 'store' 'store_ln1860' <Predicate = (!reset_read & !accepted & state_busy_load & !state_result_pending_load)> <Delay = 0.42>
+ST_3 : Operation 64 [1/1] (0.00ns)   --->   "%state_remainder_load = load i64 %state_remainder" [/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:1862]   --->   Operation 64 'load' 'state_remainder_load' <Predicate = (!reset_read & !accepted & state_busy_load & !state_result_pending_load)> <Delay = 0.00>
+ST_3 : Operation 65 [1/1] (0.00ns) (grouped into LUT with out node subtract)   --->   "%shift_overflow = bitselect i1 @_ssdm_op_BitSelect.i1.i64.i32, i64 %state_remainder_load, i32 63" [/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:1862]   --->   Operation 65 'bitselect' 'shift_overflow' <Predicate = (!reset_read & !accepted & state_busy_load & !state_result_pending_load)> <Delay = 0.00>
+ST_3 : Operation 66 [1/1] (0.00ns)   --->   "%trunc_ln1863 = trunc i64 %state_remainder_load" [/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:1863]   --->   Operation 66 'trunc' 'trunc_ln1863' <Predicate = (!reset_read & !accepted & state_busy_load & !state_result_pending_load)> <Delay = 0.00>
+ST_3 : Operation 67 [1/1] (0.00ns)   --->   "%shifted_remainder = bitconcatenate i64 @_ssdm_op_BitConcatenate.i64.i63.i1, i63 %trunc_ln1863, i1 %input_bit" [/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:1863]   --->   Operation 67 'bitconcatenate' 'shifted_remainder' <Predicate = (!reset_read & !accepted & state_busy_load & !state_result_pending_load)> <Delay = 0.00>
+ST_3 : Operation 68 [1/1] (0.00ns)   --->   "%state_divisor_magnitude_load = load i64 %state_divisor_magnitude" [/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:1865]   --->   Operation 68 'load' 'state_divisor_magnitude_load' <Predicate = (!reset_read & !accepted & state_busy_load & !state_result_pending_load)> <Delay = 0.00>
+ST_3 : Operation 69 [1/1] (1.13ns)   --->   "%icmp_ln1865 = icmp_ult  i64 %shifted_remainder, i64 %state_divisor_magnitude_load" [/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:1865]   --->   Operation 69 'icmp' 'icmp_ln1865' <Predicate = (!reset_read & !accepted & state_busy_load & !state_result_pending_load)> <Delay = 1.13> <CoreInst = "Cmp">   --->   Core 9 'Cmp' <Latency = 0> <II = 1> <Delay = 0.84> <FuncUnit> <Opcode : 'icmp'> <InPorts = 2> <OutPorts = 1>
+ST_3 : Operation 70 [1/1] (0.00ns) (grouped into LUT with out node subtract)   --->   "%xor_ln1865 = xor i1 %icmp_ln1865, i1 1" [/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:1865]   --->   Operation 70 'xor' 'xor_ln1865' <Predicate = (!reset_read & !accepted & state_busy_load & !state_result_pending_load)> <Delay = 0.00> <CoreInst = "LogicGate">   --->   Core 74 'LogicGate' <Latency = 0> <II = 1> <Delay = 0.28> <FuncUnit> <Opcode : 'and' 'or' 'xor'> <InPorts = 2> <OutPorts = 1>
+ST_3 : Operation 71 [1/1] (0.28ns) (out node of the LUT)   --->   "%subtract = or i1 %shift_overflow, i1 %xor_ln1865" [/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:1864]   --->   Operation 71 'or' 'subtract' <Predicate = (!reset_read & !accepted & state_busy_load & !state_result_pending_load)> <Delay = 0.28> <CoreInst = "LogicGate">   --->   Core 74 'LogicGate' <Latency = 0> <II = 1> <Delay = 0.28> <FuncUnit> <Opcode : 'and' 'or' 'xor'> <InPorts = 2> <OutPorts = 1>
+ST_3 : Operation 72 [1/1] (1.08ns)   --->   "%sub_ln1867 = sub i64 %shifted_remainder, i64 %state_divisor_magnitude_load" [/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:1867]   --->   Operation 72 'sub' 'sub_ln1867' <Predicate = (!reset_read & !accepted & state_busy_load & !state_result_pending_load)> <Delay = 1.08> <CoreInst = "Adder">   --->   Core 1 'Adder' <Latency = 0> <II = 1> <Delay = 1.08> <FuncUnit> <Opcode : 'add' 'sub'> <InPorts = 2> <OutPorts = 1>
+ST_3 : Operation 73 [1/1] (0.42ns)   --->   "%select_ln1866 = select i1 %subtract, i64 %sub_ln1867, i64 %shifted_remainder" [/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:1866]   --->   Operation 73 'select' 'select_ln1866' <Predicate = (!reset_read & !accepted & state_busy_load & !state_result_pending_load)> <Delay = 0.42> <CoreInst = "Sel">   --->   Core 73 'Sel' <Latency = 0> <II = 1> <Delay = 0.42> <FuncUnit> <Opcode : 'select'> <InPorts = 3> <OutPorts = 1>
+ST_3 : Operation 74 [1/1] (0.42ns)   --->   "%store_ln1866 = store i64 %select_ln1866, i64 %state_remainder" [/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:1866]   --->   Operation 74 'store' 'store_ln1866' <Predicate = (!reset_read & !accepted & state_busy_load & !state_result_pending_load)> <Delay = 0.42>
+ST_3 : Operation 75 [1/1] (0.00ns)   --->   "%state_quotient_load = load i63 %state_quotient" [/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:1868]   --->   Operation 75 'load' 'state_quotient_load' <Predicate = (!reset_read & !accepted & state_busy_load & !state_result_pending_load)> <Delay = 0.00>
+ST_3 : Operation 76 [1/1] (0.00ns)   --->   "%trunc_ln1868 = trunc i63 %state_quotient_load" [/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:1868]   --->   Operation 76 'trunc' 'trunc_ln1868' <Predicate = (!reset_read & !accepted & state_busy_load & !state_result_pending_load)> <Delay = 0.00>
+ST_3 : Operation 77 [1/1] (0.00ns)   --->   "%value_assign = bitconcatenate i64 @_ssdm_op_BitConcatenate.i64.i63.i1, i63 %state_quotient_load, i1 %subtract" [/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:1868]   --->   Operation 77 'bitconcatenate' 'value_assign' <Predicate = (!reset_read & !accepted & state_busy_load & !state_result_pending_load)> <Delay = 0.00>
+ST_3 : Operation 78 [1/1] (0.00ns)   --->   "%value_assign_cast = bitconcatenate i63 @_ssdm_op_BitConcatenate.i63.i62.i1, i62 %trunc_ln1868, i1 %subtract" [/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:1868]   --->   Operation 78 'bitconcatenate' 'value_assign_cast' <Predicate = (!reset_read & !accepted & state_busy_load & !state_result_pending_load)> <Delay = 0.00>
+ST_3 : Operation 79 [1/1] (0.42ns)   --->   "%store_ln1868 = store i63 %value_assign_cast, i63 %state_quotient" [/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:1868]   --->   Operation 79 'store' 'store_ln1868' <Predicate = (!reset_read & !accepted & state_busy_load & !state_result_pending_load)> <Delay = 0.42>
+ST_3 : Operation 80 [1/1] (0.00ns)   --->   "%state_iteration_load = load i8 %state_iteration" [/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:1869]   --->   Operation 80 'load' 'state_iteration_load' <Predicate = (!reset_read & !accepted & state_busy_load & !state_result_pending_load)> <Delay = 0.00>
+ST_3 : Operation 81 [1/1] (0.76ns)   --->   "%add_ln1869 = add i8 %state_iteration_load, i8 1" [/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:1869]   --->   Operation 81 'add' 'add_ln1869' <Predicate = (!reset_read & !accepted & state_busy_load & !state_result_pending_load)> <Delay = 0.76> <CoreInst = "Adder">   --->   Core 1 'Adder' <Latency = 0> <II = 1> <Delay = 1.08> <FuncUnit> <Opcode : 'add' 'sub'> <InPorts = 2> <OutPorts = 1>
+ST_3 : Operation 82 [1/1] (0.42ns)   --->   "%store_ln1869 = store i8 %add_ln1869, i8 %state_iteration" [/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:1869]   --->   Operation 82 'store' 'store_ln1869' <Predicate = (!reset_read & !accepted & state_busy_load & !state_result_pending_load)> <Delay = 0.42>
+ST_3 : Operation 83 [1/1] (0.00ns) (grouped into LUT with out node icmp_ln1871)   --->   "%select_ln1871 = select i1 %state_word_operation_load, i8 32, i8 64" [/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:1871]   --->   Operation 83 'select' 'select_ln1871' <Predicate = (!reset_read & !accepted & state_busy_load & !state_result_pending_load)> <Delay = 0.00> <CoreInst = "Sel">   --->   Core 73 'Sel' <Latency = 0> <II = 1> <Delay = 0.42> <FuncUnit> <Opcode : 'select'> <InPorts = 3> <OutPorts = 1>
+ST_3 : Operation 84 [1/1] (0.84ns) (out node of the LUT)   --->   "%icmp_ln1871 = icmp_eq  i8 %add_ln1869, i8 %select_ln1871" [/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:1871]   --->   Operation 84 'icmp' 'icmp_ln1871' <Predicate = (!reset_read & !accepted & state_busy_load & !state_result_pending_load)> <Delay = 0.84> <CoreInst = "Cmp">   --->   Core 9 'Cmp' <Latency = 0> <II = 1> <Delay = 0.84> <FuncUnit> <Opcode : 'icmp'> <InPorts = 2> <OutPorts = 1>
+ST_3 : Operation 85 [1/1] (0.00ns)   --->   "%br_ln1871 = br i1 %icmp_ln1871, void %_ZN4boom12divider_stepERNS_12DividerStateE.exit, void %_ifconv" [/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:1871]   --->   Operation 85 'br' 'br_ln1871' <Predicate = (!reset_read & !accepted & state_busy_load & !state_result_pending_load)> <Delay = 0.00>
+ST_3 : Operation 86 [1/1] (0.43ns)   --->   "%select_ln1876 = select i1 %state_word_operation_load, i64 4294967295, i64 18446744073709551615" [/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:1876]   --->   Operation 86 'select' 'select_ln1876' <Predicate = (!reset_read & !accepted & state_busy_load & !state_result_pending_load & icmp_ln1871)> <Delay = 0.43> <CoreInst = "Sel">   --->   Core 73 'Sel' <Latency = 0> <II = 1> <Delay = 0.42> <FuncUnit> <Opcode : 'select'> <InPorts = 3> <OutPorts = 1>
+ST_3 : Operation 87 [1/1] (0.00ns)   --->   "%state_operation_load = load i8 %state_operation" [/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:1876]   --->   Operation 87 'load' 'state_operation_load' <Predicate = (!reset_read & !accepted & state_busy_load & !state_result_pending_load & icmp_ln1871)> <Delay = 0.00>
+ST_3 : Operation 88 [1/1] (0.00ns)   --->   "%state_quotient_negative_load = load i1 %state_quotient_negative" [/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:1880]   --->   Operation 88 'load' 'state_quotient_negative_load' <Predicate = (!reset_read & !accepted & state_busy_load & !state_result_pending_load & icmp_ln1871)> <Delay = 0.00>
+ST_3 : Operation 89 [1/1] (0.00ns)   --->   "%state_remainder_negative_load = load i1 %state_remainder_negative" [/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:1877]   --->   Operation 89 'load' 'state_remainder_negative_load' <Predicate = (!reset_read & !accepted & state_busy_load & !state_result_pending_load & icmp_ln1871)> <Delay = 0.00>
+ST_3 : Operation 90 [1/1] (1.08ns)   --->   "%sub_ln1747 = sub i64 0, i64 %value_assign" [/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:1747]   --->   Operation 90 'sub' 'sub_ln1747' <Predicate = (!reset_read & !accepted & state_busy_load & !state_result_pending_load & icmp_ln1871)> <Delay = 1.08> <CoreInst = "Adder">   --->   Core 1 'Adder' <Latency = 0> <II = 1> <Delay = 1.08> <FuncUnit> <Opcode : 'add' 'sub'> <InPorts = 2> <OutPorts = 1>
+ST_3 : Operation 91 [1/1] (0.00ns) (grouped into LUT with out node select_ln1880)   --->   "%and_ln1881 = and i64 %select_ln1876, i64 %sub_ln1747" [/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:1881]   --->   Operation 91 'and' 'and_ln1881' <Predicate = (!reset_read & !accepted & state_busy_load & !state_result_pending_load & icmp_ln1871)> <Delay = 0.00> <CoreInst = "LogicGate">   --->   Core 74 'LogicGate' <Latency = 0> <II = 1> <Delay = 0.28> <FuncUnit> <Opcode : 'and' 'or' 'xor'> <InPorts = 2> <OutPorts = 1>
+ST_3 : Operation 92 [1/1] (1.08ns)   --->   "%sub_ln1747_1 = sub i64 0, i64 %select_ln1866" [/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:1747]   --->   Operation 92 'sub' 'sub_ln1747_1' <Predicate = (!reset_read & !accepted & state_busy_load & !state_result_pending_load & icmp_ln1871)> <Delay = 1.08> <CoreInst = "Adder">   --->   Core 1 'Adder' <Latency = 0> <II = 1> <Delay = 1.08> <FuncUnit> <Opcode : 'add' 'sub'> <InPorts = 2> <OutPorts = 1>
+ST_3 : Operation 93 [1/1] (0.00ns) (grouped into LUT with out node select_ln1742)   --->   "%and_ln1878 = and i64 %select_ln1876, i64 %sub_ln1747_1" [/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:1878]   --->   Operation 93 'and' 'and_ln1878' <Predicate = (!reset_read & !accepted & state_busy_load & !state_result_pending_load & icmp_ln1871)> <Delay = 0.00> <CoreInst = "LogicGate">   --->   Core 74 'LogicGate' <Latency = 0> <II = 1> <Delay = 0.28> <FuncUnit> <Opcode : 'and' 'or' 'xor'> <InPorts = 2> <OutPorts = 1>
+ST_3 : Operation 94 [1/1] (0.84ns)   --->   "%icmp_ln1742 = icmp_eq  i8 %state_operation_load, i8 6" [/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:1742]   --->   Operation 94 'icmp' 'icmp_ln1742' <Predicate = (!reset_read & !accepted & state_busy_load & !state_result_pending_load & icmp_ln1871)> <Delay = 0.84> <CoreInst = "Cmp">   --->   Core 9 'Cmp' <Latency = 0> <II = 1> <Delay = 0.84> <FuncUnit> <Opcode : 'icmp'> <InPorts = 2> <OutPorts = 1>
+ST_3 : Operation 95 [1/1] (0.84ns)   --->   "%icmp_ln1742_1 = icmp_eq  i8 %state_operation_load, i8 3" [/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:1742]   --->   Operation 95 'icmp' 'icmp_ln1742_1' <Predicate = (!reset_read & !accepted & state_busy_load & !state_result_pending_load & icmp_ln1871)> <Delay = 0.84> <CoreInst = "Cmp">   --->   Core 9 'Cmp' <Latency = 0> <II = 1> <Delay = 0.84> <FuncUnit> <Opcode : 'icmp'> <InPorts = 2> <OutPorts = 1>
+ST_3 : Operation 96 [1/1] (0.84ns)   --->   "%icmp_ln1742_2 = icmp_eq  i8 %state_operation_load, i8 2" [/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:1742]   --->   Operation 96 'icmp' 'icmp_ln1742_2' <Predicate = (!reset_read & !accepted & state_busy_load & !state_result_pending_load & icmp_ln1871)> <Delay = 0.84> <CoreInst = "Cmp">   --->   Core 9 'Cmp' <Latency = 0> <II = 1> <Delay = 0.84> <FuncUnit> <Opcode : 'icmp'> <InPorts = 2> <OutPorts = 1>
+ST_3 : Operation 97 [1/1] (0.84ns)   --->   "%icmp_ln1742_3 = icmp_eq  i8 %state_operation_load, i8 7" [/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:1742]   --->   Operation 97 'icmp' 'icmp_ln1742_3' <Predicate = (!reset_read & !accepted & state_busy_load & !state_result_pending_load & icmp_ln1871)> <Delay = 0.84> <CoreInst = "Cmp">   --->   Core 9 'Cmp' <Latency = 0> <II = 1> <Delay = 0.84> <FuncUnit> <Opcode : 'icmp'> <InPorts = 2> <OutPorts = 1>
+ST_3 : Operation 98 [1/1] (0.00ns) (grouped into LUT with out node and_ln1742)   --->   "%or_ln1742 = or i1 %icmp_ln1742, i1 %icmp_ln1742_1" [/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:1742]   --->   Operation 98 'or' 'or_ln1742' <Predicate = (!reset_read & !accepted & state_busy_load & !state_result_pending_load & icmp_ln1871)> <Delay = 0.00> <CoreInst = "LogicGate">   --->   Core 74 'LogicGate' <Latency = 0> <II = 1> <Delay = 0.28> <FuncUnit> <Opcode : 'and' 'or' 'xor'> <InPorts = 2> <OutPorts = 1>
+ST_3 : Operation 99 [1/1] (0.00ns) (grouped into LUT with out node and_ln1742)   --->   "%or_ln1742_1 = or i1 %icmp_ln1742_2, i1 %icmp_ln1742_3" [/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:1742]   --->   Operation 99 'or' 'or_ln1742_1' <Predicate = (!reset_read & !accepted & state_busy_load & !state_result_pending_load & icmp_ln1871)> <Delay = 0.00> <CoreInst = "LogicGate">   --->   Core 74 'LogicGate' <Latency = 0> <II = 1> <Delay = 0.28> <FuncUnit> <Opcode : 'and' 'or' 'xor'> <InPorts = 2> <OutPorts = 1>
+ST_3 : Operation 100 [1/1] (0.00ns) (grouped into LUT with out node and_ln1742)   --->   "%or_ln1742_2 = or i1 %or_ln1742_1, i1 %or_ln1742" [/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:1742]   --->   Operation 100 'or' 'or_ln1742_2' <Predicate = (!reset_read & !accepted & state_busy_load & !state_result_pending_load & icmp_ln1871)> <Delay = 0.00> <CoreInst = "LogicGate">   --->   Core 74 'LogicGate' <Latency = 0> <II = 1> <Delay = 0.28> <FuncUnit> <Opcode : 'and' 'or' 'xor'> <InPorts = 2> <OutPorts = 1>
+ST_3 : Operation 101 [1/1] (0.28ns) (out node of the LUT)   --->   "%and_ln1742 = and i1 %state_remainder_negative_load, i1 %or_ln1742_2" [/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:1742]   --->   Operation 101 'and' 'and_ln1742' <Predicate = (!reset_read & !accepted & state_busy_load & !state_result_pending_load & icmp_ln1871)> <Delay = 0.28> <CoreInst = "LogicGate">   --->   Core 74 'LogicGate' <Latency = 0> <II = 1> <Delay = 0.28> <FuncUnit> <Opcode : 'and' 'or' 'xor'> <InPorts = 2> <OutPorts = 1>
+ST_3 : Operation 102 [1/1] (0.42ns) (out node of the LUT)   --->   "%select_ln1742 = select i1 %and_ln1742, i64 %and_ln1878, i64 %select_ln1866" [/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:1742]   --->   Operation 102 'select' 'select_ln1742' <Predicate = (!reset_read & !accepted & state_busy_load & !state_result_pending_load & icmp_ln1871)> <Delay = 0.42> <CoreInst = "Sel">   --->   Core 73 'Sel' <Latency = 0> <II = 1> <Delay = 0.42> <FuncUnit> <Opcode : 'select'> <InPorts = 3> <OutPorts = 1>
+ST_3 : Operation 103 [1/1] (0.84ns)   --->   "%icmp_ln1742_4 = icmp_ne  i8 %state_operation_load, i8 6" [/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:1742]   --->   Operation 103 'icmp' 'icmp_ln1742_4' <Predicate = (!reset_read & !accepted & state_busy_load & !state_result_pending_load & icmp_ln1871)> <Delay = 0.84> <CoreInst = "Cmp">   --->   Core 9 'Cmp' <Latency = 0> <II = 1> <Delay = 0.84> <FuncUnit> <Opcode : 'icmp'> <InPorts = 2> <OutPorts = 1>
+ST_3 : Operation 104 [1/1] (0.84ns)   --->   "%icmp_ln1742_5 = icmp_ne  i8 %state_operation_load, i8 3" [/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:1742]   --->   Operation 104 'icmp' 'icmp_ln1742_5' <Predicate = (!reset_read & !accepted & state_busy_load & !state_result_pending_load & icmp_ln1871)> <Delay = 0.84> <CoreInst = "Cmp">   --->   Core 9 'Cmp' <Latency = 0> <II = 1> <Delay = 0.84> <FuncUnit> <Opcode : 'icmp'> <InPorts = 2> <OutPorts = 1>
+ST_3 : Operation 105 [1/1] (0.84ns)   --->   "%icmp_ln1742_6 = icmp_ne  i8 %state_operation_load, i8 2" [/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:1742]   --->   Operation 105 'icmp' 'icmp_ln1742_6' <Predicate = (!reset_read & !accepted & state_busy_load & !state_result_pending_load & icmp_ln1871)> <Delay = 0.84> <CoreInst = "Cmp">   --->   Core 9 'Cmp' <Latency = 0> <II = 1> <Delay = 0.84> <FuncUnit> <Opcode : 'icmp'> <InPorts = 2> <OutPorts = 1>
+ST_3 : Operation 106 [1/1] (0.84ns)   --->   "%icmp_ln1742_7 = icmp_ne  i8 %state_operation_load, i8 7" [/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:1742]   --->   Operation 106 'icmp' 'icmp_ln1742_7' <Predicate = (!reset_read & !accepted & state_busy_load & !state_result_pending_load & icmp_ln1871)> <Delay = 0.84> <CoreInst = "Cmp">   --->   Core 9 'Cmp' <Latency = 0> <II = 1> <Delay = 0.84> <FuncUnit> <Opcode : 'icmp'> <InPorts = 2> <OutPorts = 1>
+ST_3 : Operation 107 [1/1] (0.00ns) (grouped into LUT with out node and_ln1742_3)   --->   "%and_ln1742_1 = and i1 %icmp_ln1742_5, i1 %icmp_ln1742_6" [/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:1742]   --->   Operation 107 'and' 'and_ln1742_1' <Predicate = (!reset_read & !accepted & state_busy_load & !state_result_pending_load & icmp_ln1871)> <Delay = 0.00> <CoreInst = "LogicGate">   --->   Core 74 'LogicGate' <Latency = 0> <II = 1> <Delay = 0.28> <FuncUnit> <Opcode : 'and' 'or' 'xor'> <InPorts = 2> <OutPorts = 1>
+ST_3 : Operation 108 [1/1] (0.00ns) (grouped into LUT with out node and_ln1742_3)   --->   "%and_ln1742_2 = and i1 %icmp_ln1742_4, i1 %icmp_ln1742_7" [/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:1742]   --->   Operation 108 'and' 'and_ln1742_2' <Predicate = (!reset_read & !accepted & state_busy_load & !state_result_pending_load & icmp_ln1871)> <Delay = 0.00> <CoreInst = "LogicGate">   --->   Core 74 'LogicGate' <Latency = 0> <II = 1> <Delay = 0.28> <FuncUnit> <Opcode : 'and' 'or' 'xor'> <InPorts = 2> <OutPorts = 1>
+ST_3 : Operation 109 [1/1] (0.28ns) (out node of the LUT)   --->   "%and_ln1742_3 = and i1 %and_ln1742_2, i1 %and_ln1742_1" [/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:1742]   --->   Operation 109 'and' 'and_ln1742_3' <Predicate = (!reset_read & !accepted & state_busy_load & !state_result_pending_load & icmp_ln1871)> <Delay = 0.28> <CoreInst = "LogicGate">   --->   Core 74 'LogicGate' <Latency = 0> <II = 1> <Delay = 0.28> <FuncUnit> <Opcode : 'and' 'or' 'xor'> <InPorts = 2> <OutPorts = 1>
+ST_3 : Operation 110 [1/1] (0.00ns) (grouped into LUT with out node select_ln1880)   --->   "%and_ln1880 = and i1 %state_quotient_negative_load, i1 %and_ln1742_3" [/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:1880]   --->   Operation 110 'and' 'and_ln1880' <Predicate = (!reset_read & !accepted & state_busy_load & !state_result_pending_load & icmp_ln1871)> <Delay = 0.00> <CoreInst = "LogicGate">   --->   Core 74 'LogicGate' <Latency = 0> <II = 1> <Delay = 0.28> <FuncUnit> <Opcode : 'and' 'or' 'xor'> <InPorts = 2> <OutPorts = 1>
+ST_3 : Operation 111 [1/1] (0.42ns) (out node of the LUT)   --->   "%select_ln1880 = select i1 %and_ln1880, i64 %and_ln1881, i64 %select_ln1742" [/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:1880]   --->   Operation 111 'select' 'select_ln1880' <Predicate = (!reset_read & !accepted & state_busy_load & !state_result_pending_load & icmp_ln1871)> <Delay = 0.42> <CoreInst = "Sel">   --->   Core 73 'Sel' <Latency = 0> <II = 1> <Delay = 0.42> <FuncUnit> <Opcode : 'select'> <InPorts = 3> <OutPorts = 1>
+ST_3 : Operation 112 [1/1] (0.00ns) (grouped into LUT with out node result_1)   --->   "%xor_ln1880 = xor i1 %state_quotient_negative_load, i1 1" [/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:1880]   --->   Operation 112 'xor' 'xor_ln1880' <Predicate = (!reset_read & !accepted & state_busy_load & !state_result_pending_load & icmp_ln1871)> <Delay = 0.00> <CoreInst = "LogicGate">   --->   Core 74 'LogicGate' <Latency = 0> <II = 1> <Delay = 0.28> <FuncUnit> <Opcode : 'and' 'or' 'xor'> <InPorts = 2> <OutPorts = 1>
+ST_3 : Operation 113 [1/1] (0.00ns) (grouped into LUT with out node result_1)   --->   "%and_ln1880_1 = and i1 %and_ln1742_3, i1 %xor_ln1880" [/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:1880]   --->   Operation 113 'and' 'and_ln1880_1' <Predicate = (!reset_read & !accepted & state_busy_load & !state_result_pending_load & icmp_ln1871)> <Delay = 0.00> <CoreInst = "LogicGate">   --->   Core 74 'LogicGate' <Latency = 0> <II = 1> <Delay = 0.28> <FuncUnit> <Opcode : 'and' 'or' 'xor'> <InPorts = 2> <OutPorts = 1>
+ST_3 : Operation 114 [1/1] (0.42ns) (out node of the LUT)   --->   "%result_1 = select i1 %and_ln1880_1, i64 %value_assign, i64 %select_ln1880" [/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:1880]   --->   Operation 114 'select' 'result_1' <Predicate = (!reset_read & !accepted & state_busy_load & !state_result_pending_load & icmp_ln1871)> <Delay = 0.42> <CoreInst = "Sel">   --->   Core 73 'Sel' <Latency = 0> <II = 1> <Delay = 0.42> <FuncUnit> <Opcode : 'select'> <InPorts = 3> <OutPorts = 1>
+ST_3 : Operation 115 [1/1] (0.00ns) (grouped into LUT with out node select_ln1756)   --->   "%low = trunc i64 %result_1" [/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:1875]   --->   Operation 115 'trunc' 'low' <Predicate = (!reset_read & !accepted & state_busy_load & !state_result_pending_load & icmp_ln1871)> <Delay = 0.00>
+ST_3 : Operation 116 [1/1] (0.00ns) (grouped into LUT with out node select_ln1756)   --->   "%zext_ln1751 = zext i32 %low" [/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:1751]   --->   Operation 116 'zext' 'zext_ln1751' <Predicate = (!reset_read & !accepted & state_busy_load & !state_result_pending_load & icmp_ln1871)> <Delay = 0.00>
+ST_3 : Operation 117 [1/1] (0.00ns) (grouped into LUT with out node select_ln1756)   --->   "%tmp_3 = bitselect i1 @_ssdm_op_BitSelect.i1.i64.i32, i64 %result_1, i32 31" [/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:1752]   --->   Operation 117 'bitselect' 'tmp_3' <Predicate = (!reset_read & !accepted & state_busy_load & !state_result_pending_load & icmp_ln1871)> <Delay = 0.00>
+ST_3 : Operation 118 [1/1] (0.00ns) (grouped into LUT with out node select_ln1756)   --->   "%or_ln1752 = or i64 %result_1, i64 18446744069414584320" [/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:1752]   --->   Operation 118 'or' 'or_ln1752' <Predicate = (!reset_read & !accepted & state_busy_load & !state_result_pending_load & icmp_ln1871)> <Delay = 0.00>
+ST_3 : Operation 119 [1/1] (0.00ns) (grouped into LUT with out node select_ln1756)   --->   "%select_ln1752 = select i1 %tmp_3, i64 %or_ln1752, i64 %zext_ln1751" [/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:1752]   --->   Operation 119 'select' 'select_ln1752' <Predicate = (!reset_read & !accepted & state_busy_load & !state_result_pending_load & icmp_ln1871)> <Delay = 0.00> <CoreInst = "Sel">   --->   Core 73 'Sel' <Latency = 0> <II = 1> <Delay = 0.42> <FuncUnit> <Opcode : 'select'> <InPorts = 3> <OutPorts = 1>
+ST_3 : Operation 120 [1/1] (0.42ns) (out node of the LUT)   --->   "%select_ln1756 = select i1 %state_word_operation_load, i64 %select_ln1752, i64 %result_1" [/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:1756]   --->   Operation 120 'select' 'select_ln1756' <Predicate = (!reset_read & !accepted & state_busy_load & !state_result_pending_load & icmp_ln1871)> <Delay = 0.42> <CoreInst = "Sel">   --->   Core 73 'Sel' <Latency = 0> <II = 1> <Delay = 0.42> <FuncUnit> <Opcode : 'select'> <InPorts = 3> <OutPorts = 1>
+ST_3 : Operation 121 [1/1] (0.42ns)   --->   "%store_ln1756 = store i64 %select_ln1756, i64 %state_original_dividend" [/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:1756]   --->   Operation 121 'store' 'store_ln1756' <Predicate = (!reset_read & !accepted & state_busy_load & !state_result_pending_load & icmp_ln1871)> <Delay = 0.42>
+ST_3 : Operation 122 [1/1] (0.00ns)   --->   "%store_ln1758 = store i1 0, i1 %state_busy" [/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:1758]   --->   Operation 122 'store' 'store_ln1758' <Predicate = (!reset_read & !accepted & state_busy_load & !state_result_pending_load & icmp_ln1871)> <Delay = 0.00>
+ST_3 : Operation 123 [1/1] (0.42ns)   --->   "%store_ln1759 = store i1 1, i1 %state_result_pending" [/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:1759]   --->   Operation 123 'store' 'store_ln1759' <Predicate = (!reset_read & !accepted & state_busy_load & !state_result_pending_load & icmp_ln1871)> <Delay = 0.42>
+ST_3 : Operation 124 [1/1] (0.00ns)   --->   "%br_ln1884 = br void %_ZN4boom12divider_stepERNS_12DividerStateE.exit" [/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:1884]   --->   Operation 124 'br' 'br_ln1884' <Predicate = (!reset_read & !accepted & state_busy_load & !state_result_pending_load & icmp_ln1871)> <Delay = 0.00>
+ST_3 : Operation 125 [1/1] (0.00ns)   --->   "%br_ln1854 = br void %_ZN4boom12divider_stepERNS_12DividerStateE.exit" [/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:1854]   --->   Operation 125 'br' 'br_ln1854' <Predicate = (!reset_read & !accepted & state_result_pending_load) | (!reset_read & !accepted & !state_busy_load)> <Delay = 0.00>
+ST_3 : Operation 126 [1/1] (0.00ns)   --->   "%br_ln3430 = br void %.critedge._crit_edge" [/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:3430]   --->   Operation 126 'br' 'br_ln3430' <Predicate = (!reset_read & !accepted)> <Delay = 0.00>
+ST_3 : Operation 127 [1/1] (0.00ns)   --->   "%br_ln0 = br void %_ZN4boom21divider_request_readyERKNS_12DividerStateE.exit"   --->   Operation 127 'br' 'br_ln0' <Predicate = (!reset_read)> <Delay = 0.00>
+ST_3 : Operation 128 [1/1] (0.00ns)   --->   "%response_valid_1 = load i1 %state_result_pending" [/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:1888]   --->   Operation 128 'load' 'response_valid_1' <Predicate = true> <Delay = 0.00>
+ST_3 : Operation 129 [1/1] (0.00ns)   --->   "%state_original_dividend_load = load i64 %state_original_dividend" [/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:1889]   --->   Operation 129 'load' 'state_original_dividend_load' <Predicate = true> <Delay = 0.00>
+ST_3 : Operation 130 [1/1] (0.42ns)   --->   "%response_result = select i1 %response_valid_1, i64 %state_original_dividend_load, i64 0" [/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:1889]   --->   Operation 130 'select' 'response_result' <Predicate = true> <Delay = 0.42> <CoreInst = "Sel">   --->   Core 73 'Sel' <Latency = 0> <II = 1> <Delay = 0.42> <FuncUnit> <Opcode : 'select'> <InPorts = 3> <OutPorts = 1>
+ST_3 : Operation 131 [1/1] (0.00ns)   --->   "%state_busy_load_1 = load i1 %state_busy" [/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:1783]   --->   Operation 131 'load' 'state_busy_load_1' <Predicate = true> <Delay = 0.00>
+ST_3 : Operation 132 [1/1] (0.00ns) (grouped into LUT with out node xor_ln1783)   --->   "%or_ln1783 = or i1 %state_busy_load_1, i1 %response_valid_1" [/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:1783]   --->   Operation 132 'or' 'or_ln1783' <Predicate = true> <Delay = 0.00> <CoreInst = "LogicGate">   --->   Core 74 'LogicGate' <Latency = 0> <II = 1> <Delay = 0.28> <FuncUnit> <Opcode : 'and' 'or' 'xor'> <InPorts = 2> <OutPorts = 1>
+ST_3 : Operation 133 [1/1] (0.28ns) (out node of the LUT)   --->   "%xor_ln1783 = xor i1 %or_ln1783, i1 1" [/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:1783]   --->   Operation 133 'xor' 'xor_ln1783' <Predicate = true> <Delay = 0.28> <CoreInst = "LogicGate">   --->   Core 74 'LogicGate' <Latency = 0> <II = 1> <Delay = 0.28> <FuncUnit> <Opcode : 'and' 'or' 'xor'> <InPorts = 2> <OutPorts = 1>
+ST_3 : Operation 134 [1/1] (0.00ns)   --->   "%write_ln3433 = write void @_ssdm_op_Write.ap_auto.i1P0A, i1 %request_ready, i1 %xor_ln1783" [/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:3433]   --->   Operation 134 'write' 'write_ln3433' <Predicate = true> <Delay = 0.00>
+ST_3 : Operation 135 [1/1] (0.00ns)   --->   "%write_ln3434 = write void @_ssdm_op_Write.ap_auto.i1P0A, i1 %response_valid, i1 %response_valid_1" [/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:3434]   --->   Operation 135 'write' 'write_ln3434' <Predicate = true> <Delay = 0.00>
+ST_3 : Operation 136 [1/1] (0.00ns)   --->   "%write_ln3435 = write void @_ssdm_op_Write.ap_auto.i64P0A, i64 %result, i64 %response_result" [/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:3435]   --->   Operation 136 'write' 'write_ln3435' <Predicate = true> <Delay = 0.00>
+ST_3 : Operation 137 [1/1] (0.00ns)   --->   "%write_ln3436 = write void @_ssdm_op_Write.ap_auto.i1P0A, i1 %busy, i1 %state_busy_load_1" [/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:3436]   --->   Operation 137 'write' 'write_ln3436' <Predicate = true> <Delay = 0.00>
+ST_3 : Operation 138 [1/1] (0.00ns)   --->   "%ret_ln3437 = ret" [/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:3437]   --->   Operation 138 'ret' 'ret_ln3437' <Predicate = true> <Delay = 0.00>
+
+
+============================================================
++ Verbose Summary: Timing violations
+============================================================
+Target clock period: 10ns, clock uncertainty: 2.7ns.
+
+ <State 1>: 0.714ns
+The critical path consists of the following:
+	'store' operation ('store_ln1895', /home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:1895) of constant 0 on static variable 'state_result_pending' [57]  (0.427 ns)
+	blocking operation 0.287 ns on control path)
+
+ <State 2>: 5.73ns
+The critical path consists of the following:
+	'call' operation ('accepted', /home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:3429) to 'divider_accept' [61]  (5.73 ns)
+
+ <State 3>: 5.23ns
+The critical path consists of the following:
+	'load' operation ('state_word_operation_load', /home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:1856) on static variable 'state_word_operation' [70]  (0 ns)
+	'select' operation ('input_bit', /home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:1857) [74]  (0.179 ns)
+	'icmp' operation ('icmp_ln1865', /home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:1865) [82]  (1.13 ns)
+	'xor' operation ('xor_ln1865', /home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:1865) [83]  (0 ns)
+	'or' operation ('subtract', /home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:1864) [84]  (0.287 ns)
+	'select' operation ('value', /home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:1866) [86]  (0.424 ns)
+	'sub' operation ('sub_ln1747_1', /home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:1747) [106]  (1.08 ns)
+	'and' operation ('and_ln1878', /home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:1878) [107]  (0 ns)
+	'select' operation ('select_ln1742', /home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:1742) [116]  (0.424 ns)
+	'select' operation ('select_ln1880', /home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:1880) [125]  (0.424 ns)
+	'select' operation ('result', /home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:1880) [128]  (0.424 ns)
+	'select' operation ('select_ln1756', /home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:1756) [134]  (0.424 ns)
+	'store' operation ('store_ln1756', /home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:1756) of variable 'select_ln1756', /home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:1756 on static variable 'state_original_dividend' [135]  (0.427 ns)
+
+
+============================================================
++ Verbose Summary: Binding
+============================================================
+N/A
+* FSMD analyzer results:
+  - Output states:
+ - Input state : 
+  - Chain level:
+	State 1
+	State 2
+	State 3
+
+
+============================================================
++ Verbose Summary: Datapath Resource usage 
+============================================================
+N/A

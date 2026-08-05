@@ -38,6 +38,7 @@ Gate 3.10 status: LOCAL_PIPELINE_CHARACTERIZED_NO_ACCEPTED_CANDIDATE. R1 passes 
 | Generated RTL AXIS Backpressure | VERIFIED_FOR_TESTED_SCENARIOS | Gate 3.8 passes all commit-trace, IMEM, DMEM, stale-response, and tested priority/backpressure cases outside the reset failures. |
 | Gate 4.0 W4 concurrency | VERIFIED_FOR_SUPPORTED_SUBSET | Directed 95/95, random 128/128, focused RTL 20/20, current W3 11/11, and full-core 49/49 verify two writes, three wakeups/bypasses, and multi-ROB complete. Source-bound final csynth passes 7/7 with two replicated PRF banks, a 52-bit LVT, two independent bank write enables, and final II=1. |
 | Gate 4.1 M1 RV64M decode | VERIFIED | All 13 legal operations, four `rd=x0` cases, ten illegal near-misses, and fifteen base OP/OP-32 collision vectors pass. Frozen non-M traces are 14/14 byte-identical and conservative csynth is 3/3. This is decode equivalence only, not M arithmetic equivalence. |
+| Gate 4.1 M3B divider integration | VERIFIED_FOR_SUPPORTED_SUBSET | Existing INT completion topology is preserved. Directed 167/167, random 128x1024, native/csim/RTL full-core DIV programs 10/10, focused RTL 26/26, reset preservation 49/49, and csynth 8/8 pass. Strict BOOM cycle equivalence remains unclaimed. |
 
 ## Gate 1 Results
 

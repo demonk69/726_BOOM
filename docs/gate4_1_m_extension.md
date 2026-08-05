@@ -35,3 +35,9 @@
 `M3A_STANDALONE_DIVIDER_VERIFIED=true`. Restoring radix-2 arithmetic covers all eight DIV/REM operations in 64 full-width or 32 word steps, with specified fast returns. Directed tests pass 104 cases, 65536 arithmetic random operations have zero mismatch, and 65536 persistent protocol cycles have zero mismatch. Standalone `synth_divider_top` reports 3429 LUT, 344 FF, 0 BRAM, 0 DSP, 5.734 ns, and `PipelineType=no`; operator reports contain no division or remainder core.
 
 `READY_FOR_M3B_INT_DIVIDER_INTEGRATION=true`. Execute, completion, ROB, LSU, issue, frontend, W4 topology, and `src/boom_all.cpp` are unchanged by M3A. No full-core RTL or csynth was run, so neither `GATE4_1_RV64M_VERIFIED` nor any M4/frontend readiness is claimed.
+
+## M3B INT Divider Integration
+
+The software integration checkpoint maps all eight DIV/REM uopcs through the existing INT lane into one persistent `ExecuteState` divider and publishes only through `completion.int_execute`. Directed integration passes 167 checks, persistent random passes 128 fixed seeds by 1024 cycles with zero drop, duplicate, stale side effect, or response instability, and ten native full-core real-machine-code programs pass. Ordinary ALU/MUL/branch execution continues while arithmetic is busy; a pending response reserves the next available INT execute slot. Completion sources remain 3 and PRF write/wakeup/bypass/ROB-complete topology remains 2/3/3/3.
+
+`M3B_INT_DIVIDER_INTEGRATION_VERIFIED=true` and `READY_FOR_M3C_RV64M_FINAL=true`. Focused generated RTL passes 26/26, full-core generated RTL programs pass 10/10, the Gate 3.9 matrix remains 49/49, and canonical csynth completes 8/8. Both full-core tops remain at 6.341 ns with 3 DSP, so `M3B_PPA_BLOCKER=false`. `GATE4_1_RV64M_VERIFIED` remains false pending M3C.

@@ -2,8 +2,11 @@
 set -uo pipefail
 
 ROOT=${HLS_BOOM_ROOT:-"$(cd "$(dirname "${BASH_SOURCE[0]}")/../.." && pwd)"}
-RESULTS="$ROOT/reports/gate3_9/rtl_run_status.csv"
-SUITE_LOG_DIR="$ROOT/reports/gate3_9/logs/suite"
+REPORT_ROOT=${GATE3_9_REPORT_ROOT:-"$ROOT/reports/gate3_9"}
+RESULTS=${GATE3_9_RESULTS:-"$REPORT_ROOT/rtl_run_status.csv"}
+SUITE_LOG_DIR=${GATE3_9_SUITE_LOG_DIR:-"$REPORT_ROOT/logs/suite"}
+MATRIX=${GATE3_9_MATRIX:-"$REPORT_ROOT/rtl_test_matrix.csv"}
+RESET_LATENCY=${GATE3_9_RESET_LATENCY:-"$REPORT_ROOT/reset_latency.csv"}
 mkdir -p "$SUITE_LOG_DIR"
 
 CASES=(
@@ -70,7 +73,11 @@ for item in "${CASES[@]}"; do
   program=${item#*:}
   start=$SECONDS
   wrapper_log="$SUITE_LOG_DIR/${program}_${scenario}.stdout.log"
-  if "$ROOT/scripts/gate3_9/run_xsim.sh" "$scenario" "$program" > "$wrapper_log" 2>&1; then
+  case_log="$REPORT_ROOT/logs/${program}_${scenario}.log"
+  case_trace="$REPORT_ROOT/rtl_traces/${program}_${scenario}.jsonl"
+  mkdir -p "$(dirname "$case_log")" "$(dirname "$case_trace")"
+  if LOG="$case_log" TRACE="$case_trace" \
+      "$ROOT/scripts/gate3_9/run_xsim.sh" "$scenario" "$program" > "$wrapper_log" 2>&1; then
     status=XSIM_PASS
   else
     status=XSIM_FAIL
@@ -78,17 +85,16 @@ for item in "${CASES[@]}"; do
   fi
   runtime=$((SECONDS - start))
   printf '%s,%s,%s,%s,%s,%s\n' "$scenario" "$program" "$status" "$runtime" \
-    "reports/gate3_9/logs/${program}_${scenario}.log" \
-    "reports/gate3_9/rtl_traces/${program}_${scenario}.jsonl" >> "$RESULTS"
+    "${case_log#$ROOT/}" "${case_trace#$ROOT/}" >> "$RESULTS"
   printf '%-44s %-16s %s (%ss)\n' "$scenario" "$program" "$status" "$runtime"
 done
 
 if ! python3 "$ROOT/scripts/gate3_9/summarize_rtl_suite.py" \
-  --status "$RESULTS" --output "$ROOT/reports/gate3_9/rtl_test_matrix.csv"; then
+  --status "$RESULTS" --output "$MATRIX"; then
   overall=1
 fi
 if ! python3 "$ROOT/scripts/gate3_9/summarize_reset_latency.py" \
-  --status "$RESULTS" --output "$ROOT/reports/gate3_9/reset_latency.csv"; then
+  --status "$RESULTS" --output "$RESET_LATENCY"; then
   overall=1
 fi
 

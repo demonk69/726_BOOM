@@ -42,6 +42,18 @@ static bool resolve_operand(const BoomCoreState& state, uint8_t prs,
     return true;
 }
 
+static bool divider_uop_ready(const BoomCoreState& state, const MicroOp& uop) {
+#pragma HLS INLINE
+    if (uop.fu_code != FU_DIV) return true;
+    if (uop.uopc < 21 || uop.uopc > 28 || state.execute.divider.token_valid ||
+        !divider_request_ready(state.execute.divider.arithmetic)) return false;
+    uint8_t rob_idx = uop.queue.rob_idx;
+    return uop.queue.rob_allocation_id != 0 && rob_idx < ROB_DEPTH &&
+        state.rob.entries[rob_idx].valid && state.rob.entries[rob_idx].busy &&
+        state.rob.entries[rob_idx].uop.queue.rob_allocation_id ==
+            uop.queue.rob_allocation_id;
+}
+
 static void compact_iq(IssueQueueState& iq) {
     IssueSlotEntry temp[ISSUE_QUEUE_ALU_DEPTH];
     int w=0;
@@ -98,7 +110,7 @@ void issue_module(BoomCoreState& state) {
             s.prs3_busy || s.pdst_busy) continue;
         IssuePortClass port=classify_issue_port(s.uop);
         if (port==ISSUE_PORT_MEM && mem_index<0) mem_index=i;
-        else if (port==ISSUE_PORT_INT && int_index<0) int_index=i;
+        else if (port==ISSUE_PORT_INT && int_index<0 && divider_uop_ready(state, s.uop)) int_index=i;
     }
 
     if (mem_index>=0) {
@@ -131,7 +143,8 @@ void issue_module(BoomCoreState& state) {
             old_grant_can_accept |= iss.grants[old_lane].valid && iss.port_ready[old_lane];
         bool dispatch_can_be_preserved=iss.alu_iq.count<ISSUE_QUEUE_ALU_DEPTH ||
                                        (lane>=0 && iss.port_ready[lane]) || old_grant_can_accept;
-        if (lane>=0 && dispatch_ready && dispatch_can_be_preserved && !iss.grants[lane].valid) {
+        if (lane>=0 && dispatch_ready && divider_uop_ready(state, dispatch_uop) &&
+            dispatch_can_be_preserved && !iss.grants[lane].valid) {
             iss.grants[lane].valid=true; iss.grants[lane].from_dispatch=true;
             iss.grants[lane].entry_index=0xff; iss.grants[lane].port_class=(uint8_t)port;
             iss.grants[lane].uop=dispatch_uop;
@@ -154,6 +167,8 @@ void issue_module(BoomCoreState& state) {
     for (int lane=0; lane<INTEGER_ISSUE_PORTS; lane++) {
         IssueGrant& grant=iss.grants[lane];
         bool downstream_ready=iss.port_ready[lane];
+        if (lane==INT_ISSUE_LANE && grant.valid)
+            downstream_ready &= divider_uop_ready(state, grant.uop);
         if (lane==MEM_ISSUE_LANE && grant.valid) {
             bool is_load=grant.uop.ctrl.is_load || grant.uop.mem.uses_ldq ||
                          (grant.uop.uopc>=39 && grant.uop.uopc<=45);

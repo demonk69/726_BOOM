@@ -38,6 +38,8 @@ Gate 4.0 W4 update: the false-dependence pragma is removed and replaced by a two
 
 Gate 4.1 M1 update: exact decode and INT-compatible issue classification are verified for all 13 RV64M operations. Required legal, `rd=x0`, illegal near-miss, and base OP/OP-32 collision vectors pass 42/42. W3/W4 software, random, frozen trace, architecture, and partial-order preservation pass; conservative csynth passes 3/3 with `boom_core_top` at 6.025 ns and `CORE_CYCLE` unpipelined. `M1_RV64M_DECODE_VERIFIED=true` and `READY_FOR_M2_MUL_FAMILY=true`; arithmetic execution is not yet implemented or claimed.
 
+Gate 4.1 M3B update: one persistent Divider is integrated into `ExecuteState`; all eight DIV/REM operations use the fixed INT lane and existing `completion.int_execute` source. Directed integration passes 167 checks, random integration passes 128x1024 cycles, and native/csim/generated-RTL full-core DIV programs each pass 10/10 with zero dropped, duplicate, stale, or unstable responses. Focused RTL passes 26/26, Gate 3.9 remains 49/49, and canonical csynth passes 8/8 with both full-core tops at 6.341 ns and 3 DSP. `M3B_INT_DIVIDER_INTEGRATION_VERIFIED=true`, `READY_FOR_M3C_RV64M_FINAL=true`, and `GATE4_1_RV64M_VERIFIED=false`.
+
 Gate 4.0 W3 source scope: acceptance covers the modular `src/*.cpp` implementation plus generated `src/boom_core_merged.cpp` and public `src/boom_core_top.cpp` only. `src/boom_all.cpp` is a legacy, non-canonical, unreferenced monolithic snapshot; active build, test, RTL-generation, and csynth scripts do not consume it. It is excluded from source manifests and acceptance without deletion or rewrite. Pre-existing dirty tracked logs and backup logs are excluded non-deliverables and are not evidence.
 
 ## Implemented And Tested
@@ -49,6 +51,7 @@ Gate 4.0 W3 source scope: acceptance covers the modular `src/*.cpp` implementati
 - ROB allocate, complete, commit, full backpressure, and wrap behavior for current tests.
 - Shared implemented issue queue dispatch/select/compact with fixed MEM/INT selection lanes and up to two accepted execute inputs.
 - Three retained completion slots (LSU load, MEM execute, INT execute) with oldest-first service, up to three ROB completions/wakeups, and two PRF writes.
+- Persistent radix-2 DIV/DIVU/REM/REMU and W variants in the INT lane, with held response, allocation identity, branch kill, and fine-grained reset.
 - CSR cycle/instret and ECALL success/trap subset.
 - Commit trace output for directed tests.
 - Minimal integer LSU path for LB/LBU/LH/LHU/LW/LWU/LD and SB/SH/SW/SD in the current conservative single-lane path.

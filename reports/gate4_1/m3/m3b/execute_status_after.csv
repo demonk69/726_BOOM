@@ -1,0 +1,14 @@
+property,value
+int_lane_divider_request,integrated_uopc_21_through_28
+persistent_divider_state,ExecuteState.divider
+divider_reset_in_core,RESET_CONTROL_and_RESET_EXECUTE
+divider_busy_normal_int,continues
+divider_pending_normal_int,backpressured_until_publication
+divider_response_path,execute_lane_1_to_completion.int_execute
+completion_sources,3
+prf_write_ports,2
+wakeup_ports,3
+bypass_ports,3
+rob_complete_sources,3
+lane_2,inactive
+core_cycle_pipeline,no

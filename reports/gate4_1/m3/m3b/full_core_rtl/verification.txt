@@ -1,0 +1,7 @@
+10/10 PASS
+Expected architectural values independently checked from JSONL commit records.
+Committed tohost store/value independently checked in commit and tohost records.
+Internal writeback is not exposed by the existing Gate3.9 harness; divider commit cycles are recorded.
+The post-tohost terminal self-loop is relocated behind NOP padding in staged images; all architectural/tohost instructions and PCs are unchanged.
+scenario=N0_NORMAL_INDEPENDENT_ALU
+max_cycles=1000000

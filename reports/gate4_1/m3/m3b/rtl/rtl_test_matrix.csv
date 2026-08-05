@@ -1,0 +1,27 @@
+case,asserted_requirement,status,log
+normal_div_signed,accepted operation produced exact result and one observed writeback/ROB completion,PASS,/home/lab_726/boom/hls_boom/reports/gate4_1/m3/m3b/rtl/logs/xsim.log
+normal_div_unsigned,accepted operation produced exact result and one observed writeback/ROB completion,PASS,/home/lab_726/boom/hls_boom/reports/gate4_1/m3/m3b/rtl/logs/xsim.log
+normal_rem_signed,accepted operation produced exact result and one observed writeback/ROB completion,PASS,/home/lab_726/boom/hls_boom/reports/gate4_1/m3/m3b/rtl/logs/xsim.log
+normal_rem_unsigned,accepted operation produced exact result and one observed writeback/ROB completion,PASS,/home/lab_726/boom/hls_boom/reports/gate4_1/m3/m3b/rtl/logs/xsim.log
+normal_divw_signed,accepted operation produced exact result and one observed writeback/ROB completion,PASS,/home/lab_726/boom/hls_boom/reports/gate4_1/m3/m3b/rtl/logs/xsim.log
+normal_divw_unsigned,accepted operation produced exact result and one observed writeback/ROB completion,PASS,/home/lab_726/boom/hls_boom/reports/gate4_1/m3/m3b/rtl/logs/xsim.log
+normal_remw_signed,accepted operation produced exact result and one observed writeback/ROB completion,PASS,/home/lab_726/boom/hls_boom/reports/gate4_1/m3/m3b/rtl/logs/xsim.log
+normal_remw_unsigned,accepted operation produced exact result and one observed writeback/ROB completion,PASS,/home/lab_726/boom/hls_boom/reports/gate4_1/m3/m3b/rtl/logs/xsim.log
+divide_zero_quotient,accepted operation produced exact result and one observed writeback/ROB completion,PASS,/home/lab_726/boom/hls_boom/reports/gate4_1/m3/m3b/rtl/logs/xsim.log
+divide_zero_remainder,accepted operation produced exact result and one observed writeback/ROB completion,PASS,/home/lab_726/boom/hls_boom/reports/gate4_1/m3/m3b/rtl/logs/xsim.log
+signed_overflow_quotient,accepted operation produced exact result and one observed writeback/ROB completion,PASS,/home/lab_726/boom/hls_boom/reports/gate4_1/m3/m3b/rtl/logs/xsim.log
+signed_overflow_remainder,accepted operation produced exact result and one observed writeback/ROB completion,PASS,/home/lab_726/boom/hls_boom/reports/gate4_1/m3/m3b/rtl/logs/xsim.log
+response_hold,pending divider response held with ownership while INT result occupied,PASS,/home/lab_726/boom/hls_boom/reports/gate4_1/m3/m3b/rtl/logs/xsim.log
+existing_source_collision,pending divider coexisted with an existing INT-source result,PASS,/home/lab_726/boom/hls_boom/reports/gate4_1/m3/m3b/rtl/logs/xsim.log
+alu_collision,ALU collision completed first and retained divider response,PASS,/home/lab_726/boom/hls_boom/reports/gate4_1/m3/m3b/rtl/logs/xsim.log
+dependent_writeback_observation,held divider result became observable on writeback and ROB complete,PASS,/home/lab_726/boom/hls_boom/reports/gate4_1/m3/m3b/rtl/logs/xsim.log
+no_duplicate_complete,cycle after consumption had no duplicate completion or writeback,PASS,/home/lab_726/boom/hls_boom/reports/gate4_1/m3/m3b/rtl/logs/xsim.log
+reset_active,runtime reset discarded an active divider without side effect,PASS,/home/lab_726/boom/hls_boom/reports/gate4_1/m3/m3b/rtl/logs/xsim.log
+reset_pending,modeled reset discarded a pending response and ownership token,PASS,/home/lab_726/boom/hls_boom/reports/gate4_1/m3/m3b/rtl/logs/xsim.log
+reset_post_reexecute,a fresh divider token completed after runtime reset,PASS,/home/lab_726/boom/hls_boom/reports/gate4_1/m3/m3b/rtl/logs/xsim.log
+double_runtime_reset_divider,two runtime resets independently discarded divider work,PASS,/home/lab_726/boom/hls_boom/reports/gate4_1/m3/m3b/rtl/logs/xsim.log
+reset_stale_completion,post-reset stale allocation could not produce completion,PASS,/home/lab_726/boom/hls_boom/reports/gate4_1/m3/m3b/rtl/logs/xsim.log
+branch_kill,matching mispredict mask canceled active divider without completion,PASS,/home/lab_726/boom/hls_boom/reports/gate4_1/m3/m3b/rtl/logs/xsim.log
+stale_allocation,stale ROB allocation ownership canceled without architectural side effect,PASS,/home/lab_726/boom/hls_boom/reports/gate4_1/m3/m3b/rtl/logs/xsim.log
+alu_while_divider_busy,ALU result occupied INT source while iterative divider remained active,PASS,/home/lab_726/boom/hls_boom/reports/gate4_1/m3/m3b/rtl/logs/xsim.log
+mul_collision,MUL result occupied INT source while iterative divider remained active,PASS,/home/lab_726/boom/hls_boom/reports/gate4_1/m3/m3b/rtl/logs/xsim.log

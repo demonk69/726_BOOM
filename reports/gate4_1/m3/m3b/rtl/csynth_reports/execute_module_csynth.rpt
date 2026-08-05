@@ -1,0 +1,586 @@
+
+
+================================================================
+== Vitis HLS Report for 'execute_module'
+================================================================
+* Date:           Wed Aug  5 16:34:08 2026
+
+* Version:        2021.2 (Build 3367213 on Tue Oct 19 02:47:39 MDT 2021)
+* Project:        synth_m3b_divider_core_top
+* Solution:       solution_gate4_1_m3b_rtl (Vivado IP Flow Target)
+* Product family: zynquplus
+* Target device:  xczu7ev-ffvc1156-2-e
+
+
+================================================================
+== Performance Estimates
+================================================================
++ Timing: 
+    * Summary: 
+    +--------+----------+----------+------------+
+    |  Clock |  Target  | Estimated| Uncertainty|
+    +--------+----------+----------+------------+
+    |ap_clk  |  10.00 ns|  6.292 ns|     2.70 ns|
+    +--------+----------+----------+------------+
+
++ Latency: 
+    * Summary: 
+    +---------+---------+-----------+----------+-----+-----+---------+
+    |  Latency (cycles) |  Latency (absolute)  |  Interval | Pipeline|
+    |   min   |   max   |    min    |    max   | min | max |   Type  |
+    +---------+---------+-----------+----------+-----+-----+---------+
+    |        6|       50|  60.000 ns|  0.500 us|    6|   50|       no|
+    +---------+---------+-----------+----------+-----+-----+---------+
+
+    + Detail: 
+        * Instance: 
+        +---------------------------+----------------+---------+---------+----------+----------+-----+-----+---------+
+        |                           |                |  Latency (cycles) |  Latency (absolute) |  Interval | Pipeline|
+        |          Instance         |     Module     |   min   |   max   |    min   |    max   | min | max |   Type  |
+        +---------------------------+----------------+---------+---------+----------+----------+-----+-----+---------+
+        |tmp_divider_accept_fu_655  |divider_accept  |        0|        0|      0 ns|      0 ns|    0|    0|       no|
+        +---------------------------+----------------+---------+---------+----------+----------+-----+-----+---------+
+
+        * Loop: 
+        +---------------------+---------+---------+----------+-----------+-----------+------+----------+
+        |                     |  Latency (cycles) | Iteration|  Initiation Interval  | Trip |          |
+        |      Loop Name      |   min   |   max   |  Latency |  achieved |   target  | Count| Pipelined|
+        +---------------------+---------+---------+----------+-----------+-----------+------+----------+
+        |- VITIS_LOOP_1978_1  |        4|       46|    2 ~ 23|          -|          -|     2|        no|
+        | + VITIS_LOOP_958_1  |        6|        6|         2|          -|          -|     3|        no|
+        | + VITIS_LOOP_958_1  |        6|        6|         2|          -|          -|     3|        no|
+        +---------------------+---------+---------+----------+-----------+-----------+------+----------+
+
+
+
+================================================================
+== Utilization Estimates
+================================================================
+* Summary: 
++-----------------+---------+------+--------+--------+-----+
+|       Name      | BRAM_18K|  DSP |   FF   |   LUT  | URAM|
++-----------------+---------+------+--------+--------+-----+
+|DSP              |        -|     -|       -|       -|    -|
+|Expression       |        -|     -|       0|    3554|    -|
+|FIFO             |        -|     -|       -|       -|    -|
+|Instance         |        -|     3|       0|    2270|    -|
+|Memory           |        -|     -|       -|       -|    -|
+|Multiplexer      |        -|     -|       -|    1142|    -|
+|Register         |        -|     -|     876|       -|    -|
++-----------------+---------+------+--------+--------+-----+
+|Total            |        0|     3|     876|    6966|    0|
++-----------------+---------+------+--------+--------+-----+
+|Available        |      624|  1728|  460800|  230400|   96|
++-----------------+---------+------+--------+--------+-----+
+|Utilization (%)  |        0|    ~0|      ~0|       3|    0|
++-----------------+---------+------+--------+--------+-----+
+
++ Detail: 
+    * Instance: 
+    +---------------------------+---------------------+---------+----+---+------+-----+
+    |          Instance         |        Module       | BRAM_18K| DSP| FF|  LUT | URAM|
+    +---------------------------+---------------------+---------+----+---+------+-----+
+    |tmp_divider_accept_fu_655  |divider_accept       |        0|   0|  0|  2168|    0|
+    |mul_65s_65s_128_1_1_U16    |mul_65s_65s_128_1_1  |        0|   3|  0|    46|    0|
+    |mux_32_1_1_1_U17           |mux_32_1_1_1         |        0|   0|  0|    14|    0|
+    |mux_32_1_1_1_U19           |mux_32_1_1_1         |        0|   0|  0|    14|    0|
+    |mux_32_8_1_1_U18           |mux_32_8_1_1         |        0|   0|  0|    14|    0|
+    |mux_32_8_1_1_U20           |mux_32_8_1_1         |        0|   0|  0|    14|    0|
+    +---------------------------+---------------------+---------+----+---+------+-----+
+    |Total                      |                     |        0|   3|  0|  2270|    0|
+    +---------------------------+---------------------+---------+----+---+------+-----+
+
+    * DSP: 
+    N/A
+
+    * Memory: 
+    N/A
+
+    * FIFO: 
+    N/A
+
+    * Expression: 
+    +------------------------------+----------+----+---+-----+------------+------------+
+    |         Variable Name        | Operation| DSP| FF| LUT | Bitwidth P0| Bitwidth P1|
+    +------------------------------+----------+----+---+-----+------------+------------+
+    |add_ln1869_fu_2000_p2         |         +|   0|  0|   15|           8|           1|
+    |add_ln1978_fu_1794_p2         |         +|   0|  0|    9|           2|           1|
+    |add_ln2026_fu_2861_p2         |         +|   0|  0|   71|          64|          64|
+    |add_ln958_1_fu_2368_p2        |         +|   0|  0|    9|           2|           1|
+    |add_ln958_fu_2264_p2          |         +|   0|  0|    9|           2|           1|
+    |request_operation_fu_1711_p2  |         +|   0|  0|   13|           6|           6|
+    |high_1_fu_2965_p2             |         -|   0|  0|   71|          64|          64|
+    |high_3_fu_2985_p2             |         -|   0|  0|   71|          64|          64|
+    |sub_ln1747_1_fu_2058_p2       |         -|   0|  0|   71|           1|          64|
+    |sub_ln1747_fu_2046_p2         |         -|   0|  0|   71|           1|          64|
+    |sub_ln1867_fu_1946_p2         |         -|   0|  0|   71|          64|          64|
+    |sub_ln2027_fu_2835_p2         |         -|   0|  0|   71|          64|          64|
+    |sub_ln2037_fu_2583_p2         |         -|   0|  0|   39|          32|          32|
+    |and_ln1427_1_fu_1538_p2       |       and|   0|  0|    2|           1|           1|
+    |and_ln1427_2_fu_1570_p2       |       and|   0|  0|    2|           1|           1|
+    |and_ln1427_3_fu_1576_p2       |       and|   0|  0|    2|           1|           1|
+    |and_ln1427_4_fu_1582_p2       |       and|   0|  0|    2|           1|           1|
+    |and_ln1427_fu_1518_p2         |       and|   0|  0|    2|           1|           1|
+    |and_ln1428_fu_1442_p2         |       and|   0|  0|    2|           1|           1|
+    |and_ln1430_fu_1468_p2         |       and|   0|  0|    2|           1|           1|
+    |and_ln1432_fu_1494_p2         |       and|   0|  0|    2|           1|           1|
+    |and_ln1434_1_fu_1606_p2       |       and|   0|  0|    2|           1|           1|
+    |and_ln1434_2_fu_1612_p2       |       and|   0|  0|    2|           1|           1|
+    |and_ln1434_fu_1600_p2         |       and|   0|  0|    2|           1|           1|
+    |and_ln1742_1_fu_2150_p2       |       and|   0|  0|    2|           1|           1|
+    |and_ln1742_2_fu_2156_p2       |       and|   0|  0|    2|           1|           1|
+    |and_ln1742_3_fu_2162_p2       |       and|   0|  0|    2|           1|           1|
+    |and_ln1742_fu_2112_p2         |       and|   0|  0|    2|           1|           1|
+    |and_ln1878_fu_2064_p2         |       and|   0|  0|   64|          64|          64|
+    |and_ln1880_1_fu_2188_p2       |       and|   0|  0|    2|           1|           1|
+    |and_ln1880_fu_2168_p2         |       and|   0|  0|    2|           1|           1|
+    |and_ln1881_fu_2052_p2         |       and|   0|  0|   64|          64|          64|
+    |and_ln1955_fu_786_p2          |       and|   0|  0|    8|           8|           8|
+    |and_ln1958_fu_934_p2          |       and|   0|  0|    8|           8|           8|
+    |and_ln1979_fu_1814_p2         |       and|   0|  0|    2|           1|           1|
+    |and_ln1983_1_fu_1831_p2       |       and|   0|  0|    2|           1|           1|
+    |and_ln1983_fu_1414_p2         |       and|   0|  0|    2|           1|           1|
+    |and_ln1984_fu_1642_p2         |       and|   0|  0|    8|           8|           8|
+    |and_ln2035_fu_2631_p2         |       and|   0|  0|   64|          64|          64|
+    |and_ln286_fu_1763_p2          |       and|   0|  0|    4|           4|           4|
+    |and_ln965_1_fu_2446_p2        |       and|   0|  0|    2|           1|           1|
+    |and_ln965_fu_2342_p2          |       and|   0|  0|    2|           1|           1|
+    |ap_condition_1994             |       and|   0|  0|    2|           1|           1|
+    |ashr_ln2033_fu_2659_p2        |      ashr|   0|  0|  179|          64|          64|
+    |icmp_ln1427_1_fu_1532_p2      |      icmp|   0|  0|    8|           2|           3|
+    |icmp_ln1427_2_fu_1558_p2      |      icmp|   0|  0|    8|           2|           1|
+    |icmp_ln1427_3_fu_1564_p2      |      icmp|   0|  0|    8|           2|           1|
+    |icmp_ln1427_4_fu_1588_p2      |      icmp|   0|  0|    8|           2|           1|
+    |icmp_ln1427_fu_1512_p2        |      icmp|   0|  0|    8|           2|           1|
+    |icmp_ln1428_fu_1436_p2        |      icmp|   0|  0|    9|           5|           5|
+    |icmp_ln1430_1_fu_1462_p2      |      icmp|   0|  0|    9|           5|           3|
+    |icmp_ln1430_fu_1456_p2        |      icmp|   0|  0|    9|           5|           5|
+    |icmp_ln1432_1_fu_1488_p2      |      icmp|   0|  0|    9|           5|           4|
+    |icmp_ln1432_2_fu_1500_p2      |      icmp|   0|  0|    9|           5|           4|
+    |icmp_ln1432_fu_1482_p2        |      icmp|   0|  0|    9|           5|           1|
+    |icmp_ln1652_1_fu_1693_p2      |      icmp|   0|  0|    9|           5|           5|
+    |icmp_ln1652_2_fu_1699_p2      |      icmp|   0|  0|    9|           5|           5|
+    |icmp_ln1652_3_fu_1705_p2      |      icmp|   0|  0|    9|           5|           5|
+    |icmp_ln1652_fu_1687_p2        |      icmp|   0|  0|    9|           5|           5|
+    |icmp_ln1742_1_fu_2076_p2      |      icmp|   0|  0|   10|           6|           2|
+    |icmp_ln1742_2_fu_2082_p2      |      icmp|   0|  0|   10|           6|           2|
+    |icmp_ln1742_3_fu_2088_p2      |      icmp|   0|  0|   10|           6|           3|
+    |icmp_ln1742_4_fu_2126_p2      |      icmp|   0|  0|   10|           6|           3|
+    |icmp_ln1742_5_fu_2132_p2      |      icmp|   0|  0|   10|           6|           2|
+    |icmp_ln1742_6_fu_2138_p2      |      icmp|   0|  0|   10|           6|           2|
+    |icmp_ln1742_7_fu_2144_p2      |      icmp|   0|  0|   10|           6|           3|
+    |icmp_ln1742_fu_2070_p2        |      icmp|   0|  0|   10|           6|           3|
+    |icmp_ln1865_fu_1928_p2        |      icmp|   0|  0|   29|          64|          64|
+    |icmp_ln1871_fu_2020_p2        |      icmp|   0|  0|   11|           8|           8|
+    |icmp_ln1917_1_fu_976_p2       |      icmp|   0|  0|    8|           3|           1|
+    |icmp_ln1917_fu_956_p2         |      icmp|   0|  0|   20|          32|           1|
+    |icmp_ln1921_fu_987_p2         |      icmp|   0|  0|   20|          32|          32|
+    |icmp_ln1926_fu_1418_p2        |      icmp|   0|  0|    8|           2|           3|
+    |icmp_ln1932_fu_1669_p2        |      icmp|   0|  0|    8|           2|           1|
+    |icmp_ln1955_fu_792_p2         |      icmp|   0|  0|   11|           8|           1|
+    |icmp_ln1978_fu_1788_p2        |      icmp|   0|  0|    8|           2|           3|
+    |icmp_ln1981_fu_1618_p2        |      icmp|   0|  0|    8|           2|           3|
+    |icmp_ln1984_fu_1647_p2        |      icmp|   0|  0|   11|           8|           1|
+    |icmp_ln1999_1_fu_1733_p2      |      icmp|   0|  0|    8|           3|           1|
+    |icmp_ln1999_fu_1717_p2        |      icmp|   0|  0|   20|          32|           1|
+    |icmp_ln2002_fu_2879_p2        |      icmp|   0|  0|   20|          32|          32|
+    |icmp_ln2029_fu_2767_p2        |      icmp|   0|  0|   29|          64|          64|
+    |icmp_ln2030_fu_2737_p2        |      icmp|   0|  0|   29|          64|          64|
+    |icmp_ln2051_fu_2719_p2        |      icmp|   0|  0|   29|          64|          64|
+    |icmp_ln286_fu_1769_p2         |      icmp|   0|  0|    9|           4|           1|
+    |icmp_ln7_1_fu_2310_p2         |      icmp|   0|  0|    8|           2|           1|
+    |icmp_ln7_2_fu_2400_p2         |      icmp|   0|  0|    8|           2|           1|
+    |icmp_ln7_3_fu_2414_p2         |      icmp|   0|  0|    8|           2|           1|
+    |icmp_ln7_fu_2296_p2           |      icmp|   0|  0|    8|           2|           1|
+    |icmp_ln958_1_fu_2362_p2       |      icmp|   0|  0|    8|           2|           2|
+    |icmp_ln958_fu_2258_p2         |      icmp|   0|  0|    8|           2|           2|
+    |icmp_ln960_1_fu_2395_p2       |      icmp|   0|  0|   11|           8|           8|
+    |icmp_ln960_fu_2291_p2         |      icmp|   0|  0|   11|           8|           8|
+    |icmp_ln961_1_fu_2428_p2       |      icmp|   0|  0|   29|          64|          64|
+    |icmp_ln961_fu_2324_p2         |      icmp|   0|  0|   29|          64|          64|
+    |lshr_ln2032_fu_2675_p2        |      lshr|   0|  0|  179|          64|          64|
+    |or_ln1432_fu_1506_p2          |        or|   0|  0|    2|           1|           1|
+    |or_ln1742_1_fu_2100_p2        |        or|   0|  0|    2|           1|           1|
+    |or_ln1742_2_fu_2106_p2        |        or|   0|  0|    2|           1|           1|
+    |or_ln1742_fu_2094_p2          |        or|   0|  0|    2|           1|           1|
+    |or_ln1752_fu_2218_p2          |        or|   0|  0|   64|          64|          34|
+    |or_ln1783_fu_2474_p2          |        or|   0|  0|    2|           1|           1|
+    |or_ln1926_1_fu_2470_p2        |        or|   0|  0|    2|           1|           1|
+    |or_ln1926_fu_1681_p2          |        or|   0|  0|    2|           1|           1|
+    |or_ln1936_1_fu_2452_p2        |        or|   0|  0|    2|           1|           1|
+    |or_ln1936_fu_2348_p2          |        or|   0|  0|    2|           1|           1|
+    |or_ln1979_fu_1826_p2          |        or|   0|  0|    2|           1|           1|
+    |or_ln1981_1_fu_1630_p2        |        or|   0|  0|    2|           1|           1|
+    |or_ln1981_2_fu_1636_p2        |        or|   0|  0|    2|           1|           1|
+    |or_ln1981_fu_1624_p2          |        or|   0|  0|    2|           1|           1|
+    |or_ln1983_fu_1835_p2          |        or|   0|  0|    2|           1|           1|
+    |or_ln1999_1_fu_2485_p2        |        or|   0|  0|    2|           1|           1|
+    |or_ln1999_fu_2480_p2          |        or|   0|  0|    2|           1|           1|
+    |or_ln2034_fu_2643_p2          |        or|   0|  0|   64|          64|          64|
+    |or_ln2075_fu_1850_p2          |        or|   0|  0|    2|           1|           1|
+    |or_ln961_1_fu_2434_p2         |        or|   0|  0|    2|           1|           1|
+    |or_ln961_fu_2330_p2           |        or|   0|  0|    2|           1|           1|
+    |subtract_fu_1940_p2           |        or|   0|  0|    2|           1|           1|
+    |high_5_fu_2970_p3             |    select|   0|  0|   64|           1|          64|
+    |high_6_fu_2991_p3             |    select|   0|  0|   64|           1|          64|
+    |input_bit_fu_1880_p3          |    select|   0|  0|    2|           1|           1|
+    |response_result_5_fu_2999_p3  |    select|   0|  0|   64|           1|          64|
+    |response_result_6_fu_3006_p3  |    select|   0|  0|   64|           1|          64|
+    |response_result_7_fu_3012_p3  |    select|   0|  0|   64|           1|          64|
+    |response_result_8_fu_3019_p3  |    select|   0|  0|   64|           1|          64|
+    |response_result_9_fu_996_p3   |    select|   0|  0|   64|           1|          64|
+    |result_fu_2194_p3             |    select|   0|  0|   64|           1|          64|
+    |select_ln1427_1_fu_1544_p3    |    select|   0|  0|    2|           1|           2|
+    |select_ln1427_fu_1524_p3      |    select|   0|  0|    2|           1|           2|
+    |select_ln1428_fu_1448_p3      |    select|   0|  0|    3|           1|           1|
+    |select_ln1430_fu_1474_p3      |    select|   0|  0|    3|           1|           1|
+    |select_ln1742_fu_2118_p3      |    select|   0|  0|   64|           1|          64|
+    |select_ln1752_fu_2224_p3      |    select|   0|  0|   64|           1|          64|
+    |select_ln1756_fu_2232_p3      |    select|   0|  0|   64|           1|          64|
+    |select_ln1866_fu_1952_p3      |    select|   0|  0|   64|           1|          64|
+    |select_ln1871_fu_2012_p3      |    select|   0|  0|    7|           1|           6|
+    |select_ln1876_fu_2026_p3      |    select|   0|  0|   32|           1|          32|
+    |select_ln1880_fu_2174_p3      |    select|   0|  0|   64|           1|          64|
+    |select_ln1936_1_fu_2458_p3    |    select|   0|  0|   64|           1|          64|
+    |select_ln1936_fu_2354_p3      |    select|   0|  0|   64|           1|          64|
+    |select_ln7_1_fu_2316_p3       |    select|   0|  0|   64|           1|          64|
+    |select_ln7_2_fu_2406_p3       |    select|   0|  0|   64|           1|          64|
+    |select_ln7_3_fu_2420_p3       |    select|   0|  0|   64|           1|          64|
+    |select_ln7_fu_2302_p3         |    select|   0|  0|   64|           1|          64|
+    |shl_ln2028_fu_2823_p2         |       shl|   0|  0|  179|          64|          64|
+    |shl_ln286_fu_1757_p2          |       shl|   0|  0|    9|           1|           4|
+    |xor_ln1424_fu_1552_p2         |       xor|   0|  0|    2|           1|           2|
+    |xor_ln1432_fu_1594_p2         |       xor|   0|  0|    2|           1|           2|
+    |xor_ln1865_fu_1934_p2         |       xor|   0|  0|    2|           1|           2|
+    |xor_ln1880_fu_2182_p2         |       xor|   0|  0|    2|           1|           2|
+    |xor_ln1926_fu_1675_p2         |       xor|   0|  0|    2|           2|           1|
+    |xor_ln1958_fu_928_p2          |       xor|   0|  0|    8|           8|           2|
+    |xor_ln1979_1_fu_1820_p2       |       xor|   0|  0|    2|           2|           1|
+    |xor_ln1979_fu_1804_p2         |       xor|   0|  0|    2|           1|           2|
+    |xor_ln2031_fu_2707_p2         |       xor|   0|  0|   64|          64|          64|
+    |xor_ln2075_fu_1844_p2         |       xor|   0|  0|    2|           1|           2|
+    |xor_ln965_1_fu_2440_p2        |       xor|   0|  0|    2|           1|           2|
+    |xor_ln965_fu_2336_p2          |       xor|   0|  0|    2|           1|           2|
+    +------------------------------+----------+----+---+-----+------------+------------+
+    |Total                         |          |   0|  0| 3554|        1758|        2958|
+    +------------------------------+----------+----+---+-----+------------+------------+
+
+    * Multiplexer: 
+    +--------------------------------------------------------------+-----+-----------+-----+-----------+
+    |                             Name                             | LUT | Input Size| Bits| Total Bits|
+    +--------------------------------------------------------------+-----+-----------+-----+-----------+
+    |ap_NS_fsm                                                     |  101|         20|    1|         20|
+    |ap_phi_mux_rs2_phi_fu_622_p10                                 |   14|          3|   64|        192|
+    |conflict_1_reg_444                                            |    9|          2|    1|          2|
+    |conflict_2_reg_571                                            |    9|          2|    1|          2|
+    |conflict_3_reg_559                                            |    9|          2|    1|          2|
+    |conflict_reg_456                                              |    9|          2|    1|          2|
+    |grp_fu_639_p0                                                 |   14|          3|   65|        195|
+    |grp_fu_639_p1                                                 |   14|          3|   65|        195|
+    |hit_1_reg_486                                                 |    9|          2|    1|          2|
+    |hit_2_reg_535                                                 |    9|          2|    1|          2|
+    |hit_3_reg_601                                                 |    9|          2|    1|          2|
+    |hit_reg_420                                                   |    9|          2|    1|          2|
+    |i_57_reg_409                                                  |    9|          2|    2|          4|
+    |i_58_reg_524                                                  |    9|          2|    2|          4|
+    |i_fu_302                                                      |    9|          2|    2|          4|
+    |reg_432                                                       |   14|          3|  128|        384|
+    |rs1_reg_503                                                   |   20|          4|   64|        256|
+    |rs2_reg_618                                                   |   20|          4|   64|        256|
+    |state_execute_alu_results_mispredict_1                        |   26|          5|    1|          5|
+    |state_execute_alu_results_redirect_pc_1                       |   14|          3|   64|        192|
+    |state_execute_alu_results_result_1                            |  106|         21|   64|       1344|
+    |state_execute_alu_results_uop_branch_br_mask_1                |   14|          3|    8|         24|
+    |state_execute_alu_results_uop_queue_rob_allocation_id_1       |   14|          3|   32|         96|
+    |state_execute_alu_results_uop_queue_rob_idx_1                 |   14|          3|    8|         24|
+    |state_execute_alu_results_uop_rename_dst_rtype_1              |   14|          3|    2|          6|
+    |state_execute_alu_results_uop_rename_pdst_1                   |   14|          3|    8|         24|
+    |state_execute_alu_results_valid_1_o                           |    9|          2|    1|          2|
+    |state_execute_divider_allocation_id_o                         |   14|          3|   32|         96|
+    |state_execute_divider_arithmetic_busy_o                       |   14|          3|    1|          3|
+    |state_execute_divider_arithmetic_busy_o_ap_vld                |   14|          3|    1|          3|
+    |state_execute_divider_arithmetic_dividend_magnitude_o         |   20|          4|   64|        256|
+    |state_execute_divider_arithmetic_dividend_magnitude_o_ap_vld  |   14|          3|    1|          3|
+    |state_execute_divider_arithmetic_divisor_magnitude_o          |   14|          3|   64|        192|
+    |state_execute_divider_arithmetic_divisor_magnitude_o_ap_vld   |   14|          3|    1|          3|
+    |state_execute_divider_arithmetic_iteration_o                  |   20|          4|    8|         32|
+    |state_execute_divider_arithmetic_iteration_o_ap_vld           |   14|          3|    1|          3|
+    |state_execute_divider_arithmetic_operation_o                  |   14|          3|    6|         18|
+    |state_execute_divider_arithmetic_operation_o_ap_vld           |   14|          3|    1|          3|
+    |state_execute_divider_arithmetic_original_dividend_o          |   20|          4|   64|        256|
+    |state_execute_divider_arithmetic_original_dividend_o_ap_vld   |   14|          3|    1|          3|
+    |state_execute_divider_arithmetic_quotient_negative_o          |   14|          3|    1|          3|
+    |state_execute_divider_arithmetic_quotient_negative_o_ap_vld   |   14|          3|    1|          3|
+    |state_execute_divider_arithmetic_quotient_o                   |   20|          4|   63|        252|
+    |state_execute_divider_arithmetic_quotient_o_ap_vld            |   14|          3|    1|          3|
+    |state_execute_divider_arithmetic_remainder_negative_o         |   14|          3|    1|          3|
+    |state_execute_divider_arithmetic_remainder_negative_o_ap_vld  |   14|          3|    1|          3|
+    |state_execute_divider_arithmetic_remainder_o                  |   20|          4|   64|        256|
+    |state_execute_divider_arithmetic_remainder_o_ap_vld           |   14|          3|    1|          3|
+    |state_execute_divider_arithmetic_result_pending_o             |   20|          4|    1|          4|
+    |state_execute_divider_arithmetic_result_pending_o_ap_vld      |   14|          3|    1|          3|
+    |state_execute_divider_arithmetic_word_operation_o             |   14|          3|    1|          3|
+    |state_execute_divider_arithmetic_word_operation_o_ap_vld      |   14|          3|    1|          3|
+    |state_execute_divider_branch_mask_o                           |   20|          4|    8|         32|
+    |state_execute_divider_rob_idx_o                               |   14|          3|    8|         24|
+    |state_execute_divider_token_valid_o                           |   14|          3|    1|          3|
+    |state_execute_divider_uop_branch_br_mask_o                    |   20|          4|    8|         32|
+    |state_execute_divider_uop_queue_rob_allocation_id_o           |   14|          3|   32|         96|
+    |state_execute_divider_uop_queue_rob_idx_o                     |   14|          3|    8|         24|
+    |state_execute_divider_uop_rename_dst_rtype_o                  |   14|          3|    2|          6|
+    |state_execute_divider_uop_rename_pdst_o                       |   14|          3|    8|         24|
+    |state_int_rf_bank0_address0                                   |   14|          3|    6|         18|
+    |state_int_rf_bank1_address0                                   |   14|          3|    6|         18|
+    |state_rename_int_free_list_busy_table_address0                |   14|          3|    6|         18|
+    |state_rob_entries_busy_address0                               |   14|          3|    5|         15|
+    |state_rob_entries_uop_queue_rob_allocation_id_address0        |   14|          3|    5|         15|
+    |state_rob_entries_valid_address0                              |   14|          3|    5|         15|
+    |value_2_reg_586                                               |    9|          2|   64|        128|
+    |value_3_reg_547                                               |    9|          2|   64|        128|
+    |value_reg_471                                                 |    9|          2|   64|        128|
+    +--------------------------------------------------------------+-----+-----------+-----+-----------+
+    |Total                                                         | 1142|        239| 1335|       5377|
+    +--------------------------------------------------------------+-----+-----------+-----+-----------+
+
+    * Register: 
+    +---------------------------------------------------------------+-----+----+-----+-----------+
+    |                              Name                             |  FF | LUT| Bits| Const Bits|
+    +---------------------------------------------------------------+-----+----+-----+-----------+
+    |add_ln1978_reg_3249                                            |    2|   0|    2|          0|
+    |add_ln958_1_reg_3352                                           |    2|   0|    2|          0|
+    |add_ln958_reg_3300                                             |    2|   0|    2|          0|
+    |and_ln1983_reg_3139                                            |    1|   0|    1|          0|
+    |ap_CS_fsm                                                      |   19|   0|   19|          0|
+    |conflict_1_reg_444                                             |    1|   0|    1|          0|
+    |conflict_2_reg_571                                             |    1|   0|    1|          0|
+    |conflict_3_reg_559                                             |    1|   0|    1|          0|
+    |conflict_reg_456                                               |    1|   0|    1|          0|
+    |divider_accepted_fu_306                                        |    1|   0|    1|          0|
+    |high_reg_3398                                                  |   64|   0|   64|          0|
+    |hit_1_reg_486                                                  |    1|   0|    1|          0|
+    |hit_2_reg_535                                                  |    1|   0|    1|          0|
+    |hit_3_reg_601                                                  |    1|   0|    1|          0|
+    |hit_reg_420                                                    |    1|   0|    1|          0|
+    |i_57_reg_409                                                   |    2|   0|    2|          0|
+    |i_58_reg_524                                                   |    2|   0|    2|          0|
+    |i_fu_302                                                       |    2|   0|    2|          0|
+    |icmp_ln1652_1_reg_3182                                         |    1|   0|    1|          0|
+    |icmp_ln1652_2_reg_3187                                         |    1|   0|    1|          0|
+    |icmp_ln1652_3_reg_3192                                         |    1|   0|    1|          0|
+    |icmp_ln1652_reg_3177                                           |    1|   0|    1|          0|
+    |icmp_ln1917_1_reg_3060                                         |    1|   0|    1|          0|
+    |icmp_ln1917_reg_3056                                           |    1|   0|    1|          0|
+    |icmp_ln1932_reg_3168                                           |    1|   0|    1|          0|
+    |icmp_ln1955_reg_3047                                           |    1|   0|    1|          0|
+    |icmp_ln1984_reg_3149                                           |    1|   0|    1|          0|
+    |icmp_ln1999_1_reg_3207                                         |    1|   0|    1|          0|
+    |icmp_ln1999_reg_3202                                           |    1|   0|    1|          0|
+    |icmp_ln2002_reg_3413                                           |    1|   0|    1|          0|
+    |icmp_ln286_reg_3232                                            |    1|   0|    1|          0|
+    |or_ln1926_1_reg_3386                                           |    1|   0|    1|          0|
+    |or_ln1926_reg_3172                                             |    1|   0|    1|          0|
+    |or_ln1936_1_reg_3373                                           |    1|   0|    1|          0|
+    |or_ln1936_reg_3321                                             |    1|   0|    1|          0|
+    |or_ln1979_reg_3259                                             |    1|   0|    1|          0|
+    |or_ln1981_2_reg_3144                                           |    1|   0|    1|          0|
+    |or_ln1983_reg_3263                                             |    1|   0|    1|          0|
+    |or_ln1999_1_reg_3394                                           |    1|   0|    1|          0|
+    |reg_432                                                        |  128|   0|  128|          0|
+    |reg_740                                                        |    8|   0|    8|          0|
+    |reg_744                                                        |    8|   0|    8|          0|
+    |reg_748                                                        |    8|   0|    8|          0|
+    |reg_752                                                        |   64|   0|   64|          0|
+    |reg_756                                                        |   64|   0|   64|          0|
+    |reg_760                                                        |   64|   0|   64|          0|
+    |request_operation_reg_3197                                     |    6|   0|    6|          0|
+    |rs1_reg_503                                                    |   64|   0|   64|          0|
+    |rs2_reg_618                                                    |   64|   0|   64|          0|
+    |state_completion_bypass_valid_0_load_1_reg_3334                |    1|   0|    1|          0|
+    |state_completion_bypass_valid_0_load_reg_3267                  |    1|   0|    1|          0|
+    |state_completion_bypass_valid_1_load_1_reg_3339                |    1|   0|    1|          0|
+    |state_completion_bypass_valid_1_load_reg_3272                  |    1|   0|    1|          0|
+    |state_completion_bypass_valid_2_load_1_reg_3344                |    1|   0|    1|          0|
+    |state_completion_bypass_valid_2_load_reg_3277                  |    1|   0|    1|          0|
+    |state_execute_divider_allocation_id_load_reg_3051              |   32|   0|   32|          0|
+    |state_execute_divider_token_valid_load_4_reg_3390              |    1|   0|    1|          0|
+    |state_execute_divider_token_valid_load_reg_3032                |    1|   0|    1|          0|
+    |state_int_rf_bank0_addr_reg_3236                               |    2|   0|    6|          4|
+    |state_int_rf_bank1_addr_reg_3241                               |    2|   0|    6|          4|
+    |state_rename_int_free_list_busy_table_addr_reg_3227            |    2|   0|    6|          4|
+    |state_rename_int_free_list_busy_table_load_1_reg_3382          |    1|   0|    1|          0|
+    |state_rename_int_free_list_busy_table_load_reg_3330            |    1|   0|    1|          0|
+    |state_rob_entries_busy_addr_8_reg_3217                         |    5|   0|    5|          0|
+    |state_rob_entries_busy_load_2_reg_3409                         |    1|   0|    1|          0|
+    |state_rob_entries_busy_load_reg_3084                           |    1|   0|    1|          0|
+    |state_rob_entries_uop_queue_rob_allocation_id_addr_7_reg_3222  |    5|   0|    5|          0|
+    |state_rob_entries_valid_addr_7_reg_3212                        |    5|   0|    5|          0|
+    |state_rob_entries_valid_load_3_reg_3405                        |    1|   0|    1|          0|
+    |state_rob_entries_valid_load_reg_3075                          |    1|   0|    1|          0|
+    |tmp_28_reg_3159                                                |    1|   0|    1|          0|
+    |value_2_reg_586                                                |   64|   0|   64|          0|
+    |value_3_reg_547                                                |   64|   0|   64|          0|
+    |value_reg_471                                                  |   64|   0|   64|          0|
+    |xor_ln1979_reg_3254                                            |    1|   0|    1|          0|
+    |zext_ln1919_reg_3064                                           |    8|   0|   64|         56|
+    |zext_ln952_1_reg_3163                                          |    2|   0|    8|          6|
+    |zext_ln952_reg_3154                                            |    1|   0|    8|          7|
+    +---------------------------------------------------------------+-----+----+-----+-----------+
+    |Total                                                          |  876|   0|  957|         81|
+    +---------------------------------------------------------------+-----+----+-----+-----------+
+
+
+
+================================================================
+== Interface
+================================================================
+* Summary: 
++----------------------------------------------------------------+-----+-----+------------+---------------------------------------------------------+--------------+
+|                            RTL Ports                           | Dir | Bits|  Protocol  |                      Source Object                      |    C Type    |
++----------------------------------------------------------------+-----+-----+------------+---------------------------------------------------------+--------------+
+|ap_clk                                                          |   in|    1|  ap_ctrl_hs|                                           execute_module|  return value|
+|ap_rst                                                          |   in|    1|  ap_ctrl_hs|                                           execute_module|  return value|
+|ap_start                                                        |   in|    1|  ap_ctrl_hs|                                           execute_module|  return value|
+|ap_done                                                         |  out|    1|  ap_ctrl_hs|                                           execute_module|  return value|
+|ap_idle                                                         |  out|    1|  ap_ctrl_hs|                                           execute_module|  return value|
+|ap_ready                                                        |  out|    1|  ap_ctrl_hs|                                           execute_module|  return value|
+|state_execute_alu_results_uop_branch_br_mask_2                  |  out|    8|      ap_vld|           state_execute_alu_results_uop_branch_br_mask_2|       pointer|
+|state_execute_alu_results_uop_branch_br_mask_2_ap_vld           |  out|    1|      ap_vld|           state_execute_alu_results_uop_branch_br_mask_2|       pointer|
+|state_execute_divider_token_valid_i                             |   in|    1|     ap_ovld|                        state_execute_divider_token_valid|       pointer|
+|state_execute_divider_token_valid_o                             |  out|    1|     ap_ovld|                        state_execute_divider_token_valid|       pointer|
+|state_execute_divider_token_valid_o_ap_vld                      |  out|    1|     ap_ovld|                        state_execute_divider_token_valid|       pointer|
+|state_brupdate_valid                                            |   in|    1|     ap_none|                                     state_brupdate_valid|       pointer|
+|state_brupdate_mispredict                                       |   in|    1|     ap_none|                                state_brupdate_mispredict|       pointer|
+|state_brupdate_mispredict_mask                                  |   in|    8|     ap_none|                           state_brupdate_mispredict_mask|       pointer|
+|state_execute_divider_branch_mask_i                             |   in|    8|     ap_ovld|                        state_execute_divider_branch_mask|       pointer|
+|state_execute_divider_branch_mask_o                             |  out|    8|     ap_ovld|                        state_execute_divider_branch_mask|       pointer|
+|state_execute_divider_branch_mask_o_ap_vld                      |  out|    1|     ap_ovld|                        state_execute_divider_branch_mask|       pointer|
+|state_execute_divider_arithmetic_busy_i                         |   in|    1|     ap_ovld|                    state_execute_divider_arithmetic_busy|       pointer|
+|state_execute_divider_arithmetic_busy_o                         |  out|    1|     ap_ovld|                    state_execute_divider_arithmetic_busy|       pointer|
+|state_execute_divider_arithmetic_busy_o_ap_vld                  |  out|    1|     ap_ovld|                    state_execute_divider_arithmetic_busy|       pointer|
+|state_execute_divider_arithmetic_result_pending_i               |   in|    1|     ap_ovld|          state_execute_divider_arithmetic_result_pending|       pointer|
+|state_execute_divider_arithmetic_result_pending_o               |  out|    1|     ap_ovld|          state_execute_divider_arithmetic_result_pending|       pointer|
+|state_execute_divider_arithmetic_result_pending_o_ap_vld        |  out|    1|     ap_ovld|          state_execute_divider_arithmetic_result_pending|       pointer|
+|state_execute_divider_arithmetic_operation_i                    |   in|    6|     ap_ovld|               state_execute_divider_arithmetic_operation|       pointer|
+|state_execute_divider_arithmetic_operation_o                    |  out|    6|     ap_ovld|               state_execute_divider_arithmetic_operation|       pointer|
+|state_execute_divider_arithmetic_operation_o_ap_vld             |  out|    1|     ap_ovld|               state_execute_divider_arithmetic_operation|       pointer|
+|state_execute_divider_arithmetic_original_dividend_i            |   in|   64|     ap_ovld|       state_execute_divider_arithmetic_original_dividend|       pointer|
+|state_execute_divider_arithmetic_original_dividend_o            |  out|   64|     ap_ovld|       state_execute_divider_arithmetic_original_dividend|       pointer|
+|state_execute_divider_arithmetic_original_dividend_o_ap_vld     |  out|    1|     ap_ovld|       state_execute_divider_arithmetic_original_dividend|       pointer|
+|state_execute_divider_arithmetic_dividend_magnitude_i           |   in|   64|     ap_ovld|      state_execute_divider_arithmetic_dividend_magnitude|       pointer|
+|state_execute_divider_arithmetic_dividend_magnitude_o           |  out|   64|     ap_ovld|      state_execute_divider_arithmetic_dividend_magnitude|       pointer|
+|state_execute_divider_arithmetic_dividend_magnitude_o_ap_vld    |  out|    1|     ap_ovld|      state_execute_divider_arithmetic_dividend_magnitude|       pointer|
+|state_execute_divider_arithmetic_divisor_magnitude_i            |   in|   64|     ap_ovld|       state_execute_divider_arithmetic_divisor_magnitude|       pointer|
+|state_execute_divider_arithmetic_divisor_magnitude_o            |  out|   64|     ap_ovld|       state_execute_divider_arithmetic_divisor_magnitude|       pointer|
+|state_execute_divider_arithmetic_divisor_magnitude_o_ap_vld     |  out|    1|     ap_ovld|       state_execute_divider_arithmetic_divisor_magnitude|       pointer|
+|state_execute_divider_arithmetic_quotient_i                     |   in|   63|     ap_ovld|                state_execute_divider_arithmetic_quotient|       pointer|
+|state_execute_divider_arithmetic_quotient_o                     |  out|   63|     ap_ovld|                state_execute_divider_arithmetic_quotient|       pointer|
+|state_execute_divider_arithmetic_quotient_o_ap_vld              |  out|    1|     ap_ovld|                state_execute_divider_arithmetic_quotient|       pointer|
+|state_execute_divider_arithmetic_remainder_i                    |   in|   64|     ap_ovld|               state_execute_divider_arithmetic_remainder|       pointer|
+|state_execute_divider_arithmetic_remainder_o                    |  out|   64|     ap_ovld|               state_execute_divider_arithmetic_remainder|       pointer|
+|state_execute_divider_arithmetic_remainder_o_ap_vld             |  out|    1|     ap_ovld|               state_execute_divider_arithmetic_remainder|       pointer|
+|state_execute_divider_arithmetic_iteration_i                    |   in|    8|     ap_ovld|               state_execute_divider_arithmetic_iteration|       pointer|
+|state_execute_divider_arithmetic_iteration_o                    |  out|    8|     ap_ovld|               state_execute_divider_arithmetic_iteration|       pointer|
+|state_execute_divider_arithmetic_iteration_o_ap_vld             |  out|    1|     ap_ovld|               state_execute_divider_arithmetic_iteration|       pointer|
+|state_execute_divider_arithmetic_quotient_negative_i            |   in|    1|     ap_ovld|       state_execute_divider_arithmetic_quotient_negative|       pointer|
+|state_execute_divider_arithmetic_quotient_negative_o            |  out|    1|     ap_ovld|       state_execute_divider_arithmetic_quotient_negative|       pointer|
+|state_execute_divider_arithmetic_quotient_negative_o_ap_vld     |  out|    1|     ap_ovld|       state_execute_divider_arithmetic_quotient_negative|       pointer|
+|state_execute_divider_arithmetic_remainder_negative_i           |   in|    1|     ap_ovld|      state_execute_divider_arithmetic_remainder_negative|       pointer|
+|state_execute_divider_arithmetic_remainder_negative_o           |  out|    1|     ap_ovld|      state_execute_divider_arithmetic_remainder_negative|       pointer|
+|state_execute_divider_arithmetic_remainder_negative_o_ap_vld    |  out|    1|     ap_ovld|      state_execute_divider_arithmetic_remainder_negative|       pointer|
+|state_execute_divider_arithmetic_word_operation_i               |   in|    1|     ap_ovld|          state_execute_divider_arithmetic_word_operation|       pointer|
+|state_execute_divider_arithmetic_word_operation_o               |  out|    1|     ap_ovld|          state_execute_divider_arithmetic_word_operation|       pointer|
+|state_execute_divider_arithmetic_word_operation_o_ap_vld        |  out|    1|     ap_ovld|          state_execute_divider_arithmetic_word_operation|       pointer|
+|state_execute_divider_uop_branch_br_mask_i                      |   in|    8|     ap_ovld|                 state_execute_divider_uop_branch_br_mask|       pointer|
+|state_execute_divider_uop_branch_br_mask_o                      |  out|    8|     ap_ovld|                 state_execute_divider_uop_branch_br_mask|       pointer|
+|state_execute_divider_uop_branch_br_mask_o_ap_vld               |  out|    1|     ap_ovld|                 state_execute_divider_uop_branch_br_mask|       pointer|
+|state_execute_divider_uop_queue_rob_idx_i                       |   in|    8|     ap_ovld|                  state_execute_divider_uop_queue_rob_idx|       pointer|
+|state_execute_divider_uop_queue_rob_idx_o                       |  out|    8|     ap_ovld|                  state_execute_divider_uop_queue_rob_idx|       pointer|
+|state_execute_divider_uop_queue_rob_idx_o_ap_vld                |  out|    1|     ap_ovld|                  state_execute_divider_uop_queue_rob_idx|       pointer|
+|state_execute_divider_uop_queue_rob_allocation_id_i             |   in|   32|     ap_ovld|        state_execute_divider_uop_queue_rob_allocation_id|       pointer|
+|state_execute_divider_uop_queue_rob_allocation_id_o             |  out|   32|     ap_ovld|        state_execute_divider_uop_queue_rob_allocation_id|       pointer|
+|state_execute_divider_uop_queue_rob_allocation_id_o_ap_vld      |  out|    1|     ap_ovld|        state_execute_divider_uop_queue_rob_allocation_id|       pointer|
+|state_execute_divider_uop_rename_pdst_i                         |   in|    8|     ap_ovld|                    state_execute_divider_uop_rename_pdst|       pointer|
+|state_execute_divider_uop_rename_pdst_o                         |  out|    8|     ap_ovld|                    state_execute_divider_uop_rename_pdst|       pointer|
+|state_execute_divider_uop_rename_pdst_o_ap_vld                  |  out|    1|     ap_ovld|                    state_execute_divider_uop_rename_pdst|       pointer|
+|state_execute_divider_uop_rename_dst_rtype_i                    |   in|    2|     ap_ovld|               state_execute_divider_uop_rename_dst_rtype|       pointer|
+|state_execute_divider_uop_rename_dst_rtype_o                    |  out|    2|     ap_ovld|               state_execute_divider_uop_rename_dst_rtype|       pointer|
+|state_execute_divider_uop_rename_dst_rtype_o_ap_vld             |  out|    1|     ap_ovld|               state_execute_divider_uop_rename_dst_rtype|       pointer|
+|state_execute_divider_rob_idx_i                                 |   in|    8|     ap_ovld|                            state_execute_divider_rob_idx|       pointer|
+|state_execute_divider_rob_idx_o                                 |  out|    8|     ap_ovld|                            state_execute_divider_rob_idx|       pointer|
+|state_execute_divider_rob_idx_o_ap_vld                          |  out|    1|     ap_ovld|                            state_execute_divider_rob_idx|       pointer|
+|state_execute_divider_allocation_id_i                           |   in|   32|     ap_ovld|                      state_execute_divider_allocation_id|       pointer|
+|state_execute_divider_allocation_id_o                           |  out|   32|     ap_ovld|                      state_execute_divider_allocation_id|       pointer|
+|state_execute_divider_allocation_id_o_ap_vld                    |  out|    1|     ap_ovld|                      state_execute_divider_allocation_id|       pointer|
+|state_brupdate_resolve_mask                                     |   in|    8|     ap_none|                              state_brupdate_resolve_mask|       pointer|
+|state_rob_entries_valid_address0                                |  out|    5|   ap_memory|                                  state_rob_entries_valid|         array|
+|state_rob_entries_valid_ce0                                     |  out|    1|   ap_memory|                                  state_rob_entries_valid|         array|
+|state_rob_entries_valid_q0                                      |   in|    1|   ap_memory|                                  state_rob_entries_valid|         array|
+|state_rob_entries_busy_address0                                 |  out|    5|   ap_memory|                                   state_rob_entries_busy|         array|
+|state_rob_entries_busy_ce0                                      |  out|    1|   ap_memory|                                   state_rob_entries_busy|         array|
+|state_rob_entries_busy_q0                                       |   in|    1|   ap_memory|                                   state_rob_entries_busy|         array|
+|state_rob_entries_uop_queue_rob_allocation_id_address0          |  out|    5|   ap_memory|            state_rob_entries_uop_queue_rob_allocation_id|         array|
+|state_rob_entries_uop_queue_rob_allocation_id_ce0               |  out|    1|   ap_memory|            state_rob_entries_uop_queue_rob_allocation_id|         array|
+|state_rob_entries_uop_queue_rob_allocation_id_q0                |   in|   32|   ap_memory|            state_rob_entries_uop_queue_rob_allocation_id|         array|
+|state_execute_alu_results_valid_1_i                             |   in|    1|     ap_ovld|                        state_execute_alu_results_valid_1|       pointer|
+|state_execute_alu_results_valid_1_o                             |  out|    1|     ap_ovld|                        state_execute_alu_results_valid_1|       pointer|
+|state_execute_alu_results_valid_1_o_ap_vld                      |  out|    1|     ap_ovld|                        state_execute_alu_results_valid_1|       pointer|
+|state_execute_alu_results_mispredict_1                          |  out|    1|      ap_vld|                   state_execute_alu_results_mispredict_1|       pointer|
+|state_execute_alu_results_mispredict_1_ap_vld                   |  out|    1|      ap_vld|                   state_execute_alu_results_mispredict_1|       pointer|
+|state_execute_alu_results_redirect_pc_1                         |  out|   64|      ap_vld|                  state_execute_alu_results_redirect_pc_1|       pointer|
+|state_execute_alu_results_redirect_pc_1_ap_vld                  |  out|    1|      ap_vld|                  state_execute_alu_results_redirect_pc_1|       pointer|
+|state_execute_alu_results_memory_valid_1                        |  out|    1|      ap_vld|                 state_execute_alu_results_memory_valid_1|       pointer|
+|state_execute_alu_results_memory_valid_1_ap_vld                 |  out|    1|      ap_vld|                 state_execute_alu_results_memory_valid_1|       pointer|
+|state_execute_alu_results_is_load_1                             |  out|    1|      ap_vld|                      state_execute_alu_results_is_load_1|       pointer|
+|state_execute_alu_results_is_load_1_ap_vld                      |  out|    1|      ap_vld|                      state_execute_alu_results_is_load_1|       pointer|
+|state_execute_alu_results_is_store_1                            |  out|    1|      ap_vld|                     state_execute_alu_results_is_store_1|       pointer|
+|state_execute_alu_results_is_store_1_ap_vld                     |  out|    1|      ap_vld|                     state_execute_alu_results_is_store_1|       pointer|
+|state_execute_alu_results_memory_address_1                      |  out|    1|      ap_vld|               state_execute_alu_results_memory_address_1|       pointer|
+|state_execute_alu_results_memory_address_1_ap_vld               |  out|    1|      ap_vld|               state_execute_alu_results_memory_address_1|       pointer|
+|state_execute_alu_results_store_data_1                          |  out|    1|      ap_vld|                   state_execute_alu_results_store_data_1|       pointer|
+|state_execute_alu_results_store_data_1_ap_vld                   |  out|    1|      ap_vld|                   state_execute_alu_results_store_data_1|       pointer|
+|state_execute_alu_results_memory_mask_1                         |  out|    1|      ap_vld|                  state_execute_alu_results_memory_mask_1|       pointer|
+|state_execute_alu_results_memory_mask_1_ap_vld                  |  out|    1|      ap_vld|                  state_execute_alu_results_memory_mask_1|       pointer|
+|state_execute_alu_results_uop_branch_br_mask_1                  |  out|    8|      ap_vld|           state_execute_alu_results_uop_branch_br_mask_1|       pointer|
+|state_execute_alu_results_uop_branch_br_mask_1_ap_vld           |  out|    1|      ap_vld|           state_execute_alu_results_uop_branch_br_mask_1|       pointer|
+|state_execute_alu_results_uop_queue_rob_idx_1                   |  out|    8|      ap_vld|            state_execute_alu_results_uop_queue_rob_idx_1|       pointer|
+|state_execute_alu_results_uop_queue_rob_idx_1_ap_vld            |  out|    1|      ap_vld|            state_execute_alu_results_uop_queue_rob_idx_1|       pointer|
+|state_execute_alu_results_uop_queue_rob_allocation_id_1         |  out|   32|      ap_vld|  state_execute_alu_results_uop_queue_rob_allocation_id_1|       pointer|
+|state_execute_alu_results_uop_queue_rob_allocation_id_1_ap_vld  |  out|    1|      ap_vld|  state_execute_alu_results_uop_queue_rob_allocation_id_1|       pointer|
+|state_execute_alu_results_uop_rename_pdst_1                     |  out|    8|      ap_vld|              state_execute_alu_results_uop_rename_pdst_1|       pointer|
+|state_execute_alu_results_uop_rename_pdst_1_ap_vld              |  out|    1|      ap_vld|              state_execute_alu_results_uop_rename_pdst_1|       pointer|
+|state_execute_alu_results_uop_rename_dst_rtype_1                |  out|    2|      ap_vld|         state_execute_alu_results_uop_rename_dst_rtype_1|       pointer|
+|state_execute_alu_results_uop_rename_dst_rtype_1_ap_vld         |  out|    1|      ap_vld|         state_execute_alu_results_uop_rename_dst_rtype_1|       pointer|
+|state_execute_alu_results_result_1                              |  out|   64|      ap_vld|                       state_execute_alu_results_result_1|       pointer|
+|state_execute_alu_results_result_1_ap_vld                       |  out|    1|      ap_vld|                       state_execute_alu_results_result_1|       pointer|
+|state_issue_issued_uops_iq_type_1                               |   in|    1|     ap_none|                        state_issue_issued_uops_iq_type_1|       pointer|
+|state_issue_issued_uops_fu_code_1                               |   in|    2|     ap_none|                        state_issue_issued_uops_fu_code_1|       pointer|
+|state_issue_issued_uops_uopc_1                                  |   in|    5|     ap_none|                           state_issue_issued_uops_uopc_1|       pointer|
+|state_issue_issued_uops_branch_br_mask_1                        |   in|    8|     ap_none|                 state_issue_issued_uops_branch_br_mask_1|       pointer|
+|state_issue_issued_uops_rename_prs1_1                           |   in|    1|     ap_none|                    state_issue_issued_uops_rename_prs1_1|       pointer|
+|state_int_rf_latest_bank                                        |   in|   64|     ap_none|                                 state_int_rf_latest_bank|       pointer|
+|state_issue_issued_uops_rename_prs2_1                           |   in|    2|     ap_none|                    state_issue_issued_uops_rename_prs2_1|       pointer|
+|state_issue_issued_uops_queue_rob_allocation_id_1               |   in|   32|     ap_none|        state_issue_issued_uops_queue_rob_allocation_id_1|       pointer|
+|state_issue_issued_uops_queue_rob_idx_1                         |   in|    8|     ap_none|                  state_issue_issued_uops_queue_rob_idx_1|       pointer|
+|state_issue_issued_uops_rename_pdst_1                           |   in|    8|     ap_none|                    state_issue_issued_uops_rename_pdst_1|       pointer|
+|state_issue_issued_uops_rename_dst_rtype_1                      |   in|    2|     ap_none|               state_issue_issued_uops_rename_dst_rtype_1|       pointer|
+|state_issue_issued_valids_1                                     |   in|    1|     ap_none|                              state_issue_issued_valids_1|       pointer|
+|state_completion_bypass_valid_0                                 |   in|    1|     ap_none|                          state_completion_bypass_valid_0|       pointer|
+|state_completion_bypass_valid_1                                 |   in|    1|     ap_none|                          state_completion_bypass_valid_1|       pointer|
+|state_completion_bypass_valid_2                                 |   in|    1|     ap_none|                          state_completion_bypass_valid_2|       pointer|
+|state_completion_bypass_pdst_0                                  |   in|    8|     ap_none|                           state_completion_bypass_pdst_0|       pointer|
+|state_completion_bypass_pdst_1                                  |   in|    8|     ap_none|                           state_completion_bypass_pdst_1|       pointer|
+|state_completion_bypass_pdst_2                                  |   in|    8|     ap_none|                           state_completion_bypass_pdst_2|       pointer|
+|state_completion_bypass_value_2                                 |   in|   64|     ap_none|                          state_completion_bypass_value_2|       pointer|
+|state_completion_bypass_value_0                                 |   in|   64|     ap_none|                          state_completion_bypass_value_0|       pointer|
+|state_completion_bypass_value_1                                 |   in|   64|     ap_none|                          state_completion_bypass_value_1|       pointer|
+|state_rename_int_free_list_busy_table_address0                  |  out|    6|   ap_memory|                    state_rename_int_free_list_busy_table|         array|
+|state_rename_int_free_list_busy_table_ce0                       |  out|    1|   ap_memory|                    state_rename_int_free_list_busy_table|         array|
+|state_rename_int_free_list_busy_table_q0                        |   in|    1|   ap_memory|                    state_rename_int_free_list_busy_table|         array|
+|state_int_rf_bank1_address0                                     |  out|    6|   ap_memory|                                       state_int_rf_bank1|         array|
+|state_int_rf_bank1_ce0                                          |  out|    1|   ap_memory|                                       state_int_rf_bank1|         array|
+|state_int_rf_bank1_q0                                           |   in|   64|   ap_memory|                                       state_int_rf_bank1|         array|
+|state_int_rf_bank0_address0                                     |  out|    6|   ap_memory|                                       state_int_rf_bank0|         array|
+|state_int_rf_bank0_ce0                                          |  out|    1|   ap_memory|                                       state_int_rf_bank0|         array|
+|state_int_rf_bank0_q0                                           |   in|   64|   ap_memory|                                       state_int_rf_bank0|         array|
++----------------------------------------------------------------+-----+-----+------------+---------------------------------------------------------+--------------+
+

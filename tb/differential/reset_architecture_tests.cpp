@@ -1,4 +1,5 @@
 #include "boom_interfaces.hpp"
+#include "divider.hpp"
 #include "reset.hpp"
 #include <cstdio>
 
@@ -40,6 +41,17 @@ static void dirty_state(BoomCoreState& state) {
     state.issue.issued_valids[0] = true;
     state.execute.alu_results[0].valid = true;
     state.execute.alu_results[0].mispredict = true;
+    boom::DividerRequest divide_request;
+    divide_request.valid = true;
+    divide_request.dividend = 99;
+    divide_request.divisor = 7;
+    boom::divider_accept(state.execute.divider.arithmetic, divide_request);
+    state.execute.divider.token_valid = true;
+    state.execute.divider.uop.uopc = 21;
+    state.execute.divider.rob_idx = 4;
+    state.execute.divider.pdst = 9;
+    state.execute.divider.allocation_id = 89;
+    state.execute.divider.branch_mask = 2;
     state.rob.head = 3;
     state.rob.tail = 7;
     state.rob.maybe_full = true;
@@ -105,6 +117,10 @@ static void t_iq_nonempty_reset() {
     CHECK(state.issue.alu_iq.count == 0, "IQ count retained");
     for (int i = 0; i < ISSUE_QUEUE_ALU_DEPTH; i++) CHECK(!state.issue.alu_iq.entries[i].valid, "IQ valid retained");
     for (int i = 0; i < ISSUE_WIDTH; i++) CHECK(!state.issue.issued_valids[i], "issued valid retained");
+    CHECK(!state.execute.divider.token_valid &&
+          !state.execute.divider.arithmetic.busy &&
+          !state.execute.divider.arithmetic.result_pending,
+          "active divider token retained");
     PASS();
 }
 
@@ -254,6 +270,9 @@ static void t_no_old_writeback() {
     PipeSignals pipe;
     boom_core_step(state, pipe);
     CHECK(boom::prf_read(state,9) != 0xdeadbeef, "stale execute result wrote back");
+    CHECK(!state.execute.divider.token_valid &&
+          !boom::divider_response(state.execute.divider.arithmetic).valid,
+          "pre-reset divider response became visible");
     PASS();
 }
 

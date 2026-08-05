@@ -10,8 +10,9 @@
 | decode | src/decode.cpp | PARTIAL_M1_RV64M_VERIFIED | PASS_M1_CSYNTH | Exact decode for all 13 RV64M operations and strict OP/OP-32 legality; arithmetic, RVC, and full decode coverage remain incomplete |
 | rename | src/rename.cpp | PARTIAL | PASS_MODULE_CSYNTH | Integer RenameMapTable + FreeList subset; Gate 3.3 branch tag allocation, masks, snapshots, and allocation-list tracking implemented for supported subset |
 | rob | src/rob.cpp | PARTIAL | PASS_W4E_FINAL_CSYNTH | 32-entry ROB allocation/flush subset; up to three completion sources validated |
-| issue | src/issue.cpp | PARTIAL | PASS_M1_CSYNTH | Fixed MEM/INT grants; RV64M `FU_MUL`/`FU_DIV` classify INT-compatible; FP lane inactive and M arithmetic remains later work |
-| execute | src/execute.cpp | PARTIAL | PASS_W4E_FINAL_CSYNTH | Concurrent fixed MEM/INT lanes; no active FPU/muldiv timing model |
+| issue | src/issue.cpp | PARTIAL_M3B_VERIFIED | PASS_M3B_CSYNTH | Fixed MEM/INT grants; busy DIV requests retain IQ ownership while ordinary INT work may proceed; FP lane inactive |
+| execute | src/execute.cpp | PARTIAL_M3B_VERIFIED | PASS_M3B_CSYNTH | Concurrent fixed MEM/INT lanes; persistent radix-2 Divider publishes through the existing INT result; 6773 LUT, 916 FF, 8 BRAM, 3 DSP, 6.411 ns |
+| divider | src/divider.cpp | IMPLEMENTED_M3B | PASS_M3B_CSYNTH | Unsigned restoring radix-2 core, 64/32 iterations, fast returns, held response; 3429 LUT, 344 FF, 0 BRAM/DSP, 5.734 ns |
 | completion | src/completion.cpp | PARTIAL | PASS_W4E_FINAL_CSYNTH | Three named pending slots, three publications, and waiver-free two-bank/LVT PRF writeback at II=1 |
 | branch | src/branch.cpp | PARTIAL | COVERED_BY_STEP_TOP_CSYNTH | Gate 3.3 branch resolution/release, mispredict snapshot restore, free-list rollback, busy rebuild, mask clear, and younger-state kill implemented for supported subset; no predictor metadata |
 | lsu | src/lsu.cpp | PARTIAL | PASS_W4E_FINAL_CSYNTH | Minimal integer LSU for current load/store subset; no cache/MMU/replay or full ordering |

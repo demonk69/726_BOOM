@@ -3,6 +3,7 @@
 
 #include "boom_config.hpp"
 #include "boom_types.hpp"
+#include "divider.hpp"
 
 struct FrontendState {
     uint64_t pc;
@@ -110,6 +111,19 @@ struct IssueState {
     }
 };
 
+struct DividerExecutionState {
+    boom::DividerState arithmetic;
+    bool token_valid;
+    MicroOp uop;
+    uint8_t rob_idx;
+    uint8_t pdst;
+    uint32_t allocation_id;
+    uint8_t branch_mask;
+
+    DividerExecutionState() : arithmetic(), token_valid(false), uop(), rob_idx(0),
+        pdst(0), allocation_id(0), branch_mask(0) {}
+};
+
 struct ExecuteState {
     struct AluResult {
         bool valid; MicroOp uop; uint64_t result;
@@ -124,6 +138,7 @@ struct ExecuteState {
             store_data(0), memory_mask(0), memory_size(0) {}
     };
     AluResult alu_results[EXECUTE_RESULT_LANES];
+    DividerExecutionState divider;
     ExecuteState() { for (int i=0; i<EXECUTE_RESULT_LANES; i++) alu_results[i]=AluResult(); }
 };
 

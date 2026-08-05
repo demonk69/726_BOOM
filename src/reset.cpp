@@ -46,6 +46,13 @@ void boom_core_reset_step(BoomCoreState& state, ResetControllerState& reset_ctrl
         state.rob.commit_valid = false;
         state.completion = CompletionPendingState();
         for (int i=0; i<EXECUTE_RESULT_LANES; i++) state.execute.alu_results[i]=ExecuteState::AluResult();
+        boom::divider_reset(state.execute.divider.arithmetic);
+        state.execute.divider.token_valid = false;
+        state.execute.divider.uop = MicroOp();
+        state.execute.divider.rob_idx = 0;
+        state.execute.divider.pdst = 0;
+        state.execute.divider.allocation_id = 0;
+        state.execute.divider.branch_mask = 0;
         advance_reset(reset_ctrl, RESET_FRONTEND);
         break;
 
@@ -171,6 +178,13 @@ RESET_ROB_INIT:
             state.execute.alu_results[i].mispredict = false;
             state.execute.alu_results[i].memory_valid = false;
         }
+        boom::divider_reset(state.execute.divider.arithmetic);
+        state.execute.divider.token_valid = false;
+        state.execute.divider.uop = MicroOp();
+        state.execute.divider.rob_idx = 0;
+        state.execute.divider.pdst = 0;
+        state.execute.divider.allocation_id = 0;
+        state.execute.divider.branch_mask = 0;
         advance_reset(reset_ctrl, RESET_LSU);
         break;
 

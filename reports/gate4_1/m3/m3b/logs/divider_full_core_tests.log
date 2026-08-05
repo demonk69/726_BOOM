@@ -1,0 +1,11 @@
+PASS div                    cycles=84 accept=1 wb=1 commit=1 max_latency=66 busy=64
+PASS divu                   cycles=84 accept=1 wb=1 commit=1 max_latency=66 busy=64
+PASS rem                    cycles=84 accept=1 wb=1 commit=1 max_latency=66 busy=64
+PASS remu                   cycles=84 accept=1 wb=1 commit=1 max_latency=66 busy=64
+PASS word_div_rem_mix       cycles=159 accept=4 wb=4 commit=4 max_latency=34 busy=32
+PASS divide_by_zero         cycles=45 accept=4 wb=4 commit=4 max_latency=2 busy=0
+PASS divide_overflow        cycles=53 accept=4 wb=4 commit=4 max_latency=2 busy=0
+PASS divide_dependency      cycles=218 accept=3 wb=3 commit=3 max_latency=66 busy=64
+PASS divide_load_mix        cycles=167 accept=2 wb=2 commit=2 max_latency=66 busy=64
+PASS divide_branch_kill     cycles=121 accept=2 wb=1 commit=1 max_latency=66 busy=64
+M3B native full-core divider programs: 10/10 PASS, commit/writeback checked, max latency 66 cycles

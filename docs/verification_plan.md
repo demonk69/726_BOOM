@@ -21,6 +21,7 @@
 | Gate 3.10 local pipeline | COMPLETE: no accepted candidate | R1 II=1 and XSim 49/49, rejected latency/cycles; L1-L5 illegal |
 | Gate 4.0 W4E | PASS | directed 95/95, random 128/128, focused RTL 20/20+11/11, full-core 49/49, source-bound final csynth 7/7, two independent bank writes, final II=1 |
 | Gate 4.1 M1 RV64M decode | PASS | focused 42/42, W3 400/400, W4 95/95+128/128, frozen traces 14/14 byte-identical, csynth 3/3 |
+| Gate 4.1 M3B divider integration | PASS | directed 167/167, random 128x1024, native/csim/RTL full-core 10/10, focused RTL 26/26, reset RTL 49/49, csynth 8/8 |
 | Official Gate 3 | BLOCKED | original Chipyard/FESVR/DRAMSim path unavailable |
 
 ## Trace Format
@@ -126,6 +127,17 @@ Gate 3.8 remains failed until the last two requirements pass. See `reports/gate3
 - [x] Keep `CORE_CYCLE` unpipelined
 - [ ] Implement multiply arithmetic in M2
 - [ ] Implement persistent divide arithmetic in M3-M5
+
+### Gate 4.1 M3B Divider Integration
+
+- [x] Place one persistent Divider in canonical processor state
+- [x] Integrate fine-grained runtime reset and branch/allocation kill
+- [x] Route all eight operations through INT request and `completion.int_execute`
+- [x] Preserve 3 completion sources, 2 PRF writes, and 3 wakeup/bypass/ROB-complete sources
+- [x] Pass directed, persistent random, and native full-core software tests
+- [x] Pass focused generated RTL and ten full-core RTL programs
+- [x] Preserve the Gate 3.9 49-case XSim matrix and added divider reset cases
+- [x] Complete all eight canonical M3B csynth targets
 
 ### Gate M2
 - [ ] Rename unit tests pass (map, free list, busy table, snapshots)
