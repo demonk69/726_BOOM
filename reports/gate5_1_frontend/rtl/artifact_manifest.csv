@@ -1,0 +1,19 @@
+artifact,status,description
+baseline_manifest.md,PRESENT,source and evidence binding
+git_status_before.txt,PRESENT,reconstructed initial Git snapshot
+source_hashes_before.txt,PRESENT,frozen implementation hashes
+source_hashes_after.txt,PRESENT,post-run implementation and verification hashes
+foundation_status_snapshot.md,PRESENT,input status snapshot
+focused_csynth_baseline.csv,PRESENT,accepted focused baseline
+full_core_ppa_baseline.csv,PRESENT,accepted Gate 4.1 PPA
+rtl_test_matrix.csv,PRESENT,20 PASS and 13 BLOCKED checks
+request_cycle_trace.csv,PRESENT,generated RTL cycle trace
+throughput_analysis.md,PRESENT,interval analysis and blocker
+resource_summary.csv,PRESENT,nine canonical targets
+stage_resource_delta.csv,PRESENT,Gate 4.1 deltas
+critical_path_analysis.md,PRESENT,full-core timing attribution
+regression_after.md,PRESENT,current-source regression disposition
+guardrail_audit.md,PRESENT,forbidden-scope audit
+focused_rtl_results.md,PRESENT,focused RTL verdict
+logs/xsim.log,PRESENT,canonical generated RTL simulation
+../../gate5_1_results.md,PRESENT,final Gate 5.1 verdict

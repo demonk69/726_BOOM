@@ -1,0 +1,34 @@
+case,asserted_requirement,status,evidence
+initial_request,generated RTL issued reset-vector fetch_id=0 epoch=0 kill=0,PASS,/home/lab_726/boom/hls_boom/reports/gate5_1_frontend/rtl/logs/xsim.log
+wrong_fetch_id,response drained without completing the outstanding request,PASS,/home/lab_726/boom/hls_boom/reports/gate5_1_frontend/rtl/logs/xsim.log
+wrong_epoch,response drained without completing the outstanding request,PASS,/home/lab_726/boom/hls_boom/reports/gate5_1_frontend/rtl/logs/xsim.log
+wrong_address,response drained without completing the outstanding request,PASS,/home/lab_726/boom/hls_boom/reports/gate5_1_frontend/rtl/logs/xsim.log
+wrong_id_epoch,response drained without completing the outstanding request,PASS,/home/lab_726/boom/hls_boom/reports/gate5_1_frontend/rtl/logs/xsim.log
+wrong_epoch_address,response drained without completing the outstanding request,PASS,/home/lab_726/boom/hls_boom/reports/gate5_1_frontend/rtl/logs/xsim.log
+all_identity_fields_wrong,response drained without completing the outstanding request,PASS,/home/lab_726/boom/hls_boom/reports/gate5_1_frontend/rtl/logs/xsim.log
+triple_match,matching fetch_id epoch and address advanced PC exactly once by four,PASS,/home/lab_726/boom/hls_boom/reports/gate5_1_frontend/rtl/logs/xsim.log
+accepted_response_once,one matching response produced one observable sequential advance,PASS,/home/lab_726/boom/hls_boom/reports/gate5_1_frontend/rtl/logs/xsim.log
+duplicate_response,duplicate old response drained and did not complete the new request,PASS,/home/lab_726/boom/hls_boom/reports/gate5_1_frontend/rtl/logs/xsim.log
+response_without_matching_outstanding,response with no matching ownership had no PC side effect,PASS,/home/lab_726/boom/hls_boom/reports/gate5_1_frontend/rtl/logs/xsim.log
+delayed_response,one outstanding request remained unique across four delayed transactions,PASS,/home/lab_726/boom/hls_boom/reports/gate5_1_frontend/rtl/logs/xsim.log
+second_match,second matching request completed at its expected address,PASS,/home/lab_726/boom/hls_boom/reports/gate5_1_frontend/rtl/logs/xsim.log
+request_backpressure,generated request valid and payload held until full_n release,PASS,/home/lab_726/boom/hls_boom/reports/gate5_1_frontend/rtl/logs/xsim.log
+request_no_duplicate_under_backpressure,backpressured request transferred exactly once,PASS,/home/lab_726/boom/hls_boom/reports/gate5_1_frontend/rtl/logs/xsim.log
+sequential_32,32 generated-RTL responses advanced monotonically by PC+4,PASS,/home/lab_726/boom/hls_boom/reports/gate5_1_frontend/rtl/logs/xsim.log
+single_outstanding_32,32-response run emitted only the next sequential request per completion,PASS,/home/lab_726/boom/hls_boom/reports/gate5_1_frontend/rtl/logs/xsim.log
+fetch_id_monotonic_32,32-response run retained monotonically increasing fetch IDs,PASS,/home/lab_726/boom/hls_boom/reports/gate5_1_frontend/rtl/logs/xsim.log
+epoch_width_and_value,request payload retained the full 32-bit epoch field at epoch zero,PASS,/home/lab_726/boom/hls_boom/reports/gate5_1_frontend/rtl/logs/xsim.log
+ap_rst_control_only,RTL ap_rst reset control but did not masquerade as runtime frontend reset,PASS,/home/lab_726/boom/hls_boom/reports/gate5_1_frontend/rtl/logs/xsim.log
+redirect_priority,reset > architectural > branch > generic flush > response,BLOCKED,synth_frontend_top port not exposed
+redirect_over_response,redirect consumes old response without publish,BLOCKED,synth_frontend_top port not exposed
+architectural_ownership,ROB index and allocation ID ownership validation,BLOCKED,synth_frontend_top port not exposed
+redirect_epoch,redirect increments epoch and old epoch cannot reactivate,BLOCKED,synth_frontend_top port not exposed
+decode_hold,held instruction remains stable under decode stall,BLOCKED,synth_frontend_top port not exposed
+stale_drain_during_decode_stall,stale response drains without overwriting held entry,BLOCKED,synth_frontend_top port not exposed
+fault_to_decode,instruction access fault PC and cause propagate to Decode,BLOCKED,synth_frontend_top port not exposed
+fault_hold,fault remains stable under Decode backpressure and publishes once,BLOCKED,synth_frontend_top port not exposed
+misaligned_arch_target,misaligned architectural target faults without masking,BLOCKED,synth_frontend_top port not exposed
+misaligned_branch_target,misaligned branch target faults without masking,BLOCKED,synth_frontend_top port not exposed
+misaligned_generic_flush_target,generic flush target alignment behavior,BLOCKED,synth_frontend_top port not exposed
+runtime_reset,runtime reset clears held and pending frontend state,BLOCKED,synth_frontend_top port not exposed
+reset_priority,runtime reset wins redirects and responses,BLOCKED,synth_frontend_top port not exposed

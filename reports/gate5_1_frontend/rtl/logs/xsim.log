@@ -1,0 +1,117 @@
+#-----------------------------------------------------------
+# xsim v2021.2 (64-bit)
+# SW Build 3367213 on Tue Oct 19 02:47:39 MDT 2021
+# IP Build 3369179 on Thu Oct 21 08:25:16 MDT 2021
+# Start of session at: Tue Aug 11 15:15:27 2026
+# Process ID: 28112
+# Current directory: /home/lab_726/boom/hls_boom/build/gate5_1_frontend_rtl/xsim
+# Command line: xsim -log /home/lab_726/boom/hls_boom/reports/gate5_1_frontend/rtl/logs/xsim.log -mode tcl -source {xsim.dir/frontend_foundation_rtl_snapshot/xsim_script.tcl}
+# Log file: /home/lab_726/boom/hls_boom/reports/gate5_1_frontend/rtl/logs/xsim.log
+# Journal file: /home/lab_726/boom/hls_boom/build/gate5_1_frontend_rtl/xsim/xsim.jou
+# Running On: 726, OS: Linux, CPU Frequency: 3670.732 MHz, CPU Physical cores: 14, Host memory: 67148 MB
+#-----------------------------------------------------------
+source xsim.dir/frontend_foundation_rtl_snapshot/xsim_script.tcl
+# xsim {frontend_foundation_rtl_snapshot} -autoloadwcfg -runall -onerror quit
+Time resolution is 1 ps
+run -all
+REQUEST_TRACE,0,8,0x0000000000010040,0,0
+CASE_PASS,initial_request,generated RTL issued reset-vector fetch_id=0 epoch=0 kill=0
+RESPONSE_TRACE,0,9,0x0000000000010040,1,0
+CASE_PASS,wrong_fetch_id,response drained without completing the outstanding request
+RESPONSE_TRACE,1,12,0x0000000000010040,0,1
+CASE_PASS,wrong_epoch,response drained without completing the outstanding request
+RESPONSE_TRACE,2,15,0x0000000000010044,0,0
+CASE_PASS,wrong_address,response drained without completing the outstanding request
+RESPONSE_TRACE,3,18,0x0000000000010040,1,1
+CASE_PASS,wrong_id_epoch,response drained without completing the outstanding request
+RESPONSE_TRACE,4,21,0x0000000000010044,0,1
+CASE_PASS,wrong_epoch_address,response drained without completing the outstanding request
+RESPONSE_TRACE,5,24,0x0000000000010044,1,1
+CASE_PASS,all_identity_fields_wrong,response drained without completing the outstanding request
+RESPONSE_TRACE,6,27,0x0000000000010040,0,0
+CASE_PASS,triple_match,matching fetch_id epoch and address advanced PC exactly once by four
+CASE_PASS,accepted_response_once,one matching response produced one observable sequential advance
+RESPONSE_TRACE,7,30,0x0000000000010040,0,0
+REQUEST_TRACE,1,32,0x0000000000010044,1,0
+CASE_PASS,duplicate_response,duplicate old response drained and did not complete the new request
+CASE_PASS,response_without_matching_outstanding,response with no matching ownership had no PC side effect
+CASE_PASS,delayed_response,one outstanding request remained unique across four delayed transactions
+RESPONSE_TRACE,8,45,0x0000000000010044,1,0
+CASE_PASS,second_match,second matching request completed at its expected address
+REQUEST_TRACE,2,56,0x0000000000010048,2,0
+CASE_PASS,request_backpressure,generated request valid and payload held until full_n release
+CASE_PASS,request_no_duplicate_under_backpressure,backpressured request transferred exactly once
+RESPONSE_TRACE,9,57,0x0000000000010048,2,0
+REQUEST_TRACE,3,62,0x000000000001004c,3,0
+RESPONSE_TRACE,10,63,0x000000000001004c,3,0
+REQUEST_TRACE,4,68,0x0000000000010050,4,0
+RESPONSE_TRACE,11,69,0x0000000000010050,4,0
+REQUEST_TRACE,5,74,0x0000000000010054,5,0
+RESPONSE_TRACE,12,75,0x0000000000010054,5,0
+REQUEST_TRACE,6,80,0x0000000000010058,6,0
+RESPONSE_TRACE,13,81,0x0000000000010058,6,0
+REQUEST_TRACE,7,86,0x000000000001005c,7,0
+RESPONSE_TRACE,14,87,0x000000000001005c,7,0
+REQUEST_TRACE,8,92,0x0000000000010060,8,0
+RESPONSE_TRACE,15,93,0x0000000000010060,8,0
+REQUEST_TRACE,9,98,0x0000000000010064,9,0
+RESPONSE_TRACE,16,99,0x0000000000010064,9,0
+REQUEST_TRACE,10,104,0x0000000000010068,10,0
+RESPONSE_TRACE,17,105,0x0000000000010068,10,0
+REQUEST_TRACE,11,110,0x000000000001006c,11,0
+RESPONSE_TRACE,18,111,0x000000000001006c,11,0
+REQUEST_TRACE,12,116,0x0000000000010070,12,0
+RESPONSE_TRACE,19,117,0x0000000000010070,12,0
+REQUEST_TRACE,13,122,0x0000000000010074,13,0
+RESPONSE_TRACE,20,123,0x0000000000010074,13,0
+REQUEST_TRACE,14,128,0x0000000000010078,14,0
+RESPONSE_TRACE,21,129,0x0000000000010078,14,0
+REQUEST_TRACE,15,134,0x000000000001007c,15,0
+RESPONSE_TRACE,22,135,0x000000000001007c,15,0
+REQUEST_TRACE,16,140,0x0000000000010080,16,0
+RESPONSE_TRACE,23,141,0x0000000000010080,16,0
+REQUEST_TRACE,17,146,0x0000000000010084,17,0
+RESPONSE_TRACE,24,147,0x0000000000010084,17,0
+REQUEST_TRACE,18,152,0x0000000000010088,18,0
+RESPONSE_TRACE,25,153,0x0000000000010088,18,0
+REQUEST_TRACE,19,158,0x000000000001008c,19,0
+RESPONSE_TRACE,26,159,0x000000000001008c,19,0
+REQUEST_TRACE,20,164,0x0000000000010090,20,0
+RESPONSE_TRACE,27,165,0x0000000000010090,20,0
+REQUEST_TRACE,21,170,0x0000000000010094,21,0
+RESPONSE_TRACE,28,171,0x0000000000010094,21,0
+REQUEST_TRACE,22,176,0x0000000000010098,22,0
+RESPONSE_TRACE,29,177,0x0000000000010098,22,0
+REQUEST_TRACE,23,182,0x000000000001009c,23,0
+RESPONSE_TRACE,30,183,0x000000000001009c,23,0
+REQUEST_TRACE,24,188,0x00000000000100a0,24,0
+RESPONSE_TRACE,31,189,0x00000000000100a0,24,0
+REQUEST_TRACE,25,194,0x00000000000100a4,25,0
+RESPONSE_TRACE,32,195,0x00000000000100a4,25,0
+REQUEST_TRACE,26,200,0x00000000000100a8,26,0
+RESPONSE_TRACE,33,201,0x00000000000100a8,26,0
+REQUEST_TRACE,27,206,0x00000000000100ac,27,0
+RESPONSE_TRACE,34,207,0x00000000000100ac,27,0
+REQUEST_TRACE,28,212,0x00000000000100b0,28,0
+RESPONSE_TRACE,35,213,0x00000000000100b0,28,0
+REQUEST_TRACE,29,218,0x00000000000100b4,29,0
+RESPONSE_TRACE,36,219,0x00000000000100b4,29,0
+REQUEST_TRACE,30,224,0x00000000000100b8,30,0
+RESPONSE_TRACE,37,225,0x00000000000100b8,30,0
+REQUEST_TRACE,31,230,0x00000000000100bc,31,0
+RESPONSE_TRACE,38,231,0x00000000000100bc,31,0
+REQUEST_TRACE,32,236,0x00000000000100c0,32,0
+RESPONSE_TRACE,39,237,0x00000000000100c0,32,0
+REQUEST_TRACE,33,242,0x00000000000100c4,33,0
+RESPONSE_TRACE,40,243,0x00000000000100c4,33,0
+REQUEST_TRACE,34,248,0x00000000000100c8,34,0
+CASE_PASS,sequential_32,32 generated-RTL responses advanced monotonically by PC+4
+CASE_PASS,single_outstanding_32,32-response run emitted only the next sequential request per completion
+CASE_PASS,fetch_id_monotonic_32,32-response run retained monotonically increasing fetch IDs
+CASE_PASS,epoch_width_and_value,request payload retained the full 32-bit epoch field at epoch zero
+CASE_PASS,ap_rst_control_only,RTL ap_rst reset control but did not masquerade as runtime frontend reset
+THROUGHPUT_SUMMARY,transactions_are_nonpipelined,reported_ii_3,request_path_requires_response_and_followup_step
+FRONTEND_RTL_PARTIAL_PASS cases=20 requests=35 responses=41
+$finish called at time : 2546 ns : File "/home/lab_726/boom/hls_boom/rtl_tb/frontend_foundation_rtl_tb.sv" Line 262
+exit
+INFO: [Common 17-206] Exiting xsim at Tue Aug 11 15:15:31 2026...
