@@ -1,0 +1,19 @@
+metric,value,requirement,status
+total_inputs,65536,=65536,PASS
+exact_matches,65536,=65536,PASS
+mismatches,0,=0,PASS
+legal_encodings,38551,recorded,PASS
+hint_encodings,394,recorded subset of legal,PASS
+reserved_encodings,2409,recorded,PASS
+unsupported_encodings,8192,recorded,PASS
+non_rvc_encodings,16384,recorded,PASS
+quadrant0_encodings,16384,recorded,PASS
+quadrant1_encodings,16384,recorded,PASS
+quadrant2_encodings,16384,recorded,PASS
+quadrant3_encodings,16384,recorded,PASS
+directed_checks,228,>=150,PASS
+directed_failures,0,=0,PASS
+decode_cross_checks,38294,>=100,PASS
+decode_cross_failures,0,=0,PASS
+decode_cross_ebreak_core_unsupported,1,documented,PASS
+decode_cross_srli_shamt5_core_unsupported,256,documented,PASS

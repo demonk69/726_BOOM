@@ -1,0 +1,210 @@
+
+****** Vitis HLS - High-Level Synthesis from C, C++ and OpenCL v2021.2 (64-bit)
+  **** SW Build 3367213 on Tue Oct 19 02:47:39 MDT 2021
+  **** IP Build 3369179 on Thu Oct 21 08:25:16 MDT 2021
+    ** Copyright 1986-2021 Xilinx, Inc. All Rights Reserved.
+
+source /home/lab_726/Xilinx/Vitis_HLS/2021.2/scripts/vitis_hls/hls.tcl -notrace
+INFO: [HLS 200-10] Running '/home/lab_726/Xilinx/Vitis_HLS/2021.2/bin/unwrapped/lnx64.o/vitis_hls'
+INFO: [HLS 200-10] For user 'lab_726' on host '726' (Linux_x86_64 version 6.8.0-136-generic) on Tue Aug 11 23:50:07 CST 2026
+INFO: [HLS 200-10] On os Ubuntu 22.04.5 LTS
+INFO: [HLS 200-10] In directory '/home/lab_726/boom/hls_boom'
+Sourcing Tcl script '/home/lab_726/boom/hls_boom/scripts/module_csynth.tcl'
+INFO: [HLS 200-1510] Running: open_project -reset boom_hls_gate5_2_rvc_r1_repair_synth_rvc_top
+INFO: [HLS 200-10] Creating and opening project '/home/lab_726/boom/hls_boom/boom_hls_gate5_2_rvc_r1_repair_synth_rvc_top'.
+INFO: [HLS 200-1510] Running: set_top synth_rvc_top
+INFO: [HLS 200-1510] Running: add_files -cflags -std=c++11 -I/home/lab_726/boom/hls_boom/include  /home/lab_726/boom/hls_boom/src/boom_core_merged.cpp
+INFO: [HLS 200-10] Adding design file '/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp' to the project
+INFO: [HLS 200-1510] Running: open_solution -reset solution_module
+INFO: [HLS 200-10] Creating and opening solution '/home/lab_726/boom/hls_boom/boom_hls_gate5_2_rvc_r1_repair_synth_rvc_top/solution_module'.
+INFO: [HLS 200-10] Cleaning up the solution database.
+WARNING: [HLS 200-40] No /home/lab_726/boom/hls_boom/boom_hls_gate5_2_rvc_r1_repair_synth_rvc_top/solution_module/solution_module.aps file found.
+INFO: [HLS 200-1505] Using default flow_target 'vivado'
+Resolution: For help on HLS 200-1505 see www.xilinx.com/cgi-bin/docs/rdoc?v=2021.2;t=hls+guidance;d=200-1505.html
+INFO: [HLS 200-1510] Running: set_part xczu7ev-ffvc1156-2-e
+INFO: [HLS 200-1611] Setting target device to 'xczu7ev-ffvc1156-2-e'
+INFO: [HLS 200-1510] Running: create_clock -period 10 -name default
+INFO: [SYN 201-201] Setting up clock 'default' with a period of 10ns.
+INFO: [HLS 200-1510] Running: config_compile -pipeline_loops 0
+INFO: [XFORM 203-1171] Pipeline the innermost loop with trip count more than 0 or its parent loop when its trip count is less than or equal 0.
+INFO: [HLS 200-1510] Running: csynth_design
+INFO: [HLS 200-111] Finished File checks and directory preparation: CPU user time: 0 seconds. CPU system time: 0 seconds. Elapsed time: 0 seconds; current allocated memory: 1.321 GB.
+INFO: [HLS 200-10] Analyzing design file '/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp' ...
+INFO: [HLS 200-111] Finished Source Code Analysis and Preprocessing: CPU user time: 2.48 seconds. CPU system time: 0.31 seconds. Elapsed time: 2.23 seconds; current allocated memory: 419.297 MB.
+INFO: [HLS 200-777] Using interface defaults for 'Vivado' flow target.
+INFO: [HLS 214-284] Auto array partition mode is set into default.
+INFO: [HLS 214-131] Inlining function 'boom::(anonymous namespace)::bits(unsigned short, unsigned int, unsigned int)' into 'boom::decompress_rvc(unsigned short)' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:500:29)
+INFO: [HLS 214-131] Inlining function 'boom::(anonymous namespace)::legal(unsigned short, unsigned int)' into 'boom::decompress_rvc(unsigned short)' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:638:20)
+INFO: [HLS 214-131] Inlining function 'boom::(anonymous namespace)::bits(unsigned short, unsigned int, unsigned int)' into 'boom::decompress_rvc(unsigned short)' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:501:25)
+INFO: [HLS 214-131] Inlining function 'boom::(anonymous namespace)::encode_s(int, unsigned int, unsigned int, unsigned int, unsigned int)' into 'boom::decompress_rvc(unsigned short)' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:638:29)
+INFO: [HLS 214-131] Inlining function 'boom::(anonymous namespace)::bits(unsigned short, unsigned int, unsigned int)' into 'boom::decompress_rvc(unsigned short)' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:637:35)
+INFO: [HLS 214-131] Inlining function 'boom::(anonymous namespace)::bits(unsigned short, unsigned int, unsigned int)' into 'boom::decompress_rvc(unsigned short)' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:636:35)
+INFO: [HLS 214-131] Inlining function 'boom::(anonymous namespace)::legal(unsigned short, unsigned int)' into 'boom::decompress_rvc(unsigned short)' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:633:20)
+INFO: [HLS 214-131] Inlining function 'boom::(anonymous namespace)::bits(unsigned short, unsigned int, unsigned int)' into 'boom::decompress_rvc(unsigned short)' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:502:26)
+INFO: [HLS 214-131] Inlining function 'boom::(anonymous namespace)::encode_s(int, unsigned int, unsigned int, unsigned int, unsigned int)' into 'boom::decompress_rvc(unsigned short)' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:633:29)
+INFO: [HLS 214-131] Inlining function 'boom::(anonymous namespace)::bits(unsigned short, unsigned int, unsigned int)' into 'boom::decompress_rvc(unsigned short)' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:632:35)
+INFO: [HLS 214-131] Inlining function 'boom::(anonymous namespace)::bits(unsigned short, unsigned int, unsigned int)' into 'boom::decompress_rvc(unsigned short)' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:631:35)
+INFO: [HLS 214-131] Inlining function 'boom::(anonymous namespace)::legal(unsigned short, unsigned int)' into 'boom::decompress_rvc(unsigned short)' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:627:20)
+INFO: [HLS 214-131] Inlining function 'boom::(anonymous namespace)::bits(unsigned short, unsigned int, unsigned int)' into 'boom::decompress_rvc(unsigned short)' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:503:31)
+INFO: [HLS 214-131] Inlining function 'boom::(anonymous namespace)::encode_r(unsigned int, unsigned int, unsigned int, unsigned int, unsigned int, unsigned int)' into 'boom::decompress_rvc(unsigned short)' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:627:29)
+INFO: [HLS 214-131] Inlining function 'boom::(anonymous namespace)::legal(unsigned short, unsigned int)' into 'boom::decompress_rvc(unsigned short)' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:625:24)
+INFO: [HLS 214-131] Inlining function 'boom::(anonymous namespace)::bits(unsigned short, unsigned int, unsigned int)' into 'boom::decompress_rvc(unsigned short)' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:504:32)
+INFO: [HLS 214-131] Inlining function 'boom::(anonymous namespace)::encode_i(int, unsigned int, unsigned int, unsigned int, unsigned int)' into 'boom::decompress_rvc(unsigned short)' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:625:33)
+INFO: [HLS 214-131] Inlining function 'boom::(anonymous namespace)::legal(unsigned short, unsigned int)' into 'boom::decompress_rvc(unsigned short)' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:624:37)
+INFO: [HLS 214-131] Inlining function 'boom::(anonymous namespace)::bits(unsigned short, unsigned int, unsigned int)' into 'boom::decompress_rvc(unsigned short)' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:508:35)
+INFO: [HLS 214-131] Inlining function 'boom::(anonymous namespace)::legal(unsigned short, unsigned int)' into 'boom::decompress_rvc(unsigned short)' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:621:24)
+INFO: [HLS 214-131] Inlining function 'boom::(anonymous namespace)::bits(unsigned short, unsigned int, unsigned int)' into 'boom::decompress_rvc(unsigned short)' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:509:35)
+INFO: [HLS 214-131] Inlining function 'boom::(anonymous namespace)::encode_r(unsigned int, unsigned int, unsigned int, unsigned int, unsigned int, unsigned int)' into 'boom::decompress_rvc(unsigned short)' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:621:33)
+INFO: [HLS 214-131] Inlining function 'boom::(anonymous namespace)::legal(unsigned short, unsigned int)' into 'boom::decompress_rvc(unsigned short)' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:619:28)
+INFO: [HLS 214-131] Inlining function 'boom::(anonymous namespace)::bit(unsigned short, unsigned int)' into 'boom::decompress_rvc(unsigned short)' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:510:35)
+INFO: [HLS 214-131] Inlining function 'boom::(anonymous namespace)::encode_i(int, unsigned int, unsigned int, unsigned int, unsigned int)' into 'boom::decompress_rvc(unsigned short)' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:619:37)
+INFO: [HLS 214-131] Inlining function 'boom::(anonymous namespace)::bit(unsigned short, unsigned int)' into 'boom::decompress_rvc(unsigned short)' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:616:17)
+INFO: [HLS 214-131] Inlining function 'boom::(anonymous namespace)::legal(unsigned short, unsigned int)' into 'boom::decompress_rvc(unsigned short)' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:613:20)
+INFO: [HLS 214-131] Inlining function 'boom::(anonymous namespace)::bit(unsigned short, unsigned int)' into 'boom::decompress_rvc(unsigned short)' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:510:54)
+INFO: [HLS 214-131] Inlining function 'boom::(anonymous namespace)::encode_i(int, unsigned int, unsigned int, unsigned int, unsigned int)' into 'boom::decompress_rvc(unsigned short)' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:613:29)
+INFO: [HLS 214-131] Inlining function 'boom::(anonymous namespace)::bits(unsigned short, unsigned int, unsigned int)' into 'boom::decompress_rvc(unsigned short)' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:611:35)
+INFO: [HLS 214-131] Inlining function 'boom::(anonymous namespace)::bits(unsigned short, unsigned int, unsigned int)' into 'boom::decompress_rvc(unsigned short)' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:610:55)
+INFO: [HLS 214-131] Inlining function 'boom::(anonymous namespace)::bit(unsigned short, unsigned int)' into 'boom::decompress_rvc(unsigned short)' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:610:35)
+INFO: [HLS 214-131] Inlining function 'boom::(anonymous namespace)::legal(unsigned short, unsigned int)' into 'boom::decompress_rvc(unsigned short)' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:607:20)
+INFO: [HLS 214-131] Inlining function 'boom::(anonymous namespace)::encode_i(int, unsigned int, unsigned int, unsigned int, unsigned int)' into 'boom::decompress_rvc(unsigned short)' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:512:29)
+INFO: [HLS 214-131] Inlining function 'boom::(anonymous namespace)::encode_i(int, unsigned int, unsigned int, unsigned int, unsigned int)' into 'boom::decompress_rvc(unsigned short)' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:607:29)
+INFO: [HLS 214-131] Inlining function 'boom::(anonymous namespace)::bits(unsigned short, unsigned int, unsigned int)' into 'boom::decompress_rvc(unsigned short)' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:605:35)
+INFO: [HLS 214-131] Inlining function 'boom::(anonymous namespace)::bits(unsigned short, unsigned int, unsigned int)' into 'boom::decompress_rvc(unsigned short)' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:604:55)
+INFO: [HLS 214-131] Inlining function 'boom::(anonymous namespace)::bit(unsigned short, unsigned int)' into 'boom::decompress_rvc(unsigned short)' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:604:35)
+INFO: [HLS 214-131] Inlining function 'boom::(anonymous namespace)::legal(unsigned short, unsigned int)' into 'boom::decompress_rvc(unsigned short)' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:601:20)
+INFO: [HLS 214-131] Inlining function 'boom::(anonymous namespace)::legal(unsigned short, unsigned int)' into 'boom::decompress_rvc(unsigned short)' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:512:20)
+INFO: [HLS 214-131] Inlining function 'boom::(anonymous namespace)::bits(unsigned short, unsigned int, unsigned int)' into 'boom::decompress_rvc(unsigned short)' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:516:35)
+INFO: [HLS 214-131] Inlining function 'boom::(anonymous namespace)::encode_i(int, unsigned int, unsigned int, unsigned int, unsigned int)' into 'boom::decompress_rvc(unsigned short)' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:601:29)
+INFO: [HLS 214-131] Inlining function 'boom::(anonymous namespace)::bits(unsigned short, unsigned int, unsigned int)' into 'boom::decompress_rvc(unsigned short)' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:599:52)
+INFO: [HLS 214-131] Inlining function 'boom::(anonymous namespace)::bit(unsigned short, unsigned int)' into 'boom::decompress_rvc(unsigned short)' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:599:33)
+INFO: [HLS 214-131] Inlining function 'boom::(anonymous namespace)::legal(unsigned short, unsigned int)' into 'boom::decompress_rvc(unsigned short)' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:593:20)
+INFO: [HLS 214-131] Inlining function 'boom::(anonymous namespace)::bits(unsigned short, unsigned int, unsigned int)' into 'boom::decompress_rvc(unsigned short)' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:517:35)
+INFO: [HLS 214-131] Inlining function 'boom::(anonymous namespace)::encode_b(int, unsigned int, unsigned int, unsigned int)' into 'boom::decompress_rvc(unsigned short)' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:593:29)
+INFO: [HLS 214-131] Inlining function 'boom::(anonymous namespace)::sign_extend(unsigned int, unsigned int)' into 'boom::decompress_rvc(unsigned short)' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:593:38)
+INFO: [HLS 214-131] Inlining function 'boom::(anonymous namespace)::bit(unsigned short, unsigned int)' into 'boom::decompress_rvc(unsigned short)' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:592:35)
+INFO: [HLS 214-131] Inlining function 'boom::(anonymous namespace)::bits(unsigned short, unsigned int, unsigned int)' into 'boom::decompress_rvc(unsigned short)' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:591:58)
+INFO: [HLS 214-131] Inlining function 'boom::(anonymous namespace)::bits(unsigned short, unsigned int, unsigned int)' into 'boom::decompress_rvc(unsigned short)' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:591:35)
+INFO: [HLS 214-131] Inlining function 'boom::(anonymous namespace)::bits(unsigned short, unsigned int, unsigned int)' into 'boom::decompress_rvc(unsigned short)' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:590:55)
+INFO: [HLS 214-131] Inlining function 'boom::(anonymous namespace)::bit(unsigned short, unsigned int)' into 'boom::decompress_rvc(unsigned short)' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:590:35)
+INFO: [HLS 214-131] Inlining function 'boom::(anonymous namespace)::legal(unsigned short, unsigned int)' into 'boom::decompress_rvc(unsigned short)' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:587:20)
+INFO: [HLS 214-131] Inlining function 'boom::(anonymous namespace)::encode_i(int, unsigned int, unsigned int, unsigned int, unsigned int)' into 'boom::decompress_rvc(unsigned short)' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:518:29)
+INFO: [HLS 214-131] Inlining function 'boom::(anonymous namespace)::encode_j(int, unsigned int)' into 'boom::decompress_rvc(unsigned short)' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:587:29)
+INFO: [HLS 214-131] Inlining function 'boom::(anonymous namespace)::sign_extend(unsigned int, unsigned int)' into 'boom::decompress_rvc(unsigned short)' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:587:38)
+INFO: [HLS 214-131] Inlining function 'boom::(anonymous namespace)::bit(unsigned short, unsigned int)' into 'boom::decompress_rvc(unsigned short)' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:586:58)
+INFO: [HLS 214-131] Inlining function 'boom::(anonymous namespace)::bits(unsigned short, unsigned int, unsigned int)' into 'boom::decompress_rvc(unsigned short)' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:586:35)
+INFO: [HLS 214-131] Inlining function 'boom::(anonymous namespace)::bit(unsigned short, unsigned int)' into 'boom::decompress_rvc(unsigned short)' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:585:54)
+INFO: [HLS 214-131] Inlining function 'boom::(anonymous namespace)::bit(unsigned short, unsigned int)' into 'boom::decompress_rvc(unsigned short)' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:585:35)
+INFO: [HLS 214-131] Inlining function 'boom::(anonymous namespace)::bit(unsigned short, unsigned int)' into 'boom::decompress_rvc(unsigned short)' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:584:59)
+INFO: [HLS 214-131] Inlining function 'boom::(anonymous namespace)::bits(unsigned short, unsigned int, unsigned int)' into 'boom::decompress_rvc(unsigned short)' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:584:35)
+INFO: [HLS 214-131] Inlining function 'boom::(anonymous namespace)::bit(unsigned short, unsigned int)' into 'boom::decompress_rvc(unsigned short)' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:583:56)
+INFO: [HLS 214-131] Inlining function 'boom::(anonymous namespace)::bit(unsigned short, unsigned int)' into 'boom::decompress_rvc(unsigned short)' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:583:35)
+INFO: [HLS 214-131] Inlining function 'boom::(anonymous namespace)::legal(unsigned short, unsigned int)' into 'boom::decompress_rvc(unsigned short)' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:579:20)
+INFO: [HLS 214-131] Inlining function 'boom::(anonymous namespace)::legal(unsigned short, unsigned int)' into 'boom::decompress_rvc(unsigned short)' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:518:20)
+INFO: [HLS 214-131] Inlining function 'boom::(anonymous namespace)::bits(unsigned short, unsigned int, unsigned int)' into 'boom::decompress_rvc(unsigned short)' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:521:35)
+INFO: [HLS 214-131] Inlining function 'boom::(anonymous namespace)::encode_r(unsigned int, unsigned int, unsigned int, unsigned int, unsigned int, unsigned int)' into 'boom::decompress_rvc(unsigned short)' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:579:29)
+INFO: [HLS 214-131] Inlining function 'boom::(anonymous namespace)::legal(unsigned short, unsigned int)' into 'boom::decompress_rvc(unsigned short)' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:575:24)
+INFO: [HLS 214-131] Inlining function 'boom::(anonymous namespace)::bit(unsigned short, unsigned int)' into 'boom::decompress_rvc(unsigned short)' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:522:35)
+INFO: [HLS 214-131] Inlining function 'boom::(anonymous namespace)::encode_r(unsigned int, unsigned int, unsigned int, unsigned int, unsigned int, unsigned int)' into 'boom::decompress_rvc(unsigned short)' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:575:33)
+INFO: [HLS 214-131] Inlining function 'boom::(anonymous namespace)::bit(unsigned short, unsigned int)' into 'boom::decompress_rvc(unsigned short)' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:572:17)
+INFO: [HLS 214-131] Inlining function 'boom::(anonymous namespace)::bits(unsigned short, unsigned int, unsigned int)' into 'boom::decompress_rvc(unsigned short)' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:571:41)
+INFO: [HLS 214-131] Inlining function 'boom::(anonymous namespace)::legal(unsigned short, unsigned int)' into 'boom::decompress_rvc(unsigned short)' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:569:24)
+INFO: [HLS 214-131] Inlining function 'boom::(anonymous namespace)::bit(unsigned short, unsigned int)' into 'boom::decompress_rvc(unsigned short)' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:522:54)
+INFO: [HLS 214-131] Inlining function 'boom::(anonymous namespace)::encode_i(int, unsigned int, unsigned int, unsigned int, unsigned int)' into 'boom::decompress_rvc(unsigned short)' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:569:33)
+INFO: [HLS 214-131] Inlining function 'boom::(anonymous namespace)::bits(unsigned short, unsigned int, unsigned int)' into 'boom::decompress_rvc(unsigned short)' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:566:60)
+INFO: [HLS 214-131] Inlining function 'boom::(anonymous namespace)::bit(unsigned short, unsigned int)' into 'boom::decompress_rvc(unsigned short)' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:566:41)
+INFO: [HLS 214-131] Inlining function 'boom::(anonymous namespace)::legal(unsigned short, unsigned int)' into 'boom::decompress_rvc(unsigned short)' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:565:28)
+INFO: [HLS 214-131] Inlining function 'boom::(anonymous namespace)::encode_i(int, unsigned int, unsigned int, unsigned int, unsigned int)' into 'boom::decompress_rvc(unsigned short)' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:523:29)
+INFO: [HLS 214-131] Inlining function 'boom::(anonymous namespace)::encode_i(int, unsigned int, unsigned int, unsigned int, unsigned int)' into 'boom::decompress_rvc(unsigned short)' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:565:37)
+INFO: [HLS 214-131] Inlining function 'boom::(anonymous namespace)::bits(unsigned short, unsigned int, unsigned int)' into 'boom::decompress_rvc(unsigned short)' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:562:36)
+INFO: [HLS 214-131] Inlining function 'boom::(anonymous namespace)::legal(unsigned short, unsigned int)' into 'boom::decompress_rvc(unsigned short)' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:558:20)
+INFO: [HLS 214-131] Inlining function 'boom::(anonymous namespace)::legal(unsigned short, unsigned int)' into 'boom::decompress_rvc(unsigned short)' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:523:20)
+INFO: [HLS 214-131] Inlining function 'boom::(anonymous namespace)::bits(unsigned short, unsigned int, unsigned int)' into 'boom::decompress_rvc(unsigned short)' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:527:35)
+INFO: [HLS 214-131] Inlining function 'boom::(anonymous namespace)::legal(unsigned short, unsigned int)' into 'boom::decompress_rvc(unsigned short)' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:555:24)
+INFO: [HLS 214-131] Inlining function 'boom::(anonymous namespace)::bits(unsigned short, unsigned int, unsigned int)' into 'boom::decompress_rvc(unsigned short)' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:528:35)
+INFO: [HLS 214-131] Inlining function 'boom::(anonymous namespace)::encode_i(int, unsigned int, unsigned int, unsigned int, unsigned int)' into 'boom::decompress_rvc(unsigned short)' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:555:33)
+INFO: [HLS 214-131] Inlining function 'boom::(anonymous namespace)::sign_extend(unsigned int, unsigned int)' into 'boom::decompress_rvc(unsigned short)' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:555:42)
+INFO: [HLS 214-131] Inlining function 'boom::(anonymous namespace)::bit(unsigned short, unsigned int)' into 'boom::decompress_rvc(unsigned short)' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:553:39)
+INFO: [HLS 214-131] Inlining function 'boom::(anonymous namespace)::bits(unsigned short, unsigned int, unsigned int)' into 'boom::decompress_rvc(unsigned short)' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:552:58)
+INFO: [HLS 214-131] Inlining function 'boom::(anonymous namespace)::bit(unsigned short, unsigned int)' into 'boom::decompress_rvc(unsigned short)' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:552:39)
+INFO: [HLS 214-131] Inlining function 'boom::(anonymous namespace)::bit(unsigned short, unsigned int)' into 'boom::decompress_rvc(unsigned short)' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:551:59)
+INFO: [HLS 214-131] Inlining function 'boom::(anonymous namespace)::bit(unsigned short, unsigned int)' into 'boom::decompress_rvc(unsigned short)' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:551:39)
+INFO: [HLS 214-131] Inlining function 'boom::(anonymous namespace)::legal(unsigned short, unsigned int)' into 'boom::decompress_rvc(unsigned short)' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:548:20)
+INFO: [HLS 214-131] Inlining function 'boom::(anonymous namespace)::encode_s(int, unsigned int, unsigned int, unsigned int, unsigned int)' into 'boom::decompress_rvc(unsigned short)' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:529:29)
+INFO: [HLS 214-131] Inlining function 'boom::(anonymous namespace)::encode_i(int, unsigned int, unsigned int, unsigned int, unsigned int)' into 'boom::decompress_rvc(unsigned short)' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:548:29)
+INFO: [HLS 214-131] Inlining function 'boom::(anonymous namespace)::legal(unsigned short, unsigned int)' into 'boom::decompress_rvc(unsigned short)' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:545:20)
+INFO: [HLS 214-131] Inlining function 'boom::(anonymous namespace)::legal(unsigned short, unsigned int)' into 'boom::decompress_rvc(unsigned short)' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:529:20)
+INFO: [HLS 214-131] Inlining function 'boom::(anonymous namespace)::bits(unsigned short, unsigned int, unsigned int)' into 'boom::decompress_rvc(unsigned short)' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:532:35)
+INFO: [HLS 214-131] Inlining function 'boom::(anonymous namespace)::encode_i(int, unsigned int, unsigned int, unsigned int, unsigned int)' into 'boom::decompress_rvc(unsigned short)' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:545:29)
+INFO: [HLS 214-131] Inlining function 'boom::(anonymous namespace)::legal(unsigned short, unsigned int)' into 'boom::decompress_rvc(unsigned short)' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:542:20)
+INFO: [HLS 214-131] Inlining function 'boom::(anonymous namespace)::bit(unsigned short, unsigned int)' into 'boom::decompress_rvc(unsigned short)' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:533:35)
+INFO: [HLS 214-131] Inlining function 'boom::(anonymous namespace)::encode_i(int, unsigned int, unsigned int, unsigned int, unsigned int)' into 'boom::decompress_rvc(unsigned short)' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:542:29)
+INFO: [HLS 214-131] Inlining function 'boom::(anonymous namespace)::sign_extend(unsigned int, unsigned int)' into 'boom::decompress_rvc(unsigned short)' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:540:32)
+INFO: [HLS 214-131] Inlining function 'boom::(anonymous namespace)::bits(unsigned short, unsigned int, unsigned int)' into 'boom::decompress_rvc(unsigned short)' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:540:64)
+INFO: [HLS 214-131] Inlining function 'boom::(anonymous namespace)::bit(unsigned short, unsigned int)' into 'boom::decompress_rvc(unsigned short)' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:540:45)
+INFO: [HLS 214-131] Inlining function 'boom::(anonymous namespace)::legal(unsigned short, unsigned int)' into 'boom::decompress_rvc(unsigned short)' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:534:20)
+INFO: [HLS 214-131] Inlining function 'boom::(anonymous namespace)::bit(unsigned short, unsigned int)' into 'boom::decompress_rvc(unsigned short)' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:533:54)
+INFO: [HLS 214-131] Inlining function 'boom::(anonymous namespace)::encode_s(int, unsigned int, unsigned int, unsigned int, unsigned int)' into 'boom::decompress_rvc(unsigned short)' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:534:29)
+INFO: [HLS 214-270] Starting automatic array partition analysis...
+INFO: [HLS 200-111] Finished Compiling Optimization and Transform: CPU user time: 2.15 seconds. CPU system time: 0.21 seconds. Elapsed time: 2.36 seconds; current allocated memory: 421.461 MB.
+INFO: [HLS 200-111] Finished Checking Pragmas: CPU user time: 0 seconds. CPU system time: 0 seconds. Elapsed time: 0 seconds; current allocated memory: 421.461 MB.
+INFO: [HLS 200-10] Starting code transformations ...
+INFO: [HLS 200-111] Finished Standard Transforms: CPU user time: 0.02 seconds. CPU system time: 0 seconds. Elapsed time: 0.02 seconds; current allocated memory: 423.086 MB.
+INFO: [HLS 200-10] Checking synthesizability ...
+INFO: [HLS 200-111] Finished Checking Synthesizability: CPU user time: 0.03 seconds. CPU system time: 0 seconds. Elapsed time: 0.03 seconds; current allocated memory: 425.492 MB.
+INFO: [XFORM 203-102] Automatically partitioning small array 'base_funct3' completely based on array size.
+INFO: [XFORM 203-101] Partitioning array 'base_funct3' in dimension 1 completely.
+INFO: [XFORM 203-603] Inlining function 'aesl_mux_load.4i32P0A.i2' into 'boom::decompress_rvc' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:576).
+INFO: [XFORM 203-11] Balancing expressions in function 'boom::decompress_rvc' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:20:17)...76 expression(s) balanced.
+INFO: [HLS 200-111] Finished Loop, function and other optimizations: CPU user time: 0.07 seconds. CPU system time: 0 seconds. Elapsed time: 0.08 seconds; current allocated memory: 449.844 MB.
+INFO: [HLS 200-111] Finished Architecture Synthesis: CPU user time: 0.04 seconds. CPU system time: 0.01 seconds. Elapsed time: 0.04 seconds; current allocated memory: 451.621 MB.
+INFO: [HLS 200-10] Starting hardware synthesis ...
+INFO: [HLS 200-10] Synthesizing 'synth_rvc_top' ...
+INFO: [HLS 200-10] ----------------------------------------------------------------
+INFO: [HLS 200-42] -- Implementing module 'decompress_rvc'
+INFO: [HLS 200-10] ----------------------------------------------------------------
+INFO: [SCHED 204-11] Starting scheduling ...
+INFO: [SCHED 204-11] Finished scheduling.
+INFO: [HLS 200-111] Finished Scheduling: CPU user time: 0.05 seconds. CPU system time: 0 seconds. Elapsed time: 0.05 seconds; current allocated memory: 453.598 MB.
+INFO: [BIND 205-100] Starting micro-architecture generation ...
+INFO: [BIND 205-101] Performing variable lifetime analysis.
+INFO: [BIND 205-101] Exploring resource sharing.
+INFO: [BIND 205-101] Binding ...
+INFO: [BIND 205-100] Finished micro-architecture generation.
+INFO: [HLS 200-111] Finished Binding: CPU user time: 0.03 seconds. CPU system time: 0 seconds. Elapsed time: 0.03 seconds; current allocated memory: 453.598 MB.
+INFO: [HLS 200-10] ----------------------------------------------------------------
+INFO: [HLS 200-42] -- Implementing module 'synth_rvc_top'
+INFO: [HLS 200-10] ----------------------------------------------------------------
+INFO: [SCHED 204-11] Starting scheduling ...
+INFO: [SCHED 204-11] Finished scheduling.
+INFO: [HLS 200-111] Finished Scheduling: CPU user time: 0.04 seconds. CPU system time: 0 seconds. Elapsed time: 0.04 seconds; current allocated memory: 453.824 MB.
+INFO: [BIND 205-100] Starting micro-architecture generation ...
+INFO: [BIND 205-101] Performing variable lifetime analysis.
+INFO: [BIND 205-101] Exploring resource sharing.
+INFO: [BIND 205-101] Binding ...
+INFO: [BIND 205-100] Finished micro-architecture generation.
+INFO: [HLS 200-111] Finished Binding: CPU user time: 0.01 seconds. CPU system time: 0 seconds. Elapsed time: 0.02 seconds; current allocated memory: 453.945 MB.
+INFO: [HLS 200-10] ----------------------------------------------------------------
+INFO: [HLS 200-10] -- Generating RTL for module 'decompress_rvc'
+INFO: [HLS 200-10] ----------------------------------------------------------------
+INFO: [RTGEN 206-100] Generating core module 'mux_42_32_1_1': 1 instance(s).
+INFO: [RTGEN 206-100] Finished creating RTL model for 'decompress_rvc'.
+INFO: [HLS 200-111] Finished Creating RTL model: CPU user time: 0.03 seconds. CPU system time: 0 seconds. Elapsed time: 0.03 seconds; current allocated memory: 455.488 MB.
+INFO: [HLS 200-10] ----------------------------------------------------------------
+INFO: [HLS 200-10] -- Generating RTL for module 'synth_rvc_top'
+INFO: [HLS 200-10] ----------------------------------------------------------------
+INFO: [RTGEN 206-500] Setting interface mode on port 'synth_rvc_top/compressed' to 'ap_none'.
+INFO: [RTGEN 206-500] Setting interface mode on port 'synth_rvc_top/valid' to 'ap_vld'.
+INFO: [RTGEN 206-500] Setting interface mode on port 'synth_rvc_top/legal' to 'ap_vld'.
+INFO: [RTGEN 206-500] Setting interface mode on port 'synth_rvc_top/decompressed' to 'ap_vld'.
+INFO: [RTGEN 206-500] Setting interface mode on port 'synth_rvc_top/length_r' to 'ap_vld'.
+INFO: [RTGEN 206-500] Setting interface mode on function 'synth_rvc_top' to 'ap_ctrl_hs'.
+INFO: [RTGEN 206-100] Finished creating RTL model for 'synth_rvc_top'.
+INFO: [HLS 200-111] Finished Creating RTL model: CPU user time: 0.14 seconds. CPU system time: 0 seconds. Elapsed time: 0.14 seconds; current allocated memory: 459.516 MB.
+INFO: [HLS 200-111] Finished Generating all RTL models: CPU user time: 0.12 seconds. CPU system time: 0.01 seconds. Elapsed time: 0.12 seconds; current allocated memory: 462.723 MB.
+INFO: [HLS 200-111] Finished Updating report files: CPU user time: 0.13 seconds. CPU system time: 0 seconds. Elapsed time: 0.13 seconds; current allocated memory: 462.820 MB.
+INFO: [VHDL 208-304] Generating VHDL RTL for synth_rvc_top.
+INFO: [VLOG 209-307] Generating Verilog RTL for synth_rvc_top.
+INFO: [HLS 200-789] **** Estimated Fmax: 541.87 MHz
+INFO: [HLS 200-111] Finished Command csynth_design CPU user time: 5.35 seconds. CPU system time: 0.54 seconds. Elapsed time: 5.34 seconds; current allocated memory: -889.375 MB.
+INFO: [HLS 200-112] Total CPU user time: 6.64 seconds. Total CPU system time: 0.95 seconds. Total elapsed time: 6.39 seconds; peak allocated memory: 1.321 GB.
+INFO: [Common 17-206] Exiting vitis_hls at Tue Aug 11 23:50:13 2026...

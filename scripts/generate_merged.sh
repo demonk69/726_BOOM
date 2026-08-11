@@ -19,6 +19,7 @@ cat > "$OUT" << 'HEAD'
 #include "completion.hpp"
 #include "mul.hpp"
 #include "divider.hpp"
+#include "rvc.hpp"
 #if defined(BOOM_USE_AP_INT) || defined(__SYNTHESIS__)
 #include <ap_int.h>
 #endif
@@ -36,6 +37,9 @@ grep -v '#include' "$BASE/src/frontend.cpp" >> "$OUT"
 echo "" >> "$OUT"
 echo "// ==== decode.cpp ====" >> "$OUT"
 grep -v '#include' "$BASE/src/decode.cpp" >> "$OUT"
+echo "" >> "$OUT"
+echo "// ==== rvc.cpp ====" >> "$OUT"
+grep -v '#include' "$BASE/src/rvc.cpp" >> "$OUT"
 echo "" >> "$OUT"
 echo "// ==== rename.cpp ====" >> "$OUT"
 grep -v '#include' "$BASE/src/rename.cpp" >> "$OUT"
@@ -81,5 +85,8 @@ grep -v '#include' "$BASE/src/boom_core_top.cpp" >> "$OUT"
 echo "" >> "$OUT"
 echo "// ==== synth_module_tops.cpp ====" >> "$OUT"
 grep -v '#include' "$BASE/src/synth_module_tops.cpp" >> "$OUT"
+echo "" >> "$OUT"
+echo "// ==== synth_rvc_top.cpp ====" >> "$OUT"
+grep -v '#include' "$BASE/src/synth_rvc_top.cpp" >> "$OUT"
 
 echo "Generated $OUT ($(wc -l < "$OUT") lines)"

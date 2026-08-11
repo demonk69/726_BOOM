@@ -1,0 +1,11 @@
+requirement,observed,requirement_result,evidence
+directed_checks,228,">=150 PASS",logs/rvc_decompress_tests.log
+exhaustive_exact,65536/65536,"=65536 PASS",logs/rvc_decompress_tests.log
+supported,38551,classified,exhaustive_classification.csv
+unsupported_fp,8192,classified,exhaustive_classification.csv
+reserved,2409,classified,exhaustive_classification.csv
+non_rvc,16384,classified,exhaustive_classification.csv
+decode_cross,38294/38294,">=100 PASS",logs/rvc_decode_cross_tests.log
+merged_compile,PASS,PASS,canonical merged source
+synth_rvc_top,PASS,PASS,csynth/synth_rvc_top_csynth.rpt
+synth_frontend_top_preservation,PASS,PASS,csynth/synth_frontend_top_csynth.rpt
