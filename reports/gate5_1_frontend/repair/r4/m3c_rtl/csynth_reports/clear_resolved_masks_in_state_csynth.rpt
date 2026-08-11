@@ -1,0 +1,295 @@
+
+
+================================================================
+== Vitis HLS Report for 'clear_resolved_masks_in_state'
+================================================================
+* Date:           Tue Aug 11 18:59:38 2026
+
+* Version:        2021.2 (Build 3367213 on Tue Oct 19 02:47:39 MDT 2021)
+* Project:        synth_m3c_rv64m_top
+* Solution:       solution_gate4_1_m3c_rtl (Vivado IP Flow Target)
+* Product family: zynquplus
+* Target device:  xczu7ev-ffvc1156-2-e
+
+
+================================================================
+== Performance Estimates
+================================================================
++ Timing:
+    * Summary:
+    +--------+----------+----------+------------+
+    |  Clock |  Target  | Estimated| Uncertainty|
+    +--------+----------+----------+------------+
+    |ap_clk  |  10.00 ns|  1.689 ns|     2.70 ns|
+    +--------+----------+----------+------------+
+
++ Latency:
+    * Summary:
+    +---------+---------+-----------+----------+-----+-----+---------+
+    |  Latency (cycles) |  Latency (absolute)  |  Interval | Pipeline|
+    |   min   |   max   |    min    |    max   | min | max |   Type  |
+    +---------+---------+-----------+----------+-----+-----+---------+
+    |        1|      132|  10.000 ns|  1.320 us|    1|  132|       no|
+    +---------+---------+-----------+----------+-----+-----+---------+
+
+    + Detail:
+        * Instance:
+        N/A
+
+        * Loop:
+        +---------------------+---------+---------+----------+-----------+-----------+------+----------+
+        |                     |  Latency (cycles) | Iteration|  Initiation Interval  | Trip |          |
+        |      Loop Name      |   min   |   max   |  Latency |  achieved |   target  | Count| Pipelined|
+        +---------------------+---------+---------+----------+-----------+-----------+------+----------+
+        |- VITIS_LOOP_2190_2  |        3|        3|         1|          -|          -|     3|        no|
+        |- VITIS_LOOP_2195_3  |        3|        3|         1|          -|          -|     3|        no|
+        |- VITIS_LOOP_2196_4  |       16|       16|         2|          -|          -|     8|        no|
+        |- VITIS_LOOP_2197_5  |       64|       64|         2|          -|          -|    32|        no|
+        |- VITIS_LOOP_2204_6  |        3|        3|         1|          -|          -|     3|        no|
+        |- VITIS_LOOP_2206_7  |        3|        3|         1|          -|          -|     3|        no|
+        |- VITIS_LOOP_2208_8  |       16|       16|         2|          -|          -|     8|        no|
+        |- VITIS_LOOP_2209_9  |       16|       16|         2|          -|          -|     8|        no|
+        +---------------------+---------+---------+----------+-----------+-----------+------+----------+
+
+
+
+================================================================
+== Utilization Estimates
+================================================================
+* Summary:
++-----------------+---------+------+--------+--------+-----+
+|       Name      | BRAM_18K|  DSP |   FF   |   LUT  | URAM|
++-----------------+---------+------+--------+--------+-----+
+|DSP              |        -|     -|       -|       -|    -|
+|Expression       |        -|     -|       0|     285|    -|
+|FIFO             |        -|     -|       -|       -|    -|
+|Instance         |        -|     -|       0|      56|    -|
+|Memory           |        -|     -|       -|       -|    -|
+|Multiplexer      |        -|     -|       -|     355|    -|
+|Register         |        -|     -|      62|       -|    -|
++-----------------+---------+------+--------+--------+-----+
+|Total            |        0|     0|      62|     696|    0|
++-----------------+---------+------+--------+--------+-----+
+|Available        |      624|  1728|  460800|  230400|   96|
++-----------------+---------+------+--------+--------+-----+
+|Utilization (%)  |        0|     0|      ~0|      ~0|    0|
++-----------------+---------+------+--------+--------+-----+
+
++ Detail:
+    * Instance:
+    +-------------------+--------------+---------+----+---+----+-----+
+    |      Instance     |    Module    | BRAM_18K| DSP| FF| LUT| URAM|
+    +-------------------+--------------+---------+----+---+----+-----+
+    |mux_32_8_1_1_U106  |mux_32_8_1_1  |        0|   0|  0|  14|    0|
+    |mux_32_8_1_1_U107  |mux_32_8_1_1  |        0|   0|  0|  14|    0|
+    |mux_32_8_1_1_U108  |mux_32_8_1_1  |        0|   0|  0|  14|    0|
+    |mux_32_8_1_1_U109  |mux_32_8_1_1  |        0|   0|  0|  14|    0|
+    +-------------------+--------------+---------+----+---+----+-----+
+    |Total              |              |        0|   0|  0|  56|    0|
+    +-------------------+--------------+---------+----+---+----+-----+
+
+    * DSP:
+    N/A
+
+    * Memory:
+    N/A
+
+    * FIFO:
+    N/A
+
+    * Expression:
+    +--------------------------------------------------+----------+----+---+----+------------+------------+
+    |                   Variable Name                  | Operation| DSP| FF| LUT| Bitwidth P0| Bitwidth P1|
+    +--------------------------------------------------+----------+----+---+----+------------+------------+
+    |add_ln2190_fu_256_p2                              |         +|   0|  0|   9|           2|           1|
+    |add_ln2195_fu_362_p2                              |         +|   0|  0|   9|           2|           1|
+    |add_ln2196_fu_439_p2                              |         +|   0|  0|  12|           4|           1|
+    |add_ln2197_fu_475_p2                              |         +|   0|  0|  13|           6|           1|
+    |add_ln2204_fu_544_p2                              |         +|   0|  0|   9|           2|           1|
+    |add_ln2206_fu_616_p2                              |         +|   0|  0|   9|           2|           1|
+    |add_ln2208_fu_693_p2                              |         +|   0|  0|  12|           4|           1|
+    |add_ln2209_fu_729_p2                              |         +|   0|  0|  12|           4|           1|
+    |and_ln2142_1_fu_230_p2                            |       and|   0|  0|   8|           8|           8|
+    |and_ln2142_2_fu_286_p2                            |       and|   0|  0|   8|           8|           8|
+    |and_ln2142_3_fu_322_p2                            |       and|   0|  0|   8|           8|           8|
+    |and_ln2142_4_fu_392_p2                            |       and|   0|  0|   8|           8|           8|
+    |and_ln2142_7_fu_494_p2                            |       and|   0|  0|   8|           8|           8|
+    |and_ln2142_8_fu_513_p2                            |       and|   0|  0|   8|           8|           8|
+    |and_ln2142_fu_214_p2                              |       and|   0|  0|   8|           8|           8|
+    |and_ln2193_fu_337_p2                              |       and|   0|  0|   8|           8|           8|
+    |and_ln2205_fu_574_p2                              |       and|   0|  0|   8|           8|           8|
+    |and_ln2207_fu_646_p2                              |       and|   0|  0|   8|           8|           8|
+    |state_issue_alu_iq_entries_uop_branch_br_mask_d0  |       and|   0|  0|   8|           8|           8|
+    |state_lsu_ldq_branch_mask_d0                      |       and|   0|  0|   8|           8|           8|
+    |state_lsu_stq_branch_mask_d0                      |       and|   0|  0|   8|           8|           8|
+    |state_rob_entries_uop_branch_br_mask_d0           |       and|   0|  0|   8|           8|           8|
+    |icmp_ln2185_fu_198_p2                             |      icmp|   0|  0|  11|           8|           1|
+    |icmp_ln2190_fu_250_p2                             |      icmp|   0|  0|   8|           2|           2|
+    |icmp_ln2195_fu_356_p2                             |      icmp|   0|  0|   8|           2|           2|
+    |icmp_ln2196_fu_433_p2                             |      icmp|   0|  0|   9|           4|           5|
+    |icmp_ln2197_fu_469_p2                             |      icmp|   0|  0|  10|           6|           7|
+    |icmp_ln2204_fu_538_p2                             |      icmp|   0|  0|   8|           2|           2|
+    |icmp_ln2206_fu_610_p2                             |      icmp|   0|  0|   8|           2|           2|
+    |icmp_ln2208_fu_687_p2                             |      icmp|   0|  0|   9|           4|           5|
+    |icmp_ln2209_fu_723_p2                             |      icmp|   0|  0|   9|           4|           5|
+    |xor_ln2142_fu_204_p2                              |       xor|   0|  0|   8|           8|           2|
+    +--------------------------------------------------+----------+----+---+----+------------+------------+
+    |Total                                             |          |   0|  0| 285|         180|         153|
+    +--------------------------------------------------+----------+----+---+----+------------+------------+
+
+    * Multiplexer:
+    +--------------------------------------------------------+----+-----------+-----+-----------+
+    |                          Name                          | LUT| Input Size| Bits| Total Bits|
+    +--------------------------------------------------------+----+-----------+-----+-----------+
+    |ap_NS_fsm                                               |  65|         14|    1|         14|
+    |i_44_fu_116                                             |   9|          2|    4|          8|
+    |i_45_fu_120                                             |   9|          2|    6|         12|
+    |i_46_fu_112                                             |   9|          2|    2|          4|
+    |i_47_fu_124                                             |   9|          2|    2|          4|
+    |i_48_fu_132                                             |   9|          2|    4|          8|
+    |i_49_fu_136                                             |   9|          2|    4|          8|
+    |i_50_fu_128                                             |   9|          2|    2|          4|
+    |i_fu_108                                                |   9|          2|    2|          4|
+    |state_completion_bypass_branch_mask_0_o                 |   9|          2|    8|         16|
+    |state_completion_bypass_branch_mask_1_o                 |   9|          2|    8|         16|
+    |state_completion_bypass_branch_mask_2_o                 |   9|          2|    8|         16|
+    |state_completion_int_execute_uop_branch_br_mask_o       |   9|          2|    8|         16|
+    |state_completion_mem_execute_uop_branch_br_mask_o       |   9|          2|    8|         16|
+    |state_completion_wakeups_branch_mask_0_o                |   9|          2|    8|         16|
+    |state_completion_wakeups_branch_mask_1_o                |   9|          2|    8|         16|
+    |state_completion_wakeups_branch_mask_2_o                |   9|          2|    8|         16|
+    |state_decode_dec_uops_branch_br_mask_0_o                |   9|          2|    8|         16|
+    |state_execute_alu_results_uop_branch_br_mask_0_o        |   9|          2|    8|         16|
+    |state_execute_alu_results_uop_branch_br_mask_1_o        |   9|          2|    8|         16|
+    |state_execute_alu_results_uop_branch_br_mask_2_o        |   9|          2|    8|         16|
+    |state_execute_divider_branch_mask_o                     |   9|          2|    8|         16|
+    |state_execute_divider_uop_branch_br_mask_o              |   9|          2|    8|         16|
+    |state_issue_alu_iq_entries_uop_branch_br_mask_address0  |  14|          3|    3|          9|
+    |state_issue_issued_uops_branch_br_mask_0_o              |   9|          2|    8|         16|
+    |state_issue_issued_uops_branch_br_mask_1_o              |   9|          2|    8|         16|
+    |state_issue_issued_uops_branch_br_mask_2_o              |   9|          2|    8|         16|
+    |state_lsu_ldq_branch_mask_address0                      |  14|          3|    3|          9|
+    |state_lsu_stq_branch_mask_address0                      |  14|          3|    3|          9|
+    |state_rename_dispatch_packets_uop_branch_br_mask_0_o    |   9|          2|    8|         16|
+    |state_rob_entries_uop_branch_br_mask_address0           |  14|          3|    5|         15|
+    +--------------------------------------------------------+----+-----------+-----+-----------+
+    |Total                                                   | 355|         78|  185|        396|
+    +--------------------------------------------------------+----+-----------+-----+-----------+
+
+    * Register:
+    +----------------------------------------+----+----+-----+-----------+
+    |                  Name                  | FF | LUT| Bits| Const Bits|
+    +----------------------------------------+----+----+-----+-----------+
+    |ap_CS_fsm                               |  13|   0|   13|          0|
+    |i_44_fu_116                             |   4|   0|    4|          0|
+    |i_45_fu_120                             |   6|   0|    6|          0|
+    |i_46_fu_112                             |   2|   0|    2|          0|
+    |i_47_fu_124                             |   2|   0|    2|          0|
+    |i_48_fu_132                             |   4|   0|    4|          0|
+    |i_49_fu_136                             |   4|   0|    4|          0|
+    |i_50_fu_128                             |   2|   0|    2|          0|
+    |i_fu_108                                |   2|   0|    2|          0|
+    |icmp_ln2185_reg_746                     |   1|   0|    1|          0|
+    |state_lsu_ldq_branch_mask_addr_reg_867  |   3|   0|    3|          0|
+    |state_lsu_stq_branch_mask_addr_reg_882  |   3|   0|    3|          0|
+    |uop_branch_br_mask_1_reg_820            |   5|   0|    5|          0|
+    |uop_branch_br_mask_reg_805              |   3|   0|    3|          0|
+    |xor_ln2142_reg_757                      |   8|   0|    8|          0|
+    +----------------------------------------+----+----+-----+-----------+
+    |Total                                   |  62|   0|   62|          0|
+    +----------------------------------------+----+----+-----+-----------+
+
+
+
+================================================================
+== Interface
+================================================================
+* Summary:
++-------------------------------------------------------------+-----+-----+------------+----------------------------------------------------+--------------+
+|                          RTL Ports                          | Dir | Bits|  Protocol  |                    Source Object                   |    C Type    |
++-------------------------------------------------------------+-----+-----+------------+----------------------------------------------------+--------------+
+|ap_clk                                                       |   in|    1|  ap_ctrl_hs|                       clear_resolved_masks_in_state|  return value|
+|ap_rst                                                       |   in|    1|  ap_ctrl_hs|                       clear_resolved_masks_in_state|  return value|
+|ap_start                                                     |   in|    1|  ap_ctrl_hs|                       clear_resolved_masks_in_state|  return value|
+|ap_done                                                      |  out|    1|  ap_ctrl_hs|                       clear_resolved_masks_in_state|  return value|
+|ap_idle                                                      |  out|    1|  ap_ctrl_hs|                       clear_resolved_masks_in_state|  return value|
+|ap_ready                                                     |  out|    1|  ap_ctrl_hs|                       clear_resolved_masks_in_state|  return value|
+|resolve_mask                                                 |   in|    8|     ap_none|                                        resolve_mask|        scalar|
+|state_decode_dec_uops_branch_br_mask_0_i                     |   in|    8|     ap_ovld|              state_decode_dec_uops_branch_br_mask_0|       pointer|
+|state_decode_dec_uops_branch_br_mask_0_o                     |  out|    8|     ap_ovld|              state_decode_dec_uops_branch_br_mask_0|       pointer|
+|state_decode_dec_uops_branch_br_mask_0_o_ap_vld              |  out|    1|     ap_ovld|              state_decode_dec_uops_branch_br_mask_0|       pointer|
+|state_rename_dispatch_packets_uop_branch_br_mask_0_i         |   in|    8|     ap_ovld|  state_rename_dispatch_packets_uop_branch_br_mask_0|       pointer|
+|state_rename_dispatch_packets_uop_branch_br_mask_0_o         |  out|    8|     ap_ovld|  state_rename_dispatch_packets_uop_branch_br_mask_0|       pointer|
+|state_rename_dispatch_packets_uop_branch_br_mask_0_o_ap_vld  |  out|    1|     ap_ovld|  state_rename_dispatch_packets_uop_branch_br_mask_0|       pointer|
+|state_execute_alu_results_uop_branch_br_mask_0_i             |   in|    8|     ap_ovld|      state_execute_alu_results_uop_branch_br_mask_0|       pointer|
+|state_execute_alu_results_uop_branch_br_mask_0_o             |  out|    8|     ap_ovld|      state_execute_alu_results_uop_branch_br_mask_0|       pointer|
+|state_execute_alu_results_uop_branch_br_mask_0_o_ap_vld      |  out|    1|     ap_ovld|      state_execute_alu_results_uop_branch_br_mask_0|       pointer|
+|state_execute_alu_results_uop_branch_br_mask_1_i             |   in|    8|     ap_ovld|      state_execute_alu_results_uop_branch_br_mask_1|       pointer|
+|state_execute_alu_results_uop_branch_br_mask_1_o             |  out|    8|     ap_ovld|      state_execute_alu_results_uop_branch_br_mask_1|       pointer|
+|state_execute_alu_results_uop_branch_br_mask_1_o_ap_vld      |  out|    1|     ap_ovld|      state_execute_alu_results_uop_branch_br_mask_1|       pointer|
+|state_execute_alu_results_uop_branch_br_mask_2_i             |   in|    8|     ap_ovld|      state_execute_alu_results_uop_branch_br_mask_2|       pointer|
+|state_execute_alu_results_uop_branch_br_mask_2_o             |  out|    8|     ap_ovld|      state_execute_alu_results_uop_branch_br_mask_2|       pointer|
+|state_execute_alu_results_uop_branch_br_mask_2_o_ap_vld      |  out|    1|     ap_ovld|      state_execute_alu_results_uop_branch_br_mask_2|       pointer|
+|state_execute_divider_token_valid                            |   in|    1|     ap_none|                   state_execute_divider_token_valid|       pointer|
+|state_execute_divider_uop_branch_br_mask_i                   |   in|    8|     ap_ovld|            state_execute_divider_uop_branch_br_mask|       pointer|
+|state_execute_divider_uop_branch_br_mask_o                   |  out|    8|     ap_ovld|            state_execute_divider_uop_branch_br_mask|       pointer|
+|state_execute_divider_uop_branch_br_mask_o_ap_vld            |  out|    1|     ap_ovld|            state_execute_divider_uop_branch_br_mask|       pointer|
+|state_execute_divider_branch_mask_i                          |   in|    8|     ap_ovld|                   state_execute_divider_branch_mask|       pointer|
+|state_execute_divider_branch_mask_o                          |  out|    8|     ap_ovld|                   state_execute_divider_branch_mask|       pointer|
+|state_execute_divider_branch_mask_o_ap_vld                   |  out|    1|     ap_ovld|                   state_execute_divider_branch_mask|       pointer|
+|state_issue_issued_uops_branch_br_mask_0_i                   |   in|    8|     ap_ovld|            state_issue_issued_uops_branch_br_mask_0|       pointer|
+|state_issue_issued_uops_branch_br_mask_0_o                   |  out|    8|     ap_ovld|            state_issue_issued_uops_branch_br_mask_0|       pointer|
+|state_issue_issued_uops_branch_br_mask_0_o_ap_vld            |  out|    1|     ap_ovld|            state_issue_issued_uops_branch_br_mask_0|       pointer|
+|state_issue_issued_uops_branch_br_mask_1_i                   |   in|    8|     ap_ovld|            state_issue_issued_uops_branch_br_mask_1|       pointer|
+|state_issue_issued_uops_branch_br_mask_1_o                   |  out|    8|     ap_ovld|            state_issue_issued_uops_branch_br_mask_1|       pointer|
+|state_issue_issued_uops_branch_br_mask_1_o_ap_vld            |  out|    1|     ap_ovld|            state_issue_issued_uops_branch_br_mask_1|       pointer|
+|state_issue_issued_uops_branch_br_mask_2_i                   |   in|    8|     ap_ovld|            state_issue_issued_uops_branch_br_mask_2|       pointer|
+|state_issue_issued_uops_branch_br_mask_2_o                   |  out|    8|     ap_ovld|            state_issue_issued_uops_branch_br_mask_2|       pointer|
+|state_issue_issued_uops_branch_br_mask_2_o_ap_vld            |  out|    1|     ap_ovld|            state_issue_issued_uops_branch_br_mask_2|       pointer|
+|state_issue_alu_iq_entries_uop_branch_br_mask_address0       |  out|    3|   ap_memory|       state_issue_alu_iq_entries_uop_branch_br_mask|         array|
+|state_issue_alu_iq_entries_uop_branch_br_mask_ce0            |  out|    1|   ap_memory|       state_issue_alu_iq_entries_uop_branch_br_mask|         array|
+|state_issue_alu_iq_entries_uop_branch_br_mask_we0            |  out|    1|   ap_memory|       state_issue_alu_iq_entries_uop_branch_br_mask|         array|
+|state_issue_alu_iq_entries_uop_branch_br_mask_d0             |  out|    8|   ap_memory|       state_issue_alu_iq_entries_uop_branch_br_mask|         array|
+|state_issue_alu_iq_entries_uop_branch_br_mask_q0             |   in|    8|   ap_memory|       state_issue_alu_iq_entries_uop_branch_br_mask|         array|
+|state_rob_entries_uop_branch_br_mask_address0                |  out|    5|   ap_memory|                state_rob_entries_uop_branch_br_mask|         array|
+|state_rob_entries_uop_branch_br_mask_ce0                     |  out|    1|   ap_memory|                state_rob_entries_uop_branch_br_mask|         array|
+|state_rob_entries_uop_branch_br_mask_we0                     |  out|    1|   ap_memory|                state_rob_entries_uop_branch_br_mask|         array|
+|state_rob_entries_uop_branch_br_mask_d0                      |  out|    8|   ap_memory|                state_rob_entries_uop_branch_br_mask|         array|
+|state_rob_entries_uop_branch_br_mask_q0                      |   in|    8|   ap_memory|                state_rob_entries_uop_branch_br_mask|         array|
+|state_completion_mem_execute_valid                           |   in|    1|     ap_none|                  state_completion_mem_execute_valid|       pointer|
+|state_completion_mem_execute_uop_branch_br_mask_i            |   in|    8|     ap_ovld|     state_completion_mem_execute_uop_branch_br_mask|       pointer|
+|state_completion_mem_execute_uop_branch_br_mask_o            |  out|    8|     ap_ovld|     state_completion_mem_execute_uop_branch_br_mask|       pointer|
+|state_completion_mem_execute_uop_branch_br_mask_o_ap_vld     |  out|    1|     ap_ovld|     state_completion_mem_execute_uop_branch_br_mask|       pointer|
+|state_completion_int_execute_valid                           |   in|    1|     ap_none|                  state_completion_int_execute_valid|       pointer|
+|state_completion_int_execute_uop_branch_br_mask_i            |   in|    8|     ap_ovld|     state_completion_int_execute_uop_branch_br_mask|       pointer|
+|state_completion_int_execute_uop_branch_br_mask_o            |  out|    8|     ap_ovld|     state_completion_int_execute_uop_branch_br_mask|       pointer|
+|state_completion_int_execute_uop_branch_br_mask_o_ap_vld     |  out|    1|     ap_ovld|     state_completion_int_execute_uop_branch_br_mask|       pointer|
+|state_completion_wakeups_branch_mask_0_i                     |   in|    8|     ap_ovld|              state_completion_wakeups_branch_mask_0|       pointer|
+|state_completion_wakeups_branch_mask_0_o                     |  out|    8|     ap_ovld|              state_completion_wakeups_branch_mask_0|       pointer|
+|state_completion_wakeups_branch_mask_0_o_ap_vld              |  out|    1|     ap_ovld|              state_completion_wakeups_branch_mask_0|       pointer|
+|state_completion_wakeups_branch_mask_1_i                     |   in|    8|     ap_ovld|              state_completion_wakeups_branch_mask_1|       pointer|
+|state_completion_wakeups_branch_mask_1_o                     |  out|    8|     ap_ovld|              state_completion_wakeups_branch_mask_1|       pointer|
+|state_completion_wakeups_branch_mask_1_o_ap_vld              |  out|    1|     ap_ovld|              state_completion_wakeups_branch_mask_1|       pointer|
+|state_completion_wakeups_branch_mask_2_i                     |   in|    8|     ap_ovld|              state_completion_wakeups_branch_mask_2|       pointer|
+|state_completion_wakeups_branch_mask_2_o                     |  out|    8|     ap_ovld|              state_completion_wakeups_branch_mask_2|       pointer|
+|state_completion_wakeups_branch_mask_2_o_ap_vld              |  out|    1|     ap_ovld|              state_completion_wakeups_branch_mask_2|       pointer|
+|state_completion_bypass_branch_mask_0_i                      |   in|    8|     ap_ovld|               state_completion_bypass_branch_mask_0|       pointer|
+|state_completion_bypass_branch_mask_0_o                      |  out|    8|     ap_ovld|               state_completion_bypass_branch_mask_0|       pointer|
+|state_completion_bypass_branch_mask_0_o_ap_vld               |  out|    1|     ap_ovld|               state_completion_bypass_branch_mask_0|       pointer|
+|state_completion_bypass_branch_mask_1_i                      |   in|    8|     ap_ovld|               state_completion_bypass_branch_mask_1|       pointer|
+|state_completion_bypass_branch_mask_1_o                      |  out|    8|     ap_ovld|               state_completion_bypass_branch_mask_1|       pointer|
+|state_completion_bypass_branch_mask_1_o_ap_vld               |  out|    1|     ap_ovld|               state_completion_bypass_branch_mask_1|       pointer|
+|state_completion_bypass_branch_mask_2_i                      |   in|    8|     ap_ovld|               state_completion_bypass_branch_mask_2|       pointer|
+|state_completion_bypass_branch_mask_2_o                      |  out|    8|     ap_ovld|               state_completion_bypass_branch_mask_2|       pointer|
+|state_completion_bypass_branch_mask_2_o_ap_vld               |  out|    1|     ap_ovld|               state_completion_bypass_branch_mask_2|       pointer|
+|state_lsu_ldq_branch_mask_address0                           |  out|    3|   ap_memory|                           state_lsu_ldq_branch_mask|         array|
+|state_lsu_ldq_branch_mask_ce0                                |  out|    1|   ap_memory|                           state_lsu_ldq_branch_mask|         array|
+|state_lsu_ldq_branch_mask_we0                                |  out|    1|   ap_memory|                           state_lsu_ldq_branch_mask|         array|
+|state_lsu_ldq_branch_mask_d0                                 |  out|    8|   ap_memory|                           state_lsu_ldq_branch_mask|         array|
+|state_lsu_ldq_branch_mask_q0                                 |   in|    8|   ap_memory|                           state_lsu_ldq_branch_mask|         array|
+|state_lsu_stq_branch_mask_address0                           |  out|    3|   ap_memory|                           state_lsu_stq_branch_mask|         array|
+|state_lsu_stq_branch_mask_ce0                                |  out|    1|   ap_memory|                           state_lsu_stq_branch_mask|         array|
+|state_lsu_stq_branch_mask_we0                                |  out|    1|   ap_memory|                           state_lsu_stq_branch_mask|         array|
+|state_lsu_stq_branch_mask_d0                                 |  out|    8|   ap_memory|                           state_lsu_stq_branch_mask|         array|
+|state_lsu_stq_branch_mask_q0                                 |   in|    8|   ap_memory|                           state_lsu_stq_branch_mask|         array|
++-------------------------------------------------------------+-----+-----+------------+----------------------------------------------------+--------------+

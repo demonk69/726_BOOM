@@ -1,0 +1,412 @@
+
+
+================================================================
+== Vitis HLS Report for 'rename_module'
+================================================================
+* Date:           Tue Aug 11 20:20:16 2026
+
+* Version:        2021.2 (Build 3367213 on Tue Oct 19 02:47:39 MDT 2021)
+* Project:        boom_core_top
+* Solution:       solution_gate4_1_m3b_full_core_rtl (Vivado IP Flow Target)
+* Product family: zynquplus
+* Target device:  xczu7ev-ffvc1156-2-e
+
+
+================================================================
+== Performance Estimates
+================================================================
++ Timing:
+    * Summary:
+    +--------+----------+----------+------------+
+    |  Clock |  Target  | Estimated| Uncertainty|
+    +--------+----------+----------+------------+
+    |ap_clk  |  10.00 ns|  2.490 ns|     2.70 ns|
+    +--------+----------+----------+------------+
+
++ Latency:
+    * Summary:
+    +---------+---------+-----------+----------+-----+-----+---------+
+    |  Latency (cycles) |  Latency (absolute)  |  Interval | Pipeline|
+    |   min   |   max   |    min    |    max   | min | max |   Type  |
+    +---------+---------+-----------+----------+-----+-----+---------+
+    |        2|      253|  20.000 ns|  2.530 us|    2|  253|       no|
+    +---------+---------+-----------+----------+-----+-----+---------+
+
+    + Detail:
+        * Instance:
+        N/A
+
+        * Loop:
+        +--------------------+---------+---------+----------+-----------+-----------+--------+----------+
+        |                    |  Latency (cycles) | Iteration|  Initiation Interval  |  Trip  |          |
+        |      Loop Name     |   min   |   max   |  Latency |  achieved |   target  |  Count | Pipelined|
+        +--------------------+---------+---------+----------+-----------+-----------+--------+----------+
+        |- VITIS_LOOP_439_1  |        1|        8|         1|          -|          -|   1 ~ 8|        no|
+        |- VITIS_LOOP_450_1  |        2|      105|         2|          -|          -|  1 ~ 52|        no|
+        |- VITIS_LOOP_470_1  |       16|       16|         2|          -|          -|       8|        no|
+        |- VITIS_LOOP_465_1  |       52|       52|         1|          -|          -|      52|        no|
+        |- VITIS_LOOP_477_1  |       64|       64|         2|          -|          -|      32|        no|
+        +--------------------+---------+---------+----------+-----------+-----------+--------+----------+
+
+
+
+================================================================
+== Utilization Estimates
+================================================================
+* Summary:
++-----------------+---------+------+--------+--------+-----+
+|       Name      | BRAM_18K|  DSP |   FF   |   LUT  | URAM|
++-----------------+---------+------+--------+--------+-----+
+|DSP              |        -|     -|       -|       -|    -|
+|Expression       |        -|     -|       0|     445|    -|
+|FIFO             |        -|     -|       -|       -|    -|
+|Instance         |        -|     0|       0|      30|    -|
+|Memory           |        -|     -|       -|       -|    -|
+|Multiplexer      |        -|     -|       -|     338|    -|
+|Register         |        -|     -|     172|       -|    -|
++-----------------+---------+------+--------+--------+-----+
+|Total            |        0|     0|     172|     813|    0|
++-----------------+---------+------+--------+--------+-----+
+|Available        |      624|  1728|  460800|  230400|   96|
++-----------------+---------+------+--------+--------+-----+
+|Utilization (%)  |        0|     0|      ~0|      ~0|    0|
++-----------------+---------+------+--------+--------+-----+
+
++ Detail:
+    * Instance:
+    +-------------------------+-------------------+---------+----+---+----+-----+
+    |         Instance        |       Module      | BRAM_18K| DSP| FF| LUT| URAM|
+    +-------------------------+-------------------+---------+----+---+----+-----+
+    |mul_3ns_7ns_9_1_1_U2975  |mul_3ns_7ns_9_1_1  |        0|   0|  0|  30|    0|
+    +-------------------------+-------------------+---------+----+---+----+-----+
+    |Total                    |                   |        0|   0|  0|  30|    0|
+    +-------------------------+-------------------+---------+----+---+----+-----+
+
+    * DSP:
+    N/A
+
+    * Memory:
+    N/A
+
+    * FIFO:
+    N/A
+
+    * Expression:
+    +--------------------------------+----------+----+---+----+------------+------------+
+    |          Variable Name         | Operation| DSP| FF| LUT| Bitwidth P0| Bitwidth P1|
+    +--------------------------------+----------+----+---+----+------------+------------+
+    |add_ln453_1_fu_839_p2           |         +|   0|  0|  13|           6|           4|
+    |add_ln453_fu_827_p2             |         +|   0|  0|  14|           7|           1|
+    |add_ln454_fu_863_p2             |         +|   0|  0|  15|           8|           2|
+    |add_ln465_1_fu_1019_p2          |         +|   0|  0|  16|           9|           9|
+    |add_ln465_fu_1035_p2            |         +|   0|  0|  13|           6|           1|
+    |add_ln471_1_fu_927_p2           |         +|   0|  0|  16|           9|           6|
+    |add_ln471_fu_933_p2             |         +|   0|  0|  16|           9|           9|
+    |add_ln477_fu_1078_p2            |         +|   0|  0|  13|           6|           1|
+    |add_ln536_fu_1109_p2            |         +|   0|  0|  39|          32|           1|
+    |i_18_fu_714_p2                  |         +|   0|  0|  12|           4|           1|
+    |i_20_fu_808_p2                  |         +|   0|  0|  13|           6|           1|
+    |t_2_fu_949_p2                   |         +|   0|  0|  12|           4|           1|
+    |allocates_dst_fu_684_p2         |       and|   0|  0|   2|           1|           1|
+    |and_ln440_fu_734_p2             |       and|   0|  0|   8|           8|           8|
+    |and_ln455_fu_887_p2             |       and|   0|  0|   2|           1|           1|
+    |and_ln471_fu_969_p2             |       and|   0|  0|   8|           8|           8|
+    |uop_rename_prs1_busy_fu_777_p2  |       and|   0|  0|   2|           1|           1|
+    |uop_rename_prs2_busy_fu_788_p2  |       and|   0|  0|   2|           1|           1|
+    |grp_fu_510_p2                   |      icmp|   0|  0|  11|           8|           1|
+    |icmp_ln438_fu_694_p2            |      icmp|   0|  0|  11|           8|           2|
+    |icmp_ln439_fu_708_p2            |      icmp|   0|  0|   9|           4|           5|
+    |icmp_ln440_fu_739_p2            |      icmp|   0|  0|  11|           8|           1|
+    |icmp_ln450_fu_802_p2            |      icmp|   0|  0|  10|           6|           5|
+    |icmp_ln453_fu_833_p2            |      icmp|   0|  0|  10|           7|           6|
+    |icmp_ln455_1_fu_881_p2          |      icmp|   0|  0|  11|           8|           6|
+    |icmp_ln455_fu_875_p2            |      icmp|   0|  0|  11|           8|           1|
+    |icmp_ln465_fu_1029_p2           |      icmp|   0|  0|  10|           6|           5|
+    |icmp_ln470_fu_943_p2            |      icmp|   0|  0|   9|           4|           5|
+    |icmp_ln471_fu_974_p2            |      icmp|   0|  0|  11|           8|           1|
+    |icmp_ln477_fu_1072_p2           |      icmp|   0|  0|  10|           6|           7|
+    |icmp_ln497_1_fu_678_p2          |      icmp|   0|  0|   9|           5|           1|
+    |icmp_ln497_fu_672_p2            |      icmp|   0|  0|   8|           2|           1|
+    |icmp_ln516_fu_772_p2            |      icmp|   0|  0|  11|           8|           1|
+    |icmp_ln517_fu_783_p2            |      icmp|   0|  0|  11|           8|           1|
+    |is_branch_fu_666_p2             |        or|   0|  0|   2|           1|           1|
+    |or_ln434_fu_660_p2              |        or|   0|  0|   2|           1|           1|
+    |or_ln535_fu_1094_p2             |        or|   0|  0|   8|           8|           8|
+    |select_ln453_fu_849_p3          |    select|   0|  0|   6|           1|           6|
+    |shl_ln430_1_fu_963_p2           |       shl|   0|  0|  16|           1|           8|
+    |shl_ln430_2_fu_1089_p2          |       shl|   0|  0|  16|           1|           8|
+    |shl_ln430_fu_728_p2             |       shl|   0|  0|  16|           1|           8|
+    +--------------------------------+----------+----+---+----+------------+------------+
+    |Total                           |          |   0|  0| 445|         244|         146|
+    +--------------------------------+----------+----+---+----+------------+------------+
+
+    * Multiplexer:
+    +--------------------------------------------------+----+-----------+-----+-----------+
+    |                       Name                       | LUT| Input Size| Bits| Total Bits|
+    +--------------------------------------------------+----+-----------+-----+-----------+
+    |ap_NS_fsm                                         |  65|         13|    1|         13|
+    |i_11_fu_266                                       |   9|          2|    6|         12|
+    |i_13_fu_282                                       |   9|          2|    6|         12|
+    |i_fu_262                                          |   9|          2|    4|          8|
+    |p_15_0_reg_494                                    |   9|          2|    5|         10|
+    |p_15_4_reg_482                                    |   9|          2|    8|         16|
+    |p_fu_278                                          |   9|          2|    6|         12|
+    |phi_mul_fu_270                                    |   9|          2|    9|         18|
+    |state_branch_state_active_mask_o                  |   9|          2|    8|         16|
+    |state_branch_state_allocations_o                  |   9|          2|   32|         64|
+    |state_branch_state_br_alloc_lists_address0        |  14|          3|    9|         27|
+    |state_branch_state_br_alloc_lists_d0              |  14|          3|    1|          3|
+    |state_branch_state_tag_valid_address0             |  14|          3|    3|          9|
+    |state_decode_dec_valids_0_o                       |   9|          2|    1|          2|
+    |state_rename_dispatch_packets_valid_0_o           |   9|          2|    1|          2|
+    |state_rename_int_free_list_busy_table_address0    |  14|          3|    6|         18|
+    |state_rename_int_free_list_count_o                |   9|          2|    8|         16|
+    |state_rename_int_free_list_head_o                 |   9|          2|    6|         12|
+    |state_rename_int_map_table_br_snapshots_address0  |  14|          3|    8|         24|
+    |state_rename_int_map_table_br_snapshots_d0        |  14|          3|    8|         24|
+    |state_rename_int_map_table_map_table_address0     |  20|          4|    5|         20|
+    |state_rename_int_map_table_map_table_address1     |  20|          4|    5|         20|
+    |state_rename_int_map_table_map_table_d0           |  14|          3|    8|         24|
+    |t_fu_274                                          |   9|          2|    4|          8|
+    |tag_reg_456                                       |   9|          2|    3|          6|
+    +--------------------------------------------------+----+-----------+-----+-----------+
+    |Total                                             | 338|         72|  161|        396|
+    +--------------------------------------------------+----+-----------+-----+-----------+
+
+    * Register:
+    +---------------------------------------------------------+----+----+-----+-----------+
+    |                           Name                          | FF | LUT| Bits| Const Bits|
+    +---------------------------------------------------------+----+----+-----+-----------+
+    |add_ln471_1_reg_1614                                     |   9|   0|    9|          0|
+    |allocates_dst_reg_1478                                   |   1|   0|    1|          0|
+    |ap_CS_fsm                                                |  12|   0|   12|          0|
+    |candidate_reg_1587                                       |   8|   0|    8|          0|
+    |got_tag_reg_468                                          |   1|   0|    1|          0|
+    |i_11_fu_266                                              |   6|   0|    6|          0|
+    |i_13_fu_282                                              |   6|   0|    6|          0|
+    |i_20_reg_1574                                            |   6|   0|    6|          0|
+    |i_fu_262                                                 |   4|   0|    4|          0|
+    |icmp_ln438_reg_1485                                      |   1|   0|    1|          0|
+    |icmp_ln449_reg_1560                                      |   1|   0|    1|          0|
+    |icmp_ln471_reg_1632                                      |   1|   0|    1|          0|
+    |is_branch_reg_1474                                       |   1|   0|    1|          0|
+    |mul_ln465_reg_1659                                       |   9|   0|    9|          0|
+    |p_15_0_reg_494                                           |   5|   0|    5|          0|
+    |p_15_4_reg_482                                           |   8|   0|    8|          0|
+    |p_fu_278                                                 |   6|   0|    6|          0|
+    |phi_mul_fu_270                                           |   9|   0|    9|          0|
+    |state_branch_state_br_alloc_lists_addr_reg_1619          |   9|   0|    9|          0|
+    |state_decode_dec_valids_0_load_reg_1368                  |   1|   0|    1|          0|
+    |state_rename_dispatch_packets_valid_0_load_reg_1364      |   1|   0|    1|          0|
+    |state_rename_int_map_table_br_snapshots_addr_1_reg_1682  |   8|   0|    8|          0|
+    |state_rename_int_map_table_br_snapshots_addr_reg_1664    |   3|   0|    8|          5|
+    |state_rename_int_map_table_map_table_addr_2_reg_1529     |   5|   0|    5|          0|
+    |t_2_reg_1627                                             |   4|   0|    4|          0|
+    |t_fu_274                                                 |   4|   0|    4|          0|
+    |tag_reg_456                                              |   3|   0|    3|          0|
+    |uop_rename_prs1_busy_reg_1550                            |   1|   0|    1|          0|
+    |uop_rename_prs1_reg_1517                                 |   8|   0|    8|          0|
+    |uop_rename_prs2_busy_reg_1555                            |   1|   0|    1|          0|
+    |uop_rename_prs2_reg_1523                                 |   8|   0|    8|          0|
+    |uop_rename_stale_pdst_reg_1545                           |   8|   0|    8|          0|
+    |zext_ln525_1_reg_1609                                    |   8|   0|    9|          1|
+    |zext_ln534_1_reg_1648                                    |   3|   0|    8|          5|
+    |zext_ln534_reg_1653                                      |   3|   0|   64|         61|
+    +---------------------------------------------------------+----+----+-----+-----------+
+    |Total                                                    | 172|   0|  244|         72|
+    +---------------------------------------------------------+----+----+-----+-----------+
+
+
+
+================================================================
+== Interface
+================================================================
+* Summary:
++--------------------------------------------------------------------+-----+-----+------------+-------------------------------------------------------------+--------------+
+|                              RTL Ports                             | Dir | Bits|  Protocol  |                        Source Object                        |    C Type    |
++--------------------------------------------------------------------+-----+-----+------------+-------------------------------------------------------------+--------------+
+|ap_clk                                                              |   in|    1|  ap_ctrl_hs|                                                rename_module|  return value|
+|ap_rst                                                              |   in|    1|  ap_ctrl_hs|                                                rename_module|  return value|
+|ap_start                                                            |   in|    1|  ap_ctrl_hs|                                                rename_module|  return value|
+|ap_done                                                             |  out|    1|  ap_ctrl_hs|                                                rename_module|  return value|
+|ap_idle                                                             |  out|    1|  ap_ctrl_hs|                                                rename_module|  return value|
+|ap_ready                                                            |  out|    1|  ap_ctrl_hs|                                                rename_module|  return value|
+|state_rename_dispatch_packets_valid_0_i                             |   in|    1|     ap_ovld|                        state_rename_dispatch_packets_valid_0|       pointer|
+|state_rename_dispatch_packets_valid_0_o                             |  out|    1|     ap_ovld|                        state_rename_dispatch_packets_valid_0|       pointer|
+|state_rename_dispatch_packets_valid_0_o_ap_vld                      |  out|    1|     ap_ovld|                        state_rename_dispatch_packets_valid_0|       pointer|
+|state_decode_dec_valids_0_i                                         |   in|    1|     ap_ovld|                                    state_decode_dec_valids_0|       pointer|
+|state_decode_dec_valids_0_o                                         |  out|    1|     ap_ovld|                                    state_decode_dec_valids_0|       pointer|
+|state_decode_dec_valids_0_o_ap_vld                                  |  out|    1|     ap_ovld|                                    state_decode_dec_valids_0|       pointer|
+|state_decode_dec_uops_uopc_0                                        |   in|    8|     ap_none|                                 state_decode_dec_uops_uopc_0|       pointer|
+|state_decode_dec_uops_inst_0                                        |   in|   32|     ap_none|                                 state_decode_dec_uops_inst_0|       pointer|
+|state_decode_dec_uops_debug_pc_0                                    |   in|   64|     ap_none|                             state_decode_dec_uops_debug_pc_0|       pointer|
+|state_decode_dec_uops_iq_type_0                                     |   in|    1|     ap_none|                              state_decode_dec_uops_iq_type_0|       pointer|
+|state_decode_dec_uops_fu_code_0                                     |   in|    3|     ap_none|                              state_decode_dec_uops_fu_code_0|       pointer|
+|state_decode_dec_uops_ctrl_br_type_0                                |   in|    4|     ap_none|                         state_decode_dec_uops_ctrl_br_type_0|       pointer|
+|state_decode_dec_uops_ctrl_op1_sel_0                                |   in|    2|     ap_none|                         state_decode_dec_uops_ctrl_op1_sel_0|       pointer|
+|state_decode_dec_uops_ctrl_op2_sel_0                                |   in|    2|     ap_none|                         state_decode_dec_uops_ctrl_op2_sel_0|       pointer|
+|state_decode_dec_uops_ctrl_op_fcn_0                                 |   in|    3|     ap_none|                          state_decode_dec_uops_ctrl_op_fcn_0|       pointer|
+|state_decode_dec_uops_ctrl_fcn_dw_0                                 |   in|    1|     ap_none|                          state_decode_dec_uops_ctrl_fcn_dw_0|       pointer|
+|state_decode_dec_uops_ctrl_csr_cmd_0                                |   in|    3|     ap_none|                         state_decode_dec_uops_ctrl_csr_cmd_0|       pointer|
+|state_decode_dec_uops_ctrl_is_load_0                                |   in|    1|     ap_none|                         state_decode_dec_uops_ctrl_is_load_0|       pointer|
+|state_decode_dec_uops_ctrl_is_sta_0                                 |   in|    1|     ap_none|                          state_decode_dec_uops_ctrl_is_sta_0|       pointer|
+|state_decode_dec_uops_branch_pc_lob_0                               |   in|    6|     ap_none|                        state_decode_dec_uops_branch_pc_lob_0|       pointer|
+|state_decode_dec_uops_branch_is_br_0                                |   in|    1|     ap_none|                         state_decode_dec_uops_branch_is_br_0|       pointer|
+|state_decode_dec_uops_branch_is_jalr_0                              |   in|    1|     ap_none|                       state_decode_dec_uops_branch_is_jalr_0|       pointer|
+|state_decode_dec_uops_branch_is_jal_0                               |   in|    1|     ap_none|                        state_decode_dec_uops_branch_is_jal_0|       pointer|
+|state_decode_dec_uops_imm_packed_0                                  |   in|   32|     ap_none|                           state_decode_dec_uops_imm_packed_0|       pointer|
+|state_decode_dec_uops_csr_addr_0                                    |   in|   12|     ap_none|                             state_decode_dec_uops_csr_addr_0|       pointer|
+|state_decode_dec_uops_rename_ldst_0                                 |   in|    5|     ap_none|                          state_decode_dec_uops_rename_ldst_0|       pointer|
+|state_decode_dec_uops_rename_lrs1_0                                 |   in|    5|     ap_none|                          state_decode_dec_uops_rename_lrs1_0|       pointer|
+|state_decode_dec_uops_rename_lrs2_0                                 |   in|    5|     ap_none|                          state_decode_dec_uops_rename_lrs2_0|       pointer|
+|state_decode_dec_uops_rename_dst_rtype_0                            |   in|    2|     ap_none|                     state_decode_dec_uops_rename_dst_rtype_0|       pointer|
+|state_decode_dec_uops_exception_0                                   |   in|    1|     ap_none|                            state_decode_dec_uops_exception_0|       pointer|
+|state_decode_dec_uops_exc_cause_0                                   |   in|   64|     ap_none|                            state_decode_dec_uops_exc_cause_0|       pointer|
+|state_decode_dec_uops_mem_mem_size_0                                |   in|    2|     ap_none|                         state_decode_dec_uops_mem_mem_size_0|       pointer|
+|state_decode_dec_uops_mem_mem_signed_0                              |   in|    1|     ap_none|                       state_decode_dec_uops_mem_mem_signed_0|       pointer|
+|state_decode_dec_uops_mem_uses_ldq_0                                |   in|    1|     ap_none|                         state_decode_dec_uops_mem_uses_ldq_0|       pointer|
+|state_decode_dec_uops_mem_uses_stq_0                                |   in|    1|     ap_none|                         state_decode_dec_uops_mem_uses_stq_0|       pointer|
+|state_decode_dec_uops_is_sys_pc2epc_0                               |   in|    1|     ap_none|                        state_decode_dec_uops_is_sys_pc2epc_0|       pointer|
+|state_decode_dec_uops_exc_exception_0                               |   in|    1|     ap_none|                        state_decode_dec_uops_exc_exception_0|       pointer|
+|state_decode_dec_uops_exc_exc_cause_0                               |   in|   64|     ap_none|                        state_decode_dec_uops_exc_exc_cause_0|       pointer|
+|state_decode_dec_uops_exc_xcpt_ae_if_0                              |   in|    1|     ap_none|                       state_decode_dec_uops_exc_xcpt_ae_if_0|       pointer|
+|state_decode_dec_uops_exc_xcpt_ma_if_0                              |   in|    1|     ap_none|                       state_decode_dec_uops_exc_xcpt_ma_if_0|       pointer|
+|state_branch_state_active_mask_i                                    |   in|    8|     ap_ovld|                               state_branch_state_active_mask|       pointer|
+|state_branch_state_active_mask_o                                    |  out|    8|     ap_ovld|                               state_branch_state_active_mask|       pointer|
+|state_branch_state_active_mask_o_ap_vld                             |  out|    1|     ap_ovld|                               state_branch_state_active_mask|       pointer|
+|state_rename_int_map_table_map_table_address0                       |  out|    5|   ap_memory|                         state_rename_int_map_table_map_table|         array|
+|state_rename_int_map_table_map_table_ce0                            |  out|    1|   ap_memory|                         state_rename_int_map_table_map_table|         array|
+|state_rename_int_map_table_map_table_we0                            |  out|    1|   ap_memory|                         state_rename_int_map_table_map_table|         array|
+|state_rename_int_map_table_map_table_d0                             |  out|    8|   ap_memory|                         state_rename_int_map_table_map_table|         array|
+|state_rename_int_map_table_map_table_q0                             |   in|    8|   ap_memory|                         state_rename_int_map_table_map_table|         array|
+|state_rename_int_map_table_map_table_address1                       |  out|    5|   ap_memory|                         state_rename_int_map_table_map_table|         array|
+|state_rename_int_map_table_map_table_ce1                            |  out|    1|   ap_memory|                         state_rename_int_map_table_map_table|         array|
+|state_rename_int_map_table_map_table_q1                             |   in|    8|   ap_memory|                         state_rename_int_map_table_map_table|         array|
+|state_rename_int_free_list_busy_table_address0                      |  out|    6|   ap_memory|                        state_rename_int_free_list_busy_table|         array|
+|state_rename_int_free_list_busy_table_ce0                           |  out|    1|   ap_memory|                        state_rename_int_free_list_busy_table|         array|
+|state_rename_int_free_list_busy_table_we0                           |  out|    1|   ap_memory|                        state_rename_int_free_list_busy_table|         array|
+|state_rename_int_free_list_busy_table_d0                            |  out|    1|   ap_memory|                        state_rename_int_free_list_busy_table|         array|
+|state_rename_int_free_list_busy_table_q0                            |   in|    1|   ap_memory|                        state_rename_int_free_list_busy_table|         array|
+|state_rename_int_free_list_busy_table_address1                      |  out|    6|   ap_memory|                        state_rename_int_free_list_busy_table|         array|
+|state_rename_int_free_list_busy_table_ce1                           |  out|    1|   ap_memory|                        state_rename_int_free_list_busy_table|         array|
+|state_rename_int_free_list_busy_table_q1                            |   in|    1|   ap_memory|                        state_rename_int_free_list_busy_table|         array|
+|state_rename_int_free_list_count_i                                  |   in|    8|     ap_ovld|                             state_rename_int_free_list_count|       pointer|
+|state_rename_int_free_list_count_o                                  |  out|    8|     ap_ovld|                             state_rename_int_free_list_count|       pointer|
+|state_rename_int_free_list_count_o_ap_vld                           |  out|    1|     ap_ovld|                             state_rename_int_free_list_count|       pointer|
+|state_rename_int_free_list_head_i                                   |   in|    6|     ap_ovld|                              state_rename_int_free_list_head|       pointer|
+|state_rename_int_free_list_head_o                                   |  out|    6|     ap_ovld|                              state_rename_int_free_list_head|       pointer|
+|state_rename_int_free_list_head_o_ap_vld                            |  out|    1|     ap_ovld|                              state_rename_int_free_list_head|       pointer|
+|state_rename_int_free_list_free_list_address0                       |  out|    6|   ap_memory|                         state_rename_int_free_list_free_list|         array|
+|state_rename_int_free_list_free_list_ce0                            |  out|    1|   ap_memory|                         state_rename_int_free_list_free_list|         array|
+|state_rename_int_free_list_free_list_q0                             |   in|    8|   ap_memory|                         state_rename_int_free_list_free_list|         array|
+|state_branch_state_tag_valid_address0                               |  out|    3|   ap_memory|                                 state_branch_state_tag_valid|         array|
+|state_branch_state_tag_valid_ce0                                    |  out|    1|   ap_memory|                                 state_branch_state_tag_valid|         array|
+|state_branch_state_tag_valid_we0                                    |  out|    1|   ap_memory|                                 state_branch_state_tag_valid|         array|
+|state_branch_state_tag_valid_d0                                     |  out|    1|   ap_memory|                                 state_branch_state_tag_valid|         array|
+|state_branch_state_tag_valid_q0                                     |   in|    1|   ap_memory|                                 state_branch_state_tag_valid|         array|
+|state_branch_state_br_alloc_lists_address0                          |  out|    9|   ap_memory|                            state_branch_state_br_alloc_lists|         array|
+|state_branch_state_br_alloc_lists_ce0                               |  out|    1|   ap_memory|                            state_branch_state_br_alloc_lists|         array|
+|state_branch_state_br_alloc_lists_we0                               |  out|    1|   ap_memory|                            state_branch_state_br_alloc_lists|         array|
+|state_branch_state_br_alloc_lists_d0                                |  out|    1|   ap_memory|                            state_branch_state_br_alloc_lists|         array|
+|state_rename_int_map_table_br_snapshots_address0                    |  out|    8|   ap_memory|                      state_rename_int_map_table_br_snapshots|         array|
+|state_rename_int_map_table_br_snapshots_ce0                         |  out|    1|   ap_memory|                      state_rename_int_map_table_br_snapshots|         array|
+|state_rename_int_map_table_br_snapshots_we0                         |  out|    1|   ap_memory|                      state_rename_int_map_table_br_snapshots|         array|
+|state_rename_int_map_table_br_snapshots_d0                          |  out|    8|   ap_memory|                      state_rename_int_map_table_br_snapshots|         array|
+|state_branch_state_snapshot_valid_address0                          |  out|    3|   ap_memory|                            state_branch_state_snapshot_valid|         array|
+|state_branch_state_snapshot_valid_ce0                               |  out|    1|   ap_memory|                            state_branch_state_snapshot_valid|         array|
+|state_branch_state_snapshot_valid_we0                               |  out|    1|   ap_memory|                            state_branch_state_snapshot_valid|         array|
+|state_branch_state_snapshot_valid_d0                                |  out|    1|   ap_memory|                            state_branch_state_snapshot_valid|         array|
+|state_branch_state_allocations_i                                    |   in|   32|     ap_ovld|                               state_branch_state_allocations|       pointer|
+|state_branch_state_allocations_o                                    |  out|   32|     ap_ovld|                               state_branch_state_allocations|       pointer|
+|state_branch_state_allocations_o_ap_vld                             |  out|    1|     ap_ovld|                               state_branch_state_allocations|       pointer|
+|state_rename_dispatch_packets_uop_uopc_0                            |  out|    8|      ap_vld|                     state_rename_dispatch_packets_uop_uopc_0|       pointer|
+|state_rename_dispatch_packets_uop_uopc_0_ap_vld                     |  out|    1|      ap_vld|                     state_rename_dispatch_packets_uop_uopc_0|       pointer|
+|state_rename_dispatch_packets_uop_inst_0                            |  out|   32|      ap_vld|                     state_rename_dispatch_packets_uop_inst_0|       pointer|
+|state_rename_dispatch_packets_uop_inst_0_ap_vld                     |  out|    1|      ap_vld|                     state_rename_dispatch_packets_uop_inst_0|       pointer|
+|state_rename_dispatch_packets_uop_debug_pc_0                        |  out|   64|      ap_vld|                 state_rename_dispatch_packets_uop_debug_pc_0|       pointer|
+|state_rename_dispatch_packets_uop_debug_pc_0_ap_vld                 |  out|    1|      ap_vld|                 state_rename_dispatch_packets_uop_debug_pc_0|       pointer|
+|state_rename_dispatch_packets_uop_iq_type_0                         |  out|    1|      ap_vld|                  state_rename_dispatch_packets_uop_iq_type_0|       pointer|
+|state_rename_dispatch_packets_uop_iq_type_0_ap_vld                  |  out|    1|      ap_vld|                  state_rename_dispatch_packets_uop_iq_type_0|       pointer|
+|state_rename_dispatch_packets_uop_fu_code_0                         |  out|    3|      ap_vld|                  state_rename_dispatch_packets_uop_fu_code_0|       pointer|
+|state_rename_dispatch_packets_uop_fu_code_0_ap_vld                  |  out|    1|      ap_vld|                  state_rename_dispatch_packets_uop_fu_code_0|       pointer|
+|state_rename_dispatch_packets_uop_ctrl_br_type_0                    |  out|    4|      ap_vld|             state_rename_dispatch_packets_uop_ctrl_br_type_0|       pointer|
+|state_rename_dispatch_packets_uop_ctrl_br_type_0_ap_vld             |  out|    1|      ap_vld|             state_rename_dispatch_packets_uop_ctrl_br_type_0|       pointer|
+|state_rename_dispatch_packets_uop_ctrl_op1_sel_0                    |  out|    2|      ap_vld|             state_rename_dispatch_packets_uop_ctrl_op1_sel_0|       pointer|
+|state_rename_dispatch_packets_uop_ctrl_op1_sel_0_ap_vld             |  out|    1|      ap_vld|             state_rename_dispatch_packets_uop_ctrl_op1_sel_0|       pointer|
+|state_rename_dispatch_packets_uop_ctrl_op2_sel_0                    |  out|    2|      ap_vld|             state_rename_dispatch_packets_uop_ctrl_op2_sel_0|       pointer|
+|state_rename_dispatch_packets_uop_ctrl_op2_sel_0_ap_vld             |  out|    1|      ap_vld|             state_rename_dispatch_packets_uop_ctrl_op2_sel_0|       pointer|
+|state_rename_dispatch_packets_uop_ctrl_op_fcn_0                     |  out|    3|      ap_vld|              state_rename_dispatch_packets_uop_ctrl_op_fcn_0|       pointer|
+|state_rename_dispatch_packets_uop_ctrl_op_fcn_0_ap_vld              |  out|    1|      ap_vld|              state_rename_dispatch_packets_uop_ctrl_op_fcn_0|       pointer|
+|state_rename_dispatch_packets_uop_ctrl_fcn_dw_0                     |  out|    1|      ap_vld|              state_rename_dispatch_packets_uop_ctrl_fcn_dw_0|       pointer|
+|state_rename_dispatch_packets_uop_ctrl_fcn_dw_0_ap_vld              |  out|    1|      ap_vld|              state_rename_dispatch_packets_uop_ctrl_fcn_dw_0|       pointer|
+|state_rename_dispatch_packets_uop_ctrl_csr_cmd_0                    |  out|    3|      ap_vld|             state_rename_dispatch_packets_uop_ctrl_csr_cmd_0|       pointer|
+|state_rename_dispatch_packets_uop_ctrl_csr_cmd_0_ap_vld             |  out|    1|      ap_vld|             state_rename_dispatch_packets_uop_ctrl_csr_cmd_0|       pointer|
+|state_rename_dispatch_packets_uop_ctrl_is_load_0                    |  out|    1|      ap_vld|             state_rename_dispatch_packets_uop_ctrl_is_load_0|       pointer|
+|state_rename_dispatch_packets_uop_ctrl_is_load_0_ap_vld             |  out|    1|      ap_vld|             state_rename_dispatch_packets_uop_ctrl_is_load_0|       pointer|
+|state_rename_dispatch_packets_uop_ctrl_is_sta_0                     |  out|    1|      ap_vld|              state_rename_dispatch_packets_uop_ctrl_is_sta_0|       pointer|
+|state_rename_dispatch_packets_uop_ctrl_is_sta_0_ap_vld              |  out|    1|      ap_vld|              state_rename_dispatch_packets_uop_ctrl_is_sta_0|       pointer|
+|state_rename_dispatch_packets_uop_branch_br_mask_0                  |  out|    8|      ap_vld|           state_rename_dispatch_packets_uop_branch_br_mask_0|       pointer|
+|state_rename_dispatch_packets_uop_branch_br_mask_0_ap_vld           |  out|    1|      ap_vld|           state_rename_dispatch_packets_uop_branch_br_mask_0|       pointer|
+|state_rename_dispatch_packets_uop_branch_br_tag_0                   |  out|    3|      ap_vld|            state_rename_dispatch_packets_uop_branch_br_tag_0|       pointer|
+|state_rename_dispatch_packets_uop_branch_br_tag_0_ap_vld            |  out|    1|      ap_vld|            state_rename_dispatch_packets_uop_branch_br_tag_0|       pointer|
+|state_rename_dispatch_packets_uop_branch_pc_lob_0                   |  out|    6|      ap_vld|            state_rename_dispatch_packets_uop_branch_pc_lob_0|       pointer|
+|state_rename_dispatch_packets_uop_branch_pc_lob_0_ap_vld            |  out|    1|      ap_vld|            state_rename_dispatch_packets_uop_branch_pc_lob_0|       pointer|
+|state_rename_dispatch_packets_uop_branch_is_br_0                    |  out|    1|      ap_vld|             state_rename_dispatch_packets_uop_branch_is_br_0|       pointer|
+|state_rename_dispatch_packets_uop_branch_is_br_0_ap_vld             |  out|    1|      ap_vld|             state_rename_dispatch_packets_uop_branch_is_br_0|       pointer|
+|state_rename_dispatch_packets_uop_branch_is_jalr_0                  |  out|    1|      ap_vld|           state_rename_dispatch_packets_uop_branch_is_jalr_0|       pointer|
+|state_rename_dispatch_packets_uop_branch_is_jalr_0_ap_vld           |  out|    1|      ap_vld|           state_rename_dispatch_packets_uop_branch_is_jalr_0|       pointer|
+|state_rename_dispatch_packets_uop_branch_is_jal_0                   |  out|    1|      ap_vld|            state_rename_dispatch_packets_uop_branch_is_jal_0|       pointer|
+|state_rename_dispatch_packets_uop_branch_is_jal_0_ap_vld            |  out|    1|      ap_vld|            state_rename_dispatch_packets_uop_branch_is_jal_0|       pointer|
+|state_rename_dispatch_packets_uop_imm_packed_0                      |  out|   32|      ap_vld|               state_rename_dispatch_packets_uop_imm_packed_0|       pointer|
+|state_rename_dispatch_packets_uop_imm_packed_0_ap_vld               |  out|    1|      ap_vld|               state_rename_dispatch_packets_uop_imm_packed_0|       pointer|
+|state_rename_dispatch_packets_uop_csr_addr_0                        |  out|   12|      ap_vld|                 state_rename_dispatch_packets_uop_csr_addr_0|       pointer|
+|state_rename_dispatch_packets_uop_csr_addr_0_ap_vld                 |  out|    1|      ap_vld|                 state_rename_dispatch_packets_uop_csr_addr_0|       pointer|
+|state_rename_dispatch_packets_uop_queue_rob_idx_0                   |  out|    5|      ap_vld|            state_rename_dispatch_packets_uop_queue_rob_idx_0|       pointer|
+|state_rename_dispatch_packets_uop_queue_rob_idx_0_ap_vld            |  out|    1|      ap_vld|            state_rename_dispatch_packets_uop_queue_rob_idx_0|       pointer|
+|state_rename_dispatch_packets_uop_queue_rob_allocation_id_0         |  out|   32|      ap_vld|  state_rename_dispatch_packets_uop_queue_rob_allocation_id_0|       pointer|
+|state_rename_dispatch_packets_uop_queue_rob_allocation_id_0_ap_vld  |  out|    1|      ap_vld|  state_rename_dispatch_packets_uop_queue_rob_allocation_id_0|       pointer|
+|state_rename_dispatch_packets_uop_rename_ldst_0                     |  out|    5|      ap_vld|              state_rename_dispatch_packets_uop_rename_ldst_0|       pointer|
+|state_rename_dispatch_packets_uop_rename_ldst_0_ap_vld              |  out|    1|      ap_vld|              state_rename_dispatch_packets_uop_rename_ldst_0|       pointer|
+|state_rename_dispatch_packets_uop_rename_lrs1_0                     |  out|    5|      ap_vld|              state_rename_dispatch_packets_uop_rename_lrs1_0|       pointer|
+|state_rename_dispatch_packets_uop_rename_lrs1_0_ap_vld              |  out|    1|      ap_vld|              state_rename_dispatch_packets_uop_rename_lrs1_0|       pointer|
+|state_rename_dispatch_packets_uop_rename_lrs2_0                     |  out|    5|      ap_vld|              state_rename_dispatch_packets_uop_rename_lrs2_0|       pointer|
+|state_rename_dispatch_packets_uop_rename_lrs2_0_ap_vld              |  out|    1|      ap_vld|              state_rename_dispatch_packets_uop_rename_lrs2_0|       pointer|
+|state_rename_dispatch_packets_uop_rename_pdst_0                     |  out|    8|      ap_vld|              state_rename_dispatch_packets_uop_rename_pdst_0|       pointer|
+|state_rename_dispatch_packets_uop_rename_pdst_0_ap_vld              |  out|    1|      ap_vld|              state_rename_dispatch_packets_uop_rename_pdst_0|       pointer|
+|state_rename_dispatch_packets_uop_rename_prs1_0                     |  out|    8|      ap_vld|              state_rename_dispatch_packets_uop_rename_prs1_0|       pointer|
+|state_rename_dispatch_packets_uop_rename_prs1_0_ap_vld              |  out|    1|      ap_vld|              state_rename_dispatch_packets_uop_rename_prs1_0|       pointer|
+|state_rename_dispatch_packets_uop_rename_prs2_0                     |  out|    8|      ap_vld|              state_rename_dispatch_packets_uop_rename_prs2_0|       pointer|
+|state_rename_dispatch_packets_uop_rename_prs2_0_ap_vld              |  out|    1|      ap_vld|              state_rename_dispatch_packets_uop_rename_prs2_0|       pointer|
+|state_rename_dispatch_packets_uop_rename_prs1_busy_0                |  out|    1|      ap_vld|         state_rename_dispatch_packets_uop_rename_prs1_busy_0|       pointer|
+|state_rename_dispatch_packets_uop_rename_prs1_busy_0_ap_vld         |  out|    1|      ap_vld|         state_rename_dispatch_packets_uop_rename_prs1_busy_0|       pointer|
+|state_rename_dispatch_packets_uop_rename_prs2_busy_0                |  out|    1|      ap_vld|         state_rename_dispatch_packets_uop_rename_prs2_busy_0|       pointer|
+|state_rename_dispatch_packets_uop_rename_prs2_busy_0_ap_vld         |  out|    1|      ap_vld|         state_rename_dispatch_packets_uop_rename_prs2_busy_0|       pointer|
+|state_rename_dispatch_packets_uop_rename_stale_pdst_0               |  out|    8|      ap_vld|        state_rename_dispatch_packets_uop_rename_stale_pdst_0|       pointer|
+|state_rename_dispatch_packets_uop_rename_stale_pdst_0_ap_vld        |  out|    1|      ap_vld|        state_rename_dispatch_packets_uop_rename_stale_pdst_0|       pointer|
+|state_rename_dispatch_packets_uop_rename_dst_rtype_0                |  out|    2|      ap_vld|         state_rename_dispatch_packets_uop_rename_dst_rtype_0|       pointer|
+|state_rename_dispatch_packets_uop_rename_dst_rtype_0_ap_vld         |  out|    1|      ap_vld|         state_rename_dispatch_packets_uop_rename_dst_rtype_0|       pointer|
+|state_rename_dispatch_packets_uop_exception_0                       |  out|    1|      ap_vld|                state_rename_dispatch_packets_uop_exception_0|       pointer|
+|state_rename_dispatch_packets_uop_exception_0_ap_vld                |  out|    1|      ap_vld|                state_rename_dispatch_packets_uop_exception_0|       pointer|
+|state_rename_dispatch_packets_uop_exc_cause_0                       |  out|   64|      ap_vld|                state_rename_dispatch_packets_uop_exc_cause_0|       pointer|
+|state_rename_dispatch_packets_uop_exc_cause_0_ap_vld                |  out|    1|      ap_vld|                state_rename_dispatch_packets_uop_exc_cause_0|       pointer|
+|state_rename_dispatch_packets_uop_mem_mem_size_0                    |  out|    2|      ap_vld|             state_rename_dispatch_packets_uop_mem_mem_size_0|       pointer|
+|state_rename_dispatch_packets_uop_mem_mem_size_0_ap_vld             |  out|    1|      ap_vld|             state_rename_dispatch_packets_uop_mem_mem_size_0|       pointer|
+|state_rename_dispatch_packets_uop_mem_mem_signed_0                  |  out|    1|      ap_vld|           state_rename_dispatch_packets_uop_mem_mem_signed_0|       pointer|
+|state_rename_dispatch_packets_uop_mem_mem_signed_0_ap_vld           |  out|    1|      ap_vld|           state_rename_dispatch_packets_uop_mem_mem_signed_0|       pointer|
+|state_rename_dispatch_packets_uop_mem_uses_ldq_0                    |  out|    1|      ap_vld|             state_rename_dispatch_packets_uop_mem_uses_ldq_0|       pointer|
+|state_rename_dispatch_packets_uop_mem_uses_ldq_0_ap_vld             |  out|    1|      ap_vld|             state_rename_dispatch_packets_uop_mem_uses_ldq_0|       pointer|
+|state_rename_dispatch_packets_uop_mem_uses_stq_0                    |  out|    1|      ap_vld|             state_rename_dispatch_packets_uop_mem_uses_stq_0|       pointer|
+|state_rename_dispatch_packets_uop_mem_uses_stq_0_ap_vld             |  out|    1|      ap_vld|             state_rename_dispatch_packets_uop_mem_uses_stq_0|       pointer|
+|state_rename_dispatch_packets_uop_is_sys_pc2epc_0                   |  out|    1|      ap_vld|            state_rename_dispatch_packets_uop_is_sys_pc2epc_0|       pointer|
+|state_rename_dispatch_packets_uop_is_sys_pc2epc_0_ap_vld            |  out|    1|      ap_vld|            state_rename_dispatch_packets_uop_is_sys_pc2epc_0|       pointer|
+|state_rename_dispatch_packets_uop_exc_exception_0                   |  out|    1|      ap_vld|            state_rename_dispatch_packets_uop_exc_exception_0|       pointer|
+|state_rename_dispatch_packets_uop_exc_exception_0_ap_vld            |  out|    1|      ap_vld|            state_rename_dispatch_packets_uop_exc_exception_0|       pointer|
+|state_rename_dispatch_packets_uop_exc_exc_cause_0                   |  out|   64|      ap_vld|            state_rename_dispatch_packets_uop_exc_exc_cause_0|       pointer|
+|state_rename_dispatch_packets_uop_exc_exc_cause_0_ap_vld            |  out|    1|      ap_vld|            state_rename_dispatch_packets_uop_exc_exc_cause_0|       pointer|
+|state_rename_dispatch_packets_uop_exc_xcpt_ae_if_0                  |  out|    1|      ap_vld|           state_rename_dispatch_packets_uop_exc_xcpt_ae_if_0|       pointer|
+|state_rename_dispatch_packets_uop_exc_xcpt_ae_if_0_ap_vld           |  out|    1|      ap_vld|           state_rename_dispatch_packets_uop_exc_xcpt_ae_if_0|       pointer|
+|state_rename_dispatch_packets_uop_exc_xcpt_ma_if_0                  |  out|    1|      ap_vld|           state_rename_dispatch_packets_uop_exc_xcpt_ma_if_0|       pointer|
+|state_rename_dispatch_packets_uop_exc_xcpt_ma_if_0_ap_vld           |  out|    1|      ap_vld|           state_rename_dispatch_packets_uop_exc_xcpt_ma_if_0|       pointer|
+|state_rename_dispatch_packets_rob_allocated_0                       |  out|    1|      ap_vld|                state_rename_dispatch_packets_rob_allocated_0|       pointer|
+|state_rename_dispatch_packets_rob_allocated_0_ap_vld                |  out|    1|      ap_vld|                state_rename_dispatch_packets_rob_allocated_0|       pointer|
++--------------------------------------------------------------------+-----+-----+------------+-------------------------------------------------------------+--------------+

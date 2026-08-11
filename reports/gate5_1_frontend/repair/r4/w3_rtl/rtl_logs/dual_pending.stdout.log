@@ -1,0 +1,14 @@
+
+****** xsim v2021.2 (64-bit)
+  **** SW Build 3367213 on Tue Oct 19 02:47:39 MDT 2021
+  **** IP Build 3369179 on Thu Oct 21 08:25:16 MDT 2021
+    ** Copyright 1986-2021 Xilinx, Inc. All Rights Reserved.
+
+source xsim.dir/w3_dual_execute_snapshot/xsim_script.tcl
+# xsim {w3_dual_execute_snapshot} -testplusarg SCENARIO=3 -testplusarg EXPECT=0020000008d00002 -autoloadwcfg -runall -onerror quit
+Time resolution is 1 ps
+run -all
+W3_RTL_PASS scenario=3 expected=0020000008d00002 observed=0020000008d00002
+$finish called at time : 375 ns : File "/home/lab_726/boom/hls_boom/rtl_tb/gate4_0/w3_dual_execute_tb.sv" Line 138
+exit
+INFO: [Common 17-206] Exiting xsim at Tue Aug 11 19:28:01 2026...

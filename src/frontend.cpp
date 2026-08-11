@@ -110,10 +110,9 @@ void frontend_module(BoomCoreState& state, PipeSignals& pipe) {
         fe.fetch_packet_valid = true;
         fe.pc = fe.resp_address + 4;
         fe.response_received = false;
-        return;
     }
 
-    if (!fe.request_sent && !fe.fetch_packet_valid) {
+    if (!fe.request_sent) {
         ImemRequest req;
         req.address = fe.pc;
         req.fetch_id = fe.fetch_id;

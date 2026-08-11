@@ -1,0 +1,5 @@
+scenario,implementation,commit,cycles_to_first_fetch,cycles_per_fetch,cycles_to_first_dispatch,cycles_per_dispatch,max_rob_occupancy,expected_occupancy,cycles_to_expected_occupancy,result
+rob_full_fixture,current,e065a4a/c6e1d04,0,NA,NA,NA,32,32,0,FAIL
+rob_full_fixture,accepted_baseline,c67ce8b,0,NA,0,NA,32,32,0,PASS
+always_ready_native_stream,current,e065a4a/c6e1d04,0,2,1,2,1,NA,NA,PASS
+always_ready_native_stream,accepted_baseline,c67ce8b,0,2,1,2,1,NA,NA,PASS

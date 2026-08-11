@@ -4,7 +4,7 @@ module axis_imem_model (
     input  wire         clk,
     input  wire         rst_n,
     input  wire [7:0]   scenario_code,
-    input  wire [127:0] req_tdata,
+    input  wire [191:0] req_tdata,
     input  wire         req_tvalid,
     output wire         req_tready,
     output reg  [255:0] resp_tdata,
@@ -26,14 +26,16 @@ module axis_imem_model (
     reg pending;
     reg [63:0] pending_address;
     reg [31:0] pending_fetch_id;
+    reg [31:0] pending_epoch;
     reg stale_after_reset;
     reg [63:0] stale_address;
     reg [31:0] stale_fetch_id;
+    reg [31:0] stale_epoch;
     reg was_in_reset;
     reg inject_stale_response;
     reg stale_redirect_injected;
     reg held_request;
-    reg [127:0] held_request_data;
+    reg [191:0] held_request_data;
 
     function automatic [31:0] instruction_at(input [63:0] address);
         integer word_index;
@@ -99,6 +101,7 @@ module axis_imem_model (
         stale_after_reset = 1'b0;
         stale_address = 0;
         stale_fetch_id = 0;
+        stale_epoch = 0;
         inject_stale_response = 1'b0;
         stale_redirect_injected = 1'b0;
         was_in_reset = 1'b1;
@@ -122,9 +125,11 @@ module axis_imem_model (
                 if (pending) begin
                     stale_address <= pending_address;
                     stale_fetch_id <= pending_fetch_id;
+                    stale_epoch <= pending_epoch;
                 end else begin
                     stale_address <= resp_tdata[63:0];
                     stale_fetch_id <= resp_tdata[95:64];
+                    stale_epoch <= resp_tdata[127:96];
                 end
             end
             pending <= 1'b0;
@@ -136,12 +141,14 @@ module axis_imem_model (
             was_in_reset <= 1'b0;
 
             if (stale_after_reset && !resp_tvalid) begin
-                resp_tdata <= {64'd0, 63'd0, 1'b0, instruction_at(stale_address), stale_fetch_id, stale_address};
+                resp_tdata <= {31'd0, 64'd0, 1'b0, instruction_at(stale_address),
+                               stale_epoch, stale_fetch_id, stale_address};
                 resp_tvalid <= 1'b1;
             end
 
             if (inject_stale_response && !resp_tvalid && !pending) begin
-                resp_tdata <= {64'd0, 63'd0, 1'b0, instruction_at(stale_address), stale_fetch_id, stale_address};
+                resp_tdata <= {31'd0, 64'd0, 1'b0, instruction_at(stale_address),
+                               stale_epoch, stale_fetch_id, stale_address};
                 resp_tvalid <= 1'b1;
                 inject_stale_response <= 1'b0;
             end
@@ -150,13 +157,15 @@ module axis_imem_model (
                 request_count <= request_count + 1;
                 pending_address <= req_tdata[63:0];
                 pending_fetch_id <= req_tdata[95:64];
+                pending_epoch <= req_tdata[127:96];
                 delay_count <= response_delay(scenario_code);
                 pending <= 1'b1;
             end
 
             if (pending) begin
                 if (delay_count == 0) begin
-                    resp_tdata <= {64'd0, 63'd0, 1'b0, instruction_at(pending_address), pending_fetch_id, pending_address};
+                    resp_tdata <= {31'd0, 64'd0, 1'b0, instruction_at(pending_address),
+                                   pending_epoch, pending_fetch_id, pending_address};
                     resp_tvalid <= 1'b1;
                     pending <= 1'b0;
                 end else begin
@@ -172,6 +181,7 @@ module axis_imem_model (
                     !stale_redirect_injected && request_count >= 5) begin
                     stale_address <= resp_tdata[63:0];
                     stale_fetch_id <= resp_tdata[95:64];
+                    stale_epoch <= resp_tdata[127:96];
                     inject_stale_response <= 1'b1;
                     stale_redirect_injected <= 1'b1;
                 end

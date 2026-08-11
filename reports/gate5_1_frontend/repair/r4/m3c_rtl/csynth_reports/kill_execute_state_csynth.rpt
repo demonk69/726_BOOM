@@ -1,0 +1,413 @@
+
+
+================================================================
+== Vitis HLS Report for 'kill_execute_state'
+================================================================
+* Date:           Tue Aug 11 18:59:38 2026
+
+* Version:        2021.2 (Build 3367213 on Tue Oct 19 02:47:39 MDT 2021)
+* Project:        synth_m3c_rv64m_top
+* Solution:       solution_gate4_1_m3c_rtl (Vivado IP Flow Target)
+* Product family: zynquplus
+* Target device:  xczu7ev-ffvc1156-2-e
+
+
+================================================================
+== Performance Estimates
+================================================================
++ Timing:
+    * Summary:
+    +--------+----------+----------+------------+
+    |  Clock |  Target  | Estimated| Uncertainty|
+    +--------+----------+----------+------------+
+    |ap_clk  |  10.00 ns|  1.325 ns|     2.70 ns|
+    +--------+----------+----------+------------+
+
++ Latency:
+    * Summary:
+    +---------+---------+----------+----------+-----+-----+---------+
+    |  Latency (cycles) |  Latency (absolute) |  Interval | Pipeline|
+    |   min   |   max   |    min   |    max   | min | max |   Type  |
+    +---------+---------+----------+----------+-----+-----+---------+
+    |       12|       12|  0.120 us|  0.120 us|   12|   12|       no|
+    +---------+---------+----------+----------+-----+-----+---------+
+
+    + Detail:
+        * Instance:
+        N/A
+
+        * Loop:
+        +---------------------+---------+---------+----------+-----------+-----------+------+----------+
+        |                     |  Latency (cycles) | Iteration|  Initiation Interval  | Trip |          |
+        |      Loop Name      |   min   |   max   |  Latency |  achieved |   target  | Count| Pipelined|
+        +---------------------+---------+---------+----------+-----------+-----------+------+----------+
+        |- VITIS_LOOP_2243_1  |        3|        3|         1|          -|          -|     3|        no|
+        |- VITIS_LOOP_2262_2  |        3|        3|         1|          -|          -|     3|        no|
+        |- VITIS_LOOP_2266_3  |        3|        3|         1|          -|          -|     3|        no|
+        +---------------------+---------+---------+----------+-----------+-----------+------+----------+
+
+
+
+================================================================
+== Utilization Estimates
+================================================================
+* Summary:
++-----------------+---------+------+--------+--------+-----+
+|       Name      | BRAM_18K|  DSP |   FF   |   LUT  | URAM|
++-----------------+---------+------+--------+--------+-----+
+|DSP              |        -|     -|       -|       -|    -|
+|Expression       |        -|     -|       0|     165|    -|
+|FIFO             |        -|     -|       -|       -|    -|
+|Instance         |        -|     -|       0|      84|    -|
+|Memory           |        -|     -|       -|       -|    -|
+|Multiplexer      |        -|     -|       -|     260|    -|
+|Register         |        -|     -|      10|       -|    -|
++-----------------+---------+------+--------+--------+-----+
+|Total            |        0|     0|      10|     509|    0|
++-----------------+---------+------+--------+--------+-----+
+|Available        |      624|  1728|  460800|  230400|   96|
++-----------------+---------+------+--------+--------+-----+
+|Utilization (%)  |        0|     0|      ~0|      ~0|    0|
++-----------------+---------+------+--------+--------+-----+
+
++ Detail:
+    * Instance:
+    +-------------------+--------------+---------+----+---+----+-----+
+    |      Instance     |    Module    | BRAM_18K| DSP| FF| LUT| URAM|
+    +-------------------+--------------+---------+----+---+----+-----+
+    |mux_32_1_1_1_U347  |mux_32_1_1_1  |        0|   0|  0|  14|    0|
+    |mux_32_1_1_1_U349  |mux_32_1_1_1  |        0|   0|  0|  14|    0|
+    |mux_32_1_1_1_U351  |mux_32_1_1_1  |        0|   0|  0|  14|    0|
+    |mux_32_8_1_1_U348  |mux_32_8_1_1  |        0|   0|  0|  14|    0|
+    |mux_32_8_1_1_U350  |mux_32_8_1_1  |        0|   0|  0|  14|    0|
+    |mux_32_8_1_1_U352  |mux_32_8_1_1  |        0|   0|  0|  14|    0|
+    +-------------------+--------------+---------+----+---+----+-----+
+    |Total              |              |        0|   0|  0|  84|    0|
+    +-------------------+--------------+---------+----+---+----+-----+
+
+    * DSP:
+    N/A
+
+    * Memory:
+    N/A
+
+    * FIFO:
+    N/A
+
+    * Expression:
+    +-------------------------+----------+----+---+----+------------+------------+
+    |      Variable Name      | Operation| DSP| FF| LUT| Bitwidth P0| Bitwidth P1|
+    +-------------------------+----------+----+---+----+------------+------------+
+    |add_ln2243_fu_276_p2     |         +|   0|  0|   9|           2|           1|
+    |add_ln2262_fu_917_p2     |         +|   0|  0|   9|           2|           1|
+    |add_ln2266_fu_1037_p2    |         +|   0|  0|   9|           2|           1|
+    |and_ln2138_2_fu_681_p2   |       and|   0|  0|   8|           8|           8|
+    |and_ln2138_3_fu_796_p2   |       and|   0|  0|   8|           8|           8|
+    |and_ln2138_fu_326_p2     |       and|   0|  0|   8|           8|           8|
+    |and_ln2249_fu_536_p2     |       and|   0|  0|   8|           8|           8|
+    |and_ln2264_fu_971_p2     |       and|   0|  0|   8|           8|           8|
+    |and_ln2268_fu_1091_p2    |       and|   0|  0|   8|           8|           8|
+    |icmp_ln2138_2_fu_686_p2  |      icmp|   0|  0|  11|           8|           1|
+    |icmp_ln2138_3_fu_801_p2  |      icmp|   0|  0|  11|           8|           1|
+    |icmp_ln2138_fu_331_p2    |      icmp|   0|  0|  11|           8|           1|
+    |icmp_ln2243_fu_270_p2    |      icmp|   0|  0|   8|           2|           2|
+    |icmp_ln2249_fu_541_p2    |      icmp|   0|  0|  11|           8|           1|
+    |icmp_ln2262_fu_911_p2    |      icmp|   0|  0|   8|           2|           2|
+    |icmp_ln2264_fu_976_p2    |      icmp|   0|  0|  11|           8|           1|
+    |icmp_ln2266_fu_1031_p2   |      icmp|   0|  0|   8|           2|           2|
+    |icmp_ln2268_fu_1096_p2   |      icmp|   0|  0|  11|           8|           1|
+    +-------------------------+----------+----+---+----+------------+------------+
+    |Total                    |          |   0|  0| 165|         108|          63|
+    +-------------------------+----------+----+---+----+------------+------------+
+
+    * Multiplexer:
+    +---------------------------------------------------+----+-----------+-----+-----------+
+    |                        Name                       | LUT| Input Size| Bits| Total Bits|
+    +---------------------------------------------------+----+-----------+-----+-----------+
+    |ap_NS_fsm                                          |  26|          5|    1|          5|
+    |i_40_fu_248                                        |   9|          2|    2|          4|
+    |i_41_fu_252                                        |   9|          2|    2|          4|
+    |i_fu_244                                           |   9|          2|    2|          4|
+    |state_completion_bypass_branch_mask_0_o            |   9|          2|    8|         16|
+    |state_completion_bypass_branch_mask_1_o            |   9|          2|    8|         16|
+    |state_completion_bypass_branch_mask_2_o            |   9|          2|    8|         16|
+    |state_completion_bypass_valid_0_o                  |   9|          2|    1|          2|
+    |state_completion_bypass_valid_1_o                  |   9|          2|    1|          2|
+    |state_completion_bypass_valid_2_o                  |   9|          2|    1|          2|
+    |state_completion_int_execute_uop_branch_br_mask_o  |   9|          2|    8|         16|
+    |state_completion_int_execute_valid_o               |   9|          2|    1|          2|
+    |state_completion_mem_execute_uop_branch_br_mask_o  |   9|          2|    8|         16|
+    |state_completion_mem_execute_valid_o               |   9|          2|    1|          2|
+    |state_completion_wakeups_branch_mask_0_o           |   9|          2|    8|         16|
+    |state_completion_wakeups_branch_mask_1_o           |   9|          2|    8|         16|
+    |state_completion_wakeups_branch_mask_2_o           |   9|          2|    8|         16|
+    |state_completion_wakeups_valid_0_o                 |   9|          2|    1|          2|
+    |state_completion_wakeups_valid_1_o                 |   9|          2|    1|          2|
+    |state_completion_wakeups_valid_2_o                 |   9|          2|    1|          2|
+    |state_execute_alu_results_uop_branch_br_mask_0_o   |   9|          2|    8|         16|
+    |state_execute_alu_results_uop_branch_br_mask_1_o   |   9|          2|    8|         16|
+    |state_execute_alu_results_uop_branch_br_mask_2_o   |   9|          2|    8|         16|
+    |state_execute_alu_results_valid_0_o                |   9|          2|    1|          2|
+    |state_execute_alu_results_valid_1_o                |   9|          2|    1|          2|
+    |state_execute_divider_branch_mask_o                |   9|          2|    8|         16|
+    |state_execute_divider_token_valid_o                |   9|          2|    1|          2|
+    +---------------------------------------------------+----+-----------+-----+-----------+
+    |Total                                              | 260|         57|  114|        231|
+    +---------------------------------------------------+----+-----------+-----+-----------+
+
+    * Register:
+    +-------------+---+----+-----+-----------+
+    |     Name    | FF| LUT| Bits| Const Bits|
+    +-------------+---+----+-----+-----------+
+    |ap_CS_fsm    |  4|   0|    4|          0|
+    |i_40_fu_248  |  2|   0|    2|          0|
+    |i_41_fu_252  |  2|   0|    2|          0|
+    |i_fu_244     |  2|   0|    2|          0|
+    +-------------+---+----+-----+-----------+
+    |Total        | 10|   0|   10|          0|
+    +-------------+---+----+-----+-----------+
+
+
+
+================================================================
+== Interface
+================================================================
+* Summary:
++-----------------------------------------------------------------+-----+-----+------------+----------------------------------------------------------+--------------+
+|                            RTL Ports                            | Dir | Bits|  Protocol  |                       Source Object                      |    C Type    |
++-----------------------------------------------------------------+-----+-----+------------+----------------------------------------------------------+--------------+
+|ap_clk                                                           |   in|    1|  ap_ctrl_hs|                                        kill_execute_state|  return value|
+|ap_rst                                                           |   in|    1|  ap_ctrl_hs|                                        kill_execute_state|  return value|
+|ap_start                                                         |   in|    1|  ap_ctrl_hs|                                        kill_execute_state|  return value|
+|ap_done                                                          |  out|    1|  ap_ctrl_hs|                                        kill_execute_state|  return value|
+|ap_idle                                                          |  out|    1|  ap_ctrl_hs|                                        kill_execute_state|  return value|
+|ap_ready                                                         |  out|    1|  ap_ctrl_hs|                                        kill_execute_state|  return value|
+|mispredict_mask                                                  |   in|    8|     ap_none|                                           mispredict_mask|        scalar|
+|state_execute_alu_results_valid_0_i                              |   in|    1|     ap_ovld|                         state_execute_alu_results_valid_0|       pointer|
+|state_execute_alu_results_valid_0_o                              |  out|    1|     ap_ovld|                         state_execute_alu_results_valid_0|       pointer|
+|state_execute_alu_results_valid_0_o_ap_vld                       |  out|    1|     ap_ovld|                         state_execute_alu_results_valid_0|       pointer|
+|state_execute_alu_results_valid_1_i                              |   in|    1|     ap_ovld|                         state_execute_alu_results_valid_1|       pointer|
+|state_execute_alu_results_valid_1_o                              |  out|    1|     ap_ovld|                         state_execute_alu_results_valid_1|       pointer|
+|state_execute_alu_results_valid_1_o_ap_vld                       |  out|    1|     ap_ovld|                         state_execute_alu_results_valid_1|       pointer|
+|state_execute_alu_results_uop_branch_br_mask_0_i                 |   in|    8|     ap_ovld|            state_execute_alu_results_uop_branch_br_mask_0|       pointer|
+|state_execute_alu_results_uop_branch_br_mask_0_o                 |  out|    8|     ap_ovld|            state_execute_alu_results_uop_branch_br_mask_0|       pointer|
+|state_execute_alu_results_uop_branch_br_mask_0_o_ap_vld          |  out|    1|     ap_ovld|            state_execute_alu_results_uop_branch_br_mask_0|       pointer|
+|state_execute_alu_results_uop_branch_br_mask_1_i                 |   in|    8|     ap_ovld|            state_execute_alu_results_uop_branch_br_mask_1|       pointer|
+|state_execute_alu_results_uop_branch_br_mask_1_o                 |  out|    8|     ap_ovld|            state_execute_alu_results_uop_branch_br_mask_1|       pointer|
+|state_execute_alu_results_uop_branch_br_mask_1_o_ap_vld          |  out|    1|     ap_ovld|            state_execute_alu_results_uop_branch_br_mask_1|       pointer|
+|state_execute_alu_results_uop_branch_br_mask_2_i                 |   in|    8|     ap_ovld|            state_execute_alu_results_uop_branch_br_mask_2|       pointer|
+|state_execute_alu_results_uop_branch_br_mask_2_o                 |  out|    8|     ap_ovld|            state_execute_alu_results_uop_branch_br_mask_2|       pointer|
+|state_execute_alu_results_uop_branch_br_mask_2_o_ap_vld          |  out|    1|     ap_ovld|            state_execute_alu_results_uop_branch_br_mask_2|       pointer|
+|state_execute_divider_token_valid_i                              |   in|    1|     ap_ovld|                         state_execute_divider_token_valid|       pointer|
+|state_execute_divider_token_valid_o                              |  out|    1|     ap_ovld|                         state_execute_divider_token_valid|       pointer|
+|state_execute_divider_token_valid_o_ap_vld                       |  out|    1|     ap_ovld|                         state_execute_divider_token_valid|       pointer|
+|state_execute_divider_branch_mask_i                              |   in|    8|     ap_ovld|                         state_execute_divider_branch_mask|       pointer|
+|state_execute_divider_branch_mask_o                              |  out|    8|     ap_ovld|                         state_execute_divider_branch_mask|       pointer|
+|state_execute_divider_branch_mask_o_ap_vld                       |  out|    1|     ap_ovld|                         state_execute_divider_branch_mask|       pointer|
+|state_execute_divider_arithmetic_busy                            |  out|    1|      ap_vld|                     state_execute_divider_arithmetic_busy|       pointer|
+|state_execute_divider_arithmetic_busy_ap_vld                     |  out|    1|      ap_vld|                     state_execute_divider_arithmetic_busy|       pointer|
+|state_execute_divider_arithmetic_result_pending                  |  out|    1|      ap_vld|           state_execute_divider_arithmetic_result_pending|       pointer|
+|state_execute_divider_arithmetic_result_pending_ap_vld           |  out|    1|      ap_vld|           state_execute_divider_arithmetic_result_pending|       pointer|
+|state_execute_divider_arithmetic_operation                       |  out|    6|      ap_vld|                state_execute_divider_arithmetic_operation|       pointer|
+|state_execute_divider_arithmetic_operation_ap_vld                |  out|    1|      ap_vld|                state_execute_divider_arithmetic_operation|       pointer|
+|state_execute_divider_arithmetic_original_dividend               |  out|   64|      ap_vld|        state_execute_divider_arithmetic_original_dividend|       pointer|
+|state_execute_divider_arithmetic_original_dividend_ap_vld        |  out|    1|      ap_vld|        state_execute_divider_arithmetic_original_dividend|       pointer|
+|state_execute_divider_arithmetic_dividend_magnitude              |  out|   64|      ap_vld|       state_execute_divider_arithmetic_dividend_magnitude|       pointer|
+|state_execute_divider_arithmetic_dividend_magnitude_ap_vld       |  out|    1|      ap_vld|       state_execute_divider_arithmetic_dividend_magnitude|       pointer|
+|state_execute_divider_arithmetic_divisor_magnitude               |  out|   64|      ap_vld|        state_execute_divider_arithmetic_divisor_magnitude|       pointer|
+|state_execute_divider_arithmetic_divisor_magnitude_ap_vld        |  out|    1|      ap_vld|        state_execute_divider_arithmetic_divisor_magnitude|       pointer|
+|state_execute_divider_arithmetic_quotient                        |  out|   63|      ap_vld|                 state_execute_divider_arithmetic_quotient|       pointer|
+|state_execute_divider_arithmetic_quotient_ap_vld                 |  out|    1|      ap_vld|                 state_execute_divider_arithmetic_quotient|       pointer|
+|state_execute_divider_arithmetic_remainder                       |  out|   64|      ap_vld|                state_execute_divider_arithmetic_remainder|       pointer|
+|state_execute_divider_arithmetic_remainder_ap_vld                |  out|    1|      ap_vld|                state_execute_divider_arithmetic_remainder|       pointer|
+|state_execute_divider_arithmetic_iteration                       |  out|    8|      ap_vld|                state_execute_divider_arithmetic_iteration|       pointer|
+|state_execute_divider_arithmetic_iteration_ap_vld                |  out|    1|      ap_vld|                state_execute_divider_arithmetic_iteration|       pointer|
+|state_execute_divider_arithmetic_quotient_negative               |  out|    1|      ap_vld|        state_execute_divider_arithmetic_quotient_negative|       pointer|
+|state_execute_divider_arithmetic_quotient_negative_ap_vld        |  out|    1|      ap_vld|        state_execute_divider_arithmetic_quotient_negative|       pointer|
+|state_execute_divider_arithmetic_remainder_negative              |  out|    1|      ap_vld|       state_execute_divider_arithmetic_remainder_negative|       pointer|
+|state_execute_divider_arithmetic_remainder_negative_ap_vld       |  out|    1|      ap_vld|       state_execute_divider_arithmetic_remainder_negative|       pointer|
+|state_execute_divider_arithmetic_word_operation                  |  out|    1|      ap_vld|           state_execute_divider_arithmetic_word_operation|       pointer|
+|state_execute_divider_arithmetic_word_operation_ap_vld           |  out|    1|      ap_vld|           state_execute_divider_arithmetic_word_operation|       pointer|
+|state_execute_divider_uop_branch_br_mask                         |  out|    8|      ap_vld|                  state_execute_divider_uop_branch_br_mask|       pointer|
+|state_execute_divider_uop_branch_br_mask_ap_vld                  |  out|    1|      ap_vld|                  state_execute_divider_uop_branch_br_mask|       pointer|
+|state_execute_divider_uop_queue_rob_idx                          |  out|    8|      ap_vld|                   state_execute_divider_uop_queue_rob_idx|       pointer|
+|state_execute_divider_uop_queue_rob_idx_ap_vld                   |  out|    1|      ap_vld|                   state_execute_divider_uop_queue_rob_idx|       pointer|
+|state_execute_divider_uop_queue_rob_allocation_id                |  out|   32|      ap_vld|         state_execute_divider_uop_queue_rob_allocation_id|       pointer|
+|state_execute_divider_uop_queue_rob_allocation_id_ap_vld         |  out|    1|      ap_vld|         state_execute_divider_uop_queue_rob_allocation_id|       pointer|
+|state_execute_divider_uop_rename_pdst                            |  out|    8|      ap_vld|                     state_execute_divider_uop_rename_pdst|       pointer|
+|state_execute_divider_uop_rename_pdst_ap_vld                     |  out|    1|      ap_vld|                     state_execute_divider_uop_rename_pdst|       pointer|
+|state_execute_divider_uop_rename_dst_rtype                       |  out|    2|      ap_vld|                state_execute_divider_uop_rename_dst_rtype|       pointer|
+|state_execute_divider_uop_rename_dst_rtype_ap_vld                |  out|    1|      ap_vld|                state_execute_divider_uop_rename_dst_rtype|       pointer|
+|state_execute_divider_rob_idx                                    |  out|    8|      ap_vld|                             state_execute_divider_rob_idx|       pointer|
+|state_execute_divider_rob_idx_ap_vld                             |  out|    1|      ap_vld|                             state_execute_divider_rob_idx|       pointer|
+|state_execute_divider_allocation_id                              |  out|   32|      ap_vld|                       state_execute_divider_allocation_id|       pointer|
+|state_execute_divider_allocation_id_ap_vld                       |  out|    1|      ap_vld|                       state_execute_divider_allocation_id|       pointer|
+|state_completion_mem_execute_valid_i                             |   in|    1|     ap_ovld|                        state_completion_mem_execute_valid|       pointer|
+|state_completion_mem_execute_valid_o                             |  out|    1|     ap_ovld|                        state_completion_mem_execute_valid|       pointer|
+|state_completion_mem_execute_valid_o_ap_vld                      |  out|    1|     ap_ovld|                        state_completion_mem_execute_valid|       pointer|
+|state_completion_mem_execute_uop_branch_br_mask_i                |   in|    8|     ap_ovld|           state_completion_mem_execute_uop_branch_br_mask|       pointer|
+|state_completion_mem_execute_uop_branch_br_mask_o                |  out|    8|     ap_ovld|           state_completion_mem_execute_uop_branch_br_mask|       pointer|
+|state_completion_mem_execute_uop_branch_br_mask_o_ap_vld         |  out|    1|     ap_ovld|           state_completion_mem_execute_uop_branch_br_mask|       pointer|
+|state_completion_mem_execute_kind                                |  out|    2|      ap_vld|                         state_completion_mem_execute_kind|       pointer|
+|state_completion_mem_execute_kind_ap_vld                         |  out|    1|      ap_vld|                         state_completion_mem_execute_kind|       pointer|
+|state_completion_mem_execute_source                              |  out|    1|      ap_vld|                       state_completion_mem_execute_source|       pointer|
+|state_completion_mem_execute_source_ap_vld                       |  out|    1|      ap_vld|                       state_completion_mem_execute_source|       pointer|
+|state_completion_mem_execute_uop_queue_rob_idx                   |  out|    1|      ap_vld|            state_completion_mem_execute_uop_queue_rob_idx|       pointer|
+|state_completion_mem_execute_uop_queue_rob_idx_ap_vld            |  out|    1|      ap_vld|            state_completion_mem_execute_uop_queue_rob_idx|       pointer|
+|state_completion_mem_execute_uop_queue_rob_allocation_id         |  out|    1|      ap_vld|  state_completion_mem_execute_uop_queue_rob_allocation_id|       pointer|
+|state_completion_mem_execute_uop_queue_rob_allocation_id_ap_vld  |  out|    1|      ap_vld|  state_completion_mem_execute_uop_queue_rob_allocation_id|       pointer|
+|state_completion_mem_execute_uop_rename_pdst                     |  out|    1|      ap_vld|              state_completion_mem_execute_uop_rename_pdst|       pointer|
+|state_completion_mem_execute_uop_rename_pdst_ap_vld              |  out|    1|      ap_vld|              state_completion_mem_execute_uop_rename_pdst|       pointer|
+|state_completion_mem_execute_writes_prf                          |  out|    1|      ap_vld|                   state_completion_mem_execute_writes_prf|       pointer|
+|state_completion_mem_execute_writes_prf_ap_vld                   |  out|    1|      ap_vld|                   state_completion_mem_execute_writes_prf|       pointer|
+|state_completion_mem_execute_mispredict                          |  out|    1|      ap_vld|                   state_completion_mem_execute_mispredict|       pointer|
+|state_completion_mem_execute_mispredict_ap_vld                   |  out|    1|      ap_vld|                   state_completion_mem_execute_mispredict|       pointer|
+|state_completion_mem_execute_control_resolved                    |  out|    1|      ap_vld|             state_completion_mem_execute_control_resolved|       pointer|
+|state_completion_mem_execute_control_resolved_ap_vld             |  out|    1|      ap_vld|             state_completion_mem_execute_control_resolved|       pointer|
+|state_completion_mem_execute_value                               |  out|    1|      ap_vld|                        state_completion_mem_execute_value|       pointer|
+|state_completion_mem_execute_value_ap_vld                        |  out|    1|      ap_vld|                        state_completion_mem_execute_value|       pointer|
+|state_completion_mem_execute_is_load                             |  out|    1|      ap_vld|                      state_completion_mem_execute_is_load|       pointer|
+|state_completion_mem_execute_is_load_ap_vld                      |  out|    1|      ap_vld|                      state_completion_mem_execute_is_load|       pointer|
+|state_completion_mem_execute_is_store                            |  out|    1|      ap_vld|                     state_completion_mem_execute_is_store|       pointer|
+|state_completion_mem_execute_is_store_ap_vld                     |  out|    1|      ap_vld|                     state_completion_mem_execute_is_store|       pointer|
+|state_completion_mem_execute_memory_address                      |  out|    1|      ap_vld|               state_completion_mem_execute_memory_address|       pointer|
+|state_completion_mem_execute_memory_address_ap_vld               |  out|    1|      ap_vld|               state_completion_mem_execute_memory_address|       pointer|
+|state_completion_mem_execute_store_data                          |  out|    1|      ap_vld|                   state_completion_mem_execute_store_data|       pointer|
+|state_completion_mem_execute_store_data_ap_vld                   |  out|    1|      ap_vld|                   state_completion_mem_execute_store_data|       pointer|
+|state_completion_mem_execute_memory_mask                         |  out|    1|      ap_vld|                  state_completion_mem_execute_memory_mask|       pointer|
+|state_completion_mem_execute_memory_mask_ap_vld                  |  out|    1|      ap_vld|                  state_completion_mem_execute_memory_mask|       pointer|
+|state_completion_int_execute_valid_i                             |   in|    1|     ap_ovld|                        state_completion_int_execute_valid|       pointer|
+|state_completion_int_execute_valid_o                             |  out|    1|     ap_ovld|                        state_completion_int_execute_valid|       pointer|
+|state_completion_int_execute_valid_o_ap_vld                      |  out|    1|     ap_ovld|                        state_completion_int_execute_valid|       pointer|
+|state_completion_int_execute_uop_branch_br_mask_i                |   in|    8|     ap_ovld|           state_completion_int_execute_uop_branch_br_mask|       pointer|
+|state_completion_int_execute_uop_branch_br_mask_o                |  out|    8|     ap_ovld|           state_completion_int_execute_uop_branch_br_mask|       pointer|
+|state_completion_int_execute_uop_branch_br_mask_o_ap_vld         |  out|    1|     ap_ovld|           state_completion_int_execute_uop_branch_br_mask|       pointer|
+|state_completion_int_execute_kind                                |  out|    2|      ap_vld|                         state_completion_int_execute_kind|       pointer|
+|state_completion_int_execute_kind_ap_vld                         |  out|    1|      ap_vld|                         state_completion_int_execute_kind|       pointer|
+|state_completion_int_execute_source                              |  out|    2|      ap_vld|                       state_completion_int_execute_source|       pointer|
+|state_completion_int_execute_source_ap_vld                       |  out|    1|      ap_vld|                       state_completion_int_execute_source|       pointer|
+|state_completion_int_execute_uop_queue_rob_idx                   |  out|    8|      ap_vld|            state_completion_int_execute_uop_queue_rob_idx|       pointer|
+|state_completion_int_execute_uop_queue_rob_idx_ap_vld            |  out|    1|      ap_vld|            state_completion_int_execute_uop_queue_rob_idx|       pointer|
+|state_completion_int_execute_uop_queue_rob_allocation_id         |  out|   32|      ap_vld|  state_completion_int_execute_uop_queue_rob_allocation_id|       pointer|
+|state_completion_int_execute_uop_queue_rob_allocation_id_ap_vld  |  out|    1|      ap_vld|  state_completion_int_execute_uop_queue_rob_allocation_id|       pointer|
+|state_completion_int_execute_uop_rename_pdst                     |  out|    8|      ap_vld|              state_completion_int_execute_uop_rename_pdst|       pointer|
+|state_completion_int_execute_uop_rename_pdst_ap_vld              |  out|    1|      ap_vld|              state_completion_int_execute_uop_rename_pdst|       pointer|
+|state_completion_int_execute_writes_prf                          |  out|    1|      ap_vld|                   state_completion_int_execute_writes_prf|       pointer|
+|state_completion_int_execute_writes_prf_ap_vld                   |  out|    1|      ap_vld|                   state_completion_int_execute_writes_prf|       pointer|
+|state_completion_int_execute_mispredict                          |  out|    1|      ap_vld|                   state_completion_int_execute_mispredict|       pointer|
+|state_completion_int_execute_mispredict_ap_vld                   |  out|    1|      ap_vld|                   state_completion_int_execute_mispredict|       pointer|
+|state_completion_int_execute_control_resolved                    |  out|    1|      ap_vld|             state_completion_int_execute_control_resolved|       pointer|
+|state_completion_int_execute_control_resolved_ap_vld             |  out|    1|      ap_vld|             state_completion_int_execute_control_resolved|       pointer|
+|state_completion_int_execute_value                               |  out|   64|      ap_vld|                        state_completion_int_execute_value|       pointer|
+|state_completion_int_execute_value_ap_vld                        |  out|    1|      ap_vld|                        state_completion_int_execute_value|       pointer|
+|state_completion_int_execute_is_load                             |  out|    1|      ap_vld|                      state_completion_int_execute_is_load|       pointer|
+|state_completion_int_execute_is_load_ap_vld                      |  out|    1|      ap_vld|                      state_completion_int_execute_is_load|       pointer|
+|state_completion_int_execute_is_store                            |  out|    1|      ap_vld|                     state_completion_int_execute_is_store|       pointer|
+|state_completion_int_execute_is_store_ap_vld                     |  out|    1|      ap_vld|                     state_completion_int_execute_is_store|       pointer|
+|state_completion_int_execute_memory_address                      |  out|   64|      ap_vld|               state_completion_int_execute_memory_address|       pointer|
+|state_completion_int_execute_memory_address_ap_vld               |  out|    1|      ap_vld|               state_completion_int_execute_memory_address|       pointer|
+|state_completion_int_execute_store_data                          |  out|   64|      ap_vld|                   state_completion_int_execute_store_data|       pointer|
+|state_completion_int_execute_store_data_ap_vld                   |  out|    1|      ap_vld|                   state_completion_int_execute_store_data|       pointer|
+|state_completion_int_execute_memory_mask                         |  out|    1|      ap_vld|                  state_completion_int_execute_memory_mask|       pointer|
+|state_completion_int_execute_memory_mask_ap_vld                  |  out|    1|      ap_vld|                  state_completion_int_execute_memory_mask|       pointer|
+|state_completion_wakeups_valid_0_i                               |   in|    1|     ap_ovld|                          state_completion_wakeups_valid_0|       pointer|
+|state_completion_wakeups_valid_0_o                               |  out|    1|     ap_ovld|                          state_completion_wakeups_valid_0|       pointer|
+|state_completion_wakeups_valid_0_o_ap_vld                        |  out|    1|     ap_ovld|                          state_completion_wakeups_valid_0|       pointer|
+|state_completion_wakeups_valid_1_i                               |   in|    1|     ap_ovld|                          state_completion_wakeups_valid_1|       pointer|
+|state_completion_wakeups_valid_1_o                               |  out|    1|     ap_ovld|                          state_completion_wakeups_valid_1|       pointer|
+|state_completion_wakeups_valid_1_o_ap_vld                        |  out|    1|     ap_ovld|                          state_completion_wakeups_valid_1|       pointer|
+|state_completion_wakeups_valid_2_i                               |   in|    1|     ap_ovld|                          state_completion_wakeups_valid_2|       pointer|
+|state_completion_wakeups_valid_2_o                               |  out|    1|     ap_ovld|                          state_completion_wakeups_valid_2|       pointer|
+|state_completion_wakeups_valid_2_o_ap_vld                        |  out|    1|     ap_ovld|                          state_completion_wakeups_valid_2|       pointer|
+|state_completion_wakeups_branch_mask_0_i                         |   in|    8|     ap_ovld|                    state_completion_wakeups_branch_mask_0|       pointer|
+|state_completion_wakeups_branch_mask_0_o                         |  out|    8|     ap_ovld|                    state_completion_wakeups_branch_mask_0|       pointer|
+|state_completion_wakeups_branch_mask_0_o_ap_vld                  |  out|    1|     ap_ovld|                    state_completion_wakeups_branch_mask_0|       pointer|
+|state_completion_wakeups_branch_mask_1_i                         |   in|    8|     ap_ovld|                    state_completion_wakeups_branch_mask_1|       pointer|
+|state_completion_wakeups_branch_mask_1_o                         |  out|    8|     ap_ovld|                    state_completion_wakeups_branch_mask_1|       pointer|
+|state_completion_wakeups_branch_mask_1_o_ap_vld                  |  out|    1|     ap_ovld|                    state_completion_wakeups_branch_mask_1|       pointer|
+|state_completion_wakeups_branch_mask_2_i                         |   in|    8|     ap_ovld|                    state_completion_wakeups_branch_mask_2|       pointer|
+|state_completion_wakeups_branch_mask_2_o                         |  out|    8|     ap_ovld|                    state_completion_wakeups_branch_mask_2|       pointer|
+|state_completion_wakeups_branch_mask_2_o_ap_vld                  |  out|    1|     ap_ovld|                    state_completion_wakeups_branch_mask_2|       pointer|
+|state_completion_bypass_valid_0_i                                |   in|    1|     ap_ovld|                           state_completion_bypass_valid_0|       pointer|
+|state_completion_bypass_valid_0_o                                |  out|    1|     ap_ovld|                           state_completion_bypass_valid_0|       pointer|
+|state_completion_bypass_valid_0_o_ap_vld                         |  out|    1|     ap_ovld|                           state_completion_bypass_valid_0|       pointer|
+|state_completion_bypass_valid_1_i                                |   in|    1|     ap_ovld|                           state_completion_bypass_valid_1|       pointer|
+|state_completion_bypass_valid_1_o                                |  out|    1|     ap_ovld|                           state_completion_bypass_valid_1|       pointer|
+|state_completion_bypass_valid_1_o_ap_vld                         |  out|    1|     ap_ovld|                           state_completion_bypass_valid_1|       pointer|
+|state_completion_bypass_valid_2_i                                |   in|    1|     ap_ovld|                           state_completion_bypass_valid_2|       pointer|
+|state_completion_bypass_valid_2_o                                |  out|    1|     ap_ovld|                           state_completion_bypass_valid_2|       pointer|
+|state_completion_bypass_valid_2_o_ap_vld                         |  out|    1|     ap_ovld|                           state_completion_bypass_valid_2|       pointer|
+|state_completion_bypass_branch_mask_0_i                          |   in|    8|     ap_ovld|                     state_completion_bypass_branch_mask_0|       pointer|
+|state_completion_bypass_branch_mask_0_o                          |  out|    8|     ap_ovld|                     state_completion_bypass_branch_mask_0|       pointer|
+|state_completion_bypass_branch_mask_0_o_ap_vld                   |  out|    1|     ap_ovld|                     state_completion_bypass_branch_mask_0|       pointer|
+|state_completion_bypass_branch_mask_1_i                          |   in|    8|     ap_ovld|                     state_completion_bypass_branch_mask_1|       pointer|
+|state_completion_bypass_branch_mask_1_o                          |  out|    8|     ap_ovld|                     state_completion_bypass_branch_mask_1|       pointer|
+|state_completion_bypass_branch_mask_1_o_ap_vld                   |  out|    1|     ap_ovld|                     state_completion_bypass_branch_mask_1|       pointer|
+|state_completion_bypass_branch_mask_2_i                          |   in|    8|     ap_ovld|                     state_completion_bypass_branch_mask_2|       pointer|
+|state_completion_bypass_branch_mask_2_o                          |  out|    8|     ap_ovld|                     state_completion_bypass_branch_mask_2|       pointer|
+|state_completion_bypass_branch_mask_2_o_ap_vld                   |  out|    1|     ap_ovld|                     state_completion_bypass_branch_mask_2|       pointer|
+|state_execute_alu_results_uop_rename_pdst_0                      |  out|    1|      ap_vld|               state_execute_alu_results_uop_rename_pdst_0|       pointer|
+|state_execute_alu_results_uop_rename_pdst_0_ap_vld               |  out|    1|      ap_vld|               state_execute_alu_results_uop_rename_pdst_0|       pointer|
+|state_execute_alu_results_uop_rename_pdst_1                      |  out|    8|      ap_vld|               state_execute_alu_results_uop_rename_pdst_1|       pointer|
+|state_execute_alu_results_uop_rename_pdst_1_ap_vld               |  out|    1|      ap_vld|               state_execute_alu_results_uop_rename_pdst_1|       pointer|
+|state_execute_alu_results_uop_rename_dst_rtype_0                 |  out|    1|      ap_vld|          state_execute_alu_results_uop_rename_dst_rtype_0|       pointer|
+|state_execute_alu_results_uop_rename_dst_rtype_0_ap_vld          |  out|    1|      ap_vld|          state_execute_alu_results_uop_rename_dst_rtype_0|       pointer|
+|state_execute_alu_results_uop_rename_dst_rtype_1                 |  out|    2|      ap_vld|          state_execute_alu_results_uop_rename_dst_rtype_1|       pointer|
+|state_execute_alu_results_uop_rename_dst_rtype_1_ap_vld          |  out|    1|      ap_vld|          state_execute_alu_results_uop_rename_dst_rtype_1|       pointer|
+|state_execute_alu_results_uop_queue_rob_idx_0                    |  out|    1|      ap_vld|             state_execute_alu_results_uop_queue_rob_idx_0|       pointer|
+|state_execute_alu_results_uop_queue_rob_idx_0_ap_vld             |  out|    1|      ap_vld|             state_execute_alu_results_uop_queue_rob_idx_0|       pointer|
+|state_execute_alu_results_uop_queue_rob_idx_1                    |  out|    8|      ap_vld|             state_execute_alu_results_uop_queue_rob_idx_1|       pointer|
+|state_execute_alu_results_uop_queue_rob_idx_1_ap_vld             |  out|    1|      ap_vld|             state_execute_alu_results_uop_queue_rob_idx_1|       pointer|
+|state_execute_alu_results_uop_queue_rob_allocation_id_0          |  out|    1|      ap_vld|   state_execute_alu_results_uop_queue_rob_allocation_id_0|       pointer|
+|state_execute_alu_results_uop_queue_rob_allocation_id_0_ap_vld   |  out|    1|      ap_vld|   state_execute_alu_results_uop_queue_rob_allocation_id_0|       pointer|
+|state_execute_alu_results_uop_queue_rob_allocation_id_1          |  out|   32|      ap_vld|   state_execute_alu_results_uop_queue_rob_allocation_id_1|       pointer|
+|state_execute_alu_results_uop_queue_rob_allocation_id_1_ap_vld   |  out|    1|      ap_vld|   state_execute_alu_results_uop_queue_rob_allocation_id_1|       pointer|
+|state_execute_alu_results_store_data_0                           |  out|    1|      ap_vld|                    state_execute_alu_results_store_data_0|       pointer|
+|state_execute_alu_results_store_data_0_ap_vld                    |  out|    1|      ap_vld|                    state_execute_alu_results_store_data_0|       pointer|
+|state_execute_alu_results_store_data_1                           |  out|   64|      ap_vld|                    state_execute_alu_results_store_data_1|       pointer|
+|state_execute_alu_results_store_data_1_ap_vld                    |  out|    1|      ap_vld|                    state_execute_alu_results_store_data_1|       pointer|
+|state_execute_alu_results_result_0                               |  out|    1|      ap_vld|                        state_execute_alu_results_result_0|       pointer|
+|state_execute_alu_results_result_0_ap_vld                        |  out|    1|      ap_vld|                        state_execute_alu_results_result_0|       pointer|
+|state_execute_alu_results_result_1                               |  out|   64|      ap_vld|                        state_execute_alu_results_result_1|       pointer|
+|state_execute_alu_results_result_1_ap_vld                        |  out|    1|      ap_vld|                        state_execute_alu_results_result_1|       pointer|
+|state_execute_alu_results_redirect_pc_0                          |  out|    1|      ap_vld|                   state_execute_alu_results_redirect_pc_0|       pointer|
+|state_execute_alu_results_redirect_pc_0_ap_vld                   |  out|    1|      ap_vld|                   state_execute_alu_results_redirect_pc_0|       pointer|
+|state_execute_alu_results_redirect_pc_1                          |  out|   64|      ap_vld|                   state_execute_alu_results_redirect_pc_1|       pointer|
+|state_execute_alu_results_redirect_pc_1_ap_vld                   |  out|    1|      ap_vld|                   state_execute_alu_results_redirect_pc_1|       pointer|
+|state_execute_alu_results_mispredict_0                           |  out|    1|      ap_vld|                    state_execute_alu_results_mispredict_0|       pointer|
+|state_execute_alu_results_mispredict_0_ap_vld                    |  out|    1|      ap_vld|                    state_execute_alu_results_mispredict_0|       pointer|
+|state_execute_alu_results_mispredict_1                           |  out|    1|      ap_vld|                    state_execute_alu_results_mispredict_1|       pointer|
+|state_execute_alu_results_mispredict_1_ap_vld                    |  out|    1|      ap_vld|                    state_execute_alu_results_mispredict_1|       pointer|
+|state_execute_alu_results_memory_valid_0                         |  out|    1|      ap_vld|                  state_execute_alu_results_memory_valid_0|       pointer|
+|state_execute_alu_results_memory_valid_0_ap_vld                  |  out|    1|      ap_vld|                  state_execute_alu_results_memory_valid_0|       pointer|
+|state_execute_alu_results_memory_valid_1                         |  out|    1|      ap_vld|                  state_execute_alu_results_memory_valid_1|       pointer|
+|state_execute_alu_results_memory_valid_1_ap_vld                  |  out|    1|      ap_vld|                  state_execute_alu_results_memory_valid_1|       pointer|
+|state_execute_alu_results_memory_mask_0                          |  out|    1|      ap_vld|                   state_execute_alu_results_memory_mask_0|       pointer|
+|state_execute_alu_results_memory_mask_0_ap_vld                   |  out|    1|      ap_vld|                   state_execute_alu_results_memory_mask_0|       pointer|
+|state_execute_alu_results_memory_mask_1                          |  out|    1|      ap_vld|                   state_execute_alu_results_memory_mask_1|       pointer|
+|state_execute_alu_results_memory_mask_1_ap_vld                   |  out|    1|      ap_vld|                   state_execute_alu_results_memory_mask_1|       pointer|
+|state_execute_alu_results_memory_address_0                       |  out|    1|      ap_vld|                state_execute_alu_results_memory_address_0|       pointer|
+|state_execute_alu_results_memory_address_0_ap_vld                |  out|    1|      ap_vld|                state_execute_alu_results_memory_address_0|       pointer|
+|state_execute_alu_results_memory_address_1                       |  out|   64|      ap_vld|                state_execute_alu_results_memory_address_1|       pointer|
+|state_execute_alu_results_memory_address_1_ap_vld                |  out|    1|      ap_vld|                state_execute_alu_results_memory_address_1|       pointer|
+|state_execute_alu_results_is_store_0                             |  out|    1|      ap_vld|                      state_execute_alu_results_is_store_0|       pointer|
+|state_execute_alu_results_is_store_0_ap_vld                      |  out|    1|      ap_vld|                      state_execute_alu_results_is_store_0|       pointer|
+|state_execute_alu_results_is_store_1                             |  out|    1|      ap_vld|                      state_execute_alu_results_is_store_1|       pointer|
+|state_execute_alu_results_is_store_1_ap_vld                      |  out|    1|      ap_vld|                      state_execute_alu_results_is_store_1|       pointer|
+|state_execute_alu_results_is_load_0                              |  out|    1|      ap_vld|                       state_execute_alu_results_is_load_0|       pointer|
+|state_execute_alu_results_is_load_0_ap_vld                       |  out|    1|      ap_vld|                       state_execute_alu_results_is_load_0|       pointer|
+|state_execute_alu_results_is_load_1                              |  out|    1|      ap_vld|                       state_execute_alu_results_is_load_1|       pointer|
+|state_execute_alu_results_is_load_1_ap_vld                       |  out|    1|      ap_vld|                       state_execute_alu_results_is_load_1|       pointer|
+|state_completion_bypass_pdst_0                                   |  out|    8|      ap_vld|                            state_completion_bypass_pdst_0|       pointer|
+|state_completion_bypass_pdst_0_ap_vld                            |  out|    1|      ap_vld|                            state_completion_bypass_pdst_0|       pointer|
+|state_completion_bypass_value_0                                  |  out|   64|      ap_vld|                           state_completion_bypass_value_0|       pointer|
+|state_completion_bypass_value_0_ap_vld                           |  out|    1|      ap_vld|                           state_completion_bypass_value_0|       pointer|
+|state_completion_bypass_pdst_1                                   |  out|    8|      ap_vld|                            state_completion_bypass_pdst_1|       pointer|
+|state_completion_bypass_pdst_1_ap_vld                            |  out|    1|      ap_vld|                            state_completion_bypass_pdst_1|       pointer|
+|state_completion_bypass_value_1                                  |  out|   64|      ap_vld|                           state_completion_bypass_value_1|       pointer|
+|state_completion_bypass_value_1_ap_vld                           |  out|    1|      ap_vld|                           state_completion_bypass_value_1|       pointer|
+|state_completion_bypass_pdst_2                                   |  out|    8|      ap_vld|                            state_completion_bypass_pdst_2|       pointer|
+|state_completion_bypass_pdst_2_ap_vld                            |  out|    1|      ap_vld|                            state_completion_bypass_pdst_2|       pointer|
+|state_completion_bypass_value_2                                  |  out|   64|      ap_vld|                           state_completion_bypass_value_2|       pointer|
+|state_completion_bypass_value_2_ap_vld                           |  out|    1|      ap_vld|                           state_completion_bypass_value_2|       pointer|
++-----------------------------------------------------------------+-----+-----+------------+----------------------------------------------------------+--------------+

@@ -1,0 +1,14 @@
+
+****** xsim v2021.2 (64-bit)
+  **** SW Build 3367213 on Tue Oct 19 02:47:39 MDT 2021
+  **** IP Build 3369179 on Thu Oct 21 08:25:16 MDT 2021
+    ** Copyright 1986-2021 Xilinx, Inc. All Rights Reserved.
+
+source xsim.dir/frontend_throughput_rtl_snapshot/xsim_script.tcl
+# xsim {frontend_throughput_rtl_snapshot} -testplusarg LATENCY=0 -autoloadwcfg -runall -onerror quit
+Time resolution is 1 ps
+run -all
+THROUGHPUT_PASS,latency=0,requests=40,responses=39,interval_min=3,interval_max=3
+$finish called at time : 1235 ns : File "/home/lab_726/boom/hls_boom/rtl_tb/frontend_throughput_rtl_tb.sv" Line 75
+exit
+INFO: [Common 17-206] Exiting xsim at Tue Aug 11 18:35:58 2026...

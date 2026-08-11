@@ -1,0 +1,34 @@
+case,asserted_requirement,status,evidence
+initial_request,generated RTL issued reset-vector fetch_id=0 epoch=0 kill=0,PASS,/home/lab_726/boom/hls_boom/reports/gate5_1_frontend/repair/r2/logs/xsim.log
+wrong_fetch_id,response drained without completing the outstanding request,PASS,/home/lab_726/boom/hls_boom/reports/gate5_1_frontend/repair/r2/logs/xsim.log
+wrong_epoch,response drained without completing the outstanding request,PASS,/home/lab_726/boom/hls_boom/reports/gate5_1_frontend/repair/r2/logs/xsim.log
+wrong_address,response drained without completing the outstanding request,PASS,/home/lab_726/boom/hls_boom/reports/gate5_1_frontend/repair/r2/logs/xsim.log
+wrong_id_epoch,response drained without completing the outstanding request,PASS,/home/lab_726/boom/hls_boom/reports/gate5_1_frontend/repair/r2/logs/xsim.log
+wrong_epoch_address,response drained without completing the outstanding request,PASS,/home/lab_726/boom/hls_boom/reports/gate5_1_frontend/repair/r2/logs/xsim.log
+all_identity_fields_wrong,response drained without completing the outstanding request,PASS,/home/lab_726/boom/hls_boom/reports/gate5_1_frontend/repair/r2/logs/xsim.log
+triple_match,matching fetch_id epoch and address advanced PC exactly once by four,PASS,/home/lab_726/boom/hls_boom/reports/gate5_1_frontend/repair/r2/logs/xsim.log
+accepted_response_once,one matching response produced one Decode publication,PASS,/home/lab_726/boom/hls_boom/reports/gate5_1_frontend/repair/r2/logs/xsim.log
+duplicate_response,duplicate old response drained and next request remained unique,PASS,/home/lab_726/boom/hls_boom/reports/gate5_1_frontend/repair/r2/logs/xsim.log
+response_without_matching_outstanding,unowned response had no PC side effect,PASS,/home/lab_726/boom/hls_boom/reports/gate5_1_frontend/repair/r2/logs/xsim.log
+delayed_response,one outstanding request remained stable across delay,PASS,/home/lab_726/boom/hls_boom/reports/gate5_1_frontend/repair/r2/logs/xsim.log
+second_match,second matching request completed at expected address,PASS,/home/lab_726/boom/hls_boom/reports/gate5_1_frontend/repair/r2/logs/xsim.log
+request_backpressure,request valid and payload held until ready,PASS,/home/lab_726/boom/hls_boom/reports/gate5_1_frontend/repair/r2/logs/xsim.log
+request_no_duplicate_under_backpressure,backpressured request transferred exactly once,PASS,/home/lab_726/boom/hls_boom/reports/gate5_1_frontend/repair/r2/logs/xsim.log
+sequential_32,32 responses advanced monotonically by PC+4,PASS,/home/lab_726/boom/hls_boom/reports/gate5_1_frontend/repair/r2/logs/xsim.log
+single_outstanding_32,32-response run retained one outstanding request,PASS,/home/lab_726/boom/hls_boom/reports/gate5_1_frontend/repair/r2/logs/xsim.log
+fetch_id_monotonic_32,32-response run retained monotonic fetch IDs,PASS,/home/lab_726/boom/hls_boom/reports/gate5_1_frontend/repair/r2/logs/xsim.log
+epoch_width_and_value,request payload retained full 32-bit epoch,PASS,/home/lab_726/boom/hls_boom/reports/gate5_1_frontend/repair/r2/logs/xsim.log
+ap_rst_control_only,ap_rst reset control but did not masquerade as runtime reset,PASS,/home/lab_726/boom/hls_boom/reports/gate5_1_frontend/repair/r2/logs/xsim.log
+redirect_priority,runtime reset > architectural > branch > generic > response,PASS,/home/lab_726/boom/hls_boom/reports/gate5_1_frontend/repair/r2/logs/xsim.log
+redirect_over_response,redirect drained old response without publication,PASS,/home/lab_726/boom/hls_boom/reports/gate5_1_frontend/repair/r2/logs/xsim.log
+redirect_epoch,redirect incremented epoch and old epoch could not reactivate,PASS,/home/lab_726/boom/hls_boom/reports/gate5_1_frontend/repair/r2/logs/xsim.log
+architectural_ownership,ROB index and allocation ID ownership validated,PASS,/home/lab_726/boom/hls_boom/reports/gate5_1_frontend/repair/r2/logs/xsim.log
+decode_hold,held instruction remained stable under Decode stall,PASS,/home/lab_726/boom/hls_boom/reports/gate5_1_frontend/repair/r2/logs/xsim.log
+stale_drain_during_decode_stall,stale response drained without held overwrite,PASS,/home/lab_726/boom/hls_boom/reports/gate5_1_frontend/repair/r2/logs/xsim.log
+fault_to_decode,instruction access fault PC and cause propagated to Decode,PASS,/home/lab_726/boom/hls_boom/reports/gate5_1_frontend/repair/r2/logs/xsim.log
+fault_hold,fault remained stable under Decode backpressure,PASS,/home/lab_726/boom/hls_boom/reports/gate5_1_frontend/repair/r2/logs/xsim.log
+runtime_reset,"runtime reset cleared outstanding, held instruction, and held fault state",PASS,/home/lab_726/boom/hls_boom/reports/gate5_1_frontend/repair/r2/logs/xsim.log
+misaligned_arch_target,misaligned architectural target faulted without masking,PASS,/home/lab_726/boom/hls_boom/reports/gate5_1_frontend/repair/r2/logs/xsim.log
+misaligned_branch_target,misaligned branch target faulted without masking,PASS,/home/lab_726/boom/hls_boom/reports/gate5_1_frontend/repair/r2/logs/xsim.log
+misaligned_generic_flush_target,generic flush retained current-PC alignment policy,PASS,/home/lab_726/boom/hls_boom/reports/gate5_1_frontend/repair/r2/logs/xsim.log
+reset_priority,runtime reset won redirects and response and rejected old epoch,PASS,/home/lab_726/boom/hls_boom/reports/gate5_1_frontend/repair/r2/logs/xsim.log

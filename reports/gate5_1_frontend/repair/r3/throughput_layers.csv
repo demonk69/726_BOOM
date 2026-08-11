@@ -1,0 +1,10 @@
+layer,configuration,workload,request_interval_min,request_interval_max,response_interval,dispatch_interval,status,evidence
+native_frontend,c67ce8b baseline,128-cycle always-ready,2,2,2,2,BASELINE,reports/gate5_1_frontend/repair/r1/baseline_comparison.csv
+native_frontend,R3 next-state repair,128-cycle always-ready,1,1,1,1,PASS,reports/gate5_1_frontend/repair/r3/native_frontend_after.csv
+native_full_core,R3 next-state repair,ROB-full stale fixture,not_applicable,not_applicable,not_applicable,not_applicable,PASS_400_OF_400,reports/gate5_1_frontend/repair/r3/w3/regression_after.md
+focused_generated_rtl,S0 no directive,response latency 0,3,3,3,not_observed,CHARACTERIZATION_PASS,reports/gate5_1_frontend/repair/r3/throughput_rtl/latency_0.log
+focused_generated_rtl,S0 no directive,response latency 1,6,6,6,not_observed,CHARACTERIZATION_PASS,reports/gate5_1_frontend/repair/r3/throughput_rtl/latency_1.log
+focused_generated_rtl,S0 no directive,response latency 3,6,6,6,not_observed,CHARACTERIZATION_PASS,reports/gate5_1_frontend/repair/r3/throughput_rtl/latency_3.log
+focused_generated_rtl,S0 no directive,response latency 4,3,6,variable,not_observed,CHARACTERIZATION_PASS,reports/gate5_1_frontend/repair/r3/throughput_rtl/latency_4.log
+hls_diagnostic_top,S0 no directive,csynth transaction schedule,3,3,not_applicable,not_applicable,ACCEPTED_DIAGNOSTIC,reports/gate5_1_frontend_repair_r3_s0/module_csynth/synth_frontend_top.log
+full_core_product,S0 no directive,canonical boom_core_top,not_reported,not_reported,not_reported,not_reported,CORE_CYCLE_UNPIPELINED,boom_hls_gate5_1_frontend_repair_r4_boom_core_top/solution_module/syn/report/boom_core_top_csynth.rpt

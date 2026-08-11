@@ -1,0 +1,281 @@
+
+
+================================================================
+== Vitis HLS Report for 'decode_module'
+================================================================
+* Date:           Tue Aug 11 20:20:16 2026
+
+* Version:        2021.2 (Build 3367213 on Tue Oct 19 02:47:39 MDT 2021)
+* Project:        boom_core_top
+* Solution:       solution_gate4_1_m3b_full_core_rtl (Vivado IP Flow Target)
+* Product family: zynquplus
+* Target device:  xczu7ev-ffvc1156-2-e
+
+
+================================================================
+== Performance Estimates
+================================================================
++ Timing:
+    * Summary:
+    +--------+----------+----------+------------+
+    |  Clock |  Target  | Estimated| Uncertainty|
+    +--------+----------+----------+------------+
+    |ap_clk  |  10.00 ns|  3.680 ns|     2.70 ns|
+    +--------+----------+----------+------------+
+
++ Latency:
+    * Summary:
+    +---------+---------+----------+----------+-----+-----+---------+
+    |  Latency (cycles) |  Latency (absolute) |  Interval | Pipeline|
+    |   min   |   max   |    min   |    max   | min | max |   Type  |
+    +---------+---------+----------+----------+-----+-----+---------+
+    |        0|        0|      0 ns|      0 ns|    0|    0|       no|
+    +---------+---------+----------+----------+-----+-----+---------+
+
+    + Detail:
+        * Instance:
+        N/A
+
+        * Loop:
+        N/A
+
+
+
+================================================================
+== Utilization Estimates
+================================================================
+* Summary:
++-----------------+---------+------+--------+--------+-----+
+|       Name      | BRAM_18K|  DSP |   FF   |   LUT  | URAM|
++-----------------+---------+------+--------+--------+-----+
+|DSP              |        -|     -|       -|       -|    -|
+|Expression       |        -|     -|       0|     314|    -|
+|FIFO             |        -|     -|       -|       -|    -|
+|Instance         |        -|     -|       -|       -|    -|
+|Memory           |        -|     -|       -|       -|    -|
+|Multiplexer      |        -|     -|       -|    1264|    -|
+|Register         |        -|     -|       -|       -|    -|
++-----------------+---------+------+--------+--------+-----+
+|Total            |        0|     0|       0|    1578|    0|
++-----------------+---------+------+--------+--------+-----+
+|Available        |      624|  1728|  460800|  230400|   96|
++-----------------+---------+------+--------+--------+-----+
+|Utilization (%)  |        0|     0|       0|      ~0|    0|
++-----------------+---------+------+--------+--------+-----+
+
++ Detail:
+    * Instance:
+    N/A
+
+    * DSP:
+    N/A
+
+    * Memory:
+    N/A
+
+    * FIFO:
+    N/A
+
+    * Expression:
+    +-----------------------------------+----------+----+---+----+------------+------------+
+    |           Variable Name           | Operation| DSP| FF| LUT| Bitwidth P0| Bitwidth P1|
+    +-----------------------------------+----------+----+---+----+------------+------------+
+    |add_ln282_fu_5906_p2               |         +|   0|  0|  15|           8|           3|
+    |ap_condition_110                   |       and|   0|  0|   2|           1|           1|
+    |ap_condition_131                   |       and|   0|  0|   2|           1|           1|
+    |ap_condition_2271                  |       and|   0|  0|   2|           1|           1|
+    |ap_condition_2282                  |       and|   0|  0|   2|           1|           1|
+    |ap_condition_99                    |       and|   0|  0|   2|           1|           1|
+    |grp_fu_5698_p2                     |      icmp|   0|  0|  10|           7|           1|
+    |grp_fu_5751_p2                     |      icmp|   0|  0|   9|           5|           1|
+    |icmp_ln239_fu_6305_p2              |      icmp|   0|  0|  12|          13|           1|
+    |icmp_ln243_fu_6405_p2              |      icmp|   0|  0|  15|          21|           1|
+    |icmp_ln335_fu_5938_p2              |      icmp|   0|  0|  10|           7|           1|
+    |icmp_ln394_1_fu_5966_p2            |      icmp|   0|  0|  12|          12|           1|
+    |icmp_ln394_fu_5946_p2              |      icmp|   0|  0|   8|           3|           1|
+    |icmp_ln417_fu_6464_p2              |      icmp|   0|  0|  11|           8|           2|
+    |or_ln394_fu_5952_p2                |        or|   0|  0|   5|           5|           5|
+    |state_decode_dec_uops_exception_0  |        or|   0|  0|   2|           1|           1|
+    |grp_fu_5715_p3                     |    select|   0|  0|   2|           1|           2|
+    |grp_fu_5730_p3                     |    select|   0|  0|   2|           1|           1|
+    |grp_fu_5756_p3                     |    select|   0|  0|   3|           1|           1|
+    |select_ln266_1_fu_6063_p3          |    select|   0|  0|   2|           1|           2|
+    |select_ln266_2_fu_6035_p3          |    select|   0|  0|   2|           1|           2|
+    |select_ln266_3_fu_6007_p3          |    select|   0|  0|   2|           1|           2|
+    |select_ln266_fu_6118_p3            |    select|   0|  0|   2|           1|           2|
+    |select_ln335_fu_6175_p3            |    select|   0|  0|   6|           1|           6|
+    |select_ln342_fu_6154_p3            |    select|   0|  0|   6|           1|           6|
+    |select_ln362_2_fu_6109_p3          |    select|   0|  0|   2|           1|           2|
+    |select_ln363_2_fu_6100_p3          |    select|   0|  0|   3|           1|           3|
+    |select_ln364_2_fu_6091_p3          |    select|   0|  0|   3|           1|           3|
+    |select_ln365_2_fu_6082_p3          |    select|   0|  0|   3|           1|           3|
+    |select_ln367_2_fu_6054_p3          |    select|   0|  0|   4|           1|           4|
+    |select_ln368_2_fu_6137_p3          |    select|   0|  0|   4|           1|           4|
+    |select_ln387_2_fu_6026_p3          |    select|   0|  0|   4|           1|           4|
+    |select_ln394_1_fu_5980_p3          |    select|   0|  0|   2|           1|           2|
+    |select_ln394_2_fu_5998_p3          |    select|   0|  0|   7|           1|           7|
+    |select_ln394_fu_5989_p3            |    select|   0|  0|   4|           1|           4|
+    |state_decode_dec_uops_exc_cause_0  |    select|   0|  0|  64|           1|          64|
+    |v_10_fu_6427_p3                    |    select|   0|  0|  21|           1|          22|
+    |v_12_fu_6327_p3                    |    select|   0|  0|  14|           1|          14|
+    |v_13_fu_6222_p3                    |    select|   0|  0|  29|           1|          29|
+    |grp_fu_5703_p2                     |       xor|   0|  0|   2|           1|           2|
+    |xor_ln394_fu_5974_p2               |       xor|   0|  0|   2|           1|           2|
+    +-----------------------------------+----------+----+---+----+------------+------------+
+    |Total                              |          |   0|  0| 314|         120|         216|
+    +-----------------------------------+----------+----+---+----+------------+------------+
+
+    * Multiplexer:
+    +------------------------------------------------------------+-----+-----------+-----+-----------+
+    |                            Name                            | LUT | Input Size| Bits| Total Bits|
+    +------------------------------------------------------------+-----+-----------+-----+-----------+
+    |ap_phi_mux_empty_phi_fu_5662_p4                             |   14|          3|   64|        192|
+    |ap_phi_mux_p_11_6_phi_fu_3233_p152                          |   14|          3|    1|          3|
+    |ap_phi_mux_p_11_7_phi_fu_3000_p152                          |   14|          3|    1|          3|
+    |ap_phi_mux_p_11_8_phi_fu_2767_p152                          |   14|          3|    1|          3|
+    |ap_phi_mux_p_19_1_phi_fu_2534_p152                          |   26|          5|    2|         10|
+    |ap_phi_mux_p_19_2_phi_fu_2301_p152                          |   14|          3|    1|          3|
+    |ap_phi_mux_p_19_6_phi_fu_3699_p152                          |   14|          3|    1|          3|
+    |ap_phi_mux_p_19_7_phi_fu_3466_p152                          |   14|          3|    1|          3|
+    |ap_phi_mux_p_5_phi_fu_5315_p152                             |   14|          3|    1|          3|
+    |ap_phi_mux_p_7_0_phi_fu_5084_p152                           |   49|          9|    4|         36|
+    |ap_phi_mux_p_7_1_phi_fu_4851_p152                           |   20|          4|    2|          8|
+    |ap_phi_mux_p_7_2_phi_fu_4618_p152                           |   26|          5|    2|         10|
+    |ap_phi_mux_p_7_4_phi_fu_4398_p152                           |   20|          4|    3|         12|
+    |ap_phi_mux_p_7_5_phi_fu_4165_p152                           |   14|          3|    1|          3|
+    |ap_phi_mux_p_7_6_phi_fu_3932_p152                           |   26|          5|    3|         15|
+    |ap_phi_mux_state_decode_dec_valids_0_flag_0_phi_fu_5673_p6  |   14|          3|    1|          3|
+    |ap_phi_mux_state_decode_dec_valids_0_new_0_phi_fu_5687_p6   |   14|          3|    1|          3|
+    |ap_phi_mux_uop_16221_213_phi_fu_5651_p4                     |   14|          3|    1|          3|
+    |ap_phi_mux_uop_17222_205_phi_fu_5641_p4                     |   14|          3|   64|        192|
+    |ap_phi_mux_uop_17222_206_phi_fu_5588_p4                     |   14|          3|   64|        192|
+    |ap_phi_mux_uop_23_0231_07_phi_fu_5630_p4                    |   14|          3|    1|          3|
+    |ap_phi_mux_uop_23_0231_08_phi_fu_5578_p4                    |   14|          3|    1|          3|
+    |ap_phi_mux_uop_23_1232_010_phi_fu_5568_p4                   |   14|          3|   64|        192|
+    |ap_phi_mux_uop_23_1232_09_phi_fu_5619_p4                    |   14|          3|   64|        192|
+    |ap_phi_mux_uop_23_3234_013_phi_fu_5608_p4                   |   14|          3|    1|          3|
+    |ap_phi_mux_uop_23_3234_014_phi_fu_5558_p4                   |   14|          3|    1|          3|
+    |ap_phi_mux_uop_23_4235_015_phi_fu_5597_p4                   |   14|          3|    1|          3|
+    |ap_phi_mux_uop_23_4235_016_phi_fu_5548_p4                   |   14|          3|    1|          3|
+    |ap_phi_mux_uop_csr_addr_1_phi_fu_726_p152                   |   14|          3|   12|         36|
+    |ap_phi_mux_uop_exc_cause_1_phi_fu_474_p4                    |   14|          3|    2|          6|
+    |ap_phi_mux_uop_exc_cause_2_phi_fu_441_p4                    |   14|          3|    2|          6|
+    |ap_phi_mux_uop_exc_cause_3_phi_fu_408_p4                    |   14|          3|    2|          6|
+    |ap_phi_mux_uop_exc_cause_4_phi_fu_1396_p152                 |   49|          9|    4|         36|
+    |ap_phi_mux_uop_exc_cause_phi_fu_507_p4                      |   14|          3|    2|          6|
+    |ap_phi_mux_uop_exception_6_phi_fu_496_p4                    |   14|          3|    1|          3|
+    |ap_phi_mux_uop_exception_7_phi_fu_463_p4                    |   14|          3|    1|          3|
+    |ap_phi_mux_uop_exception_8_phi_fu_430_p4                    |   14|          3|    1|          3|
+    |ap_phi_mux_uop_exception_9_phi_fu_397_p4                    |   14|          3|    1|          3|
+    |ap_phi_mux_uop_exception_phi_fu_1171_p152                   |   49|          9|    1|          9|
+    |ap_phi_mux_uop_fu_code_phi_fu_1849_p152                     |   31|          6|    3|         18|
+    |ap_phi_mux_uop_imm_packed_9_phi_fu_529_p152                 |   59|         11|   32|        352|
+    |ap_phi_mux_uop_is_sys_pc2epc_phi_fu_1617_p152               |   14|          3|    1|          3|
+    |ap_phi_mux_uop_rename_dst_rtype_6_phi_fu_952_p152           |   54|         10|    2|         20|
+    |ap_phi_mux_uop_uopc_1_phi_fu_485_p4                         |   14|          3|    5|         15|
+    |ap_phi_mux_uop_uopc_2_phi_fu_452_p4                         |   14|          3|    5|         15|
+    |ap_phi_mux_uop_uopc_3_phi_fu_419_p4                         |   14|          3|    5|         15|
+    |ap_phi_mux_uop_uopc_4_phi_fu_2082_p152                      |  342|         70|    8|        560|
+    |ap_phi_mux_uop_uopc_phi_fu_518_p4                           |   14|          3|    3|          9|
+    |state_decode_dec_valids_0_o                                 |    9|          2|    1|          2|
+    +------------------------------------------------------------+-----+-----------+-----+-----------+
+    |Total                                                       | 1264|        257|  447|       2228|
+    +------------------------------------------------------------+-----+-----------+-----+-----------+
+
+    * Register:
+    N/A
+
+
+
+================================================================
+== Interface
+================================================================
+* Summary:
++-------------------------------------------------+-----+-----+------------+------------------------------------------+--------------+
+|                    RTL Ports                    | Dir | Bits|  Protocol  |               Source Object              |    C Type    |
++-------------------------------------------------+-----+-----+------------+------------------------------------------+--------------+
+|ap_ready                                         |  out|    1|  ap_ctrl_hs|                             decode_module|  return value|
+|state_rename_dispatch_packets_valid_0            |   in|    1|     ap_none|     state_rename_dispatch_packets_valid_0|       pointer|
+|state_decode_dec_valids_0_i                      |   in|    1|     ap_ovld|                 state_decode_dec_valids_0|       pointer|
+|state_decode_dec_valids_0_o                      |  out|    1|     ap_ovld|                 state_decode_dec_valids_0|       pointer|
+|state_decode_dec_valids_0_o_ap_vld               |  out|    1|     ap_ovld|                 state_decode_dec_valids_0|       pointer|
+|state_frontend_fetch_packet_valid                |   in|    1|     ap_none|         state_frontend_fetch_packet_valid|       pointer|
+|state_frontend_fetch_uop_debug_pc                |   in|   64|     ap_none|         state_frontend_fetch_uop_debug_pc|       pointer|
+|state_frontend_fetch_uop_inst                    |   in|   32|     ap_none|             state_frontend_fetch_uop_inst|       pointer|
+|state_frontend_fetch_uop_exception               |   in|    1|     ap_none|        state_frontend_fetch_uop_exception|       pointer|
+|state_frontend_fetch_uop_exc_cause               |   in|   64|     ap_none|        state_frontend_fetch_uop_exc_cause|       pointer|
+|state_frontend_fetch_uop_exc_exception           |   in|    1|     ap_none|    state_frontend_fetch_uop_exc_exception|       pointer|
+|state_frontend_fetch_uop_exc_exc_cause           |   in|   64|     ap_none|    state_frontend_fetch_uop_exc_exc_cause|       pointer|
+|state_frontend_fetch_uop_exc_xcpt_ae_if          |   in|    1|     ap_none|   state_frontend_fetch_uop_exc_xcpt_ae_if|       pointer|
+|state_frontend_fetch_uop_exc_xcpt_ma_if          |   in|    1|     ap_none|   state_frontend_fetch_uop_exc_xcpt_ma_if|       pointer|
+|state_decode_dec_uops_uopc_0                     |  out|    8|      ap_vld|              state_decode_dec_uops_uopc_0|       pointer|
+|state_decode_dec_uops_uopc_0_ap_vld              |  out|    1|      ap_vld|              state_decode_dec_uops_uopc_0|       pointer|
+|state_decode_dec_uops_inst_0                     |  out|   32|      ap_vld|              state_decode_dec_uops_inst_0|       pointer|
+|state_decode_dec_uops_inst_0_ap_vld              |  out|    1|      ap_vld|              state_decode_dec_uops_inst_0|       pointer|
+|state_decode_dec_uops_debug_pc_0                 |  out|   64|      ap_vld|          state_decode_dec_uops_debug_pc_0|       pointer|
+|state_decode_dec_uops_debug_pc_0_ap_vld          |  out|    1|      ap_vld|          state_decode_dec_uops_debug_pc_0|       pointer|
+|state_decode_dec_uops_iq_type_0                  |  out|    1|      ap_vld|           state_decode_dec_uops_iq_type_0|       pointer|
+|state_decode_dec_uops_iq_type_0_ap_vld           |  out|    1|      ap_vld|           state_decode_dec_uops_iq_type_0|       pointer|
+|state_decode_dec_uops_fu_code_0                  |  out|    3|      ap_vld|           state_decode_dec_uops_fu_code_0|       pointer|
+|state_decode_dec_uops_fu_code_0_ap_vld           |  out|    1|      ap_vld|           state_decode_dec_uops_fu_code_0|       pointer|
+|state_decode_dec_uops_ctrl_br_type_0             |  out|    4|      ap_vld|      state_decode_dec_uops_ctrl_br_type_0|       pointer|
+|state_decode_dec_uops_ctrl_br_type_0_ap_vld      |  out|    1|      ap_vld|      state_decode_dec_uops_ctrl_br_type_0|       pointer|
+|state_decode_dec_uops_ctrl_op1_sel_0             |  out|    2|      ap_vld|      state_decode_dec_uops_ctrl_op1_sel_0|       pointer|
+|state_decode_dec_uops_ctrl_op1_sel_0_ap_vld      |  out|    1|      ap_vld|      state_decode_dec_uops_ctrl_op1_sel_0|       pointer|
+|state_decode_dec_uops_ctrl_op2_sel_0             |  out|    2|      ap_vld|      state_decode_dec_uops_ctrl_op2_sel_0|       pointer|
+|state_decode_dec_uops_ctrl_op2_sel_0_ap_vld      |  out|    1|      ap_vld|      state_decode_dec_uops_ctrl_op2_sel_0|       pointer|
+|state_decode_dec_uops_ctrl_op_fcn_0              |  out|    3|      ap_vld|       state_decode_dec_uops_ctrl_op_fcn_0|       pointer|
+|state_decode_dec_uops_ctrl_op_fcn_0_ap_vld       |  out|    1|      ap_vld|       state_decode_dec_uops_ctrl_op_fcn_0|       pointer|
+|state_decode_dec_uops_ctrl_fcn_dw_0              |  out|    1|      ap_vld|       state_decode_dec_uops_ctrl_fcn_dw_0|       pointer|
+|state_decode_dec_uops_ctrl_fcn_dw_0_ap_vld       |  out|    1|      ap_vld|       state_decode_dec_uops_ctrl_fcn_dw_0|       pointer|
+|state_decode_dec_uops_ctrl_csr_cmd_0             |  out|    3|      ap_vld|      state_decode_dec_uops_ctrl_csr_cmd_0|       pointer|
+|state_decode_dec_uops_ctrl_csr_cmd_0_ap_vld      |  out|    1|      ap_vld|      state_decode_dec_uops_ctrl_csr_cmd_0|       pointer|
+|state_decode_dec_uops_ctrl_is_load_0             |  out|    1|      ap_vld|      state_decode_dec_uops_ctrl_is_load_0|       pointer|
+|state_decode_dec_uops_ctrl_is_load_0_ap_vld      |  out|    1|      ap_vld|      state_decode_dec_uops_ctrl_is_load_0|       pointer|
+|state_decode_dec_uops_ctrl_is_sta_0              |  out|    1|      ap_vld|       state_decode_dec_uops_ctrl_is_sta_0|       pointer|
+|state_decode_dec_uops_ctrl_is_sta_0_ap_vld       |  out|    1|      ap_vld|       state_decode_dec_uops_ctrl_is_sta_0|       pointer|
+|state_decode_dec_uops_branch_br_mask_0           |  out|    8|      ap_vld|    state_decode_dec_uops_branch_br_mask_0|       pointer|
+|state_decode_dec_uops_branch_br_mask_0_ap_vld    |  out|    1|      ap_vld|    state_decode_dec_uops_branch_br_mask_0|       pointer|
+|state_decode_dec_uops_branch_pc_lob_0            |  out|    6|      ap_vld|     state_decode_dec_uops_branch_pc_lob_0|       pointer|
+|state_decode_dec_uops_branch_pc_lob_0_ap_vld     |  out|    1|      ap_vld|     state_decode_dec_uops_branch_pc_lob_0|       pointer|
+|state_decode_dec_uops_branch_is_br_0             |  out|    1|      ap_vld|      state_decode_dec_uops_branch_is_br_0|       pointer|
+|state_decode_dec_uops_branch_is_br_0_ap_vld      |  out|    1|      ap_vld|      state_decode_dec_uops_branch_is_br_0|       pointer|
+|state_decode_dec_uops_branch_is_jalr_0           |  out|    1|      ap_vld|    state_decode_dec_uops_branch_is_jalr_0|       pointer|
+|state_decode_dec_uops_branch_is_jalr_0_ap_vld    |  out|    1|      ap_vld|    state_decode_dec_uops_branch_is_jalr_0|       pointer|
+|state_decode_dec_uops_branch_is_jal_0            |  out|    1|      ap_vld|     state_decode_dec_uops_branch_is_jal_0|       pointer|
+|state_decode_dec_uops_branch_is_jal_0_ap_vld     |  out|    1|      ap_vld|     state_decode_dec_uops_branch_is_jal_0|       pointer|
+|state_decode_dec_uops_imm_packed_0               |  out|   32|      ap_vld|        state_decode_dec_uops_imm_packed_0|       pointer|
+|state_decode_dec_uops_imm_packed_0_ap_vld        |  out|    1|      ap_vld|        state_decode_dec_uops_imm_packed_0|       pointer|
+|state_decode_dec_uops_csr_addr_0                 |  out|   12|      ap_vld|          state_decode_dec_uops_csr_addr_0|       pointer|
+|state_decode_dec_uops_csr_addr_0_ap_vld          |  out|    1|      ap_vld|          state_decode_dec_uops_csr_addr_0|       pointer|
+|state_decode_dec_uops_rename_ldst_0              |  out|    5|      ap_vld|       state_decode_dec_uops_rename_ldst_0|       pointer|
+|state_decode_dec_uops_rename_ldst_0_ap_vld       |  out|    1|      ap_vld|       state_decode_dec_uops_rename_ldst_0|       pointer|
+|state_decode_dec_uops_rename_lrs1_0              |  out|    5|      ap_vld|       state_decode_dec_uops_rename_lrs1_0|       pointer|
+|state_decode_dec_uops_rename_lrs1_0_ap_vld       |  out|    1|      ap_vld|       state_decode_dec_uops_rename_lrs1_0|       pointer|
+|state_decode_dec_uops_rename_lrs2_0              |  out|    5|      ap_vld|       state_decode_dec_uops_rename_lrs2_0|       pointer|
+|state_decode_dec_uops_rename_lrs2_0_ap_vld       |  out|    1|      ap_vld|       state_decode_dec_uops_rename_lrs2_0|       pointer|
+|state_decode_dec_uops_rename_dst_rtype_0         |  out|    2|      ap_vld|  state_decode_dec_uops_rename_dst_rtype_0|       pointer|
+|state_decode_dec_uops_rename_dst_rtype_0_ap_vld  |  out|    1|      ap_vld|  state_decode_dec_uops_rename_dst_rtype_0|       pointer|
+|state_decode_dec_uops_exception_0                |  out|    1|      ap_vld|         state_decode_dec_uops_exception_0|       pointer|
+|state_decode_dec_uops_exception_0_ap_vld         |  out|    1|      ap_vld|         state_decode_dec_uops_exception_0|       pointer|
+|state_decode_dec_uops_exc_cause_0                |  out|   64|      ap_vld|         state_decode_dec_uops_exc_cause_0|       pointer|
+|state_decode_dec_uops_exc_cause_0_ap_vld         |  out|    1|      ap_vld|         state_decode_dec_uops_exc_cause_0|       pointer|
+|state_decode_dec_uops_mem_mem_size_0             |  out|    2|      ap_vld|      state_decode_dec_uops_mem_mem_size_0|       pointer|
+|state_decode_dec_uops_mem_mem_size_0_ap_vld      |  out|    1|      ap_vld|      state_decode_dec_uops_mem_mem_size_0|       pointer|
+|state_decode_dec_uops_mem_mem_signed_0           |  out|    1|      ap_vld|    state_decode_dec_uops_mem_mem_signed_0|       pointer|
+|state_decode_dec_uops_mem_mem_signed_0_ap_vld    |  out|    1|      ap_vld|    state_decode_dec_uops_mem_mem_signed_0|       pointer|
+|state_decode_dec_uops_mem_uses_ldq_0             |  out|    1|      ap_vld|      state_decode_dec_uops_mem_uses_ldq_0|       pointer|
+|state_decode_dec_uops_mem_uses_ldq_0_ap_vld      |  out|    1|      ap_vld|      state_decode_dec_uops_mem_uses_ldq_0|       pointer|
+|state_decode_dec_uops_mem_uses_stq_0             |  out|    1|      ap_vld|      state_decode_dec_uops_mem_uses_stq_0|       pointer|
+|state_decode_dec_uops_mem_uses_stq_0_ap_vld      |  out|    1|      ap_vld|      state_decode_dec_uops_mem_uses_stq_0|       pointer|
+|state_decode_dec_uops_is_sys_pc2epc_0            |  out|    1|      ap_vld|     state_decode_dec_uops_is_sys_pc2epc_0|       pointer|
+|state_decode_dec_uops_is_sys_pc2epc_0_ap_vld     |  out|    1|      ap_vld|     state_decode_dec_uops_is_sys_pc2epc_0|       pointer|
+|state_decode_dec_uops_exc_exception_0            |  out|    1|      ap_vld|     state_decode_dec_uops_exc_exception_0|       pointer|
+|state_decode_dec_uops_exc_exception_0_ap_vld     |  out|    1|      ap_vld|     state_decode_dec_uops_exc_exception_0|       pointer|
+|state_decode_dec_uops_exc_exc_cause_0            |  out|   64|      ap_vld|     state_decode_dec_uops_exc_exc_cause_0|       pointer|
+|state_decode_dec_uops_exc_exc_cause_0_ap_vld     |  out|    1|      ap_vld|     state_decode_dec_uops_exc_exc_cause_0|       pointer|
+|state_decode_dec_uops_exc_xcpt_ae_if_0           |  out|    1|      ap_vld|    state_decode_dec_uops_exc_xcpt_ae_if_0|       pointer|
+|state_decode_dec_uops_exc_xcpt_ae_if_0_ap_vld    |  out|    1|      ap_vld|    state_decode_dec_uops_exc_xcpt_ae_if_0|       pointer|
+|state_decode_dec_uops_exc_xcpt_ma_if_0           |  out|    1|      ap_vld|    state_decode_dec_uops_exc_xcpt_ma_if_0|       pointer|
+|state_decode_dec_uops_exc_xcpt_ma_if_0_ap_vld    |  out|    1|      ap_vld|    state_decode_dec_uops_exc_xcpt_ma_if_0|       pointer|
++-------------------------------------------------+-----+-----+------------+------------------------------------------+--------------+

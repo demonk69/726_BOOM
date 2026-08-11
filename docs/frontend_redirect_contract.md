@@ -1,6 +1,6 @@
-# Frontend Redirect Contract Proposal
+# Frontend Redirect Contract
 
-This is a Gate 5.0 design contract only. Canonical types are unchanged.
+Gate 5.1R verifies the protocol foundation through the non-product `synth_frontend_verify_top`, which exposes redirect, ROB ownership, runtime reset, and held Decode/fault state without duplicating the canonical Frontend algorithm. The 33 required generated-RTL checks pass.
 
 ```cpp
 enum RedirectCause {

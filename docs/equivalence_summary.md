@@ -39,6 +39,7 @@ Gate 3.10 status: LOCAL_PIPELINE_CHARACTERIZED_NO_ACCEPTED_CANDIDATE. R1 passes 
 | Gate 4.0 W4 concurrency | VERIFIED_FOR_SUPPORTED_SUBSET | Directed 95/95, random 128/128, focused RTL 20/20, current W3 11/11, and full-core 49/49 verify two writes, three wakeups/bypasses, and multi-ROB complete. Source-bound final csynth passes 7/7 with two replicated PRF banks, a 52-bit LVT, two independent bank write enables, and final II=1. |
 | Gate 4.1 M1 RV64M decode | VERIFIED | All 13 legal operations, four `rd=x0` cases, ten illegal near-misses, and fifteen base OP/OP-32 collision vectors pass. Frozen non-M traces are 14/14 byte-identical and conservative csynth is 3/3. This is decode equivalence only, not M arithmetic equivalence. |
 | Gate 4.1 M3B divider integration | VERIFIED_FOR_SUPPORTED_SUBSET | Existing INT completion topology is preserved. Directed 167/167, random 128x1024, native/csim/RTL full-core DIV programs 10/10, focused RTL 26/26, reset preservation 49/49, and csynth 8/8 pass. Strict BOOM cycle equivalence remains unclaimed. |
+| Gate 5.1 Frontend foundation | VERIFIED_FOR_SUPPORTED_SUBSET | Native/UBSan, focused generated RTL 33/33, W3 400/400, normalized traces 7/7, full-program 10/10, partial-order 7/7, Gate 3.9 RTL 49/49, and canonical csynth 9/9 pass. RVC/Fetch Buffer/FTQ/predictor/ICache remain outside this gate. |
 
 ## Gate 1 Results
 
@@ -239,3 +240,5 @@ See `reports/gate3_8/gate3_8_results.md` and `docs/gate3_8_rtl_verification.md`.
 The latest accepted PPA configuration remains Gate 3.3. Gate 3.8 reproduces its synthesis metrics and adds normal-operation/backpressure RTL evidence, but demonstrates that its runtime reset semantics are not acceptable. Strict BOOM cycle equivalence remains `INSUFFICIENT_EVIDENCE`.
 
 Gate 4.0 does not change the strict-equivalence verdict. `M009=PARTIALLY_VERIFIED`, `M014=VERIFIED`, and `READY_FOR_OFFICIAL_GATE_3=false`. The official Chipyard/FESVR/DRAMSim environment remains unavailable.
+
+Gate 5.1R also does not claim strict BOOM cycle equivalence. It verifies the supported Frontend foundation and preserves `M009=PARTIALLY_VERIFIED`, `M014=VERIFIED`, and `READY_FOR_OFFICIAL_GATE_3=false`.

@@ -129,10 +129,9 @@ void frontend_module(BoomCoreState& state, PipeSignals& pipe) {
         fe.fetch_packet_valid = true;
         fe.pc = fe.resp_address + 4;
         fe.response_received = false;
-        return;
     }
 
-    if (!fe.request_sent && !fe.fetch_packet_valid) {
+    if (!fe.request_sent) {
         ImemRequest req;
         req.address = fe.pc;
         req.fetch_id = fe.fetch_id;
@@ -3331,8 +3330,8 @@ extern void rob_commit_module(BoomCoreState& state, PipeSignals& pipe);
 
 void synth_frontend_top(hls::stream<ImemRequest>& imem_req_out,
                         hls::stream<ImemResponse>& imem_resp_in,
-                        uint64_t seed,
-                        uint64_t& observable) {
+                         uint64_t seed,
+                         uint64_t& observable) {
     static BoomCoreState state;
     if ((seed & 1ULL) != 0) state.frontend.pc = seed & ~0x3ULL;
     PipeSignals pipe;
@@ -3340,6 +3339,124 @@ void synth_frontend_top(hls::stream<ImemRequest>& imem_req_out,
     boom::frontend_module(state, pipe);
     if (!pipe.imem_req.empty()) imem_req_out.write(pipe.imem_req.read());
     observable = state.frontend.pc;
+}
+
+void synth_frontend_verify_top(
+        hls::stream<ImemRequest>& imem_req_out,
+        hls::stream<ImemResponse>& imem_resp_in,
+        bool runtime_reset,
+        bool decode_ready,
+        bool architectural_redirect_valid,
+        uint64_t architectural_redirect_target,
+        uint8_t architectural_redirect_cause,
+        uint8_t architectural_redirect_rob_idx,
+        uint32_t architectural_redirect_allocation_id,
+        bool branch_redirect_valid,
+        uint64_t branch_redirect_target,
+        bool generic_flush_valid,
+        uint64_t generic_flush_target,
+        bool owner_live,
+        uint32_t owner_allocation_id,
+        bool& response_ready,
+        bool& decode_valid,
+        uint64_t& decode_pc,
+        uint32_t& decode_instruction,
+        bool& decode_fault,
+        uint64_t& decode_fault_cause,
+        bool& held_entry_valid,
+        bool& outstanding_valid,
+        uint64_t& frontend_pc,
+        uint32_t& frontend_epoch,
+        uint64_t& expected_address,
+        bool& accepted_response_pulse,
+        bool& stale_response_pulse,
+        bool& redirect_accepted_pulse,
+        bool& ownership_rejection_pulse,
+        bool& misalignment_fault_pulse) {
+    static BoomCoreState state;
+
+    if (runtime_reset) {
+        // This is the focused equivalent of the Gate 3.9 validity-clearing
+        // reset phase. Canonical Frontend performs restart and epoch advance.
+        state.frontend.reset_done = false;
+        state.decode = DecodeState();
+        state.rename.dispatch_packets[0] = RenameDispatchPacket();
+    } else if (decode_ready) {
+        state.decode.dec_valids[0] = false;
+    }
+
+    state.frontend_redirect = FrontendRedirect();
+    state.brupdate = BranchUpdate();
+    state.global_flush = generic_flush_valid;
+    if (generic_flush_valid) state.frontend.pc = generic_flush_target;
+
+    state.frontend_redirect.valid = architectural_redirect_valid;
+    state.frontend_redirect.target_pc = architectural_redirect_target;
+    state.frontend_redirect.cause =
+        static_cast<FrontendRedirectCause>(architectural_redirect_cause);
+    state.frontend_redirect.rob_idx = architectural_redirect_rob_idx;
+    state.frontend_redirect.allocation_id = architectural_redirect_allocation_id;
+
+    if (architectural_redirect_rob_idx < ROB_DEPTH) {
+        RobEntry& owner = state.rob.entries[architectural_redirect_rob_idx];
+        owner.valid = owner_live;
+        owner.uop.queue.rob_allocation_id = owner_allocation_id;
+    }
+
+    state.brupdate.valid = branch_redirect_valid;
+    state.brupdate.mispredict = branch_redirect_valid;
+    state.brupdate.jalr_target = branch_redirect_target;
+
+    PipeSignals pipe;
+    bool response_present = !imem_resp_in.empty();
+    ImemResponse response;
+    if (response_present) {
+        response = imem_resp_in.read();
+        pipe.imem_resp.write(response);
+    }
+
+    const bool reset_redirect = !state.frontend.reset_done;
+    const bool owner_bypass = architectural_redirect_cause == FRONTEND_REDIRECT_DEBUG ||
+        architectural_redirect_cause == FRONTEND_REDIRECT_INTERRUPT;
+    const bool owner_matches = architectural_redirect_rob_idx < ROB_DEPTH &&
+        owner_live && owner_allocation_id == architectural_redirect_allocation_id;
+    const bool owned_architectural_redirect = !reset_redirect &&
+        architectural_redirect_valid && (owner_bypass || owner_matches);
+    const bool rejected_owner = !reset_redirect && architectural_redirect_valid &&
+        !owner_bypass && !owner_matches;
+    const bool branch_redirect = !reset_redirect && !owned_architectural_redirect &&
+        branch_redirect_valid;
+    const bool generic_redirect = !reset_redirect && !owned_architectural_redirect &&
+        !branch_redirect && generic_flush_valid;
+    const bool any_redirect = reset_redirect || owned_architectural_redirect ||
+        branch_redirect || generic_redirect || state.frontend.flush;
+    const bool response_matches = response_present && state.frontend.request_sent &&
+        response.fetch_id == state.frontend.pending_fetch_id &&
+        response.epoch == state.frontend.pending_epoch &&
+        response.address == state.frontend.pending_address;
+
+    boom::frontend_module(state, pipe);
+    boom::decode_module(state);
+
+    if (!pipe.imem_req.empty()) imem_req_out.write(pipe.imem_req.read());
+
+    response_ready = true;
+    decode_valid = state.decode.dec_valids[0];
+    decode_pc = state.decode.dec_uops[0].debug_pc;
+    decode_instruction = state.decode.dec_uops[0].inst;
+    decode_fault = state.decode.dec_uops[0].exception;
+    decode_fault_cause = state.decode.dec_uops[0].exc_cause;
+    held_entry_valid = state.frontend.fetch_packet_valid;
+    outstanding_valid = state.frontend.request_sent;
+    frontend_pc = state.frontend.pc;
+    frontend_epoch = state.frontend.epoch;
+    expected_address = state.frontend.pending_address;
+    accepted_response_pulse = response_matches && !any_redirect;
+    stale_response_pulse = response_present && !accepted_response_pulse;
+    redirect_accepted_pulse = any_redirect;
+    ownership_rejection_pulse = rejected_owner;
+    misalignment_fault_pulse = state.frontend.fetch_packet_valid &&
+        state.frontend.fetch_uop.exception && state.frontend.fetch_uop.exc.xcpt_ma_if;
 }
 
 void synth_decode_top(uint32_t seed_inst, uint64_t seed_pc, uint64_t& observable) {

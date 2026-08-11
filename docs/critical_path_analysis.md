@@ -56,3 +56,7 @@ Cycle equivalence remains INSUFFICIENT_EVIDENCE. Gate 3.7 status is `CORE_CYCLE_
 The final W4E product estimate is 6.025 ns for both step and product tops. Verbose scheduling localizes the longest state to `execute_module` state 8 at 6.02 ns: selected source readiness, parallel 52x64 replicated-bank reads, LVT selection, operand/opcode selection, and execute result/control generation. Completion service is secondary. Canonical verbose evidence is under `reports/gate4_0/w4/csynth_final/{synth_core_step_top,boom_core_top}/verbose/`.
 
 All tops are reported unpipelined and `CORE_CYCLE` has no `PipelineII`. The source has no DATAFLOW, false-dependence, or explicit complete-partition pragma. Waiver-free `apply_writeback_ports` reaches target/final II=1 and maps independent bank write enables. The LVT bank-select read cone moves `execute_module` state 8 to 6.02 ns; final product estimate is 6.025 ns.
+
+## Gate 5.1 Final
+
+Nine canonical targets pass. `boom_core_top` and `synth_core_step_top` are both 6.341 ns with 16 BRAM and 3 DSP. The full-core longest child schedule remains `execute_module` at 6.341 ns; standalone `synth_execute_top` is 6.411 ns. `synth_frontend_top` and the full-core `frontend_module` are 5.993 ns and do not become the critical path. The final product is 124317 LUT and 27513 FF. `GATE5_1_PPA_BLOCKER=false`; all canonical tops report `PipelineType=no`, `CORE_CYCLE` is not pipelined, and no DATAFLOW, false-dependence, or explicit complete-partition directive is accepted.

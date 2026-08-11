@@ -86,13 +86,18 @@ void t5_x0() { TEST("x0 write: ADDI x0,x0,99; x0 stays 0");
 
 void t6_rob_full() { TEST("ROB fill: 33 instructions should stall");
     BoomCoreState s; PipeSignals p;
-    s.frontend.reset_done = true;
     s.rob.state = ROB_NORMAL;
     s.rob.head = 0;
     s.rob.tail = 0;
     s.rob.maybe_full = true;
     for(int i=0;i<ROB_DEPTH;i++) { s.rob.entries[i].valid=true; s.rob.entries[i].busy=true; }
-    ImemResponse rs; rs.address=RESET_VECTOR; rs.fetch_id=0; rs.instruction=MI(1,0,0,1,0x13); p.imem_resp.write(rs);
+    // Establish a real outstanding transaction before returning the response.
+    // Gate 5.1 requires address, fetch ID, and epoch ownership to all match.
+    boom_core_step(s,p);
+    CHECK(!p.imem_req.empty(),"ROB-full setup did not issue a fetch request");
+    ImemRequest rq=p.imem_req.read();
+    ImemResponse rs; rs.address=rq.address; rs.fetch_id=rq.fetch_id; rs.epoch=rq.epoch;
+    rs.instruction=MI(1,0,0,1,0x13); p.imem_resp.write(rs);
     boom_core_step(s,p);
     CHECK(s.rob.head==0,"ROB head changed while full");
     CHECK(s.rob.tail==0,"ROB tail advanced while full");

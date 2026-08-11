@@ -1,0 +1,16 @@
+
+****** xsim v2021.2 (64-bit)
+  **** SW Build 3367213 on Tue Oct 19 02:47:39 MDT 2021
+  **** IP Build 3369179 on Thu Oct 21 08:25:16 MDT 2021
+    ** Copyright 1986-2021 Xilinx, Inc. All Rights Reserved.
+
+source xsim.dir/gate3_9_snapshot/xsim_script.tcl
+# xsim {gate3_9_snapshot} -testplusarg PROGRAM=/home/lab_726/boom/hls_boom/build/gate5_1_frontend/r4_gate3_9_epoch_fix/load_store.readmemh -testplusarg PROGRAM_NAME=load_store -testplusarg SCENARIO=D5_STALE_LOAD_RESPONSE_AFTER_FLUSH -testplusarg MAX_CYCLES=50000 -testplusarg TRACE=/home/lab_726/boom/hls_boom/reports/gate5_1_frontend/repair/r4/gate3_9/rtl_traces/load_store_D5_STALE_LOAD_RESPONSE_AFTER_FLUSH.jsonl -autoloadwcfg -runall -onerror quit
+Time resolution is 1 ps
+run -all
+GATE3_8_IMEM program=/home/lab_726/boom/hls_boom/build/gate5_1_frontend/r4_gate3_9_epoch_fix/load_store.readmemh
+GATE3_8_START scenario=D5_STALE_LOAD_RESPONSE_AFTER_FLUSH code=35 program=load_store max_cycles=50000
+GATE3_8_PASS scenario=D5_STALE_LOAD_RESPONSE_AFTER_FLUSH cycles=20346 commits=13 resets=1 imem=18 dmem=3 loads=1 stores=2 tohost=0000000000000001
+$finish called at time : 203505 ns : File "/home/lab_726/boom/hls_boom/rtl_tb/boom_core_rtl_tb.sv" Line 282
+exit
+INFO: [Common 17-206] Exiting xsim at Tue Aug 11 20:11:47 2026...

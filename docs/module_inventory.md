@@ -2,11 +2,11 @@
 
 | Module | File | Status | HLS Status | Notes |
 |---|---|---|---|---|
-| boom_core_top | src/boom_core_top.cpp | PARTIAL | PASS_W4E_FINAL_CSYNTH | 111869 LUT, 25094 FF, 16 BRAM_18K, 3 DSP, 6.025 ns; `CORE_CYCLE` unpipelined; product RTL 49/49 |
+| boom_core_top | src/boom_core_top.cpp | PARTIAL | PASS_GATE5_1R_CSYNTH | 124317 LUT, 27513 FF, 16 BRAM_18K, 3 DSP, 6.341 ns; `CORE_CYCLE` unpipelined; Gate 5.1R full regression accepted |
 | reset controller | src/reset.cpp | IMPLEMENTED | PASS_LOCAL_PIPELINE_CHARACTERIZATION | Default 145-step Gate 3.9 reset accepted; R1 114-step source/II=1 loop rejected by RTL latency/cycle evidence |
-| boom_core_step | src/boom_core_step.cpp | PARTIAL | PASS_W4E_FINAL_CSYNTH | Owns exactly one completion service; no-partition two-step diagnostic PASS; final step top 105121 LUT and 6.025 ns |
+| boom_core_step | src/boom_core_step.cpp | PARTIAL | PASS_GATE5_1R_CANONICAL_WRAPPER_CSYNTH | Raw function is not a product top; canonical `synth_core_step_top` is 116835 LUT, 27106 FF, 16 BRAM, 3 DSP, 6.341 ns |
 | boom_core_ncycle_n1/n2/n4/n8_top | src/boom_core_top.cpp | ANALYSIS_ONLY | PASS_ATTRIBUTION_CSYNTH | Gate 3.6 fixed-trip controls; one retained cycle wrapper, no pipeline/unroll, flat resources; not product replacements |
-| frontend | src/frontend.cpp | PARTIAL | PASS_MODULE_CSYNTH | Ideal imem request/response subset; no ICache/FetchBuffer/BP |
+| frontend | src/frontend.cpp | VERIFIED_GATE5_1R | PASS_MODULE_CSYNTH | One outstanding request with ID/epoch/address match, redirect ownership, fault/alignment handling, and one-entry handoff; verification RTL 33/33 and throughput repair accepted; no RVC/Fetch Buffer/FTQ/predictor/ICache |
 | decode | src/decode.cpp | PARTIAL_M1_RV64M_VERIFIED | PASS_M1_CSYNTH | Exact decode for all 13 RV64M operations and strict OP/OP-32 legality; arithmetic, RVC, and full decode coverage remain incomplete |
 | rename | src/rename.cpp | PARTIAL | PASS_MODULE_CSYNTH | Integer RenameMapTable + FreeList subset; Gate 3.3 branch tag allocation, masks, snapshots, and allocation-list tracking implemented for supported subset |
 | rob | src/rob.cpp | PARTIAL | PASS_W4E_FINAL_CSYNTH | 32-entry ROB allocation/flush subset; up to three completion sources validated |

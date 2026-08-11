@@ -38,13 +38,15 @@ Gate 4.0 W4 update: the false-dependence pragma is removed and replaced by a two
 
 Gate 4.1 M1 update: exact decode and INT-compatible issue classification are verified for all 13 RV64M operations. Required legal, `rd=x0`, illegal near-miss, and base OP/OP-32 collision vectors pass 42/42. W3/W4 software, random, frozen trace, architecture, and partial-order preservation pass; conservative csynth passes 3/3 with `boom_core_top` at 6.025 ns and `CORE_CYCLE` unpipelined. `M1_RV64M_DECODE_VERIFIED=true` and `READY_FOR_M2_MUL_FAMILY=true`; arithmetic execution is not yet implemented or claimed.
 
-Gate 4.1 M3B update: one persistent Divider is integrated into `ExecuteState`; all eight DIV/REM operations use the fixed INT lane and existing `completion.int_execute` source. Directed integration passes 167 checks, random integration passes 128x1024 cycles, and native/csim/generated-RTL full-core DIV programs each pass 10/10 with zero dropped, duplicate, stale, or unstable responses. Focused RTL passes 26/26, Gate 3.9 remains 49/49, and canonical csynth passes 8/8 with both full-core tops at 6.341 ns and 3 DSP. `M3B_INT_DIVIDER_INTEGRATION_VERIFIED=true`, `READY_FOR_M3C_RV64M_FINAL=true`, and `GATE4_1_RV64M_VERIFIED=false`.
+Gate 4.1 M3C update: complete RV64M directed/random, native/csim/generated-RTL full-core, reset, and canonical synthesis evidence is accepted. `GATE4_1_RV64M_VERIFIED=true`.
+
+Gate 5.1R final update: native/UBSan and focused generated RTL 33/33 pass; the next-state repair sustains one request per native architectural call and restores W3 to 400/400. Gate 3.9 full-core RTL is 49/49; RV64M native/csim/full-core RTL are 15/15 each; focused M3C/W3/W4 are 30/30, 11/11, and 20/20. Canonical csynth is 9/9 with `boom_core_top` at 124317 LUT, 27513 FF, 16 BRAM, 3 DSP, and 6.341 ns, with `CORE_CYCLE Pipelined=no`. `GATE5_1_FOCUSED_RTL_VERIFIED=true`, `GATE5_1_THROUGHPUT_BLOCKER=false`, `GATE5_1_PPA_BLOCKER=false`, `GATE5_1_FRONTEND_FOUNDATION_VERIFIED=true`, `READY_FOR_GATE5_2_RVC=true`, and `READY_FOR_FRONTEND_IMPLEMENTATION=true`. `READY_FOR_FULL_LSU_IMPLEMENTATION=false`, `READY_FOR_OFFICIAL_GATE_3=false`, `M009=PARTIALLY_VERIFIED`, and `M014=VERIFIED` remain unchanged.
 
 Gate 4.0 W3 source scope: acceptance covers the modular `src/*.cpp` implementation plus generated `src/boom_core_merged.cpp` and public `src/boom_core_top.cpp` only. `src/boom_all.cpp` is a legacy, non-canonical, unreferenced monolithic snapshot; active build, test, RTL-generation, and csynth scripts do not consume it. It is excluded from source manifests and acceptance without deletion or rewrite. Pre-existing dirty tracked logs and backup logs are excluded non-deliverables and are not evidence.
 
 ## Implemented And Tested
 
-- Frontend request/response FSM with monotonic fetch IDs and stale response drop.
+- Frontend request/response FSM with one outstanding request, fetch ID, 32-bit epoch, expected-address matching, stale drain, redirect priority/ownership, fetch faults, non-RVC alignment checks, and verified next-state request replacement; Gate 5.1 generated-RTL acceptance is complete.
 - RV64 integer ALU subset used by directed tests.
 - JAL, JALR, and conditional branches with always-not-taken baseline redirect behavior.
 - Integer rename map/free-list/stale-pdst commit release for single dispatch lane.

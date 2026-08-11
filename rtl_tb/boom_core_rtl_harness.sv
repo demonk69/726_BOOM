@@ -23,7 +23,7 @@ module boom_core_rtl_harness (
     output wire [127:0] observed_imem_req,
     output wire        observed_imem_transfer
 );
-    wire [127:0] imem_req_tdata;
+    wire [191:0] imem_req_tdata;
     wire imem_req_tvalid;
     wire imem_req_tready;
     wire [255:0] imem_resp_tdata;
@@ -56,7 +56,7 @@ module boom_core_rtl_harness (
     assign protocol_error = imem_protocol_error || dmem_protocol_error || trace_protocol_error;
     assign dmem_stalled = dmem_req_tvalid && !dmem_req_tready;
     assign trace_stalled = commit_trace_tvalid && !commit_trace_tready;
-    assign observed_imem_req = imem_req_tdata;
+    assign observed_imem_req = imem_req_tdata[127:0];
     assign observed_imem_transfer = imem_req_tvalid && imem_req_tready;
     assign rob_nonempty =
         dut.grp_boom_core_cycle_io_fu_1764.state_rob_head !=
@@ -113,7 +113,7 @@ module boom_core_rtl_harness (
 
     commit_trace_monitor trace_monitor (
         .clk(clk), .rst_n(rst_n), .scenario_code(scenario_code),
-        .imem_req_tdata(imem_req_tdata), .imem_req_tvalid(imem_req_tvalid), .imem_req_tready(imem_req_tready),
+        .imem_req_tdata(imem_req_tdata[127:0]), .imem_req_tvalid(imem_req_tvalid), .imem_req_tready(imem_req_tready),
         .dmem_req_tdata(dmem_req_tdata), .dmem_req_tvalid(dmem_req_tvalid), .dmem_req_tready(dmem_req_tready),
         .trace_tdata(commit_trace_tdata), .trace_tvalid(commit_trace_tvalid), .trace_tready(commit_trace_tready),
         .commit_count(commit_count), .trace_transfer_count(trace_transfers),

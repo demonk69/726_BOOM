@@ -1,0 +1,277 @@
+
+
+================================================================
+== Vitis HLS Report for 'frontend_module'
+================================================================
+* Date:           Tue Aug 11 20:20:16 2026
+
+* Version:        2021.2 (Build 3367213 on Tue Oct 19 02:47:39 MDT 2021)
+* Project:        boom_core_top
+* Solution:       solution_gate4_1_m3b_full_core_rtl (Vivado IP Flow Target)
+* Product family: zynquplus
+* Target device:  xczu7ev-ffvc1156-2-e
+
+
+================================================================
+== Performance Estimates
+================================================================
++ Timing:
+    * Summary:
+    +--------+----------+----------+------------+
+    |  Clock |  Target  | Estimated| Uncertainty|
+    +--------+----------+----------+------------+
+    |ap_clk  |  10.00 ns|  5.993 ns|     2.70 ns|
+    +--------+----------+----------+------------+
+
++ Latency:
+    * Summary:
+    +---------+---------+----------+----------+-----+-----+---------+
+    |  Latency (cycles) |  Latency (absolute) |  Interval | Pipeline|
+    |   min   |   max   |    min   |    max   | min | max |   Type  |
+    +---------+---------+----------+----------+-----+-----+---------+
+    |        0|        0|      0 ns|      0 ns|    0|    0|       no|
+    +---------+---------+----------+----------+-----+-----+---------+
+
+    + Detail:
+        * Instance:
+        N/A
+
+        * Loop:
+        N/A
+
+
+
+================================================================
+== Utilization Estimates
+================================================================
+* Summary:
++-----------------+---------+------+--------+--------+-----+
+|       Name      | BRAM_18K|  DSP |   FF   |   LUT  | URAM|
++-----------------+---------+------+--------+--------+-----+
+|DSP              |        -|     -|       -|       -|    -|
+|Expression       |        -|     -|       0|     502|    -|
+|FIFO             |        -|     -|       -|       -|    -|
+|Instance         |        -|     -|       -|       -|    -|
+|Memory           |        -|     -|       -|       -|    -|
+|Multiplexer      |        -|     -|       -|     688|    -|
+|Register         |        -|     -|       1|       -|    -|
++-----------------+---------+------+--------+--------+-----+
+|Total            |        0|     0|       1|    1190|    0|
++-----------------+---------+------+--------+--------+-----+
+|Available        |      624|  1728|  460800|  230400|   96|
++-----------------+---------+------+--------+--------+-----+
+|Utilization (%)  |        0|     0|      ~0|      ~0|    0|
++-----------------+---------+------+--------+--------+-----+
+
++ Detail:
+    * Instance:
+    N/A
+
+    * DSP:
+    N/A
+
+    * Memory:
+    N/A
+
+    * FIFO:
+    N/A
+
+    * Expression:
+    +----------------------------------------------------------+----------+----+---+----+------------+------------+
+    |                       Variable Name                      | Operation| DSP| FF| LUT| Bitwidth P0| Bitwidth P1|
+    +----------------------------------------------------------+----------+----+---+----+------------+------------+
+    |add_ln130_fu_1000_p2                                      |         +|   0|  0|  71|          64|           3|
+    |add_ln145_fu_1155_p2                                      |         +|   0|  0|  39|          32|           1|
+    |grp_fu_722_p2                                             |         +|   0|  0|  39|          32|           1|
+    |and_ln109_fu_964_p2                                       |       and|   0|  0|   2|           1|           1|
+    |and_ln74_fu_812_p2                                        |       and|   0|  0|   2|           1|           1|
+    |and_ln91_1_fu_912_p2                                      |       and|   0|  0|   2|           1|           1|
+    |and_ln91_2_fu_918_p2                                      |       and|   0|  0|   2|           1|           1|
+    |and_ln91_fu_906_p2                                        |       and|   0|  0|   2|           1|           1|
+    |ap_predicate_op105_write_state1                           |       and|   0|  0|   2|           1|           1|
+    |branch_redirect_fu_785_p2                                 |       and|   0|  0|   2|           1|           1|
+    |state_frontend_fetch_uop_exc_xcpt_ae_if_new_2_fu_1113_p2  |       and|   0|  0|   2|           1|           1|
+    |state_frontend_response_received_new_3_fu_1044_p2         |       and|   0|  0|   2|           1|           1|
+    |tmp_nbreadreq_fu_118_p3                                   |       and|   0|  0|   2|           1|           0|
+    |icmp_ln104_fu_952_p2                                      |      icmp|   0|  0|   8|           2|           2|
+    |icmp_ln109_fu_958_p2                                      |      icmp|   0|  0|   8|           2|           1|
+    |icmp_ln74_fu_806_p2                                       |      icmp|   0|  0|   8|           2|           1|
+    |icmp_ln92_fu_880_p2                                       |      icmp|   0|  0|  20|          32|          32|
+    |icmp_ln93_fu_890_p2                                       |      icmp|   0|  0|  20|          32|          32|
+    |icmp_ln94_fu_900_p2                                       |      icmp|   0|  0|  29|          64|          64|
+    |ap_block_state1                                           |        or|   0|  0|   2|           1|           1|
+    |or_ln111_fu_978_p2                                        |        or|   0|  0|   2|           1|           1|
+    |state_frontend_fetch_packet_valid_flag_3_fu_1053_p2       |        or|   0|  0|   2|           1|           1|
+    |state_frontend_fetch_uop_exception_new_2_fu_1093_p2       |        or|   0|  0|   2|           1|           1|
+    |state_frontend_fetch_uop_inst_flag_2_fu_1062_p2           |        or|   0|  0|   2|           1|           1|
+    |state_frontend_pc_flag_2_fu_1006_p2                       |        or|   0|  0|   2|           1|           1|
+    |state_frontend_response_received_flag_3_fu_1026_p2        |        or|   0|  0|   2|           1|           1|
+    |req_address_fu_1015_p3                                    |    select|   0|  0|  64|           1|          64|
+    |state_frontend_fetch_uop_debug_pc_new_2_fu_1082_p3        |    select|   0|  0|  64|           1|          64|
+    |state_frontend_fetch_uop_exc_cause_new_2_fu_1102_p3       |    select|   0|  0|  64|           1|          64|
+    |state_frontend_fetch_uop_inst_new_2_fu_1071_p3            |    select|   0|  0|  32|           1|          32|
+    |not_state_frontend_response_received_loc_2_fu_1035_p2     |       xor|   0|  0|   2|           1|           2|
+    +----------------------------------------------------------+----------+----+---+----+------------+------------+
+    |Total                                                     |          |   0|  0| 502|         284|         379|
+    +----------------------------------------------------------+----------+----+---+----+------------+------------+
+
+    * Multiplexer:
+    +-------------------------------------------------------------------------+----+-----------+-----+-----------+
+    |                                   Name                                  | LUT| Input Size| Bits| Total Bits|
+    +-------------------------------------------------------------------------+----+-----------+-----+-----------+
+    |ap_phi_mux_fault_debug_pc_phi_fu_159_p4                                  |  14|          3|   64|        192|
+    |ap_phi_mux_phi_ln109_phi_fu_292_p4                                       |  14|          3|    1|          3|
+    |ap_phi_mux_req_epoch_phi_fu_201_p4                                       |  14|          3|   32|         96|
+    |ap_phi_mux_req_fetch_id_phi_fu_243_p4                                    |  14|          3|   32|         96|
+    |ap_phi_mux_spec_select6202336_phi_fu_190_p4                              |  14|          3|    1|          3|
+    |ap_phi_mux_state_frontend_fetch_id_flag_0_phi_fu_169_p4                  |  14|          3|    1|          3|
+    |ap_phi_mux_state_frontend_fetch_id_flag_1_phi_fu_232_p4                  |  14|          3|    1|          3|
+    |ap_phi_mux_state_frontend_fetch_id_flag_3_phi_fu_411_p12                 |  14|          3|    1|          3|
+    |ap_phi_mux_state_frontend_fetch_id_loc_0_phi_fu_180_p4                   |  14|          3|   32|         96|
+    |ap_phi_mux_state_frontend_fetch_id_new_3_phi_fu_434_p12                  |  14|          3|   32|         96|
+    |ap_phi_mux_state_frontend_fetch_packet_valid_flag_4_phi_fu_542_p12       |  20|          4|    1|          4|
+    |ap_phi_mux_state_frontend_fetch_packet_valid_loc_1_phi_fu_273_p4         |  14|          3|    1|          3|
+    |ap_phi_mux_state_frontend_fetch_packet_valid_new_4_phi_fu_562_p12        |  20|          4|    1|          4|
+    |ap_phi_mux_state_frontend_fetch_uop_debug_pc_new_3_phi_fu_625_p12        |  14|          3|   64|        192|
+    |ap_phi_mux_state_frontend_fetch_uop_exc_cause_new_3_phi_fu_665_p12       |  14|          3|   64|        192|
+    |ap_phi_mux_state_frontend_fetch_uop_exc_xcpt_ae_if_new_3_phi_fu_685_p12  |  14|          3|    1|          3|
+    |ap_phi_mux_state_frontend_fetch_uop_exc_xcpt_ma_if_new_3_phi_fu_705_p12  |  14|          3|    1|          3|
+    |ap_phi_mux_state_frontend_fetch_uop_exception_new_3_phi_fu_645_p12       |  14|          3|    1|          3|
+    |ap_phi_mux_state_frontend_fetch_uop_inst_flag_1_phi_fu_282_p4            |  14|          3|    1|          3|
+    |ap_phi_mux_state_frontend_fetch_uop_inst_flag_3_phi_fu_585_p12           |  14|          3|    1|          3|
+    |ap_phi_mux_state_frontend_fetch_uop_inst_new_3_phi_fu_605_p12            |  14|          3|   32|         96|
+    |ap_phi_mux_state_frontend_pc_flag_1_phi_fu_211_p4                        |  14|          3|    1|          3|
+    |ap_phi_mux_state_frontend_pc_flag_3_phi_fu_371_p12                       |  14|          3|    1|          3|
+    |ap_phi_mux_state_frontend_pc_loc_1_phi_fu_222_p4                         |  14|          3|   64|        192|
+    |ap_phi_mux_state_frontend_pc_new_3_phi_fu_391_p12                        |  14|          3|   64|        192|
+    |ap_phi_mux_state_frontend_request_sent_flag_2_phi_fu_303_p8              |  20|          4|    1|          4|
+    |ap_phi_mux_state_frontend_request_sent_flag_4_phi_fu_456_p12             |  14|          3|    1|          3|
+    |ap_phi_mux_state_frontend_request_sent_loc_0_phi_fu_253_p4               |  14|          3|    1|          3|
+    |ap_phi_mux_state_frontend_request_sent_loc_2_phi_fu_320_p8               |  14|          3|    1|          3|
+    |ap_phi_mux_state_frontend_request_sent_new_4_phi_fu_479_p12              |  14|          3|    1|          3|
+    |ap_phi_mux_state_frontend_response_received_flag_4_phi_fu_502_p12        |  14|          3|    1|          3|
+    |ap_phi_mux_state_frontend_response_received_loc_0_phi_fu_263_p4          |  14|          3|    1|          3|
+    |ap_phi_mux_state_frontend_response_received_loc_2_phi_fu_354_p8          |  14|          3|    1|          3|
+    |ap_phi_mux_state_frontend_response_received_new_2_phi_fu_337_p8          |  14|          3|    1|          3|
+    |ap_phi_mux_state_frontend_response_received_new_4_phi_fu_522_p12         |  14|          3|    1|          3|
+    |ap_sig_allocacmp_uop_debug_pc                                            |   9|          2|   64|        128|
+    |ap_sig_allocacmp_uop_exc_cause                                           |   9|          2|   64|        128|
+    |ap_sig_allocacmp_uop_exception                                           |   9|          2|    1|          2|
+    |ap_sig_allocacmp_uop_inst                                                |   9|          2|   32|         64|
+    |pipe_0_blk_n                                                             |   9|          2|    1|          2|
+    |pipe_1_blk_n                                                             |   9|          2|    1|          2|
+    |state_frontend_epoch_o                                                   |   9|          2|   32|         64|
+    |state_frontend_fetch_id_o                                                |   9|          2|   32|         64|
+    |state_frontend_fetch_packet_valid_o                                      |   9|          2|    1|          2|
+    |state_frontend_pc_o                                                      |   9|          2|   64|        128|
+    |state_frontend_pending_address_o                                         |   9|          2|   64|        128|
+    |state_frontend_pending_epoch_o                                           |   9|          2|   32|         64|
+    |state_frontend_pending_fetch_id_o                                        |   9|          2|   32|         64|
+    |state_frontend_request_sent_o                                            |   9|          2|    1|          2|
+    |state_frontend_reset_done_o                                              |   9|          2|    1|          2|
+    |state_frontend_resp_address_o                                            |   9|          2|   64|        128|
+    |state_frontend_resp_exc_cause_o                                          |   9|          2|   64|        128|
+    |state_frontend_resp_exception_o                                          |   9|          2|    1|          2|
+    |state_frontend_resp_instruction_o                                        |   9|          2|   32|         64|
+    |state_frontend_response_received_o                                       |   9|          2|    1|          2|
+    +-------------------------------------------------------------------------+----+-----------+-----+-----------+
+    |Total                                                                    | 688|        148| 1089|       2686|
+    +-------------------------------------------------------------------------+----+-----------+-----+-----------+
+
+    * Register:
+    +-----------+---+----+-----+-----------+
+    |    Name   | FF| LUT| Bits| Const Bits|
+    +-----------+---+----+-----+-----------+
+    |ap_CS_fsm  |  1|   0|    1|          0|
+    +-----------+---+----+-----+-----------+
+    |Total      |  1|   0|    1|          0|
+    +-----------+---+----+-----+-----------+
+
+
+
+================================================================
+== Interface
+================================================================
+* Summary:
++------------------------------------------------+-----+-----+------------+-----------------------------------------+--------------+
+|                    RTL Ports                   | Dir | Bits|  Protocol  |              Source Object              |    C Type    |
++------------------------------------------------+-----+-----+------------+-----------------------------------------+--------------+
+|ap_clk                                          |   in|    1|  ap_ctrl_hs|                          frontend_module|  return value|
+|ap_rst                                          |   in|    1|  ap_ctrl_hs|                          frontend_module|  return value|
+|ap_start                                        |   in|    1|  ap_ctrl_hs|                          frontend_module|  return value|
+|ap_done                                         |  out|    1|  ap_ctrl_hs|                          frontend_module|  return value|
+|ap_idle                                         |  out|    1|  ap_ctrl_hs|                          frontend_module|  return value|
+|ap_ready                                        |  out|    1|  ap_ctrl_hs|                          frontend_module|  return value|
+|pipe_0_blk_n                                    |  out|    1|  ap_ctrl_hs|                          frontend_module|  return value|
+|pipe_1_blk_n                                    |  out|    1|  ap_ctrl_hs|                          frontend_module|  return value|
+|pipe_0_din                                      |  out|  129|     ap_fifo|                                   pipe_0|       pointer|
+|pipe_0_full_n                                   |   in|    1|     ap_fifo|                                   pipe_0|       pointer|
+|pipe_0_write                                    |  out|    1|     ap_fifo|                                   pipe_0|       pointer|
+|pipe_1_dout                                     |   in|  225|     ap_fifo|                                   pipe_1|       pointer|
+|pipe_1_empty_n                                  |   in|    1|     ap_fifo|                                   pipe_1|       pointer|
+|pipe_1_read                                     |  out|    1|     ap_fifo|                                   pipe_1|       pointer|
+|state_frontend_reset_done_i                     |   in|    1|     ap_ovld|                state_frontend_reset_done|       pointer|
+|state_frontend_reset_done_o                     |  out|    1|     ap_ovld|                state_frontend_reset_done|       pointer|
+|state_frontend_reset_done_o_ap_vld              |  out|    1|     ap_ovld|                state_frontend_reset_done|       pointer|
+|state_frontend_epoch_i                          |   in|   32|     ap_ovld|                     state_frontend_epoch|       pointer|
+|state_frontend_epoch_o                          |  out|   32|     ap_ovld|                     state_frontend_epoch|       pointer|
+|state_frontend_epoch_o_ap_vld                   |  out|    1|     ap_ovld|                     state_frontend_epoch|       pointer|
+|state_frontend_pc_i                             |   in|   64|     ap_ovld|                        state_frontend_pc|       pointer|
+|state_frontend_pc_o                             |  out|   64|     ap_ovld|                        state_frontend_pc|       pointer|
+|state_frontend_pc_o_ap_vld                      |  out|    1|     ap_ovld|                        state_frontend_pc|       pointer|
+|state_frontend_fetch_id_i                       |   in|   32|     ap_ovld|                  state_frontend_fetch_id|       pointer|
+|state_frontend_fetch_id_o                       |  out|   32|     ap_ovld|                  state_frontend_fetch_id|       pointer|
+|state_frontend_fetch_id_o_ap_vld                |  out|    1|     ap_ovld|                  state_frontend_fetch_id|       pointer|
+|state_frontend_request_sent_i                   |   in|    1|     ap_ovld|              state_frontend_request_sent|       pointer|
+|state_frontend_request_sent_o                   |  out|    1|     ap_ovld|              state_frontend_request_sent|       pointer|
+|state_frontend_request_sent_o_ap_vld            |  out|    1|     ap_ovld|              state_frontend_request_sent|       pointer|
+|state_frontend_response_received_i              |   in|    1|     ap_ovld|         state_frontend_response_received|       pointer|
+|state_frontend_response_received_o              |  out|    1|     ap_ovld|         state_frontend_response_received|       pointer|
+|state_frontend_response_received_o_ap_vld       |  out|    1|     ap_ovld|         state_frontend_response_received|       pointer|
+|state_frontend_fetch_packet_valid_i             |   in|    1|     ap_ovld|        state_frontend_fetch_packet_valid|       pointer|
+|state_frontend_fetch_packet_valid_o             |  out|    1|     ap_ovld|        state_frontend_fetch_packet_valid|       pointer|
+|state_frontend_fetch_packet_valid_o_ap_vld      |  out|    1|     ap_ovld|        state_frontend_fetch_packet_valid|       pointer|
+|state_brupdate_valid                            |   in|    1|     ap_none|                     state_brupdate_valid|       pointer|
+|state_brupdate_mispredict                       |   in|    1|     ap_none|                state_brupdate_mispredict|       pointer|
+|state_brupdate_jalr_target                      |   in|   64|     ap_none|               state_brupdate_jalr_target|       pointer|
+|state_frontend_pending_fetch_id_i               |   in|   32|     ap_ovld|          state_frontend_pending_fetch_id|       pointer|
+|state_frontend_pending_fetch_id_o               |  out|   32|     ap_ovld|          state_frontend_pending_fetch_id|       pointer|
+|state_frontend_pending_fetch_id_o_ap_vld        |  out|    1|     ap_ovld|          state_frontend_pending_fetch_id|       pointer|
+|state_frontend_pending_epoch_i                  |   in|   32|     ap_ovld|             state_frontend_pending_epoch|       pointer|
+|state_frontend_pending_epoch_o                  |  out|   32|     ap_ovld|             state_frontend_pending_epoch|       pointer|
+|state_frontend_pending_epoch_o_ap_vld           |  out|    1|     ap_ovld|             state_frontend_pending_epoch|       pointer|
+|state_frontend_pending_address_i                |   in|   64|     ap_ovld|           state_frontend_pending_address|       pointer|
+|state_frontend_pending_address_o                |  out|   64|     ap_ovld|           state_frontend_pending_address|       pointer|
+|state_frontend_pending_address_o_ap_vld         |  out|    1|     ap_ovld|           state_frontend_pending_address|       pointer|
+|state_frontend_resp_address_i                   |   in|   64|     ap_ovld|              state_frontend_resp_address|       pointer|
+|state_frontend_resp_address_o                   |  out|   64|     ap_ovld|              state_frontend_resp_address|       pointer|
+|state_frontend_resp_address_o_ap_vld            |  out|    1|     ap_ovld|              state_frontend_resp_address|       pointer|
+|state_frontend_resp_instruction_i               |   in|   32|     ap_ovld|          state_frontend_resp_instruction|       pointer|
+|state_frontend_resp_instruction_o               |  out|   32|     ap_ovld|          state_frontend_resp_instruction|       pointer|
+|state_frontend_resp_instruction_o_ap_vld        |  out|    1|     ap_ovld|          state_frontend_resp_instruction|       pointer|
+|state_frontend_resp_exception_i                 |   in|    1|     ap_ovld|            state_frontend_resp_exception|       pointer|
+|state_frontend_resp_exception_o                 |  out|    1|     ap_ovld|            state_frontend_resp_exception|       pointer|
+|state_frontend_resp_exception_o_ap_vld          |  out|    1|     ap_ovld|            state_frontend_resp_exception|       pointer|
+|state_frontend_resp_exc_cause_i                 |   in|   64|     ap_ovld|            state_frontend_resp_exc_cause|       pointer|
+|state_frontend_resp_exc_cause_o                 |  out|   64|     ap_ovld|            state_frontend_resp_exc_cause|       pointer|
+|state_frontend_resp_exc_cause_o_ap_vld          |  out|    1|     ap_ovld|            state_frontend_resp_exc_cause|       pointer|
+|state_rob_state                                 |   in|    2|     ap_none|                          state_rob_state|       pointer|
+|state_rename_dispatch_packets_valid_0           |   in|    1|     ap_none|    state_rename_dispatch_packets_valid_0|       pointer|
+|state_decode_dec_valids_0                       |   in|    1|     ap_none|                state_decode_dec_valids_0|       pointer|
+|state_frontend_fetch_uop_exc_xcpt_ma_if         |  out|    1|      ap_vld|  state_frontend_fetch_uop_exc_xcpt_ma_if|       pointer|
+|state_frontend_fetch_uop_exc_xcpt_ma_if_ap_vld  |  out|    1|      ap_vld|  state_frontend_fetch_uop_exc_xcpt_ma_if|       pointer|
+|state_frontend_fetch_uop_exc_xcpt_ae_if         |  out|    1|      ap_vld|  state_frontend_fetch_uop_exc_xcpt_ae_if|       pointer|
+|state_frontend_fetch_uop_exc_xcpt_ae_if_ap_vld  |  out|    1|      ap_vld|  state_frontend_fetch_uop_exc_xcpt_ae_if|       pointer|
+|state_frontend_fetch_uop_exc_exc_cause          |  out|   64|      ap_vld|   state_frontend_fetch_uop_exc_exc_cause|       pointer|
+|state_frontend_fetch_uop_exc_exc_cause_ap_vld   |  out|    1|      ap_vld|   state_frontend_fetch_uop_exc_exc_cause|       pointer|
+|state_frontend_fetch_uop_exc_exception          |  out|    1|      ap_vld|   state_frontend_fetch_uop_exc_exception|       pointer|
+|state_frontend_fetch_uop_exc_exception_ap_vld   |  out|    1|      ap_vld|   state_frontend_fetch_uop_exc_exception|       pointer|
+|state_frontend_fetch_uop_exc_cause              |  out|   64|      ap_vld|       state_frontend_fetch_uop_exc_cause|       pointer|
+|state_frontend_fetch_uop_exc_cause_ap_vld       |  out|    1|      ap_vld|       state_frontend_fetch_uop_exc_cause|       pointer|
+|state_frontend_fetch_uop_exception              |  out|    1|      ap_vld|       state_frontend_fetch_uop_exception|       pointer|
+|state_frontend_fetch_uop_exception_ap_vld       |  out|    1|      ap_vld|       state_frontend_fetch_uop_exception|       pointer|
+|state_frontend_fetch_uop_debug_pc               |  out|   64|      ap_vld|        state_frontend_fetch_uop_debug_pc|       pointer|
+|state_frontend_fetch_uop_debug_pc_ap_vld        |  out|    1|      ap_vld|        state_frontend_fetch_uop_debug_pc|       pointer|
+|state_frontend_fetch_uop_inst                   |  out|   32|      ap_vld|            state_frontend_fetch_uop_inst|       pointer|
+|state_frontend_fetch_uop_inst_ap_vld            |  out|    1|      ap_vld|            state_frontend_fetch_uop_inst|       pointer|
++------------------------------------------------+-----+-----+------------+-----------------------------------------+--------------+

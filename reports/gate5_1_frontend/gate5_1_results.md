@@ -1,31 +1,26 @@
 # Gate 5.1 Final Results
 
-Gate 5.1 does not pass final acceptance.
+Gate 5.1 Frontend foundation passes final acceptance after Gate 5.1R.
 
-1. Focused RTL: 20 observable checks PASS, 13 mandatory checks BLOCKED; not verified.
+1. Focused RTL: 33/33 mandatory checks PASS through the canonical verification wrapper.
 2. Triple response match: PASS for fetch ID, 32-bit epoch, and expected address, including six mismatch combinations.
-3. Redirect over response and priority: BLOCKED by focused top interface.
-4. Architectural ownership: BLOCKED by focused top interface.
-5. Stale drain: PASS for exposed unstalled stale responses; Decode-stall drain is BLOCKED.
-6. Holding/backpressure: request backpressure PASS; held Decode instruction/fault stability is BLOCKED.
-7. Fault propagation and misaligned targets: native PASS, focused RTL BLOCKED.
-8. Runtime reset: focused RTL BLOCKED; `ap_rst` is control-only for algorithmic static state.
-9. Steady request and instruction interval: 6 `ap_clk` cycles in the 32-instruction always-ready run.
-10. HLS interval 3: top transaction initiation interval, not request interval; two transactions per instruction produce interval 6.
-11. Throughput blocker: true.
-12. Full-core regression: M3C directed/random/native 15/15 PASS, but W3 is 399/400 and remaining current-source suites are not accepted/reached.
-13. Full-core RTL: not accepted; W4 focused rerun timed out and later suites were not run after mandatory failures.
-14. Canonical csynth: 9/9 PASS.
-15. `boom_core_top`: 124079 LUT, 27513 FF, 16 BRAM, 3 DSP, 6.341 ns.
-16. `synth_core_step_top`: 116597 LUT, 27106 FF, 16 BRAM, 3 DSP, 6.341 ns.
-17. Critical path: `execute_module`; Frontend is 5.569 ns and is not critical.
-18. `GATE5_1_PPA_BLOCKER=false`.
-19. `GATE5_1_FRONTEND_FOUNDATION_VERIFIED=false`.
-20. `READY_FOR_GATE5_2_RVC=false`.
-21. `READY_FOR_FRONTEND_IMPLEMENTATION=false`.
-22. `READY_FOR_FULL_LSU_IMPLEMENTATION=false`.
-23. `M009=PARTIALLY_VERIFIED`.
-24. `M014=VERIFIED` based on the accepted Gate 3.9 baseline; no new contradictory reset result is claimed.
-25. `READY_FOR_OFFICIAL_GATE_3=false`.
+3. Redirect over response, priority, ownership, stale drain under Decode stall, held instruction/fault stability, misalignment, and runtime reset: PASS.
+4. R3 next-state throughput: one request/response/dispatch per native architectural call; the diagnostic `ap_ctrl_hs` wrapper remains separately characterized at interval 3.
+5. Scheduling: S0 no-directive accepted; S1/S3 rejected and not present in canonical RTL.
+6. Full-core regression: W3 400/400, normalized traces 7/7, full-program 10/10, and partial-order 7/7 PASS.
+7. Full-core RTL: Gate 3.9 49/49 and RV64M 15/15 PASS; focused M3C/W3/W4 are 30/30, 11/11, and 20/20 PASS.
+8. Canonical csynth: 9/9 PASS.
+9. `boom_core_top`: 124317 LUT, 27513 FF, 16 BRAM, 3 DSP, 6.341 ns.
+10. `synth_core_step_top`: 116835 LUT, 27106 FF, 16 BRAM, 3 DSP, 6.341 ns.
+11. Critical path: `execute_module`; Frontend is 5.993 ns and is not critical.
+12. `GATE5_1_PPA_BLOCKER=false`.
+13. `GATE5_1_FRONTEND_FOUNDATION_VERIFIED=true`.
+14. `GATE5_1_THROUGHPUT_BLOCKER=false`.
+15. `READY_FOR_GATE5_2_RVC=true`.
+16. `READY_FOR_FRONTEND_IMPLEMENTATION=true`.
+17. `READY_FOR_FULL_LSU_IMPLEMENTATION=false`.
+18. `M009=PARTIALLY_VERIFIED`.
+19. `M014=VERIFIED`; the current R4 generated full-core RTL passes the Gate 3.9 suite 49/49, including reset cases.
+20. `READY_FOR_OFFICIAL_GATE_3=false`.
 
-Gate 5.2 RVC was not started. The minimum next action is a verification-capable generated focused top or equivalent canonical observability that does not alter architectural behavior, followed by a minimal legal scheduling fix for the six-clock throughput and diagnosis of the W3 ROB-full regression.
+Gate 5.2 RVC was not started in Gate 5.1R. `READY_FOR_FULL_LSU_IMPLEMENTATION=false`, `READY_FOR_OFFICIAL_GATE_3=false`, `M009=PARTIALLY_VERIFIED`, and `M014=VERIFIED` remain unchanged.
