@@ -90,7 +90,7 @@ struct RunResult { BoomCoreState state; std::vector<CommitEntry> commits; DMemMo
 static RunResult run(IMem& imem, DMemModel dmem, int max_cycles, bool stop_on_tohost=true) {
     RunResult rr; rr.dmem = dmem; PipeSignals pipe; bool store_commit_seen=false;
     for(int c=0;c<max_cycles;c++) {
-        if(!pipe.imem_req.empty()) { ImemRequest r=pipe.imem_req.read(); ImemResponse rs; rs.address=r.address; rs.fetch_id=r.fetch_id; rs.instruction=imem.read(r.address); if(!pipe.imem_resp.full()) pipe.imem_resp.write(rs); }
+        if(!pipe.imem_req.empty()) { ImemRequest r=pipe.imem_req.read(); ImemResponse rs; rs.address=r.address; rs.fetch_id=r.fetch_id; rs.epoch=r.epoch; rs.instruction=imem.read(r.address); if(!pipe.imem_resp.full()) pipe.imem_resp.write(rs); }
         boom_core_step(rr.state, pipe);
         while(!pipe.commit_trace.empty()) { CommitEntry ce=pipe.commit_trace.read(); if(ce.is_store) store_commit_seen=true; rr.commits.push_back(ce); }
         rr.dmem.step(pipe, store_commit_seen);

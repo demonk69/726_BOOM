@@ -36,7 +36,7 @@ static BoomCoreState run_program(const IM& mem, int mc, std::vector<TR>& trace) 
     for (int c=0; c<mc; c++) {
         if (!p.imem_req.empty()) {
             ImemRequest r=p.imem_req.read(); ImemResponse rs;
-            rs.address=r.address; rs.fetch_id=r.fetch_id; rs.instruction=mem.read(r.address); rs.exception=false;
+            rs.address=r.address; rs.fetch_id=r.fetch_id; rs.epoch=r.epoch; rs.instruction=mem.read(r.address); rs.exception=false;
             if(!p.imem_resp.full()) p.imem_resp.write(rs);
         }
         boom_core_step(s,p);
@@ -176,12 +176,12 @@ void t_stale_imem_response() { TEST("frontend drops stale imem response fetch_id
     boom_core_step(s,p);
     CHECK(!s.io_success && !s.io_trap,"stale response was executed");
     CHECK(s.frontend.request_sent,"request was cleared by stale response");
-    ImemResponse good0; good0.address=r0.address; good0.fetch_id=r0.fetch_id; good0.instruction=MI(42,0,0,1,0x13); p.imem_resp.write(good0);
+    ImemResponse good0; good0.address=r0.address; good0.fetch_id=r0.fetch_id; good0.epoch=r0.epoch; good0.instruction=MI(42,0,0,1,0x13); p.imem_resp.write(good0);
     boom_core_step(s,p);
     boom_core_step(s,p);
     CHECK(!p.imem_req.empty(),"no second imem request");
     ImemRequest r1=p.imem_req.read();
-    ImemResponse good1; good1.address=r1.address; good1.fetch_id=r1.fetch_id; good1.instruction=EC(); p.imem_resp.write(good1);
+    ImemResponse good1; good1.address=r1.address; good1.fetch_id=r1.fetch_id; good1.epoch=r1.epoch; good1.instruction=EC(); p.imem_resp.write(good1);
     for (int i=0; i<4 && !s.io_success; i++) boom_core_step(s,p);
     CHECK(s.io_success,"correct response stream did not reach ECALL"); PASS(); }
 

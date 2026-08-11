@@ -62,6 +62,8 @@ void boom_core_reset_step(BoomCoreState& state, ResetControllerState& reset_ctrl
         state.frontend.request_sent = false;
         state.frontend.fetch_id = 0;
         state.frontend.pending_fetch_id = 0;
+        state.frontend.pending_epoch = 0;
+        state.frontend.pending_address = 0;
         state.frontend.response_received = false;
         state.frontend.resp_address = 0;
         state.frontend.resp_instruction = 0;
@@ -70,6 +72,7 @@ void boom_core_reset_step(BoomCoreState& state, ResetControllerState& reset_ctrl
         state.frontend.stalled = false;
         state.frontend.flush = false;
         state.frontend.fetch_packet_valid = false;
+        state.frontend_redirect = FrontendRedirect();
         advance_reset(reset_ctrl, RESET_RENAME_MAP);
         break;
 

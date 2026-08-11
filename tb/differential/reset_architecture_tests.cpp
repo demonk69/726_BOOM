@@ -206,6 +206,7 @@ static void t_restart_program() {
             ImemResponse response;
             response.address = request.address;
             response.fetch_id = request.fetch_id;
+            response.epoch = request.epoch;
             response.instruction = request.address == RESET_VECTOR ? addi(5, 0, 1) : 0x00000073;
             pipe.imem_resp.write(response);
         }

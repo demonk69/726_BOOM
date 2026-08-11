@@ -24,70 +24,74 @@
 
 namespace boom {
 
+static bool architectural_redirect_owner_valid(const BoomCoreState& state) {
+    const FrontendRedirect& redirect = state.frontend_redirect;
+    if (redirect.cause == FRONTEND_REDIRECT_DEBUG ||
+        redirect.cause == FRONTEND_REDIRECT_INTERRUPT) return true;
+    if (redirect.rob_idx >= ROB_DEPTH) return false;
+    const RobEntry& owner = state.rob.entries[redirect.rob_idx];
+    return owner.valid && owner.uop.queue.rob_allocation_id == redirect.allocation_id;
+}
+
 void frontend_module(BoomCoreState& state, PipeSignals& pipe) {
     FrontendState& fe = state.frontend;
 
-    if (state.global_flush) {
-        fe.flush = true;
-        fe.request_sent = false;
-        fe.fetch_packet_valid = false;
-    }
-
-    if (!fe.reset_done) {
+    const bool reset_redirect = !fe.reset_done;
+    if (reset_redirect) {
         fe.pc = RESET_VECTOR;
         fe.fetch_id = 0;
+        fe.epoch++;
         fe.reset_done = true;
         fe.request_sent = false;
+        fe.response_received = false;
+        fe.fetch_packet_valid = false;
     }
 
-    if (state.brupdate.valid && state.brupdate.mispredict) {
-        fe.pc = state.brupdate.jalr_target & ~0x3ULL;
+    const bool architectural_redirect_requested = !reset_redirect && state.frontend_redirect.valid;
+    const bool architectural_redirect = architectural_redirect_requested &&
+        architectural_redirect_owner_valid(state);
+    if (architectural_redirect_requested && !architectural_redirect)
+        state.frontend_redirect.valid = false;
+    const bool branch_redirect = !reset_redirect && !architectural_redirect &&
+        state.brupdate.valid && state.brupdate.mispredict;
+    const bool generic_flush = !reset_redirect && !architectural_redirect &&
+        !branch_redirect && state.global_flush;
+    const bool redirect = reset_redirect || architectural_redirect ||
+        branch_redirect || generic_flush || fe.flush;
+    const bool target_redirect = architectural_redirect || branch_redirect;
+    if (redirect) {
+        const uint64_t target = architectural_redirect ? state.frontend_redirect.target_pc :
+            (branch_redirect ? state.brupdate.jalr_target : fe.pc);
+        if (!reset_redirect) fe.epoch++;
+        fe.pc = target;
         fe.request_sent = false;
         fe.response_received = false;
         fe.fetch_packet_valid = false;
         fe.flush = false;
         state.global_flush = false;
-    }
+        if (reset_redirect || architectural_redirect) state.frontend_redirect.valid = false;
 
-    if (state.rob.state == ROB_EXCEPTION) {
-        fe.pc = fe.pc;
-        fe.fetch_packet_valid = false;
-        return;
-    }
-
-    if (fe.flush) {
-        fe.pc = state.brupdate.valid ? (state.brupdate.jalr_target & ~0x3ULL) : fe.pc;
-        fe.request_sent = false;
-        fe.response_received = false;
-        fe.fetch_packet_valid = false;
-        fe.flush = false;
-        state.global_flush = false;
-    }
-
-    fe.stalled = state.rename.dispatch_packets[0].valid || state.decode.dec_valids[0];
-    if (fe.stalled) return;
-
-    if (!fe.request_sent && fe.fetch_packet_valid) {
-        fe.response_received = false;
-        fe.fetch_packet_valid = false;
-    }
-
-    if (!fe.request_sent) {
-        ImemRequest req;
-        req.address = fe.pc;
-        req.fetch_id = fe.fetch_id;
-        req.kill = false;
-        if (!pipe.imem_req.full()) {
-            pipe.imem_req.write(req);
-            fe.pending_fetch_id = fe.fetch_id;
-            fe.fetch_id++;
-            fe.request_sent = true;
+        if (target_redirect && (target & 0x3ULL) != 0) {
+            MicroOp fault;
+            fault.debug_pc = target;
+            fault.exception = true;
+            fault.exc_cause = 0;
+            fault.exc.exception = true;
+            fault.exc.exc_cause = 0;
+            fault.exc.xcpt_ma_if = true;
+            fe.fetch_uop = fault;
+            fe.fetch_packet_valid = true;
         }
     }
 
+    // Responses are always drained. A redirect in this cycle invalidates the
+    // transaction before matching, so redirect wins over response.
     if (!pipe.imem_resp.empty()) {
         ImemResponse resp = pipe.imem_resp.read();
-        if (fe.request_sent && resp.fetch_id == fe.pending_fetch_id) {
+        if (!redirect && fe.request_sent &&
+            resp.fetch_id == fe.pending_fetch_id &&
+            resp.epoch == fe.pending_epoch &&
+            resp.address == fe.pending_address) {
             fe.resp_address = resp.address;
             fe.resp_instruction = resp.instruction;
             fe.resp_exception = resp.exception;
@@ -97,19 +101,52 @@ void frontend_module(BoomCoreState& state, PipeSignals& pipe) {
         }
     }
 
-    fe.fetch_packet_valid = false;
-    if (fe.response_received && !fe.request_sent) {
+    if (state.rob.state == ROB_EXCEPTION) {
+        fe.fetch_packet_valid = false;
+        return;
+    }
+
+    if (target_redirect && (fe.pc & 0x3ULL) != 0) return;
+
+    fe.stalled = state.rename.dispatch_packets[0].valid || state.decode.dec_valids[0];
+    if (fe.stalled) return;
+
+    if (fe.fetch_packet_valid) {
+        fe.fetch_packet_valid = false;
+    }
+
+    if (fe.response_received) {
         MicroOp uop;
         uop.debug_pc = fe.resp_address;
         uop.inst = fe.resp_instruction;
         uop.is_rvc = false;
+        uop.exception = fe.resp_exception;
+        uop.exc_cause = fe.resp_exc_cause;
+        uop.exc.exception = fe.resp_exception;
+        uop.exc.exc_cause = fe.resp_exc_cause;
+        uop.exc.xcpt_ae_if = fe.resp_exception;
         fe.fetch_uop = uop;
         fe.fetch_packet_valid = true;
         fe.pc = fe.resp_address + 4;
         fe.response_received = false;
+        return;
     }
 
-    state.frontend = fe;
+    if (!fe.request_sent && !fe.fetch_packet_valid) {
+        ImemRequest req;
+        req.address = fe.pc;
+        req.fetch_id = fe.fetch_id;
+        req.epoch = fe.epoch;
+        req.kill = false;
+        if (!pipe.imem_req.full()) {
+            pipe.imem_req.write(req);
+            fe.pending_fetch_id = fe.fetch_id;
+            fe.pending_epoch = fe.epoch;
+            fe.pending_address = fe.pc;
+            fe.fetch_id++;
+            fe.request_sent = true;
+        }
+    }
 }
 
 }
@@ -224,6 +261,8 @@ void decode_module(BoomCoreState& state) {
 
     uint64_t pc = state.frontend.fetch_uop.debug_pc;
     uint32_t inst = state.frontend.fetch_uop.inst;
+    bool fetch_exception = state.frontend.fetch_uop.exception;
+    uint64_t fetch_exc_cause = state.frontend.fetch_uop.exc_cause;
 
     MicroOp uop;
     uop.ctrl = DecodeControl();
@@ -368,6 +407,12 @@ void decode_module(BoomCoreState& state) {
             case 7:uop.uopc=UOPC_CSRRCI;uop.ctrl.csr_cmd=CSR_C;break;
             default:uop.uopc=UOPC_ILLEGAL;uop.exception=true;break;}} break;
         default: uop.uopc=UOPC_ILLEGAL; uop.exception=true; uop.exc_cause=2; uop.iq_type=IQ_ALU; uop.fu_code=FU_ALU; break;
+    }
+
+    if (fetch_exception) {
+        uop.exception = true;
+        uop.exc_cause = fetch_exc_cause;
+        uop.exc = state.frontend.fetch_uop.exc;
     }
 
     if (uop.uopc==UOPC_ILLEGAL && !uop.exception) { uop.exception=true; uop.exc_cause=2; }
@@ -2358,7 +2403,7 @@ static void recover_mispredict(BoomCoreState& state, const BranchUpdate& update)
     state.frontend.response_received = false;
     state.frontend.request_sent = false;
     state.frontend.flush = false;
-    state.frontend.pc = update.jalr_target & ~0x3ULL;
+    state.frontend.pc = update.jalr_target;
 
     restore_map_snapshot(state, tag);
     rollback_free_list(state, tag);
@@ -2841,6 +2886,8 @@ void boom_core_reset_step(BoomCoreState& state, ResetControllerState& reset_ctrl
         state.frontend.request_sent = false;
         state.frontend.fetch_id = 0;
         state.frontend.pending_fetch_id = 0;
+        state.frontend.pending_epoch = 0;
+        state.frontend.pending_address = 0;
         state.frontend.response_received = false;
         state.frontend.resp_address = 0;
         state.frontend.resp_instruction = 0;
@@ -2849,6 +2896,7 @@ void boom_core_reset_step(BoomCoreState& state, ResetControllerState& reset_ctrl
         state.frontend.stalled = false;
         state.frontend.flush = false;
         state.frontend.fetch_packet_valid = false;
+        state.frontend_redirect = FrontendRedirect();
         advance_reset(reset_ctrl, RESET_RENAME_MAP);
         break;
 

@@ -61,6 +61,7 @@ void run_program(const char* name, IdealMem& mem, int max_cycles, int expected_x
             ImemResponse resp;
             resp.address = req.address;
             resp.fetch_id = req.fetch_id;
+            resp.epoch = req.epoch;
             resp.instruction = mem_ptr->read(req.address);
             resp.exception = false;
             resp.exc_cause = 0;

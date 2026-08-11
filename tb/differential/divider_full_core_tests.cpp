@@ -105,6 +105,7 @@ struct InstructionMemory {
             ImemResponse response;
             response.address = request.address;
             response.fetch_id = request.fetch_id;
+            response.epoch = request.epoch;
             const uint64_t index = request.address >= RESET_VECTOR ?
                 (request.address - RESET_VECTOR) >> 2 : UINT64_MAX;
             response.instruction = index < words.size() ? words[(size_t)index] : 0x00000013;

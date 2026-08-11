@@ -37,6 +37,7 @@ int main() {
             ImemResponse response;
             response.address = request.address;
             response.fetch_id = request.fetch_id;
+            response.epoch = request.epoch;
             response.instruction = index < sizeof(program) / sizeof(program[0]) ?
                 program[index] : 0x00000073;
             pipe.imem_resp.write(response);

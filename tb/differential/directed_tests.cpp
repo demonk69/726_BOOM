@@ -41,7 +41,7 @@ struct TR { uint64_t pc,rd_v; uint32_t inst; uint8_t rd; bool rd_ok,exc;
 static int run(IM& mem, int mc, std::vector<TR>& trace) {
     BoomCoreState s; PipeSignals p; trace.clear();
     for (int c=0; c<mc; c++) {
-        if (!p.imem_req.empty()) { ImemRequest r=p.imem_req.read(); ImemResponse rs; rs.address=r.address; rs.fetch_id=r.fetch_id; uint32_t ii=(r.address-mem.base)>>2; rs.instruction=(ii<(uint32_t)mem.n)?mem.w[ii]:0; rs.exception=false; if(!p.imem_resp.full()) p.imem_resp.write(rs); }
+        if (!p.imem_req.empty()) { ImemRequest r=p.imem_req.read(); ImemResponse rs; rs.address=r.address; rs.fetch_id=r.fetch_id; rs.epoch=r.epoch; uint32_t ii=(r.address-mem.base)>>2; rs.instruction=(ii<(uint32_t)mem.n)?mem.w[ii]:0; rs.exception=false; if(!p.imem_resp.full()) p.imem_resp.write(rs); }
         boom_core_step(s, p);
         while(!p.commit_trace.empty()) { CommitEntry ce=p.commit_trace.read(); TR t; t.pc=ce.pc; t.inst=ce.inst; t.rd=ce.rd; t.rd_v=ce.rd_value; t.rd_ok=ce.rd_valid; t.exc=ce.exception; trace.push_back(t); }
         if (s.io_success) { break; }
@@ -158,7 +158,7 @@ void t14_illegal() { TEST("Illegal instruction: 0x00000000 → io_trap");
     IM m; m.clear(RESET_VECTOR); m.add(0x00000000); m.add(EC());
     BoomCoreState s; PipeSignals p;
     for (int c=0;c<100;c++) {
-        if(!p.imem_req.empty()){ImemRequest r=p.imem_req.read();ImemResponse rs;rs.address=r.address;rs.fetch_id=r.fetch_id;rs.instruction=m.read(r.address);if(!p.imem_resp.full())p.imem_resp.write(rs);}
+        if(!p.imem_req.empty()){ImemRequest r=p.imem_req.read();ImemResponse rs;rs.address=r.address;rs.fetch_id=r.fetch_id;rs.epoch=r.epoch;rs.instruction=m.read(r.address);if(!p.imem_resp.full())p.imem_resp.write(rs);}
         boom_core_step(s,p);
         if(s.io_trap) { PASS(); return; }
     }
@@ -168,7 +168,7 @@ void t15_ecall() { TEST("ECALL: io_success set");
     IM m; m.clear(RESET_VECTOR); m.add(EC());
     BoomCoreState s; PipeSignals p;
     for(int c=0;c<100;c++) {
-        if(!p.imem_req.empty()){ImemRequest r=p.imem_req.read();ImemResponse rs;rs.address=r.address;rs.fetch_id=r.fetch_id;rs.instruction=m.read(r.address);if(!p.imem_resp.full())p.imem_resp.write(rs);}
+        if(!p.imem_req.empty()){ImemRequest r=p.imem_req.read();ImemResponse rs;rs.address=r.address;rs.fetch_id=r.fetch_id;rs.epoch=r.epoch;rs.instruction=m.read(r.address);if(!p.imem_resp.full())p.imem_resp.write(rs);}
         boom_core_step(s,p);
         if(s.io_success) { PASS(); return; }
     }
@@ -186,7 +186,7 @@ void t17_imem_backpressure() { TEST("IMEM backpressure: delayed response still w
     BoomCoreState s; PipeSignals p; int resp_delay=0; ImemRequest delayed_req;
     for(int c=0;c<200;c++) {
         if(!p.imem_req.empty() && resp_delay==0){ delayed_req=p.imem_req.read(); resp_delay=3; /*cache miss*/ }
-        if(resp_delay>0) { resp_delay--; if(resp_delay==0) { ImemResponse rs; rs.address=delayed_req.address; rs.fetch_id=delayed_req.fetch_id; rs.instruction=m.read(delayed_req.address); if(!p.imem_resp.full()) p.imem_resp.write(rs); } }
+        if(resp_delay>0) { resp_delay--; if(resp_delay==0) { ImemResponse rs; rs.address=delayed_req.address; rs.fetch_id=delayed_req.fetch_id; rs.epoch=delayed_req.epoch; rs.instruction=m.read(delayed_req.address); if(!p.imem_resp.full()) p.imem_resp.write(rs); } }
         boom_core_step(s,p);
         if(s.io_success) { PASS(); return; }
     }

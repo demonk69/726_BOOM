@@ -280,7 +280,7 @@ static void recover_mispredict(BoomCoreState& state, const BranchUpdate& update)
     state.frontend.response_received = false;
     state.frontend.request_sent = false;
     state.frontend.flush = false;
-    state.frontend.pc = update.jalr_target & ~0x3ULL;
+    state.frontend.pc = update.jalr_target;
 
     restore_map_snapshot(state, tag);
     rollback_free_list(state, tag);

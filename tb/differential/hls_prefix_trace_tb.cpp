@@ -208,6 +208,7 @@ bool run_program(const ProgramSpec& program, const std::string& root, const std:
             ImemResponse resp;
             resp.address = req.address;
             resp.fetch_id = req.fetch_id;
+            resp.epoch = req.epoch;
             resp.instruction = mem.read(req.address);
             resp.exception = false;
             resp.exc_cause = 0;

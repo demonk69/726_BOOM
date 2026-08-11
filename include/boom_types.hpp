@@ -188,6 +188,25 @@ struct BranchUpdate {
         valid(false), mispredict(false), taken(false), jalr_target(0), target_offset(0), uop() {}
 };
 
+enum FrontendRedirectCause : uint8_t {
+    FRONTEND_REDIRECT_DEBUG,
+    FRONTEND_REDIRECT_EXCEPTION,
+    FRONTEND_REDIRECT_INTERRUPT,
+    FRONTEND_REDIRECT_ERET,
+    FRONTEND_REDIRECT_FENCEI
+};
+
+struct FrontendRedirect {
+    bool valid;
+    uint64_t target_pc;
+    FrontendRedirectCause cause;
+    uint8_t rob_idx;
+    uint32_t allocation_id;
+    uint8_t branch_mask;
+    FrontendRedirect() : valid(false), target_pc(0), cause(FRONTEND_REDIRECT_EXCEPTION),
+        rob_idx(0), allocation_id(0), branch_mask(0) {}
+};
+
 struct CommitEntry {
     bool valid; uint64_t pc; uint32_t inst; uint8_t rd, priv; uint64_t rd_value;
     bool exception, rd_valid; uint64_t exc_cause;
@@ -204,17 +223,19 @@ struct CommitEntry {
 struct ImemRequest {
     uint64_t address;
     uint32_t fetch_id;
+    uint32_t epoch;
     bool     kill;
-    ImemRequest() : address(0), fetch_id(0), kill(false) {}
+    ImemRequest() : address(0), fetch_id(0), epoch(0), kill(false) {}
 };
 
 struct ImemResponse {
     uint64_t address;
     uint32_t fetch_id;
+    uint32_t epoch;
     uint32_t instruction;
     bool     exception;
     uint64_t exc_cause;
-    ImemResponse() : address(0), fetch_id(0), instruction(0), exception(false), exc_cause(0) {}
+    ImemResponse() : address(0), fetch_id(0), epoch(0), instruction(0), exception(false), exc_cause(0) {}
 };
 
 struct DmemRequest {

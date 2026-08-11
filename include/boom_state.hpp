@@ -11,6 +11,9 @@ struct FrontendState {
     bool     request_sent;
     uint32_t fetch_id;
     uint32_t pending_fetch_id;
+    uint32_t epoch;
+    uint32_t pending_epoch;
+    uint64_t pending_address;
     bool     response_received;
     uint64_t resp_address;
     uint32_t resp_instruction;
@@ -22,7 +25,8 @@ struct FrontendState {
     MicroOp  fetch_uop;
 
     FrontendState() : pc(RESET_VECTOR), reset_done(false), request_sent(false),
-        fetch_id(0), pending_fetch_id(0), response_received(false),
+        fetch_id(0), pending_fetch_id(0), epoch(0xffffffffu), pending_epoch(0),
+        pending_address(0), response_received(false),
         resp_address(0), resp_instruction(0), resp_exception(false), resp_exc_cause(0),
         stalled(false), flush(false), fetch_packet_valid(false), fetch_uop() {}
 };
@@ -261,13 +265,14 @@ struct BoomCoreState {
     uint64_t        int_rf_latest_bank;
     uint64_t        fp_rf[FP_PHYS_REGS];
     BranchUpdate    brupdate;
+    FrontendRedirect frontend_redirect;
     bool            global_flush;
     bool            io_success;
     bool            io_halted;
     bool            io_trap;
     uint64_t        tohost;
 
-    BoomCoreState() : cycle_count(0), int_rf_latest_bank(0), brupdate(), global_flush(false),
+    BoomCoreState() : cycle_count(0), int_rf_latest_bank(0), brupdate(), frontend_redirect(), global_flush(false),
         io_success(false), io_halted(false), io_trap(false), tohost(0) {
         for (int i=0; i<INT_PHYS_REGS; i++) {
             int_rf_bank0[i]=0;

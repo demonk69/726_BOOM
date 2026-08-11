@@ -110,6 +110,8 @@ void decode_module(BoomCoreState& state) {
 
     uint64_t pc = state.frontend.fetch_uop.debug_pc;
     uint32_t inst = state.frontend.fetch_uop.inst;
+    bool fetch_exception = state.frontend.fetch_uop.exception;
+    uint64_t fetch_exc_cause = state.frontend.fetch_uop.exc_cause;
 
     MicroOp uop;
     uop.ctrl = DecodeControl();
@@ -254,6 +256,12 @@ void decode_module(BoomCoreState& state) {
             case 7:uop.uopc=UOPC_CSRRCI;uop.ctrl.csr_cmd=CSR_C;break;
             default:uop.uopc=UOPC_ILLEGAL;uop.exception=true;break;}} break;
         default: uop.uopc=UOPC_ILLEGAL; uop.exception=true; uop.exc_cause=2; uop.iq_type=IQ_ALU; uop.fu_code=FU_ALU; break;
+    }
+
+    if (fetch_exception) {
+        uop.exception = true;
+        uop.exc_cause = fetch_exc_cause;
+        uop.exc = state.frontend.fetch_uop.exc;
     }
 
     if (uop.uopc==UOPC_ILLEGAL && !uop.exception) { uop.exception=true; uop.exc_cause=2; }
