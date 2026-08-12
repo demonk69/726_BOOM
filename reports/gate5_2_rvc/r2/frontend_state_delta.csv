@@ -1,0 +1,11 @@
+state,width,purpose,lifetime
+response_received,1,retained aligned IMEM word valid,until visible parcels consumed or killed
+resp_address,64,retained response word base,until word invalidated
+resp_instruction,32,retained response word data,until word invalidated
+resp_exception,1,retained word fetch fault,until fault published or killed
+resp_exc_cause,64,retained word fetch fault cause,until fault published or killed
+halfword_valid,1,cross-word lower parcel carry valid,until upper arrives or kill
+halfword,16,cross-word instruction bits 15:0,until assembly or kill
+halfword_pc,64,architectural PC of carried instruction,until assembly or kill
+halfword_epoch,32,generation binding for carry,until assembly or kill
+architecture_summary,0,"one retained response word plus one carry; not a Fetch Buffer/FTQ/predictor/ICache",R2 final

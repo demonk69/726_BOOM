@@ -5,7 +5,7 @@ if {[info exists ::env(BOOM_HLS_CFLAGS_EXTRA)]} {
 }
 open_project -reset $::env(GATE3_10_CSIM_PROJECT)
 set_top boom_core_top
-foreach source {boom_core_top.cpp boom_core_step.cpp reset.cpp frontend.cpp decode.cpp rename.cpp rob.cpp issue.cpp execute.cpp branch.cpp lsu.cpp commit.cpp csr.cpp} {
+foreach source {boom_core_top.cpp boom_core_step.cpp reset.cpp frontend.cpp rvc.cpp decode.cpp rename.cpp rob.cpp issue.cpp execute.cpp branch.cpp lsu.cpp commit.cpp csr.cpp} {
   add_files -cflags $cflags "$root/src/$source"
 }
 add_files -tb -cflags $cflags "$root/tb/differential/hls_prefix_trace_tb.cpp"

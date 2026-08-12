@@ -3,6 +3,7 @@ set -euo pipefail
 
 ROOT=${HLS_BOOM_ROOT:-"$(cd "$(dirname "${BASH_SOURCE[0]}")/../.." && pwd)"}
 BUILD_DIR=${GATE3_9_XSIM_BUILD:-"$ROOT/build/gate3_9/xsim"}
+SNAPSHOT=${GATE3_9_XSIM_SNAPSHOT:-gate3_9_snapshot}
 XSIM=${XSIM:-/home/lab_726/Xilinx/Vivado/2021.2/bin/xsim}
 SCENARIO=${1:-R0_POWER_ON_RESET}
 PROGRAM_NAME=${2:-independent_alu}
@@ -11,7 +12,11 @@ PROGRAM=${PROGRAM:-"$ROOT/tb/programs/boom_reference/build/$PROGRAM_NAME.hex"}
 TRACE=${TRACE:-"$ROOT/reports/gate3_9/rtl_traces/${PROGRAM_NAME}_${SCENARIO}.jsonl"}
 LOG=${LOG:-"$ROOT/reports/gate3_9/logs/${PROGRAM_NAME}_${SCENARIO}.log"}
 
-if [[ ! -d "$BUILD_DIR/xsim.dir/gate3_9_snapshot" ]]; then
+if [[ ! -d "$BUILD_DIR/xsim.dir/$SNAPSHOT" ]]; then
+  [[ "$SNAPSHOT" == gate3_9_snapshot ]] || {
+    printf 'missing requested XSim snapshot: %s/xsim.dir/%s\n' "$BUILD_DIR" "$SNAPSHOT" >&2
+    exit 2
+  }
   "$ROOT/scripts/gate3_9/build_xsim.sh"
 fi
 if [[ ! -f "$PROGRAM" ]]; then
@@ -32,7 +37,7 @@ done < "$PROGRAM"
 
 if (
   cd "$BUILD_DIR"
-  "$XSIM" gate3_9_snapshot --runall --onerror quit \
+  "$XSIM" "$SNAPSHOT" --runall --onerror quit \
     --testplusarg "PROGRAM=$CLEAN_PROGRAM" \
     --testplusarg "PROGRAM_NAME=$PROGRAM_NAME" \
     --testplusarg "SCENARIO=$SCENARIO" \

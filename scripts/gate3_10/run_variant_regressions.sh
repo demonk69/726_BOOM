@@ -16,7 +16,7 @@ case "$VARIANT" in
   *) printf 'unsupported variant: %s\n' "$VARIANT" >&2; exit 2 ;;
 esac
 mkdir -p "$BUILD" "$TRACE_DIR" "$LOG_DIR"
-COMMON=("$ROOT/src/boom_core_step.cpp" "$ROOT/src/frontend.cpp" "$ROOT/src/decode.cpp" "$ROOT/src/rename.cpp"
+COMMON=("$ROOT/src/boom_core_step.cpp" "$ROOT/src/frontend.cpp" "$ROOT/src/rvc.cpp" "$ROOT/src/decode.cpp" "$ROOT/src/rename.cpp"
   "$ROOT/src/rob.cpp" "$ROOT/src/issue.cpp" "$ROOT/src/execute.cpp" "$ROOT/src/branch.cpp"
   "$ROOT/src/lsu.cpp" "$ROOT/src/commit.cpp" "$ROOT/src/csr.cpp")
 compile_test() { "$CXX_BIN" -std=c++11 -I"$ROOT/include" $CFLAGS "${COMMON[@]}" "$2" -o "$BUILD/$1"; }

@@ -194,7 +194,7 @@ with (report.parent / "prf_after.csv").open("w", newline="") as stream:
     writer.writerows(prf_rows)
 
 canonical = tuple(root / "src" / name for name in
-    ("boom_core_step.cpp", "frontend.cpp", "decode.cpp", "rename.cpp", "completion.cpp",
+    ("boom_core_step.cpp", "frontend.cpp", "rvc.cpp", "decode.cpp", "rename.cpp", "completion.cpp",
      "rob.cpp", "issue.cpp", "execute.cpp", "branch.cpp", "lsu.cpp", "commit.cpp",
      "csr.cpp", "reset.cpp", "boom_core_top.cpp", "synth_module_tops.cpp",
      "boom_core_merged.cpp"))

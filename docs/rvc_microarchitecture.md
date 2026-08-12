@@ -18,6 +18,6 @@ The independent HLS wrapper is `synth_rvc_top`, with scalar outputs `valid`,
 `legal`, `decompressed`, and `length`. Local helper inlining permits constant
 bit-slice propagation without changing global directives.
 
-R1 does not instantiate the decompressor in Frontend. There is no PC+2 update,
-halfword cursor, carry parcel, cross-word assembly, mixed-stream sequencing,
-Fetch Buffer, or Decode/backend interface change. Those belong to R2.
+R1 did not instantiate the decompressor in Frontend. Gate 5.2 R2 now integrates it into the one-wide Frontend, adds PC+2 progression, retained-word parcel selection, and one 16-bit cross-word carry, and verifies mixed streams in native, csim, and generated RTL. This state is not a Fetch Buffer or queue.
+
+R2 deliberately protects 288 legal RV64C forms as illegal cause 2: one `C.EBREAK`, 256 `C.SRLI` forms with shamt[5], and 31 `C.JALR` forms. `C.JALR` is deferred because frozen Execute writes a PC+4 link rather than compressed PC+2. Full RV64C remains unverified pending R3.

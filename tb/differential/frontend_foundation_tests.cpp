@@ -214,13 +214,13 @@ static void test_misaligned_redirect_fault() {
     PipeSignals pipe;
     issue_initial(state, pipe);
     state.brupdate.valid = state.brupdate.mispredict = true;
-    state.brupdate.jalr_target = 0x23002;
+    state.brupdate.jalr_target = 0x23003;
     boom::frontend_module(state, pipe);
     CHECK(pipe.imem_req.empty(), "misaligned target was requested from IMEM");
     CHECK(state.frontend.fetch_packet_valid, "misaligned target did not create fault");
     CHECK(state.frontend.fetch_uop.exception, "misaligned target fault bit missing");
     CHECK(state.frontend.fetch_uop.exc_cause == 0, "misaligned target cause mismatch");
-    CHECK(state.frontend.fetch_uop.debug_pc == 0x23002, "misaligned target was masked");
+    CHECK(state.frontend.fetch_uop.debug_pc == 0x23003, "misaligned target was masked");
 }
 
 int main() {

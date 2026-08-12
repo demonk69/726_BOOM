@@ -15,6 +15,7 @@ mkdir -p "$BUILD_DIR" "$LOG_DIR" "$TRACE_DIR"
 COMMON_SRCS=(
   "$ROOT/src/boom_core_step.cpp"
   "$ROOT/src/frontend.cpp"
+  "$ROOT/src/rvc.cpp"
   "$ROOT/src/decode.cpp"
   "$ROOT/src/rename.cpp"
   "$ROOT/src/rob.cpp"

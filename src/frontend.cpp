@@ -2,6 +2,7 @@
 #include "boom_types.hpp"
 #include "boom_state.hpp"
 #include "boom_interfaces.hpp"
+#include "rvc.hpp"
 
 namespace boom {
 
@@ -12,6 +13,28 @@ static bool architectural_redirect_owner_valid(const BoomCoreState& state) {
     if (redirect.rob_idx >= ROB_DEPTH) return false;
     const RobEntry& owner = state.rob.entries[redirect.rob_idx];
     return owner.valid && owner.uop.queue.rob_allocation_id == redirect.allocation_id;
+}
+
+static bool protected_rvc_decode_gap(uint16_t parcel) {
+#pragma HLS INLINE
+    const bool c_ebreak = parcel == 0x9002u;
+    const bool c_srli_shamt5 = (parcel & 0xfc03u) == 0x9001u;
+    const bool c_jalr = (parcel & 0xf07fu) == 0x9002u &&
+        ((parcel >> 7) & 0x1fu) != 0;
+    return c_ebreak || c_srli_shamt5 || c_jalr;
+}
+
+static MicroOp fetch_fault(uint64_t pc, uint64_t cause, bool access_fault) {
+#pragma HLS INLINE
+    MicroOp fault;
+    fault.debug_pc = pc;
+    fault.exception = true;
+    fault.exc_cause = cause;
+    fault.exc.exception = true;
+    fault.exc.exc_cause = cause;
+    fault.exc.xcpt_ae_if = access_fault;
+    fault.exc.xcpt_ma_if = !access_fault && cause == 0;
+    return fault;
 }
 
 void frontend_module(BoomCoreState& state, PipeSignals& pipe) {
@@ -25,6 +48,7 @@ void frontend_module(BoomCoreState& state, PipeSignals& pipe) {
         fe.reset_done = true;
         fe.request_sent = false;
         fe.response_received = false;
+        fe.halfword_valid = false;
         fe.fetch_packet_valid = false;
     }
 
@@ -39,7 +63,7 @@ void frontend_module(BoomCoreState& state, PipeSignals& pipe) {
         !branch_redirect && state.global_flush;
     const bool redirect = reset_redirect || architectural_redirect ||
         branch_redirect || generic_flush || fe.flush;
-    const bool target_redirect = architectural_redirect || branch_redirect;
+    bool misaligned_redirect = false;
     if (redirect) {
         const uint64_t target = architectural_redirect ? state.frontend_redirect.target_pc :
             (branch_redirect ? state.brupdate.jalr_target : fe.pc);
@@ -47,20 +71,14 @@ void frontend_module(BoomCoreState& state, PipeSignals& pipe) {
         fe.pc = target;
         fe.request_sent = false;
         fe.response_received = false;
+        fe.halfword_valid = false;
         fe.fetch_packet_valid = false;
         fe.flush = false;
-        state.global_flush = false;
         if (reset_redirect || architectural_redirect) state.frontend_redirect.valid = false;
 
-        if (target_redirect && (target & 0x3ULL) != 0) {
-            MicroOp fault;
-            fault.debug_pc = target;
-            fault.exception = true;
-            fault.exc_cause = 0;
-            fault.exc.exception = true;
-            fault.exc.exc_cause = 0;
-            fault.exc.xcpt_ma_if = true;
-            fe.fetch_uop = fault;
+        misaligned_redirect = !reset_redirect && (target & 0x1ULL) != 0;
+        if (misaligned_redirect) {
+            fe.fetch_uop = fetch_fault(target, 0, false);
             fe.fetch_packet_valid = true;
         }
     }
@@ -87,7 +105,7 @@ void frontend_module(BoomCoreState& state, PipeSignals& pipe) {
         return;
     }
 
-    if (target_redirect && (fe.pc & 0x3ULL) != 0) return;
+    if (misaligned_redirect) return;
 
     fe.stalled = state.rename.dispatch_packets[0].valid || state.decode.dec_valids[0];
     if (fe.stalled) return;
@@ -96,25 +114,87 @@ void frontend_module(BoomCoreState& state, PipeSignals& pipe) {
         fe.fetch_packet_valid = false;
     }
 
-    if (fe.response_received) {
-        MicroOp uop;
-        uop.debug_pc = fe.resp_address;
-        uop.inst = fe.resp_instruction;
-        uop.is_rvc = false;
-        uop.exception = fe.resp_exception;
-        uop.exc_cause = fe.resp_exc_cause;
-        uop.exc.exception = fe.resp_exception;
-        uop.exc.exc_cause = fe.resp_exc_cause;
-        uop.exc.xcpt_ae_if = fe.resp_exception;
-        fe.fetch_uop = uop;
-        fe.fetch_packet_valid = true;
-        fe.pc = fe.resp_address + 4;
-        fe.response_received = false;
+    // An odd redirect remains fenced after its one-shot fault is consumed.
+    // Only a later redirect or reset may establish a fetchable PC.
+    if ((fe.pc & 0x1ULL) != 0) return;
+
+    if (fe.response_received && fe.halfword_valid) {
+        if (fe.halfword_epoch != fe.epoch) {
+            fe.response_received = false;
+            fe.halfword_valid = false;
+        } else if (fe.resp_exception) {
+            fe.fetch_uop = fetch_fault(fe.halfword_pc, fe.resp_exc_cause, true);
+        } else {
+            MicroOp uop;
+            uop.debug_pc = fe.halfword_pc;
+            uop.inst = (fe.resp_instruction << 16) | fe.halfword;
+            uop.is_rvc = false;
+            fe.fetch_uop = uop;
+        }
+        if (fe.halfword_valid) {
+            fe.fetch_packet_valid = true;
+            fe.pc = fe.halfword_pc + 4;
+            fe.halfword_valid = false;
+            fe.response_received = false;
+        }
+    } else if (fe.response_received) {
+        const uint64_t parcel_pc = fe.pc;
+        const bool upper = (parcel_pc & 0x2ULL) != 0;
+        const uint16_t parcel = upper ?
+            static_cast<uint16_t>(fe.resp_instruction >> 16) :
+            static_cast<uint16_t>(fe.resp_instruction);
+
+        if (fe.resp_exception) {
+            fe.fetch_uop = fetch_fault(parcel_pc, fe.resp_exc_cause, true);
+            fe.fetch_packet_valid = true;
+            fe.pc = parcel_pc + 4;
+            fe.response_received = false;
+        } else if ((parcel & 0x3u) != 0x3u) {
+            const RvcDecodeResult rvc = decompress_rvc(parcel);
+            MicroOp uop;
+            uop.debug_pc = parcel_pc;
+            uop.debug_inst = parcel;
+            uop.is_rvc = true;
+            if (!rvc.legal || protected_rvc_decode_gap(parcel)) {
+                uop.exception = true;
+                uop.exc_cause = 2;
+                uop.exc.exception = true;
+                uop.exc.exc_cause = 2;
+            } else {
+                uop.inst = rvc.instruction;
+            }
+            fe.fetch_uop = uop;
+            fe.fetch_packet_valid = true;
+            fe.pc = parcel_pc + 2;
+            if (upper) fe.response_received = false;
+        } else if ((parcel & 0x1fu) == 0x1fu) {
+            fe.fetch_uop = fetch_fault(parcel_pc, 2, false);
+            fe.fetch_uop.debug_inst = parcel;
+            fe.fetch_packet_valid = true;
+            fe.pc = parcel_pc + 2;
+            fe.response_received = false;
+        } else if (!upper) {
+            MicroOp uop;
+            uop.debug_pc = parcel_pc;
+            uop.inst = fe.resp_instruction;
+            uop.is_rvc = false;
+            fe.fetch_uop = uop;
+            fe.fetch_packet_valid = true;
+            fe.pc = parcel_pc + 4;
+            fe.response_received = false;
+        } else {
+            fe.halfword_valid = true;
+            fe.halfword = parcel;
+            fe.halfword_pc = parcel_pc;
+            fe.halfword_epoch = fe.epoch;
+            fe.response_received = false;
+        }
     }
 
-    if (!fe.request_sent) {
+    if (!fe.request_sent && !fe.response_received) {
         ImemRequest req;
-        req.address = fe.pc;
+        req.address = fe.halfword_valid ?
+            ((fe.halfword_pc + 2) & ~0x3ULL) : (fe.pc & ~0x3ULL);
         req.fetch_id = fe.fetch_id;
         req.epoch = fe.epoch;
         req.kill = false;
@@ -122,7 +202,7 @@ void frontend_module(BoomCoreState& state, PipeSignals& pipe) {
             pipe.imem_req.write(req);
             fe.pending_fetch_id = fe.fetch_id;
             fe.pending_epoch = fe.epoch;
-            fe.pending_address = fe.pc;
+            fe.pending_address = req.address;
             fe.fetch_id++;
             fe.request_sent = true;
         }

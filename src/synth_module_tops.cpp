@@ -29,7 +29,7 @@ void synth_frontend_top(hls::stream<ImemRequest>& imem_req_out,
                          uint64_t seed,
                          uint64_t& observable) {
     static BoomCoreState state;
-    if ((seed & 1ULL) != 0) state.frontend.pc = seed & ~0x3ULL;
+    if ((seed & 1ULL) != 0) state.frontend.pc = seed & ~0x1ULL;
     PipeSignals pipe;
     if (!imem_resp_in.empty()) pipe.imem_resp.write(imem_resp_in.read());
     boom::frontend_module(state, pipe);
@@ -153,6 +153,94 @@ void synth_frontend_verify_top(
     ownership_rejection_pulse = rejected_owner;
     misalignment_fault_pulse = state.frontend.fetch_packet_valid &&
         state.frontend.fetch_uop.exception && state.frontend.fetch_uop.exc.xcpt_ma_if;
+}
+
+// Gate 5.2 R2 focused harness. All fetch, RVC, identity, carry, and redirect
+// behavior remains in the canonical frontend_module implementation.
+void synth_r2_rvc_frontend_top(
+        hls::stream<ImemRequest>& imem_req_out,
+        hls::stream<ImemResponse>& imem_resp_in,
+        bool runtime_reset,
+        bool decode_ready,
+        bool redirect_valid,
+        uint64_t redirect_target,
+        bool& decode_valid,
+        uint64_t& decode_pc,
+        uint32_t& decode_instruction,
+        bool& decode_fault,
+        uint64_t& decode_fault_cause,
+        bool& decode_is_rvc,
+        uint16_t& decode_original_bits,
+        bool& held_entry_valid,
+        bool& outstanding_valid,
+        uint64_t& frontend_pc,
+        uint32_t& frontend_epoch,
+        uint64_t& expected_address,
+        bool& carry_valid,
+        uint16_t& carry_value,
+        uint64_t& carry_pc,
+        uint32_t& carry_epoch,
+        bool& accepted_response_pulse,
+        bool& stale_response_pulse,
+        bool& redirect_accepted_pulse,
+        bool& misalignment_fault_pulse) {
+    static BoomCoreState state;
+
+    if (runtime_reset) {
+        state.frontend.reset_done = false;
+        state.decode = DecodeState();
+        state.rename.dispatch_packets[0] = RenameDispatchPacket();
+    } else if (redirect_valid || decode_ready) {
+        state.decode.dec_valids[0] = false;
+    }
+
+    state.frontend_redirect = FrontendRedirect();
+    state.global_flush = false;
+    state.brupdate = BranchUpdate();
+    state.brupdate.valid = redirect_valid;
+    state.brupdate.mispredict = redirect_valid;
+    state.brupdate.jalr_target = redirect_target;
+
+    PipeSignals pipe;
+    const bool response_present = !imem_resp_in.empty();
+    ImemResponse response;
+    if (response_present) {
+        response = imem_resp_in.read();
+        pipe.imem_resp.write(response);
+    }
+
+    const bool reset_redirect = !state.frontend.reset_done;
+    const bool branch_redirect = !reset_redirect && redirect_valid;
+    const bool any_redirect = reset_redirect || branch_redirect || state.frontend.flush;
+    const bool response_matches = response_present && state.frontend.request_sent &&
+        response.fetch_id == state.frontend.pending_fetch_id &&
+        response.epoch == state.frontend.pending_epoch &&
+        response.address == state.frontend.pending_address;
+
+    boom::frontend_module(state, pipe);
+    boom::decode_module(state);
+    if (!pipe.imem_req.empty()) imem_req_out.write(pipe.imem_req.read());
+
+    decode_valid = state.decode.dec_valids[0];
+    decode_pc = state.decode.dec_uops[0].debug_pc;
+    decode_instruction = state.decode.dec_uops[0].inst;
+    decode_fault = state.decode.dec_uops[0].exception;
+    decode_fault_cause = state.decode.dec_uops[0].exc_cause;
+    decode_is_rvc = state.decode.dec_uops[0].is_rvc;
+    decode_original_bits = static_cast<uint16_t>(state.decode.dec_uops[0].debug_inst);
+    held_entry_valid = state.frontend.fetch_packet_valid;
+    outstanding_valid = state.frontend.request_sent;
+    frontend_pc = state.frontend.pc;
+    frontend_epoch = state.frontend.epoch;
+    expected_address = state.frontend.pending_address;
+    carry_valid = state.frontend.halfword_valid;
+    carry_value = state.frontend.halfword;
+    carry_pc = state.frontend.halfword_pc;
+    carry_epoch = state.frontend.halfword_epoch;
+    accepted_response_pulse = response_matches && !any_redirect;
+    stale_response_pulse = response_present && !accepted_response_pulse;
+    redirect_accepted_pulse = any_redirect;
+    misalignment_fault_pulse = branch_redirect && ((redirect_target & 1ULL) != 0);
 }
 
 void synth_decode_top(uint32_t seed_inst, uint64_t seed_pc, uint64_t& observable) {

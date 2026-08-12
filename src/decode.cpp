@@ -119,6 +119,8 @@ void decode_module(BoomCoreState& state) {
     uop.mem = MemoryInfo();
     uop.inst = inst;
     uop.debug_pc = pc;
+    uop.debug_inst = state.frontend.fetch_uop.debug_inst;
+    uop.is_rvc = state.frontend.fetch_uop.is_rvc;
     uop.rename.lrs1 = (inst>>15)&0x1F;
     uop.rename.lrs2 = (inst>>20)&0x1F;
     uop.rename.ldst = (inst>>7)&0x1F;

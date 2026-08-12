@@ -1,0 +1,4 @@
+instruction,legal_forms,reason_not_supported,r2_action,exception_cause,original_bits_preserved,focused_rtl,status,next_gate
+C.EBREAK,1,base Decode has no architectural EBREAK,explicit illegal instruction,2,yes,PASS,NOT_SUPPORTED,Gate5.2_R3
+C.SRLI_shamt5,256,base Decode confuses the RV64 shift-immediate form with SRAI,explicit illegal instruction,2,yes,PASS,NOT_SUPPORTED,Gate5.2_R3
+C.JALR,31,frozen execute writes PC+4 link instead of required compressed PC+2 link,explicit illegal instruction,2,yes,PASS,NOT_SUPPORTED,Gate5.2_R3

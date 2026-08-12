@@ -1,0 +1,11 @@
+program,bytes,compressed,uncompressed,signature,native,csim,rtl,tohost
+rvc_addi,32,2,7,x8=12;x9=15,PASS,PASS,PASS,PASS
+rvc_load_store,48,4,10,x9=46;x10=46;x11=47,PASS,PASS,PASS,PASS
+rvc_branch,36,4,7,x9=9;x10=13,PASS,PASS,PASS,PASS
+rvc_jump,36,4,7,x8=7;x9=18,PASS,PASS,PASS,PASS
+rvc_word_ops,36,4,7,x8=12;x10=0xfffffffffffffff8,PASS,PASS,PASS,PASS
+rvc_mixed_16_32,36,2,8,x8=19;x9=13;x10=30,PASS,PASS,PASS,PASS
+rvc_cross_boundary,36,2,8,x8=10;x9=21;x10=31,PASS,PASS,PASS,PASS
+rvc_rv64m_mix,38,3,8,x10=42;x11=8,PASS,PASS,PASS,PASS
+rvc_redirect_halfword,40,2,9,x8=23;x9=27,PASS,PASS,PASS,PASS
+rvc_tohost,32,2,7,x8=15;x9=31,PASS,PASS,PASS,PASS

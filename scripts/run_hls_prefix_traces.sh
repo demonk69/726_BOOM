@@ -14,6 +14,7 @@ mkdir -p "$OUT_DIR" "$REPORT_DIR"
 "$CXX_BIN" -std=c++11 -I"$ROOT/include" \
   "$ROOT/src/boom_core_step.cpp" \
   "$ROOT/src/frontend.cpp" \
+  "$ROOT/src/rvc.cpp" \
   "$ROOT/src/decode.cpp" \
   "$ROOT/src/rename.cpp" \
   "$ROOT/src/rob.cpp" \

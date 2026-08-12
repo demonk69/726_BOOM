@@ -1,0 +1,78 @@
+#-----------------------------------------------------------
+# xsim v2021.2 (64-bit)
+# SW Build 3367213 on Tue Oct 19 02:47:39 MDT 2021
+# IP Build 3369179 on Thu Oct 21 08:25:16 MDT 2021
+# Start of session at: Wed Aug 12 06:45:01 2026
+# Process ID: 146991
+# Current directory: /home/lab_726/boom/hls_boom/build/gate5_2_rvc/r2/xsim
+# Command line: xsim -log /home/lab_726/boom/hls_boom/reports/gate5_2_rvc/r2/logs/xsim.log -mode tcl -source {xsim.dir/rvc_frontend_rtl_snapshot/xsim_script.tcl}
+# Log file: /home/lab_726/boom/hls_boom/reports/gate5_2_rvc/r2/logs/xsim.log
+# Journal file: /home/lab_726/boom/hls_boom/build/gate5_2_rvc/r2/xsim/xsim.jou
+# Running On: 726, OS: Linux, CPU Frequency: 5300.000 MHz, CPU Physical cores: 14, Host memory: 67148 MB
+#-----------------------------------------------------------
+source xsim.dir/rvc_frontend_rtl_snapshot/xsim_script.tcl
+# xsim {rvc_frontend_rtl_snapshot} -autoloadwcfg -runall -onerror quit
+Time resolution is 1 ps
+run -all
+CASE_PASS,initial_request,canonical reset issued one aligned fetch with fetch_id 0 epoch 0
+CASE_PASS,wrong_fetch_id_lower,wrong identity response drained with no architectural effect
+CASE_PASS,wrong_epoch_lower,wrong identity response drained with no architectural effect
+CASE_PASS,wrong_address_lower,wrong identity response drained with no architectural effect
+CASE_PASS,delayed_lower_response,delayed matching response preserved one outstanding request
+CASE_PASS,basic_c_lower_valid,lower C.NOP produced one valid Decode entry
+CASE_PASS,basic_c_lower_pc,lower compressed parcel retained exact PC
+CASE_PASS,basic_c_expansion,C.NOP expanded to canonical ADDI x0 x0 0
+CASE_PASS,basic_c_attribution,compressed attribution remained observable
+CASE_PASS,basic_c_original_bits,original compressed parcel remained observable
+CASE_PASS,basic_c_pc_plus_2,compressed instruction advanced frontend PC by two
+CASE_PASS,upper_c_same_word,upper C.ADDI was consumed from retained response word
+CASE_PASS,upper_c_original_bits,upper compressed original bits were exact
+CASE_PASS,upper_c_pc_plus_2,second compressed instruction advanced PC by two
+CASE_PASS,basic_32_aligned,aligned 32-bit instruction published unchanged
+CASE_PASS,basic_32_pc_plus_4,32-bit instruction advanced frontend PC by four
+CASE_PASS,basic_32_not_rvc,32-bit instruction was not attributed as compressed
+CASE_PASS,mixed_c_c_32,C/C/32 mixed sequence preserved exact parcel ordering
+CASE_PASS,mixed_cross_redirect,redirect established an aligned mixed-stream base
+CASE_PASS,mixed_c_before_cross32,compressed parcel preceded a cross-boundary 32-bit instruction
+CASE_PASS,cross_carry_valid,upper-position 32-bit low half established carry valid
+CASE_PASS,cross_carry_value,carry retained exact low halfword
+CASE_PASS,cross_carry_pc,carry retained the architectural instruction PC
+CASE_PASS,cross_carry_epoch,carry retained the active frontend epoch
+CASE_PASS,wrong_fetch_id_upper,wrong identity response drained with no architectural effect
+CASE_PASS,wrong_epoch_upper,wrong identity response drained with no architectural effect
+CASE_PASS,wrong_address_upper,wrong identity response drained with no architectural effect
+CASE_PASS,cross_assembled_instruction,matching delayed upper assembled exact 32-bit instruction
+CASE_PASS,cross_assembled_pc,assembled instruction retained low-halfword PC
+CASE_PASS,cross_carry_consumed,matching upper consumed carry exactly once
+CASE_PASS,cross_pc_plus_4,cross-boundary 32-bit instruction advanced PC by four
+CASE_PASS,decode_hold_valid,Decode backpressure retained valid fetch entry
+CASE_PASS,decode_hold_stability,held PC and instruction remained stable
+CASE_PASS,duplicate_upper_stale,duplicate consumed upper response was classified stale
+CASE_PASS,duplicate_upper_no_effect,duplicate response did not alter held Decode publication
+CASE_PASS,redirect_kills_held_decode,redirect invalidated stale held Decode publication
+CASE_PASS,redirect_after_hold_request,redirect after Decode hold issued only its target request
+CASE_PASS,cross_upper_fault,matching cross upper access fault reached Decode
+CASE_PASS,cross_upper_fault_pc,cross upper fault was attributed to carried instruction PC
+CASE_PASS,cross_fault_carry_clear,cross upper fault consumed and cleared carry
+CASE_PASS,redirect_mod4_2_request,PC mod 4 equals 2 redirected to aligned containing word without fault
+CASE_PASS,redirect_mod4_2_decode,redirected upper compressed parcel retained exact target PC
+CASE_PASS,odd_redirect_pulse,odd branch redirect asserted misalignment pulse
+CASE_PASS,odd_redirect_fault,odd redirect published precise MA-IF Decode fault
+CASE_PASS,odd_redirect_no_request,odd redirect issued no IMEM request
+CASE_PASS,odd_redirect_persistent_fence,odd PC remained fenced until a later redirect
+CASE_PASS,redirect_clears_partial,redirect while partial instruction cleared carry
+CASE_PASS,redirect_rejects_stale_upper,redirect won over stale upper and advanced epoch
+CASE_PASS,reset_clears_partial,runtime reset cleared partial instruction and restarted PC
+CASE_PASS,reset_rejects_stale_upper,runtime reset drained old upper without publication
+CASE_PASS,protected_c_ebreak,protected C.EBREAK gap faulted as illegal RVC
+CASE_PASS,protected_c_ebreak_bits,protected C.EBREAK retained original compressed bits
+CASE_PASS,protected_c_srli_shamt5,protected RV64 C.SRLI shamt5 gap faulted as illegal RVC
+CASE_PASS,protected_c_srli_bits,protected C.SRLI retained original compressed bits
+CASE_PASS,protected_c_jalr,C.JALR faulted rather than using frozen backend PC+4 link
+CASE_PASS,protected_c_jalr_bits,protected C.JALR retained original compressed bits
+CASE_PASS,reserved_long_encoding,reserved long encoding faulted and advanced by one parcel
+CASE_PASS,sequence_32_then_c,32-bit then compressed sequence preserved PC plus four then plus two
+GATE5_2_R2_RVC_FRONTEND_RTL_PASS cases=58 requests=24 responses=24
+$finish called at time : 2626 ns : File "/home/lab_726/boom/hls_boom/rtl_tb/rvc_frontend_rtl_tb.sv" Line 422
+exit
+INFO: [Common 17-206] Exiting xsim at Wed Aug 12 06:45:05 2026...

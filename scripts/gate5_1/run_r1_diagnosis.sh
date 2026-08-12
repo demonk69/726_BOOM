@@ -15,7 +15,7 @@ CXX_BIN=${CXX:-g++}
 mkdir -p "$REPORT" "$BUILD/current" "$BUILD/baseline"
 
 COMMON_SRCS=(
-  src/boom_core_step.cpp src/frontend.cpp src/decode.cpp src/rename.cpp src/rob.cpp
+  src/boom_core_step.cpp src/frontend.cpp src/rvc.cpp src/decode.cpp src/rename.cpp src/rob.cpp
   src/issue.cpp src/completion.cpp src/mul.cpp src/divider.cpp src/execute.cpp
   src/branch.cpp src/lsu.cpp src/commit.cpp src/csr.cpp src/reset.cpp
 )

@@ -69,6 +69,10 @@ void boom_core_reset_step(BoomCoreState& state, ResetControllerState& reset_ctrl
         state.frontend.resp_instruction = 0;
         state.frontend.resp_exception = false;
         state.frontend.resp_exc_cause = 0;
+        state.frontend.halfword_valid = false;
+        state.frontend.halfword = 0;
+        state.frontend.halfword_pc = 0;
+        state.frontend.halfword_epoch = 0;
         state.frontend.stalled = false;
         state.frontend.flush = false;
         state.frontend.fetch_packet_valid = false;

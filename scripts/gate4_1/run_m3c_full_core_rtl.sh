@@ -7,16 +7,28 @@ REPORT=${BOOM_M3C_FULL_RTL_REPORT_DIR:-"$ROOT/reports/gate4_1/m3/m3c/full_core_r
 BASE_BUILD="$BUILD/base_m3b"
 BASE_REPORT="$REPORT/base_m3b"
 XSIM_BUILD="$BASE_BUILD/xsim"
+XSIM_SNAPSHOT=gate3_9_snapshot
 XSIM_BIN=${XSIM:-/home/lab_726/Xilinx/Vivado/2021.2/bin/xsim}
 MAX_CYCLES=${BOOM_M3C_FULL_RTL_MAX_CYCLES:-1000000}
 START_SECONDS=$SECONDS
 
 rm -rf "$BUILD" "$REPORT"
 mkdir -p "$BUILD/programs" "$REPORT/logs/suite" "$REPORT/traces"
-BOOM_M3B_FULL_CORE_RTL_BUILD_DIR="$BASE_BUILD" \
-BOOM_M3B_FULL_CORE_RTL_REPORT_DIR="$BASE_REPORT" \
-  "$ROOT/scripts/gate4_1/run_m3b_full_core_rtl.sh" \
-  > "$REPORT/logs/base_m3b.log" 2>&1
+if [[ -n ${BOOM_M3C_REUSE_XSIM_BUILD:-} ]]; then
+  [[ -n ${BOOM_M3C_REUSE_XSIM_SNAPSHOT:-} ]] || {
+    printf 'BOOM_M3C_REUSE_XSIM_SNAPSHOT is required with BOOM_M3C_REUSE_XSIM_BUILD\n' >&2
+    exit 2
+  }
+  XSIM_BUILD=$BOOM_M3C_REUSE_XSIM_BUILD
+  XSIM_SNAPSHOT=$BOOM_M3C_REUSE_XSIM_SNAPSHOT
+  printf 'Reusing XSim snapshot: %s/%s\n' "$XSIM_BUILD" "$XSIM_SNAPSHOT" \
+    > "$REPORT/logs/base_m3b.log"
+else
+  BOOM_M3B_FULL_CORE_RTL_BUILD_DIR="$BASE_BUILD" \
+  BOOM_M3B_FULL_CORE_RTL_REPORT_DIR="$BASE_REPORT" \
+    "$ROOT/scripts/gate4_1/run_m3b_full_core_rtl.sh" \
+    > "$REPORT/logs/base_m3b.log" 2>&1
+fi
 
 PROGRAMS=(mul_family_all div_family_all rv64m_all_13 mul_div_dependency
   div_mul_dependency high_multiply_mix word_multiply_divide_mix
@@ -46,7 +58,8 @@ output.write_text("\n".join(tokens) + "\n", encoding="ascii")
 PY
   scenario=N0_NORMAL_INDEPENDENT_ALU
   [[ "$program" != rv64m_reset_replay ]] || scenario=R8_DOUBLE_RUNTIME_RESET
-  GATE3_9_XSIM_BUILD="$XSIM_BUILD" PROGRAM="$image" TRACE="$trace" LOG="$log" \
+  GATE3_9_XSIM_BUILD="$XSIM_BUILD" GATE3_9_XSIM_SNAPSHOT="$XSIM_SNAPSHOT" \
+    PROGRAM="$image" TRACE="$trace" LOG="$log" \
     MAX_CYCLES="$MAX_CYCLES" XSIM="$XSIM_BIN" \
     "$ROOT/scripts/gate3_9/run_xsim.sh" "$scenario" "$program" > "$stdout" 2>&1
 done

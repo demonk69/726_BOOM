@@ -44,11 +44,14 @@ Gate 5.1R final update: native/UBSan and focused generated RTL 33/33 pass; the n
 
 Gate 5.2 R1 update: the standalone integer RV64C decompressor uses canonical `RvcDecodeResult`/`decompress_rvc`, rejects compressed FP memory forms as current-core unsupported, passes 228 directed checks, all 65,536 parcel comparisons, and 38,294 supported expansion-to-Decode checks. It is not connected to Frontend. `GATE5_2_R1_RVC_DECOMPRESSOR_VERIFIED=true` and `READY_FOR_GATE5_2_R2_RVC_FETCH=true`; neither full Gate 5.2 nor Fetch Buffer readiness is claimed.
 
+Gate 5.2 R2 update: the one-wide Frontend now consumes mixed 16/32-bit streams, retains an aligned response word, advances by PC+2/PC+4, assembles cross-word 32-bit instructions, and preserves exact request identity, redirects, reset, backpressure, and fault attribution. Focused native passes 4,111 assertions across 414 cases, 256x2048 random passes with successful and faulted cross-word assembly, focused RTL passes 58/58, and mixed full-core native/csim/RTL pass 10/10 each. Ten final csynth tops pass; `boom_core_top` is 126798 LUT, 28492 FF, 16 BRAM, 3 DSP, and 6.341 ns with `Pipelined=no`. One `C.EBREAK`, 256 `C.SRLI shamt5`, and 31 `C.JALR` forms remain explicit illegal cause 2. `GATE5_2_R2_RVC_FETCH_VERIFIED=true`, `READY_FOR_GATE5_2_R3_DECODE_GAP_CLOSURE=true`, `GATE5_2_RVC_VERIFIED=false`, and `READY_FOR_FETCH_BUFFER=false`.
+
 Gate 4.0 W3 source scope: acceptance covers the modular `src/*.cpp` implementation plus generated `src/boom_core_merged.cpp` and public `src/boom_core_top.cpp` only. `src/boom_all.cpp` is a legacy, non-canonical, unreferenced monolithic snapshot; active build, test, RTL-generation, and csynth scripts do not consume it. It is excluded from source manifests and acceptance without deletion or rewrite. Pre-existing dirty tracked logs and backup logs are excluded non-deliverables and are not evidence.
 
 ## Implemented And Tested
 
 - Frontend request/response FSM with one outstanding request, fetch ID, 32-bit epoch, expected-address matching, stale drain, redirect priority/ownership, fetch faults, non-RVC alignment checks, and verified next-state request replacement; Gate 5.1 generated-RTL acceptance is complete.
+- One-wide RV64C parcel fetch for the supported integer subset, including retained-word reuse and one cross-word carry; three protected Decode-gap classes remain unsupported.
 - RV64 integer ALU subset used by directed tests.
 - JAL, JALR, and conditional branches with always-not-taken baseline redirect behavior.
 - Integer rename map/free-list/stale-pdst commit release for single dispatch lane.

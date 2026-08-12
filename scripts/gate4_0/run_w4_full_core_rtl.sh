@@ -161,7 +161,7 @@ with (report/"full_core_prf_ports.csv").open("w",newline="") as stream:
 rtl_paths=sorted(p for p in rtl.iterdir() if p.is_file() and p.suffix in (".v",".dat"))
 with (report/"full_core_rtl_hashes.txt").open("w") as out:
     for p in rtl_paths: out.write(f"{hashlib.sha256(p.read_bytes()).hexdigest()}  {p.relative_to(root)}\n")
-source_names=("boom_core_step.cpp","frontend.cpp","decode.cpp","rename.cpp","rob.cpp",
+source_names=("boom_core_step.cpp","frontend.cpp","rvc.cpp","decode.cpp","rename.cpp","rob.cpp",
               "issue.cpp","execute.cpp","branch.cpp","lsu.cpp","completion.cpp","commit.cpp",
               "csr.cpp","reset.cpp","boom_core_top.cpp")
 source_paths=sorted(root.glob("include/*.hpp"))+[root/"src"/name for name in source_names]

@@ -1,0 +1,59 @@
+case,asserted_requirement,status,evidence
+initial_request,canonical reset issued one aligned fetch with fetch_id 0 epoch 0,PASS,/home/lab_726/boom/hls_boom/reports/gate5_2_rvc/r2/logs/xsim.log
+wrong_fetch_id_lower,wrong identity response drained with no architectural effect,PASS,/home/lab_726/boom/hls_boom/reports/gate5_2_rvc/r2/logs/xsim.log
+wrong_epoch_lower,wrong identity response drained with no architectural effect,PASS,/home/lab_726/boom/hls_boom/reports/gate5_2_rvc/r2/logs/xsim.log
+wrong_address_lower,wrong identity response drained with no architectural effect,PASS,/home/lab_726/boom/hls_boom/reports/gate5_2_rvc/r2/logs/xsim.log
+delayed_lower_response,delayed matching response preserved one outstanding request,PASS,/home/lab_726/boom/hls_boom/reports/gate5_2_rvc/r2/logs/xsim.log
+basic_c_lower_valid,lower C.NOP produced one valid Decode entry,PASS,/home/lab_726/boom/hls_boom/reports/gate5_2_rvc/r2/logs/xsim.log
+basic_c_lower_pc,lower compressed parcel retained exact PC,PASS,/home/lab_726/boom/hls_boom/reports/gate5_2_rvc/r2/logs/xsim.log
+basic_c_expansion,C.NOP expanded to canonical ADDI x0 x0 0,PASS,/home/lab_726/boom/hls_boom/reports/gate5_2_rvc/r2/logs/xsim.log
+basic_c_attribution,compressed attribution remained observable,PASS,/home/lab_726/boom/hls_boom/reports/gate5_2_rvc/r2/logs/xsim.log
+basic_c_original_bits,original compressed parcel remained observable,PASS,/home/lab_726/boom/hls_boom/reports/gate5_2_rvc/r2/logs/xsim.log
+basic_c_pc_plus_2,compressed instruction advanced frontend PC by two,PASS,/home/lab_726/boom/hls_boom/reports/gate5_2_rvc/r2/logs/xsim.log
+upper_c_same_word,upper C.ADDI was consumed from retained response word,PASS,/home/lab_726/boom/hls_boom/reports/gate5_2_rvc/r2/logs/xsim.log
+upper_c_original_bits,upper compressed original bits were exact,PASS,/home/lab_726/boom/hls_boom/reports/gate5_2_rvc/r2/logs/xsim.log
+upper_c_pc_plus_2,second compressed instruction advanced PC by two,PASS,/home/lab_726/boom/hls_boom/reports/gate5_2_rvc/r2/logs/xsim.log
+basic_32_aligned,aligned 32-bit instruction published unchanged,PASS,/home/lab_726/boom/hls_boom/reports/gate5_2_rvc/r2/logs/xsim.log
+basic_32_pc_plus_4,32-bit instruction advanced frontend PC by four,PASS,/home/lab_726/boom/hls_boom/reports/gate5_2_rvc/r2/logs/xsim.log
+basic_32_not_rvc,32-bit instruction was not attributed as compressed,PASS,/home/lab_726/boom/hls_boom/reports/gate5_2_rvc/r2/logs/xsim.log
+mixed_c_c_32,C/C/32 mixed sequence preserved exact parcel ordering,PASS,/home/lab_726/boom/hls_boom/reports/gate5_2_rvc/r2/logs/xsim.log
+mixed_cross_redirect,redirect established an aligned mixed-stream base,PASS,/home/lab_726/boom/hls_boom/reports/gate5_2_rvc/r2/logs/xsim.log
+mixed_c_before_cross32,compressed parcel preceded a cross-boundary 32-bit instruction,PASS,/home/lab_726/boom/hls_boom/reports/gate5_2_rvc/r2/logs/xsim.log
+cross_carry_valid,upper-position 32-bit low half established carry valid,PASS,/home/lab_726/boom/hls_boom/reports/gate5_2_rvc/r2/logs/xsim.log
+cross_carry_value,carry retained exact low halfword,PASS,/home/lab_726/boom/hls_boom/reports/gate5_2_rvc/r2/logs/xsim.log
+cross_carry_pc,carry retained the architectural instruction PC,PASS,/home/lab_726/boom/hls_boom/reports/gate5_2_rvc/r2/logs/xsim.log
+cross_carry_epoch,carry retained the active frontend epoch,PASS,/home/lab_726/boom/hls_boom/reports/gate5_2_rvc/r2/logs/xsim.log
+wrong_fetch_id_upper,wrong identity response drained with no architectural effect,PASS,/home/lab_726/boom/hls_boom/reports/gate5_2_rvc/r2/logs/xsim.log
+wrong_epoch_upper,wrong identity response drained with no architectural effect,PASS,/home/lab_726/boom/hls_boom/reports/gate5_2_rvc/r2/logs/xsim.log
+wrong_address_upper,wrong identity response drained with no architectural effect,PASS,/home/lab_726/boom/hls_boom/reports/gate5_2_rvc/r2/logs/xsim.log
+cross_assembled_instruction,matching delayed upper assembled exact 32-bit instruction,PASS,/home/lab_726/boom/hls_boom/reports/gate5_2_rvc/r2/logs/xsim.log
+cross_assembled_pc,assembled instruction retained low-halfword PC,PASS,/home/lab_726/boom/hls_boom/reports/gate5_2_rvc/r2/logs/xsim.log
+cross_carry_consumed,matching upper consumed carry exactly once,PASS,/home/lab_726/boom/hls_boom/reports/gate5_2_rvc/r2/logs/xsim.log
+cross_pc_plus_4,cross-boundary 32-bit instruction advanced PC by four,PASS,/home/lab_726/boom/hls_boom/reports/gate5_2_rvc/r2/logs/xsim.log
+decode_hold_valid,Decode backpressure retained valid fetch entry,PASS,/home/lab_726/boom/hls_boom/reports/gate5_2_rvc/r2/logs/xsim.log
+decode_hold_stability,held PC and instruction remained stable,PASS,/home/lab_726/boom/hls_boom/reports/gate5_2_rvc/r2/logs/xsim.log
+duplicate_upper_stale,duplicate consumed upper response was classified stale,PASS,/home/lab_726/boom/hls_boom/reports/gate5_2_rvc/r2/logs/xsim.log
+duplicate_upper_no_effect,duplicate response did not alter held Decode publication,PASS,/home/lab_726/boom/hls_boom/reports/gate5_2_rvc/r2/logs/xsim.log
+redirect_kills_held_decode,redirect invalidated stale held Decode publication,PASS,/home/lab_726/boom/hls_boom/reports/gate5_2_rvc/r2/logs/xsim.log
+redirect_after_hold_request,redirect after Decode hold issued only its target request,PASS,/home/lab_726/boom/hls_boom/reports/gate5_2_rvc/r2/logs/xsim.log
+cross_upper_fault,matching cross upper access fault reached Decode,PASS,/home/lab_726/boom/hls_boom/reports/gate5_2_rvc/r2/logs/xsim.log
+cross_upper_fault_pc,cross upper fault was attributed to carried instruction PC,PASS,/home/lab_726/boom/hls_boom/reports/gate5_2_rvc/r2/logs/xsim.log
+cross_fault_carry_clear,cross upper fault consumed and cleared carry,PASS,/home/lab_726/boom/hls_boom/reports/gate5_2_rvc/r2/logs/xsim.log
+redirect_mod4_2_request,PC mod 4 equals 2 redirected to aligned containing word without fault,PASS,/home/lab_726/boom/hls_boom/reports/gate5_2_rvc/r2/logs/xsim.log
+redirect_mod4_2_decode,redirected upper compressed parcel retained exact target PC,PASS,/home/lab_726/boom/hls_boom/reports/gate5_2_rvc/r2/logs/xsim.log
+odd_redirect_pulse,odd branch redirect asserted misalignment pulse,PASS,/home/lab_726/boom/hls_boom/reports/gate5_2_rvc/r2/logs/xsim.log
+odd_redirect_fault,odd redirect published precise MA-IF Decode fault,PASS,/home/lab_726/boom/hls_boom/reports/gate5_2_rvc/r2/logs/xsim.log
+odd_redirect_no_request,odd redirect issued no IMEM request,PASS,/home/lab_726/boom/hls_boom/reports/gate5_2_rvc/r2/logs/xsim.log
+odd_redirect_persistent_fence,odd PC remained fenced until a later redirect,PASS,/home/lab_726/boom/hls_boom/reports/gate5_2_rvc/r2/logs/xsim.log
+redirect_clears_partial,redirect while partial instruction cleared carry,PASS,/home/lab_726/boom/hls_boom/reports/gate5_2_rvc/r2/logs/xsim.log
+redirect_rejects_stale_upper,redirect won over stale upper and advanced epoch,PASS,/home/lab_726/boom/hls_boom/reports/gate5_2_rvc/r2/logs/xsim.log
+reset_clears_partial,runtime reset cleared partial instruction and restarted PC,PASS,/home/lab_726/boom/hls_boom/reports/gate5_2_rvc/r2/logs/xsim.log
+reset_rejects_stale_upper,runtime reset drained old upper without publication,PASS,/home/lab_726/boom/hls_boom/reports/gate5_2_rvc/r2/logs/xsim.log
+protected_c_ebreak,protected C.EBREAK gap faulted as illegal RVC,PASS,/home/lab_726/boom/hls_boom/reports/gate5_2_rvc/r2/logs/xsim.log
+protected_c_ebreak_bits,protected C.EBREAK retained original compressed bits,PASS,/home/lab_726/boom/hls_boom/reports/gate5_2_rvc/r2/logs/xsim.log
+protected_c_srli_shamt5,protected RV64 C.SRLI shamt5 gap faulted as illegal RVC,PASS,/home/lab_726/boom/hls_boom/reports/gate5_2_rvc/r2/logs/xsim.log
+protected_c_srli_bits,protected C.SRLI retained original compressed bits,PASS,/home/lab_726/boom/hls_boom/reports/gate5_2_rvc/r2/logs/xsim.log
+protected_c_jalr,C.JALR faulted rather than using frozen backend PC+4 link,PASS,/home/lab_726/boom/hls_boom/reports/gate5_2_rvc/r2/logs/xsim.log
+protected_c_jalr_bits,protected C.JALR retained original compressed bits,PASS,/home/lab_726/boom/hls_boom/reports/gate5_2_rvc/r2/logs/xsim.log
+reserved_long_encoding,reserved long encoding faulted and advanced by one parcel,PASS,/home/lab_726/boom/hls_boom/reports/gate5_2_rvc/r2/logs/xsim.log
+sequence_32_then_c,32-bit then compressed sequence preserved PC plus four then plus two,PASS,/home/lab_726/boom/hls_boom/reports/gate5_2_rvc/r2/logs/xsim.log

@@ -60,3 +60,7 @@ All tops are reported unpipelined and `CORE_CYCLE` has no `PipelineII`. The sour
 ## Gate 5.1 Final
 
 Nine canonical targets pass. `boom_core_top` and `synth_core_step_top` are both 6.341 ns with 16 BRAM and 3 DSP. The full-core longest child schedule remains `execute_module` at 6.341 ns; standalone `synth_execute_top` is 6.411 ns. `synth_frontend_top` and the full-core `frontend_module` are 5.993 ns and do not become the critical path. The final product is 124317 LUT and 27513 FF. `GATE5_1_PPA_BLOCKER=false`; all canonical tops report `PipelineType=no`, `CORE_CYCLE` is not pipelined, and no DATAFLOW, false-dependence, or explicit complete-partition directive is accepted.
+
+## Gate 5.2 R2 Final
+
+The final R2 `boom_core_top` XML reads 126798 LUT, 28492 FF, 16 BRAM_18K, 3 DSP, and **6.341 ns**. Its child `execute_module` remains 6.341 ns; the full-core `frontend_module` is 5.190 ns and standalone `synth_frontend_top` is 4.379 ns. Against the frozen R2 Gate 5.1 baseline, full-core period/BRAM/DSP are unchanged while LUT/FF rise by 2481/979. The 10 ns target closes, so `GATE5_2_R2_PPA_BLOCKER=false`. All ten final tops report `PipelineType=no`; `CORE_CYCLE` remains unpipelined and no DATAFLOW, false-dependence, or complete partition is used.

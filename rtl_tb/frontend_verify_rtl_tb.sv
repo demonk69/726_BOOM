@@ -275,7 +275,8 @@ module frontend_verify_rtl_tb;
         pass("request_no_duplicate_under_backpressure", "backpressured request transferred exactly once");
 
         for (i=0; i<32; i=i+1) begin
-            invoke(1, response_payload(req[63:0], req[95:64], req[127:96], 32'h00000013+i, 0, 0));
+            invoke(1, response_payload(req[63:0], req[95:64], req[127:96],
+                                       32'h00000013+(i << 20), 0, 0));
             if (!accepted_response_pulse || frontend_pc !== req[63:0]+4)
                 fail("sequential_32", "nonsequential response");
             invoke(0, 0);
@@ -383,23 +384,23 @@ module frontend_verify_rtl_tb;
         req = requests[request_count-1];
 
         architectural_redirect_valid = 1;
-        architectural_redirect_target = 64'h24002;
+        architectural_redirect_target = 64'h24003;
         architectural_redirect_rob_idx = 5;
         architectural_redirect_allocation_id = 99;
         owner_live = 1; owner_allocation_id = 99;
         before_requests = request_count;
         invoke(0, 0);
-        if (!misalignment_fault_pulse || !decode_fault || decode_pc !== 64'h24002 ||
+        if (!misalignment_fault_pulse || !decode_fault || decode_pc !== 64'h24003 ||
             decode_fault_cause !== 0 || request_count != before_requests)
             fail("misaligned_arch_target", "architectural alignment fault");
         pass("misaligned_arch_target", "misaligned architectural target faulted without masking");
         clear_controls();
 
         runtime_reset = 1; invoke(0, 0); runtime_reset = 0;
-        branch_redirect_valid = 1; branch_redirect_target = 64'h25002;
+        branch_redirect_valid = 1; branch_redirect_target = 64'h25003;
         before_requests = request_count;
         invoke(0, 0);
-        if (!misalignment_fault_pulse || !decode_fault || decode_pc !== 64'h25002 ||
+        if (!misalignment_fault_pulse || !decode_fault || decode_pc !== 64'h25003 ||
             request_count != before_requests)
             fail("misaligned_branch_target", "branch alignment fault");
         pass("misaligned_branch_target", "misaligned branch target faulted without masking");
@@ -408,7 +409,7 @@ module frontend_verify_rtl_tb;
         runtime_reset = 1; invoke(0, 0); runtime_reset = 0;
         generic_flush_valid = 1; generic_flush_target = 64'h26002;
         invoke(0, 0);
-        if (misalignment_fault_pulse || requests[request_count-1][63:0] !== 64'h26002)
+        if (misalignment_fault_pulse || requests[request_count-1][63:0] !== 64'h26000)
             fail("misaligned_generic_flush_target", "generic flush policy changed");
         pass("misaligned_generic_flush_target", "generic flush retained current-PC alignment policy");
         clear_controls();

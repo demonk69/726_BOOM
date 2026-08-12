@@ -1,0 +1,11 @@
+program,status,commits,signature,tohost,trace
+rvc_addi,PASS,11,x8=0x000000000000000c;x9=0x000000000000000f,PASS,r2_rtl_traces/rvc_addi.jsonl
+rvc_load_store,PASS,16,x9=0x000000000000002e;x10=0x000000000000002e;x11=0x000000000000002f,PASS,r2_rtl_traces/rvc_load_store.jsonl
+rvc_branch,PASS,12,x9=0x0000000000000009;x10=0x000000000000000d,PASS,r2_rtl_traces/rvc_branch.jsonl
+rvc_jump,PASS,12,x8=0x0000000000000007;x9=0x0000000000000012,PASS,r2_rtl_traces/rvc_jump.jsonl
+rvc_word_ops,PASS,13,x8=0x000000000000000c;x10=0xfffffffffffffff8,PASS,r2_rtl_traces/rvc_word_ops.jsonl
+rvc_mixed_16_32,PASS,12,x8=0x0000000000000013;x9=0x000000000000000d;x10=0x000000000000001e,PASS,r2_rtl_traces/rvc_mixed_16_32.jsonl
+rvc_cross_boundary,PASS,12,x8=0x000000000000000a;x9=0x0000000000000015;x10=0x000000000000001f,PASS,r2_rtl_traces/rvc_cross_boundary.jsonl
+rvc_rv64m_mix,PASS,13,x10=0x000000000000002a;x11=0x0000000000000008,PASS,r2_rtl_traces/rvc_rv64m_mix.jsonl
+rvc_redirect_halfword,PASS,11,x8=0x0000000000000017;x9=0x000000000000001b,PASS,r2_rtl_traces/rvc_redirect_halfword.jsonl
+rvc_tohost,PASS,11,x8=0x000000000000000f;x9=0x000000000000001f,PASS,r2_rtl_traces/rvc_tohost.jsonl
