@@ -1,0 +1,11 @@
+case,asserted_requirement,status,evidence
+runtime_reset,runtime reset clears control state,PASS,/home/lab_726/boom/hls_boom/reports/gate5_3_fetch_buffer/b1/logs/rtl_xsim.log
+sparse_mask,partial packet compacts valid lanes,PASS,/home/lab_726/boom/hls_boom/reports/gate5_3_fetch_buffer/b1/logs/rtl_xsim.log
+one_wide_drain,one instruction drains per invocation,PASS,/home/lab_726/boom/hls_boom/reports/gate5_3_fetch_buffer/b1/logs/rtl_xsim.log
+full,two four-wide packets fill eight entries,PASS,/home/lab_726/boom/hls_boom/reports/gate5_3_fetch_buffer/b1/logs/rtl_xsim.log
+backpressure,full queue atomically backpressures enqueue,PASS,/home/lab_726/boom/hls_boom/reports/gate5_3_fetch_buffer/b1/logs/rtl_xsim.log
+capacity_reuse,dequeue capacity permits same-cycle enqueue,PASS,/home/lab_726/boom/hls_boom/reports/gate5_3_fetch_buffer/b1/logs/rtl_xsim.log
+fifo_order,FIFO order survives full replacement,PASS,/home/lab_726/boom/hls_boom/reports/gate5_3_fetch_buffer/b1/logs/rtl_xsim.log
+head_tail_wrap,head and tail wrap preserve FIFO order,PASS,/home/lab_726/boom/hls_boom/reports/gate5_3_fetch_buffer/b1/logs/rtl_xsim.log
+flush_priority,flush removes all entries and rejects concurrent traffic,PASS,/home/lab_726/boom/hls_boom/reports/gate5_3_fetch_buffer/b1/logs/rtl_xsim.log
+zero_mask,valid zero-mask packet is accepted no-op,PASS,/home/lab_726/boom/hls_boom/reports/gate5_3_fetch_buffer/b1/logs/rtl_xsim.log

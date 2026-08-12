@@ -1,0 +1,139 @@
+
+****** Vitis HLS - High-Level Synthesis from C, C++ and OpenCL v2021.2 (64-bit)
+  **** SW Build 3367213 on Tue Oct 19 02:47:39 MDT 2021
+  **** IP Build 3369179 on Thu Oct 21 08:25:16 MDT 2021
+    ** Copyright 1986-2021 Xilinx, Inc. All Rights Reserved.
+
+source /home/lab_726/Xilinx/Vitis_HLS/2021.2/scripts/vitis_hls/hls.tcl -notrace
+INFO: [HLS 200-10] Running '/home/lab_726/Xilinx/Vitis_HLS/2021.2/bin/unwrapped/lnx64.o/vitis_hls'
+INFO: [HLS 200-10] For user 'lab_726' on host '726' (Linux_x86_64 version 6.8.0-136-generic) on Wed Aug 12 21:03:06 CST 2026
+INFO: [HLS 200-10] On os Ubuntu 22.04.5 LTS
+INFO: [HLS 200-10] In directory '/home/lab_726/boom/hls_boom'
+Sourcing Tcl script '/home/lab_726/boom/hls_boom/scripts/gate5_3/b1_fetch_buffer_csynth.tcl'
+INFO: [HLS 200-1510] Running: open_project -reset d8_auto 
+INFO: [HLS 200-10] Creating and opening project '/home/lab_726/boom/hls_boom/build/gate5_3_fetch_buffer/b1/csynth/d8_auto'.
+INFO: [HLS 200-1510] Running: set_top synth_fetch_buffer_top 
+INFO: [HLS 200-1510] Running: add_files -cflags -std=c++11 -I/home/lab_726/boom/hls_boom/include -DFETCH_BUFFER_DEPTH=8  /home/lab_726/boom/hls_boom/src/fetch_buffer.cpp 
+INFO: [HLS 200-10] Adding design file '/home/lab_726/boom/hls_boom/src/fetch_buffer.cpp' to the project
+INFO: [HLS 200-1510] Running: add_files -cflags -std=c++11 -I/home/lab_726/boom/hls_boom/include -DFETCH_BUFFER_DEPTH=8  /home/lab_726/boom/hls_boom/src/synth_fetch_buffer_top.cpp 
+INFO: [HLS 200-10] Adding design file '/home/lab_726/boom/hls_boom/src/synth_fetch_buffer_top.cpp' to the project
+INFO: [HLS 200-1510] Running: open_solution -reset solution 
+INFO: [HLS 200-10] Creating and opening solution '/home/lab_726/boom/hls_boom/build/gate5_3_fetch_buffer/b1/csynth/d8_auto/solution'.
+INFO: [HLS 200-10] Cleaning up the solution database.
+WARNING: [HLS 200-40] No /home/lab_726/boom/hls_boom/build/gate5_3_fetch_buffer/b1/csynth/d8_auto/solution/solution.aps file found.
+INFO: [HLS 200-1505] Using default flow_target 'vivado'
+Resolution: For help on HLS 200-1505 see www.xilinx.com/cgi-bin/docs/rdoc?v=2021.2;t=hls+guidance;d=200-1505.html
+INFO: [HLS 200-1510] Running: set_part xczu7ev-ffvc1156-2-e 
+INFO: [HLS 200-1611] Setting target device to 'xczu7ev-ffvc1156-2-e'
+INFO: [HLS 200-1510] Running: create_clock -period 10 -name default 
+INFO: [SYN 201-201] Setting up clock 'default' with a period of 10ns.
+INFO: [HLS 200-1510] Running: config_compile -pipeline_loops 0 
+INFO: [XFORM 203-1171] Pipeline the innermost loop with trip count more than 0 or its parent loop when its trip count is less than or equal 0.
+INFO: [HLS 200-1510] Running: csynth_design 
+INFO: [HLS 200-111] Finished File checks and directory preparation: CPU user time: 0.01 seconds. CPU system time: 0 seconds. Elapsed time: 0 seconds; current allocated memory: 1.321 GB.
+INFO: [HLS 200-10] Analyzing design file '/home/lab_726/boom/hls_boom/src/synth_fetch_buffer_top.cpp' ... 
+INFO: [HLS 200-10] Analyzing design file '/home/lab_726/boom/hls_boom/src/fetch_buffer.cpp' ... 
+INFO: [HLS 200-111] Finished Source Code Analysis and Preprocessing: CPU user time: 0.71 seconds. CPU system time: 0.37 seconds. Elapsed time: 0.55 seconds; current allocated memory: 416.484 MB.
+INFO: [HLS 200-777] Using interface defaults for 'Vivado' flow target.
+INFO: [HLS 214-284] Auto array partition mode is set into default.
+INFO: [HLS 214-131] Inlining function 'boom::(anonymous namespace)::packet_count(unsigned char)' into 'boom::fetch_buffer_step(boom::FetchBufferState&, boom::FetchPacket const&, bool, bool)' (/home/lab_726/boom/hls_boom/src/fetch_buffer.cpp:50:45)
+INFO: [HLS 214-131] Inlining function 'boom::(anonymous namespace)::wrap_index(unsigned char, unsigned char)' into 'boom::fetch_buffer_step(boom::FetchBufferState&, boom::FetchPacket const&, bool, bool)' (/home/lab_726/boom/hls_boom/src/fetch_buffer.cpp:77:26)
+INFO: [HLS 214-131] Inlining function 'boom::(anonymous namespace)::wrap_index(unsigned char, unsigned char)' into 'boom::fetch_buffer_step(boom::FetchBufferState&, boom::FetchPacket const&, bool, bool)' (/home/lab_726/boom/hls_boom/src/fetch_buffer.cpp:73:35)
+INFO: [HLS 214-131] Inlining function 'boom::(anonymous namespace)::wrap_index(unsigned char, unsigned char)' into 'boom::fetch_buffer_step(boom::FetchBufferState&, boom::FetchPacket const&, bool, bool)' (/home/lab_726/boom/hls_boom/src/fetch_buffer.cpp:66:26)
+INFO: [HLS 214-131] Inlining function 'boom::fetch_buffer_reset(boom::FetchBufferState&)' into 'boom::fetch_buffer_step(boom::FetchBufferState&, boom::FetchPacket const&, bool, bool)' (/home/lab_726/boom/hls_boom/src/fetch_buffer.cpp:63:9)
+INFO: [HLS 214-131] Inlining function 'boom::fetch_buffer_reset(boom::FetchBufferState&)' into 'synth_fetch_buffer_top(bool, bool, bool, bool, unsigned char, unsigned long, unsigned int, unsigned int, unsigned long, bool, bool, unsigned long, unsigned int, unsigned int, unsigned long, bool, bool, unsigned long, unsigned int, unsigned int, unsigned long, bool, bool, unsigned long, unsigned int, unsigned int, unsigned long, bool, bool, bool&, bool&, bool&, bool&, unsigned long&, unsigned int&, unsigned int&, unsigned long&, bool&, bool&, bool&, bool&, unsigned char&)' (/home/lab_726/boom/hls_boom/src/synth_fetch_buffer_top.cpp:52:9)
+INFO: [HLS 214-131] Inlining function 'boom::fetch_buffer_step(boom::FetchBufferState&, boom::FetchPacket const&, bool, bool)' into 'synth_fetch_buffer_top(bool, bool, bool, bool, unsigned char, unsigned long, unsigned int, unsigned int, unsigned long, bool, bool, unsigned long, unsigned int, unsigned int, unsigned long, bool, bool, unsigned long, unsigned int, unsigned int, unsigned long, bool, bool, unsigned long, unsigned int, unsigned int, unsigned long, bool, bool, bool&, bool&, bool&, bool&, unsigned long&, unsigned int&, unsigned int&, unsigned long&, bool&, bool&, bool&, bool&, unsigned char&)' (/home/lab_726/boom/hls_boom/src/synth_fetch_buffer_top.cpp:56:18)
+INFO: [HLS 214-186] Unrolling loop 'VITIS_LOOP_70_1' (/home/lab_726/boom/hls_boom/src/fetch_buffer.cpp:70:30) in function 'synth_fetch_buffer_top' completely with a factor of 4 (/home/lab_726/boom/hls_boom/src/synth_fetch_buffer_top.cpp:19:0)
+INFO: [HLS 214-186] Unrolling loop 'VITIS_LOOP_14_1' (/home/lab_726/boom/hls_boom/src/fetch_buffer.cpp:14:22) in function 'synth_fetch_buffer_top' completely with a factor of 4 (/home/lab_726/boom/hls_boom/src/synth_fetch_buffer_top.cpp:19:0)
+INFO: [HLS 214-178] Inlining function 'boom::FetchInstruction::FetchInstruction() (.9)' into 'boom::FetchPacket::FetchPacket()' (/home/lab_726/boom/hls_boom/include/fetch_buffer.hpp:28:0)
+INFO: [HLS 214-178] Inlining function 'boom::FetchInstruction::FetchInstruction() (.9)' into 'boom::FetchBufferResult::FetchBufferResult()' (/home/lab_726/boom/hls_boom/include/fetch_buffer.hpp:53:0)
+INFO: [HLS 214-178] Inlining function 'boom::FetchPacket::FetchPacket()' into 'synth_fetch_buffer_top(bool, bool, bool, bool, unsigned char, unsigned long, unsigned int, unsigned int, unsigned long, bool, bool, unsigned long, unsigned int, unsigned int, unsigned long, bool, bool, unsigned long, unsigned int, unsigned int, unsigned long, bool, bool, unsigned long, unsigned int, unsigned int, unsigned long, bool, bool, bool&, bool&, bool&, bool&, unsigned long&, unsigned int&, unsigned int&, unsigned long&, bool&, bool&, bool&, bool&, unsigned char&)' (/home/lab_726/boom/hls_boom/src/synth_fetch_buffer_top.cpp:19:0)
+INFO: [HLS 214-178] Inlining function 'boom::FetchBufferResult::FetchBufferResult()' into 'synth_fetch_buffer_top(bool, bool, bool, bool, unsigned char, unsigned long, unsigned int, unsigned int, unsigned long, bool, bool, unsigned long, unsigned int, unsigned int, unsigned long, bool, bool, unsigned long, unsigned int, unsigned int, unsigned long, bool, bool, unsigned long, unsigned int, unsigned int, unsigned long, bool, bool, bool&, bool&, bool&, bool&, unsigned long&, unsigned int&, unsigned int&, unsigned long&, bool&, bool&, bool&, bool&, unsigned char&)' (/home/lab_726/boom/hls_boom/src/synth_fetch_buffer_top.cpp:19:0)
+INFO: [HLS 214-270] Starting automatic array partition analysis...
+INFO: [HLS 200-111] Finished Compiling Optimization and Transform: CPU user time: 1.7 seconds. CPU system time: 0.18 seconds. Elapsed time: 1.88 seconds; current allocated memory: 417.594 MB.
+INFO: [HLS 200-111] Finished Checking Pragmas: CPU user time: 0 seconds. CPU system time: 0 seconds. Elapsed time: 0 seconds; current allocated memory: 417.594 MB.
+INFO: [HLS 200-10] Starting code transformations ...
+INFO: [HLS 200-111] Finished Standard Transforms: CPU user time: 0.01 seconds. CPU system time: 0 seconds. Elapsed time: 0.01 seconds; current allocated memory: 418.480 MB.
+INFO: [HLS 200-10] Checking synthesizability ...
+INFO: [HLS 200-111] Finished Checking Synthesizability: CPU user time: 0.01 seconds. CPU system time: 0 seconds. Elapsed time: 0.01 seconds; current allocated memory: 418.512 MB.
+INFO: [XFORM 203-401] Performing if-conversion on hyperblock from (/home/lab_726/boom/hls_boom/src/fetch_buffer.cpp:37:42) to (/home/lab_726/boom/hls_boom/src/fetch_buffer.cpp:59:35) in function 'synth_fetch_buffer_top'... converting 5 basic blocks.
+INFO: [XFORM 203-11] Balancing expressions in function 'synth_fetch_buffer_top' (/home/lab_726/boom/hls_boom/src/synth_fetch_buffer_top.cpp:4)...3 expression(s) balanced.
+INFO: [HLS 200-111] Finished Loop, function and other optimizations: CPU user time: 0.04 seconds. CPU system time: 0.01 seconds. Elapsed time: 0.05 seconds; current allocated memory: 440.672 MB.
+INFO: [HLS 200-472] Inferring partial write operation for 'state.entries.pc' (/home/lab_726/boom/hls_boom/src/fetch_buffer.cpp:73:72)
+INFO: [HLS 200-111] Finished Architecture Synthesis: CPU user time: 0.03 seconds. CPU system time: 0 seconds. Elapsed time: 0.03 seconds; current allocated memory: 438.918 MB.
+INFO: [HLS 200-10] Starting hardware synthesis ...
+INFO: [HLS 200-10] Synthesizing 'synth_fetch_buffer_top' ...
+INFO: [HLS 200-10] ----------------------------------------------------------------
+INFO: [HLS 200-42] -- Implementing module 'synth_fetch_buffer_top' 
+INFO: [HLS 200-10] ----------------------------------------------------------------
+INFO: [SCHED 204-11] Starting scheduling ...
+INFO: [SCHED 204-11] Finished scheduling.
+INFO: [HLS 200-111] Finished Scheduling: CPU user time: 0.05 seconds. CPU system time: 0.02 seconds. Elapsed time: 0.06 seconds; current allocated memory: 438.918 MB.
+INFO: [BIND 205-100] Starting micro-architecture generation ...
+INFO: [BIND 205-101] Performing variable lifetime analysis.
+INFO: [BIND 205-101] Exploring resource sharing.
+INFO: [BIND 205-101] Binding ...
+INFO: [BIND 205-100] Finished micro-architecture generation.
+INFO: [HLS 200-111] Finished Binding: CPU user time: 0.04 seconds. CPU system time: 0 seconds. Elapsed time: 0.05 seconds; current allocated memory: 438.918 MB.
+INFO: [HLS 200-10] ----------------------------------------------------------------
+INFO: [HLS 200-10] -- Generating RTL for module 'synth_fetch_buffer_top' 
+INFO: [HLS 200-10] ----------------------------------------------------------------
+INFO: [RTGEN 206-500] Setting interface mode on port 'synth_fetch_buffer_top/runtime_reset' to 'ap_none'.
+INFO: [RTGEN 206-500] Setting interface mode on port 'synth_fetch_buffer_top/flush' to 'ap_none'.
+INFO: [RTGEN 206-500] Setting interface mode on port 'synth_fetch_buffer_top/dequeue_ready' to 'ap_none'.
+INFO: [RTGEN 206-500] Setting interface mode on port 'synth_fetch_buffer_top/packet_valid' to 'ap_none'.
+INFO: [RTGEN 206-500] Setting interface mode on port 'synth_fetch_buffer_top/valid_mask' to 'ap_none'.
+INFO: [RTGEN 206-500] Setting interface mode on port 'synth_fetch_buffer_top/pc0' to 'ap_none'.
+INFO: [RTGEN 206-500] Setting interface mode on port 'synth_fetch_buffer_top/instruction0' to 'ap_none'.
+INFO: [RTGEN 206-500] Setting interface mode on port 'synth_fetch_buffer_top/fetch_id0' to 'ap_none'.
+INFO: [RTGEN 206-500] Setting interface mode on port 'synth_fetch_buffer_top/cause0' to 'ap_none'.
+INFO: [RTGEN 206-500] Setting interface mode on port 'synth_fetch_buffer_top/is_rvc0' to 'ap_none'.
+INFO: [RTGEN 206-500] Setting interface mode on port 'synth_fetch_buffer_top/exception0' to 'ap_none'.
+INFO: [RTGEN 206-500] Setting interface mode on port 'synth_fetch_buffer_top/pc1' to 'ap_none'.
+INFO: [RTGEN 206-500] Setting interface mode on port 'synth_fetch_buffer_top/instruction1' to 'ap_none'.
+INFO: [RTGEN 206-500] Setting interface mode on port 'synth_fetch_buffer_top/fetch_id1' to 'ap_none'.
+INFO: [RTGEN 206-500] Setting interface mode on port 'synth_fetch_buffer_top/cause1' to 'ap_none'.
+INFO: [RTGEN 206-500] Setting interface mode on port 'synth_fetch_buffer_top/is_rvc1' to 'ap_none'.
+INFO: [RTGEN 206-500] Setting interface mode on port 'synth_fetch_buffer_top/exception1' to 'ap_none'.
+INFO: [RTGEN 206-500] Setting interface mode on port 'synth_fetch_buffer_top/pc2' to 'ap_none'.
+INFO: [RTGEN 206-500] Setting interface mode on port 'synth_fetch_buffer_top/instruction2' to 'ap_none'.
+INFO: [RTGEN 206-500] Setting interface mode on port 'synth_fetch_buffer_top/fetch_id2' to 'ap_none'.
+INFO: [RTGEN 206-500] Setting interface mode on port 'synth_fetch_buffer_top/cause2' to 'ap_none'.
+INFO: [RTGEN 206-500] Setting interface mode on port 'synth_fetch_buffer_top/is_rvc2' to 'ap_none'.
+INFO: [RTGEN 206-500] Setting interface mode on port 'synth_fetch_buffer_top/exception2' to 'ap_none'.
+INFO: [RTGEN 206-500] Setting interface mode on port 'synth_fetch_buffer_top/pc3' to 'ap_none'.
+INFO: [RTGEN 206-500] Setting interface mode on port 'synth_fetch_buffer_top/instruction3' to 'ap_none'.
+INFO: [RTGEN 206-500] Setting interface mode on port 'synth_fetch_buffer_top/fetch_id3' to 'ap_none'.
+INFO: [RTGEN 206-500] Setting interface mode on port 'synth_fetch_buffer_top/cause3' to 'ap_none'.
+INFO: [RTGEN 206-500] Setting interface mode on port 'synth_fetch_buffer_top/is_rvc3' to 'ap_none'.
+INFO: [RTGEN 206-500] Setting interface mode on port 'synth_fetch_buffer_top/exception3' to 'ap_none'.
+INFO: [RTGEN 206-500] Setting interface mode on port 'synth_fetch_buffer_top/enqueue_ready' to 'ap_vld'.
+INFO: [RTGEN 206-500] Setting interface mode on port 'synth_fetch_buffer_top/enqueue_fire' to 'ap_vld'.
+INFO: [RTGEN 206-500] Setting interface mode on port 'synth_fetch_buffer_top/dequeue_valid' to 'ap_vld'.
+INFO: [RTGEN 206-500] Setting interface mode on port 'synth_fetch_buffer_top/dequeue_fire' to 'ap_vld'.
+INFO: [RTGEN 206-500] Setting interface mode on port 'synth_fetch_buffer_top/dequeue_pc' to 'ap_vld'.
+INFO: [RTGEN 206-500] Setting interface mode on port 'synth_fetch_buffer_top/dequeue_instruction' to 'ap_vld'.
+INFO: [RTGEN 206-500] Setting interface mode on port 'synth_fetch_buffer_top/dequeue_fetch_id' to 'ap_vld'.
+INFO: [RTGEN 206-500] Setting interface mode on port 'synth_fetch_buffer_top/dequeue_cause' to 'ap_vld'.
+INFO: [RTGEN 206-500] Setting interface mode on port 'synth_fetch_buffer_top/dequeue_is_rvc' to 'ap_vld'.
+INFO: [RTGEN 206-500] Setting interface mode on port 'synth_fetch_buffer_top/dequeue_exception' to 'ap_vld'.
+INFO: [RTGEN 206-500] Setting interface mode on port 'synth_fetch_buffer_top/full' to 'ap_vld'.
+INFO: [RTGEN 206-500] Setting interface mode on port 'synth_fetch_buffer_top/empty' to 'ap_vld'.
+INFO: [RTGEN 206-500] Setting interface mode on port 'synth_fetch_buffer_top/count' to 'ap_vld'.
+INFO: [RTGEN 206-500] Setting interface mode on function 'synth_fetch_buffer_top' to 'ap_ctrl_hs'.
+WARNING: [RTGEN 206-101] Register 'state_head' is power-on initialization.
+WARNING: [RTGEN 206-101] Register 'state_tail' is power-on initialization.
+WARNING: [RTGEN 206-101] Register 'state_count' is power-on initialization.
+INFO: [RTGEN 206-100] Finished creating RTL model for 'synth_fetch_buffer_top'.
+INFO: [HLS 200-111] Finished Creating RTL model: CPU user time: 0.07 seconds. CPU system time: 0 seconds. Elapsed time: 0.07 seconds; current allocated memory: 438.918 MB.
+INFO: [RTMG 210-278] Implementing memory 'synth_fetch_buffer_top_state_entries_pc_RAM_AUTO_1R1W_ram (RAM)' using auto RAMs with power-on initialization.
+INFO: [RTMG 210-278] Implementing memory 'synth_fetch_buffer_top_state_entries_instruction_RAM_AUTO_1R1W_ram (RAM)' using auto RAMs with power-on initialization.
+INFO: [RTMG 210-278] Implementing memory 'synth_fetch_buffer_top_state_entries_is_rvc_RAM_AUTO_1R1W_ram (RAM)' using auto RAMs with power-on initialization.
+INFO: [HLS 200-111] Finished Generating all RTL models: CPU user time: 0.29 seconds. CPU system time: 0.01 seconds. Elapsed time: 0.31 seconds; current allocated memory: 443.508 MB.
+INFO: [HLS 200-111] Finished Updating report files: CPU user time: 0.29 seconds. CPU system time: 0 seconds. Elapsed time: 0.29 seconds; current allocated memory: 446.098 MB.
+INFO: [VHDL 208-304] Generating VHDL RTL for synth_fetch_buffer_top.
+INFO: [VLOG 209-307] Generating Verilog RTL for synth_fetch_buffer_top.
+INFO: [HLS 200-789] **** Estimated Fmax: 218.63 MHz
+INFO: [HLS 200-111] Finished Command csynth_design CPU user time: 3.26 seconds. CPU system time: 0.59 seconds. Elapsed time: 3.31 seconds; current allocated memory: -906.355 MB.
+INFO: [HLS 200-112] Total CPU user time: 4.53 seconds. Total CPU system time: 0.98 seconds. Total elapsed time: 4.33 seconds; peak allocated memory: 1.321 GB.
+INFO: [Common 17-206] Exiting vitis_hls at Wed Aug 12 21:03:10 2026...

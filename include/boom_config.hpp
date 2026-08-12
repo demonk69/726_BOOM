@@ -47,7 +47,9 @@
 #define FTQ_DEPTH           16
 #define FTQ_IDX_BITS        4
 
+#ifndef FETCH_BUFFER_DEPTH
 #define FETCH_BUFFER_DEPTH  8
+#endif
 
 #define ICACHE_SETS         64
 #define ICACHE_WAYS         4
@@ -121,6 +123,9 @@ static_assert(STQ_IDX_BITS >= 3, "STQ_IDX_BITS too small");
 static_assert((1u << STQ_IDX_BITS) >= STQ_DEPTH, "STQ_IDX_BITS insufficient for STQ_DEPTH");
 static_assert(FTQ_IDX_BITS >= 4, "FTQ_IDX_BITS too small");
 static_assert((1u << FTQ_IDX_BITS) >= FTQ_DEPTH, "FTQ_IDX_BITS insufficient for FTQ_DEPTH");
+static_assert(FETCH_BUFFER_DEPTH == 2 || FETCH_BUFFER_DEPTH == 4 ||
+              FETCH_BUFFER_DEPTH == 8 || FETCH_BUFFER_DEPTH == 16,
+              "FETCH_BUFFER_DEPTH must be 2, 4, 8, or 16");
 static_assert(EXECUTE_RESULT_LANES == ISSUE_WIDTH, "execute result interface must match issue lanes");
 static_assert(ISSUE_WIDTH == 3, "SmallBoom fixed issue interface must contain MEM, INT, and FP lanes");
 static_assert(MEM_ISSUE_LANE != INT_ISSUE_LANE, "MEM and INT issue lanes must be distinct");
