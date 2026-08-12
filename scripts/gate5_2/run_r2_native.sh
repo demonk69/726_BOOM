@@ -12,5 +12,5 @@ g++ -std=c++11 -O2 -I"$ROOT/include" "${ARGS[@]}" \
   "$ROOT/tb/differential/gate5_2_r2_full_core_rvc.cpp" -o "$BUILD/full_core_rvc" \
   > "$REPORT/logs/r2_native_compile.log" 2>&1
 "$BUILD/full_core_rvc" > "$REPORT/logs/r2_native.log" 2>&1
-grep -q 'GATE5_2_R2_FULL_CORE_RVC 10/10 PASS' "$REPORT/logs/r2_native.log"
-printf '%s\n' 'Gate 5.2 R2 native full-core mixed RVC: 10/10 PASS'
+grep -q 'GATE5_2_R2_FULL_CORE_RVC 11/11 PASS' "$REPORT/logs/r2_native.log"
+printf '%s\n' 'Gate 5.2 R3 native full-core mixed RVC: 11/11 PASS'

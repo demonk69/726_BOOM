@@ -554,9 +554,14 @@ void test_protected_decode_gaps() {
         pipe.imem_resp.write(response_for(request, parcel));
         boom::frontend_module(state, pipe);
         check(state.frontend.fetch_packet_valid, "protected C.EBREAK packet missing");
-        check(state.frontend.fetch_uop.exception && state.frontend.fetch_uop.exc_cause == 2,
-              "protected C.EBREAK was allowed through frontend");
+        check(!state.frontend.fetch_uop.exception,
+              "C.EBREAK was rejected before base Decode");
         check(state.frontend.fetch_uop.debug_inst == parcel, "C.EBREAK debug parcel mismatch");
+        boom::decode_module(state);
+        check(state.decode.dec_valids[0] && state.decode.dec_uops[0].uopc == 66,
+              "C.EBREAK Decode uopc mismatch");
+        check(state.decode.dec_uops[0].exception && state.decode.dec_uops[0].exc_cause == 3,
+              "C.EBREAK did not raise breakpoint cause 3");
         ++metrics.rvc_protected;
         count_case();
     }
@@ -580,17 +585,21 @@ void test_protected_decode_gaps() {
             boom::frontend_module(state, pipe);
             check(state.frontend.fetch_packet_valid, "protected C.SRLI packet missing");
             check(state.frontend.fetch_uop.is_rvc, "protected C.SRLI lost RVC attribution");
-            check(state.frontend.fetch_uop.exception, "protected C.SRLI did not fault");
-            check(state.frontend.fetch_uop.exc_cause == 2,
-                  "protected C.SRLI fault cause mismatch");
+            check(!state.frontend.fetch_uop.exception,
+                  "RV64 C.SRLI shamt[5] was rejected before Decode");
             check(state.frontend.fetch_uop.debug_inst == parcel,
-                  "protected C.SRLI debug parcel mismatch");
+                  "C.SRLI debug parcel mismatch");
+            boom::decode_module(state);
+            check(state.decode.dec_valids[0] && state.decode.dec_uops[0].uopc == 55,
+                  "RV64 C.SRLI shamt[5] Decode mismatch");
+            check(!state.decode.dec_uops[0].exception,
+                  "RV64 C.SRLI shamt[5] Decode faulted");
             ++metrics.rvc_protected;
             count_case();
         }
     }
 
-    // C.JALR requires a PC+2 link value, while the frozen backend writes PC+4.
+    // Every legal C.JALR form must retain compressed attribution for PC+2 link.
     for (unsigned rd = 1; rd < 32; ++rd) {
         const uint16_t parcel = static_cast<uint16_t>(0x9002u | (rd << 7));
         const boom::RvcDecodeResult decoded = boom::decompress_rvc(parcel);
@@ -602,10 +611,15 @@ void test_protected_decode_gaps() {
         pipe.imem_resp.write(response_for(request, parcel));
         boom::frontend_module(state, pipe);
         check(state.frontend.fetch_packet_valid, "protected C.JALR packet missing");
-        check(state.frontend.fetch_uop.exception && state.frontend.fetch_uop.exc_cause == 2,
-              "protected C.JALR was allowed into the frozen PC+4 backend");
+        check(!state.frontend.fetch_uop.exception,
+              "C.JALR was rejected before Decode");
         check(state.frontend.fetch_uop.debug_inst == parcel,
-              "protected C.JALR debug parcel mismatch");
+              "C.JALR debug parcel mismatch");
+        boom::decode_module(state);
+        check(state.decode.dec_valids[0] && state.decode.dec_uops[0].uopc == 30,
+              "C.JALR Decode uopc mismatch");
+        check(state.decode.dec_uops[0].is_rvc && !state.decode.dec_uops[0].exception,
+              "C.JALR Decode metadata mismatch");
         ++metrics.rvc_protected;
         count_case();
     }

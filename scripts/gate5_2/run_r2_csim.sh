@@ -10,5 +10,5 @@ bash "$ROOT/scripts/gate5_2/build_rvc_programs.sh" > "$REPORT/logs/r2_csim_progr
   cd "$BUILD"
   HLS_PROJECT_ROOT="$ROOT" "$VITIS_HLS_BIN" -f "$ROOT/scripts/gate5_2/run_r2_csim.tcl"
 ) > "$REPORT/logs/r2_csim.log" 2>&1
-grep -q 'GATE5_2_R2_FULL_CORE_RVC 10/10 PASS' "$REPORT/logs/r2_csim.log"
-printf '%s\n' 'Gate 5.2 R2 Vitis csim full-core mixed RVC: 10/10 PASS'
+grep -q 'GATE5_2_R2_FULL_CORE_RVC 11/11 PASS' "$REPORT/logs/r2_csim.log"
+printf '%s\n' 'Gate 5.2 R3 Vitis csim full-core mixed RVC: 11/11 PASS'

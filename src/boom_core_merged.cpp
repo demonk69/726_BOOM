@@ -34,15 +34,6 @@ static bool architectural_redirect_owner_valid(const BoomCoreState& state) {
     return owner.valid && owner.uop.queue.rob_allocation_id == redirect.allocation_id;
 }
 
-static bool protected_rvc_decode_gap(uint16_t parcel) {
-#pragma HLS INLINE
-    const bool c_ebreak = parcel == 0x9002u;
-    const bool c_srli_shamt5 = (parcel & 0xfc03u) == 0x9001u;
-    const bool c_jalr = (parcel & 0xf07fu) == 0x9002u &&
-        ((parcel >> 7) & 0x1fu) != 0;
-    return c_ebreak || c_srli_shamt5 || c_jalr;
-}
-
 static MicroOp fetch_fault(uint64_t pc, uint64_t cause, bool access_fault) {
 #pragma HLS INLINE
     MicroOp fault;
@@ -174,7 +165,7 @@ void frontend_module(BoomCoreState& state, PipeSignals& pipe) {
             uop.debug_pc = parcel_pc;
             uop.debug_inst = parcel;
             uop.is_rvc = true;
-            if (!rvc.legal || protected_rvc_decode_gap(parcel)) {
+            if (!rvc.legal) {
                 uop.exception = true;
                 uop.exc_cause = 2;
                 uop.exc.exception = true;
@@ -359,6 +350,7 @@ void decode_module(BoomCoreState& state) {
     uint8_t opcode = inst & 0x7F;
     uint8_t f3 = (inst>>12)&0x7;
     uint8_t f7 = (inst>>25)&0x7F;
+    uint8_t f6 = (inst>>26)&0x3F;
     uint8_t rd = (inst>>7)&0x1F;
 
     switch (opcode) {
@@ -413,8 +405,8 @@ void decode_module(BoomCoreState& state) {
             case 2:uop.uopc=UOPC_SLTI;break; case 3:uop.uopc=UOPC_SLTIU;break;
             case 4:uop.uopc=UOPC_XORI;break; case 6:uop.uopc=UOPC_ORI;break;
             case 7:uop.uopc=UOPC_ANDI;break;
-            case 1:uop.uopc=UOPC_SLLI;break;
-            case 5:uop.uopc=(f7==0)?UOPC_SRLI:UOPC_SRAI;break;
+            case 1:if(f6==0)uop.uopc=UOPC_SLLI;else mark_illegal_r_type(uop);break;
+            case 5:if(f6==0)uop.uopc=UOPC_SRLI;else if(f6==0x10)uop.uopc=UOPC_SRAI;else mark_illegal_r_type(uop);break;
             default:uop.uopc=UOPC_ILLEGAL;uop.exception=true;break;} break;
         case 0x1B: uop.iq_type=IQ_ALU; uop.fu_code= FU_ALU;
             uop.ctrl.op1_sel=OP1_RS1; uop.ctrl.op2_sel=OP2_IMM; uop.imm_packed=extract_imm_i(inst);
@@ -473,10 +465,14 @@ void decode_module(BoomCoreState& state) {
             } break;
         case 0x0F: uop.uopc=UOPC_FENCE; uop.iq_type=IQ_MEM; uop.fu_code= FU_MEM;
             uop.rename.dst_rtype=DST_N; break;
-        case 0x73: if(f3==0) { if(rd==0&&(inst>>20)==0) {uop.uopc=UOPC_ECALL;
-            uop.iq_type=IQ_ALU; uop.fu_code= FU_CSR; uop.exception=true; uop.exc_cause=11;
-            uop.is_sys_pc2epc=true;} else {uop.uopc=UOPC_MRET; uop.iq_type=IQ_ALU;
-            uop.fu_code= FU_CSR; uop.rename.dst_rtype=DST_N;}}
+        case 0x73: if(f3==0) { uop.iq_type=IQ_ALU; uop.fu_code=FU_CSR;
+            uop.rename.dst_rtype=DST_N;
+            if(inst==0x00000073u) {uop.uopc=UOPC_ECALL; uop.exception=true;
+            uop.exc_cause=11; uop.is_sys_pc2epc=true;}
+            else if(inst==0x00100073u) {uop.uopc=UOPC_EBREAK; uop.exception=true;
+            uop.exc_cause=3; uop.is_sys_pc2epc=true;}
+            else if(inst==0x30200073u) {uop.uopc=UOPC_MRET;}
+            else {uop.uopc=UOPC_ILLEGAL; uop.exception=true; uop.exc_cause=2;}}
             else { uop.iq_type=IQ_ALU; uop.fu_code= FU_CSR;
             uop.ctrl.op1_sel=OP1_RS1; uop.ctrl.op2_sel=OP2_IMZ;
             uop.csr_addr=inst>>20; uop.rename.dst_rtype=DST_INT;
@@ -2397,8 +2393,8 @@ void execute_module(BoomCoreState& state) {
                 r.result = execute_mul(request).result;
                 break;
             }
-            case 29: r.result=pc+4; r.mispredict=true; r.redirect_pc=(uint64_t)((int64_t)pc+(int64_t)(int32_t)uop.imm_packed); break;
-            case 30: r.result=pc+4; r.mispredict=true; r.redirect_pc=(rs1+(int64_t)(int32_t)uop.imm_packed)&~1ULL; break;
+            case 29: r.result=pc+(uop.is_rvc?2:4); r.mispredict=true; r.redirect_pc=(uint64_t)((int64_t)pc+(int64_t)(int32_t)uop.imm_packed); break;
+            case 30: r.result=pc+(uop.is_rvc?2:4); r.mispredict=true; r.redirect_pc=(rs1+(int64_t)(int32_t)uop.imm_packed)&~1ULL; break;
             case 31: r.mispredict=(rs1==rs2); r.redirect_pc=pc+(int64_t)(int32_t)uop.imm_packed; break;
             case 32: r.mispredict=(rs1!=rs2); r.redirect_pc=pc+(int64_t)(int32_t)uop.imm_packed; break;
             case 33: r.mispredict=((int64_t)rs1<(int64_t)rs2); r.redirect_pc=pc+(int64_t)(int32_t)uop.imm_packed; break;

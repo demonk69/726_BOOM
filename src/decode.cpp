@@ -129,6 +129,7 @@ void decode_module(BoomCoreState& state) {
     uint8_t opcode = inst & 0x7F;
     uint8_t f3 = (inst>>12)&0x7;
     uint8_t f7 = (inst>>25)&0x7F;
+    uint8_t f6 = (inst>>26)&0x3F;
     uint8_t rd = (inst>>7)&0x1F;
 
     switch (opcode) {
@@ -183,8 +184,8 @@ void decode_module(BoomCoreState& state) {
             case 2:uop.uopc=UOPC_SLTI;break; case 3:uop.uopc=UOPC_SLTIU;break;
             case 4:uop.uopc=UOPC_XORI;break; case 6:uop.uopc=UOPC_ORI;break;
             case 7:uop.uopc=UOPC_ANDI;break;
-            case 1:uop.uopc=UOPC_SLLI;break;
-            case 5:uop.uopc=(f7==0)?UOPC_SRLI:UOPC_SRAI;break;
+            case 1:if(f6==0)uop.uopc=UOPC_SLLI;else mark_illegal_r_type(uop);break;
+            case 5:if(f6==0)uop.uopc=UOPC_SRLI;else if(f6==0x10)uop.uopc=UOPC_SRAI;else mark_illegal_r_type(uop);break;
             default:uop.uopc=UOPC_ILLEGAL;uop.exception=true;break;} break;
         case 0x1B: uop.iq_type=IQ_ALU; uop.fu_code= FU_ALU;
             uop.ctrl.op1_sel=OP1_RS1; uop.ctrl.op2_sel=OP2_IMM; uop.imm_packed=extract_imm_i(inst);
@@ -243,10 +244,14 @@ void decode_module(BoomCoreState& state) {
             } break;
         case 0x0F: uop.uopc=UOPC_FENCE; uop.iq_type=IQ_MEM; uop.fu_code= FU_MEM;
             uop.rename.dst_rtype=DST_N; break;
-        case 0x73: if(f3==0) { if(rd==0&&(inst>>20)==0) {uop.uopc=UOPC_ECALL;
-            uop.iq_type=IQ_ALU; uop.fu_code= FU_CSR; uop.exception=true; uop.exc_cause=11;
-            uop.is_sys_pc2epc=true;} else {uop.uopc=UOPC_MRET; uop.iq_type=IQ_ALU;
-            uop.fu_code= FU_CSR; uop.rename.dst_rtype=DST_N;}}
+        case 0x73: if(f3==0) { uop.iq_type=IQ_ALU; uop.fu_code=FU_CSR;
+            uop.rename.dst_rtype=DST_N;
+            if(inst==0x00000073u) {uop.uopc=UOPC_ECALL; uop.exception=true;
+            uop.exc_cause=11; uop.is_sys_pc2epc=true;}
+            else if(inst==0x00100073u) {uop.uopc=UOPC_EBREAK; uop.exception=true;
+            uop.exc_cause=3; uop.is_sys_pc2epc=true;}
+            else if(inst==0x30200073u) {uop.uopc=UOPC_MRET;}
+            else {uop.uopc=UOPC_ILLEGAL; uop.exception=true; uop.exc_cause=2;}}
             else { uop.iq_type=IQ_ALU; uop.fu_code= FU_CSR;
             uop.ctrl.op1_sel=OP1_RS1; uop.ctrl.op2_sel=OP2_IMZ;
             uop.csr_addr=inst>>20; uop.rename.dst_rtype=DST_INT;

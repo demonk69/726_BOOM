@@ -152,8 +152,8 @@ void execute_module(BoomCoreState& state) {
                 r.result = execute_mul(request).result;
                 break;
             }
-            case 29: r.result=pc+4; r.mispredict=true; r.redirect_pc=(uint64_t)((int64_t)pc+(int64_t)(int32_t)uop.imm_packed); break;
-            case 30: r.result=pc+4; r.mispredict=true; r.redirect_pc=(rs1+(int64_t)(int32_t)uop.imm_packed)&~1ULL; break;
+            case 29: r.result=pc+(uop.is_rvc?2:4); r.mispredict=true; r.redirect_pc=(uint64_t)((int64_t)pc+(int64_t)(int32_t)uop.imm_packed); break;
+            case 30: r.result=pc+(uop.is_rvc?2:4); r.mispredict=true; r.redirect_pc=(rs1+(int64_t)(int32_t)uop.imm_packed)&~1ULL; break;
             case 31: r.mispredict=(rs1==rs2); r.redirect_pc=pc+(int64_t)(int32_t)uop.imm_packed; break;
             case 32: r.mispredict=(rs1!=rs2); r.redirect_pc=pc+(int64_t)(int32_t)uop.imm_packed; break;
             case 33: r.mispredict=((int64_t)rs1<(int64_t)rs2); r.redirect_pc=pc+(int64_t)(int32_t)uop.imm_packed; break;

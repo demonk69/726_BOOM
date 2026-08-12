@@ -7,7 +7,7 @@ OUT="$SRC/build"
 CLANG=${CLANG:-clang}
 OBJCOPY=${LLVM_OBJCOPY:-/usr/lib/llvm-14/bin/llvm-objcopy}
 OBJDUMP=${LLVM_OBJDUMP:-/usr/lib/llvm-14/bin/llvm-objdump}
-PROGRAMS=(rvc_addi rvc_load_store rvc_branch rvc_jump rvc_word_ops rvc_mixed_16_32 rvc_cross_boundary rvc_rv64m_mix rvc_redirect_halfword rvc_tohost)
+PROGRAMS=(rvc_addi rvc_load_store rvc_branch rvc_jump rvc_word_ops rvc_mixed_16_32 rvc_cross_boundary rvc_rv64m_mix rvc_redirect_halfword rvc_tohost rvc_decode_gaps)
 
 mkdir -p "$OUT"
 rm -f "$OUT"/*

@@ -20,6 +20,8 @@ struct Expected {
     bool load;
     bool store;
     uint8_t memory_size;
+    bool exception;
+    uint64_t exc_cause;
 };
 
 static uint32_t imm_i(uint32_t inst) { return uint32_t(int32_t(inst) >> 20); }
@@ -44,8 +46,11 @@ static bool expected_decode(uint32_t inst, Expected& e, const char*& family) {
     const uint8_t f7 = (inst >> 25) & 0x7f;
     const uint8_t rd = (inst >> 7) & 0x1f;
     e = Expected{0, IQ_ALU, FU_ALU, DST_INT, OP1_RS1, OP2_RS2, 0,
-                 false, false, false, false, false, 0};
-    if (inst == 0x00100073u) { family = "ebreak_core_unsupported"; return false; }
+                 false, false, false, false, false, 0, false, 0};
+    if (inst == 0x00100073u) {
+        family = "ebreak"; e.uopc = 66; e.fu = FU_CSR; e.dst_type = DST_N;
+        e.exception = true; e.exc_cause = 3; return true;
+    }
     switch (opcode) {
     case 0x37:
         family="lui"; e.uopc=37; e.op1=OP1_X0; e.op2=OP2_IMU;
@@ -72,11 +77,9 @@ static bool expected_decode(uint32_t inst, Expected& e, const char*& family) {
         if (f3==0) { family="addi"; e.uopc=50; return true; }
         if (f3==1) { family="slli"; e.uopc=51; return true; }
         if (f3==7) { family="andi"; e.uopc=58; return true; }
-        if (f3==5 && f7==0) { family="srli"; e.uopc=55; return true; }
+        if (f3==5 && (f7==0 || f7==1)) { family="srli"; e.uopc=55; return true; }
         if (f3==5 && (f7==0x20 || f7==0x21)) { family="srai"; e.uopc=56; return true; }
-        // Current Decode treats RV64 SRLI shamt[5]=1 as SRAI; keep that known
-        // protected-module gap outside the supported cross set.
-        family="srli_shamt5_core_unsupported"; return false;
+        family="unsupported_shift"; return false;
     case 0x1b:
         family="addiw"; e.uopc=59; e.op2=OP2_IMM; e.immediate=imm_i(inst); return f3==0;
     case 0x33:
@@ -95,7 +98,7 @@ static bool expected_decode(uint32_t inst, Expected& e, const char*& family) {
 }
 
 int main() {
-    unsigned checked=0, failures=0, skipped_ebreak=0, skipped_srli_shamt5=0;
+    unsigned checked=0, failures=0;
     unsigned arithmetic=0, control=0, memory=0;
     for (uint32_t raw=0; raw<=0xffffu; ++raw) {
         const boom::RvcDecodeResult expanded=boom::decompress_rvc(uint16_t(raw));
@@ -103,14 +106,9 @@ int main() {
         Expected expected;
         const char* family="";
         if (!expected_decode(expanded.instruction, expected, family)) {
-            if (expanded.instruction==0x00100073u) ++skipped_ebreak;
-            else if ((expanded.instruction&0x707f)==0x5013 &&
-                     ((expanded.instruction>>25)&0x7f)==1) ++skipped_srli_shamt5;
-            else {
-                if (failures<20) std::printf("CROSS_UNEXPECTED c=%04x inst=%08x family=%s\n",
-                                             raw,expanded.instruction,family);
-                ++failures;
-            }
+            if (failures<20) std::printf("CROSS_UNEXPECTED c=%04x inst=%08x family=%s\n",
+                                         raw,expanded.instruction,family);
+            ++failures;
             continue;
         }
         BoomCoreState state;
@@ -134,7 +132,8 @@ int main() {
                        (!expected.store || (u.mem.uses_stq &&
                                             u.mem.mem_size==expected.memory_size));
         const bool ok=state.decode.dec_valids[0] && sources && destination && controls &&
-                      branches && mem && !u.exception && u.exc_cause==0;
+                       branches && mem && u.exception==expected.exception &&
+                       u.exc_cause==expected.exc_cause;
         ++checked;
         if (expected.load || expected.store) ++memory;
         else if (expected.branch || expected.jal || expected.jalr) ++control;
@@ -148,9 +147,8 @@ int main() {
     }
     std::printf("RVC_DECODE_CROSS checked=%u failures=%u arithmetic=%u control=%u memory=%u\n",
                 checked,failures,arithmetic,control,memory);
-    std::printf("RVC_DECODE_UNSUPPORTED ebreak=%u srli_shamt5=%u\n",
-                skipped_ebreak,skipped_srli_shamt5);
-    if (checked<100 || failures) return 1;
+    std::printf("RVC_DECODE_GAPS_CLOSED checked=%u expected=38551\n", checked);
+    if (checked!=38551 || failures) return 1;
     std::printf("GATE5_2_R1_RVC_DECODE_CROSS_PASS\n");
     return 0;
 }

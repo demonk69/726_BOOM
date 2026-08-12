@@ -10,7 +10,7 @@ VITIS_HLS_BIN=${VITIS_HLS:-/home/lab_726/Xilinx/Vitis_HLS/2021.2/bin/vitis_hls}
 XVLOG_BIN=${XVLOG:-/home/lab_726/Xilinx/Vivado/2021.2/bin/xvlog}
 XELAB_BIN=${XELAB:-/home/lab_726/Xilinx/Vivado/2021.2/bin/xelab}
 XSIM_BIN=${XSIM:-/home/lab_726/Xilinx/Vivado/2021.2/bin/xsim}
-PROGRAMS=(rvc_addi rvc_load_store rvc_branch rvc_jump rvc_word_ops rvc_mixed_16_32 rvc_cross_boundary rvc_rv64m_mix rvc_redirect_halfword rvc_tohost)
+PROGRAMS=(rvc_addi rvc_load_store rvc_branch rvc_jump rvc_word_ops rvc_mixed_16_32 rvc_cross_boundary rvc_rv64m_mix rvc_redirect_halfword rvc_tohost rvc_decode_gaps)
 
 mkdir -p "$REPORT/logs/r2_rtl" "$REPORT/r2_rtl_traces" "$BUILD" "$XSIM_BUILD"
 bash "$ROOT/scripts/gate5_2/build_rvc_programs.sh" > "$REPORT/logs/r2_rtl/program_build.log" 2>&1
@@ -69,7 +69,7 @@ expected = {
  "rvc_word_ops": {8:12,10:0xfffffffffffffff8},
  "rvc_mixed_16_32": {8:19,9:13,10:30}, "rvc_cross_boundary": {8:10,9:21,10:31},
  "rvc_rv64m_mix": {10:42,11:8}, "rvc_redirect_halfword": {8:23,9:27},
- "rvc_tohost": {8:15,9:31}}
+ "rvc_tohost": {8:15,9:31}, "rvc_decode_gaps": {8:0xffffffff,9:2}}
 rows=[]
 for name in programs:
     records=[json.loads(x) for x in (report/'r2_rtl_traces'/f'{name}.jsonl').read_text().splitlines() if x]
@@ -90,6 +90,6 @@ for name in programs:
     rows.append((name,'PASS' if ok else 'FAIL',len(commits),';'.join(checks),'PASS' if tohost else 'FAIL',f'r2_rtl_traces/{name}.jsonl'))
 with (report/'r2_full_core_rtl_matrix.csv').open('w',newline='') as f:
     w=csv.writer(f); w.writerow(('program','status','commits','signature','tohost','trace')); w.writerows(rows)
-if sum(x[1]=='PASS' for x in rows)!=10: raise SystemExit('R2 full-core RTL signature check failed')
-print('Gate 5.2 R2 XSim full-core mixed RVC: 10/10 PASS')
+if sum(x[1]=='PASS' for x in rows)!=11: raise SystemExit('R3 full-core RTL signature check failed')
+print('Gate 5.2 R3 XSim full-core mixed RVC: 11/11 PASS')
 PY

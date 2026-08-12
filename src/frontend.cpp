@@ -15,15 +15,6 @@ static bool architectural_redirect_owner_valid(const BoomCoreState& state) {
     return owner.valid && owner.uop.queue.rob_allocation_id == redirect.allocation_id;
 }
 
-static bool protected_rvc_decode_gap(uint16_t parcel) {
-#pragma HLS INLINE
-    const bool c_ebreak = parcel == 0x9002u;
-    const bool c_srli_shamt5 = (parcel & 0xfc03u) == 0x9001u;
-    const bool c_jalr = (parcel & 0xf07fu) == 0x9002u &&
-        ((parcel >> 7) & 0x1fu) != 0;
-    return c_ebreak || c_srli_shamt5 || c_jalr;
-}
-
 static MicroOp fetch_fault(uint64_t pc, uint64_t cause, bool access_fault) {
 #pragma HLS INLINE
     MicroOp fault;
@@ -155,7 +146,7 @@ void frontend_module(BoomCoreState& state, PipeSignals& pipe) {
             uop.debug_pc = parcel_pc;
             uop.debug_inst = parcel;
             uop.is_rvc = true;
-            if (!rvc.legal || protected_rvc_decode_gap(parcel)) {
+            if (!rvc.legal) {
                 uop.exception = true;
                 uop.exc_cause = 2;
                 uop.exc.exception = true;

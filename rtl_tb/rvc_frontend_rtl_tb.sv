@@ -370,32 +370,32 @@ module rvc_frontend_rtl_tb;
         req = requests[request_count-1];
         invoke(1, response_payload(req[63:0], req[95:64], req[127:96],
                                    32'h00019002, 0, 0));
-        if (!decode_valid || !decode_fault || decode_fault_cause !== 2 || !decode_is_rvc)
-            fail("protected_c_ebreak", "C.EBREAK protection mismatch");
-        pass("protected_c_ebreak", "protected C.EBREAK gap faulted as illegal RVC");
+        if (!decode_valid || !decode_fault || decode_fault_cause !== 3 || !decode_is_rvc)
+            fail("closed_c_ebreak", "C.EBREAK architectural Decode mismatch");
+        pass("closed_c_ebreak", "C.EBREAK decoded as breakpoint cause 3");
         if (decode_original_bits !== 16'h9002)
             fail("protected_c_ebreak_bits", "C.EBREAK bits mismatch");
-        pass("protected_c_ebreak_bits", "protected C.EBREAK retained original compressed bits");
+        pass("closed_c_ebreak_bits", "C.EBREAK retained original compressed bits");
 
         redirect_to(64'h27000);
         invoke(1, response_payload(req[63:0], req[95:64], req[127:96],
                                    32'h00019001, 0, 0));
-        if (!decode_valid || !decode_fault || decode_fault_cause !== 2 || !decode_is_rvc)
-            fail("protected_c_srli_shamt5", "C.SRLI protection mismatch");
-        pass("protected_c_srli_shamt5", "protected RV64 C.SRLI shamt5 gap faulted as illegal RVC");
+        if (!decode_valid || decode_fault || !decode_is_rvc)
+            fail("closed_c_srli_shamt5", "C.SRLI shamt5 Decode mismatch");
+        pass("closed_c_srli_shamt5", "RV64 C.SRLI shamt5 decoded legally");
         if (decode_original_bits !== 16'h9001)
             fail("protected_c_srli_bits", "C.SRLI bits mismatch");
-        pass("protected_c_srli_bits", "protected C.SRLI retained original compressed bits");
+        pass("closed_c_srli_bits", "C.SRLI retained original compressed bits");
 
         redirect_to(64'h27500);
         invoke(1, response_payload(req[63:0], req[95:64], req[127:96],
                                    32'h00019782, 0, 0));
-        if (!decode_valid || !decode_fault || decode_fault_cause !== 2 || !decode_is_rvc)
-            fail("protected_c_jalr", "C.JALR PC+2-link protection mismatch");
-        pass("protected_c_jalr", "C.JALR faulted rather than using frozen backend PC+4 link");
+        if (!decode_valid || decode_fault || !decode_is_rvc)
+            fail("closed_c_jalr", "C.JALR Decode mismatch");
+        pass("closed_c_jalr", "C.JALR decoded legally with compressed metadata");
         if (decode_original_bits !== 16'h9782)
             fail("protected_c_jalr_bits", "C.JALR bits mismatch");
-        pass("protected_c_jalr_bits", "protected C.JALR retained original compressed bits");
+        pass("closed_c_jalr_bits", "C.JALR retained original compressed bits");
 
         redirect_to(64'h28000);
         invoke(1, response_payload(req[63:0], req[95:64], req[127:96],

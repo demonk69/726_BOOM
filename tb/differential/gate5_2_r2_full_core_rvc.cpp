@@ -58,10 +58,8 @@ static bool load_image(const TestSpec& spec, std::vector<uint8_t>& bytes,
                                 (static_cast<uint16_t>(bytes[pc + 1]) << 8);
         if ((parcel & 3u) != 3u) {
             const boom::RvcDecodeResult decoded = boom::decompress_rvc(parcel);
-            const bool forbidden_srli = (parcel & 3u) == 1u && ((parcel >> 13) & 7u) == 4u &&
-                                        ((parcel >> 10) & 3u) == 0u && (parcel & 0x1000u);
-            if (!decoded.legal || parcel == 0x9002u || forbidden_srli) {
-                std::printf("FAIL %-24s illegal/forbidden compressed parcel %04x at +0x%zx\n",
+            if (!decoded.legal) {
+                std::printf("FAIL %-24s illegal compressed parcel %04x at +0x%zx\n",
                             spec.name, parcel, pc);
                 return false;
             }
@@ -214,7 +212,8 @@ int main() {
         {"rvc_cross_boundary", {{8, 10}, {9, 21}, {10, 31}}},
         {"rvc_rv64m_mix", {{10, 42}, {11, 8}}},
         {"rvc_redirect_halfword", {{8, 23}, {9, 27}}},
-        {"rvc_tohost", {{8, 15}, {9, 31}}}
+        {"rvc_tohost", {{8, 15}, {9, 31}}},
+        {"rvc_decode_gaps", {{8, UINT64_C(0xffffffff)}, {9, 2}}}
     };
     unsigned passed = 0;
     for (size_t i = 0; i < tests.size(); ++i) if (run_test(tests[i])) ++passed;

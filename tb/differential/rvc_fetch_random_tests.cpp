@@ -100,11 +100,6 @@ static uint32_t imem_word(uint64_t address, uint64_t seed, Coverage& cov) {
     return static_cast<uint32_t>(lo) | (static_cast<uint32_t>(hi) << 16);
 }
 
-static bool protected_gap(uint16_t parcel) {
-    return parcel == 0x9002u || (parcel & 0xfc03u) == 0x9001u ||
-        ((parcel & 0xf07fu) == 0x9002u && ((parcel >> 7) & 0x1fu) != 0);
-}
-
 static bool expected_rvc(uint16_t parcel, uint32_t& instruction) {
     const boom::RvcDecodeResult decoded = boom::decompress_rvc(parcel);
     instruction = decoded.instruction;
@@ -252,7 +247,7 @@ static StepResult reference_step(Ref& f, const Stimulus& in, Coverage& cov) {
             u.debug_pc = parcel_pc;
             u.debug_inst = parcel;
             u.is_rvc = true;
-            if (!legal || protected_gap(parcel)) {
+            if (!legal) {
                 u.exception = true;
                 u.exc_cause = 2;
                 u.exc.exception = true;
@@ -409,11 +404,11 @@ int main() {
         if (!got.valid || got.legal)
             report(errors, errors.instruction, "RVC_RESERVED", 0, i, 0, got.legal);
     }
-    const uint16_t protected_parcels[] = {0x9002u, 0x9001u, 0x9782u};
+    const uint16_t closed_gap_parcels[] = {0x9002u, 0x9001u, 0x9782u};
     for (unsigned i = 0; i < 3; ++i) {
-        const boom::RvcDecodeResult got = boom::decompress_rvc(protected_parcels[i]);
-        if (!got.valid || !got.legal || !protected_gap(protected_parcels[i]))
-            report(errors, errors.instruction, "RVC_PROTECTED", 0, i, 1, got.legal);
+        const boom::RvcDecodeResult got = boom::decompress_rvc(closed_gap_parcels[i]);
+        if (!got.valid || !got.legal || got.instruction == 0)
+            report(errors, errors.instruction, "RVC_CLOSED_GAP", 0, i, 1, got.legal);
     }
 
     for (unsigned seed = 0; seed < kSeeds; ++seed) {
