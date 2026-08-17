@@ -6,6 +6,7 @@
 #include "completion.hpp"
 #include "mul.hpp"
 #include "divider.hpp"
+#include "fetch_buffer.hpp"
 
 extern void boom_core_step(BoomCoreState& state, PipeSignals& pipe);
 
@@ -35,6 +36,75 @@ void synth_frontend_top(hls::stream<ImemRequest>& imem_req_out,
     boom::frontend_module(state, pipe);
     if (!pipe.imem_req.empty()) imem_req_out.write(pipe.imem_req.read());
     observable = state.frontend.pc;
+}
+
+void synth_fetch_buffer_integration_top(
+        hls::stream<ImemRequest>& imem_req_out,
+        hls::stream<ImemResponse>& imem_resp_in,
+        bool runtime_reset, bool generic_flush, bool decode_ready,
+        bool canonical_redirect_valid, uint64_t canonical_redirect_target,
+        bool push_valid, uint64_t push_pc, uint32_t push_instruction,
+        uint32_t push_original, uint32_t push_fetch_id, bool push_is_rvc,
+        bool push_exception, uint64_t push_cause,
+        bool& push_held, bool& decode_valid, uint64_t& decode_pc,
+        uint32_t& decode_instruction, uint32_t& decode_original,
+        bool& decode_is_rvc, bool& decode_exception, uint64_t& decode_cause,
+        uint8_t& occupancy, bool& full,
+        bool& canonical_producer_valid, uint64_t& canonical_producer_pc,
+        uint32_t& canonical_producer_original, bool& canonical_producer_is_rvc,
+        bool& canonical_producer_exception, uint64_t& canonical_producer_cause,
+        bool& canonical_carry_valid, uint64_t& canonical_carry_pc) {
+    static BoomCoreState state;
+    if (runtime_reset) state.frontend.reset_done = false;
+    state.global_flush = generic_flush;
+    state.brupdate = BranchUpdate();
+    state.brupdate.valid = canonical_redirect_valid;
+    state.brupdate.mispredict = canonical_redirect_valid;
+    state.brupdate.jalr_target = canonical_redirect_target;
+    state.frontend_redirect = FrontendRedirect();
+    if (decode_ready) {
+        state.decode.dec_valids[0] = false;
+        state.rename.dispatch_packets[0] = RenameDispatchPacket();
+    } else {
+        state.rename.dispatch_packets[0].valid = true;
+    }
+    if (push_valid && !state.frontend.producer_valid) {
+        MicroOp& uop = state.frontend.producer_uop;
+        uop = MicroOp();
+        uop.debug_pc = push_pc;
+        uop.inst = push_instruction;
+        uop.debug_inst = push_original;
+        uop.is_rvc = push_is_rvc;
+        uop.exception = push_exception;
+        uop.exc_cause = push_cause;
+        uop.exc.exception = push_exception;
+        uop.exc.exc_cause = push_cause;
+        state.frontend.producer_fetch_id = push_fetch_id;
+        state.frontend.producer_valid = true;
+    }
+    PipeSignals pipe;
+    if (!imem_resp_in.empty()) pipe.imem_resp.write(imem_resp_in.read());
+    boom::frontend_module(state, pipe);
+    boom::decode_module(state);
+    if (!pipe.imem_req.empty()) imem_req_out.write(pipe.imem_req.read());
+    push_held = state.frontend.producer_valid;
+    decode_valid = state.decode.dec_valids[0];
+    decode_pc = state.decode.dec_uops[0].debug_pc;
+    decode_instruction = state.decode.dec_uops[0].inst;
+    decode_original = state.decode.dec_uops[0].debug_inst;
+    decode_is_rvc = state.decode.dec_uops[0].is_rvc;
+    decode_exception = state.decode.dec_uops[0].exception;
+    decode_cause = state.decode.dec_uops[0].exc_cause;
+    occupancy = state.frontend.fetch_buffer.count;
+    full = occupancy == FETCH_BUFFER_DEPTH;
+    canonical_producer_valid = state.frontend.producer_valid;
+    canonical_producer_pc = state.frontend.producer_uop.debug_pc;
+    canonical_producer_original = state.frontend.producer_uop.debug_inst;
+    canonical_producer_is_rvc = state.frontend.producer_uop.is_rvc;
+    canonical_producer_exception = state.frontend.producer_uop.exception;
+    canonical_producer_cause = state.frontend.producer_uop.exc_cause;
+    canonical_carry_valid = state.frontend.halfword_valid;
+    canonical_carry_pc = state.frontend.halfword_pc;
 }
 
 void synth_frontend_verify_top(

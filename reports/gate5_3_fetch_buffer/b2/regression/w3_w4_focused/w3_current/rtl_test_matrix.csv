@@ -1,0 +1,12 @@
+case,scenario,requirement,status,expected,observed,log
+dual_accept,0,"both fixed lanes accept and execute",PASS,000c000b0000030b,000c000b0000030b,reports/gate5_3_fetch_buffer/b2/regression/w3_w4_focused/w3_current/rtl_logs/dual_accept.log
+mem_blocked_int_forward,1,"held MEM completion blocks only MEM",PASS,000c001300000217,000c001300000217,reports/gate5_3_fetch_buffer/b2/regression/w3_w4_focused/w3_current/rtl_logs/mem_blocked_int_forward.log
+int_blocked_mem_forward,2,"held INT completion blocks only INT",PASS,001d000b00000117,001d000b00000117,reports/gate5_3_fetch_buffer/b2/regression/w3_w4_focused/w3_current/rtl_logs/int_blocked_mem_forward.log
+dual_pending,3,"oldest of two completions is serviced",PASS,0020000008d00002,0020000008d00002,reports/gate5_3_fetch_buffer/b2/regression/w3_w4_focused/w3_current/rtl_logs/dual_pending.log
+branch_kill,4,"mispredict kills younger held completion",PASS,0000000008100400,0000000008100400,reports/gate5_3_fetch_buffer/b2/regression/w3_w4_focused/w3_current/rtl_logs/branch_kill.log
+reset_clear,5,"full reset clears held completions and LSU pending",PASS,0000000000000000,0000000000000000,reports/gate5_3_fetch_buffer/b2/regression/w3_w4_focused/w3_current/rtl_logs/reset_clear.log
+load_response_int_conflict,6,"load response owns writeback and holds INT",PASS,003e000000d00002,003e000000d00002,reports/gate5_3_fetch_buffer/b2/regression/w3_w4_focused/w3_current/rtl_logs/load_response_int_conflict.log
+trace_backpressure,7,"full trace FIFO leaves commit atomic",PASS,000000000a100000,000000000a100000,reports/gate5_3_fetch_buffer/b2/regression/w3_w4_focused/w3_current/rtl_logs/trace_backpressure.log
+dmem_backpressure,8,"full DMEM FIFO leaves store commit atomic",PASS,000000000c110000,000000000c110000,reports/gate5_3_fetch_buffer/b2/regression/w3_w4_focused/w3_current/rtl_logs/dmem_backpressure.log
+rob_wrap_multiple_identity,9,"wrap-safe age selects ROB 31 and preserves ID 92",PASS,0000005cf8d00001,0000005cf8d00001,reports/gate5_3_fetch_buffer/b2/regression/w3_w4_focused/w3_current/rtl_logs/rob_wrap_multiple_identity.log
+stale_completion_identity,10,"stale allocation ID has no ROB side effect",PASS,0000000000300000,0000000000300000,reports/gate5_3_fetch_buffer/b2/regression/w3_w4_focused/w3_current/rtl_logs/stale_completion_identity.log

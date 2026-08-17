@@ -1,0 +1,18 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+SCRIPT=$(readlink -f "${BASH_SOURCE[0]}")
+ROOT=${HLS_BOOM_ROOT:-"$(cd "$(dirname "$SCRIPT")/../.." && pwd)"}
+has_frontend=0
+has_fetch_buffer=0
+compile_only=0
+for arg in "$@"; do
+    [[ "$arg" != "$ROOT/src/frontend.cpp" ]] || has_frontend=1
+    [[ "$arg" != "$ROOT/src/fetch_buffer.cpp" ]] || has_fetch_buffer=1
+    [[ "$arg" != -c ]] || compile_only=1
+done
+
+if (( has_frontend && !has_fetch_buffer && !compile_only )); then
+    exec /usr/bin/g++ "$@" "$ROOT/src/fetch_buffer.cpp"
+fi
+exec /usr/bin/g++ "$@"

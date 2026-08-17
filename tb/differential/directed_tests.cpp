@@ -99,6 +99,8 @@ void t6_rob_full() { TEST("ROB fill: 33 instructions should stall");
     ImemResponse rs; rs.address=rq.address; rs.fetch_id=rq.fetch_id; rs.epoch=rq.epoch;
     rs.instruction=MI(1,0,0,1,0x13); p.imem_resp.write(rs);
     boom_core_step(s,p);
+    for(int cycle=0; cycle<4 && !s.rename.dispatch_packets[0].valid; ++cycle)
+        boom_core_step(s,p);
     CHECK(s.rob.head==0,"ROB head changed while full");
     CHECK(s.rob.tail==0,"ROB tail advanced while full");
     CHECK(s.rob.maybe_full,"ROB full flag cleared");

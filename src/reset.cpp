@@ -69,6 +69,7 @@ void boom_core_reset_step(BoomCoreState& state, ResetControllerState& reset_ctrl
         state.frontend.resp_instruction = 0;
         state.frontend.resp_exception = false;
         state.frontend.resp_exc_cause = 0;
+        state.frontend.resp_fetch_id = 0;
         state.frontend.halfword_valid = false;
         state.frontend.halfword = 0;
         state.frontend.halfword_pc = 0;
@@ -76,6 +77,8 @@ void boom_core_reset_step(BoomCoreState& state, ResetControllerState& reset_ctrl
         state.frontend.stalled = false;
         state.frontend.flush = false;
         state.frontend.fetch_packet_valid = false;
+        state.frontend.producer_valid = false;
+        boom::fetch_buffer_reset(state.frontend.fetch_buffer);
         state.frontend_redirect = FrontendRedirect();
         advance_reset(reset_ctrl, RESET_RENAME_MAP);
         break;

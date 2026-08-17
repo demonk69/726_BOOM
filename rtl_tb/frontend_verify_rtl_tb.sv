@@ -230,9 +230,15 @@ module frontend_verify_rtl_tb;
         before_requests = request_count;
         redirected_req = req;
         invoke(1, response_payload(req[63:0], req[95:64], req[127:96], 32'h00100093, 0, 0));
-        if (!accepted_response_pulse || !decode_valid || decode_instruction !== 32'h00100093 ||
+        if (!accepted_response_pulse || decode_valid ||
             frontend_pc !== req[63:0]+4 || request_count != before_requests+1)
             fail("triple_match", "matching response publication");
+        invoke(0, 0);
+        if (decode_valid)
+            fail("triple_match", "fetch buffer bypassed its registered dequeue");
+        invoke(0, 0);
+        if (!decode_valid || decode_instruction !== 32'h00100093)
+            fail("triple_match", "buffered matching response was not published");
         req = requests[request_count-1];
         pass("triple_match", "matching fetch_id epoch and address advanced PC exactly once by four");
         pass("accepted_response_once", "one matching response produced one Decode publication");
@@ -346,10 +352,18 @@ module frontend_verify_rtl_tb;
 
         invoke(1, response_payload(redirected_req[63:0], redirected_req[95:64],
                                    redirected_req[127:96], 32'h00500293, 0, 0));
-        held_pc = decode_pc; held_inst = decode_instruction;
+        if (decode_valid)
+            fail("decode_hold", "response bypassed the fetch buffer");
+        invoke(0, 0);
+        if (decode_valid)
+            fail("decode_hold", "enqueue bypassed the registered dequeue");
         decode_ready = 0;
         invoke(0, 0);
-        if (!decode_valid || decode_pc !== held_pc || decode_instruction !== held_inst || !held_entry_valid)
+        held_pc = decode_pc; held_inst = decode_instruction;
+        if (!decode_valid || decode_instruction !== 32'h00500293)
+            fail("decode_hold", "buffered instruction was not published");
+        invoke(0, 0);
+        if (!decode_valid || decode_pc !== held_pc || decode_instruction !== held_inst || held_entry_valid)
             fail("decode_hold", "held instruction changed under stall");
         pass("decode_hold", "held instruction remained stable under Decode stall");
         invoke(1, response_payload(redirected_req[63:0], redirected_req[95:64]+9,
@@ -362,6 +376,9 @@ module frontend_verify_rtl_tb;
         req = requests[request_count-1];
 
         invoke(1, response_payload(req[63:0], req[95:64], req[127:96], 0, 1, 64'd1));
+        invoke(0, 0);
+        decode_ready = 0;
+        invoke(0, 0);
         if (!decode_valid || !decode_fault || decode_pc !== req[63:0] || decode_fault_cause !== 1)
             fail("fault_to_decode", "fault payload changed");
         pass("fault_to_decode", "instruction access fault PC and cause propagated to Decode");
@@ -390,21 +407,33 @@ module frontend_verify_rtl_tb;
         owner_live = 1; owner_allocation_id = 99;
         before_requests = request_count;
         invoke(0, 0);
+        if (!redirect_accepted_pulse || decode_valid || request_count != before_requests)
+            fail("misaligned_arch_target", "architectural redirect was not buffered");
+        clear_controls();
+        invoke(0, 0);
+        if (decode_valid || misalignment_fault_pulse || request_count != before_requests)
+            fail("misaligned_arch_target", "architectural fault bypassed the registered dequeue");
+        invoke(0, 0);
         if (!misalignment_fault_pulse || !decode_fault || decode_pc !== 64'h24003 ||
             decode_fault_cause !== 0 || request_count != before_requests)
             fail("misaligned_arch_target", "architectural alignment fault");
         pass("misaligned_arch_target", "misaligned architectural target faulted without masking");
-        clear_controls();
 
         runtime_reset = 1; invoke(0, 0); runtime_reset = 0;
         branch_redirect_valid = 1; branch_redirect_target = 64'h25003;
         before_requests = request_count;
         invoke(0, 0);
+        if (!redirect_accepted_pulse || decode_valid || request_count != before_requests)
+            fail("misaligned_branch_target", "branch redirect was not buffered");
+        clear_controls();
+        invoke(0, 0);
+        if (decode_valid || misalignment_fault_pulse || request_count != before_requests)
+            fail("misaligned_branch_target", "branch fault bypassed the registered dequeue");
+        invoke(0, 0);
         if (!misalignment_fault_pulse || !decode_fault || decode_pc !== 64'h25003 ||
             request_count != before_requests)
             fail("misaligned_branch_target", "branch alignment fault");
         pass("misaligned_branch_target", "misaligned branch target faulted without masking");
-        clear_controls();
 
         runtime_reset = 1; invoke(0, 0); runtime_reset = 0;
         generic_flush_valid = 1; generic_flush_target = 64'h26002;

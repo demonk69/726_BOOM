@@ -277,6 +277,8 @@ static void recover_mispredict(BoomCoreState& state, const BranchUpdate& update)
         killed_by_mask(state.rename.dispatch_packets[0].uop, mispredict_mask))
         state.rename.dispatch_packets[0] = RenameDispatchPacket();
     state.frontend.fetch_packet_valid = false;
+    state.frontend.producer_valid = false;
+    boom::fetch_buffer_reset(state.frontend.fetch_buffer);
     state.frontend.response_received = false;
     state.frontend.request_sent = false;
     state.frontend.halfword_valid = false;

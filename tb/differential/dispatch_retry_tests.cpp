@@ -177,22 +177,23 @@ static void t09_exception_waits_for_rob() {
 }
 
 static void t10_frontend_decode_stall() {
-    TEST("10 pending packet stalls frontend and decode");
+    TEST("10 pending packet preserves decode while frontend decouples");
     BoomCoreState state;
     PipeSignals pipe;
     seed_packet(state, 10, false);
     state.frontend.reset_done = true;
     state.frontend.pc = RESET_VECTOR + 0x40;
-    state.frontend.fetch_packet_valid = true;
-    state.frontend.fetch_uop.inst = 0x13;
+    state.frontend.producer_valid = true;
+    state.frontend.producer_uop.inst = 0x13;
     state.decode.dec_valids[0] = true;
     state.decode.dec_uops[0].debug_inst = 77;
     boom::frontend_module(state, pipe);
     boom::decode_module(state);
-    CHECK(state.frontend.stalled, "frontend did not report stall");
-    CHECK(pipe.imem_req.empty(), "stalled frontend issued request");
+    CHECK(!state.frontend.stalled, "frontend stalled below fetch-buffer capacity");
+    CHECK(state.frontend.fetch_buffer.count == 1, "producer was not buffered behind decode");
+    CHECK(!pipe.imem_req.empty(), "decoupled frontend did not run ahead");
     CHECK(state.decode.dec_valids[0] && state.decode.dec_uops[0].debug_inst == 77,
-          "stalled decode was overwritten");
+           "stalled decode was overwritten");
     PASS();
 }
 

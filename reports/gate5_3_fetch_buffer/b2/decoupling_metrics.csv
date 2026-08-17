@@ -1,0 +1,11 @@
+scenario,path,instructions,cycles,frontend_stall_cycles,buffer_full_cycles,max_occupancy,enqueue_count,dequeue_count,decode_stall_cycles,imem_request_count,imem_response_count,producer_count,protocol_constraint_cycles,ipc
+A_ALWAYS_READY,gate5_2_unbuffered_model,2048,2049,0,0,0,0,2048,0,2048,2048,2048,0,0.999512
+A_ALWAYS_READY,b2_canonical_frontend_depth8,2048,2051,0,0,1,2049,2048,0,2051,2050,2050,0,0.998537
+B_STALL_1_OF_4,gate5_2_unbuffered_model,2048,2731,682,0,0,0,2048,682,2048,2048,2048,0,0.749908
+B_STALL_1_OF_4,b2_canonical_frontend_depth8,2048,2734,676,2707,8,2056,2048,683,2058,2057,2057,0,0.749086
+C_STALL_50_PERCENT,gate5_2_unbuffered_model,2048,4097,2048,0,0,0,2048,2048,2048,2048,2048,0,0.499878
+C_STALL_50_PERCENT,b2_canonical_frontend_depth8,2048,4099,2041,4084,8,2056,2048,2049,2058,2057,2057,0,0.499634
+D_BURST_STALL_4,gate5_2_unbuffered_model,2048,2560,511,0,0,0,2048,512,2048,2048,2048,0,0.800000
+D_BURST_STALL_4,b2_canonical_frontend_depth8,2048,2560,502,2519,8,2056,2048,512,2058,2057,2057,0,0.800000
+E_BURST_STALL_8,gate5_2_unbuffered_model,2048,2736,687,0,0,0,2048,688,2048,2048,2048,0,0.748538
+E_BURST_STALL_8,b2_canonical_frontend_depth8,2048,2736,678,2703,8,2056,2048,688,2058,2057,2057,0,0.748538

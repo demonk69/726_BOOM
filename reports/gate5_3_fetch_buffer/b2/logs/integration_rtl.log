@@ -1,0 +1,72 @@
+#-----------------------------------------------------------
+# xsim v2021.2 (64-bit)
+# SW Build 3367213 on Tue Oct 19 02:47:39 MDT 2021
+# IP Build 3369179 on Thu Oct 21 08:25:16 MDT 2021
+# Start of session at: Thu Aug 13 01:19:35 2026
+# Process ID: 200355
+# Current directory: /home/lab_726/boom/hls_boom/build/gate5_3_fetch_buffer/b2/xsim
+# Command line: xsim -log /home/lab_726/boom/hls_boom/reports/gate5_3_fetch_buffer/b2/logs/integration_rtl.log -mode tcl -source {xsim.dir/b2_integration_snapshot/xsim_script.tcl}
+# Log file: /home/lab_726/boom/hls_boom/reports/gate5_3_fetch_buffer/b2/logs/integration_rtl.log
+# Journal file: /home/lab_726/boom/hls_boom/build/gate5_3_fetch_buffer/b2/xsim/xsim.jou
+# Running On: 726, OS: Linux, CPU Frequency: 800.723 MHz, CPU Physical cores: 14, Host memory: 67148 MB
+#-----------------------------------------------------------
+source xsim.dir/b2_integration_snapshot/xsim_script.tcl
+# xsim {b2_integration_snapshot} -autoloadwcfg -runall -onerror quit
+Time resolution is 1 ps
+run -all
+CASE_PASS,reset_empty,canonical integration
+CASE_PASS,reset_no_decode,canonical integration
+CASE_PASS,canonical_upper_half_request,canonical integration
+CASE_PASS,upper_half_response_consumed,canonical integration
+SEMANTIC_PASS,upper_half_rvc_production
+CASE_PASS,upper_half_rvc_production,real frontend_module IMEM request/response semantics
+SEMANTIC_PASS,rvc_pc_plus_2_start
+CASE_PASS,rvc_pc_plus_2_start,real frontend_module IMEM request/response semantics
+CASE_PASS,post_rvc_cross_word_request,canonical integration
+CASE_PASS,cross_setup_response_consumed,canonical integration
+CASE_PASS,lower_half_setup_rvc,canonical integration
+SEMANTIC_PASS,cross_word_carry_creation
+CASE_PASS,cross_word_carry_creation,real frontend_module IMEM request/response semantics
+SEMANTIC_PASS,partial_cross_word_excluded_from_fetch_buffer
+CASE_PASS,partial_cross_word_excluded_from_fetch_buffer,real frontend_module IMEM request/response semantics
+CASE_PASS,cross_word_completion_request,canonical integration
+CASE_PASS,cross_fault_response_consumed,canonical integration
+SEMANTIC_PASS,faulted_cross_word_lower_half_start_pc
+CASE_PASS,faulted_cross_word_lower_half_start_pc,real frontend_module IMEM request/response semantics
+CASE_PASS,canonical_sequence_reset_flush,canonical integration
+CASE_PASS,lane0_accept_first_cycle,canonical integration
+CASE_PASS,first_cycle_occupancy,canonical integration
+CASE_PASS,lane0_enqueue,canonical integration
+CASE_PASS,producer_release,canonical integration
+CASE_PASS,decode_stall_retains_head,canonical integration
+CASE_PASS,head_visible_on_pop,canonical integration
+CASE_PASS,head_pc,canonical integration
+CASE_PASS,head_instruction,canonical integration
+CASE_PASS,decode_pop_valid,canonical integration
+CASE_PASS,decode_pop_removes,canonical integration
+CASE_PASS,fill_depth8,canonical integration
+CASE_PASS,full_flag,canonical integration
+CASE_PASS,full_backpressure,canonical integration
+CASE_PASS,full_hold_stable,canonical integration
+CASE_PASS,fifo_first,canonical integration
+CASE_PASS,same_cycle_pop_push_capacity,canonical integration
+CASE_PASS,stall_release,canonical integration
+CASE_PASS,fifo_order_wrap,canonical integration
+CASE_PASS,fifo_last_held,canonical integration
+CASE_PASS,drain_empty,canonical integration
+CASE_PASS,rvc_metadata,canonical integration
+CASE_PASS,rvc_original,canonical integration
+CASE_PASS,redirect_flush,canonical integration
+CASE_PASS,redirect_no_old_pop,canonical integration
+CASE_PASS,fault_entry,canonical integration
+CASE_PASS,fault_cause,canonical integration
+CASE_PASS,fault_flush_no_late_exception,canonical integration
+CASE_PASS,full_reset_flush,canonical integration
+CASE_PASS,reset_no_post_flush_entry,canonical integration
+CASE_PASS,reset_kills_producer,canonical integration
+CASE_PASS,no_spurious_response_read,canonical integration
+CASE_PASS,minimum_30_cases,canonical integration
+GATE5_3_B2_FETCH_BUFFER_INTEGRATION_RTL_PASS cases=47
+$finish called at time : 4021 ns : File "/home/lab_726/boom/hls_boom/rtl_tb/fetch_buffer_integration_rtl_tb.sv" Line 232
+exit
+INFO: [Common 17-206] Exiting xsim at Thu Aug 13 01:19:41 2026...

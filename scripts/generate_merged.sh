@@ -19,6 +19,7 @@ cat > "$OUT" << 'HEAD'
 #include "completion.hpp"
 #include "mul.hpp"
 #include "divider.hpp"
+#include "fetch_buffer.hpp"
 #include "rvc.hpp"
 #if defined(BOOM_USE_AP_INT) || defined(__SYNTHESIS__)
 #include <ap_int.h>
@@ -31,6 +32,9 @@ cat > "$OUT" << 'HEAD'
 #define UOPC_MERGED_ILLEGAL 255
 HEAD
 
+echo "" >> "$OUT"
+echo "// ==== fetch_buffer.cpp ====" >> "$OUT"
+grep -v '#include' "$BASE/src/fetch_buffer.cpp" >> "$OUT"
 echo "" >> "$OUT"
 echo "// ==== frontend.cpp ====" >> "$OUT"
 grep -v '#include' "$BASE/src/frontend.cpp" >> "$OUT"

@@ -1,0 +1,23 @@
+IMAGE rvc_addi                bytes=32 C=2 I32=7
+PASS rvc_addi                 cycles=26 commits=8 signature=2 tohost=1
+IMAGE rvc_load_store          bytes=48 C=4 I32=10
+PASS rvc_load_store           cycles=39 commits=13 signature=3 tohost=1
+IMAGE rvc_branch              bytes=36 C=4 I32=7
+PASS rvc_branch               cycles=32 commits=9 signature=2 tohost=1
+IMAGE rvc_jump                bytes=36 C=4 I32=7
+PASS rvc_jump                 cycles=32 commits=9 signature=2 tohost=1
+IMAGE rvc_word_ops            bytes=36 C=4 I32=7
+PASS rvc_word_ops             cycles=30 commits=10 signature=2 tohost=1
+IMAGE rvc_mixed_16_32         bytes=36 C=2 I32=8
+PASS rvc_mixed_16_32          cycles=32 commits=9 signature=3 tohost=1
+IMAGE rvc_cross_boundary      bytes=36 C=2 I32=8
+PASS rvc_cross_boundary       cycles=32 commits=9 signature=3 tohost=1
+IMAGE rvc_rv64m_mix           bytes=38 C=3 I32=8
+PASS rvc_rv64m_mix            cycles=85 commits=10 signature=2 tohost=1
+IMAGE rvc_redirect_halfword   bytes=40 C=2 I32=9
+PASS rvc_redirect_halfword    cycles=31 commits=8 signature=2 tohost=1
+IMAGE rvc_tohost              bytes=32 C=2 I32=7
+PASS rvc_tohost               cycles=26 commits=8 signature=2 tohost=1
+IMAGE rvc_decode_gaps         bytes=52 C=4 I32=11
+PASS rvc_decode_gaps          cycles=44 commits=13 signature=2 tohost=1
+GATE5_2_R2_FULL_CORE_RVC 11/11 PASS

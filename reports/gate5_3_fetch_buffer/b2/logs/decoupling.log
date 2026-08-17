@@ -1,0 +1,5 @@
+ASSERT_PASS canonical_frontend_only_imem_driven
+ASSERT_PASS stalled_receive_produce_enqueue responses=2961 productions=2961 enqueues_below_full=30
+ASSERT_PASS occupancy_rises_during_decode_stalls rises=30 max=8 levels=1..8
+ASSERT_PASS capacity_backpressure_full_only full_cycles=3897 below_full=0
+GATE5_3_B2_PHASE_B_TEST_INTEGRITY_PASS

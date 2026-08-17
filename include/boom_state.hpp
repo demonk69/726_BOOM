@@ -4,6 +4,7 @@
 #include "boom_config.hpp"
 #include "boom_types.hpp"
 #include "divider.hpp"
+#include "fetch_buffer.hpp"
 
 struct FrontendState {
     uint64_t pc;
@@ -19,6 +20,7 @@ struct FrontendState {
     uint32_t resp_instruction;
     bool     resp_exception;
     uint64_t resp_exc_cause;
+    uint32_t resp_fetch_id;
     bool     halfword_valid;
     uint16_t halfword;
     uint64_t halfword_pc;
@@ -27,13 +29,19 @@ struct FrontendState {
     bool     flush;
     bool     fetch_packet_valid;
     MicroOp  fetch_uop;
+    bool     producer_valid;
+    MicroOp  producer_uop;
+    uint32_t producer_fetch_id;
+    boom::FetchBufferState fetch_buffer;
 
     FrontendState() : pc(RESET_VECTOR), reset_done(false), request_sent(false),
         fetch_id(0), pending_fetch_id(0), epoch(0xffffffffu), pending_epoch(0),
         pending_address(0), response_received(false),
         resp_address(0), resp_instruction(0), resp_exception(false), resp_exc_cause(0),
+        resp_fetch_id(0),
         halfword_valid(false), halfword(0), halfword_pc(0), halfword_epoch(0),
-        stalled(false), flush(false), fetch_packet_valid(false), fetch_uop() {}
+        stalled(false), flush(false), fetch_packet_valid(false), fetch_uop(),
+        producer_valid(false), producer_uop(), producer_fetch_id(0), fetch_buffer() {}
 };
 
 struct DecodeState {

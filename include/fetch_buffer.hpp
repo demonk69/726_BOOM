@@ -10,14 +10,18 @@ namespace boom {
 struct FetchInstruction {
     uint64_t pc;
     uint32_t instruction;
+    uint32_t original_instruction;
     uint32_t fetch_id;
     uint64_t exception_cause;
     bool is_rvc;
     bool exception;
+    bool exception_access_fault;
+    bool exception_misaligned;
 
     FetchInstruction()
-        : pc(0), instruction(0), fetch_id(0), exception_cause(0),
-          is_rvc(false), exception(false) {}
+        : pc(0), instruction(0), original_instruction(0), fetch_id(0),
+          exception_cause(0), is_rvc(false), exception(false),
+          exception_access_fault(false), exception_misaligned(false) {}
 };
 
 struct FetchPacket {
