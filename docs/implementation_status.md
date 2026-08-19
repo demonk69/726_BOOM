@@ -46,12 +46,17 @@ Gate 5.2 R1 update: the standalone integer RV64C decompressor uses canonical `Rv
 
 Gate 5.2 R2 update: the one-wide Frontend now consumes mixed 16/32-bit streams, retains an aligned response word, advances by PC+2/PC+4, assembles cross-word 32-bit instructions, and preserves exact request identity, redirects, reset, backpressure, and fault attribution. Focused native passes 4,111 assertions across 414 cases, 256x2048 random passes with successful and faulted cross-word assembly, focused RTL passes 58/58, and mixed full-core native/csim/RTL pass 10/10 each. Ten final csynth tops pass; `boom_core_top` is 126798 LUT, 28492 FF, 16 BRAM, 3 DSP, and 6.341 ns with `Pipelined=no`. One `C.EBREAK`, 256 `C.SRLI shamt5`, and 31 `C.JALR` forms remain explicit illegal cause 2. `GATE5_2_R2_RVC_FETCH_VERIFIED=true`, `READY_FOR_GATE5_2_R3_DECODE_GAP_CLOSURE=true`, `GATE5_2_RVC_VERIFIED=false`, and `READY_FOR_FETCH_BUFFER=false`.
 
+Gate 5.2 R3 update: `C.EBREAK`, RV64 `C.SRLI shamt[5]`, and `C.JALR` decode/link semantics are closed for the supported integer RV64C scope. Focused and full-core evidence passes and `GATE5_2_RVC_VERIFIED=true`.
+
+Gate 5.3 final update: standalone FIFO parameterization, scalar integration/decoupling, packet architecture review, and two-lane packet implementation are accepted. The canonical configuration is depth 8, AUTO storage, CONTROL_ONLY reset, packet width 2, 32-bit IMEM response, and one-wide Decode/Dispatch with one logical outstanding request and no multi-response aggregation. B3I full-core csynth is 135953 LUT, 33373 FF, 16 BRAM, 3 DSP, and 6.341 ns. `GATE5_3_FETCH_BUFFER_VERIFIED=true`, `GATE5_3_PPA_BLOCKER=false`, and `READY_FOR_GATE5_4_PREREQUISITE_REVIEW=true`; FTQ, Predictor, and ICache implementation readiness remain false.
+
 Gate 4.0 W3 source scope: acceptance covers the modular `src/*.cpp` implementation plus generated `src/boom_core_merged.cpp` and public `src/boom_core_top.cpp` only. `src/boom_all.cpp` is a legacy, non-canonical, unreferenced monolithic snapshot; active build, test, RTL-generation, and csynth scripts do not consume it. It is excluded from source manifests and acceptance without deletion or rewrite. Pre-existing dirty tracked logs and backup logs are excluded non-deliverables and are not evidence.
 
 ## Implemented And Tested
 
-- Frontend request/response FSM with one outstanding request, fetch ID, 32-bit epoch, expected-address matching, stale drain, redirect priority/ownership, fetch faults, non-RVC alignment checks, and verified next-state request replacement; Gate 5.1 generated-RTL acceptance is complete.
-- One-wide RV64C parcel fetch for the supported integer subset, including retained-word reuse and one cross-word carry; three protected Decode-gap classes remain unsupported.
+- Frontend request/response FSM with one outstanding request, fetch ID, 32-bit epoch, expected-address matching, stale drain, redirect priority/ownership, fetch faults, alignment checks, and verified next-state request replacement.
+- Integer RV64C parcel fetch/decompression for the supported subset, including retained-word reuse, one cross-word carry, `C.EBREAK`, RV64 `C.SRLI shamt[5]`, and `C.JALR` link semantics.
+- Eight-entry complete-instruction Fetch Buffer with AUTO storage, CONTROL_ONLY reset, atomic two-lane packet admission, flush/backpressure handling, and one-wide dequeue.
 - RV64 integer ALU subset used by directed tests.
 - JAL, JALR, and conditional branches with always-not-taken baseline redirect behavior.
 - Integer rename map/free-list/stale-pdst commit release for single dispatch lane.
@@ -80,7 +85,7 @@ Gate 4.0 W3 source scope: acceptance covers the modular `src/*.cpp` implementati
 
 - Full BOOM LSU behavior, DCache, ICache, MMU/Sv39, TLB, PTW, cache miss/replay, AMO/LRSC, and full memory-ordering semantics.
 - FPU and FP issue/register-read/writeback paths.
-- Branch predictor, BTB, BIM, TAGE, RAS, FTQ, fetch buffer.
+- Branch predictor, BTB, BIM, TAGE, RAS, and FTQ.
 - TileLink, L2, interrupts, full CSR file, privilege transitions.
 
 ## Latest Verification

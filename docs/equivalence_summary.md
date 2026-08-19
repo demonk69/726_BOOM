@@ -40,7 +40,8 @@ Gate 3.10 status: LOCAL_PIPELINE_CHARACTERIZED_NO_ACCEPTED_CANDIDATE. R1 passes 
 | Gate 4.1 M1 RV64M decode | VERIFIED | All 13 legal operations, four `rd=x0` cases, ten illegal near-misses, and fifteen base OP/OP-32 collision vectors pass. Frozen non-M traces are 14/14 byte-identical and conservative csynth is 3/3. This is decode equivalence only, not M arithmetic equivalence. |
 | Gate 4.1 M3B divider integration | VERIFIED_FOR_SUPPORTED_SUBSET | Existing INT completion topology is preserved. Directed 167/167, random 128x1024, native/csim/RTL full-core DIV programs 10/10, focused RTL 26/26, reset preservation 49/49, and csynth 8/8 pass. Strict BOOM cycle equivalence remains unclaimed. |
 | Gate 5.1 Frontend foundation | VERIFIED_FOR_SUPPORTED_SUBSET | Native/UBSan, focused generated RTL 33/33, W3 400/400, normalized traces 7/7, full-program 10/10, partial-order 7/7, Gate 3.9 RTL 49/49, and canonical csynth 9/9 pass. RVC/Fetch Buffer/FTQ/predictor/ICache remain outside this gate. |
-| Gate 5.2 R2 RVC fetch | VERIFIED_FOR_SUPPORTED_SUBSET | Focused native has 4,111 assertions/414 cases, persistent random passes 256x2048 with successful and faulted cross-word assembly, focused RTL passes 58/58, and mixed full-core native/csim/RTL pass 10/10 each. `C.EBREAK`, RV64 `C.SRLI shamt5`, and `C.JALR` remain protected illegal cause 2; complete RV64C and Fetch Buffer readiness are not claimed. |
+| Gate 5.2 RV64C | VERIFIED_FOR_SUPPORTED_SUBSET | R2 focused native has 4,111 assertions/414 cases, persistent random passes 256x2048, focused RTL passes 58/58, and mixed full-core native/csim/RTL pass 10/10 each. R3 closes `C.EBREAK`, RV64 `C.SRLI shamt[5]`, and `C.JALR`; `GATE5_2_RVC_VERIFIED=true`. |
+| Gate 5.3 Fetch Buffer | VERIFIED_FOR_SUPPORTED_SUBSET | B1 standalone parameterization, B2 integration/decoupling, B3 architecture review, and B3I packet implementation pass. B3I directed/exhaustive/random checks, focused RTL 95/95, six-program native/csim/generated-RTL, preservation, and canonical csynth 11/11 pass. The canonical depth-8 AUTO CONTROL_ONLY buffer accepts two-lane packets and dequeues one wide. FTQ/predictor/ICache and backend IPC widening are not claimed. |
 
 ## Gate 1 Results
 
@@ -67,7 +68,7 @@ Gate 3.10 status: LOCAL_PIPELINE_CHARACTERIZED_NO_ACCEPTED_CANDIDATE. R1 passes 
 - Branch snapshot structural absence is no longer current for the supported HLS subset after Gate 3.3, but strict BOOM event/cycle equivalence for branch recovery remains INSUFFICIENT_EVIDENCE.
 - M004 remains VERIFIED only for the concrete JALR redirect test; it did not close branch snapshot recovery. Gate 3.3 branch recovery evidence is tracked separately under M009. See `docs/branch_snapshot_status.md`.
 - Only the integer ALU/control subset is implemented.
-- Full BOOM LSU, caches, MMU/Sv39, TLB, FPU, predictor, TileLink, and L2 remain NOT_IMPLEMENTED. Gate 3.1C only adds a minimal integer LSU path for directed loads/stores and committed store-to-`tohost` termination.
+- Full BOOM LSU, caches, MMU/Sv39, TLB, FPU, FTQ/predictor, TileLink, and L2 remain NOT_IMPLEMENTED. Gate 3.1C only adds a minimal integer LSU path for directed loads/stores and committed store-to-`tohost` termination. Gate 5.3 adds an instruction FIFO, not FTQ or ICache state.
 - Cycle equivalence remains INSUFFICIENT_EVIDENCE because Provisional Gate 3 normalized-cycle checks fail for BOOM-vs-HLS and the full official emulator path remains blocked.
 
 ## Gate 2 Result

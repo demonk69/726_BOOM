@@ -1,0 +1,16 @@
+dimension,b2_single_producer,b3i_packet_width2,delta_or_observation,final_interpretation
+all-C,512 instructions in 514 native calls,512 instructions in 515 native calls;256 mask11 packets;2.0 valid slots per packet,measured rate ratio=0.998058;width2 consumes both complete RVC parcels,no backend speedup;real response-utilization and burst-fill benefit
+all-32,256 instructions in 258 native calls,256 instructions in 259 native calls;256 mask01 packets;1.0 valid slot per packet,measured rate ratio=0.996139;second lane unused,no width2 functional throughput benefit for this stream
+alternating,384 instructions in 386 native calls,384 instructions in 387 native calls;192 mask01 and 96 mask11;1.333333 valid slots per packet,measured rate ratio=0.997416,workload-dependent response-utilization benefit
+75-percent-RVC,512 instructions in 514 native calls,512 instructions in 515 native calls;128 mask01 and 192 mask11;1.6 valid slots per packet,measured rate ratio=0.998058,strong packet admission benefit without backend widening
+cross-word-heavy,256 instructions in 258 native calls,256 instructions in 260 native calls;one mask00 and 256 mask01,measured rate ratio=0.992308;carry completes one instruction per response,no second-lane benefit in this stream
+branch-heavy,384 instructions in 386 native calls,384 instructions in 387 native calls;96 mask01 and 144 mask11;1.6 valid slots per packet,measured rate ratio=0.997416,response unpacking benefit survives branch-rich instruction mix
+decode_always_ready,2048 instructions in 2049 model cycles at IPC 0.999512,depth8 B2 baseline was 2051 cycles at IPC 0.998537;B3I finite native scenarios show no speedup,one-wide Decode is the long-run limiter,width2 is not an IPC-width claim
+decode_stall_1_of_4,unbuffered IPC 0.749908,depth8 B2 IPC 0.749086 and occupancy reaches8;B3I retains same one-wide consumer bound,buffer absorbs bursts but eventually backpressures,packet width changes fill granularity not consumer capacity
+decode_stall_50_percent,unbuffered IPC 0.499878,depth8 B2 IPC 0.499634 and occupancy reaches8;B3I retains same one-wide consumer bound,steady-state rate is Decode-limited,packet width does not change consumer capacity
+burst_stall_4,unbuffered IPC 0.800000,depth8 B2 IPC 0.800000 and occupancy reaches8;B3I can admit two complete instructions atomically,two-lane admission can reduce local producer serialization,burst absorption improves locally but long-run rate does not
+full_core_LUT,129885,135953,+6068 (+4.672%),accepted bounded area cost
+full_core_FF,29194,33373,+4179 (+14.315%),accepted but must remain visible in future area budgeting
+full_core_BRAM_18K,16,16,0,no storage blocker
+full_core_DSP,3,3,0,no arithmetic-resource blocker
+full_core_period_ns,6.341,6.341,0.000,critical path unchanged and below 10.00ns target

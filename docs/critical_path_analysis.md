@@ -64,3 +64,9 @@ Nine canonical targets pass. `boom_core_top` and `synth_core_step_top` are both 
 ## Gate 5.2 R2 Final
 
 The final R2 `boom_core_top` XML reads 126798 LUT, 28492 FF, 16 BRAM_18K, 3 DSP, and **6.341 ns**. Its child `execute_module` remains 6.341 ns; the full-core `frontend_module` is 5.190 ns and standalone `synth_frontend_top` is 4.379 ns. Against the frozen R2 Gate 5.1 baseline, full-core period/BRAM/DSP are unchanged while LUT/FF rise by 2481/979. The 10 ns target closes, so `GATE5_2_R2_PPA_BLOCKER=false`. All ten final tops report `PipelineType=no`; `CORE_CYCLE` remains unpipelined and no DATAFLOW, false-dependence, or complete partition is used.
+
+## Gate 5.3 Final
+
+The B3I `boom_core_top` estimate is 135953 LUT, 33373 FF, 16 BRAM_18K, 3 DSP, and **6.341 ns**. Against the accepted B2 width-1 baseline this is `+6068` LUT (`+4.672%`) and `+4179` FF (`+14.315%`), with unchanged BRAM, DSP, and period. The standalone packet builder is 4491 LUT, 2232 FF, and 6.071 ns; the integrated Frontend is 7824 LUT, 4430 FF, and 6.071 ns. The full-core longest child remains the 6.341 ns execute path, so packetization does not become the product critical path.
+
+All canonical tops report `PipelineType=no`; `CORE_CYCLE` remains unpipelined. The 10.00 ns target closes and `GATE5_3_PPA_BLOCKER=false`. These are HLS estimates, not post-route STA. The FF increase is accepted for the width-2 response/packet boundary and must remain visible in future Frontend area reviews.
