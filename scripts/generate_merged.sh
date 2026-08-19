@@ -20,6 +20,7 @@ cat > "$OUT" << 'HEAD'
 #include "mul.hpp"
 #include "divider.hpp"
 #include "fetch_buffer.hpp"
+#include "fetch_packet.hpp"
 #include "rvc.hpp"
 #if defined(BOOM_USE_AP_INT) || defined(__SYNTHESIS__)
 #include <ap_int.h>
@@ -35,6 +36,9 @@ HEAD
 echo "" >> "$OUT"
 echo "// ==== fetch_buffer.cpp ====" >> "$OUT"
 grep -v '#include' "$BASE/src/fetch_buffer.cpp" >> "$OUT"
+echo "" >> "$OUT"
+echo "// ==== fetch_packet.cpp ====" >> "$OUT"
+grep -v '#include' "$BASE/src/fetch_packet.cpp" >> "$OUT"
 echo "" >> "$OUT"
 echo "// ==== frontend.cpp ====" >> "$OUT"
 grep -v '#include' "$BASE/src/frontend.cpp" >> "$OUT"

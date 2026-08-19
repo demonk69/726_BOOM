@@ -1,0 +1,7 @@
+scenario,instructions,b2_single_producer_native_calls,b3i_native_calls,b2_instructions_per_native_call,b3i_instructions_per_native_call,measured_native_call_rate_ratio,end_to_end_speedup_claim,b3i_valid_slots_per_packet,b3i_packets_per_response,physical_clock_claim
+all-C,512,514,515,0.996109,0.994175,0.998058,none_one_wide_decode,2.000000,0.980843,none
+all-32,256,258,259,0.992248,0.988417,0.996139,none_one_wide_decode,1.000000,0.992248,none
+alternating,384,386,387,0.994819,0.992248,0.997416,none_one_wide_decode,1.333333,0.982935,none
+75-percent-RVC,512,514,515,0.996109,0.994175,0.998058,none_one_wide_decode,1.600000,0.984615,none
+cross-word-heavy,256,258,260,0.992248,0.984615,0.992308,none_one_wide_decode,1.000000,0.988417,none
+branch-heavy,384,386,387,0.994819,0.992248,0.997416,none_one_wide_decode,1.600000,0.979592,none

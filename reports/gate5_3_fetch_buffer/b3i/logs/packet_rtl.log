@@ -1,0 +1,79 @@
+#-----------------------------------------------------------
+# xsim v2021.2 (64-bit)
+# SW Build 3367213 on Tue Oct 19 02:47:39 MDT 2021
+# IP Build 3369179 on Thu Oct 21 08:25:16 MDT 2021
+# Start of session at: Mon Aug 17 13:59:18 2026
+# Process ID: 125758
+# Current directory: /home/lab_726/boom/hls_boom/build/gate5_3_fetch_buffer/b3i/xsim
+# Command line: xsim -log /home/lab_726/boom/hls_boom/reports/gate5_3_fetch_buffer/b3i/logs/packet_rtl.log -mode tcl -source {xsim.dir/b3i_packet_snapshot/xsim_script.tcl}
+# Log file: /home/lab_726/boom/hls_boom/reports/gate5_3_fetch_buffer/b3i/logs/packet_rtl.log
+# Journal file: /home/lab_726/boom/hls_boom/build/gate5_3_fetch_buffer/b3i/xsim/xsim.jou
+# Running On: 726, OS: Linux, CPU Frequency: 4342.108 MHz, CPU Physical cores: 14, Host memory: 67148 MB
+#-----------------------------------------------------------
+source xsim.dir/b3i_packet_snapshot/xsim_script.tcl
+# xsim {b3i_packet_snapshot} -autoloadwcfg -runall -onerror quit
+Time resolution is 1 ps
+run -all
+CASE_PASS,cc_packet_mask3,C+C produces valid mask3
+CASE_PASS,cc_lane_pc_order,C+C lane PCs are pc and pc+2
+CASE_PASS,cc_lane0_rvc_metadata,lane0 preserves C.NOP original and RVC tag
+CASE_PASS,cc_lane1_rvc_metadata,lane1 preserves C.ADDI original and RVC tag
+CASE_PASS,cc_lane_expansions,both compressed lanes expose deterministic expansions
+CASE_PASS,cc_fetch_id_both_lanes,fetch_id is copied to both complete lanes
+CASE_PASS,cc_no_faults,legal compressed lanes have no exception subtype
+CASE_PASS,cc_continuation,C+C consumes the complete response
+CASE_PASS,ordinary32_mask1,aligned ordinary32 produces only lane0
+CASE_PASS,ordinary32_payload,ordinary32 instruction is unchanged
+CASE_PASS,ordinary32_metadata,ordinary32 carries PC and fetch_id
+CASE_PASS,ordinary32_not_rvc,ordinary32 has no RVC or fault metadata
+CASE_PASS,ordinary32_continuation,ordinary32 advances four bytes without carry
+CASE_PASS,ordinary32_no_partial_lane,mask1 leaves lane1 deterministically unavailable
+CASE_PASS,c_partial_mask1,C plus partial ordinary32 emits only complete C
+CASE_PASS,c_partial_lane0_metadata,complete lower C retains PC original and fetch_id
+CASE_PASS,c_partial_carry_value,upper ordinary32 parcel becomes carry
+CASE_PASS,c_partial_carry_pc,carry PC and next PC identify the partial parcel
+CASE_PASS,c_partial_no_lane1,partial instruction is never exposed as lane1
+CASE_PASS,carry_c_mask3,completed carry plus upper C produces mask3
+CASE_PASS,carry_c_lane0_assembly,carry completion assembles exact ordinary32 bits
+CASE_PASS,carry_c_lane0_metadata,carry completion receives response fetch_id
+CASE_PASS,carry_c_lane1_metadata,upper C occupies lane1 with parcel metadata
+CASE_PASS,carry_c_continuation,carry plus C consumes upper parcel
+CASE_PASS,carry_new_carry_mask1,carry plus new partial ordinary32 emits mask1
+CASE_PASS,carry_new_carry_assembly,old carry completes before new carry
+CASE_PASS,carry_new_carry_value,upper parcel replaces consumed carry
+CASE_PASS,carry_new_carry_pc,replacement carry points at upper parcel
+CASE_PASS,carry_new_carry_no_partial_lane,new partial instruction is not a packet lane
+CASE_PASS,upper_start_c_mask1,upper-half C start emits one complete lane
+CASE_PASS,upper_start_c_metadata,upper-half C uses requested PC and metadata
+CASE_PASS,upper_start_c_continuation,upper-half C advances by two
+CASE_PASS,upper_start_32_no_packet,upper-half ordinary32 start has no complete lane
+CASE_PASS,upper_start_32_carry,upper-half ordinary32 start creates carry at requested PC
+CASE_PASS,upper_start_lanes_unavailable,zero mask exposes neither lane
+CASE_PASS,illegal_lower_mask1,illegal lower C terminates with lane0 only
+CASE_PASS,illegal_lower_metadata,illegal lower C preserves original PC fetch_id and cause
+CASE_PASS,illegal_lower_subtype,illegal C is neither access fault nor misaligned
+CASE_PASS,illegal_lower_no_partial_lane,terminal lower fault exposes no upper lane or younger carry
+CASE_PASS,illegal_upper_lane1,illegal upper C is observable in lane1 and terminates carry
+CASE_PASS,illegal_upper_metadata,illegal upper C preserves original fetch_id cause and subtype
+CASE_PASS,long_lower_fault,reserved long lower encoding is lane0 fault
+CASE_PASS,long_lower_metadata,long lower fault preserves original fetch_id cause and subtype
+CASE_PASS,long_upper_fault,reserved long upper encoding is terminal lane1 fault
+CASE_PASS,long_upper_metadata,long upper fault preserves original fetch_id cause and subtype
+CASE_PASS,carry_illegal_upper_lane1,carry completion precedes terminal illegal upper C fault
+CASE_PASS,carry_long_upper_lane1,carry completion precedes terminal reserved long upper fault
+CASE_PASS,access_fault_mask1,requested lane access fault is the sole packet entry
+CASE_PASS,access_fault_metadata,access fault preserves PC fetch_id and cause
+CASE_PASS,access_fault_subtype,requested fault sets access subtype only
+CASE_PASS,access_fault_terminates,requested fault consumes no parcel or carry
+CASE_PASS,carry_access_fault_attribution,fault with carry is attributed to carry PC
+CASE_PASS,carry_access_fault_termination,fault with carry terminates and advances from carry PC
+CASE_PASS,cause0_access_not_misaligned,input exception cause0 remains access fault not misaligned
+CASE_PASS,mask_domain_never2,all paths restrict masks to 0 1 or 3 never 2
+CASE_PASS,upper_mask_bits_unavailable,all valid bits above the two helper lanes stay zero
+CASE_PASS,high_pc_metadata,full-width PC and fetch_id survive C+C construction
+CASE_PASS,helper_determinism_first,first identical helper invocation has canonical outputs
+CASE_PASS,helper_determinism_repeat,repeated identical invocation has identical observable outputs
+GATE5_3_B3I_FETCH_PACKET_RTL_PASS cases=59
+$finish called at time : 2496 ns : File "/home/lab_726/boom/hls_boom/rtl_tb/fetch_packet_2lane_rtl_tb.sv" Line 253
+exit
+INFO: [Common 17-206] Exiting xsim at Mon Aug 17 13:59:22 2026...

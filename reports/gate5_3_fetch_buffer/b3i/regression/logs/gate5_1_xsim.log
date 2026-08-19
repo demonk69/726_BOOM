@@ -1,0 +1,97 @@
+#-----------------------------------------------------------
+# xsim v2021.2 (64-bit)
+# SW Build 3367213 on Tue Oct 19 02:47:39 MDT 2021
+# IP Build 3369179 on Thu Oct 21 08:25:16 MDT 2021
+# Start of session at: Mon Aug 17 14:07:33 2026
+# Process ID: 127312
+# Current directory: /home/lab_726/boom/hls_boom/build/gate5_3_fetch_buffer/b3i/regression/gate5_1/xsim
+# Command line: xsim -log /home/lab_726/boom/hls_boom/reports/gate5_3_fetch_buffer/b3i/regression/logs/gate5_1_xsim.log -mode tcl -source {xsim.dir/gate5_3_b2_phase_e_frontend/xsim_script.tcl}
+# Log file: /home/lab_726/boom/hls_boom/reports/gate5_3_fetch_buffer/b3i/regression/logs/gate5_1_xsim.log
+# Journal file: /home/lab_726/boom/hls_boom/build/gate5_3_fetch_buffer/b3i/regression/gate5_1/xsim/xsim.jou
+# Running On: 726, OS: Linux, CPU Frequency: 1410.848 MHz, CPU Physical cores: 14, Host memory: 67148 MB
+#-----------------------------------------------------------
+source xsim.dir/gate5_3_b2_phase_e_frontend/xsim_script.tcl
+# xsim {gate5_3_b2_phase_e_frontend} -autoloadwcfg -runall -onerror quit
+Time resolution is 1 ps
+run -all
+REQUEST_TRACE,0,91,0x0000000000010040,0,0
+CASE_PASS,initial_request,generated RTL issued reset-vector fetch_id=0 epoch=0 kill=0
+CASE_PASS,wrong_fetch_id,response drained without completing the outstanding request
+CASE_PASS,wrong_epoch,response drained without completing the outstanding request
+CASE_PASS,wrong_address,response drained without completing the outstanding request
+CASE_PASS,wrong_id_epoch,response drained without completing the outstanding request
+CASE_PASS,wrong_epoch_address,response drained without completing the outstanding request
+CASE_PASS,all_identity_fields_wrong,response drained without completing the outstanding request
+REQUEST_TRACE,1,167,0x0000000000010044,1,0
+CASE_PASS,triple_match,matching fetch_id epoch and address advanced PC exactly once by four
+CASE_PASS,accepted_response_once,one matching response produced one Decode publication
+CASE_PASS,duplicate_response,duplicate old response drained and next request remained unique
+CASE_PASS,response_without_matching_outstanding,unowned response had no PC side effect
+CASE_PASS,delayed_response,one outstanding request remained stable across delay
+REQUEST_TRACE,2,255,0x0000000000010048,2,0
+CASE_PASS,second_match,second matching request completed at expected address
+CASE_PASS,request_backpressure,request valid and payload held until ready
+CASE_PASS,request_no_duplicate_under_backpressure,backpressured request transferred exactly once
+REQUEST_TRACE,3,273,0x000000000001004c,3,0
+REQUEST_TRACE,4,301,0x0000000000010050,4,0
+REQUEST_TRACE,5,329,0x0000000000010054,5,0
+REQUEST_TRACE,6,357,0x0000000000010058,6,0
+REQUEST_TRACE,7,385,0x000000000001005c,7,0
+REQUEST_TRACE,8,413,0x0000000000010060,8,0
+REQUEST_TRACE,9,441,0x0000000000010064,9,0
+REQUEST_TRACE,10,469,0x0000000000010068,10,0
+REQUEST_TRACE,11,497,0x000000000001006c,11,0
+REQUEST_TRACE,12,525,0x0000000000010070,12,0
+REQUEST_TRACE,13,553,0x0000000000010074,13,0
+REQUEST_TRACE,14,581,0x0000000000010078,14,0
+REQUEST_TRACE,15,609,0x000000000001007c,15,0
+REQUEST_TRACE,16,637,0x0000000000010080,16,0
+REQUEST_TRACE,17,665,0x0000000000010084,17,0
+REQUEST_TRACE,18,693,0x0000000000010088,18,0
+REQUEST_TRACE,19,721,0x000000000001008c,19,0
+REQUEST_TRACE,20,749,0x0000000000010090,20,0
+REQUEST_TRACE,21,777,0x0000000000010094,21,0
+REQUEST_TRACE,22,805,0x0000000000010098,22,0
+REQUEST_TRACE,23,833,0x000000000001009c,23,0
+REQUEST_TRACE,24,861,0x00000000000100a0,24,0
+REQUEST_TRACE,25,889,0x00000000000100a4,25,0
+REQUEST_TRACE,26,917,0x00000000000100a8,26,0
+REQUEST_TRACE,27,945,0x00000000000100ac,27,0
+REQUEST_TRACE,28,973,0x00000000000100b0,28,0
+REQUEST_TRACE,29,1001,0x00000000000100b4,29,0
+REQUEST_TRACE,30,1029,0x00000000000100b8,30,0
+REQUEST_TRACE,31,1057,0x00000000000100bc,31,0
+REQUEST_TRACE,32,1085,0x00000000000100c0,32,0
+REQUEST_TRACE,33,1113,0x00000000000100c4,33,0
+REQUEST_TRACE,34,1141,0x00000000000100c8,34,0
+CASE_PASS,sequential_32,32 responses advanced monotonically by PC+4
+CASE_PASS,single_outstanding_32,32-response run retained one outstanding request
+CASE_PASS,fetch_id_monotonic_32,32-response run retained monotonic fetch IDs
+CASE_PASS,epoch_width_and_value,request payload retained full 32-bit epoch
+CASE_PASS,ap_rst_control_only,ap_rst reset control but did not masquerade as runtime reset
+REQUEST_TRACE,35,1178,0x0000000000010040,0,1
+REQUEST_TRACE,36,1189,0x0000000000020000,1,2
+CASE_PASS,redirect_priority,runtime reset > architectural > branch > generic > response
+CASE_PASS,redirect_over_response,redirect drained old response without publication
+CASE_PASS,redirect_epoch,redirect incremented epoch and old epoch could not reactivate
+CASE_PASS,architectural_ownership,ROB index and allocation ID ownership validated
+REQUEST_TRACE,37,1226,0x0000000000020004,2,2
+CASE_PASS,decode_hold,held instruction remained stable under Decode stall
+CASE_PASS,stale_drain_during_decode_stall,stale response drained without held overwrite
+REQUEST_TRACE,38,1294,0x0000000000020008,3,2
+CASE_PASS,fault_to_decode,instruction access fault PC and cause propagated to Decode
+CASE_PASS,fault_hold,fault remained stable under Decode backpressure
+REQUEST_TRACE,39,1337,0x0000000000010040,0,3
+CASE_PASS,runtime_reset,runtime reset cleared outstanding, held instruction, and held fault state
+CASE_PASS,misaligned_arch_target,misaligned architectural target faulted without masking
+REQUEST_TRACE,40,1381,0x0000000000010040,0,5
+CASE_PASS,misaligned_branch_target,misaligned branch target faulted without masking
+REQUEST_TRACE,41,1424,0x0000000000010040,0,7
+REQUEST_TRACE,42,1434,0x0000000000026000,1,8
+CASE_PASS,misaligned_generic_flush_target,generic flush retained current-PC alignment policy
+REQUEST_TRACE,43,1445,0x0000000000010040,0,9
+CASE_PASS,reset_priority,runtime reset won redirects and response and rejected old epoch
+FRONTEND_VERIFY_RTL_PASS cases=33 requests=44 responses=48
+$finish called at time : 14456 ns : File "/home/lab_726/boom/hls_boom/rtl_tb/frontend_verify_rtl_tb.sv" Line 463
+exit
+INFO: [Common 17-206] Exiting xsim at Mon Aug 17 14:07:37 2026...

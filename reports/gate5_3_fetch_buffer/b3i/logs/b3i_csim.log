@@ -1,0 +1,110 @@
+
+****** Vitis HLS - High-Level Synthesis from C, C++ and OpenCL v2021.2 (64-bit)
+  **** SW Build 3367213 on Tue Oct 19 02:47:39 MDT 2021
+  **** IP Build 3369179 on Thu Oct 21 08:25:16 MDT 2021
+    ** Copyright 1986-2021 Xilinx, Inc. All Rights Reserved.
+
+source /home/lab_726/Xilinx/Vitis_HLS/2021.2/scripts/vitis_hls/hls.tcl -notrace
+INFO: [HLS 200-10] Running '/home/lab_726/Xilinx/Vitis_HLS/2021.2/bin/unwrapped/lnx64.o/vitis_hls'
+INFO: [HLS 200-10] For user 'lab_726' on host '726' (Linux_x86_64 version 6.8.0-136-generic) on Mon Aug 17 13:59:32 CST 2026
+INFO: [HLS 200-10] On os Ubuntu 22.04.5 LTS
+INFO: [HLS 200-10] In directory '/home/lab_726/boom/hls_boom'
+Sourcing Tcl script '/home/lab_726/boom/hls_boom/scripts/gate5_3/b3i_full_core_csim.tcl'
+INFO: [HLS 200-1510] Running: open_project -reset b3i_full_core_csim
+INFO: [HLS 200-10] Opening and resetting project '/home/lab_726/boom/hls_boom/build/gate5_3_fetch_buffer/b3i/csim/b3i_full_core_csim'.
+WARNING: [HLS 200-40] No /home/lab_726/boom/hls_boom/build/gate5_3_fetch_buffer/b3i/csim/b3i_full_core_csim/solution_b3i_csim/solution_b3i_csim.aps file found.
+INFO: [HLS 200-1510] Running: set_top boom_core_step
+INFO: [HLS 200-1510] Running: add_files -cflags -std=c++11 -I/home/lab_726/boom/hls_boom/include /home/lab_726/boom/hls_boom/src/frontend.cpp
+INFO: [HLS 200-10] Adding design file '/home/lab_726/boom/hls_boom/src/frontend.cpp' to the project
+INFO: [HLS 200-1510] Running: add_files -cflags -std=c++11 -I/home/lab_726/boom/hls_boom/include /home/lab_726/boom/hls_boom/src/fetch_packet.cpp
+INFO: [HLS 200-10] Adding design file '/home/lab_726/boom/hls_boom/src/fetch_packet.cpp' to the project
+INFO: [HLS 200-1510] Running: add_files -cflags -std=c++11 -I/home/lab_726/boom/hls_boom/include /home/lab_726/boom/hls_boom/src/fetch_buffer.cpp
+INFO: [HLS 200-10] Adding design file '/home/lab_726/boom/hls_boom/src/fetch_buffer.cpp' to the project
+INFO: [HLS 200-1510] Running: add_files -cflags -std=c++11 -I/home/lab_726/boom/hls_boom/include /home/lab_726/boom/hls_boom/src/decode.cpp
+INFO: [HLS 200-10] Adding design file '/home/lab_726/boom/hls_boom/src/decode.cpp' to the project
+INFO: [HLS 200-1510] Running: add_files -cflags -std=c++11 -I/home/lab_726/boom/hls_boom/include /home/lab_726/boom/hls_boom/src/rename.cpp
+INFO: [HLS 200-10] Adding design file '/home/lab_726/boom/hls_boom/src/rename.cpp' to the project
+INFO: [HLS 200-1510] Running: add_files -cflags -std=c++11 -I/home/lab_726/boom/hls_boom/include /home/lab_726/boom/hls_boom/src/issue.cpp
+INFO: [HLS 200-10] Adding design file '/home/lab_726/boom/hls_boom/src/issue.cpp' to the project
+INFO: [HLS 200-1510] Running: add_files -cflags -std=c++11 -I/home/lab_726/boom/hls_boom/include /home/lab_726/boom/hls_boom/src/execute.cpp
+INFO: [HLS 200-10] Adding design file '/home/lab_726/boom/hls_boom/src/execute.cpp' to the project
+INFO: [HLS 200-1510] Running: add_files -cflags -std=c++11 -I/home/lab_726/boom/hls_boom/include /home/lab_726/boom/hls_boom/src/branch.cpp
+INFO: [HLS 200-10] Adding design file '/home/lab_726/boom/hls_boom/src/branch.cpp' to the project
+INFO: [HLS 200-1510] Running: add_files -cflags -std=c++11 -I/home/lab_726/boom/hls_boom/include /home/lab_726/boom/hls_boom/src/lsu.cpp
+INFO: [HLS 200-10] Adding design file '/home/lab_726/boom/hls_boom/src/lsu.cpp' to the project
+INFO: [HLS 200-1510] Running: add_files -cflags -std=c++11 -I/home/lab_726/boom/hls_boom/include /home/lab_726/boom/hls_boom/src/commit.cpp
+INFO: [HLS 200-10] Adding design file '/home/lab_726/boom/hls_boom/src/commit.cpp' to the project
+INFO: [HLS 200-1510] Running: add_files -cflags -std=c++11 -I/home/lab_726/boom/hls_boom/include /home/lab_726/boom/hls_boom/src/csr.cpp
+INFO: [HLS 200-10] Adding design file '/home/lab_726/boom/hls_boom/src/csr.cpp' to the project
+INFO: [HLS 200-1510] Running: add_files -cflags -std=c++11 -I/home/lab_726/boom/hls_boom/include /home/lab_726/boom/hls_boom/src/completion.cpp
+INFO: [HLS 200-10] Adding design file '/home/lab_726/boom/hls_boom/src/completion.cpp' to the project
+INFO: [HLS 200-1510] Running: add_files -cflags -std=c++11 -I/home/lab_726/boom/hls_boom/include /home/lab_726/boom/hls_boom/src/rob.cpp
+INFO: [HLS 200-10] Adding design file '/home/lab_726/boom/hls_boom/src/rob.cpp' to the project
+INFO: [HLS 200-1510] Running: add_files -cflags -std=c++11 -I/home/lab_726/boom/hls_boom/include /home/lab_726/boom/hls_boom/src/reset.cpp
+INFO: [HLS 200-10] Adding design file '/home/lab_726/boom/hls_boom/src/reset.cpp' to the project
+INFO: [HLS 200-1510] Running: add_files -cflags -std=c++11 -I/home/lab_726/boom/hls_boom/include /home/lab_726/boom/hls_boom/src/divider.cpp
+INFO: [HLS 200-10] Adding design file '/home/lab_726/boom/hls_boom/src/divider.cpp' to the project
+INFO: [HLS 200-1510] Running: add_files -cflags -std=c++11 -I/home/lab_726/boom/hls_boom/include /home/lab_726/boom/hls_boom/src/mul.cpp
+INFO: [HLS 200-10] Adding design file '/home/lab_726/boom/hls_boom/src/mul.cpp' to the project
+INFO: [HLS 200-1510] Running: add_files -cflags -std=c++11 -I/home/lab_726/boom/hls_boom/include /home/lab_726/boom/hls_boom/src/rvc.cpp
+INFO: [HLS 200-10] Adding design file '/home/lab_726/boom/hls_boom/src/rvc.cpp' to the project
+INFO: [HLS 200-1510] Running: add_files -cflags -std=c++11 -I/home/lab_726/boom/hls_boom/include /home/lab_726/boom/hls_boom/src/boom_core_step.cpp
+INFO: [HLS 200-10] Adding design file '/home/lab_726/boom/hls_boom/src/boom_core_step.cpp' to the project
+INFO: [HLS 200-1510] Running: add_files -tb -cflags -std=c++11 -I/home/lab_726/boom/hls_boom/include /home/lab_726/boom/hls_boom/tb/differential/gate5_3_b3i_full_core.cpp
+INFO: [HLS 200-10] Adding test bench file '/home/lab_726/boom/hls_boom/tb/differential/gate5_3_b3i_full_core.cpp' to the project
+INFO: [HLS 200-1510] Running: open_solution -reset solution_b3i_csim
+INFO: [HLS 200-10] Creating and opening solution '/home/lab_726/boom/hls_boom/build/gate5_3_fetch_buffer/b3i/csim/b3i_full_core_csim/solution_b3i_csim'.
+INFO: [HLS 200-10] Cleaning up the solution database.
+WARNING: [HLS 200-40] No /home/lab_726/boom/hls_boom/build/gate5_3_fetch_buffer/b3i/csim/b3i_full_core_csim/solution_b3i_csim/solution_b3i_csim.aps file found.
+INFO: [HLS 200-1505] Using default flow_target 'vivado'
+Resolution: For help on HLS 200-1505 see www.xilinx.com/cgi-bin/docs/rdoc?v=2021.2;t=hls+guidance;d=200-1505.html
+INFO: [HLS 200-1510] Running: set_part xczu7ev-ffvc1156-2-e
+INFO: [HLS 200-1611] Setting target device to 'xczu7ev-ffvc1156-2-e'
+INFO: [HLS 200-1510] Running: create_clock -period 10 -name default
+INFO: [SYN 201-201] Setting up clock 'default' with a period of 10ns.
+INFO: [HLS 200-1510] Running: csim_design
+INFO: [SIM 211-2] *************** CSIM start ***************
+INFO: [SIM 211-4] CSIM will launch GCC as the compiler.
+   Compiling ../../../../../../../../tb/differential/gate5_3_b3i_full_core.cpp in debug mode
+   Compiling ../../../../../../../../src/boom_core_step.cpp in debug mode
+   Compiling ../../../../../../../../src/rvc.cpp in debug mode
+   Compiling ../../../../../../../../src/mul.cpp in debug mode
+   Compiling ../../../../../../../../src/divider.cpp in debug mode
+   Compiling ../../../../../../../../src/reset.cpp in debug mode
+   Compiling ../../../../../../../../src/rob.cpp in debug mode
+   Compiling ../../../../../../../../src/completion.cpp in debug mode
+   Compiling ../../../../../../../../src/csr.cpp in debug mode
+   Compiling ../../../../../../../../src/commit.cpp in debug mode
+   Compiling ../../../../../../../../src/lsu.cpp in debug mode
+   Compiling ../../../../../../../../src/branch.cpp in debug mode
+   Compiling ../../../../../../../../src/execute.cpp in debug mode
+   Compiling ../../../../../../../../src/issue.cpp in debug mode
+   Compiling ../../../../../../../../src/rename.cpp in debug mode
+   Compiling ../../../../../../../../src/decode.cpp in debug mode
+   Compiling ../../../../../../../../src/fetch_buffer.cpp in debug mode
+   Compiling ../../../../../../../../src/fetch_packet.cpp in debug mode
+   Compiling ../../../../../../../../src/frontend.cpp in debug mode
+   Generating csim.exe
+IMAGE packet_two_rvc            bytes=32 legal_C=2 I32=7 illegal_C=0
+PASS packet_two_rvc             cycles=25 commits=8 signature=2 trap=0 atomic_hold=0
+WARNING: Hls::stream 'hls::stream<ImemRequest, 0>0' contains leftover data, which may result in RTL simulation hanging.
+IMAGE packet_rvc_rvc_long       bytes=32 legal_C=2 I32=7 illegal_C=0
+PASS packet_rvc_rvc_long        cycles=25 commits=8 signature=3 trap=0 atomic_hold=0
+WARNING: Hls::stream 'hls::stream<ImemRequest, 0>1' contains leftover data, which may result in RTL simulation hanging.
+IMAGE packet_carry_plus_rvc     bytes=36 legal_C=2 I32=8 illegal_C=0
+PASS packet_carry_plus_rvc      cycles=28 commits=9 signature=3 trap=0 atomic_hold=0
+WARNING: Hls::stream 'hls::stream<ImemRequest, 0>2' contains leftover data, which may result in RTL simulation hanging.
+IMAGE packet_atomic_backpressure bytes=126 legal_C=41 I32=11 illegal_C=0
+PASS packet_atomic_backpressure cycles=251 commits=51 signature=3 trap=0 atomic_hold=156
+WARNING: Hls::stream 'hls::stream<ImemRequest, 0>3' contains leftover data, which may result in RTL simulation hanging.
+IMAGE packet_redirect           bytes=40 legal_C=6 I32=7 illegal_C=0
+PASS packet_redirect            cycles=32 commits=10 signature=3 trap=0 atomic_hold=0
+WARNING: Hls::stream 'hls::stream<ImemRequest, 0>4' contains leftover data, which may result in RTL simulation hanging.
+IMAGE packet_fault              bytes=34 legal_C=2 I32=7 illegal_C=1
+PASS packet_fault               cycles=8 commits=2 signature=1 trap=1 atomic_hold=0
+GATE5_3_B3I_FULL_CORE 6/6 PASS
+INFO: [SIM 211-1] CSim done with 0 errors.
+INFO: [SIM 211-3] *************** CSIM finish ***************
+INFO: [HLS 200-111] Finished Command csim_design CPU user time: 2.81 seconds. CPU system time: 0.52 seconds. Elapsed time: 2.78 seconds; current allocated memory: -937.109 MB.
+INFO: [HLS 200-112] Total CPU user time: 4.11 seconds. Total CPU system time: 0.87 seconds. Total elapsed time: 3.8 seconds; peak allocated memory: 416.027 MB.
+INFO: [Common 17-206] Exiting vitis_hls at Mon Aug 17 13:59:36 2026...

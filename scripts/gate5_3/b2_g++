@@ -5,14 +5,19 @@ SCRIPT=$(readlink -f "${BASH_SOURCE[0]}")
 ROOT=${HLS_BOOM_ROOT:-"$(cd "$(dirname "$SCRIPT")/../.." && pwd)"}
 has_frontend=0
 has_fetch_buffer=0
+has_fetch_packet=0
 compile_only=0
 for arg in "$@"; do
     [[ "$arg" != "$ROOT/src/frontend.cpp" ]] || has_frontend=1
     [[ "$arg" != "$ROOT/src/fetch_buffer.cpp" ]] || has_fetch_buffer=1
+    [[ "$arg" != "$ROOT/src/fetch_packet.cpp" ]] || has_fetch_packet=1
     [[ "$arg" != -c ]] || compile_only=1
 done
 
-if (( has_frontend && !has_fetch_buffer && !compile_only )); then
-    exec /usr/bin/g++ "$@" "$ROOT/src/fetch_buffer.cpp"
+if (( has_frontend && !compile_only )); then
+    extras=()
+    (( has_fetch_buffer )) || extras+=("$ROOT/src/fetch_buffer.cpp")
+    (( has_fetch_packet )) || extras+=("$ROOT/src/fetch_packet.cpp")
+    exec /usr/bin/g++ "$@" "${extras[@]}"
 fi
 exec /usr/bin/g++ "$@"

@@ -2,9 +2,9 @@
 set -euo pipefail
 
 ROOT=${HLS_BOOM_ROOT:-"$(cd "$(dirname "${BASH_SOURCE[0]}")/../.." && pwd)"}
-REPORT="$ROOT/reports/gate5_3_fetch_buffer/b2"
+REPORT=${GATE5_3_CANONICAL_REPORT:-"$ROOT/reports/gate5_3_fetch_buffer/b2"}
 VITIS_HLS=${VITIS_HLS:-/home/lab_726/Xilinx/Vitis_HLS/2021.2/bin/vitis_hls}
-TAG=gate5_3_fetch_buffer_b2
+TAG=${GATE5_3_CANONICAL_TAG:-gate5_3_fetch_buffer_b2}
 mkdir -p "$REPORT/logs/canonical_csynth"
 
 bash "$ROOT/scripts/gate5_3/run_b1_csynth_sweep.sh" \
@@ -21,4 +21,4 @@ cp "$ROOT/reports/$TAG/module_csynth_summary.csv" \
   "$REPORT/logs/canonical_csynth/module_csynth_summary.csv"
 cp "$ROOT/reports/${TAG}_core/module_csynth_summary.csv" \
   "$REPORT/logs/canonical_csynth/core_csynth_summary.csv"
-printf '%s\n' 'GATE5_3_B2_CANONICAL_CSYNTH_COMPLETE tops=11'
+printf 'GATE5_3_CANONICAL_CSYNTH_COMPLETE tag=%s tops=11\n' "$TAG"

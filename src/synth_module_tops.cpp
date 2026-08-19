@@ -7,6 +7,7 @@
 #include "mul.hpp"
 #include "divider.hpp"
 #include "fetch_buffer.hpp"
+#include "fetch_packet.hpp"
 
 extern void boom_core_step(BoomCoreState& state, PipeSignals& pipe);
 
@@ -23,6 +24,137 @@ extern void branch_complete_event(BoomCoreState& state, const MicroOp& uop,
                                   bool mispredict, uint64_t redirect_pc);
 extern void lsu_module(BoomCoreState& state, PipeSignals& pipe);
 extern void rob_commit_module(BoomCoreState& state, PipeSignals& pipe);
+}
+
+void synth_fetch_packet_top(
+        uint64_t pc, uint32_t instruction, uint32_t fetch_id,
+        bool exception, uint64_t exception_cause,
+        bool carry_valid, uint16_t carry, uint64_t carry_pc,
+        bool& packet_valid, uint8_t& valid_mask,
+        uint64_t& lane0_pc, uint32_t& lane0_instruction,
+        uint32_t& lane0_original, uint32_t& lane0_fetch_id,
+        bool& lane0_is_rvc, bool& lane0_exception, uint64_t& lane0_cause,
+        bool& lane0_access_fault, bool& lane0_misaligned,
+        uint64_t& lane1_pc, uint32_t& lane1_instruction,
+        uint32_t& lane1_original, uint32_t& lane1_fetch_id,
+        bool& lane1_is_rvc, bool& lane1_exception, uint64_t& lane1_cause,
+        bool& lane1_access_fault, bool& lane1_misaligned,
+        uint64_t& next_pc, bool& next_carry_valid,
+        uint16_t& next_carry, uint64_t& next_carry_pc) {
+    boom::FetchPacketInput input;
+    input.pc = pc;
+    input.instruction = instruction;
+    input.fetch_id = fetch_id;
+    input.exception = exception;
+    input.exception_cause = exception_cause;
+    input.carry_valid = carry_valid;
+    input.carry = carry;
+    input.carry_pc = carry_pc;
+    const boom::FetchPacketResult result = boom::build_fetch_packet(input);
+    packet_valid = result.packet.valid;
+    valid_mask = result.packet.valid_mask;
+    lane0_pc = result.packet.slots[0].pc;
+    lane0_instruction = result.packet.slots[0].instruction;
+    lane0_original = result.packet.slots[0].original_instruction;
+    lane0_fetch_id = result.packet.slots[0].fetch_id;
+    lane0_is_rvc = result.packet.slots[0].is_rvc;
+    lane0_exception = result.packet.slots[0].exception;
+    lane0_cause = result.packet.slots[0].exception_cause;
+    lane0_access_fault = result.packet.slots[0].exception_access_fault;
+    lane0_misaligned = result.packet.slots[0].exception_misaligned;
+    lane1_pc = result.packet.slots[1].pc;
+    lane1_instruction = result.packet.slots[1].instruction;
+    lane1_original = result.packet.slots[1].original_instruction;
+    lane1_fetch_id = result.packet.slots[1].fetch_id;
+    lane1_is_rvc = result.packet.slots[1].is_rvc;
+    lane1_exception = result.packet.slots[1].exception;
+    lane1_cause = result.packet.slots[1].exception_cause;
+    lane1_access_fault = result.packet.slots[1].exception_access_fault;
+    lane1_misaligned = result.packet.slots[1].exception_misaligned;
+    next_pc = result.next_pc;
+    next_carry_valid = result.carry_valid;
+    next_carry = result.carry;
+    next_carry_pc = result.carry_pc;
+}
+
+void synth_fetch_packet_frontend_top(
+        hls::stream<ImemRequest>& imem_req_out,
+        hls::stream<ImemResponse>& imem_resp_in,
+        bool runtime_reset, bool generic_flush, bool decode_ready,
+        bool redirect_valid, uint64_t redirect_target,
+        bool& packet_valid, uint8_t& packet_mask,
+        uint64_t& lane0_pc, uint32_t& lane0_instruction,
+        uint64_t& lane1_pc, uint32_t& lane1_instruction,
+        bool& lane0_exception, uint64_t& lane0_cause,
+        bool& lane1_exception, uint64_t& lane1_cause,
+        bool& carry_valid, uint16_t& carry, uint64_t& carry_pc,
+        uint8_t& occupancy, bool& buffer_full,
+        bool& decode_valid, uint64_t& decode_pc, uint32_t& decode_instruction,
+        bool& outstanding_valid, uint64_t& expected_address,
+        uint32_t& expected_fetch_id, uint32_t& expected_epoch,
+        bool& accepted_response_pulse, bool& stale_response_pulse) {
+    static BoomCoreState state;
+    if (runtime_reset) {
+        state.frontend.reset_done = false;
+        state.decode = DecodeState();
+        state.rename.dispatch_packets[0] = RenameDispatchPacket();
+    }
+    state.global_flush = generic_flush;
+    state.frontend_redirect = FrontendRedirect();
+    state.brupdate = BranchUpdate();
+    state.brupdate.valid = redirect_valid;
+    state.brupdate.mispredict = redirect_valid;
+    state.brupdate.jalr_target = redirect_target;
+    if (decode_ready) {
+        state.decode.dec_valids[0] = false;
+        state.rename.dispatch_packets[0] = RenameDispatchPacket();
+    } else {
+        state.rename.dispatch_packets[0].valid = true;
+    }
+
+    PipeSignals pipe;
+    const bool response_present = !imem_resp_in.empty();
+    ImemResponse response;
+    if (response_present) {
+        response = imem_resp_in.read();
+        pipe.imem_resp.write(response);
+    }
+    const bool reset_redirect = !state.frontend.reset_done;
+    const bool any_redirect = reset_redirect || redirect_valid || generic_flush ||
+        state.frontend.flush;
+    const bool response_matches = response_present && state.frontend.request_sent &&
+        response.fetch_id == state.frontend.pending_fetch_id &&
+        response.epoch == state.frontend.pending_epoch &&
+        response.address == state.frontend.pending_address;
+
+    boom::frontend_module(state, pipe);
+    boom::decode_module(state);
+    if (!pipe.imem_req.empty()) imem_req_out.write(pipe.imem_req.read());
+
+    packet_valid = state.frontend.pending_packet.valid;
+    packet_mask = state.frontend.pending_packet.valid_mask;
+    lane0_pc = state.frontend.pending_packet.slots[0].pc;
+    lane0_instruction = state.frontend.pending_packet.slots[0].instruction;
+    lane1_pc = state.frontend.pending_packet.slots[1].pc;
+    lane1_instruction = state.frontend.pending_packet.slots[1].instruction;
+    lane0_exception = state.frontend.pending_packet.slots[0].exception;
+    lane0_cause = state.frontend.pending_packet.slots[0].exception_cause;
+    lane1_exception = state.frontend.pending_packet.slots[1].exception;
+    lane1_cause = state.frontend.pending_packet.slots[1].exception_cause;
+    carry_valid = state.frontend.halfword_valid;
+    carry = state.frontend.halfword;
+    carry_pc = state.frontend.halfword_pc;
+    occupancy = state.frontend.fetch_buffer.count;
+    buffer_full = occupancy == FETCH_BUFFER_DEPTH;
+    decode_valid = state.decode.dec_valids[0];
+    decode_pc = state.decode.dec_uops[0].debug_pc;
+    decode_instruction = state.decode.dec_uops[0].inst;
+    outstanding_valid = state.frontend.request_sent;
+    expected_address = state.frontend.pending_address;
+    expected_fetch_id = state.frontend.pending_fetch_id;
+    expected_epoch = state.frontend.pending_epoch;
+    accepted_response_pulse = response_matches && !any_redirect;
+    stale_response_pulse = response_present && !accepted_response_pulse;
 }
 
 void synth_frontend_top(hls::stream<ImemRequest>& imem_req_out,

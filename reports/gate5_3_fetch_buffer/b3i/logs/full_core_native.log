@@ -1,0 +1,13 @@
+IMAGE packet_two_rvc            bytes=32 legal_C=2 I32=7 illegal_C=0
+PASS packet_two_rvc             cycles=25 commits=8 signature=2 trap=0 atomic_hold=0
+IMAGE packet_rvc_rvc_long       bytes=32 legal_C=2 I32=7 illegal_C=0
+PASS packet_rvc_rvc_long        cycles=25 commits=8 signature=3 trap=0 atomic_hold=0
+IMAGE packet_carry_plus_rvc     bytes=36 legal_C=2 I32=8 illegal_C=0
+PASS packet_carry_plus_rvc      cycles=28 commits=9 signature=3 trap=0 atomic_hold=0
+IMAGE packet_atomic_backpressure bytes=126 legal_C=41 I32=11 illegal_C=0
+PASS packet_atomic_backpressure cycles=251 commits=51 signature=3 trap=0 atomic_hold=156
+IMAGE packet_redirect           bytes=40 legal_C=6 I32=7 illegal_C=0
+PASS packet_redirect            cycles=32 commits=10 signature=3 trap=0 atomic_hold=0
+IMAGE packet_fault              bytes=34 legal_C=2 I32=7 illegal_C=1
+PASS packet_fault               cycles=8 commits=2 signature=1 trap=1 atomic_hold=0
+GATE5_3_B3I_FULL_CORE 6/6 PASS

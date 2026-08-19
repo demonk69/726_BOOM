@@ -278,6 +278,8 @@ static void recover_mispredict(BoomCoreState& state, const BranchUpdate& update)
         state.rename.dispatch_packets[0] = RenameDispatchPacket();
     state.frontend.fetch_packet_valid = false;
     state.frontend.producer_valid = false;
+    state.frontend.pending_packet = boom::FetchPacket();
+    state.frontend.stalled = false;
     boom::fetch_buffer_reset(state.frontend.fetch_buffer);
     state.frontend.response_received = false;
     state.frontend.request_sent = false;

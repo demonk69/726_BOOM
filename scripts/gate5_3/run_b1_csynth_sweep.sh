@@ -2,8 +2,8 @@
 set -euo pipefail
 
 ROOT=${HLS_BOOM_ROOT:-"$(cd "$(dirname "${BASH_SOURCE[0]}")/../.." && pwd)"}
-BUILD="$ROOT/build/gate5_3_fetch_buffer/b1/csynth"
-REPORT="$ROOT/reports/gate5_3_fetch_buffer/b1"
+BUILD=${GATE5_3_FETCH_BUFFER_CSYNTH_BUILD:-"$ROOT/build/gate5_3_fetch_buffer/b1/csynth"}
+REPORT=${GATE5_3_FETCH_BUFFER_CSYNTH_REPORT:-"$ROOT/reports/gate5_3_fetch_buffer/b1"}
 VITIS_HLS=${VITIS_HLS:-/home/lab_726/Xilinx/Vitis_HLS/2021.2/bin/vitis_hls}
 TCL="$ROOT/scripts/gate5_3/b1_fetch_buffer_csynth.tcl"
 mkdir -p "$BUILD" "$REPORT/logs/csynth"

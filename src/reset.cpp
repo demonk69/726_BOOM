@@ -78,6 +78,7 @@ void boom_core_reset_step(BoomCoreState& state, ResetControllerState& reset_ctrl
         state.frontend.flush = false;
         state.frontend.fetch_packet_valid = false;
         state.frontend.producer_valid = false;
+        state.frontend.pending_packet = boom::FetchPacket();
         boom::fetch_buffer_reset(state.frontend.fetch_buffer);
         state.frontend_redirect = FrontendRedirect();
         advance_reset(reset_ctrl, RESET_RENAME_MAP);

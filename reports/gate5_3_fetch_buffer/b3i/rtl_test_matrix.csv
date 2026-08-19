@@ -1,0 +1,96 @@
+scope,case,asserted_requirement,status,evidence
+fetch_packet_helper,cc_packet_mask3,C+C produces valid mask3,PASS,/home/lab_726/boom/hls_boom/reports/gate5_3_fetch_buffer/b3i/logs/packet_rtl.log
+fetch_packet_helper,cc_lane_pc_order,C+C lane PCs are pc and pc+2,PASS,/home/lab_726/boom/hls_boom/reports/gate5_3_fetch_buffer/b3i/logs/packet_rtl.log
+fetch_packet_helper,cc_lane0_rvc_metadata,lane0 preserves C.NOP original and RVC tag,PASS,/home/lab_726/boom/hls_boom/reports/gate5_3_fetch_buffer/b3i/logs/packet_rtl.log
+fetch_packet_helper,cc_lane1_rvc_metadata,lane1 preserves C.ADDI original and RVC tag,PASS,/home/lab_726/boom/hls_boom/reports/gate5_3_fetch_buffer/b3i/logs/packet_rtl.log
+fetch_packet_helper,cc_lane_expansions,both compressed lanes expose deterministic expansions,PASS,/home/lab_726/boom/hls_boom/reports/gate5_3_fetch_buffer/b3i/logs/packet_rtl.log
+fetch_packet_helper,cc_fetch_id_both_lanes,fetch_id is copied to both complete lanes,PASS,/home/lab_726/boom/hls_boom/reports/gate5_3_fetch_buffer/b3i/logs/packet_rtl.log
+fetch_packet_helper,cc_no_faults,legal compressed lanes have no exception subtype,PASS,/home/lab_726/boom/hls_boom/reports/gate5_3_fetch_buffer/b3i/logs/packet_rtl.log
+fetch_packet_helper,cc_continuation,C+C consumes the complete response,PASS,/home/lab_726/boom/hls_boom/reports/gate5_3_fetch_buffer/b3i/logs/packet_rtl.log
+fetch_packet_helper,ordinary32_mask1,aligned ordinary32 produces only lane0,PASS,/home/lab_726/boom/hls_boom/reports/gate5_3_fetch_buffer/b3i/logs/packet_rtl.log
+fetch_packet_helper,ordinary32_payload,ordinary32 instruction is unchanged,PASS,/home/lab_726/boom/hls_boom/reports/gate5_3_fetch_buffer/b3i/logs/packet_rtl.log
+fetch_packet_helper,ordinary32_metadata,ordinary32 carries PC and fetch_id,PASS,/home/lab_726/boom/hls_boom/reports/gate5_3_fetch_buffer/b3i/logs/packet_rtl.log
+fetch_packet_helper,ordinary32_not_rvc,ordinary32 has no RVC or fault metadata,PASS,/home/lab_726/boom/hls_boom/reports/gate5_3_fetch_buffer/b3i/logs/packet_rtl.log
+fetch_packet_helper,ordinary32_continuation,ordinary32 advances four bytes without carry,PASS,/home/lab_726/boom/hls_boom/reports/gate5_3_fetch_buffer/b3i/logs/packet_rtl.log
+fetch_packet_helper,ordinary32_no_partial_lane,mask1 leaves lane1 deterministically unavailable,PASS,/home/lab_726/boom/hls_boom/reports/gate5_3_fetch_buffer/b3i/logs/packet_rtl.log
+fetch_packet_helper,c_partial_mask1,C plus partial ordinary32 emits only complete C,PASS,/home/lab_726/boom/hls_boom/reports/gate5_3_fetch_buffer/b3i/logs/packet_rtl.log
+fetch_packet_helper,c_partial_lane0_metadata,complete lower C retains PC original and fetch_id,PASS,/home/lab_726/boom/hls_boom/reports/gate5_3_fetch_buffer/b3i/logs/packet_rtl.log
+fetch_packet_helper,c_partial_carry_value,upper ordinary32 parcel becomes carry,PASS,/home/lab_726/boom/hls_boom/reports/gate5_3_fetch_buffer/b3i/logs/packet_rtl.log
+fetch_packet_helper,c_partial_carry_pc,carry PC and next PC identify the partial parcel,PASS,/home/lab_726/boom/hls_boom/reports/gate5_3_fetch_buffer/b3i/logs/packet_rtl.log
+fetch_packet_helper,c_partial_no_lane1,partial instruction is never exposed as lane1,PASS,/home/lab_726/boom/hls_boom/reports/gate5_3_fetch_buffer/b3i/logs/packet_rtl.log
+fetch_packet_helper,carry_c_mask3,completed carry plus upper C produces mask3,PASS,/home/lab_726/boom/hls_boom/reports/gate5_3_fetch_buffer/b3i/logs/packet_rtl.log
+fetch_packet_helper,carry_c_lane0_assembly,carry completion assembles exact ordinary32 bits,PASS,/home/lab_726/boom/hls_boom/reports/gate5_3_fetch_buffer/b3i/logs/packet_rtl.log
+fetch_packet_helper,carry_c_lane0_metadata,carry completion receives response fetch_id,PASS,/home/lab_726/boom/hls_boom/reports/gate5_3_fetch_buffer/b3i/logs/packet_rtl.log
+fetch_packet_helper,carry_c_lane1_metadata,upper C occupies lane1 with parcel metadata,PASS,/home/lab_726/boom/hls_boom/reports/gate5_3_fetch_buffer/b3i/logs/packet_rtl.log
+fetch_packet_helper,carry_c_continuation,carry plus C consumes upper parcel,PASS,/home/lab_726/boom/hls_boom/reports/gate5_3_fetch_buffer/b3i/logs/packet_rtl.log
+fetch_packet_helper,carry_new_carry_mask1,carry plus new partial ordinary32 emits mask1,PASS,/home/lab_726/boom/hls_boom/reports/gate5_3_fetch_buffer/b3i/logs/packet_rtl.log
+fetch_packet_helper,carry_new_carry_assembly,old carry completes before new carry,PASS,/home/lab_726/boom/hls_boom/reports/gate5_3_fetch_buffer/b3i/logs/packet_rtl.log
+fetch_packet_helper,carry_new_carry_value,upper parcel replaces consumed carry,PASS,/home/lab_726/boom/hls_boom/reports/gate5_3_fetch_buffer/b3i/logs/packet_rtl.log
+fetch_packet_helper,carry_new_carry_pc,replacement carry points at upper parcel,PASS,/home/lab_726/boom/hls_boom/reports/gate5_3_fetch_buffer/b3i/logs/packet_rtl.log
+fetch_packet_helper,carry_new_carry_no_partial_lane,new partial instruction is not a packet lane,PASS,/home/lab_726/boom/hls_boom/reports/gate5_3_fetch_buffer/b3i/logs/packet_rtl.log
+fetch_packet_helper,upper_start_c_mask1,upper-half C start emits one complete lane,PASS,/home/lab_726/boom/hls_boom/reports/gate5_3_fetch_buffer/b3i/logs/packet_rtl.log
+fetch_packet_helper,upper_start_c_metadata,upper-half C uses requested PC and metadata,PASS,/home/lab_726/boom/hls_boom/reports/gate5_3_fetch_buffer/b3i/logs/packet_rtl.log
+fetch_packet_helper,upper_start_c_continuation,upper-half C advances by two,PASS,/home/lab_726/boom/hls_boom/reports/gate5_3_fetch_buffer/b3i/logs/packet_rtl.log
+fetch_packet_helper,upper_start_32_no_packet,upper-half ordinary32 start has no complete lane,PASS,/home/lab_726/boom/hls_boom/reports/gate5_3_fetch_buffer/b3i/logs/packet_rtl.log
+fetch_packet_helper,upper_start_32_carry,upper-half ordinary32 start creates carry at requested PC,PASS,/home/lab_726/boom/hls_boom/reports/gate5_3_fetch_buffer/b3i/logs/packet_rtl.log
+fetch_packet_helper,upper_start_lanes_unavailable,zero mask exposes neither lane,PASS,/home/lab_726/boom/hls_boom/reports/gate5_3_fetch_buffer/b3i/logs/packet_rtl.log
+fetch_packet_helper,illegal_lower_mask1,illegal lower C terminates with lane0 only,PASS,/home/lab_726/boom/hls_boom/reports/gate5_3_fetch_buffer/b3i/logs/packet_rtl.log
+fetch_packet_helper,illegal_lower_metadata,illegal lower C preserves original PC fetch_id and cause,PASS,/home/lab_726/boom/hls_boom/reports/gate5_3_fetch_buffer/b3i/logs/packet_rtl.log
+fetch_packet_helper,illegal_lower_subtype,illegal C is neither access fault nor misaligned,PASS,/home/lab_726/boom/hls_boom/reports/gate5_3_fetch_buffer/b3i/logs/packet_rtl.log
+fetch_packet_helper,illegal_lower_no_partial_lane,terminal lower fault exposes no upper lane or younger carry,PASS,/home/lab_726/boom/hls_boom/reports/gate5_3_fetch_buffer/b3i/logs/packet_rtl.log
+fetch_packet_helper,illegal_upper_lane1,illegal upper C is observable in lane1 and terminates carry,PASS,/home/lab_726/boom/hls_boom/reports/gate5_3_fetch_buffer/b3i/logs/packet_rtl.log
+fetch_packet_helper,illegal_upper_metadata,illegal upper C preserves original fetch_id cause and subtype,PASS,/home/lab_726/boom/hls_boom/reports/gate5_3_fetch_buffer/b3i/logs/packet_rtl.log
+fetch_packet_helper,long_lower_fault,reserved long lower encoding is lane0 fault,PASS,/home/lab_726/boom/hls_boom/reports/gate5_3_fetch_buffer/b3i/logs/packet_rtl.log
+fetch_packet_helper,long_lower_metadata,long lower fault preserves original fetch_id cause and subtype,PASS,/home/lab_726/boom/hls_boom/reports/gate5_3_fetch_buffer/b3i/logs/packet_rtl.log
+fetch_packet_helper,long_upper_fault,reserved long upper encoding is terminal lane1 fault,PASS,/home/lab_726/boom/hls_boom/reports/gate5_3_fetch_buffer/b3i/logs/packet_rtl.log
+fetch_packet_helper,long_upper_metadata,long upper fault preserves original fetch_id cause and subtype,PASS,/home/lab_726/boom/hls_boom/reports/gate5_3_fetch_buffer/b3i/logs/packet_rtl.log
+fetch_packet_helper,carry_illegal_upper_lane1,carry completion precedes terminal illegal upper C fault,PASS,/home/lab_726/boom/hls_boom/reports/gate5_3_fetch_buffer/b3i/logs/packet_rtl.log
+fetch_packet_helper,carry_long_upper_lane1,carry completion precedes terminal reserved long upper fault,PASS,/home/lab_726/boom/hls_boom/reports/gate5_3_fetch_buffer/b3i/logs/packet_rtl.log
+fetch_packet_helper,access_fault_mask1,requested lane access fault is the sole packet entry,PASS,/home/lab_726/boom/hls_boom/reports/gate5_3_fetch_buffer/b3i/logs/packet_rtl.log
+fetch_packet_helper,access_fault_metadata,access fault preserves PC fetch_id and cause,PASS,/home/lab_726/boom/hls_boom/reports/gate5_3_fetch_buffer/b3i/logs/packet_rtl.log
+fetch_packet_helper,access_fault_subtype,requested fault sets access subtype only,PASS,/home/lab_726/boom/hls_boom/reports/gate5_3_fetch_buffer/b3i/logs/packet_rtl.log
+fetch_packet_helper,access_fault_terminates,requested fault consumes no parcel or carry,PASS,/home/lab_726/boom/hls_boom/reports/gate5_3_fetch_buffer/b3i/logs/packet_rtl.log
+fetch_packet_helper,carry_access_fault_attribution,fault with carry is attributed to carry PC,PASS,/home/lab_726/boom/hls_boom/reports/gate5_3_fetch_buffer/b3i/logs/packet_rtl.log
+fetch_packet_helper,carry_access_fault_termination,fault with carry terminates and advances from carry PC,PASS,/home/lab_726/boom/hls_boom/reports/gate5_3_fetch_buffer/b3i/logs/packet_rtl.log
+fetch_packet_helper,cause0_access_not_misaligned,input exception cause0 remains access fault not misaligned,PASS,/home/lab_726/boom/hls_boom/reports/gate5_3_fetch_buffer/b3i/logs/packet_rtl.log
+fetch_packet_helper,mask_domain_never2,all paths restrict masks to 0 1 or 3 never 2,PASS,/home/lab_726/boom/hls_boom/reports/gate5_3_fetch_buffer/b3i/logs/packet_rtl.log
+fetch_packet_helper,upper_mask_bits_unavailable,all valid bits above the two helper lanes stay zero,PASS,/home/lab_726/boom/hls_boom/reports/gate5_3_fetch_buffer/b3i/logs/packet_rtl.log
+fetch_packet_helper,high_pc_metadata,full-width PC and fetch_id survive C+C construction,PASS,/home/lab_726/boom/hls_boom/reports/gate5_3_fetch_buffer/b3i/logs/packet_rtl.log
+fetch_packet_helper,helper_determinism_first,first identical helper invocation has canonical outputs,PASS,/home/lab_726/boom/hls_boom/reports/gate5_3_fetch_buffer/b3i/logs/packet_rtl.log
+fetch_packet_helper,helper_determinism_repeat,repeated identical invocation has identical observable outputs,PASS,/home/lab_726/boom/hls_boom/reports/gate5_3_fetch_buffer/b3i/logs/packet_rtl.log
+fetch_packet_frontend,fe_reset_request_owned,runtime initialization emits one owned IMEM request,PASS,/home/lab_726/boom/hls_boom/reports/gate5_3_fetch_buffer/b3i/logs/packet_frontend_rtl.log
+fetch_packet_frontend,fe_cc_response_accepted,matching C+C response is accepted exactly at current ownership,PASS,/home/lab_726/boom/hls_boom/reports/gate5_3_fetch_buffer/b3i/logs/packet_frontend_rtl.log
+fetch_packet_frontend,fe_cc_pending_mask3,C+C creates a pending two-lane packet,PASS,/home/lab_726/boom/hls_boom/reports/gate5_3_fetch_buffer/b3i/logs/packet_frontend_rtl.log
+fetch_packet_frontend,fe_cc_pending_lane_pcs,C+C pending lane PCs are ordered pc and pc+2,PASS,/home/lab_726/boom/hls_boom/reports/gate5_3_fetch_buffer/b3i/logs/packet_frontend_rtl.log
+fetch_packet_frontend,fe_cc_pending_instructions,C+C pending lanes expose both decompressed instructions,PASS,/home/lab_726/boom/hls_boom/reports/gate5_3_fetch_buffer/b3i/logs/packet_frontend_rtl.log
+fetch_packet_frontend,fe_cc_atomic_enqueue,C+C enters Fetch Buffer as two entries,PASS,/home/lab_726/boom/hls_boom/reports/gate5_3_fetch_buffer/b3i/logs/packet_frontend_rtl.log
+fetch_packet_frontend,fe_cc_fifo_lane0,Decode observes C+C lane0 first,PASS,/home/lab_726/boom/hls_boom/reports/gate5_3_fetch_buffer/b3i/logs/packet_frontend_rtl.log
+fetch_packet_frontend,fe_cc_fifo_lane1,Decode observes C+C lane1 second,PASS,/home/lab_726/boom/hls_boom/reports/gate5_3_fetch_buffer/b3i/logs/packet_frontend_rtl.log
+fetch_packet_frontend,fe_ordinary32_pending_mask1,matching ordinary32 response creates mask1,PASS,/home/lab_726/boom/hls_boom/reports/gate5_3_fetch_buffer/b3i/logs/packet_frontend_rtl.log
+fetch_packet_frontend,fe_ordinary32_pending_payload,ordinary32 pending lane preserves PC and instruction,PASS,/home/lab_726/boom/hls_boom/reports/gate5_3_fetch_buffer/b3i/logs/packet_frontend_rtl.log
+fetch_packet_frontend,fe_ordinary32_single_enqueue,ordinary32 adds exactly one Fetch Buffer entry,PASS,/home/lab_726/boom/hls_boom/reports/gate5_3_fetch_buffer/b3i/logs/packet_frontend_rtl.log
+fetch_packet_frontend,fe_c_partial_pending_mask1,C plus partial ordinary32 exposes only complete C lane,PASS,/home/lab_726/boom/hls_boom/reports/gate5_3_fetch_buffer/b3i/logs/packet_frontend_rtl.log
+fetch_packet_frontend,fe_c_partial_carry,C plus partial ordinary32 records carry at pc+2,PASS,/home/lab_726/boom/hls_boom/reports/gate5_3_fetch_buffer/b3i/logs/packet_frontend_rtl.log
+fetch_packet_frontend,fe_c_partial_no_partial_enqueue,partial ordinary32 never occupies Fetch Buffer,PASS,/home/lab_726/boom/hls_boom/reports/gate5_3_fetch_buffer/b3i/logs/packet_frontend_rtl.log
+fetch_packet_frontend,fe_carry_c_pending_mask3,matching continuation completes carry plus upper C as mask3,PASS,/home/lab_726/boom/hls_boom/reports/gate5_3_fetch_buffer/b3i/logs/packet_frontend_rtl.log
+fetch_packet_frontend,fe_carry_c_lane_pcs,carry completion and upper C retain program-order PCs,PASS,/home/lab_726/boom/hls_boom/reports/gate5_3_fetch_buffer/b3i/logs/packet_frontend_rtl.log
+fetch_packet_frontend,fe_carry_c_lane_payloads,carry completion and C expansion are both observable,PASS,/home/lab_726/boom/hls_boom/reports/gate5_3_fetch_buffer/b3i/logs/packet_frontend_rtl.log
+fetch_packet_frontend,fe_carry_c_atomic_enqueue,carry plus C atomically adds two entries,PASS,/home/lab_726/boom/hls_boom/reports/gate5_3_fetch_buffer/b3i/logs/packet_frontend_rtl.log
+fetch_packet_frontend,fe_fill_depth8_two_lane,four matching two-lane responses fill depth8,PASS,/home/lab_726/boom/hls_boom/reports/gate5_3_fetch_buffer/b3i/logs/packet_frontend_rtl.log
+fetch_packet_frontend,fe_full_two_lane_pending,full Fetch Buffer retains newly built two-lane packet,PASS,/home/lab_726/boom/hls_boom/reports/gate5_3_fetch_buffer/b3i/logs/packet_frontend_rtl.log
+fetch_packet_frontend,fe_full_pending_stability,full backpressure holds every exposed pending lane field stable,PASS,/home/lab_726/boom/hls_boom/reports/gate5_3_fetch_buffer/b3i/logs/packet_frontend_rtl.log
+fetch_packet_frontend,fe_one_free_atomic_reject,one freed slot rejects the complete two-lane pending packet,PASS,/home/lab_726/boom/hls_boom/reports/gate5_3_fetch_buffer/b3i/logs/packet_frontend_rtl.log
+fetch_packet_frontend,fe_one_free_no_partial_enqueue,atomic rejection leaves every exposed pending lane field unchanged,PASS,/home/lab_726/boom/hls_boom/reports/gate5_3_fetch_buffer/b3i/logs/packet_frontend_rtl.log
+fetch_packet_frontend,fe_pop_frees_second_slot_admit,second simultaneous pop creates capacity and admits both pending lanes,PASS,/home/lab_726/boom/hls_boom/reports/gate5_3_fetch_buffer/b3i/logs/packet_frontend_rtl.log
+fetch_packet_frontend,fe_atomic_admission_fifo_order,accepted two-lane packet follows all older entries in FIFO order,PASS,/home/lab_726/boom/hls_boom/reports/gate5_3_fetch_buffer/b3i/logs/packet_frontend_rtl.log
+fetch_packet_frontend,fe_redirect_kill_precondition,redirect kill starts with buffer pending packet and carry,PASS,/home/lab_726/boom/hls_boom/reports/gate5_3_fetch_buffer/b3i/logs/packet_frontend_rtl.log
+fetch_packet_frontend,fe_redirect_kills_frontend_state,branch redirect kills pending packet Fetch Buffer and carry,PASS,/home/lab_726/boom/hls_boom/reports/gate5_3_fetch_buffer/b3i/logs/packet_frontend_rtl.log
+fetch_packet_frontend,fe_runtime_reset_kills_frontend_state,runtime reset kills pending packet Fetch Buffer and carry,PASS,/home/lab_726/boom/hls_boom/reports/gate5_3_fetch_buffer/b3i/logs/packet_frontend_rtl.log
+fetch_packet_frontend,fe_generic_flush_kills_frontend_state,generic flush kills pending packet Fetch Buffer and carry,PASS,/home/lab_726/boom/hls_boom/reports/gate5_3_fetch_buffer/b3i/logs/packet_frontend_rtl.log
+fetch_packet_frontend,fe_stale_id_drained,wrong fetch ID response is drained without acceptance,PASS,/home/lab_726/boom/hls_boom/reports/gate5_3_fetch_buffer/b3i/logs/packet_frontend_rtl.log
+fetch_packet_frontend,fe_stale_epoch_drained,wrong epoch response is drained without acceptance,PASS,/home/lab_726/boom/hls_boom/reports/gate5_3_fetch_buffer/b3i/logs/packet_frontend_rtl.log
+fetch_packet_frontend,fe_stale_address_drained,wrong address response is drained without acceptance,PASS,/home/lab_726/boom/hls_boom/reports/gate5_3_fetch_buffer/b3i/logs/packet_frontend_rtl.log
+fetch_packet_frontend,fe_match_after_stale_drain,correct owner response remains acceptable after stale drains,PASS,/home/lab_726/boom/hls_boom/reports/gate5_3_fetch_buffer/b3i/logs/packet_frontend_rtl.log
+fetch_packet_frontend,fe_redirect_over_response,redirect wins while matching response is drained as stale,PASS,/home/lab_726/boom/hls_boom/reports/gate5_3_fetch_buffer/b3i/logs/packet_frontend_rtl.log
+fetch_packet_frontend,fe_fault_packet_pending,matching access fault creates one pending fault lane,PASS,/home/lab_726/boom/hls_boom/reports/gate5_3_fetch_buffer/b3i/logs/packet_frontend_rtl.log
+fetch_packet_frontend,fe_pending_fault_killed,redirect kills pending fault before Fetch Buffer or Decode,PASS,/home/lab_726/boom/hls_boom/reports/gate5_3_fetch_buffer/b3i/logs/packet_frontend_rtl.log

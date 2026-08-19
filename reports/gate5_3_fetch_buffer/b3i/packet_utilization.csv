@@ -1,0 +1,7 @@
+scenario,instructions,rvc_instructions,native_calls,requests,responses,packets,mask_00,mask_01,mask_11,valid_slots,packet_capacity_slots,packet_slot_utilization,useful_bytes,fetched_bytes,fetch_byte_utilization,native_call_qualified
+all-C,512,512,515,262,261,256,0,0,256,512,512,1.000000,1024,1048,0.977099,true
+all-32,256,0,259,259,258,256,0,256,0,256,512,0.500000,1024,1036,0.988417,true
+alternating,384,192,387,294,293,288,0,192,96,384,576,0.666667,1152,1176,0.979592,true
+75-percent-RVC,512,384,515,326,325,320,0,128,192,512,640,0.800000,1280,1304,0.981595,true
+cross-word-heavy,256,0,260,260,259,256,1,256,0,256,512,0.500000,1024,1040,0.984615,true
+branch-heavy,384,288,387,246,245,240,0,96,144,384,480,0.800000,960,984,0.975610,true

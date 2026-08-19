@@ -1,0 +1,56 @@
+#-----------------------------------------------------------
+# xsim v2021.2 (64-bit)
+# SW Build 3367213 on Tue Oct 19 02:47:39 MDT 2021
+# IP Build 3369179 on Thu Oct 21 08:25:16 MDT 2021
+# Start of session at: Mon Aug 17 13:59:27 2026
+# Process ID: 125939
+# Current directory: /home/lab_726/boom/hls_boom/build/gate5_3_fetch_buffer/b3i/xsim_frontend
+# Command line: xsim -log /home/lab_726/boom/hls_boom/reports/gate5_3_fetch_buffer/b3i/logs/packet_frontend_rtl.log -mode tcl -source {xsim.dir/b3i_packet_frontend_snapshot/xsim_script.tcl}
+# Log file: /home/lab_726/boom/hls_boom/reports/gate5_3_fetch_buffer/b3i/logs/packet_frontend_rtl.log
+# Journal file: /home/lab_726/boom/hls_boom/build/gate5_3_fetch_buffer/b3i/xsim_frontend/xsim.jou
+# Running On: 726, OS: Linux, CPU Frequency: 2862.153 MHz, CPU Physical cores: 14, Host memory: 67148 MB
+#-----------------------------------------------------------
+source xsim.dir/b3i_packet_frontend_snapshot/xsim_script.tcl
+# xsim {b3i_packet_frontend_snapshot} -autoloadwcfg -runall -onerror quit
+Time resolution is 1 ps
+run -all
+CASE_PASS,fe_reset_request_owned,runtime initialization emits one owned IMEM request
+CASE_PASS,fe_cc_response_accepted,matching C+C response is accepted exactly at current ownership
+CASE_PASS,fe_cc_pending_mask3,C+C creates a pending two-lane packet
+CASE_PASS,fe_cc_pending_lane_pcs,C+C pending lane PCs are ordered pc and pc+2
+CASE_PASS,fe_cc_pending_instructions,C+C pending lanes expose both decompressed instructions
+CASE_PASS,fe_cc_atomic_enqueue,C+C enters Fetch Buffer as two entries
+CASE_PASS,fe_cc_fifo_lane0,Decode observes C+C lane0 first
+CASE_PASS,fe_cc_fifo_lane1,Decode observes C+C lane1 second
+CASE_PASS,fe_ordinary32_pending_mask1,matching ordinary32 response creates mask1
+CASE_PASS,fe_ordinary32_pending_payload,ordinary32 pending lane preserves PC and instruction
+CASE_PASS,fe_ordinary32_single_enqueue,ordinary32 adds exactly one Fetch Buffer entry
+CASE_PASS,fe_c_partial_pending_mask1,C plus partial ordinary32 exposes only complete C lane
+CASE_PASS,fe_c_partial_carry,C plus partial ordinary32 records carry at pc+2
+CASE_PASS,fe_c_partial_no_partial_enqueue,partial ordinary32 never occupies Fetch Buffer
+CASE_PASS,fe_carry_c_pending_mask3,matching continuation completes carry plus upper C as mask3
+CASE_PASS,fe_carry_c_lane_pcs,carry completion and upper C retain program-order PCs
+CASE_PASS,fe_carry_c_lane_payloads,carry completion and C expansion are both observable
+CASE_PASS,fe_carry_c_atomic_enqueue,carry plus C atomically adds two entries
+CASE_PASS,fe_fill_depth8_two_lane,four matching two-lane responses fill depth8
+CASE_PASS,fe_full_two_lane_pending,full Fetch Buffer retains newly built two-lane packet
+CASE_PASS,fe_full_pending_stability,full backpressure holds every exposed pending lane field stable
+CASE_PASS,fe_one_free_atomic_reject,one freed slot rejects the complete two-lane pending packet
+CASE_PASS,fe_one_free_no_partial_enqueue,atomic rejection leaves every exposed pending lane field unchanged
+CASE_PASS,fe_pop_frees_second_slot_admit,second simultaneous pop creates capacity and admits both pending lanes
+CASE_PASS,fe_atomic_admission_fifo_order,accepted two-lane packet follows all older entries in FIFO order
+CASE_PASS,fe_redirect_kill_precondition,redirect kill starts with buffer pending packet and carry
+CASE_PASS,fe_redirect_kills_frontend_state,branch redirect kills pending packet Fetch Buffer and carry
+CASE_PASS,fe_runtime_reset_kills_frontend_state,runtime reset kills pending packet Fetch Buffer and carry
+CASE_PASS,fe_generic_flush_kills_frontend_state,generic flush kills pending packet Fetch Buffer and carry
+CASE_PASS,fe_stale_id_drained,wrong fetch ID response is drained without acceptance
+CASE_PASS,fe_stale_epoch_drained,wrong epoch response is drained without acceptance
+CASE_PASS,fe_stale_address_drained,wrong address response is drained without acceptance
+CASE_PASS,fe_match_after_stale_drain,correct owner response remains acceptable after stale drains
+CASE_PASS,fe_redirect_over_response,redirect wins while matching response is drained as stale
+CASE_PASS,fe_fault_packet_pending,matching access fault creates one pending fault lane
+CASE_PASS,fe_pending_fault_killed,redirect kills pending fault before Fetch Buffer or Decode
+GATE5_3_B3I_PACKET_FRONTEND_RTL_PASS cases=36
+$finish called at time : 5971 ns : File "/home/lab_726/boom/hls_boom/rtl_tb/fetch_packet_frontend_rtl_tb.sv" Line 326
+exit
+INFO: [Common 17-206] Exiting xsim at Mon Aug 17 13:59:30 2026...

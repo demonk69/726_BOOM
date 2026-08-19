@@ -2,11 +2,17 @@
 set -uo pipefail
 
 ROOT=${HLS_BOOM_ROOT:-"$(cd "$(dirname "${BASH_SOURCE[0]}")/../.." && pwd)"}
-REPORT="$ROOT/reports/gate5_3_fetch_buffer/b2/regression"
-BUILD="$ROOT/build/gate5_3_fetch_buffer/b2/regression"
-RTL="$ROOT/build/gate5_3_fetch_buffer/b2/phase_d/retry_20260816/boom_core_top_hls/solution_phase_d/syn/verilog"
+REPORT=${GATE5_3_REGRESSION_REPORT:-"$ROOT/reports/gate5_3_fetch_buffer/b2/regression"}
+BUILD=${GATE5_3_REGRESSION_BUILD:-"$ROOT/build/gate5_3_fetch_buffer/b2/regression"}
+RTL=${GATE5_3_REGRESSION_RTL:-"$ROOT/build/gate5_3_fetch_buffer/b2/phase_d/retry_20260816/boom_core_top_hls/solution_phase_d/syn/verilog"}
+FRESHNESS_MANIFEST=${GATE5_3_REGRESSION_FRESHNESS_MANIFEST:-"$ROOT/reports/gate5_3_fetch_buffer/b2/phase_d/source_freshness_manifest.csv"}
+SUMMARY=${GATE5_3_REGRESSION_SUMMARY:-"$REPORT/../regression_after.md"}
+SUMMARY_TITLE=${GATE5_3_REGRESSION_SUMMARY_TITLE:-"Gate 5.3 B2 Phase E Preservation Regressions"}
+SUMMARY_SCOPE=${GATE5_3_REGRESSION_SUMMARY_SCOPE:-"current B2 modular-source run"}
+SUMMARY_GATE=${GATE5_3_REGRESSION_SUMMARY_GATE:-"Phase E"}
+SUMMARY_FOLLOWUP=${GATE5_3_REGRESSION_SUMMARY_FOLLOWUP:-"Canonical csynth phase F was not run."}
 XSIM_BUILD="$BUILD/gate3_9/xsim"
-FRONTEND_TAG=gate5_3_b2_phase_e_frontend
+FRONTEND_TAG=${GATE5_3_REGRESSION_FRONTEND_TAG:-gate5_3_b2_phase_e_frontend}
 FRONTEND_RTL="$ROOT/boom_hls_${FRONTEND_TAG}_synth_frontend_verify_top/solution_module/syn/verilog"
 REAL_PATH=$PATH
 SHIM_DIR="$BUILD/compiler_shim"
@@ -34,7 +40,7 @@ run_check() {
 }
 
 freshness() {
-    python3 - "$ROOT" "$ROOT/reports/gate5_3_fetch_buffer/b2/phase_d/source_freshness_manifest.csv" "$RTL/boom_core_top.v" <<'PY'
+    python3 - "$ROOT" "$FRESHNESS_MANIFEST" "$RTL/boom_core_top.v" <<'PY'
 import csv, hashlib, sys
 from pathlib import Path
 root, manifest, rtl = map(Path, sys.argv[1:])
@@ -44,14 +50,15 @@ with manifest.open(newline="") as stream:
     rows = list(csv.DictReader(stream))
 checked = 0
 for row in rows:
-    if row["freshness_scope"] != "INCLUDED" or row["path"] == "AGGREGATE":
+    scope = row.get("freshness_scope", row.get("scope"))
+    if scope != "INCLUDED" or row["path"] == "AGGREGATE":
         continue
     path = root / row["path"]
     actual = hashlib.sha256(path.read_bytes()).hexdigest()
     if actual != row["sha256"]:
         raise SystemExit(f"phase D RTL source mismatch: {row['path']} {actual} != {row['sha256']}")
     checked += 1
-print(f"B2_PHASE_D_RTL_FRESHNESS_PASS inputs={checked} rtl={rtl}")
+print(f"GATE5_3_REGRESSION_RTL_FRESHNESS_PASS inputs={checked} rtl={rtl}")
 PY
 }
 
@@ -115,10 +122,11 @@ m3c_full_rtl() {
 }
 
 summary() {
-    python3 - "$STATUS" "$REPORT/../regression_after.md" <<'PY'
+    python3 - "$STATUS" "$SUMMARY" "$SUMMARY_TITLE" "$SUMMARY_SCOPE" "$SUMMARY_GATE" "$SUMMARY_FOLLOWUP" <<'PY'
 import csv, sys
 from pathlib import Path
-status, output = map(Path, sys.argv[1:])
+status, output = map(Path, sys.argv[1:3])
+title, scope, gate, followup = sys.argv[3:]
 rows = {row["requirement"]: row for row in csv.DictReader(status.open(newline=""))}
 specs = (
  ("Gate 5.1 focused generated RTL", "gate5_1_focused_rtl", "33/33", "regression/logs/gate5_1_xsim.log"),
@@ -135,8 +143,8 @@ specs = (
  ("Full-program architectural diff", "w4e", "10/10", "regression/w4e/regression/w4e/product_full/full_program_architectural_diff.csv"),
  ("Partial-order", "w4e", "7/7", "regression/w4e/regression/w4e/product_full/logs/partial_order.log"),
 )
-lines = ["# Gate 5.3 B2 Phase E Preservation Regressions", "",
-         "All results below are based only on this current B2 modular-source run.", "",
+lines = [f"# {title}", "",
+         f"All results below are based only on this {scope}.", "",
          "| Requirement | Status | Current-run result | Evidence |", "|---|---:|---:|---|"]
 blocked_on_w3 = {"W4E", "Full-program architectural diff", "Partial-order"}
 for label, key, result, evidence in specs:
@@ -147,8 +155,8 @@ for label, key, result, evidence in specs:
     shown = result if state == "PASS" else f"exit {row['exit_code']}" if row else "not run"
     lines.append(f"| {label} | {state} | {shown} | `{evidence}` |")
 closed = all((rows.get(key) or {}).get("status") == "PASS" for _, key, _, _ in specs)
-lines += ["", f"Phase E closed: **{'YES' if closed else 'NO'}**.",
-          "Canonical csynth phase F was not run."]
+lines += ["", f"{gate} closed: **{'YES' if closed else 'NO'}**.",
+          followup]
 output.write_text("\n".join(lines) + "\n")
 PY
 }

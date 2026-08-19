@@ -11,6 +11,7 @@
 #include "mul.hpp"
 #include "divider.hpp"
 #include "fetch_buffer.hpp"
+#include "fetch_packet.hpp"
 #include "rvc.hpp"
 #if defined(BOOM_USE_AP_INT) || defined(__SYNTHESIS__)
 #include <ap_int.h>
@@ -112,6 +113,143 @@ FetchBufferResult fetch_buffer_step(FetchBufferState& state,
 
 }  // namespace boom
 
+// ==== fetch_packet.cpp ====
+
+
+namespace boom {
+namespace {
+
+static_assert(FETCH_PACKET_WIDTH == 2, "canonical response packet width must be two");
+
+FetchInstruction fetch_fault(uint64_t pc, uint16_t original, uint64_t cause,
+                             bool access_fault) {
+    FetchInstruction entry;
+    entry.pc = pc;
+    entry.original_instruction = original;
+    entry.exception = true;
+    entry.exception_cause = cause;
+    entry.exception_access_fault = access_fault;
+    entry.exception_misaligned = !access_fault && cause == 0;
+    return entry;
+}
+
+FetchInstruction base_instruction(uint64_t pc, uint32_t instruction,
+                                   uint32_t fetch_id) {
+    FetchInstruction entry;
+    entry.pc = pc;
+    entry.instruction = instruction;
+    entry.fetch_id = fetch_id;
+    return entry;
+}
+
+FetchInstruction compressed_instruction(uint64_t pc, uint16_t parcel,
+                                         uint32_t fetch_id) {
+    const RvcDecodeResult decoded = decompress_rvc(parcel);
+    FetchInstruction entry;
+    entry.pc = pc;
+    entry.original_instruction = parcel;
+    entry.fetch_id = fetch_id;
+    entry.is_rvc = true;
+    if (decoded.legal) {
+        entry.instruction = decoded.instruction;
+    } else {
+        entry.exception = true;
+        entry.exception_cause = 2;
+    }
+    return entry;
+}
+
+void append(FetchPacketResult& result, const FetchInstruction& entry) {
+    const uint8_t lane = result.packet.valid_mask == 0 ? 0 : 1;
+    result.packet.slots[lane] = entry;
+    result.packet.valid_mask = lane == 0 ? 1 : 3;
+    result.packet.valid = true;
+}
+
+bool append_parcel(FetchPacketResult& result, uint64_t pc, uint16_t parcel,
+                    uint32_t fetch_id) {
+    if ((parcel & 0x3u) != 0x3u) {
+        const FetchInstruction entry = compressed_instruction(pc, parcel, fetch_id);
+        append(result, entry);
+        return entry.exception;
+    }
+    if ((parcel & 0x1fu) == 0x1fu) {
+        FetchInstruction entry = fetch_fault(pc, parcel, 2, false);
+        entry.fetch_id = fetch_id;
+        append(result, entry);
+        return true;
+    }
+    return false;
+}
+
+}  // namespace
+
+FetchPacketResult build_fetch_packet(const FetchPacketInput& input) {
+    FetchPacketResult result;
+    result.next_pc = input.pc;
+
+    const uint64_t first_pc = input.carry_valid ? input.carry_pc : input.pc;
+    if (input.exception) {
+        FetchInstruction entry = fetch_fault(first_pc, 0, input.exception_cause, true);
+        entry.fetch_id = input.fetch_id;
+        append(result, entry);
+        result.next_pc = first_pc + 4;
+        return result;
+    }
+
+    if (input.carry_valid) {
+        const uint32_t instruction =
+            (input.instruction << 16) | static_cast<uint32_t>(input.carry);
+        append(result, base_instruction(input.carry_pc, instruction, input.fetch_id));
+        const uint64_t upper_pc = input.carry_pc + 4;
+        const uint16_t upper = static_cast<uint16_t>(input.instruction >> 16);
+        result.next_pc = upper_pc + 2;
+        if ((upper & 0x3u) == 0x3u && (upper & 0x1fu) != 0x1fu) {
+            result.carry_valid = true;
+            result.carry = upper;
+            result.carry_pc = upper_pc;
+            result.next_pc = upper_pc;
+        } else {
+            append_parcel(result, upper_pc, upper, input.fetch_id);
+        }
+        return result;
+    }
+
+    const bool start_upper = (input.pc & 0x2ULL) != 0;
+    const uint16_t first = start_upper ?
+        static_cast<uint16_t>(input.instruction >> 16) :
+        static_cast<uint16_t>(input.instruction);
+    if ((first & 0x3u) == 0x3u && (first & 0x1fu) != 0x1fu) {
+        if (!start_upper) {
+            append(result, base_instruction(input.pc, input.instruction, input.fetch_id));
+            result.next_pc = input.pc + 4;
+        } else {
+            result.carry_valid = true;
+            result.carry = first;
+            result.carry_pc = input.pc;
+        }
+        return result;
+    }
+
+    const bool terminal = append_parcel(result, input.pc, first, input.fetch_id);
+    result.next_pc = input.pc + 2;
+    if (terminal || start_upper) return result;
+
+    const uint64_t upper_pc = input.pc + 2;
+    const uint16_t upper = static_cast<uint16_t>(input.instruction >> 16);
+    if ((upper & 0x3u) == 0x3u && (upper & 0x1fu) != 0x1fu) {
+        result.carry_valid = true;
+        result.carry = upper;
+        result.carry_pc = upper_pc;
+        return result;
+    }
+    append_parcel(result, upper_pc, upper, input.fetch_id);
+    result.next_pc = upper_pc + 2;
+    return result;
+}
+
+}  // namespace boom
+
 // ==== frontend.cpp ====
 
 namespace boom {
@@ -183,6 +321,7 @@ void frontend_module(BoomCoreState& state, PipeSignals& pipe) {
         fe.halfword_valid = false;
         fe.fetch_packet_valid = false;
         fe.producer_valid = false;
+        fe.pending_packet = FetchPacket();
         fetch_buffer_reset(fe.fetch_buffer);
     }
 
@@ -208,6 +347,7 @@ void frontend_module(BoomCoreState& state, PipeSignals& pipe) {
         fe.halfword_valid = false;
         fe.fetch_packet_valid = false;
         fe.producer_valid = false;
+        fe.pending_packet = FetchPacket();
         fetch_buffer_reset(fe.fetch_buffer);
         state.decode.dec_valids[0] = false;
         state.decode.dec_uops[0] = MicroOp();
@@ -219,6 +359,10 @@ void frontend_module(BoomCoreState& state, PipeSignals& pipe) {
             fe.producer_uop = fetch_fault(target, 0, false);
             fe.producer_fetch_id = fe.fetch_id;
             fe.producer_valid = true;
+            fe.pending_packet.valid = true;
+            fe.pending_packet.valid_mask = 1;
+            fe.pending_packet.slots[0] = buffer_entry(fe.producer_uop,
+                                                       fe.producer_fetch_id);
         }
     }
 
@@ -243,24 +387,34 @@ void frontend_module(BoomCoreState& state, PipeSignals& pipe) {
     if (state.rob.state == ROB_EXCEPTION) {
         fe.fetch_packet_valid = false;
         fe.producer_valid = false;
+        fe.pending_packet = FetchPacket();
+        fe.response_received = false;
+        fe.request_sent = false;
+        fe.halfword_valid = false;
+        fe.stalled = false;
         fetch_buffer_reset(fe.fetch_buffer);
         return;
     }
 
-    FetchPacket packet;
-    if (fe.producer_valid) {
-        packet.valid = true;
-        packet.valid_mask = 1;
-        packet.slots[0] = buffer_entry(fe.producer_uop, fe.producer_fetch_id);
+    // Keep direct scalar seeding used by the accepted B2 harness as a lane-0
+    // compatibility input. Product response parsing writes pending_packet.
+    if (fe.producer_valid && !fe.pending_packet.valid) {
+        fe.pending_packet.valid = true;
+        fe.pending_packet.valid_mask = 1;
+        fe.pending_packet.slots[0] = buffer_entry(fe.producer_uop,
+                                                   fe.producer_fetch_id);
     }
     const bool decode_ready = !state.rename.dispatch_packets[0].valid &&
         !state.decode.dec_valids[0] && !redirect;
     const FetchBufferResult buffer = fetch_buffer_step(
-        fe.fetch_buffer, packet, decode_ready, redirect);
+        fe.fetch_buffer, fe.pending_packet, decode_ready, redirect);
     fe.fetch_packet_valid = buffer.dequeue_valid;
     if (buffer.dequeue_valid) fe.fetch_uop = buffer_uop(buffer.dequeue_bits);
-    if (buffer.enqueue_fire) fe.producer_valid = false;
-    fe.stalled = fe.producer_valid;
+    if (buffer.enqueue_fire) {
+        fe.pending_packet = FetchPacket();
+        fe.producer_valid = false;
+    }
+    fe.stalled = fe.pending_packet.valid;
 
     if (misaligned_redirect || fe.stalled) return;
 
@@ -268,81 +422,35 @@ void frontend_module(BoomCoreState& state, PipeSignals& pipe) {
     // Only a later redirect or reset may establish a fetchable PC.
     if ((fe.pc & 0x1ULL) != 0) return;
 
-    if (fe.response_received && fe.halfword_valid) {
-        if (fe.halfword_epoch != fe.epoch) {
+    if (fe.response_received) {
+        if (fe.halfword_valid && fe.halfword_epoch != fe.epoch) {
             fe.response_received = false;
             fe.halfword_valid = false;
-        } else if (fe.resp_exception) {
-            fe.producer_uop = fetch_fault(fe.halfword_pc, fe.resp_exc_cause, true);
         } else {
-            MicroOp uop;
-            uop.debug_pc = fe.halfword_pc;
-            uop.inst = (fe.resp_instruction << 16) | fe.halfword;
-            uop.is_rvc = false;
-            fe.producer_uop = uop;
-        }
-        if (fe.halfword_valid) {
-            fe.producer_fetch_id = fe.resp_fetch_id;
-            fe.producer_valid = true;
-            fe.pc = fe.halfword_pc + 4;
-            fe.halfword_valid = false;
-            fe.response_received = false;
-        }
-    } else if (fe.response_received) {
-        const uint64_t parcel_pc = fe.pc;
-        const bool upper = (parcel_pc & 0x2ULL) != 0;
-        const uint16_t parcel = upper ?
-            static_cast<uint16_t>(fe.resp_instruction >> 16) :
-            static_cast<uint16_t>(fe.resp_instruction);
+            FetchPacketInput input;
+            input.pc = fe.pc;
+            input.instruction = fe.resp_instruction;
+            input.fetch_id = fe.resp_fetch_id;
+            input.exception = fe.resp_exception;
+            input.exception_cause = fe.resp_exc_cause;
+            input.carry_valid = fe.halfword_valid;
+            input.carry = fe.halfword;
+            input.carry_pc = fe.halfword_pc;
+            const FetchPacketResult built = build_fetch_packet(input);
 
-        if (fe.resp_exception) {
-            fe.producer_uop = fetch_fault(parcel_pc, fe.resp_exc_cause, true);
-            fe.producer_fetch_id = fe.resp_fetch_id;
-            fe.producer_valid = true;
-            fe.pc = parcel_pc + 4;
-            fe.response_received = false;
-        } else if ((parcel & 0x3u) != 0x3u) {
-            const RvcDecodeResult rvc = decompress_rvc(parcel);
-            MicroOp uop;
-            uop.debug_pc = parcel_pc;
-            uop.debug_inst = parcel;
-            uop.is_rvc = true;
-            if (!rvc.legal) {
-                uop.exception = true;
-                uop.exc_cause = 2;
-                uop.exc.exception = true;
-                uop.exc.exc_cause = 2;
-            } else {
-                uop.inst = rvc.instruction;
-            }
-            fe.producer_uop = uop;
-            fe.producer_fetch_id = fe.resp_fetch_id;
-            fe.producer_valid = true;
-            fe.pc = parcel_pc + 2;
-            if (upper) fe.response_received = false;
-        } else if ((parcel & 0x1fu) == 0x1fu) {
-            fe.producer_uop = fetch_fault(parcel_pc, 2, false);
-            fe.producer_uop.debug_inst = parcel;
-            fe.producer_fetch_id = fe.resp_fetch_id;
-            fe.producer_valid = true;
-            fe.pc = parcel_pc + 2;
-            fe.response_received = false;
-        } else if (!upper) {
-            MicroOp uop;
-            uop.debug_pc = parcel_pc;
-            uop.inst = fe.resp_instruction;
-            uop.is_rvc = false;
-            fe.producer_uop = uop;
-            fe.producer_fetch_id = fe.resp_fetch_id;
-            fe.producer_valid = true;
-            fe.pc = parcel_pc + 4;
-            fe.response_received = false;
-        } else {
-            fe.halfword_valid = true;
-            fe.halfword = parcel;
-            fe.halfword_pc = parcel_pc;
+            fe.pc = built.next_pc;
+            fe.halfword_valid = built.carry_valid;
+            fe.halfword = built.carry;
+            fe.halfword_pc = built.carry_pc;
             fe.halfword_epoch = fe.epoch;
             fe.response_received = false;
+            fe.pending_packet = built.packet;
+            fe.producer_valid = built.packet.valid;
+            if (built.packet.valid) {
+                fe.producer_fetch_id = built.packet.slots[0].fetch_id;
+                fe.producer_uop = buffer_uop(built.packet.slots[0]);
+            }
+            fe.stalled = fe.pending_packet.valid;
         }
     }
 
@@ -2848,6 +2956,8 @@ static void recover_mispredict(BoomCoreState& state, const BranchUpdate& update)
         state.rename.dispatch_packets[0] = RenameDispatchPacket();
     state.frontend.fetch_packet_valid = false;
     state.frontend.producer_valid = false;
+    state.frontend.pending_packet = boom::FetchPacket();
+    state.frontend.stalled = false;
     boom::fetch_buffer_reset(state.frontend.fetch_buffer);
     state.frontend.response_received = false;
     state.frontend.request_sent = false;
@@ -3353,6 +3463,7 @@ void boom_core_reset_step(BoomCoreState& state, ResetControllerState& reset_ctrl
         state.frontend.flush = false;
         state.frontend.fetch_packet_valid = false;
         state.frontend.producer_valid = false;
+        state.frontend.pending_packet = boom::FetchPacket();
         boom::fetch_buffer_reset(state.frontend.fetch_buffer);
         state.frontend_redirect = FrontendRedirect();
         advance_reset(reset_ctrl, RESET_RENAME_MAP);
@@ -3785,6 +3896,137 @@ extern void branch_complete_event(BoomCoreState& state, const MicroOp& uop,
                                   bool mispredict, uint64_t redirect_pc);
 extern void lsu_module(BoomCoreState& state, PipeSignals& pipe);
 extern void rob_commit_module(BoomCoreState& state, PipeSignals& pipe);
+}
+
+void synth_fetch_packet_top(
+        uint64_t pc, uint32_t instruction, uint32_t fetch_id,
+        bool exception, uint64_t exception_cause,
+        bool carry_valid, uint16_t carry, uint64_t carry_pc,
+        bool& packet_valid, uint8_t& valid_mask,
+        uint64_t& lane0_pc, uint32_t& lane0_instruction,
+        uint32_t& lane0_original, uint32_t& lane0_fetch_id,
+        bool& lane0_is_rvc, bool& lane0_exception, uint64_t& lane0_cause,
+        bool& lane0_access_fault, bool& lane0_misaligned,
+        uint64_t& lane1_pc, uint32_t& lane1_instruction,
+        uint32_t& lane1_original, uint32_t& lane1_fetch_id,
+        bool& lane1_is_rvc, bool& lane1_exception, uint64_t& lane1_cause,
+        bool& lane1_access_fault, bool& lane1_misaligned,
+        uint64_t& next_pc, bool& next_carry_valid,
+        uint16_t& next_carry, uint64_t& next_carry_pc) {
+    boom::FetchPacketInput input;
+    input.pc = pc;
+    input.instruction = instruction;
+    input.fetch_id = fetch_id;
+    input.exception = exception;
+    input.exception_cause = exception_cause;
+    input.carry_valid = carry_valid;
+    input.carry = carry;
+    input.carry_pc = carry_pc;
+    const boom::FetchPacketResult result = boom::build_fetch_packet(input);
+    packet_valid = result.packet.valid;
+    valid_mask = result.packet.valid_mask;
+    lane0_pc = result.packet.slots[0].pc;
+    lane0_instruction = result.packet.slots[0].instruction;
+    lane0_original = result.packet.slots[0].original_instruction;
+    lane0_fetch_id = result.packet.slots[0].fetch_id;
+    lane0_is_rvc = result.packet.slots[0].is_rvc;
+    lane0_exception = result.packet.slots[0].exception;
+    lane0_cause = result.packet.slots[0].exception_cause;
+    lane0_access_fault = result.packet.slots[0].exception_access_fault;
+    lane0_misaligned = result.packet.slots[0].exception_misaligned;
+    lane1_pc = result.packet.slots[1].pc;
+    lane1_instruction = result.packet.slots[1].instruction;
+    lane1_original = result.packet.slots[1].original_instruction;
+    lane1_fetch_id = result.packet.slots[1].fetch_id;
+    lane1_is_rvc = result.packet.slots[1].is_rvc;
+    lane1_exception = result.packet.slots[1].exception;
+    lane1_cause = result.packet.slots[1].exception_cause;
+    lane1_access_fault = result.packet.slots[1].exception_access_fault;
+    lane1_misaligned = result.packet.slots[1].exception_misaligned;
+    next_pc = result.next_pc;
+    next_carry_valid = result.carry_valid;
+    next_carry = result.carry;
+    next_carry_pc = result.carry_pc;
+}
+
+void synth_fetch_packet_frontend_top(
+        hls::stream<ImemRequest>& imem_req_out,
+        hls::stream<ImemResponse>& imem_resp_in,
+        bool runtime_reset, bool generic_flush, bool decode_ready,
+        bool redirect_valid, uint64_t redirect_target,
+        bool& packet_valid, uint8_t& packet_mask,
+        uint64_t& lane0_pc, uint32_t& lane0_instruction,
+        uint64_t& lane1_pc, uint32_t& lane1_instruction,
+        bool& lane0_exception, uint64_t& lane0_cause,
+        bool& lane1_exception, uint64_t& lane1_cause,
+        bool& carry_valid, uint16_t& carry, uint64_t& carry_pc,
+        uint8_t& occupancy, bool& buffer_full,
+        bool& decode_valid, uint64_t& decode_pc, uint32_t& decode_instruction,
+        bool& outstanding_valid, uint64_t& expected_address,
+        uint32_t& expected_fetch_id, uint32_t& expected_epoch,
+        bool& accepted_response_pulse, bool& stale_response_pulse) {
+    static BoomCoreState state;
+    if (runtime_reset) {
+        state.frontend.reset_done = false;
+        state.decode = DecodeState();
+        state.rename.dispatch_packets[0] = RenameDispatchPacket();
+    }
+    state.global_flush = generic_flush;
+    state.frontend_redirect = FrontendRedirect();
+    state.brupdate = BranchUpdate();
+    state.brupdate.valid = redirect_valid;
+    state.brupdate.mispredict = redirect_valid;
+    state.brupdate.jalr_target = redirect_target;
+    if (decode_ready) {
+        state.decode.dec_valids[0] = false;
+        state.rename.dispatch_packets[0] = RenameDispatchPacket();
+    } else {
+        state.rename.dispatch_packets[0].valid = true;
+    }
+
+    PipeSignals pipe;
+    const bool response_present = !imem_resp_in.empty();
+    ImemResponse response;
+    if (response_present) {
+        response = imem_resp_in.read();
+        pipe.imem_resp.write(response);
+    }
+    const bool reset_redirect = !state.frontend.reset_done;
+    const bool any_redirect = reset_redirect || redirect_valid || generic_flush ||
+        state.frontend.flush;
+    const bool response_matches = response_present && state.frontend.request_sent &&
+        response.fetch_id == state.frontend.pending_fetch_id &&
+        response.epoch == state.frontend.pending_epoch &&
+        response.address == state.frontend.pending_address;
+
+    boom::frontend_module(state, pipe);
+    boom::decode_module(state);
+    if (!pipe.imem_req.empty()) imem_req_out.write(pipe.imem_req.read());
+
+    packet_valid = state.frontend.pending_packet.valid;
+    packet_mask = state.frontend.pending_packet.valid_mask;
+    lane0_pc = state.frontend.pending_packet.slots[0].pc;
+    lane0_instruction = state.frontend.pending_packet.slots[0].instruction;
+    lane1_pc = state.frontend.pending_packet.slots[1].pc;
+    lane1_instruction = state.frontend.pending_packet.slots[1].instruction;
+    lane0_exception = state.frontend.pending_packet.slots[0].exception;
+    lane0_cause = state.frontend.pending_packet.slots[0].exception_cause;
+    lane1_exception = state.frontend.pending_packet.slots[1].exception;
+    lane1_cause = state.frontend.pending_packet.slots[1].exception_cause;
+    carry_valid = state.frontend.halfword_valid;
+    carry = state.frontend.halfword;
+    carry_pc = state.frontend.halfword_pc;
+    occupancy = state.frontend.fetch_buffer.count;
+    buffer_full = occupancy == FETCH_BUFFER_DEPTH;
+    decode_valid = state.decode.dec_valids[0];
+    decode_pc = state.decode.dec_uops[0].debug_pc;
+    decode_instruction = state.decode.dec_uops[0].inst;
+    outstanding_valid = state.frontend.request_sent;
+    expected_address = state.frontend.pending_address;
+    expected_fetch_id = state.frontend.pending_fetch_id;
+    expected_epoch = state.frontend.pending_epoch;
+    accepted_response_pulse = response_matches && !any_redirect;
+    stale_response_pulse = response_present && !accepted_response_pulse;
 }
 
 void synth_frontend_top(hls::stream<ImemRequest>& imem_req_out,

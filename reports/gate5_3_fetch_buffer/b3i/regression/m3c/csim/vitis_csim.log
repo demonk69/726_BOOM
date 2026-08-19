@@ -1,0 +1,64 @@
+
+****** Vitis HLS - High-Level Synthesis from C, C++ and OpenCL v2021.2 (64-bit)
+  **** SW Build 3367213 on Tue Oct 19 02:47:39 MDT 2021
+  **** IP Build 3369179 on Thu Oct 21 08:25:16 MDT 2021
+    ** Copyright 1986-2021 Xilinx, Inc. All Rights Reserved.
+
+source /home/lab_726/Xilinx/Vitis_HLS/2021.2/scripts/vitis_hls/hls.tcl -notrace
+INFO: [HLS 200-10] Running '/home/lab_726/Xilinx/Vitis_HLS/2021.2/bin/unwrapped/lnx64.o/vitis_hls'
+INFO: [HLS 200-10] For user 'lab_726' on host '726' (Linux_x86_64 version 6.8.0-136-generic) on Mon Aug 17 14:14:39 CST 2026
+INFO: [HLS 200-10] On os Ubuntu 22.04.5 LTS
+INFO: [HLS 200-10] In directory '/home/lab_726/boom/hls_boom/build/gate5_3_fetch_buffer/b3i/regression/m3c_csim'
+Sourcing Tcl script '/home/lab_726/boom/hls_boom/scripts/gate4_1/run_m3c_csim.tcl'
+INFO: [HLS 200-1510] Running: open_project -reset m3c_full_core_csim
+INFO: [HLS 200-10] Creating and opening project '/home/lab_726/boom/hls_boom/build/gate5_3_fetch_buffer/b3i/regression/m3c_csim/m3c_full_core_csim'.
+INFO: [HLS 200-1510] Running: set_top boom_core_top
+INFO: [HLS 200-1510] Running: add_files -cflags -std=c++11 -I/home/lab_726/boom/hls_boom/include /home/lab_726/boom/hls_boom/src/boom_core_merged.cpp
+INFO: [HLS 200-10] Adding design file '/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp' to the project
+INFO: [HLS 200-1510] Running: add_files -tb -cflags -std=c++11 -I/home/lab_726/boom/hls_boom/include /home/lab_726/boom/hls_boom/tb/differential/rv64m_full_core_tests.cpp
+INFO: [HLS 200-10] Adding test bench file '/home/lab_726/boom/hls_boom/tb/differential/rv64m_full_core_tests.cpp' to the project
+INFO: [HLS 200-1510] Running: open_solution -reset solution_m3c_csim
+INFO: [HLS 200-10] Creating and opening solution '/home/lab_726/boom/hls_boom/build/gate5_3_fetch_buffer/b3i/regression/m3c_csim/m3c_full_core_csim/solution_m3c_csim'.
+INFO: [HLS 200-10] Cleaning up the solution database.
+WARNING: [HLS 200-40] No /home/lab_726/boom/hls_boom/build/gate5_3_fetch_buffer/b3i/regression/m3c_csim/m3c_full_core_csim/solution_m3c_csim/solution_m3c_csim.aps file found.
+INFO: [HLS 200-1505] Using default flow_target 'vivado'
+Resolution: For help on HLS 200-1505 see www.xilinx.com/cgi-bin/docs/rdoc?v=2021.2;t=hls+guidance;d=200-1505.html
+INFO: [HLS 200-1510] Running: set_part xczu7ev-ffvc1156-2-e
+INFO: [HLS 200-1611] Setting target device to 'xczu7ev-ffvc1156-2-e'
+INFO: [HLS 200-1510] Running: create_clock -period 10 -name default
+INFO: [SYN 201-201] Setting up clock 'default' with a period of 10ns.
+INFO: [HLS 200-1510] Running: csim_design
+INFO: [SIM 211-2] *************** CSIM start ***************
+INFO: [SIM 211-4] CSIM will launch GCC as the compiler.
+   Compiling ../../../../../../../../../tb/differential/rv64m_full_core_tests.cpp in debug mode
+   Compiling ../../../../../../../../../src/boom_core_merged.cpp in debug mode
+   Generating csim.exe
+PASS mul_family_all         cycles=40 accept=0 wb=0 commit=0 max_latency=0 busy=0
+WARNING: Hls::stream 'hls::stream<ImemRequest, 0>0' contains leftover data, which may result in RTL simulation hanging.
+PASS div_family_all         cycles=49 accept=8 wb=8 commit=8 max_latency=2 busy=0
+WARNING: Hls::stream 'hls::stream<ImemRequest, 0>1' contains leftover data, which may result in RTL simulation hanging.
+PASS rv64m_all_13           cycles=67 accept=8 wb=8 commit=8 max_latency=2 busy=0
+WARNING: Hls::stream 'hls::stream<ImemRequest, 0>2' contains leftover data, which may result in RTL simulation hanging.
+PASS mul_div_dependency     cycles=91 accept=1 wb=1 commit=1 max_latency=66 busy=64
+WARNING: Hls::stream 'hls::stream<ImemRequest, 0>3' contains leftover data, which may result in RTL simulation hanging.
+PASS div_mul_dependency     cycles=150 accept=2 wb=2 commit=2 max_latency=66 busy=64
+PASS high_multiply_mix      cycles=37 accept=0 wb=0 commit=0 max_latency=0 busy=0
+WARNING: Hls::stream 'hls::stream<ImemRequest, 0>5' contains leftover data, which may result in RTL simulation hanging.
+PASS word_multiply_divide_mix cycles=156 accept=4 wb=4 commit=4 max_latency=34 busy=32
+PASS divide_by_zero_mix     cycles=43 accept=6 wb=6 commit=6 max_latency=2 busy=0
+WARNING: Hls::stream 'hls::stream<ImemRequest, 0>7' contains leftover data, which may result in RTL simulation hanging.
+PASS signed_overflow_mix    cycles=40 accept=4 wb=4 commit=4 max_latency=2 busy=0
+WARNING: Hls::stream 'hls::stream<ImemRequest, 0>8' contains leftover data, which may result in RTL simulation hanging.
+PASS rv64m_branch_mix       cycles=96 accept=1 wb=1 commit=1 max_latency=66 busy=64
+PASS rv64m_load_mix         cycles=98 accept=1 wb=1 commit=1 max_latency=66 busy=64
+PASS rv64m_store_mix        cycles=43 accept=0 wb=0 commit=0 max_latency=0 busy=0
+WARNING: Hls::stream 'hls::stream<ImemRequest, 0>11' contains leftover data, which may result in RTL simulation hanging.
+PASS rv64m_reset_replay     cycles=84 accept=1 wb=1 commit=1 max_latency=66 busy=64
+PASS rv64m_rob_wrap         cycles=206 accept=1 wb=1 commit=1 max_latency=66 busy=64
+PASS rv64m_tohost_stress    cycles=87 accept=1 wb=1 commit=1 max_latency=66 busy=64
+M3C native full-core RV64M programs: 15/15 PASS, max latency 66 cycles
+INFO: [SIM 211-1] CSim done with 0 errors.
+INFO: [SIM 211-3] *************** CSIM finish ***************
+INFO: [HLS 200-111] Finished Command csim_design CPU user time: 1.94 seconds. CPU system time: 0.28 seconds. Elapsed time: 1.65 seconds; current allocated memory: -937.109 MB.
+INFO: [HLS 200-112] Total CPU user time: 3.23 seconds. Total CPU system time: 0.64 seconds. Total elapsed time: 2.65 seconds; peak allocated memory: 415.531 MB.
+INFO: [Common 17-206] Exiting vitis_hls at Mon Aug 17 14:14:41 2026...

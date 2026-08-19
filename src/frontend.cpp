@@ -3,6 +3,7 @@
 #include "boom_state.hpp"
 #include "boom_interfaces.hpp"
 #include "fetch_buffer.hpp"
+#include "fetch_packet.hpp"
 #include "rvc.hpp"
 
 namespace boom {
@@ -74,6 +75,7 @@ void frontend_module(BoomCoreState& state, PipeSignals& pipe) {
         fe.halfword_valid = false;
         fe.fetch_packet_valid = false;
         fe.producer_valid = false;
+        fe.pending_packet = FetchPacket();
         fetch_buffer_reset(fe.fetch_buffer);
     }
 
@@ -99,6 +101,7 @@ void frontend_module(BoomCoreState& state, PipeSignals& pipe) {
         fe.halfword_valid = false;
         fe.fetch_packet_valid = false;
         fe.producer_valid = false;
+        fe.pending_packet = FetchPacket();
         fetch_buffer_reset(fe.fetch_buffer);
         state.decode.dec_valids[0] = false;
         state.decode.dec_uops[0] = MicroOp();
@@ -110,6 +113,10 @@ void frontend_module(BoomCoreState& state, PipeSignals& pipe) {
             fe.producer_uop = fetch_fault(target, 0, false);
             fe.producer_fetch_id = fe.fetch_id;
             fe.producer_valid = true;
+            fe.pending_packet.valid = true;
+            fe.pending_packet.valid_mask = 1;
+            fe.pending_packet.slots[0] = buffer_entry(fe.producer_uop,
+                                                       fe.producer_fetch_id);
         }
     }
 
@@ -134,24 +141,34 @@ void frontend_module(BoomCoreState& state, PipeSignals& pipe) {
     if (state.rob.state == ROB_EXCEPTION) {
         fe.fetch_packet_valid = false;
         fe.producer_valid = false;
+        fe.pending_packet = FetchPacket();
+        fe.response_received = false;
+        fe.request_sent = false;
+        fe.halfword_valid = false;
+        fe.stalled = false;
         fetch_buffer_reset(fe.fetch_buffer);
         return;
     }
 
-    FetchPacket packet;
-    if (fe.producer_valid) {
-        packet.valid = true;
-        packet.valid_mask = 1;
-        packet.slots[0] = buffer_entry(fe.producer_uop, fe.producer_fetch_id);
+    // Keep direct scalar seeding used by the accepted B2 harness as a lane-0
+    // compatibility input. Product response parsing writes pending_packet.
+    if (fe.producer_valid && !fe.pending_packet.valid) {
+        fe.pending_packet.valid = true;
+        fe.pending_packet.valid_mask = 1;
+        fe.pending_packet.slots[0] = buffer_entry(fe.producer_uop,
+                                                   fe.producer_fetch_id);
     }
     const bool decode_ready = !state.rename.dispatch_packets[0].valid &&
         !state.decode.dec_valids[0] && !redirect;
     const FetchBufferResult buffer = fetch_buffer_step(
-        fe.fetch_buffer, packet, decode_ready, redirect);
+        fe.fetch_buffer, fe.pending_packet, decode_ready, redirect);
     fe.fetch_packet_valid = buffer.dequeue_valid;
     if (buffer.dequeue_valid) fe.fetch_uop = buffer_uop(buffer.dequeue_bits);
-    if (buffer.enqueue_fire) fe.producer_valid = false;
-    fe.stalled = fe.producer_valid;
+    if (buffer.enqueue_fire) {
+        fe.pending_packet = FetchPacket();
+        fe.producer_valid = false;
+    }
+    fe.stalled = fe.pending_packet.valid;
 
     if (misaligned_redirect || fe.stalled) return;
 
@@ -159,81 +176,35 @@ void frontend_module(BoomCoreState& state, PipeSignals& pipe) {
     // Only a later redirect or reset may establish a fetchable PC.
     if ((fe.pc & 0x1ULL) != 0) return;
 
-    if (fe.response_received && fe.halfword_valid) {
-        if (fe.halfword_epoch != fe.epoch) {
+    if (fe.response_received) {
+        if (fe.halfword_valid && fe.halfword_epoch != fe.epoch) {
             fe.response_received = false;
             fe.halfword_valid = false;
-        } else if (fe.resp_exception) {
-            fe.producer_uop = fetch_fault(fe.halfword_pc, fe.resp_exc_cause, true);
         } else {
-            MicroOp uop;
-            uop.debug_pc = fe.halfword_pc;
-            uop.inst = (fe.resp_instruction << 16) | fe.halfword;
-            uop.is_rvc = false;
-            fe.producer_uop = uop;
-        }
-        if (fe.halfword_valid) {
-            fe.producer_fetch_id = fe.resp_fetch_id;
-            fe.producer_valid = true;
-            fe.pc = fe.halfword_pc + 4;
-            fe.halfword_valid = false;
-            fe.response_received = false;
-        }
-    } else if (fe.response_received) {
-        const uint64_t parcel_pc = fe.pc;
-        const bool upper = (parcel_pc & 0x2ULL) != 0;
-        const uint16_t parcel = upper ?
-            static_cast<uint16_t>(fe.resp_instruction >> 16) :
-            static_cast<uint16_t>(fe.resp_instruction);
+            FetchPacketInput input;
+            input.pc = fe.pc;
+            input.instruction = fe.resp_instruction;
+            input.fetch_id = fe.resp_fetch_id;
+            input.exception = fe.resp_exception;
+            input.exception_cause = fe.resp_exc_cause;
+            input.carry_valid = fe.halfword_valid;
+            input.carry = fe.halfword;
+            input.carry_pc = fe.halfword_pc;
+            const FetchPacketResult built = build_fetch_packet(input);
 
-        if (fe.resp_exception) {
-            fe.producer_uop = fetch_fault(parcel_pc, fe.resp_exc_cause, true);
-            fe.producer_fetch_id = fe.resp_fetch_id;
-            fe.producer_valid = true;
-            fe.pc = parcel_pc + 4;
-            fe.response_received = false;
-        } else if ((parcel & 0x3u) != 0x3u) {
-            const RvcDecodeResult rvc = decompress_rvc(parcel);
-            MicroOp uop;
-            uop.debug_pc = parcel_pc;
-            uop.debug_inst = parcel;
-            uop.is_rvc = true;
-            if (!rvc.legal) {
-                uop.exception = true;
-                uop.exc_cause = 2;
-                uop.exc.exception = true;
-                uop.exc.exc_cause = 2;
-            } else {
-                uop.inst = rvc.instruction;
-            }
-            fe.producer_uop = uop;
-            fe.producer_fetch_id = fe.resp_fetch_id;
-            fe.producer_valid = true;
-            fe.pc = parcel_pc + 2;
-            if (upper) fe.response_received = false;
-        } else if ((parcel & 0x1fu) == 0x1fu) {
-            fe.producer_uop = fetch_fault(parcel_pc, 2, false);
-            fe.producer_uop.debug_inst = parcel;
-            fe.producer_fetch_id = fe.resp_fetch_id;
-            fe.producer_valid = true;
-            fe.pc = parcel_pc + 2;
-            fe.response_received = false;
-        } else if (!upper) {
-            MicroOp uop;
-            uop.debug_pc = parcel_pc;
-            uop.inst = fe.resp_instruction;
-            uop.is_rvc = false;
-            fe.producer_uop = uop;
-            fe.producer_fetch_id = fe.resp_fetch_id;
-            fe.producer_valid = true;
-            fe.pc = parcel_pc + 4;
-            fe.response_received = false;
-        } else {
-            fe.halfword_valid = true;
-            fe.halfword = parcel;
-            fe.halfword_pc = parcel_pc;
+            fe.pc = built.next_pc;
+            fe.halfword_valid = built.carry_valid;
+            fe.halfword = built.carry;
+            fe.halfword_pc = built.carry_pc;
             fe.halfword_epoch = fe.epoch;
             fe.response_received = false;
+            fe.pending_packet = built.packet;
+            fe.producer_valid = built.packet.valid;
+            if (built.packet.valid) {
+                fe.producer_fetch_id = built.packet.slots[0].fetch_id;
+                fe.producer_uop = buffer_uop(built.packet.slots[0]);
+            }
+            fe.stalled = fe.pending_packet.valid;
         }
     }
 

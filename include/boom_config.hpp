@@ -9,6 +9,7 @@
 #define MMU_SV39 1
 
 #define FETCH_WIDTH         4
+#define FETCH_PACKET_WIDTH  2
 #define DECODE_WIDTH        1
 #define DISPATCH_WIDTH      1
 #define ISSUE_WIDTH         3
