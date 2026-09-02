@@ -1,0 +1,172 @@
+
+
+================================================================
+== Vitis HLS Report for 'synth_predictor_foundation_top'
+================================================================
+* Date:           Wed Sep  2 20:26:41 2026
+
+* Version:        2021.2 (Build 3367213 on Tue Oct 19 02:47:39 MDT 2021)
+* Project:        boom_hls_gate5_4_f1_preserve_lutram_synth_predictor_foundation_top
+* Solution:       solution_module (Vivado IP Flow Target)
+* Product family: zynquplus
+* Target device:  xczu7ev-ffvc1156-2-e
+
+
+================================================================
+== Performance Estimates
+================================================================
++ Timing: 
+    * Summary: 
+    +--------+----------+----------+------------+
+    |  Clock |  Target  | Estimated| Uncertainty|
+    +--------+----------+----------+------------+
+    |ap_clk  |  10.00 ns|  2.989 ns|     2.70 ns|
+    +--------+----------+----------+------------+
+
++ Latency: 
+    * Summary: 
+    +---------+---------+-----------+----------+-----+-----+---------+
+    |  Latency (cycles) |  Latency (absolute)  |  Interval | Pipeline|
+    |   min   |   max   |    min    |    max   | min | max |   Type  |
+    +---------+---------+-----------+----------+-----+-----+---------+
+    |        3|      259|  30.000 ns|  2.590 us|    4|  260|       no|
+    +---------+---------+-----------+----------+-----+-----+---------+
+
+    + Detail: 
+        * Instance: 
+        +-----------------+-------+---------+---------+-----------+----------+-----+-----+---------+
+        |                 |       |  Latency (cycles) |  Latency (absolute)  |  Interval | Pipeline|
+        |     Instance    | Module|   min   |   max   |    min    |    max   | min | max |   Type  |
+        +-----------------+-------+---------+---------+-----------+----------+-----+-----+---------+
+        |grp_step_fu_311  |step   |        2|      258|  20.000 ns|  2.580 us|    2|  258|       no|
+        +-----------------+-------+---------+---------+-----------+----------+-----+-----+---------+
+
+        * Loop: 
+        N/A
+
+
+
+================================================================
+== Utilization Estimates
+================================================================
+* Summary: 
++-----------------+---------+------+--------+--------+-----+
+|       Name      | BRAM_18K|  DSP |   FF   |   LUT  | URAM|
++-----------------+---------+------+--------+--------+-----+
+|DSP              |        -|     -|       -|       -|    -|
+|Expression       |        -|     -|       -|       -|    -|
+|FIFO             |        -|     -|       -|       -|    -|
+|Instance         |        0|     -|     444|     670|    0|
+|Memory           |        -|     -|       -|       -|    -|
+|Multiplexer      |        -|     -|       -|      14|    -|
+|Register         |        -|     -|      21|       -|    -|
++-----------------+---------+------+--------+--------+-----+
+|Total            |        0|     0|     465|     684|    0|
++-----------------+---------+------+--------+--------+-----+
+|Available        |      624|  1728|  460800|  230400|   96|
++-----------------+---------+------+--------+--------+-----+
+|Utilization (%)  |        0|     0|      ~0|      ~0|    0|
++-----------------+---------+------+--------+--------+-----+
+
++ Detail: 
+    * Instance: 
+    +-----------------+-------+---------+----+-----+-----+-----+
+    |     Instance    | Module| BRAM_18K| DSP|  FF | LUT | URAM|
+    +-----------------+-------+---------+----+-----+-----+-----+
+    |grp_step_fu_311  |step   |        0|   0|  444|  670|    0|
+    +-----------------+-------+---------+----+-----+-----+-----+
+    |Total            |       |        0|   0|  444|  670|    0|
+    +-----------------+-------+---------+----+-----+-----+-----+
+
+    * DSP: 
+    N/A
+
+    * Memory: 
+    N/A
+
+    * FIFO: 
+    N/A
+
+    * Expression: 
+    N/A
+
+    * Multiplexer: 
+    +-----------+----+-----------+-----+-----------+
+    |    Name   | LUT| Input Size| Bits| Total Bits|
+    +-----------+----+-----------+-----+-----------+
+    |ap_NS_fsm  |  14|          3|    1|          3|
+    +-----------+----+-----------+-----+-----------+
+    |Total      |  14|          3|    1|          3|
+    +-----------+----+-----------+-----+-----------+
+
+    * Register: 
+    +------------------------------+---+----+-----+-----------+
+    |             Name             | FF| LUT| Bits| Const Bits|
+    +------------------------------+---+----+-----+-----------+
+    |ap_CS_fsm                     |  2|   0|    2|          0|
+    |empty_8_reg_523               |  9|   0|    9|          0|
+    |empty_reg_518                 |  9|   0|    9|          0|
+    |grp_step_fu_311_ap_start_reg  |  1|   0|    1|          0|
+    +------------------------------+---+----+-----+-----------+
+    |Total                         | 21|   0|   21|          0|
+    +------------------------------+---+----+-----+-----------+
+
+
+
+================================================================
+== Interface
+================================================================
+* Summary: 
++----------------------------+-----+-----+------------+--------------------------------+--------------+
+|          RTL Ports         | Dir | Bits|  Protocol  |          Source Object         |    C Type    |
++----------------------------+-----+-----+------------+--------------------------------+--------------+
+|ap_local_block              |  out|    1|  ap_ctrl_hs|  synth_predictor_foundation_top|  return value|
+|ap_local_deadlock           |  out|    1|  ap_ctrl_hs|  synth_predictor_foundation_top|  return value|
+|ap_clk                      |   in|    1|  ap_ctrl_hs|  synth_predictor_foundation_top|  return value|
+|ap_rst                      |   in|    1|  ap_ctrl_hs|  synth_predictor_foundation_top|  return value|
+|ap_start                    |   in|    1|  ap_ctrl_hs|  synth_predictor_foundation_top|  return value|
+|ap_done                     |  out|    1|  ap_ctrl_hs|  synth_predictor_foundation_top|  return value|
+|ap_idle                     |  out|    1|  ap_ctrl_hs|  synth_predictor_foundation_top|  return value|
+|ap_ready                    |  out|    1|  ap_ctrl_hs|  synth_predictor_foundation_top|  return value|
+|reset                       |   in|    1|     ap_none|                           reset|        scalar|
+|active_generation           |   in|   32|     ap_none|               active_generation|        scalar|
+|req_valid                   |   in|    1|     ap_none|                       req_valid|        scalar|
+|req_pc                      |   in|   64|     ap_none|                          req_pc|        scalar|
+|req_cfi_lane                |   in|    8|     ap_none|                    req_cfi_lane|        scalar|
+|req_cfi_type                |   in|    8|     ap_none|                    req_cfi_type|        scalar|
+|req_static_target_valid     |   in|    1|     ap_none|         req_static_target_valid|        scalar|
+|req_static_target           |   in|   64|     ap_none|               req_static_target|        scalar|
+|req_generation              |   in|   32|     ap_none|                  req_generation|        scalar|
+|req_token                   |   in|   64|     ap_none|                       req_token|        scalar|
+|resp_ready                  |   in|    1|     ap_none|                      resp_ready|        scalar|
+|update_valid                |   in|    1|     ap_none|                    update_valid|        scalar|
+|update_commit_qualified     |   in|    1|     ap_none|         update_commit_qualified|        scalar|
+|update_cfi_type             |   in|    8|     ap_none|                 update_cfi_type|        scalar|
+|update_pc                   |   in|   64|     ap_none|                       update_pc|        scalar|
+|update_metadata_token       |   in|   16|     ap_none|           update_metadata_token|        scalar|
+|update_taken                |   in|    1|     ap_none|                    update_taken|        scalar|
+|update_generation           |   in|   32|     ap_none|               update_generation|        scalar|
+|req_ready                   |  out|    1|      ap_vld|                       req_ready|       pointer|
+|req_ready_ap_vld            |  out|    1|      ap_vld|                       req_ready|       pointer|
+|resp_valid                  |  out|    1|      ap_vld|                      resp_valid|       pointer|
+|resp_valid_ap_vld           |  out|    1|      ap_vld|                      resp_valid|       pointer|
+|prediction_valid            |  out|    1|      ap_vld|                prediction_valid|       pointer|
+|prediction_valid_ap_vld     |  out|    1|      ap_vld|                prediction_valid|       pointer|
+|predicted_taken             |  out|    1|      ap_vld|                 predicted_taken|       pointer|
+|predicted_taken_ap_vld      |  out|    1|      ap_vld|                 predicted_taken|       pointer|
+|target_valid                |  out|    1|      ap_vld|                    target_valid|       pointer|
+|target_valid_ap_vld         |  out|    1|      ap_vld|                    target_valid|       pointer|
+|target                      |  out|   64|      ap_vld|                          target|       pointer|
+|target_ap_vld               |  out|    1|      ap_vld|                          target|       pointer|
+|resp_cfi_lane               |  out|    8|      ap_vld|                   resp_cfi_lane|       pointer|
+|resp_cfi_lane_ap_vld        |  out|    1|      ap_vld|                   resp_cfi_lane|       pointer|
+|resp_cfi_type               |  out|    8|      ap_vld|                   resp_cfi_type|       pointer|
+|resp_cfi_type_ap_vld        |  out|    1|      ap_vld|                   resp_cfi_type|       pointer|
+|resp_metadata_token         |  out|   16|      ap_vld|             resp_metadata_token|       pointer|
+|resp_metadata_token_ap_vld  |  out|    1|      ap_vld|             resp_metadata_token|       pointer|
+|resp_generation             |  out|   32|      ap_vld|                 resp_generation|       pointer|
+|resp_generation_ap_vld      |  out|    1|      ap_vld|                 resp_generation|       pointer|
+|resp_request_token          |  out|   64|      ap_vld|              resp_request_token|       pointer|
+|resp_request_token_ap_vld   |  out|    1|      ap_vld|              resp_request_token|       pointer|
++----------------------------+-----+-----+------------+--------------------------------+--------------+
+

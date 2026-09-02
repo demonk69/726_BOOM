@@ -15,6 +15,7 @@
 #include "rvc.hpp"
 #include "predecode.hpp"
 #include "predictor.hpp"
+#include "ftq.hpp"
 #if defined(BOOM_USE_AP_INT) || defined(__SYNTHESIS__)
 #include <ap_int.h>
 #endif
@@ -447,6 +448,184 @@ template class PredictorFoundation<128>;
 template class PredictorFoundation<256>;
 template class PredictorFoundation<512>;
 template class PredictorFoundation<256, true>;
+
+}  // namespace boom
+
+// ==== ftq.cpp ====
+
+namespace boom {
+
+template <std::size_t Depth, bool FullPayloadReset>
+FtqFoundation<Depth, FullPayloadReset>::FtqFoundation()
+    : head_(0), tail_(0), count_(0), next_generation_(1) {
+    for (std::size_t i = 0; i < Depth; ++i) entries_[i].valid = false;
+}
+
+template <std::size_t Depth, bool FullPayloadReset>
+uint8_t FtqFoundation<Depth, FullPayloadReset>::advance(uint8_t index) {
+    return static_cast<uint8_t>((index + 1u) & (Depth - 1u));
+}
+
+template <std::size_t Depth, bool FullPayloadReset>
+bool FtqFoundation<Depth, FullPayloadReset>::entry_is_active(
+        uint8_t index, uint32_t generation) const {
+    return index < Depth && entries_[index].valid &&
+           entries_[index].generation == generation;
+}
+
+template <std::size_t Depth, bool FullPayloadReset>
+bool FtqFoundation<Depth, FullPayloadReset>::apply_lane_event(
+        const FtqLaneEvent& event) {
+    if (!event.valid || event.lane > 1 ||
+        !entry_is_active(event.ftq_idx, event.generation)) {
+        return false;
+    }
+    const uint8_t lane_bit = static_cast<uint8_t>(1u << event.lane);
+    FtqEntry& entry = entries_[event.ftq_idx];
+    if ((entry.packet_valid_mask & lane_bit) == 0 ||
+        (entry.live_lane_mask & lane_bit) == 0) {
+        return false;
+    }
+    entry.live_lane_mask = static_cast<uint8_t>(entry.live_lane_mask & ~lane_bit);
+    return true;
+}
+
+template <std::size_t Depth, bool FullPayloadReset>
+void FtqFoundation<Depth, FullPayloadReset>::reset_controls() {
+    for (std::size_t i = 0; i < Depth; ++i) {
+        entries_[i].valid = false;
+        entries_[i].live_lane_mask = 0;
+        if (FullPayloadReset) entries_[i] = FtqEntry();
+    }
+    head_ = 0;
+    tail_ = 0;
+    count_ = 0;
+    ++next_generation_;
+    if (next_generation_ == 0) next_generation_ = 1;
+}
+
+template <std::size_t Depth, bool FullPayloadReset>
+FtqStepOutput FtqFoundation<Depth, FullPayloadReset>::step(
+        const FtqStepInput& input) {
+#if defined(BOOM_FTQ_STORAGE_LUTRAM)
+#pragma HLS bind_storage variable=entries_ type=RAM_2P impl=LUTRAM
+#elif defined(BOOM_FTQ_STORAGE_BRAM)
+#pragma HLS bind_storage variable=entries_ type=RAM_2P impl=BRAM
+#endif
+    FtqStepOutput output;
+
+    if (input.reset) {
+        reset_controls();
+        output.head = head_;
+        output.tail = tail_;
+        output.count = count_;
+        output.empty = true;
+        return output;
+    }
+
+    if (input.redirect.valid) {
+        if (entry_is_active(input.redirect.owner_ftq_idx,
+                            input.redirect.owner_generation)) {
+            const uint8_t owner_distance = static_cast<uint8_t>(
+                (input.redirect.owner_ftq_idx + Depth - head_) & (Depth - 1u));
+            if (owner_distance < count_) {
+                for (std::size_t offset = 0; offset < Depth; ++offset) {
+                    if (offset > owner_distance && offset < count_) {
+                        const uint8_t index = static_cast<uint8_t>(
+                            (head_ + offset) & (Depth - 1u));
+                        entries_[index].valid = false;
+                        entries_[index].live_lane_mask = 0;
+                    }
+                }
+                FtqEntry& owner = entries_[input.redirect.owner_ftq_idx];
+                owner.live_lane_mask = static_cast<uint8_t>(
+                    owner.live_lane_mask & input.redirect.surviving_lane_mask &
+                    owner.packet_valid_mask);
+                tail_ = advance(input.redirect.owner_ftq_idx);
+                count_ = static_cast<uint8_t>(owner_distance + 1u);
+                output.redirect_accepted = true;
+            } else {
+                output.redirect_rejected = true;
+            }
+        } else {
+            output.redirect_rejected = true;
+        }
+        output.retire_rejected = input.retire.valid;
+        output.squash_rejected = input.squash.valid;
+    } else {
+        if (input.retire.valid) {
+            output.retire_accepted = apply_lane_event(input.retire);
+            output.retire_rejected = !output.retire_accepted;
+        }
+        if (input.squash.valid) {
+            output.squash_accepted = apply_lane_event(input.squash);
+            output.squash_rejected = !output.squash_accepted;
+        }
+    }
+
+    if (count_ != 0 && entries_[head_].valid &&
+        entries_[head_].live_lane_mask == 0) {
+        output.reclaimed = true;
+        output.reclaimed_ftq_idx = head_;
+        entries_[head_].valid = false;
+        head_ = advance(head_);
+        --count_;
+    }
+
+    output.alloc_ready = !input.redirect.valid && count_ < Depth;
+    const uint8_t mask = static_cast<uint8_t>(input.allocation.packet_valid_mask & 3u);
+    output.alloc_invalid_mask = input.alloc_valid &&
+        (input.allocation.packet_valid_mask != mask || mask == 2u);
+    if (input.alloc_valid && output.alloc_ready && !output.alloc_invalid_mask &&
+        mask != 0) {
+        FtqEntry entry;
+        entry.valid = true;
+        entry.packet_base_pc = input.allocation.packet_base_pc;
+        entry.packet_valid_mask = mask;
+        entry.live_lane_mask = mask;
+        entry.prediction_valid = input.allocation.prediction_valid;
+        entry.predicted_taken = input.allocation.prediction_valid &&
+                                input.allocation.predicted_taken;
+        entry.target_valid = input.allocation.prediction_valid &&
+                             input.allocation.target_valid;
+        entry.predicted_target = entry.target_valid ?
+            input.allocation.predicted_target : 0;
+        entry.cfi_lane = static_cast<uint8_t>(input.allocation.cfi_lane & 1u);
+        entry.cfi_type = static_cast<uint8_t>(input.allocation.cfi_type & 3u);
+        entry.predictor_metadata_index =
+            input.allocation.predictor_metadata_index;
+        entry.predictor_generation = input.allocation.predictor_generation;
+        entry.generation = next_generation_;
+        ++next_generation_;
+        if (next_generation_ == 0) next_generation_ = 1;
+        entries_[tail_] = entry;
+        output.alloc_accepted = true;
+        output.alloc_ftq_idx = tail_;
+        output.alloc_generation = entry.generation;
+        tail_ = advance(tail_);
+        ++count_;
+    }
+
+    if (input.read_valid &&
+        entry_is_active(input.read_ftq_idx, input.read_generation)) {
+        output.read_hit = true;
+        output.read_entry = entries_[input.read_ftq_idx];
+    }
+    output.head = head_;
+    output.tail = tail_;
+    output.count = count_;
+    output.empty = count_ == 0;
+    output.full = count_ == Depth;
+    return output;
+}
+
+template class FtqFoundation<2>;
+template class FtqFoundation<4>;
+template class FtqFoundation<8>;
+template class FtqFoundation<16>;
+template class FtqFoundation<32>;
+template class FtqFoundation<64>;
+template class FtqFoundation<32, true>;
 
 }  // namespace boom
 
@@ -4254,6 +4433,193 @@ void synth_predictor_foundation_full_reset_top(
 }
 
 #undef DEFINE_PREDICTOR_TOP
+
+template <std::size_t Depth, bool FullPayloadReset = false>
+static void synth_ftq_step(
+        bool reset, bool alloc_valid, uint64_t alloc_pc, uint8_t alloc_mask,
+        bool prediction_valid, bool predicted_taken, bool target_valid,
+        uint64_t predicted_target, uint8_t cfi_lane, uint8_t cfi_type,
+        uint8_t metadata_index, uint32_t predictor_generation,
+        bool retire_valid, uint8_t retire_idx, uint8_t retire_lane,
+        uint32_t retire_generation,
+        bool squash_valid, uint8_t squash_idx, uint8_t squash_lane,
+        uint32_t squash_generation,
+        bool redirect_valid, uint8_t redirect_owner_idx,
+        uint32_t redirect_owner_generation, uint8_t surviving_lane_mask,
+        bool read_valid, uint8_t read_idx, uint32_t read_generation,
+        bool& alloc_ready, bool& alloc_accepted, bool& alloc_invalid_mask,
+        uint8_t& alloc_ftq_idx, uint32_t& alloc_generation,
+        bool& retire_accepted, bool& retire_rejected,
+        bool& squash_accepted, bool& squash_rejected,
+        bool& redirect_accepted, bool& redirect_rejected,
+        bool& reclaimed, uint8_t& reclaimed_ftq_idx,
+        bool& read_hit, uint64_t& read_pc, uint8_t& read_packet_mask,
+        uint8_t& read_live_mask, bool& read_prediction_valid,
+        bool& read_predicted_taken, bool& read_target_valid,
+        uint64_t& read_predicted_target, uint8_t& read_cfi_lane,
+        uint8_t& read_cfi_type, uint8_t& read_metadata_index,
+        uint32_t& read_predictor_generation, uint32_t& read_entry_generation,
+        bool& empty, bool& full, uint8_t& head, uint8_t& tail,
+        uint8_t& count) {
+    static boom::FtqFoundation<Depth, FullPayloadReset> ftq;
+    boom::FtqStepInput input;
+    input.reset = reset;
+    input.alloc_valid = alloc_valid;
+    input.allocation.packet_base_pc = alloc_pc;
+    input.allocation.packet_valid_mask = alloc_mask;
+    input.allocation.prediction_valid = prediction_valid;
+    input.allocation.predicted_taken = predicted_taken;
+    input.allocation.target_valid = target_valid;
+    input.allocation.predicted_target = predicted_target;
+    input.allocation.cfi_lane = cfi_lane;
+    input.allocation.cfi_type = cfi_type;
+    input.allocation.predictor_metadata_index = metadata_index;
+    input.allocation.predictor_generation = predictor_generation;
+    input.retire.valid = retire_valid;
+    input.retire.ftq_idx = retire_idx;
+    input.retire.lane = retire_lane;
+    input.retire.generation = retire_generation;
+    input.squash.valid = squash_valid;
+    input.squash.ftq_idx = squash_idx;
+    input.squash.lane = squash_lane;
+    input.squash.generation = squash_generation;
+    input.redirect.valid = redirect_valid;
+    input.redirect.owner_ftq_idx = redirect_owner_idx;
+    input.redirect.owner_generation = redirect_owner_generation;
+    input.redirect.surviving_lane_mask = surviving_lane_mask;
+    input.read_valid = read_valid;
+    input.read_ftq_idx = read_idx;
+    input.read_generation = read_generation;
+    const boom::FtqStepOutput output = ftq.step(input);
+    alloc_ready = output.alloc_ready;
+    alloc_accepted = output.alloc_accepted;
+    alloc_invalid_mask = output.alloc_invalid_mask;
+    alloc_ftq_idx = output.alloc_ftq_idx;
+    alloc_generation = output.alloc_generation;
+    retire_accepted = output.retire_accepted;
+    retire_rejected = output.retire_rejected;
+    squash_accepted = output.squash_accepted;
+    squash_rejected = output.squash_rejected;
+    redirect_accepted = output.redirect_accepted;
+    redirect_rejected = output.redirect_rejected;
+    reclaimed = output.reclaimed;
+    reclaimed_ftq_idx = output.reclaimed_ftq_idx;
+    read_hit = output.read_hit;
+    read_pc = output.read_entry.packet_base_pc;
+    read_packet_mask = output.read_entry.packet_valid_mask;
+    read_live_mask = output.read_entry.live_lane_mask;
+    read_prediction_valid = output.read_entry.prediction_valid;
+    read_predicted_taken = output.read_entry.predicted_taken;
+    read_target_valid = output.read_entry.target_valid;
+    read_predicted_target = output.read_entry.predicted_target;
+    read_cfi_lane = output.read_entry.cfi_lane;
+    read_cfi_type = output.read_entry.cfi_type;
+    read_metadata_index = output.read_entry.predictor_metadata_index;
+    read_predictor_generation = output.read_entry.predictor_generation;
+    read_entry_generation = output.read_entry.generation;
+    empty = output.empty;
+    full = output.full;
+    head = output.head;
+    tail = output.tail;
+    count = output.count;
+}
+
+#define DEFINE_FTQ_TOP(name, depth) \
+void name( \
+        bool reset, bool alloc_valid, uint64_t alloc_pc, uint8_t alloc_mask, \
+        bool prediction_valid, bool predicted_taken, bool target_valid, \
+        uint64_t predicted_target, uint8_t cfi_lane, uint8_t cfi_type, \
+        uint8_t metadata_index, uint32_t predictor_generation, \
+        bool retire_valid, uint8_t retire_idx, uint8_t retire_lane, \
+        uint32_t retire_generation, \
+        bool squash_valid, uint8_t squash_idx, uint8_t squash_lane, \
+        uint32_t squash_generation, \
+        bool redirect_valid, uint8_t redirect_owner_idx, \
+        uint32_t redirect_owner_generation, uint8_t surviving_lane_mask, \
+        bool read_valid, uint8_t read_idx, uint32_t read_generation, \
+        bool& alloc_ready, bool& alloc_accepted, bool& alloc_invalid_mask, \
+        uint8_t& alloc_ftq_idx, uint32_t& alloc_generation, \
+        bool& retire_accepted, bool& retire_rejected, \
+        bool& squash_accepted, bool& squash_rejected, \
+        bool& redirect_accepted, bool& redirect_rejected, \
+        bool& reclaimed, uint8_t& reclaimed_ftq_idx, \
+        bool& read_hit, uint64_t& read_pc, uint8_t& read_packet_mask, \
+        uint8_t& read_live_mask, bool& read_prediction_valid, \
+        bool& read_predicted_taken, bool& read_target_valid, \
+        uint64_t& read_predicted_target, uint8_t& read_cfi_lane, \
+        uint8_t& read_cfi_type, uint8_t& read_metadata_index, \
+        uint32_t& read_predictor_generation, uint32_t& read_entry_generation, \
+        bool& empty, bool& full, uint8_t& head, uint8_t& tail, \
+        uint8_t& count) { \
+    synth_ftq_step<depth>( \
+        reset, alloc_valid, alloc_pc, alloc_mask, prediction_valid, \
+        predicted_taken, target_valid, predicted_target, cfi_lane, cfi_type, \
+        metadata_index, predictor_generation, retire_valid, retire_idx, retire_lane, \
+        retire_generation, squash_valid, squash_idx, squash_lane, \
+        squash_generation, redirect_valid, redirect_owner_idx, \
+        redirect_owner_generation, surviving_lane_mask, read_valid, read_idx, \
+        read_generation, alloc_ready, alloc_accepted, alloc_invalid_mask, \
+        alloc_ftq_idx, alloc_generation, retire_accepted, retire_rejected, \
+        squash_accepted, squash_rejected, redirect_accepted, \
+        redirect_rejected, reclaimed, reclaimed_ftq_idx, read_hit, read_pc, \
+        read_packet_mask, read_live_mask, read_prediction_valid, \
+        read_predicted_taken, read_target_valid, read_predicted_target, \
+        read_cfi_lane, read_cfi_type, read_metadata_index, \
+        read_predictor_generation, read_entry_generation, empty, full, head, \
+        tail, count); \
+}
+
+DEFINE_FTQ_TOP(synth_ftq_top, 32)
+DEFINE_FTQ_TOP(synth_ftq_8_top, 8)
+DEFINE_FTQ_TOP(synth_ftq_16_top, 16)
+DEFINE_FTQ_TOP(synth_ftq_32_top, 32)
+DEFINE_FTQ_TOP(synth_ftq_64_top, 64)
+
+void synth_ftq_32_full_reset_top(
+        bool reset, bool alloc_valid, uint64_t alloc_pc, uint8_t alloc_mask,
+        bool prediction_valid, bool predicted_taken, bool target_valid,
+        uint64_t predicted_target, uint8_t cfi_lane, uint8_t cfi_type,
+        uint8_t metadata_index, uint32_t predictor_generation,
+        bool retire_valid, uint8_t retire_idx, uint8_t retire_lane,
+        uint32_t retire_generation,
+        bool squash_valid, uint8_t squash_idx, uint8_t squash_lane,
+        uint32_t squash_generation,
+        bool redirect_valid, uint8_t redirect_owner_idx,
+        uint32_t redirect_owner_generation, uint8_t surviving_lane_mask,
+        bool read_valid, uint8_t read_idx, uint32_t read_generation,
+        bool& alloc_ready, bool& alloc_accepted, bool& alloc_invalid_mask,
+        uint8_t& alloc_ftq_idx, uint32_t& alloc_generation,
+        bool& retire_accepted, bool& retire_rejected,
+        bool& squash_accepted, bool& squash_rejected,
+        bool& redirect_accepted, bool& redirect_rejected,
+        bool& reclaimed, uint8_t& reclaimed_ftq_idx,
+        bool& read_hit, uint64_t& read_pc, uint8_t& read_packet_mask,
+        uint8_t& read_live_mask, bool& read_prediction_valid,
+        bool& read_predicted_taken, bool& read_target_valid,
+        uint64_t& read_predicted_target, uint8_t& read_cfi_lane,
+        uint8_t& read_cfi_type, uint8_t& read_metadata_index,
+        uint32_t& read_predictor_generation, uint32_t& read_entry_generation,
+        bool& empty, bool& full, uint8_t& head, uint8_t& tail,
+        uint8_t& count) {
+    synth_ftq_step<32, true>(
+        reset, alloc_valid, alloc_pc, alloc_mask, prediction_valid,
+        predicted_taken, target_valid, predicted_target, cfi_lane, cfi_type,
+        metadata_index, predictor_generation, retire_valid, retire_idx, retire_lane,
+        retire_generation, squash_valid, squash_idx, squash_lane,
+        squash_generation, redirect_valid, redirect_owner_idx,
+        redirect_owner_generation, surviving_lane_mask, read_valid, read_idx,
+        read_generation, alloc_ready, alloc_accepted, alloc_invalid_mask,
+        alloc_ftq_idx, alloc_generation, retire_accepted, retire_rejected,
+        squash_accepted, squash_rejected, redirect_accepted,
+        redirect_rejected, reclaimed, reclaimed_ftq_idx, read_hit, read_pc,
+        read_packet_mask, read_live_mask, read_prediction_valid,
+        read_predicted_taken, read_target_valid, read_predicted_target,
+        read_cfi_lane, read_cfi_type, read_metadata_index,
+        read_predictor_generation, read_entry_generation, empty, full, head,
+        tail, count);
+}
+
+#undef DEFINE_FTQ_TOP
 
 void synth_fetch_packet_top(
         uint64_t pc, uint32_t instruction, uint32_t fetch_id,

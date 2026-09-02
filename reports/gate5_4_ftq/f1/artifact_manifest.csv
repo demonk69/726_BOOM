@@ -1,0 +1,26 @@
+artifact,role,status,evidence
+include/ftq.hpp,standalone API,VERIFIED,source inspection
+src/ftq.cpp,canonical standalone implementation,VERIFIED,source inspection
+src/synth_module_tops.cpp,scalar synthesis wrappers,VERIFIED,csynth reports
+src/boom_core_merged.cpp,generated merged source,PASS,regression_after.md
+tb/differential/ftq_tests.cpp,directed and bounded exhaustive,PASS_275944648,logs/ftq_directed.log
+tb/differential/ftq_random_tests.cpp,persistent random differential,PASS_587202560,logs/ftq_random.log
+tb/differential/predictor_ftq_composition_tests.cpp,P1/P2/F1 composition,PASS_11080,logs/ftq_composition.log
+rtl_tb/ftq_rtl_tb.sv,generated RTL testbench,PASS_193,logs/rtl/xsim.log
+scripts/gate5_4/run_f1_ftq_native.sh,native runner,PASS,logs/ftq_directed.log
+scripts/gate5_4/run_f1_ftq_random.sh,random runner,PASS,logs/ftq_random.log
+scripts/gate5_4/run_f1_ftq_rtl.sh,RTL runner,PASS,logs/rtl/xsim.log
+scripts/gate5_4/run_f1_ftq_csynth.sh,isolated synthesis runner,PASS_7_OF_7,csynth/summary.csv
+reports/gate5_4_ftq/f1/csynth/d8_auto.rpt,depth 8 AUTO csynth,PASS,ftq_depth_sweep.csv
+reports/gate5_4_ftq/f1/csynth/d16_auto.rpt,depth 16 AUTO csynth,PASS,ftq_depth_sweep.csv
+reports/gate5_4_ftq/f1/csynth/d32_auto.rpt,depth 32 AUTO csynth,PASS,ftq_depth_sweep.csv
+reports/gate5_4_ftq/f1/csynth/d64_auto.rpt,depth 64 AUTO csynth,PASS,ftq_depth_sweep.csv
+reports/gate5_4_ftq/f1/csynth/d32_lutram.rpt,depth 32 LUTRAM csynth,PASS_SELECTED,storage_experiments.csv
+reports/gate5_4_ftq/f1/csynth/d32_bram.rpt,depth 32 BRAM csynth,PASS,storage_experiments.csv
+reports/gate5_4_ftq/f1/csynth/d32_full_reset.rpt,depth 32 payload-reset csynth,PASS,reset_experiments.csv
+reports/gate5_4_ftq/f1/csynth/preserve_frontend.rpt,product Frontend preservation,PASS,regression_after.md
+reports/gate5_4_ftq/f1/csynth/preserve_predictor.rpt,P2 predictor preservation,PASS,regression_after.md
+reports/gate5_4_ftq/f1/source_hashes_before.txt,protected baseline,CAPTURED,baseline_manifest.md
+reports/gate5_4_ftq/f1/source_hashes_after.txt,protected final,IDENTICAL,regression_after.md
+reports/gate5_4_ftq/f1/git_status_before.txt,dirty baseline,CAPTURED,baseline_manifest.md
+reports/gate5_4_ftq/f1/workspace_hygiene_check.md,workspace audit,PASS,repository size below threshold and build root 24KB

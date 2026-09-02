@@ -1,0 +1,12 @@
+area,result,evidence
+reset,PASS,full partial wrapped and pending-reclaim states
+allocation,PASS,mask00 no-op mask01 mask11 and illegal mask10/high bits
+capacity,PASS,empty full and no overwrite
+wrap,PASS,head tail and same-step reclaim/allocation
+live_tracking,PASS,lane0 lane1 retire squash duplicate and underflow rejection
+ordered_reclaim,PASS,younger zero-live retained until head advances
+redirect,PASS,owner retention younger suffix kill same-packet lane kill stale owner
+exception_abstract,PASS,retain-owner/kill-younger capture contract
+metadata,PASS,PC prediction target CFI BIM index and generation roundtrip
+depths,PASS,8/16/32/64
+summary,PASS,275944648 checks 0 failures

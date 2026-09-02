@@ -1,0 +1,15 @@
+field,bits,producer,lifetime,notes
+valid,1,FTQ allocator,allocation_to_reclaim,reachability control
+packet_base_pc,64,accepted packet,allocation_to_reclaim,oldest instruction start or carry_pc
+packet_valid_mask,2,accepted packet,allocation_to_reclaim,legal nonempty masks 01 or 11
+live_lane_mask,2,FTQ allocator,allocation_to_reclaim,popcount is live-uop count and lane identity prevents duplicate decrement
+prediction_valid,1,P2 predictor,allocation_to_reclaim,false distinguishes no prediction
+predicted_taken,1,P2 predictor,allocation_to_reclaim,stored only when prediction_valid
+target_valid,1,P2 predictor,allocation_to_reclaim,qualifies predicted_target
+predicted_target,64,P1/P2,allocation_to_reclaim,zeroed when target is invalid
+cfi_lane,1,P1/P2,allocation_to_reclaim,earliest valid CFI lane
+cfi_type,2,P1/P2,allocation_to_reclaim,NONE/CONDITIONAL/JAL/JALR
+predictor_metadata_index,8,P2 predictor,allocation_to_future_update,exact BIM index; not recomputed
+predictor_generation,32,P2 predictor,allocation_to_future_update,active predictor epoch retained for future qualified update
+generation,32,FTQ allocator,allocation_to_reclaim,per-allocation stale-reference identity
+TOTAL,211,,,,

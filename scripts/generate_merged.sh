@@ -24,6 +24,7 @@ cat > "$OUT" << 'HEAD'
 #include "rvc.hpp"
 #include "predecode.hpp"
 #include "predictor.hpp"
+#include "ftq.hpp"
 #if defined(BOOM_USE_AP_INT) || defined(__SYNTHESIS__)
 #include <ap_int.h>
 #endif
@@ -47,6 +48,9 @@ grep -v '#include' "$BASE/src/predecode.cpp" >> "$OUT"
 echo "" >> "$OUT"
 echo "// ==== predictor.cpp ====" >> "$OUT"
 grep -v '#include' "$BASE/src/predictor.cpp" >> "$OUT"
+echo "" >> "$OUT"
+echo "// ==== ftq.cpp ====" >> "$OUT"
+grep -v '#include' "$BASE/src/ftq.cpp" >> "$OUT"
 echo "" >> "$OUT"
 echo "// ==== frontend.cpp ====" >> "$OUT"
 grep -v '#include' "$BASE/src/frontend.cpp" >> "$OUT"
