@@ -13,6 +13,7 @@
 #include "fetch_buffer.hpp"
 #include "fetch_packet.hpp"
 #include "rvc.hpp"
+#include "predecode.hpp"
 #if defined(BOOM_USE_AP_INT) || defined(__SYNTHESIS__)
 #include <ap_int.h>
 #endif
@@ -246,6 +247,112 @@ FetchPacketResult build_fetch_packet(const FetchPacketInput& input) {
     append_parcel(result, upper_pc, upper, input.fetch_id);
     result.next_pc = upper_pc + 2;
     return result;
+}
+
+}  // namespace boom
+
+// ==== predecode.cpp ====
+
+namespace boom {
+namespace {
+
+static int64_t predecode_sign_extend(uint32_t value, unsigned width) {
+    const uint64_t sign = uint64_t(1) << (width - 1);
+    return static_cast<int64_t>((static_cast<uint64_t>(value) ^ sign) - sign);
+}
+
+static int64_t predecode_branch_immediate(uint32_t instruction) {
+    const uint32_t immediate =
+        ((instruction >> 31) & 0x1u) << 12 |
+        ((instruction >> 7) & 0x1u) << 11 |
+        ((instruction >> 25) & 0x3fu) << 5 |
+        ((instruction >> 8) & 0xfu) << 1;
+    return predecode_sign_extend(immediate, 13);
+}
+
+static int64_t predecode_jal_immediate(uint32_t instruction) {
+    const uint32_t immediate =
+        ((instruction >> 31) & 0x1u) << 20 |
+        ((instruction >> 12) & 0xffu) << 12 |
+        ((instruction >> 20) & 0x1u) << 11 |
+        ((instruction >> 21) & 0x3ffu) << 1;
+    return predecode_sign_extend(immediate, 21);
+}
+
+static bool predecode_is_link_register(uint32_t reg) {
+    return reg == 1u || reg == 5u;
+}
+
+}  // namespace
+
+CfiPredecodeResult predecode_cfi(uint64_t pc, uint32_t instruction,
+                                 bool is_rvc) {
+    CfiPredecodeResult result;
+    result.valid = true;
+    result.instruction_length = is_rvc ? 2 : 4;
+
+    const uint32_t opcode = instruction & 0x7fu;
+    const uint32_t funct3 = (instruction >> 12) & 0x7u;
+    const uint32_t rd = (instruction >> 7) & 0x1fu;
+    const uint32_t rs1 = (instruction >> 15) & 0x1fu;
+
+    const bool legal_branch_funct3 = funct3 == 0u || funct3 == 1u ||
+        funct3 == 4u || funct3 == 5u || funct3 == 6u || funct3 == 7u;
+    if (opcode == 0x63u && legal_branch_funct3) {
+        result.is_cfi = true;
+        result.cfi_type = CFI_CONDITIONAL_BRANCH;
+        result.is_conditional = true;
+        result.static_target_valid = true;
+        result.static_target = pc +
+            static_cast<uint64_t>(predecode_branch_immediate(instruction));
+    } else if (opcode == 0x6fu) {
+        result.is_cfi = true;
+        result.cfi_type = CFI_JAL;
+        result.is_jal = true;
+        result.is_call = predecode_is_link_register(rd);
+        result.static_target_valid = true;
+        result.static_target = pc +
+            static_cast<uint64_t>(predecode_jal_immediate(instruction));
+    } else if (opcode == 0x67u && funct3 == 0u) {
+        result.is_cfi = true;
+        result.cfi_type = CFI_JALR;
+        result.is_jalr = true;
+        result.is_call = predecode_is_link_register(rd);
+        const uint32_t immediate = instruction >> 20;
+        result.is_return = rd == 0u && predecode_is_link_register(rs1) &&
+            immediate == 0u;
+    }
+
+    return result;
+}
+
+CfiPacketPredecodeResult predecode_cfi_packet(
+    uint8_t valid_mask,
+    uint64_t lane0_pc, uint32_t lane0_instruction, bool lane0_is_rvc,
+    uint64_t lane1_pc, uint32_t lane1_instruction, bool lane1_is_rvc) {
+    CfiPacketPredecodeResult packet;
+    const CfiPredecodeResult lane0 =
+        predecode_cfi(lane0_pc, lane0_instruction, lane0_is_rvc);
+    const CfiPredecodeResult lane1 =
+        predecode_cfi(lane1_pc, lane1_instruction, lane1_is_rvc);
+
+    if ((valid_mask & 0x1u) != 0 && lane0.is_cfi) {
+        packet.packet_has_cfi = true;
+        packet.selected_cfi_lane = 0;
+        packet.selected_cfi_result = lane0;
+        packet.younger_lane_mask = valid_mask & 0x2u;
+    } else if ((valid_mask & 0x2u) != 0 && lane1.is_cfi) {
+        packet.packet_has_cfi = true;
+        packet.selected_cfi_lane = 1;
+        packet.selected_cfi_result = lane1;
+    }
+    return packet;
+}
+
+uint8_t mask_younger_packet_lanes(uint8_t valid_mask,
+                                  const CfiPacketPredecodeResult& packet) {
+    return packet.packet_has_cfi ?
+        static_cast<uint8_t>(valid_mask & ~packet.younger_lane_mask) : valid_mask;
 }
 
 }  // namespace boom
@@ -3896,6 +4003,52 @@ extern void branch_complete_event(BoomCoreState& state, const MicroOp& uop,
                                   bool mispredict, uint64_t redirect_pc);
 extern void lsu_module(BoomCoreState& state, PipeSignals& pipe);
 extern void rob_commit_module(BoomCoreState& state, PipeSignals& pipe);
+}
+
+void synth_predecode_top(
+        uint64_t pc, uint32_t instruction, bool is_rvc,
+        bool& valid, bool& is_cfi, uint8_t& cfi_type,
+        bool& is_conditional, bool& is_jal, bool& is_jalr,
+        bool& is_call, bool& is_return,
+        bool& static_target_valid, uint64_t& static_target,
+        uint8_t& instruction_length) {
+    const boom::CfiPredecodeResult result =
+        boom::predecode_cfi(pc, instruction, is_rvc);
+    valid = result.valid;
+    is_cfi = result.is_cfi;
+    cfi_type = result.cfi_type;
+    is_conditional = result.is_conditional;
+    is_jal = result.is_jal;
+    is_jalr = result.is_jalr;
+    is_call = result.is_call;
+    is_return = result.is_return;
+    static_target_valid = result.static_target_valid;
+    static_target = result.static_target;
+    instruction_length = result.instruction_length;
+}
+
+void synth_predecode_packet_top(
+        uint8_t valid_mask,
+        uint64_t lane0_pc, uint32_t lane0_instruction, bool lane0_is_rvc,
+        uint64_t lane1_pc, uint32_t lane1_instruction, bool lane1_is_rvc,
+        bool& packet_has_cfi, uint8_t& selected_cfi_lane,
+        uint8_t& selected_cfi_type, bool& selected_is_call,
+        bool& selected_is_return, bool& selected_static_target_valid,
+        uint64_t& selected_static_target, uint8_t& younger_lane_mask,
+        uint8_t& predicted_taken_effective_mask) {
+    const boom::CfiPacketPredecodeResult packet = boom::predecode_cfi_packet(
+        valid_mask, lane0_pc, lane0_instruction, lane0_is_rvc,
+        lane1_pc, lane1_instruction, lane1_is_rvc);
+    packet_has_cfi = packet.packet_has_cfi;
+    selected_cfi_lane = packet.selected_cfi_lane;
+    selected_cfi_type = packet.selected_cfi_result.cfi_type;
+    selected_is_call = packet.selected_cfi_result.is_call;
+    selected_is_return = packet.selected_cfi_result.is_return;
+    selected_static_target_valid = packet.selected_cfi_result.static_target_valid;
+    selected_static_target = packet.selected_cfi_result.static_target;
+    younger_lane_mask = packet.younger_lane_mask;
+    predicted_taken_effective_mask =
+        boom::mask_younger_packet_lanes(valid_mask, packet);
 }
 
 void synth_fetch_packet_top(

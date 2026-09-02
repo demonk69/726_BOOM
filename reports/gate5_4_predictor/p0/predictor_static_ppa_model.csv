@@ -1,0 +1,9 @@
+structure,entries,counter_bits,index_bits,total_counter_bits,estimated_entry_bits,total_bits,likely_hls_storage,register_lutram_bram_risk,notes
+BIM,64,2,6,128,2,128,AUTO,"register/LUTRAM likely; BRAM inefficient","One read and one commit write"
+BIM,128,2,7,256,2,256,AUTO,"register/LUTRAM likely; BRAM inefficient","Selected sweep point not frozen"
+BIM,256,2,8,512,2,512,AUTO,"LUTRAM plausible; registers possible",foundation_reference_candidate
+BIM,512,2,9,1024,2,1024,AUTO,"LUTRAM likely; BRAM packing inefficient","Measure standalone before selection"
+BTB_DEFERRED,8,0,3,0,108,864,AUTO,"register/LUTRAM; wide compare/mux risk","Estimate valid1+tag39+target64+type3+cfi_lane1; generation is request/FTQ state not persistent BTB payload"
+BTB_DEFERRED,16,0,4,0,108,1728,AUTO,"LUTRAM plausible; wide compare/mux risk","Not foundation PPA authorization"
+BTB_DEFERRED,32,0,5,0,108,3456,AUTO,"LUTRAM/BRAM split uncertain","Not foundation PPA authorization"
+BTB_DEFERRED,64,0,6,0,108,6912,AUTO,"BRAM capacity plausible but wide ports costly","Not foundation PPA authorization"

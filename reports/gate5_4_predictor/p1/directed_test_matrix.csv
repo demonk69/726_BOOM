@@ -1,0 +1,8 @@
+area,cases_or_checks,status,evidence
+native_directed,994,PASS,logs/predecode_directed.log
+branch_funct3,BEQ_BNE_BLT_BGE_BLTU_BGEU,PASS,"positive negative zero min max multiple PCs/registers"
+JAL,"rd x0/x1/x5/other; positive negative zero min max",PASS,logs/predecode_directed.log
+JALR,"call return ordinary; immediate/register sweep",PASS,logs/predecode_directed.log
+RVC_directed,"C.BEQZ C.BNEZ C.J C.JR C.JALR C.EBREAK C.SRLI",PASS,logs/predecode_directed.log
+non_CFI,"ALU MUL DIV load store LUI AUIPC system illegal",PASS,logs/predecode_directed.log
+decode_cross,6206,PASS,logs/predecode_directed.log

@@ -1,0 +1,7 @@
+candidate,direction_prediction,target_prediction,jal_support,jalr_support,return_support,requires_predecode,requires_btb,requires_ras,requires_history,ftq_metadata_bits,state_bits,hls_complexity,verification_complexity,ppa_risk,future_extensibility,recommendation
+STATIC_NOT_TAKEN,static_not_taken,none,"redirect_at_execute",none,none,false,false,false,false,0,0,LOW,LOW,LOW,LOW,"insufficient; already implicit"
+BIM_ONLY,dynamic_conditional,none,"redirect_at_execute",none,none,true,false,false,false,"token+direction but no useful taken target","2*N counters",LOW,MEDIUM,LOW,MEDIUM,"incomplete because taken direction lacks redirect target"
+STATIC_TARGET_PREDECODE_PLUS_BIM,dynamic_conditional,"static branch/JAL",yes,no,no,true,false,false,false,"prediction fields+token+generation","2*N counters",MEDIUM,MEDIUM,LOW_TO_MEDIUM,HIGH,RECOMMENDED
+BTB_PLUS_BIM,dynamic,"BTB dynamic/cache",yes,yes_limited,yes_limited,true,true,false,false,"prediction+BTB token+generation","BIM plus BTB",HIGH,HIGH,MEDIUM,HIGH,DEFER
+BTB_PLUS_BIM_PLUS_RAS,dynamic,"BTB+RAS",yes,yes,yes,true,true,true,false,"prediction+BTB/RAS snapshots+generation","BIM+BTB+RAS",HIGH,HIGH,HIGH,HIGH,DEFER
+FULL_BOOM_STYLE_PREDICTOR_SCAFFOLD,multi_component,"multi_component",yes,yes,yes,true,true,true,true,"large opaque metadata/history snapshots",large,VERY_HIGH,VERY_HIGH,HIGH,HIGH,REJECT_FOR_FOUNDATION

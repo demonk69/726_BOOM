@@ -1,0 +1,17 @@
+artifact,role,status
+include/predecode.hpp,public standalone contract,VERIFIED
+src/predecode.cpp,combinational implementation,VERIFIED
+tb/differential/predecode_tests.cpp,directed/RVC exhaustive/Decode cross,994 checks PASS
+tb/differential/predecode_random_tests.cpp,structured plus one-million random oracle,PASS
+tb/differential/predecode_packet_tests.cpp,directed and persistent packet oracle,PASS
+rtl_tb/predecode_rtl_tb.sv,generated RTL observable testbench,51/51 PASS
+scripts/gate5_4/run_p1_predecode_native.sh,native launcher,PASS
+scripts/gate5_4/run_p1_predecode_random.sh,random launcher,PASS
+scripts/gate5_4/run_p1_predecode_rtl.sh,RTL launcher,PASS
+scripts/gate5_4/run_p1_predecode_csynth.sh,standalone synthesis launcher,PASS
+src/synth_module_tops.cpp,standalone scalar/packet wrappers,VERIFIED
+scripts/generate_merged.sh,canonical merged generator update,VERIFIED
+src/boom_core_merged.cpp,generated merged TU,COMPILE_PASS
+boom_hls_gate5_4_p1_synth_predecode_top/solution_module/syn/report/synth_predecode_top_csynth.rpt,scalar csynth,PASS
+boom_hls_gate5_4_p1_synth_predecode_packet_top/solution_module/syn/report/synth_predecode_packet_top_csynth.rpt,packet csynth,PASS
+reports/gate5_4_predictor/p1/logs/rtl/xsim.log,focused generated RTL,PASS

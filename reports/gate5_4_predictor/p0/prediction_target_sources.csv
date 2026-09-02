@@ -1,0 +1,9 @@
+cfi,static_target_available_from_instruction,needs_dynamic_target_prediction,needs_btb,needs_ras,needs_register_value,foundation_action,notes
+conditional_branch,true,false,false,false,false,"predecode PC+sign_extended_B_imm; BIM chooses taken","All RV conditional targets are PC-relative"
+JAL,true,false,false,false,false,"always taken to PC+sign_extended_J_imm","Call classification uses rd=x1/x5 but target remains static"
+JALR,false,true,"optional target cache",false,true,"do not predict; resolve in Execute","Actual target=(rs1+I_imm)&~1; instruction alone lacks rs1 value"
+C.BEQZ,true,false,false,false,false,"use decompressed canonical B immediate","RVC decompressor already preserves equivalent target"
+C.BNEZ,true,false,false,false,false,"use decompressed canonical B immediate","RVC decompressor already preserves equivalent target"
+C.J,true,false,false,false,false,"use decompressed canonical J immediate and always take","RV64 C.J expands to JAL rd=x0"
+C.JALR,false,true,"optional target cache","recommended later for return/call patterns",true,"do not predict in foundation","Expands to JALR rd=x1 rs1!=x0 imm=0"
+return,false,true,"optional",true,true,"do not predict in foundation","Recognize JALR rd=x0 rs1=x1/x5 imm=0; RAS predicts saved link without register read"

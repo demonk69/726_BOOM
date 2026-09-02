@@ -1,0 +1,20 @@
+REQUESTED_PATH: /home/lab_726/boom
+ACTUAL_GIT_WORKTREE: /home/lab_726/boom/hls_boom
+BRANCH: gate3.8-rtl-verification
+HEAD: ef051ca4e3673d663f9d10b55029c956fbc0052a
+STATUS: NONEMPTY
+STATUS_ENTRY_COUNT: 845
+TRACKED_MODIFIED_COUNT: 34
+
+The complete historical status is very large and predates P1. It includes generated
+RTL/HLS/report artifacts and backup logs. The tracked modifications at freeze time
+were `.gitignore`, historical report/log artifacts, `src/boom_all.cpp`, and
+`vitis_hls.log`. Existing uncommitted F0/P0 reports and predictor review docs were
+also present. No cleanup, reset, restore, checkout, or stash was performed.
+
+P1-specific protection observations:
+ M src/boom_all.cpp
+ ?? docs/predictor_architecture_review.md
+ ?? docs/predictor_parameterization.md
+ ?? reports/gate5_4_ftq/
+ ?? reports/gate5_4_predictor/
