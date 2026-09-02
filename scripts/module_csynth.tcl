@@ -10,7 +10,9 @@ if {[info exists ::env(BOOM_HLS_GATE)]} {
 }
 set ::env(BOOM_HLS_PROJECT) boom_hls_${gate}_$top
 set ::env(BOOM_HLS_SOLUTION) solution_module
-set ::env(BOOM_HLS_CFLAGS_EXTRA) ""
+if {![info exists ::env(BOOM_HLS_CFLAGS_EXTRA)]} {
+  set ::env(BOOM_HLS_CFLAGS_EXTRA) ""
+}
 
 source [file join [file dirname [info script]] create_project.tcl]
 source [file join [file dirname [info script]] .. directives baseline_directives.tcl]

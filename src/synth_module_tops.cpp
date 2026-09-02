@@ -9,6 +9,7 @@
 #include "fetch_buffer.hpp"
 #include "fetch_packet.hpp"
 #include "predecode.hpp"
+#include "predictor.hpp"
 
 extern void boom_core_step(BoomCoreState& state, PipeSignals& pipe);
 
@@ -72,6 +73,117 @@ void synth_predecode_packet_top(
     predicted_taken_effective_mask =
         boom::mask_younger_packet_lanes(valid_mask, packet);
 }
+
+template <std::size_t Entries, bool FullPayloadReset = false>
+static void synth_predictor_foundation_step(
+        bool reset, uint32_t active_generation,
+        bool req_valid, uint64_t req_pc, uint8_t req_cfi_lane,
+        uint8_t req_cfi_type, bool req_static_target_valid,
+        uint64_t req_static_target, uint32_t req_generation,
+        uint64_t req_token, bool resp_ready,
+        bool update_valid, bool update_commit_qualified,
+        uint8_t update_cfi_type, uint64_t update_pc,
+        uint16_t update_metadata_token, bool update_taken,
+        uint32_t update_generation,
+        bool& req_ready, bool& resp_valid, bool& prediction_valid,
+        bool& predicted_taken, bool& target_valid, uint64_t& target,
+        uint8_t& resp_cfi_lane, uint8_t& resp_cfi_type,
+        uint16_t& resp_metadata_token, uint32_t& resp_generation,
+        uint64_t& resp_request_token) {
+    static boom::PredictorFoundation<Entries, FullPayloadReset> predictor;
+    boom::PredictorStepInput input;
+    input.reset = reset;
+    input.active_generation = active_generation;
+    input.req_valid = req_valid;
+    input.request.pc = req_pc;
+    input.request.cfi_lane = req_cfi_lane;
+    input.request.cfi_type = req_cfi_type;
+    input.request.static_target_valid = req_static_target_valid;
+    input.request.static_target = req_static_target;
+    input.request.generation = req_generation;
+    input.request.request_token = req_token;
+    input.resp_ready = resp_ready;
+    input.update.valid = update_valid;
+    input.update.commit_qualified = update_commit_qualified;
+    input.update.cfi_type = update_cfi_type;
+    input.update.pc = update_pc;
+    input.update.metadata_token = update_metadata_token;
+    input.update.taken = update_taken;
+    input.update.generation = update_generation;
+    const boom::PredictorStepOutput output = predictor.step(input);
+    req_ready = output.req_ready;
+    resp_valid = output.resp_valid;
+    prediction_valid = output.response.prediction_valid;
+    predicted_taken = output.response.taken;
+    target_valid = output.response.target_valid;
+    target = output.response.target;
+    resp_cfi_lane = output.response.cfi_lane;
+    resp_cfi_type = output.response.cfi_type;
+    resp_metadata_token = output.response.metadata_token;
+    resp_generation = output.response.generation;
+    resp_request_token = output.response.request_token;
+}
+
+#define DEFINE_PREDICTOR_TOP(name, entries) \
+void name( \
+        bool reset, uint32_t active_generation, \
+        bool req_valid, uint64_t req_pc, uint8_t req_cfi_lane, \
+        uint8_t req_cfi_type, bool req_static_target_valid, \
+        uint64_t req_static_target, uint32_t req_generation, \
+        uint64_t req_token, bool resp_ready, \
+        bool update_valid, bool update_commit_qualified, \
+        uint8_t update_cfi_type, uint64_t update_pc, \
+        uint16_t update_metadata_token, bool update_taken, \
+        uint32_t update_generation, \
+        bool& req_ready, bool& resp_valid, bool& prediction_valid, \
+        bool& predicted_taken, bool& target_valid, uint64_t& target, \
+        uint8_t& resp_cfi_lane, uint8_t& resp_cfi_type, \
+        uint16_t& resp_metadata_token, uint32_t& resp_generation, \
+        uint64_t& resp_request_token) { \
+    synth_predictor_foundation_step<entries>( \
+        reset, active_generation, req_valid, req_pc, req_cfi_lane, \
+        req_cfi_type, req_static_target_valid, req_static_target, \
+        req_generation, req_token, resp_ready, update_valid, \
+        update_commit_qualified, update_cfi_type, update_pc, \
+        update_metadata_token, update_taken, update_generation, req_ready, \
+        resp_valid, prediction_valid, predicted_taken, target_valid, target, \
+        resp_cfi_lane, resp_cfi_type, resp_metadata_token, resp_generation, \
+        resp_request_token); \
+}
+
+DEFINE_PREDICTOR_TOP(synth_predictor_foundation_top, 256)
+DEFINE_PREDICTOR_TOP(synth_predictor_foundation_64_top, 64)
+DEFINE_PREDICTOR_TOP(synth_predictor_foundation_128_top, 128)
+DEFINE_PREDICTOR_TOP(synth_predictor_foundation_256_top, 256)
+DEFINE_PREDICTOR_TOP(synth_predictor_foundation_512_top, 512)
+
+void synth_predictor_foundation_full_reset_top(
+        bool reset, uint32_t active_generation,
+        bool req_valid, uint64_t req_pc, uint8_t req_cfi_lane,
+        uint8_t req_cfi_type, bool req_static_target_valid,
+        uint64_t req_static_target, uint32_t req_generation,
+        uint64_t req_token, bool resp_ready,
+        bool update_valid, bool update_commit_qualified,
+        uint8_t update_cfi_type, uint64_t update_pc,
+        uint16_t update_metadata_token, bool update_taken,
+        uint32_t update_generation,
+        bool& req_ready, bool& resp_valid, bool& prediction_valid,
+        bool& predicted_taken, bool& target_valid, uint64_t& target,
+        uint8_t& resp_cfi_lane, uint8_t& resp_cfi_type,
+        uint16_t& resp_metadata_token, uint32_t& resp_generation,
+        uint64_t& resp_request_token) {
+    synth_predictor_foundation_step<256, true>(
+        reset, active_generation, req_valid, req_pc, req_cfi_lane,
+        req_cfi_type, req_static_target_valid, req_static_target,
+        req_generation, req_token, resp_ready, update_valid,
+        update_commit_qualified, update_cfi_type, update_pc,
+        update_metadata_token, update_taken, update_generation, req_ready,
+        resp_valid, prediction_valid, predicted_taken, target_valid, target,
+        resp_cfi_lane, resp_cfi_type, resp_metadata_token, resp_generation,
+        resp_request_token);
+}
+
+#undef DEFINE_PREDICTOR_TOP
 
 void synth_fetch_packet_top(
         uint64_t pc, uint32_t instruction, uint32_t fetch_id,

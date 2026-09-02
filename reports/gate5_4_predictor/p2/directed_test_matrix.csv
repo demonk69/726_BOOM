@@ -1,0 +1,9 @@
+area,depths,checks,failures,status,evidence
+all_directed,"64;128;256;512",5008,0,PASS,logs/predictor_directed.log
+initial_state,"64;128;256;512",all_entries,0,PASS,"invalid reads weak not-taken"
+counter_transitions,"64;128;256;512","01-10-11 and 11-10-01-00",0,PASS,logs/predictor_directed.log
+saturation,"64;128;256;512","00 and 11",0,PASS,logs/predictor_directed.log
+update_filtering,"64;128;256;512","commit/type/generation/metadata",0,PASS,logs/predictor_directed.log
+collision_forwarding,"64;128;256;512",same_index,0,PASS,logs/predictor_directed.log
+handshake,"64;128;256;512","accept N/response N+1/hold/no turnover",0,PASS,logs/predictor_directed.log
+cfi_policy,"64;128;256;512","conditional/JAL/JALR/NONE",0,PASS,logs/predictor_directed.log

@@ -1,0 +1,15 @@
+
+****** xsim v2021.2 (64-bit)
+  **** SW Build 3367213 on Tue Oct 19 02:47:39 MDT 2021
+  **** IP Build 3369179 on Thu Oct 21 08:25:16 MDT 2021
+    ** Copyright 1986-2021 Xilinx, Inc. All Rights Reserved.
+
+source xsim.dir/predictor_foundation_rtl_sim/xsim_script.tcl
+# xsim {predictor_foundation_rtl_sim} -autoloadwcfg -runall
+Time resolution is 1 ps
+run -all
+PREDICTOR_FOUNDATION_RTL,checks=164,failures=0
+GATE5_4_P2_PREDICTOR_RTL_PASS
+$finish called at time : 11310 ns : File "/home/lab_726/boom/hls_boom/rtl_tb/predictor_foundation_rtl_tb.sv" Line 291
+exit
+INFO: [Common 17-206] Exiting xsim at Wed Sep  2 10:54:06 2026...

@@ -14,6 +14,7 @@
 #include "fetch_packet.hpp"
 #include "rvc.hpp"
 #include "predecode.hpp"
+#include "predictor.hpp"
 #if defined(BOOM_USE_AP_INT) || defined(__SYNTHESIS__)
 #include <ap_int.h>
 #endif
@@ -354,6 +355,98 @@ uint8_t mask_younger_packet_lanes(uint8_t valid_mask,
     return packet.packet_has_cfi ?
         static_cast<uint8_t>(valid_mask & ~packet.younger_lane_mask) : valid_mask;
 }
+
+}  // namespace boom
+
+// ==== predictor.cpp ====
+
+namespace boom {
+
+template <std::size_t Entries, bool FullPayloadReset>
+PredictorFoundation<Entries, FullPayloadReset>::PredictorFoundation()
+    : response_pending_(false), pending_response_() {
+    for (std::size_t i = 0; i < Entries; ++i) valid_[i] = false;
+}
+
+template <std::size_t Entries, bool FullPayloadReset>
+PredictorStepOutput PredictorFoundation<Entries, FullPayloadReset>::step(
+    const PredictorStepInput& input) {
+#if defined(BOOM_PREDICTOR_STORAGE_LUTRAM)
+#pragma HLS bind_storage variable=counters_ type=RAM_2P impl=LUTRAM
+#elif defined(BOOM_PREDICTOR_STORAGE_BRAM)
+#pragma HLS bind_storage variable=counters_ type=RAM_2P impl=BRAM
+#endif
+    PredictorStepOutput output;
+    output.req_ready = !response_pending_ && !input.reset;
+    output.resp_valid = response_pending_ && !input.reset;
+    if (response_pending_) output.response = pending_response_;
+
+    if (input.reset) {
+        for (std::size_t i = 0; i < Entries; ++i) {
+            valid_[i] = false;
+            if (FullPayloadReset) counters_[i] = 1;
+        }
+        response_pending_ = false;
+        return output;
+    }
+
+    const std::size_t update_index = static_cast<std::size_t>(
+        (input.update.pc >> 1) & static_cast<uint64_t>(Entries - 1));
+    const bool train = input.update.valid && input.update.commit_qualified &&
+        input.update.cfi_type == CFI_CONDITIONAL_BRANCH &&
+        input.update.generation == input.active_generation &&
+        input.update.metadata_token == update_index;
+    uint8_t updated_counter = 0;
+    if (train) {
+        const uint8_t old_counter = valid_[update_index] ?
+            counters_[update_index] : static_cast<uint8_t>(1);
+        updated_counter = input.update.taken ?
+            static_cast<uint8_t>(old_counter == 3 ? 3 : old_counter + 1) :
+            static_cast<uint8_t>(old_counter == 0 ? 0 : old_counter - 1);
+        counters_[update_index] = updated_counter;
+        valid_[update_index] = true;
+    }
+
+    if (response_pending_) {
+        if (input.resp_ready) response_pending_ = false;
+        return output;
+    }
+
+    if (input.req_valid && output.req_ready) {
+        const PredictorRequest& request = input.request;
+        const std::size_t request_index = static_cast<std::size_t>(
+            (request.pc >> 1) & static_cast<uint64_t>(Entries - 1));
+        PredictorResponse response;
+        response.cfi_lane = request.cfi_lane;
+        response.cfi_type = request.cfi_type;
+        response.metadata_token = static_cast<uint16_t>(request_index);
+        response.generation = request.generation;
+        response.request_token = request.request_token;
+
+        if (request.cfi_type == CFI_CONDITIONAL_BRANCH) {
+            const uint8_t counter = train && update_index == request_index ?
+                updated_counter : (valid_[request_index] ?
+                    counters_[request_index] : static_cast<uint8_t>(1));
+            response.prediction_valid = true;
+            response.taken = (counter & 2u) != 0;
+            response.target_valid = response.taken && request.static_target_valid;
+        } else if (request.cfi_type == CFI_JAL) {
+            response.prediction_valid = true;
+            response.taken = true;
+            response.target_valid = request.static_target_valid;
+        }
+        response.target = response.target_valid ? request.static_target : 0;
+        pending_response_ = response;
+        response_pending_ = true;
+    }
+    return output;
+}
+
+template class PredictorFoundation<64>;
+template class PredictorFoundation<128>;
+template class PredictorFoundation<256>;
+template class PredictorFoundation<512>;
+template class PredictorFoundation<256, true>;
 
 }  // namespace boom
 
@@ -4050,6 +4143,117 @@ void synth_predecode_packet_top(
     predicted_taken_effective_mask =
         boom::mask_younger_packet_lanes(valid_mask, packet);
 }
+
+template <std::size_t Entries, bool FullPayloadReset = false>
+static void synth_predictor_foundation_step(
+        bool reset, uint32_t active_generation,
+        bool req_valid, uint64_t req_pc, uint8_t req_cfi_lane,
+        uint8_t req_cfi_type, bool req_static_target_valid,
+        uint64_t req_static_target, uint32_t req_generation,
+        uint64_t req_token, bool resp_ready,
+        bool update_valid, bool update_commit_qualified,
+        uint8_t update_cfi_type, uint64_t update_pc,
+        uint16_t update_metadata_token, bool update_taken,
+        uint32_t update_generation,
+        bool& req_ready, bool& resp_valid, bool& prediction_valid,
+        bool& predicted_taken, bool& target_valid, uint64_t& target,
+        uint8_t& resp_cfi_lane, uint8_t& resp_cfi_type,
+        uint16_t& resp_metadata_token, uint32_t& resp_generation,
+        uint64_t& resp_request_token) {
+    static boom::PredictorFoundation<Entries, FullPayloadReset> predictor;
+    boom::PredictorStepInput input;
+    input.reset = reset;
+    input.active_generation = active_generation;
+    input.req_valid = req_valid;
+    input.request.pc = req_pc;
+    input.request.cfi_lane = req_cfi_lane;
+    input.request.cfi_type = req_cfi_type;
+    input.request.static_target_valid = req_static_target_valid;
+    input.request.static_target = req_static_target;
+    input.request.generation = req_generation;
+    input.request.request_token = req_token;
+    input.resp_ready = resp_ready;
+    input.update.valid = update_valid;
+    input.update.commit_qualified = update_commit_qualified;
+    input.update.cfi_type = update_cfi_type;
+    input.update.pc = update_pc;
+    input.update.metadata_token = update_metadata_token;
+    input.update.taken = update_taken;
+    input.update.generation = update_generation;
+    const boom::PredictorStepOutput output = predictor.step(input);
+    req_ready = output.req_ready;
+    resp_valid = output.resp_valid;
+    prediction_valid = output.response.prediction_valid;
+    predicted_taken = output.response.taken;
+    target_valid = output.response.target_valid;
+    target = output.response.target;
+    resp_cfi_lane = output.response.cfi_lane;
+    resp_cfi_type = output.response.cfi_type;
+    resp_metadata_token = output.response.metadata_token;
+    resp_generation = output.response.generation;
+    resp_request_token = output.response.request_token;
+}
+
+#define DEFINE_PREDICTOR_TOP(name, entries) \
+void name( \
+        bool reset, uint32_t active_generation, \
+        bool req_valid, uint64_t req_pc, uint8_t req_cfi_lane, \
+        uint8_t req_cfi_type, bool req_static_target_valid, \
+        uint64_t req_static_target, uint32_t req_generation, \
+        uint64_t req_token, bool resp_ready, \
+        bool update_valid, bool update_commit_qualified, \
+        uint8_t update_cfi_type, uint64_t update_pc, \
+        uint16_t update_metadata_token, bool update_taken, \
+        uint32_t update_generation, \
+        bool& req_ready, bool& resp_valid, bool& prediction_valid, \
+        bool& predicted_taken, bool& target_valid, uint64_t& target, \
+        uint8_t& resp_cfi_lane, uint8_t& resp_cfi_type, \
+        uint16_t& resp_metadata_token, uint32_t& resp_generation, \
+        uint64_t& resp_request_token) { \
+    synth_predictor_foundation_step<entries>( \
+        reset, active_generation, req_valid, req_pc, req_cfi_lane, \
+        req_cfi_type, req_static_target_valid, req_static_target, \
+        req_generation, req_token, resp_ready, update_valid, \
+        update_commit_qualified, update_cfi_type, update_pc, \
+        update_metadata_token, update_taken, update_generation, req_ready, \
+        resp_valid, prediction_valid, predicted_taken, target_valid, target, \
+        resp_cfi_lane, resp_cfi_type, resp_metadata_token, resp_generation, \
+        resp_request_token); \
+}
+
+DEFINE_PREDICTOR_TOP(synth_predictor_foundation_top, 256)
+DEFINE_PREDICTOR_TOP(synth_predictor_foundation_64_top, 64)
+DEFINE_PREDICTOR_TOP(synth_predictor_foundation_128_top, 128)
+DEFINE_PREDICTOR_TOP(synth_predictor_foundation_256_top, 256)
+DEFINE_PREDICTOR_TOP(synth_predictor_foundation_512_top, 512)
+
+void synth_predictor_foundation_full_reset_top(
+        bool reset, uint32_t active_generation,
+        bool req_valid, uint64_t req_pc, uint8_t req_cfi_lane,
+        uint8_t req_cfi_type, bool req_static_target_valid,
+        uint64_t req_static_target, uint32_t req_generation,
+        uint64_t req_token, bool resp_ready,
+        bool update_valid, bool update_commit_qualified,
+        uint8_t update_cfi_type, uint64_t update_pc,
+        uint16_t update_metadata_token, bool update_taken,
+        uint32_t update_generation,
+        bool& req_ready, bool& resp_valid, bool& prediction_valid,
+        bool& predicted_taken, bool& target_valid, uint64_t& target,
+        uint8_t& resp_cfi_lane, uint8_t& resp_cfi_type,
+        uint16_t& resp_metadata_token, uint32_t& resp_generation,
+        uint64_t& resp_request_token) {
+    synth_predictor_foundation_step<256, true>(
+        reset, active_generation, req_valid, req_pc, req_cfi_lane,
+        req_cfi_type, req_static_target_valid, req_static_target,
+        req_generation, req_token, resp_ready, update_valid,
+        update_commit_qualified, update_cfi_type, update_pc,
+        update_metadata_token, update_taken, update_generation, req_ready,
+        resp_valid, prediction_valid, predicted_taken, target_valid, target,
+        resp_cfi_lane, resp_cfi_type, resp_metadata_token, resp_generation,
+        resp_request_token);
+}
+
+#undef DEFINE_PREDICTOR_TOP
 
 void synth_fetch_packet_top(
         uint64_t pc, uint32_t instruction, uint32_t fetch_id,

@@ -52,6 +52,8 @@ Gate 5.3 final update: standalone FIFO parameterization, scalar integration/deco
 
 Gate 5.4 P1 update: standalone stateless CFI predecode recognizes conditional/JAL/JALR including canonical RV64C expansions, computes exact direct targets, classifies x1/x5 calls/returns, and selects the earliest two-lane packet CFI. Directed 994/994, RV64C exhaustive 65,536 with zero false positives, one-million random words, 256x4096 random packets, generated RTL 51/51, and scalar/packet csynth pass. The scalar module is 639 LUT, 0 FF/BRAM/DSP, 2.442 ns, zero-cycle combinational, and unpipelined. It is not connected to product Frontend; Predictor/BIM/BTB/RAS/GHR/FTQ/ICache remain unimplemented.
 
+Gate 5.4 P2 update: the standalone predictor foundation is verified with a 256-entry, 2-bit PC-indexed BIM, LUTRAM storage, lazy valid initialization, commit-qualified generation/metadata-validated updates, and forwarded same-index update values. Directed 5,008/5,008, canonical predecode/RVC composition 10,620/10,620, random 75,497,472 checks, and generated LUTRAM RTL 164/164 pass with zero errors. Standalone HLS estimates are 684 LUT, 465 FF, 0 BRAM/DSP, and 2.989 ns; best-case top transaction latency is 3 and minimum II is 4, while the architectural API remains request call N/response call N+1. Product Frontend/FTQ/Execute/Commit are unchanged, no full-core PPA is claimed, `GATE5_4_P2_PREDICTOR_FOUNDATION_VERIFIED=true`, and `READY_FOR_GATE5_4_F1_FTQ_FOUNDATION=true`; product predictor/FTQ readiness and implementation remain false.
+
 Gate 4.0 W3 source scope: acceptance covers the modular `src/*.cpp` implementation plus generated `src/boom_core_merged.cpp` and public `src/boom_core_top.cpp` only. `src/boom_all.cpp` is a legacy, non-canonical, unreferenced monolithic snapshot; active build, test, RTL-generation, and csynth scripts do not consume it. It is excluded from source manifests and acceptance without deletion or rewrite. Pre-existing dirty tracked logs and backup logs are excluded non-deliverables and are not evidence.
 
 ## Implemented And Tested
@@ -87,7 +89,7 @@ Gate 4.0 W3 source scope: acceptance covers the modular `src/*.cpp` implementati
 
 - Full BOOM LSU behavior, DCache, ICache, MMU/Sv39, TLB, PTW, cache miss/replay, AMO/LRSC, and full memory-ordering semantics.
 - FPU and FP issue/register-read/writeback paths.
-- Branch predictor, BTB, BIM, TAGE, RAS, and FTQ.
+- Product-integrated branch predictor, BTB, BIM, TAGE, RAS, and FTQ. P2's BIM predictor is standalone only.
 - TileLink, L2, interrupts, full CSR file, privilege transitions.
 
 ## Latest Verification
