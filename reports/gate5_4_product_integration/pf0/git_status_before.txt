@@ -1,0 +1,53 @@
+Gate 5.4 PF0 pre-review Git status
+=================================
+
+Command root correction:
+  /home/lab_726/boom is not a Git worktree.
+  The actual worktree is /home/lab_726/boom/hls_boom.
+
+git branch --show-current
+  gate3.8-rtl-verification
+
+git rev-parse HEAD
+  a905d65d00f3c27f6bb2f1cfda7bbfc83c72edac
+
+git log -12 --oneline
+  a905d65 Gate 5.4 F1: verify standalone FTQ
+  7b6a7a6 Maintenance: establish repository hygiene policy
+  5bc5644 Gate 5.4 P2: verify standalone predictor foundation
+  fb1f347 Gate 5.4 P1: verify standalone CFI predecode
+  ef051ca Gate 5.3: finalize fetch buffer architecture
+  a48e527 Gate 5.3 B3I: verify two-lane fetch packet construction
+  c5e15ca Gate 5.3 B2: integrate fetch buffer with frontend
+  48f50e8 Gate 5.3 B1: verify standalone fetch buffer
+  dfaf8e9 Gate 5.2 R3: close RV64C decode gaps
+  db9d3b2 Gate 5.2 R2: verify mixed-width RVC fetch
+  c2b4e55 Gate 5.2 R1: verify standalone RVC decompressor
+  3f34691 Gate 5.1R: verify frontend foundation repair
+
+Tracked pre-existing modifications (`git status --short --untracked-files=no`):
+  .gitignore
+  reports/equivalence/provisional_gate3/hls_csim_trace.log
+  reports/gate3_9/regression_after_artifacts/logs/generate_merged.log
+  reports/gate3_9/regression_after_artifacts/logs/merged_compile.log
+  reports/gate4_0/w4/regression/w4e/product_full/logs/directed_tests.log
+  reports/gate4_0/w4/regression/w4e/product_full/logs/generate_merged.log
+  reports/gate5_2_rvc/r1/logs/rvc_decode_cross_tests.log
+  reports/gate5_2_rvc/r2/logs/canonical_csynth/core_csynth_summary.csv
+  reports/gate5_2_rvc/r2/logs/canonical_csynth/module_csynth_summary.csv
+  reports/gate5_2_rvc/r2/logs/gate5_1_preservation/xsim.log
+  reports/gate5_2_rvc/r2/logs/r2_csim.log
+  reports/gate5_2_rvc/r2/logs/r2_native.log
+  reports/gate5_2_rvc/r2/logs/rvc_fetch_random_tests.log
+  reports/gate5_2_rvc/r2/logs/rvc_fetch_tests.log
+  reports/gate5_2_rvc/r2/logs/xsim.log
+  reports/gate5_2_rvc/r2/r2_full_core_rtl_matrix.csv
+  reports/gate5_2_rvc/r2/r2_rtl_traces/*.jsonl (10 files)
+  reports/gate5_2_rvc/r2/rtl_test_matrix.csv
+  reports/gate5_3_fetch_buffer/b1/logs/csynth/*.log (7 files)
+  scripts/gate4_0/run_w3_regressions.sh
+  scripts/gate4_1/run_m3c_tests.sh
+  src/boom_all.cpp
+  vitis_hls.log
+
+The complete status had 8513 entries, overwhelmingly retained/untracked historical evidence and build artifacts. These paths predate PF0 and were preserved. Before PF0, neither the requested PF0 directory nor `docs/predictor_ftq_product_integration.md` existed. No canonical source other than the pre-existing excluded `src/boom_all.cpp` was dirty in the scoped status check.

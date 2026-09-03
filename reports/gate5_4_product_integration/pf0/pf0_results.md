@@ -1,0 +1,70 @@
+# Gate 5.4 PF0 Predictor + FTQ Product Integration Review
+
+## Verdict
+
+The read-only product integration architecture audit is complete. It reviewed the accepted Gate 5.3 product path and standalone P1/P2/F1 contracts without integrating Predictor, FTQ, or exception recovery and without modifying canonical product source.
+
+```text
+GATE5_4_PF0_PRODUCT_INTEGRATION_REVIEWED=true
+
+PRODUCT_PREDECODE_POINT=AFTER_CANONICAL_FETCH_PACKET_BUILD_BEFORE_PREDICTOR_REQUEST_OR_FETCH_BUFFER_ADMISSION
+PRODUCT_PREDICTOR_REQUEST_GRANULARITY=PER_PACKET_SELECTED_EARLIEST_CONDITIONAL_CFI
+PRODUCT_PREDICTOR_WAIT_STATE_REQUIRED=true
+PRODUCT_NO_CFI_PREDICTOR_POLICY=CFI_ONLY_REQUEST_WITH_NO_CFI_BYPASS
+PRODUCT_JAL_PREDICTION_POLICY=STATIC_PREDECODE_TAKEN_BYPASS_WITH_UNIFORM_FTQ_METADATA
+PRODUCT_PACKET_PREDICTION_MASK_POLICY=POST_PREDICTION_EFFECTIVE_MASK_FROZEN_BEFORE_ATOMIC_ADMISSION
+PRODUCT_FB_FTQ_ATOMIC_ALLOCATION_POLICY=ONE_NONEMPTY_FINAL_PACKET_ONE_ATOMIC_FB_ENQUEUE_AND_EXACTLY_ONE_FTQ_ALLOCATION
+PRODUCT_FTQ_REFERENCE={ftq_idx[4:0],ftq_generation[31:0],lane[0],halfword_offset[1:0]}_PLUS_PER_UOP_IS_RVC
+PRODUCT_PC_STORAGE_POLICY=STAGED_MIGRATION_RETAIN_FULL_PC_PLUS_FTQ_REFERENCE_FIRST
+PRODUCT_PREDICTOR_GENERATION_POLICY=SEPARATE_PREDICTOR_RESET_GENERATION_FROM_FRONTEND_EPOCH_AND_FTQ_ALLOCATION_GENERATION
+
+CURRENT_EXCEPTION_RECOVERY_IMPLEMENTED=false
+EXCEPTION_RECOVERY_BLOCKS_PRODUCT_INTEGRATION=true
+PRODUCT_INTEGRATION_PPA_RISK=MEDIUM
+RECOMMENDED_PRODUCT_INTEGRATION_ORDER=PF1_EXCEPTION_RECOVERY_FOUNDATION_THEN_PF2_PRODUCT_PREDECODE_PREDICTOR_FRONTEND_THEN_PF3_FB_FTQ_ATOMIC_ALLOCATION_THEN_PF4_FTQ_REFERENCE_BRANCH_COMPARISON_THEN_PF5_COMMIT_BIM_UPDATE_FTQ_RECLAIM_THEN_PF6_FULL_RTL_PPA_ACCEPTANCE
+NEXT_GATE=GATE5_4_PF1_EXCEPTION_RECOVERY_FOUNDATION
+
+READY_FOR_GATE5_4_PF1=true
+READY_FOR_PRODUCT_PREDICTOR_INTEGRATION=false
+READY_FOR_PRODUCT_FTQ_INTEGRATION=false
+
+GATE5_3_FETCH_BUFFER_VERIFIED=true
+GATE5_4_P1_CFI_PREDECODE_VERIFIED=true
+GATE5_4_P2_PREDICTOR_FOUNDATION_VERIFIED=true
+GATE5_4_F1_STANDALONE_FTQ_VERIFIED=true
+
+CURRENT_PREDICTOR_IMPLEMENTED=false
+CURRENT_FTQ_IMPLEMENTED=false
+CURRENT_ICACHE_IMPLEMENTED=false
+BTB_IMPLEMENTED=false
+RAS_IMPLEMENTED=false
+GHR_IMPLEMENTED=false
+TAGE_IMPLEMENTED=false
+
+DECODE_WIDTH=1
+DISPATCH_WIDTH=1
+COMMIT_WIDTH=1
+FULL_CORE_BASELINE_LUT=135953
+FULL_CORE_BASELINE_FF=33373
+FULL_CORE_BASELINE_BRAM=16
+FULL_CORE_BASELINE_DSP=3
+FULL_CORE_BASELINE_PERIOD_NS=6.341
+CORE_CYCLE_PIPELINED=false
+
+REPOSITORY_HYGIENE_PRESERVED=true
+READY_FOR_FULL_LSU_IMPLEMENTATION=false
+READY_FOR_OFFICIAL_GATE_3=false
+M009=PARTIALLY_VERIFIED
+M014=VERIFIED
+SRC_BOOM_ALL_CPP_EXCLUDED=true
+```
+
+## Principal Findings
+
+1. Conditional packets require a pending prediction context. Logical request N/response N+1 can align with the existing next-step packet admission, but delays the next one-outstanding IMEM request by one step. Wrapper latency 3/II 4 is irrelevant.
+2. Final packet acceptance is a single fire shared by FB enqueue and F1 allocation. F1 full backpressures admission and request issue; no side may advance alone.
+3. Durable uop identity requires FTQ index, 32-bit allocation generation, lane, and halfword offset. `is_rvc` remains per-uop. Full PC is retained initially.
+4. Actual conditional direction currently dies at Completion. It must be stored in the validated ROB owner through Commit; predictor metadata remains in FTQ and is consumed before final reclaim.
+5. Current exception behavior is terminal and incomplete. PF1 must establish trap capture, unified younger squash, redirect, owner lifetime, and return before Predictor/FTQ product integration.
+
+No tests, synthesis, benchmark, or build workspace were run because PF0 is a static architecture review.
