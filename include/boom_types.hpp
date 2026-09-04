@@ -207,6 +207,12 @@ struct FrontendRedirect {
         rob_idx(0), allocation_id(0), branch_mask(0) {}
 };
 
+struct ExceptionCommitEvent {
+    bool valid;
+    uint64_t cause, pc, tval, target;
+    ExceptionCommitEvent() : valid(false), cause(0), pc(0), tval(0), target(0) {}
+};
+
 struct CommitEntry {
     bool valid; uint64_t pc; uint32_t inst; uint8_t rd, priv; uint64_t rd_value;
     bool exception, rd_valid; uint64_t exc_cause;

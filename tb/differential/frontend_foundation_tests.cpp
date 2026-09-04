@@ -167,6 +167,8 @@ static void test_architectural_redirect_priority() {
     state.frontend_redirect.cause = FRONTEND_REDIRECT_EXCEPTION;
     state.frontend_redirect.rob_idx = 3;
     state.frontend_redirect.allocation_id = 77;
+    state.exception_commit.valid = true;
+    state.exception_commit.target = 0x25000;
     state.rob.entries[3].valid = true;
     state.rob.entries[3].uop.queue.rob_allocation_id = 77;
     boom::frontend_module(state, pipe);

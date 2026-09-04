@@ -10,8 +10,12 @@ namespace boom {
 
 static bool architectural_redirect_owner_valid(const BoomCoreState& state) {
     const FrontendRedirect& redirect = state.frontend_redirect;
+    if (redirect.cause == FRONTEND_REDIRECT_EXCEPTION)
+        return state.exception_commit.valid &&
+               state.exception_commit.target == redirect.target_pc;
     if (redirect.cause == FRONTEND_REDIRECT_DEBUG ||
-        redirect.cause == FRONTEND_REDIRECT_INTERRUPT) return true;
+        redirect.cause == FRONTEND_REDIRECT_INTERRUPT ||
+        redirect.cause == FRONTEND_REDIRECT_ERET) return true;
     if (redirect.rob_idx >= ROB_DEPTH) return false;
     const RobEntry& owner = state.rob.entries[redirect.rob_idx];
     return owner.valid && owner.uop.queue.rob_allocation_id == redirect.allocation_id;
@@ -138,6 +142,8 @@ void frontend_module(BoomCoreState& state, PipeSignals& pipe) {
         }
     }
 
+    // Recoverable PF1 takes return the ROB to ROB_NORMAL; preserve the
+    // existing fence for externally seeded terminal exception states.
     if (state.rob.state == ROB_EXCEPTION) {
         fe.fetch_packet_valid = false;
         fe.producer_valid = false;

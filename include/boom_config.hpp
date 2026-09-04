@@ -74,6 +74,10 @@
 
 #define RESET_VECTOR        0x10040ull
 
+#ifndef BOOM_TRAP_VECTOR
+#define BOOM_TRAP_VECTOR    0x10100ull
+#endif
+
 #define CLOCK_FREQ_HZ       100000000
 #define CLOCK_PERIOD_NS     10
 

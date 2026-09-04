@@ -161,15 +161,17 @@ void t13_flush_rob() { TEST("Branch flush: wrong-path instructions not committed
     for(auto& t:tr) { CHECK(t.rd_v!=99,"wrong-path instruction committed (x3=99)"); }
     PASS(); }
 
-void t14_illegal() { TEST("Illegal instruction: 0x00000000 → io_trap");
+void t14_illegal() { TEST("Illegal instruction: recover at trap vector");
     IM m; m.clear(RESET_VECTOR); m.add(0x00000000); m.add(EC());
     BoomCoreState s; PipeSignals p;
-    for (int c=0;c<100;c++) {
-        if(!p.imem_req.empty()){ImemRequest r=p.imem_req.read();ImemResponse rs;rs.address=r.address;rs.fetch_id=r.fetch_id;rs.epoch=r.epoch;rs.instruction=m.read(r.address);if(!p.imem_resp.full())p.imem_resp.write(rs);}
+    bool saw_exception=false;
+    for (int c=0;c<200;c++) {
+        if(!p.imem_req.empty()){ImemRequest r=p.imem_req.read();ImemResponse rs;rs.address=r.address;rs.fetch_id=r.fetch_id;rs.epoch=r.epoch;rs.instruction=(r.address==BOOM_TRAP_VECTOR)?EC():m.read(r.address);if(!p.imem_resp.full())p.imem_resp.write(rs);}
         boom_core_step(s,p);
-        if(s.io_trap) { PASS(); return; }
+        while(!p.commit_trace.empty()){CommitEntry ce=p.commit_trace.read();if(ce.exception&&ce.pc==RESET_VECTOR&&ce.exc_cause==2)saw_exception=true;}
+        if(s.io_success) { CHECK(saw_exception,"precise exception commit missing"); CHECK(!s.io_trap,"recoverable illegal asserted io_trap"); PASS(); return; }
     }
-    FAIL("no io_trap from illegal"); }
+    FAIL("trap handler did not continue to success"); }
 
 void t15_ecall() { TEST("ECALL: io_success set");
     IM m; m.clear(RESET_VECTOR); m.add(EC());

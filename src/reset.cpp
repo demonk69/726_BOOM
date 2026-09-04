@@ -18,6 +18,7 @@ void boom_core_reset_step(BoomCoreState& state, ResetControllerState& reset_ctrl
         state.tohost = 0;
         state.brupdate.valid = false;
         state.brupdate.mispredict = false;
+        state.exception_commit = ExceptionCommitEvent();
         state.decode.dec_valids[0] = false;
         state.rename.dispatch_packets[0] = RenameDispatchPacket();
         state.issue.issued_valids[0] = false;
@@ -228,7 +229,7 @@ RESET_ROB_INIT:
         state.csr.mstatus = 0x0000000a00000000ull;
         state.csr.misa = 0x800000000014112dull;
         state.csr.mie = 0;
-        state.csr.mtvec = 0;
+        state.csr.mtvec = BOOM_TRAP_VECTOR;
         state.csr.mscratch = 0;
         state.csr.mepc = 0;
         state.csr.mcause = 0;

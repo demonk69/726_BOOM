@@ -1,0 +1,9 @@
+PROGRAM illegal_trap status=PASS success=1 exception=1 handler=1 epc=0x10044 cause=0x2
+PROGRAM ebreak_trap status=PASS success=1 exception=1 handler=1 epc=0x10044 cause=0x3
+PROGRAM compressed_ebreak_trap status=PASS success=1 exception=1 handler=1 epc=0x10044 cause=0x3
+PROGRAM fetch_fault_trap status=PASS success=1 exception=1 handler=1 epc=0x10044 cause=0x1
+PROGRAM exception_kills_younger status=PASS success=1 exception=1 handler=1 epc=0x10044 cause=0x2
+PROGRAM exception_with_branch status=PASS success=1 exception=1 handler=1 epc=0x10044 cause=0x3
+PROGRAM exception_with_rv64m_pending status=PASS success=1 exception=1 handler=1 epc=0x10044 cause=0x2
+PROGRAM exception_after_rvc_stream status=PASS success=1 exception=1 handler=1 epc=0x10044 cause=0x3
+PF1_PROGRAMS cases=8 failures=0

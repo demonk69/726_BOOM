@@ -27,6 +27,7 @@ extern void branch_complete_event(BoomCoreState& state, const MicroOp& uop,
                                   bool mispredict, uint64_t redirect_pc);
 extern void lsu_module(BoomCoreState& state, PipeSignals& pipe);
 extern void rob_commit_module(BoomCoreState& state, PipeSignals& pipe);
+extern void exception_recovery_apply(BoomCoreState& state, const RobEntry& owner);
 }
 
 void synth_predecode_top(
@@ -1221,6 +1222,61 @@ void synth_commit_top(hls::stream<DmemRequest>& dmem_req_out,
     if (!pipe.dmem_req.empty()) dmem_req_out.write(pipe.dmem_req.read());
     if (!pipe.commit_trace.empty()) commit_trace_out.write(pipe.commit_trace.read());
     observable = state.csr.instret;
+}
+
+void synth_exception_recovery_top(uint64_t fault_pc, uint64_t fault_cause,
+                                  uint32_t fault_inst, uint8_t rob_head,
+                                  uint64_t& exception_pc,
+                                  uint64_t& exception_cause,
+                                  uint64_t& exception_target,
+                                  uint64_t& observable) {
+    BoomCoreState state;
+    state.rob.state = ROB_NORMAL;
+    state.frontend.reset_done = true;
+    state.frontend.epoch = 1;
+    for (int i = 0; i < LOGICAL_REG_COUNT; i++) {
+        state.rename.int_map_table.committed_map_table[i] = (uint8_t)i;
+        state.rename.int_map_table.map_table[i] = (uint8_t)i;
+    }
+    state.rename.int_map_table.map_table[5] = 40;
+    state.rename.int_free_list.busy_table[40] = true;
+    state.rob.head = (uint8_t)(rob_head % ROB_DEPTH);
+    state.rob.tail = (uint8_t)((state.rob.head + 2) % ROB_DEPTH);
+    RobEntry& owner = state.rob.entries[state.rob.head];
+    owner.valid = true;
+    owner.busy = false;
+    owner.exception = true;
+    owner.uop.uopc = 255;
+    owner.uop.inst = fault_inst;
+    owner.uop.debug_inst = fault_inst;
+    owner.uop.debug_pc = fault_pc;
+    owner.uop.exception = true;
+    owner.uop.exc_cause = fault_cause;
+    owner.uop.queue.rob_idx = state.rob.head;
+    owner.uop.queue.rob_allocation_id = 1;
+    RobEntry& younger = state.rob.entries[(state.rob.head + 1) % ROB_DEPTH];
+    younger.valid = true;
+    younger.busy = true;
+    younger.uop.queue.rob_allocation_id = 2;
+    state.issue.alu_iq.entries[0].valid = true;
+    state.issue.alu_iq.count = 1;
+    state.execute.divider.token_valid = true;
+    state.completion.int_execute.valid = true;
+    state.lsu.ldq[0].valid = true;
+    state.lsu.ldq_count = 1;
+    boom::exception_recovery_apply(state, owner);
+    exception_pc = state.exception_commit.pc;
+    exception_cause = state.exception_commit.cause;
+    exception_target = state.exception_commit.target;
+    observable = state.exception_commit.valid;
+    observable |= (uint64_t)(state.rob.head == 0 && state.rob.tail == 0) << 1;
+    observable |= (uint64_t)(state.rename.int_map_table.map_table[5] == 5) << 2;
+    observable |= (uint64_t)(state.issue.alu_iq.count == 0) << 3;
+    observable |= (uint64_t)!state.execute.divider.token_valid << 4;
+    observable |= (uint64_t)!state.completion.int_execute.valid << 5;
+    observable |= (uint64_t)(state.lsu.ldq_count == 0) << 6;
+    observable |= (uint64_t)state.frontend_redirect.valid << 7;
+    observable |= (uint64_t)!state.io_trap << 8;
 }
 
 void synth_branch_tag_top(uint32_t seed_inst, uint64_t seed_pc, uint64_t& observable) {

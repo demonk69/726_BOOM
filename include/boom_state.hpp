@@ -287,9 +287,11 @@ struct BoomCoreState {
     bool            io_halted;
     bool            io_trap;
     uint64_t        tohost;
+    ExceptionCommitEvent exception_commit;
 
-    BoomCoreState() : cycle_count(0), int_rf_latest_bank(0), brupdate(), frontend_redirect(), global_flush(false),
-        io_success(false), io_halted(false), io_trap(false), tohost(0) {
+    BoomCoreState() : cycle_count(0), int_rf_latest_bank(0), brupdate(), frontend_redirect(),
+        global_flush(false), io_success(false), io_halted(false), io_trap(false),
+        tohost(0), exception_commit() {
         for (int i=0; i<INT_PHYS_REGS; i++) {
             int_rf_bank0[i]=0;
             int_rf_bank1[i]=0;

@@ -127,7 +127,8 @@ void t_wrong_path_store_flush() { TEST("wrong-path store is flushed");
 void t_exception_younger_store_flush() { TEST("exception before younger store suppresses store");
     IMem im; im.clear(RESET_VECTOR); im.add(0x00000000); im.add(MI(64,0,0,5,0x13)); im.add(MI(1,0,0,6,0x13)); im.add(MS(0,6,5,3));
     DMemModel dm; dm.clear(64); RunResult rr=run(im,dm,100,false);
-    CHECK(rr.state.io_trap,"illegal instruction did not trap"); CHECK(rr.dmem.store_count==0,"younger store after exception reached dmem"); PASS(); }
+    bool saw_exception=false; for(size_t i=0;i<rr.commits.size();i++) if(rr.commits[i].exception&&rr.commits[i].pc==RESET_VECTOR&&rr.commits[i].exc_cause==2)saw_exception=true;
+    CHECK(saw_exception,"precise illegal exception commit missing"); CHECK(!rr.state.io_trap,"recoverable illegal asserted io_trap"); CHECK(rr.dmem.store_count==0,"younger store after exception reached dmem"); PASS(); }
 
 void t_store_not_duplicate() { TEST("store request is not duplicated");
     IMem im; im.clear(RESET_VECTOR); im.add(MI(40,0,0,5,0x13)); im.add(MI(3,0,0,6,0x13)); im.add(MS(0,6,5,3)); im.add(EC());

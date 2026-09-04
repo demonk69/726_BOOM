@@ -1,0 +1,36 @@
+#-----------------------------------------------------------
+# xsim v2021.2 (64-bit)
+# SW Build 3367213 on Tue Oct 19 02:47:39 MDT 2021
+# IP Build 3369179 on Thu Oct 21 08:25:16 MDT 2021
+# Start of session at: Thu Sep  3 14:17:20 2026
+# Process ID: 30589
+# Current directory: /tmp/boom_hls/gate5_4_product_integration/pf1/full_core_rtl/xsim
+# Command line: xsim -log /home/lab_726/boom/hls_boom/reports/gate5_4_product_integration/pf1/logs/pf1_full_core_rtl_5.log -mode tcl -source {xsim.dir/pf1_full_core_snapshot/xsim_script.tcl}
+# Log file: /home/lab_726/boom/hls_boom/reports/gate5_4_product_integration/pf1/logs/pf1_full_core_rtl_5.log
+# Journal file: /tmp/boom_hls/gate5_4_product_integration/pf1/full_core_rtl/xsim/xsim.jou
+# Running On: 726, OS: Linux, CPU Frequency: 800.000 MHz, CPU Physical cores: 14, Host memory: 67148 MB
+#-----------------------------------------------------------
+source xsim.dir/pf1_full_core_snapshot/xsim_script.tcl
+# xsim {pf1_full_core_snapshot} -testplusarg SCENARIO=5 -autoloadwcfg -runall -onerror quit
+Time resolution is 1 ps
+run -all
+PF1_IMEM_REQ scenario=5 pc=0000000000010040 fetch_id=0 epoch=0
+PF1_IMEM_REQ scenario=5 pc=0000000000010044 fetch_id=1 epoch=0
+PF1_IMEM_REQ scenario=5 pc=0000000000010048 fetch_id=2 epoch=0
+PF1_IMEM_REQ scenario=5 pc=000000000001004c fetch_id=3 epoch=0
+PF1_IMEM_REQ scenario=5 pc=0000000000010050 fetch_id=4 epoch=0
+PF1_COMMIT scenario=5 cycle=5708 pc=0000000000010040 exception=0 cause=0000000000000000 rd_valid=1 rd=1 value=0000000000000001
+PF1_IMEM_REQ scenario=5 pc=0000000000010100 fetch_id=5 epoch=1
+PF1_COMMIT scenario=5 cycle=10277 pc=0000000000010044 exception=1 cause=0000000000000003 rd_valid=0 rd=0 value=0000000000000000
+PF1_IMEM_REQ scenario=5 pc=0000000000010104 fetch_id=6 epoch=1
+PF1_IMEM_REQ scenario=5 pc=0000000000010108 fetch_id=7 epoch=1
+PF1_IMEM_REQ scenario=5 pc=000000000001010c fetch_id=8 epoch=1
+PF1_IMEM_REQ scenario=5 pc=0000000000010110 fetch_id=9 epoch=1
+PF1_COMMIT scenario=5 cycle=13501 pc=0000000000010100 exception=0 cause=0000000000000000 rd_valid=1 rd=3 value=000000000000005a
+PF1_IMEM_REQ scenario=5 pc=0000000000010114 fetch_id=10 epoch=1
+PF1_COMMIT scenario=5 cycle=14358 pc=0000000000010104 exception=0 cause=0000000000000000 rd_valid=1 rd=10 value=0000000000000000
+PF1_IMEM_REQ scenario=5 pc=0000000000010114 fetch_id=11 epoch=2
+PF1_FULL_CORE_RTL_PASS scenario=5 cycles=18829
+$finish called at time : 188485 ns : File "/home/lab_726/boom/hls_boom/rtl_tb/exception_recovery_full_core_rtl_tb.sv" Line 138
+exit
+INFO: [Common 17-206] Exiting xsim at Thu Sep  3 14:17:26 2026...
