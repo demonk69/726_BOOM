@@ -1,0 +1,11 @@
+commit,file,change,semantic_effect,candidate_root_cause
+c5e15cae358d6cbdfb1b4ce7e52f292b2538bbc3,tb/differential/fetch_buffer_integration_random_tests.cpp,"introduced B2 351-line scalar integration test","models at most one producer_uop enqueue per cycle","valid only for B2 scalar producer contract"
+c5e15cae358d6cbdfb1b4ce7e52f292b2538bbc3,scripts/gate5_3/run_b2_native.sh,"introduced B2 runner","compiles and runs scalar integration test against pre-B3I source list","historical owner later reused outside its contract"
+c5e15cae358d6cbdfb1b4ce7e52f292b2538bbc3,src/frontend.cpp,"integrated scalar producer with Fetch Buffer","one-wide producer behavior satisfies B2 scoreboard","B2 accepted baseline"
+a48e527f78e42945969e945c63f501641eae179c,src/frontend.cpp,"replaced response parsing/admission with pending two-lane packets","one response may atomically enqueue two complete instructions","B2 scalar scoreboard becomes obsolete"
+a48e527f78e42945969e945c63f501641eae179c,src/fetch_packet.cpp,"introduced two-lane packet constructor","packet masks 1 or 3 and carry-aware parsing become product contract","intentional Gate 5.3 contract evolution"
+a48e527f78e42945969e945c63f501641eae179c,tb/differential/fetch_packet_2lane_random_tests.cpp,"introduced packet-aware 487-line independent oracle","models packet lanes carry pending packet and atomic admission","accepted replacement preservation test"
+a48e527f78e42945969e945c63f501641eae179c,scripts/gate5_3/run_b3i_random.sh,"introduced B3I acceptance runner","binds packet-aware test to frontend buffer packet rvc decode divider sources","accepted runner"
+a48e527f78e42945969e945c63f501641eae179c,tb/differential/fetch_buffer_integration_random_tests.cpp,"no change","old B2 assumptions remain encoded","latent obsolete test retained but not B3I acceptance evidence"
+490788d8f20a43b802f5457d9e4fb55915a2a9e7,"accepted/current scoped files","no changes from a48e527 through current committed HEAD","rules out post-acceptance source test and checked-in runner drift","current failure caused by invocation selection"
+WORKTREE_PF1,src/frontend.cpp,"adds exception redirect ownership without changing packet construction/admission","accepted B3I test remains all-zero PASS","not causal"
