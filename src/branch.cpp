@@ -279,6 +279,11 @@ static void recover_mispredict(BoomCoreState& state, const BranchUpdate& update)
     state.frontend.fetch_packet_valid = false;
     state.frontend.producer_valid = false;
     state.frontend.pending_packet = boom::FetchPacket();
+    state.frontend.pending_predecode = boom::CfiPacketPredecodeResult();
+    state.frontend.original_packet_mask = 0;
+    state.frontend.final_admission_mask = 0;
+    state.frontend.prediction_pending = false;
+    state.frontend.predictor_request_sent = false;
     state.frontend.stalled = false;
     boom::fetch_buffer_reset(state.frontend.fetch_buffer);
     state.frontend.response_received = false;

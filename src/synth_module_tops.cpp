@@ -11,11 +11,11 @@
 #include "predecode.hpp"
 #include "predictor.hpp"
 #include "ftq.hpp"
+#include "frontend.hpp"
 
 extern void boom_core_step(BoomCoreState& state, PipeSignals& pipe);
 
 namespace boom {
-extern void frontend_module(BoomCoreState& state, PipeSignals& pipe);
 extern void decode_module(BoomCoreState& state);
 extern void rename_module(BoomCoreState& state);
 extern void rob_allocate(BoomCoreState& state);
@@ -516,6 +516,126 @@ void synth_frontend_top(hls::stream<ImemRequest>& imem_req_out,
     boom::frontend_module(state, pipe);
     if (!pipe.imem_req.empty()) imem_req_out.write(pipe.imem_req.read());
     observable = state.frontend.pc;
+}
+
+void synth_pf2_predictor_frontend_top(
+        hls::stream<ImemRequest>& imem_req_out,
+        hls::stream<ImemResponse>& imem_resp_in,
+        bool runtime_reset,
+        bool decode_ready, uint8_t redirect_kind, uint64_t redirect_target,
+        bool diagnostic_train_valid, bool diagnostic_train_taken,
+        uint64_t diagnostic_train_pc,
+        bool& predictor_request_accepted, bool& predictor_response_valid,
+        bool& prediction_valid, bool& predicted_taken, bool& target_valid,
+        uint64_t& predicted_target, bool& prediction_pending,
+        bool& stale_response, uint8_t& selected_cfi_lane,
+        uint8_t& selected_cfi_type, uint8_t& original_packet_mask,
+        uint8_t& final_packet_mask, bool& pending_packet_valid,
+        uint64_t& frontend_pc, uint8_t& fetch_buffer_count) {
+    static BoomCoreState state;
+
+    state.frontend_redirect = FrontendRedirect();
+    state.brupdate = BranchUpdate();
+    state.global_flush = false;
+    state.exception_commit = ExceptionCommitEvent();
+    if (runtime_reset) {
+        boom::PredictorStepInput reset;
+        reset.reset = true;
+        reset.active_generation = ++state.predictor_generation;
+        state.predictor.step(reset);
+        state.frontend.reset_done = false;
+        predictor_request_accepted = false;
+        predictor_response_valid = false;
+        prediction_valid = false;
+        predicted_taken = false;
+        target_valid = false;
+        predicted_target = 0;
+        prediction_pending = false;
+        stale_response = false;
+        selected_cfi_lane = 0;
+        selected_cfi_type = boom::CFI_NONE;
+        original_packet_mask = 0;
+        final_packet_mask = 0;
+        pending_packet_valid = false;
+        frontend_pc = RESET_VECTOR;
+        fetch_buffer_count = 0;
+        return;
+    } else if (redirect_kind == 1) {
+        state.frontend_redirect.valid = true;
+        state.frontend_redirect.cause = FRONTEND_REDIRECT_DEBUG;
+        state.frontend_redirect.target_pc = redirect_target;
+    } else if (redirect_kind == 2) {
+        state.exception_commit.valid = true;
+        state.exception_commit.target = redirect_target;
+        state.frontend_redirect.valid = true;
+        state.frontend_redirect.cause = FRONTEND_REDIRECT_EXCEPTION;
+        state.frontend_redirect.target_pc = redirect_target;
+    } else if (redirect_kind == 3) {
+        state.brupdate.valid = true;
+        state.brupdate.mispredict = true;
+        state.brupdate.jalr_target = redirect_target;
+    } else if (redirect_kind == 4) {
+        state.global_flush = true;
+    }
+
+    if (diagnostic_train_valid && !state.frontend.prediction_pending) {
+        boom::PredictorStepInput update;
+        update.active_generation = state.predictor_generation;
+        update.update.valid = true;
+        update.update.commit_qualified = true;
+        update.update.cfi_type = boom::CFI_CONDITIONAL_BRANCH;
+        update.update.pc = diagnostic_train_pc;
+        update.update.metadata_token =
+            static_cast<uint16_t>((diagnostic_train_pc >> 1) & 255u);
+        update.update.taken = diagnostic_train_taken;
+        update.update.generation = state.predictor_generation;
+        state.predictor.step(update);
+        predictor_request_accepted = false;
+        predictor_response_valid = false;
+        prediction_valid = false;
+        predicted_taken = false;
+        target_valid = false;
+        predicted_target = 0;
+        prediction_pending = state.frontend.prediction_pending;
+        stale_response = false;
+        selected_cfi_lane = state.frontend.pending_predecode.selected_cfi_lane;
+        selected_cfi_type = state.frontend.pending_predecode.selected_cfi_result.cfi_type;
+        original_packet_mask = state.frontend.original_packet_mask;
+        final_packet_mask = state.frontend.pending_packet.valid_mask;
+        pending_packet_valid = state.frontend.pending_packet.valid;
+        frontend_pc = state.frontend.pc;
+        fetch_buffer_count = state.frontend.fetch_buffer.count;
+        return;
+    }
+
+    if (decode_ready) {
+        state.decode.dec_valids[0] = false;
+        state.rename.dispatch_packets[0] = RenameDispatchPacket();
+    } else {
+        state.rename.dispatch_packets[0].valid = true;
+    }
+
+    PipeSignals pipe;
+    if (!imem_resp_in.empty()) pipe.imem_resp.write(imem_resp_in.read());
+    boom::frontend_module(state, pipe);
+    if (!pipe.imem_req.empty()) imem_req_out.write(pipe.imem_req.read());
+
+    predictor_request_accepted = state.frontend.predictor_request_accepted;
+    predictor_response_valid = state.frontend.predictor_response_valid;
+    prediction_valid = state.frontend.predictor_prediction_valid;
+    predicted_taken = state.frontend.predictor_predicted_taken;
+    target_valid = state.frontend.predictor_target_valid;
+    predicted_target = state.frontend.predictor_target;
+    prediction_pending = state.frontend.prediction_pending;
+    stale_response = state.frontend.predictor_response_stale;
+    selected_cfi_lane = state.frontend.pending_predecode.selected_cfi_lane;
+    selected_cfi_type = state.frontend.pending_predecode.selected_cfi_result.cfi_type;
+    original_packet_mask = state.frontend.original_packet_mask;
+    final_packet_mask = state.frontend.pending_packet.valid ?
+        state.frontend.pending_packet.valid_mask : state.frontend.final_admission_mask;
+    pending_packet_valid = state.frontend.pending_packet.valid;
+    frontend_pc = state.frontend.pc;
+    fetch_buffer_count = state.frontend.fetch_buffer.count;
 }
 
 void synth_fetch_buffer_integration_top(

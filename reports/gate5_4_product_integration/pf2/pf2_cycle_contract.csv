@@ -1,0 +1,9 @@
+scenario,request_step,response_step,logical_cycles_packet_complete_to_admission,pc_policy,notes
+no_cfi,none,none,1,sequential,no predictor wait; same PF1 admission stage
+conditional,N,N+1,1,sequential_shadow,matching response required
+jal,none,none,1,static_target,canonical P1 target
+jalr,none,none,1,fallthrough,no target prediction
+backpressure,N,N+1_plus_hold,variable,sequential_shadow,response stable until atomic admission
+redirect,N,drain,aborted,redirect_target,stale response no side effect
+reset,N,cleared,aborted,reset_vector,predictor generation advanced
+fault,none,none,1,fault_path,no prediction request

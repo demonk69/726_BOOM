@@ -70,3 +70,7 @@ The final R2 `boom_core_top` XML reads 126798 LUT, 28492 FF, 16 BRAM_18K, 3 DSP,
 The B3I `boom_core_top` estimate is 135953 LUT, 33373 FF, 16 BRAM_18K, 3 DSP, and **6.341 ns**. Against the accepted B2 width-1 baseline this is `+6068` LUT (`+4.672%`) and `+4179` FF (`+14.315%`), with unchanged BRAM, DSP, and period. The standalone packet builder is 4491 LUT, 2232 FF, and 6.071 ns; the integrated Frontend is 7824 LUT, 4430 FF, and 6.071 ns. The full-core longest child remains the 6.341 ns execute path, so packetization does not become the product critical path.
 
 All canonical tops report `PipelineType=no`; `CORE_CYCLE` remains unpipelined. The 10.00 ns target closes and `GATE5_3_PPA_BLOCKER=false`. These are HLS estimates, not post-route STA. The FF increase is accepted for the width-2 response/packet boundary and must remain visible in future Frontend area reviews.
+
+## Gate 5.4 PF2
+
+PF2 full-core is 182549 LUT, 38385 FF, 16 BRAM, 3 DSP, and 6.341 ns. Relative to PF1 this is +11009 LUT (+6.418%), +4681 FF, and no BRAM/DSP/period change. Conditional request N and response N+1 prevent a combinational predecode/BIM/mask/Fetch Buffer chain. `CORE_CYCLE` remains unpipelined and no forbidden scheduling directive was added.

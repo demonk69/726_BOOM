@@ -6,7 +6,7 @@ ROOT=${HLS_BOOM_ROOT:-"$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")/../.." && pwd 
 BUILD="$BOOM_BUILD_ROOT/gate5_4_product_integration/pf1/native"
 REPORT="$ROOT/reports/gate5_4_product_integration/pf1"
 mkdir -p -- "$BUILD" "$REPORT/logs"
-sources=(boom_core_step frontend fetch_packet fetch_buffer rvc decode rename rob issue
+sources=(boom_core_step frontend fetch_packet fetch_buffer predecode predictor rvc decode rename rob issue
          mul divider execute branch lsu completion commit csr reset)
 inputs=()
 for source in "${sources[@]}"; do inputs+=("$ROOT/src/$source.cpp"); done

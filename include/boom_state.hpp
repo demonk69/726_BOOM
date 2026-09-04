@@ -6,6 +6,8 @@
 #include "divider.hpp"
 #include "fetch_buffer.hpp"
 #include "fetch_packet.hpp"
+#include "predictor.hpp"
+#include "predecode.hpp"
 
 struct FrontendState {
     uint64_t pc;
@@ -34,6 +36,22 @@ struct FrontendState {
     MicroOp  producer_uop;
     uint32_t producer_fetch_id;
     boom::FetchPacket pending_packet;
+    boom::CfiPacketPredecodeResult pending_predecode;
+    uint8_t  original_packet_mask;
+    uint8_t  final_admission_mask;
+    bool     prediction_pending;
+    bool     predictor_request_sent;
+    uint32_t prediction_epoch;
+    uint32_t prediction_generation;
+    uint64_t prediction_token;
+    uint64_t next_prediction_token;
+    bool     predictor_request_accepted;
+    bool     predictor_response_valid;
+    bool     predictor_response_stale;
+    bool     predictor_prediction_valid;
+    bool     predictor_predicted_taken;
+    bool     predictor_target_valid;
+    uint64_t predictor_target;
     boom::FetchBufferState fetch_buffer;
 
     FrontendState() : pc(RESET_VECTOR), reset_done(false), request_sent(false),
@@ -44,6 +62,13 @@ struct FrontendState {
         halfword_valid(false), halfword(0), halfword_pc(0), halfword_epoch(0),
         stalled(false), flush(false), fetch_packet_valid(false), fetch_uop(),
         producer_valid(false), producer_uop(), producer_fetch_id(0), pending_packet(),
+        pending_predecode(), original_packet_mask(0), final_admission_mask(0),
+        prediction_pending(false), predictor_request_sent(false),
+        prediction_epoch(0), prediction_generation(0), prediction_token(0),
+        next_prediction_token(1), predictor_request_accepted(false),
+        predictor_response_valid(false), predictor_response_stale(false),
+        predictor_prediction_valid(false), predictor_predicted_taken(false),
+        predictor_target_valid(false), predictor_target(0),
         fetch_buffer() {}
 };
 
@@ -276,6 +301,8 @@ struct BoomCoreState {
     LsuState        lsu;
     CompletionPendingState completion;
     BranchRecoveryState branch_state;
+    boom::PredictorFoundation<256> predictor;
+    uint32_t        predictor_generation;
     uint64_t        int_rf_bank0[INT_PHYS_REGS];
     uint64_t        int_rf_bank1[INT_PHYS_REGS];
     uint64_t        int_rf_latest_bank;
@@ -289,7 +316,8 @@ struct BoomCoreState {
     uint64_t        tohost;
     ExceptionCommitEvent exception_commit;
 
-    BoomCoreState() : cycle_count(0), int_rf_latest_bank(0), brupdate(), frontend_redirect(),
+    BoomCoreState() : cycle_count(0), predictor(), predictor_generation(0),
+        int_rf_latest_bank(0), brupdate(), frontend_redirect(),
         global_flush(false), io_success(false), io_halted(false), io_trap(false),
         tohost(0), exception_commit() {
         for (int i=0; i<INT_PHYS_REGS; i++) {

@@ -1,5 +1,7 @@
 # Implementation Status
 
+Gate 5.4 PF2 update: canonical complete-instruction P1 predecode and canonical 256-entry P2 Predictor state are integrated into the product Frontend. Conditional BIM direction is verified in `SHADOW_ONLY` mode, including WT/ST taken results without PC steering or younger-lane masking. Static JAL steering is enabled; JALR remains no-target prediction. PF2 directed native/CSim pass 2233/2233 each and matching full-core native/CSim programs pass 11/11 each. Full-core csynth is 182549 LUT, 38385 FF, 16 BRAM, 3 DSP, and 6.341 ns. FTQ, conditional recovery metadata, and Commit training remain unimplemented.
+
 Gate 1 update: M003, M004, M006 are closed for the implemented integer/control subset.
 
 Gate 2 update: Gate 2.5 corrected the standalone generated-model traces; they are finite loadmem-backed traces with retired-store `tohost` termination. Official Chipyard simulator/toolchain dependencies remain absent. `READY_FOR_PROVISIONAL_GATE_3=true`, `READY_FOR_GATE_3=false`.
@@ -91,7 +93,7 @@ Gate 4.0 W3 source scope: acceptance covers the modular `src/*.cpp` implementati
 
 - Full BOOM LSU behavior, DCache, ICache, MMU/Sv39, TLB, PTW, cache miss/replay, AMO/LRSC, and full memory-ordering semantics.
 - FPU and FP issue/register-read/writeback paths.
-- Product-integrated branch predictor, BTB, BIM, TAGE, RAS, and FTQ. P2's BIM predictor is standalone only.
+- Full branch-prediction recovery, BTB, TAGE, RAS, and product FTQ. PF2 integrates BIM as a Frontend shadow path only; conditional steering and Commit training are absent.
 - TileLink, L2, interrupts, full CSR file, privilege transitions.
 
 ## Latest Verification

@@ -1,5 +1,7 @@
 # Predictor and FTQ Product Integration
 
+Gate 5.4 PF2 now integrates canonical P1 and P2 into Frontend. Conditional BIM results are `SHADOW_ONLY`; JAL static targets steer Frontend; JALR remains no-target prediction. FTQ, product update training, prediction metadata propagation, and predicted-vs-actual recovery remain absent. PF3 is the next gate and has not started.
+
 Gate 5.4 PF0 freezes the integration architecture but implements no product Predictor, FTQ, or recovery changes. The evidence is under `reports/gate5_4_product_integration/pf0/`.
 
 ## Frozen Decisions

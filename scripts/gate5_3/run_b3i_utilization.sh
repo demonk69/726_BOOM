@@ -10,6 +10,7 @@ CXXFLAGS=(-std=c++11 -O2 -Wall -Wextra -Werror
           -Wno-unknown-pragmas -I"$ROOT/include")
 SOURCES=("$ROOT/src/frontend.cpp" "$ROOT/src/fetch_buffer.cpp"
          "$ROOT/src/fetch_packet.cpp" "$ROOT/src/rvc.cpp"
+         "$ROOT/src/predecode.cpp" "$ROOT/src/predictor.cpp"
          "$ROOT/src/decode.cpp" "$ROOT/src/divider.cpp")
 
 g++ "${CXXFLAGS[@]}" "$ROOT/tb/differential/fetch_packet_2lane_utilization.cpp" \

@@ -690,8 +690,34 @@ static MicroOp buffer_uop(const FetchInstruction& entry) {
     return uop;
 }
 
+static void clear_prediction_context(FrontendState& fe) {
+    fe.pending_predecode = CfiPacketPredecodeResult();
+    fe.original_packet_mask = 0;
+    fe.final_admission_mask = 0;
+    fe.prediction_pending = false;
+    fe.predictor_request_sent = false;
+    fe.prediction_epoch = 0;
+    fe.prediction_generation = 0;
+    fe.prediction_token = 0;
+}
+
+static bool fetch_buffer_can_accept(const FetchBufferState& buffer,
+                                    const FetchPacket& packet,
+                                    bool dequeue_ready) {
+    const uint8_t incoming = static_cast<uint8_t>(
+        (packet.valid_mask & 1u) + ((packet.valid_mask >> 1) & 1u));
+    const bool dequeue_fire = buffer.count != 0 && dequeue_ready;
+    const uint8_t available = static_cast<uint8_t>(FETCH_BUFFER_DEPTH - buffer.count +
+                                                    (dequeue_fire ? 1 : 0));
+    return packet.valid && incoming <= available;
+}
+
 void frontend_module(BoomCoreState& state, PipeSignals& pipe) {
     FrontendState& fe = state.frontend;
+
+    fe.predictor_request_accepted = false;
+    fe.predictor_response_valid = false;
+    fe.predictor_response_stale = false;
 
     const bool reset_redirect = !fe.reset_done;
     if (reset_redirect) {
@@ -705,6 +731,7 @@ void frontend_module(BoomCoreState& state, PipeSignals& pipe) {
         fe.fetch_packet_valid = false;
         fe.producer_valid = false;
         fe.pending_packet = FetchPacket();
+        clear_prediction_context(fe);
         fetch_buffer_reset(fe.fetch_buffer);
     }
 
@@ -731,6 +758,7 @@ void frontend_module(BoomCoreState& state, PipeSignals& pipe) {
         fe.fetch_packet_valid = false;
         fe.producer_valid = false;
         fe.pending_packet = FetchPacket();
+        clear_prediction_context(fe);
         fetch_buffer_reset(fe.fetch_buffer);
         state.decode.dec_valids[0] = false;
         state.decode.dec_uops[0] = MicroOp();
@@ -770,9 +798,16 @@ void frontend_module(BoomCoreState& state, PipeSignals& pipe) {
     // Recoverable PF1 takes return the ROB to ROB_NORMAL; preserve the
     // existing fence for externally seeded terminal exception states.
     if (state.rob.state == ROB_EXCEPTION) {
+        PredictorStepInput predictor_input;
+        predictor_input.active_generation = state.predictor_generation;
+        predictor_input.resp_ready = true;
+        const PredictorStepOutput predictor_output = state.predictor.step(predictor_input);
+        fe.predictor_response_valid = predictor_output.resp_valid;
+        fe.predictor_response_stale = predictor_output.resp_valid;
         fe.fetch_packet_valid = false;
         fe.producer_valid = false;
         fe.pending_packet = FetchPacket();
+        clear_prediction_context(fe);
         fe.response_received = false;
         fe.request_sent = false;
         fe.halfword_valid = false;
@@ -788,26 +823,29 @@ void frontend_module(BoomCoreState& state, PipeSignals& pipe) {
         fe.pending_packet.valid_mask = 1;
         fe.pending_packet.slots[0] = buffer_entry(fe.producer_uop,
                                                    fe.producer_fetch_id);
+        fe.original_packet_mask = 1;
+        fe.final_admission_mask = 1;
     }
     const bool decode_ready = !state.rename.dispatch_packets[0].valid &&
         !state.decode.dec_valids[0] && !redirect;
-    const FetchBufferResult buffer = fetch_buffer_step(
-        fe.fetch_buffer, fe.pending_packet, decode_ready, redirect);
-    fe.fetch_packet_valid = buffer.dequeue_valid;
-    if (buffer.dequeue_valid) fe.fetch_uop = buffer_uop(buffer.dequeue_bits);
-    if (buffer.enqueue_fire) {
-        fe.pending_packet = FetchPacket();
-        fe.producer_valid = false;
+
+    FetchBufferResult buffer;
+    bool buffer_stepped = false;
+    if (fe.pending_packet.valid && !fe.prediction_pending) {
+        buffer = fetch_buffer_step(fe.fetch_buffer, fe.pending_packet,
+                                   decode_ready, redirect);
+        buffer_stepped = true;
+        fe.fetch_packet_valid = buffer.dequeue_valid;
+        if (buffer.dequeue_valid) fe.fetch_uop = buffer_uop(buffer.dequeue_bits);
+        if (buffer.enqueue_fire) {
+            fe.pending_packet = FetchPacket();
+            fe.producer_valid = false;
+            clear_prediction_context(fe);
+        }
     }
-    fe.stalled = fe.pending_packet.valid;
 
-    if (misaligned_redirect || fe.stalled) return;
-
-    // An odd redirect remains fenced after its one-shot fault is consumed.
-    // Only a later redirect or reset may establish a fetchable PC.
-    if ((fe.pc & 0x1ULL) != 0) return;
-
-    if (fe.response_received) {
+    bool packet_built = false;
+    if (!misaligned_redirect && !fe.pending_packet.valid && fe.response_received) {
         if (fe.halfword_valid && fe.halfword_epoch != fe.epoch) {
             fe.response_received = false;
             fe.halfword_valid = false;
@@ -830,16 +868,127 @@ void frontend_module(BoomCoreState& state, PipeSignals& pipe) {
             fe.halfword_epoch = fe.epoch;
             fe.response_received = false;
             fe.pending_packet = built.packet;
+            fe.original_packet_mask = built.packet.valid_mask;
+            fe.final_admission_mask = built.packet.valid_mask;
+            fe.pending_predecode = CfiPacketPredecodeResult();
+            fe.prediction_pending = false;
+            fe.predictor_request_sent = false;
+            packet_built = built.packet.valid;
+
+            if (built.packet.valid) {
+                uint8_t predecode_mask = built.packet.valid_mask;
+                if ((built.packet.valid_mask & 1u) != 0 &&
+                    built.packet.slots[0].exception) {
+                    fe.final_admission_mask = 1;
+                    predecode_mask = 0;
+                } else if ((built.packet.valid_mask & 2u) != 0 &&
+                           built.packet.slots[1].exception) {
+                    fe.final_admission_mask = built.packet.valid_mask;
+                    predecode_mask = 1;
+                }
+                fe.pending_packet.valid_mask = fe.final_admission_mask;
+                const FetchInstruction& lane0 = built.packet.slots[0];
+                const FetchInstruction& lane1 = built.packet.slots[1];
+                fe.pending_predecode = predecode_cfi_packet(
+                    predecode_mask,
+                    lane0.pc, lane0.instruction, lane0.is_rvc,
+                    lane1.pc, lane1.instruction, lane1.is_rvc);
+                if (fe.pending_predecode.packet_has_cfi) {
+                    const CfiPredecodeResult& cfi =
+                        fe.pending_predecode.selected_cfi_result;
+                    fe.pending_predecode.younger_lane_mask =
+                        fe.pending_predecode.selected_cfi_lane == 0 ?
+                        static_cast<uint8_t>(fe.final_admission_mask & 2u) : 0;
+                    if (cfi.cfi_type == CFI_CONDITIONAL_BRANCH) {
+                        fe.prediction_pending = true;
+                        fe.prediction_epoch = fe.epoch;
+                        fe.prediction_generation = state.predictor_generation;
+                        fe.prediction_token = fe.next_prediction_token++;
+                    } else if (cfi.cfi_type == CFI_JAL &&
+                               cfi.static_target_valid) {
+                        fe.final_admission_mask = mask_younger_packet_lanes(
+                            fe.original_packet_mask, fe.pending_predecode);
+                        fe.pending_packet.valid_mask = fe.final_admission_mask;
+                        fe.pc = cfi.static_target;
+                        fe.halfword_valid = false;
+                    }
+                }
+            }
+
             fe.producer_valid = built.packet.valid;
             if (built.packet.valid) {
                 fe.producer_fetch_id = built.packet.slots[0].fetch_id;
                 fe.producer_uop = buffer_uop(built.packet.slots[0]);
             }
-            fe.stalled = fe.pending_packet.valid;
         }
     }
 
-    if (!fe.request_sent && !fe.response_received) {
+    PredictorStepInput predictor_input;
+    predictor_input.active_generation = state.predictor_generation;
+    if (fe.prediction_pending && !fe.predictor_request_sent) {
+        const uint8_t lane = fe.pending_predecode.selected_cfi_lane;
+        const CfiPredecodeResult& cfi = fe.pending_predecode.selected_cfi_result;
+        predictor_input.req_valid = true;
+        predictor_input.request.pc = fe.pending_packet.slots[lane].pc;
+        predictor_input.request.cfi_lane = lane;
+        predictor_input.request.cfi_type = cfi.cfi_type;
+        predictor_input.request.static_target_valid = cfi.static_target_valid;
+        predictor_input.request.static_target = cfi.static_target;
+        predictor_input.request.generation = fe.prediction_generation;
+        predictor_input.request.request_token = fe.prediction_token;
+    }
+    const bool prediction_can_admit = fe.prediction_pending &&
+        fe.predictor_request_sent && !packet_built && !redirect &&
+        fetch_buffer_can_accept(fe.fetch_buffer, fe.pending_packet, decode_ready);
+    predictor_input.resp_ready = !fe.prediction_pending || prediction_can_admit;
+    const PredictorStepOutput predictor_output = state.predictor.step(predictor_input);
+    fe.predictor_response_valid = predictor_output.resp_valid;
+    fe.predictor_prediction_valid = predictor_output.response.prediction_valid;
+    fe.predictor_predicted_taken = predictor_output.response.taken;
+    fe.predictor_target_valid = predictor_output.response.target_valid;
+    fe.predictor_target = predictor_output.response.target;
+
+    if (predictor_input.req_valid && predictor_output.req_ready) {
+        fe.predictor_request_sent = true;
+        fe.predictor_request_accepted = true;
+    }
+
+    const bool matching_prediction = predictor_output.resp_valid &&
+        fe.prediction_pending && fe.predictor_request_sent &&
+        predictor_output.response.generation == fe.prediction_generation &&
+        predictor_output.response.request_token == fe.prediction_token &&
+        predictor_output.response.cfi_lane == fe.pending_predecode.selected_cfi_lane &&
+        predictor_output.response.cfi_type == CFI_CONDITIONAL_BRANCH &&
+        fe.prediction_epoch == fe.epoch;
+    if (predictor_output.resp_valid && !matching_prediction)
+        fe.predictor_response_stale = true;
+
+    FetchPacket admission_packet;
+    if (!packet_built && fe.pending_packet.valid &&
+        (!fe.prediction_pending || matching_prediction))
+        admission_packet = fe.pending_packet;
+    if (!buffer_stepped) {
+        buffer = fetch_buffer_step(fe.fetch_buffer, admission_packet,
+                                   decode_ready, redirect);
+        fe.fetch_packet_valid = buffer.dequeue_valid;
+        if (buffer.dequeue_valid) fe.fetch_uop = buffer_uop(buffer.dequeue_bits);
+        if (buffer.enqueue_fire) {
+            fe.pending_packet = FetchPacket();
+            fe.producer_valid = false;
+            clear_prediction_context(fe);
+        }
+    }
+    fe.stalled = fe.pending_packet.valid;
+
+    if (misaligned_redirect) return;
+
+    // An odd redirect remains fenced after its one-shot fault is consumed.
+    // Only a later redirect or reset may establish a fetchable PC.
+    if ((fe.pc & 0x1ULL) != 0) return;
+
+    const bool bypass_build_can_issue = packet_built && !fe.prediction_pending;
+    if ((!fe.stalled || bypass_build_can_issue) && !fe.request_sent &&
+        !fe.response_received) {
         ImemRequest req;
         req.address = fe.halfword_valid ?
             ((fe.halfword_pc + 2) & ~0x3ULL) : (fe.pc & ~0x3ULL);
@@ -3342,6 +3491,11 @@ static void recover_mispredict(BoomCoreState& state, const BranchUpdate& update)
     state.frontend.fetch_packet_valid = false;
     state.frontend.producer_valid = false;
     state.frontend.pending_packet = boom::FetchPacket();
+    state.frontend.pending_predecode = boom::CfiPacketPredecodeResult();
+    state.frontend.original_packet_mask = 0;
+    state.frontend.final_admission_mask = 0;
+    state.frontend.prediction_pending = false;
+    state.frontend.predictor_request_sent = false;
     state.frontend.stalled = false;
     boom::fetch_buffer_reset(state.frontend.fetch_buffer);
     state.frontend.response_received = false;
@@ -3825,7 +3979,6 @@ void csr_module(BoomCoreState& state) {
 // ==== boom_core_step.cpp ====
 
 namespace boom {
-extern void frontend_module(BoomCoreState& state, PipeSignals& pipe);
 extern void decode_module(BoomCoreState& state);
 extern void rename_module(BoomCoreState& state);
 extern void issue_module(BoomCoreState& state);
@@ -3922,6 +4075,11 @@ void boom_core_reset_step(BoomCoreState& state, ResetControllerState& reset_ctrl
         break;
 
     case RESET_FRONTEND:
+        {
+        boom::PredictorStepInput predictor_reset;
+        predictor_reset.reset = true;
+        predictor_reset.active_generation = ++state.predictor_generation;
+        state.predictor.step(predictor_reset);
         state.frontend.pc = RESET_VECTOR;
         state.frontend.reset_done = false;
         state.frontend.request_sent = false;
@@ -3944,9 +4102,26 @@ void boom_core_reset_step(BoomCoreState& state, ResetControllerState& reset_ctrl
         state.frontend.fetch_packet_valid = false;
         state.frontend.producer_valid = false;
         state.frontend.pending_packet = boom::FetchPacket();
+        state.frontend.pending_predecode = boom::CfiPacketPredecodeResult();
+        state.frontend.original_packet_mask = 0;
+        state.frontend.final_admission_mask = 0;
+        state.frontend.prediction_pending = false;
+        state.frontend.predictor_request_sent = false;
+        state.frontend.prediction_epoch = 0;
+        state.frontend.prediction_generation = 0;
+        state.frontend.prediction_token = 0;
+        state.frontend.next_prediction_token = 1;
+        state.frontend.predictor_request_accepted = false;
+        state.frontend.predictor_response_valid = false;
+        state.frontend.predictor_response_stale = false;
+        state.frontend.predictor_prediction_valid = false;
+        state.frontend.predictor_predicted_taken = false;
+        state.frontend.predictor_target_valid = false;
+        state.frontend.predictor_target = 0;
         boom::fetch_buffer_reset(state.frontend.fetch_buffer);
         state.frontend_redirect = FrontendRedirect();
         advance_reset(reset_ctrl, RESET_RENAME_MAP);
+        }
         break;
 
     case RESET_RENAME_MAP:
@@ -4364,7 +4539,6 @@ DEFINE_BOOM_NCYCLE_TOP(boom_core_ncycle_n8_top, 8)
 extern void boom_core_step(BoomCoreState& state, PipeSignals& pipe);
 
 namespace boom {
-extern void frontend_module(BoomCoreState& state, PipeSignals& pipe);
 extern void decode_module(BoomCoreState& state);
 extern void rename_module(BoomCoreState& state);
 extern void rob_allocate(BoomCoreState& state);
@@ -4865,6 +5039,126 @@ void synth_frontend_top(hls::stream<ImemRequest>& imem_req_out,
     boom::frontend_module(state, pipe);
     if (!pipe.imem_req.empty()) imem_req_out.write(pipe.imem_req.read());
     observable = state.frontend.pc;
+}
+
+void synth_pf2_predictor_frontend_top(
+        hls::stream<ImemRequest>& imem_req_out,
+        hls::stream<ImemResponse>& imem_resp_in,
+        bool runtime_reset,
+        bool decode_ready, uint8_t redirect_kind, uint64_t redirect_target,
+        bool diagnostic_train_valid, bool diagnostic_train_taken,
+        uint64_t diagnostic_train_pc,
+        bool& predictor_request_accepted, bool& predictor_response_valid,
+        bool& prediction_valid, bool& predicted_taken, bool& target_valid,
+        uint64_t& predicted_target, bool& prediction_pending,
+        bool& stale_response, uint8_t& selected_cfi_lane,
+        uint8_t& selected_cfi_type, uint8_t& original_packet_mask,
+        uint8_t& final_packet_mask, bool& pending_packet_valid,
+        uint64_t& frontend_pc, uint8_t& fetch_buffer_count) {
+    static BoomCoreState state;
+
+    state.frontend_redirect = FrontendRedirect();
+    state.brupdate = BranchUpdate();
+    state.global_flush = false;
+    state.exception_commit = ExceptionCommitEvent();
+    if (runtime_reset) {
+        boom::PredictorStepInput reset;
+        reset.reset = true;
+        reset.active_generation = ++state.predictor_generation;
+        state.predictor.step(reset);
+        state.frontend.reset_done = false;
+        predictor_request_accepted = false;
+        predictor_response_valid = false;
+        prediction_valid = false;
+        predicted_taken = false;
+        target_valid = false;
+        predicted_target = 0;
+        prediction_pending = false;
+        stale_response = false;
+        selected_cfi_lane = 0;
+        selected_cfi_type = boom::CFI_NONE;
+        original_packet_mask = 0;
+        final_packet_mask = 0;
+        pending_packet_valid = false;
+        frontend_pc = RESET_VECTOR;
+        fetch_buffer_count = 0;
+        return;
+    } else if (redirect_kind == 1) {
+        state.frontend_redirect.valid = true;
+        state.frontend_redirect.cause = FRONTEND_REDIRECT_DEBUG;
+        state.frontend_redirect.target_pc = redirect_target;
+    } else if (redirect_kind == 2) {
+        state.exception_commit.valid = true;
+        state.exception_commit.target = redirect_target;
+        state.frontend_redirect.valid = true;
+        state.frontend_redirect.cause = FRONTEND_REDIRECT_EXCEPTION;
+        state.frontend_redirect.target_pc = redirect_target;
+    } else if (redirect_kind == 3) {
+        state.brupdate.valid = true;
+        state.brupdate.mispredict = true;
+        state.brupdate.jalr_target = redirect_target;
+    } else if (redirect_kind == 4) {
+        state.global_flush = true;
+    }
+
+    if (diagnostic_train_valid && !state.frontend.prediction_pending) {
+        boom::PredictorStepInput update;
+        update.active_generation = state.predictor_generation;
+        update.update.valid = true;
+        update.update.commit_qualified = true;
+        update.update.cfi_type = boom::CFI_CONDITIONAL_BRANCH;
+        update.update.pc = diagnostic_train_pc;
+        update.update.metadata_token =
+            static_cast<uint16_t>((diagnostic_train_pc >> 1) & 255u);
+        update.update.taken = diagnostic_train_taken;
+        update.update.generation = state.predictor_generation;
+        state.predictor.step(update);
+        predictor_request_accepted = false;
+        predictor_response_valid = false;
+        prediction_valid = false;
+        predicted_taken = false;
+        target_valid = false;
+        predicted_target = 0;
+        prediction_pending = state.frontend.prediction_pending;
+        stale_response = false;
+        selected_cfi_lane = state.frontend.pending_predecode.selected_cfi_lane;
+        selected_cfi_type = state.frontend.pending_predecode.selected_cfi_result.cfi_type;
+        original_packet_mask = state.frontend.original_packet_mask;
+        final_packet_mask = state.frontend.pending_packet.valid_mask;
+        pending_packet_valid = state.frontend.pending_packet.valid;
+        frontend_pc = state.frontend.pc;
+        fetch_buffer_count = state.frontend.fetch_buffer.count;
+        return;
+    }
+
+    if (decode_ready) {
+        state.decode.dec_valids[0] = false;
+        state.rename.dispatch_packets[0] = RenameDispatchPacket();
+    } else {
+        state.rename.dispatch_packets[0].valid = true;
+    }
+
+    PipeSignals pipe;
+    if (!imem_resp_in.empty()) pipe.imem_resp.write(imem_resp_in.read());
+    boom::frontend_module(state, pipe);
+    if (!pipe.imem_req.empty()) imem_req_out.write(pipe.imem_req.read());
+
+    predictor_request_accepted = state.frontend.predictor_request_accepted;
+    predictor_response_valid = state.frontend.predictor_response_valid;
+    prediction_valid = state.frontend.predictor_prediction_valid;
+    predicted_taken = state.frontend.predictor_predicted_taken;
+    target_valid = state.frontend.predictor_target_valid;
+    predicted_target = state.frontend.predictor_target;
+    prediction_pending = state.frontend.prediction_pending;
+    stale_response = state.frontend.predictor_response_stale;
+    selected_cfi_lane = state.frontend.pending_predecode.selected_cfi_lane;
+    selected_cfi_type = state.frontend.pending_predecode.selected_cfi_result.cfi_type;
+    original_packet_mask = state.frontend.original_packet_mask;
+    final_packet_mask = state.frontend.pending_packet.valid ?
+        state.frontend.pending_packet.valid_mask : state.frontend.final_admission_mask;
+    pending_packet_valid = state.frontend.pending_packet.valid;
+    frontend_pc = state.frontend.pc;
+    fetch_buffer_count = state.frontend.fetch_buffer.count;
 }
 
 void synth_fetch_buffer_integration_top(

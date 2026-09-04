@@ -10,14 +10,18 @@ CXXFLAGS=(-std=c++11 -O2 -Wall -Wextra -Werror -Wno-error=misleading-indentation
 mkdir -p "$BUILD" "$REPORT/logs"
 
 g++ "${CXXFLAGS[@]}" "$ROOT/tb/differential/rvc_fetch_tests.cpp" \
-  "$ROOT/src/frontend.cpp" "$ROOT/src/rvc.cpp" "$ROOT/src/decode.cpp" \
+  "$ROOT/src/frontend.cpp" "$ROOT/src/fetch_packet.cpp" "$ROOT/src/fetch_buffer.cpp" \
+  "$ROOT/src/predecode.cpp" "$ROOT/src/predictor.cpp" \
+  "$ROOT/src/rvc.cpp" "$ROOT/src/decode.cpp" \
   "$ROOT/src/branch.cpp" "$ROOT/src/divider.cpp" \
   -o "$BUILD/rvc_fetch_tests" \
   2>"$REPORT/logs/rvc_fetch_tests_compile.log"
 "$BUILD/rvc_fetch_tests" | tee "$REPORT/logs/rvc_fetch_tests.log"
 
 g++ "${CXXFLAGS[@]}" "$ROOT/tb/differential/rvc_fetch_random_tests.cpp" \
-  "$ROOT/src/frontend.cpp" "$ROOT/src/rvc.cpp" "$ROOT/src/divider.cpp" \
+  "$ROOT/src/frontend.cpp" "$ROOT/src/fetch_packet.cpp" "$ROOT/src/fetch_buffer.cpp" \
+  "$ROOT/src/predecode.cpp" "$ROOT/src/predictor.cpp" \
+  "$ROOT/src/rvc.cpp" "$ROOT/src/divider.cpp" \
   -o "$BUILD/rvc_fetch_random_tests" \
   2>"$REPORT/logs/rvc_fetch_random_tests_compile.log"
 "$BUILD/rvc_fetch_random_tests" | tee "$REPORT/logs/rvc_fetch_random_tests.log"
@@ -31,7 +35,9 @@ g++ "${CXXFLAGS[@]}" "$ROOT/tb/differential/rvc_execute_gap_tests.cpp" \
 "$BUILD/rvc_execute_gap_tests" | tee "$REPORT/logs/rvc_execute_gap_tests.log"
 
 g++ "${CXXFLAGS[@]}" "$ROOT/tb/differential/gate5_2_r2_native_throughput_audit.cpp" \
-  "$ROOT/src/frontend.cpp" "$ROOT/src/rvc.cpp" "$ROOT/src/decode.cpp" \
+  "$ROOT/src/frontend.cpp" "$ROOT/src/fetch_packet.cpp" "$ROOT/src/fetch_buffer.cpp" \
+  "$ROOT/src/predecode.cpp" "$ROOT/src/predictor.cpp" \
+  "$ROOT/src/rvc.cpp" "$ROOT/src/decode.cpp" \
   -o "$BUILD/rvc_throughput_audit" \
   2>"$REPORT/logs/rvc_throughput_compile.log"
 "$BUILD/rvc_throughput_audit" "$REPORT/cycle_trace.csv" \

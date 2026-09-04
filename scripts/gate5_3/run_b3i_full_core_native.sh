@@ -10,6 +10,7 @@ CXXFLAGS=(-std=c++11 -O2 -Wall -Wextra -Werror
           -Wno-unknown-pragmas -I"$ROOT/include")
 SOURCES=("$ROOT/src/boom_core_step.cpp" "$ROOT/src/frontend.cpp"
          "$ROOT/src/fetch_buffer.cpp" "$ROOT/src/fetch_packet.cpp"
+         "$ROOT/src/predecode.cpp" "$ROOT/src/predictor.cpp"
          "$ROOT/src/rvc.cpp" "$ROOT/src/decode.cpp" "$ROOT/src/rename.cpp"
          "$ROOT/src/rob.cpp" "$ROOT/src/issue.cpp" "$ROOT/src/mul.cpp"
          "$ROOT/src/divider.cpp" "$ROOT/src/execute.cpp" "$ROOT/src/branch.cpp"

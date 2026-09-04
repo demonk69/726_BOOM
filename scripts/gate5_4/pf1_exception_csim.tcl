@@ -5,7 +5,7 @@ cd $build
 open_project -reset pf1_exception_csim
 set_top boom_core_step
 set cflags "-std=c++11 -I$root/include"
-foreach source {frontend fetch_packet fetch_buffer decode rename issue execute branch lsu commit csr completion rob reset divider mul rvc boom_core_step} {
+foreach source {frontend fetch_packet fetch_buffer predecode predictor decode rename issue execute branch lsu commit csr completion rob reset divider mul rvc boom_core_step} {
     add_files -cflags $cflags "$root/src/$source.cpp"
 }
 add_files -tb -cflags $cflags "$root/tb/differential/exception_recovery_program_tests.cpp"

@@ -58,6 +58,11 @@ void boom_core_reset_step(BoomCoreState& state, ResetControllerState& reset_ctrl
         break;
 
     case RESET_FRONTEND:
+        {
+        boom::PredictorStepInput predictor_reset;
+        predictor_reset.reset = true;
+        predictor_reset.active_generation = ++state.predictor_generation;
+        state.predictor.step(predictor_reset);
         state.frontend.pc = RESET_VECTOR;
         state.frontend.reset_done = false;
         state.frontend.request_sent = false;
@@ -80,9 +85,26 @@ void boom_core_reset_step(BoomCoreState& state, ResetControllerState& reset_ctrl
         state.frontend.fetch_packet_valid = false;
         state.frontend.producer_valid = false;
         state.frontend.pending_packet = boom::FetchPacket();
+        state.frontend.pending_predecode = boom::CfiPacketPredecodeResult();
+        state.frontend.original_packet_mask = 0;
+        state.frontend.final_admission_mask = 0;
+        state.frontend.prediction_pending = false;
+        state.frontend.predictor_request_sent = false;
+        state.frontend.prediction_epoch = 0;
+        state.frontend.prediction_generation = 0;
+        state.frontend.prediction_token = 0;
+        state.frontend.next_prediction_token = 1;
+        state.frontend.predictor_request_accepted = false;
+        state.frontend.predictor_response_valid = false;
+        state.frontend.predictor_response_stale = false;
+        state.frontend.predictor_prediction_valid = false;
+        state.frontend.predictor_predicted_taken = false;
+        state.frontend.predictor_target_valid = false;
+        state.frontend.predictor_target = 0;
         boom::fetch_buffer_reset(state.frontend.fetch_buffer);
         state.frontend_redirect = FrontendRedirect();
         advance_reset(reset_ctrl, RESET_RENAME_MAP);
+        }
         break;
 
     case RESET_RENAME_MAP:

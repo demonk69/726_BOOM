@@ -1,8 +1,8 @@
 #!/usr/bin/env bash
 set -euo pipefail
 ROOT=${HLS_BOOM_ROOT:-"$(cd "$(dirname "${BASH_SOURCE[0]}")/../.." && pwd)"}
-REPORT="$ROOT/reports/gate5_2_rvc/r2"
-BUILD="$ROOT/tb/differential/gate5_2_r2_rtl_build"
+REPORT=${BOOM_R2_REPORT_DIR:-"$ROOT/reports/gate5_2_rvc/r2"}
+BUILD=${BOOM_R2_BUILD_DIR:-"/tmp/boom_hls/gate5_2/r2_full_core_rtl"}
 TAG=${BOOM_R2_CSYNTH_TAG:-gate5_2_rvc_r2_repair}
 RTL=${GATE5_2_R2_CORE_RTL_DIR:-"$ROOT/boom_hls_${TAG}_core_boom_core_top/solution_module/syn/verilog"}
 XSIM_BUILD="$BUILD/xsim"

@@ -1,0 +1,15 @@
+program_or_scenario,mode,status,scope
+pf2_no_cfi_stream,native_and_CSim_directed,PASS,no-CFI fastpath
+pf2_branch_shadow,native_and_CSim_directed,PASS,WT/ST taken shadow
+pf2_jal_lane0,native_and_CSim_directed,PASS,target and younger mask
+pf2_jal_lane1,native_and_CSim_directed,PASS,target and mask11
+pf2_jalr,native_and_CSim_directed,PASS,no target prediction
+pf2_rvc_j,native_and_CSim_directed,PASS,compressed direct jump
+pf2_mixed_cfi,native_and_CSim_directed,PASS,mixed packet CFI
+pf2_redirect_pending_prediction,native_and_CSim_directed,PASS,stale drain
+pf2_exception_pending_prediction,native_CSim_and_RTL,PASS,exception priority
+pf2_fetch_buffer_backpressure,native_and_CSim_directed,PASS,held response and atomic enqueue
+full_core_rvc_programs,native_and_CSim,11/11_PASS,"product Frontend binary programs; matching runner"
+pf1_trap_programs,native_and_CSim,8/8_PASS,trap-handler continuation
+rv64m_programs,native,15/15_PASS,backend preservation
+rvc_full_core_generated_RTL,RTL,11/11_PASS,full-core product preservation
