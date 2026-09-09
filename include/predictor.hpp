@@ -79,6 +79,7 @@ template <std::size_t Entries, bool FullPayloadReset = false>
 class PredictorFoundation {
 public:
     PredictorFoundation();
+    PredictorStepOutput peek(bool reset) const;
     PredictorStepOutput step(const PredictorStepInput& input);
 
 private:

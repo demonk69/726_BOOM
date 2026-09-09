@@ -2,6 +2,7 @@
 set -euo pipefail
 
 ROOT=${HLS_BOOM_ROOT:-"$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"}
+BUILD_ROOT=${BOOM_HLS_BUILD_ROOT:-"$ROOT"}
 VITIS_HLS_BIN=${VITIS_HLS:-vitis_hls}
 GATE_TAG=${BOOM_HLS_GATE:-gate3_3}
 if ! command -v "$VITIS_HLS_BIN" >/dev/null 2>&1; then
@@ -16,6 +17,7 @@ fi
 OUT_DIR="$ROOT/reports/$GATE_TAG/module_csynth"
 SUMMARY="$ROOT/reports/$GATE_TAG/module_csynth_summary.csv"
 mkdir -p "$OUT_DIR"
+mkdir -p "$BUILD_ROOT"
 
 MODULES=(
   synth_frontend_top
@@ -38,14 +40,15 @@ printf 'module,status,runtime,peak_memory,LUT,FF,BRAM,DSP,estimated_period,last_
 for module in "${MODULES[@]}"; do
   log="$OUT_DIR/${module}.log"
   time_log="$OUT_DIR/${module}.time"
-  report="$ROOT/boom_hls_${GATE_TAG}_${module}/solution_module/syn/report/${module}_csynth.rpt"
+  report="$BUILD_ROOT/boom_hls_${GATE_TAG}_${module}/solution_module/syn/report/${module}_csynth.rpt"
   status=FAIL
   runtime=""
   peak_memory=""
   set +e
   FPGA_PART=${FPGA_PART:-xczu7ev-ffvc1156-2-e} CLOCK_PERIOD=${CLOCK_PERIOD:-10} BOOM_HLS_GATE="$GATE_TAG" BOOM_HLS_TOP="$module" \
     /usr/bin/time -f 'runtime_seconds=%e\npeak_memory_kb=%M' -o "$time_log" \
-    "$VITIS_HLS_BIN" -f "$ROOT/scripts/module_csynth.tcl" > "$log" 2>&1
+    bash -c 'cd "$1" && exec "$2" -f "$3"' _ "$BUILD_ROOT" "$VITIS_HLS_BIN" \
+      "$ROOT/scripts/module_csynth.tcl" > "$log" 2>&1
   rc=$?
   set -e
   if [ -f "$report" ] && [ "$rc" -eq 0 ]; then
@@ -92,5 +95,25 @@ PY
 )
   printf '%s,%s,%s,%s,,,,,,%s,%s,%s,%s\n' "$module" "$status" "$runtime" "$peak_memory" "$last_pass" "$warnings" "$report" "$log" >> "$SUMMARY"
 done
+
+python3 - "$ROOT" "$SUMMARY" <<'PY'
+import csv
+import sys
+from pathlib import Path
+
+sys.path.insert(0, str(Path(sys.argv[1]) / "scripts"))
+from collect_csynth_summary import parse_report
+
+summary = Path(sys.argv[2])
+with summary.open(encoding="utf-8", newline="") as handle:
+    rows = list(csv.DictReader(handle))
+for row in rows:
+    row.update({key: value for key, value in parse_report(Path(row["report_path"])).items()
+                if key in row})
+with summary.open("w", encoding="utf-8", newline="") as handle:
+    writer = csv.DictWriter(handle, fieldnames=rows[0].keys())
+    writer.writeheader()
+    writer.writerows(rows)
+PY
 
 echo "Module csynth summary: $SUMMARY"

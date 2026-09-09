@@ -68,6 +68,11 @@ struct DebugInfo { uint8_t debug_fsrc, debug_tsrc; uint32_t debug_inst; uint64_t
 
 struct MicroOp {
     uint8_t uopc; uint32_t inst, debug_inst; bool is_rvc; uint64_t debug_pc;
+    uint32_t ftq_generation;
+    uint8_t ftq_idx : 5;
+    uint8_t ftq_lane : 1;
+    uint8_t ftq_halfword_offset : 2;
+    bool ftq_valid;
     uint8_t iq_type, fu_code;
     DecodeControl ctrl;
     uint8_t iw_state; bool iw_p1_poisoned, iw_p2_poisoned;
@@ -79,7 +84,9 @@ struct MicroOp {
     MemoryInfo mem;
     bool is_sys_pc2epc, is_unique, flush_on_commit;
     ExceptionInfo exc; DebugInfo debug;
-    MicroOp() { uopc=0; inst=0; debug_inst=0; is_rvc=false; debug_pc=0; iq_type=0; fu_code=0;
+    MicroOp() { uopc=0; inst=0; debug_inst=0; is_rvc=false; debug_pc=0;
+        ftq_generation=0; ftq_idx=ftq_lane=ftq_halfword_offset=0; ftq_valid=false;
+        iq_type=0; fu_code=0;
         ctrl={}; iw_state=0; iw_p1_poisoned=iw_p2_poisoned=false; branch={}; imm_packed=0; csr_addr=0;
         queue={}; rename={}; exception=false; exc_cause=0; bypassable=false; mem={};
         is_sys_pc2epc=is_unique=flush_on_commit=false; exc={}; debug={}; }

@@ -9,6 +9,16 @@ PredictorFoundation<Entries, FullPayloadReset>::PredictorFoundation()
 }
 
 template <std::size_t Entries, bool FullPayloadReset>
+PredictorStepOutput PredictorFoundation<Entries, FullPayloadReset>::peek(
+        bool reset) const {
+    PredictorStepOutput output;
+    output.req_ready = !response_pending_ && !reset;
+    output.resp_valid = response_pending_ && !reset;
+    if (response_pending_) output.response = pending_response_;
+    return output;
+}
+
+template <std::size_t Entries, bool FullPayloadReset>
 PredictorStepOutput PredictorFoundation<Entries, FullPayloadReset>::step(
     const PredictorStepInput& input) {
 #if defined(BOOM_PREDICTOR_STORAGE_LUTRAM)
@@ -16,10 +26,7 @@ PredictorStepOutput PredictorFoundation<Entries, FullPayloadReset>::step(
 #elif defined(BOOM_PREDICTOR_STORAGE_BRAM)
 #pragma HLS bind_storage variable=counters_ type=RAM_2P impl=BRAM
 #endif
-    PredictorStepOutput output;
-    output.req_ready = !response_pending_ && !input.reset;
-    output.resp_valid = response_pending_ && !input.reset;
-    if (response_pending_) output.response = pending_response_;
+    PredictorStepOutput output = peek(input.reset);
 
     if (input.reset) {
         for (std::size_t i = 0; i < Entries; ++i) {

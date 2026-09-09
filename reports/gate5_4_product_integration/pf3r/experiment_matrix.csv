@@ -1,0 +1,11 @@
+experiment,change,LUT,FF,BRAM,DSP,period_ns,decision
+PF2_BASELINE,PF2 canonical baseline,180807,37691,16,3,6.341,REFERENCE
+PF3_INITIAL,PF3 canonical before repair,202425,44545,17,3,6.739,REJECT_PPA
+E1A,"force complete ROB entries to LUTRAM",216041,,5,3,6.739,REJECT_LUT_COST_AND_NO_TIMING_GAIN
+E1B,"move only ROB FTQ generation to LUTRAM sidecar",202330,44614,16,3,6.739,KEEP_BRAM_FIX
+E2,"E1B plus predictor peek observation separated from state advance",202113,44795,16,3,6.341,KEEP_TIMING_FIX
+E3,"E2 plus initial reference-width expression",,,,,,REJECT_INSUFFICIENT_GAIN
+E3B,"E2 plus alternate reference-width expression",,,,,,REJECT_INSUFFICIENT_GAIN
+E4,"E1B plus E2 plus compile-time product-mode specialization",199221,43641,16,3,6.341,KEEP_LUT_FIX
+E5,"E4 plus 5/1/2-bit FTQ reference fields",198482,45293,16,3,6.341,ACCEPT_PF3R_CANDIDATE
+PF3R_CANONICAL,"E5 applied to canonical modular source and regenerated merged TU",198482,45293,16,3,6.341,PPA_PASS

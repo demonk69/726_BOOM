@@ -638,6 +638,132 @@ void synth_pf2_predictor_frontend_top(
     fetch_buffer_count = state.frontend.fetch_buffer.count;
 }
 
+void synth_pf3_ftq_atomic_top(
+        hls::stream<ImemRequest>& imem_req_out,
+        hls::stream<ImemResponse>& imem_resp_in,
+        bool runtime_reset, bool packet_valid, uint8_t packet_mask,
+        uint64_t packet_base_pc, uint32_t lane0_instruction,
+        uint32_t lane1_instruction, bool lane0_rvc, bool lane1_rvc,
+        bool prediction_valid, bool predicted_taken, bool target_valid,
+        uint64_t predicted_target, uint8_t cfi_lane, uint8_t cfi_type,
+        uint8_t predictor_metadata_index, uint32_t predictor_generation,
+        bool fetch_buffer_blocked, bool retire_valid, uint8_t retire_ftq_idx,
+        uint32_t retire_generation, uint8_t retire_lane,
+        bool redirect_valid, uint8_t redirect_owner_idx,
+        uint32_t redirect_owner_generation, uint8_t redirect_surviving_mask,
+        bool lookup_valid, uint8_t lookup_idx, uint32_t lookup_generation,
+        bool& packet_accept, bool& fetch_buffer_enqueue,
+        bool& ftq_alloc_ready, bool& ftq_alloc_accepted,
+        uint8_t& reference_idx, uint32_t& reference_generation,
+        uint8_t& final_mask, uint8_t& live_mask,
+        bool& retire_accepted, bool& redirect_accepted,
+        uint8_t& ftq_head, uint8_t& ftq_tail, uint8_t& ftq_count,
+        bool& ftq_full, bool& reclaimed, bool& lookup_hit,
+        uint64_t& lookup_base_pc, bool& lookup_prediction_valid,
+        bool& lookup_predicted_taken, bool& lookup_target_valid,
+        uint64_t& lookup_target, uint8_t& lookup_cfi_lane,
+        uint8_t& lookup_cfi_type, uint8_t& lookup_metadata_index,
+        uint32_t& lookup_predictor_generation) {
+    static BoomCoreState state;
+    state.product_ftq_enabled = true;
+    state.frontend.reset_done = true;
+    state.frontend.pc = 1;
+    state.global_flush = false;
+    state.frontend_redirect = FrontendRedirect();
+    state.brupdate = BranchUpdate();
+
+    if (runtime_reset) {
+        boom::FtqStepInput reset;
+        reset.reset = true;
+        state.ftq_last_output = state.ftq.step(reset);
+        state.frontend.pending_packet = boom::FetchPacket();
+        state.frontend.fetch_buffer = boom::FetchBufferState();
+        state.ftq_retire_pending = boom::FtqLaneEvent();
+        state.ftq_redirect_pending = boom::FtqRedirect();
+    } else {
+        if (packet_valid && !state.frontend.pending_packet.valid) {
+            FrontendState& fe = state.frontend;
+            fe.pending_packet = boom::FetchPacket();
+            fe.pending_packet.valid = (packet_mask & 3u) != 0;
+            fe.pending_packet.valid_mask = packet_mask & 3u;
+            fe.pending_packet.slots[0].pc = packet_base_pc;
+            fe.pending_packet.slots[0].instruction = lane0_instruction;
+            fe.pending_packet.slots[0].is_rvc = lane0_rvc;
+            fe.pending_packet.slots[1].pc = packet_base_pc + (lane0_rvc ? 2u : 4u);
+            fe.pending_packet.slots[1].instruction = lane1_instruction;
+            fe.pending_packet.slots[1].is_rvc = lane1_rvc;
+            fe.original_packet_mask = packet_mask & 3u;
+            fe.final_admission_mask = packet_mask & 3u;
+            fe.pending_predecode = boom::predecode_cfi_packet(
+                packet_mask & 3u, fe.pending_packet.slots[0].pc,
+                lane0_instruction, lane0_rvc, fe.pending_packet.slots[1].pc,
+                lane1_instruction, lane1_rvc);
+            fe.prediction_pending = cfi_type == boom::CFI_CONDITIONAL_BRANCH;
+            fe.predictor_request_sent = fe.prediction_pending;
+            fe.prediction_resolved = fe.prediction_pending;
+            fe.predictor_prediction_valid = prediction_valid;
+            fe.predictor_predicted_taken = predicted_taken;
+            fe.predictor_target_valid = target_valid;
+            fe.predictor_target = predicted_target;
+            fe.predictor_metadata_index = predictor_metadata_index;
+            state.predictor_generation = predictor_generation;
+            if (fe.pending_predecode.packet_has_cfi) {
+                fe.pending_predecode.selected_cfi_lane = cfi_lane & 1u;
+                fe.pending_predecode.selected_cfi_result.cfi_type = cfi_type & 3u;
+            }
+        }
+        state.rename.dispatch_packets[0].valid = fetch_buffer_blocked;
+        if (fetch_buffer_blocked) {
+            state.frontend.fetch_buffer.count = FETCH_BUFFER_DEPTH;
+            state.frontend.fetch_buffer.head = 0;
+            state.frontend.fetch_buffer.tail = 0;
+        }
+        state.ftq_retire_pending.valid = retire_valid;
+        state.ftq_retire_pending.ftq_idx = retire_ftq_idx;
+        state.ftq_retire_pending.generation = retire_generation;
+        state.ftq_retire_pending.lane = retire_lane;
+        state.ftq_redirect_pending.valid = redirect_valid;
+        state.ftq_redirect_pending.owner_ftq_idx = redirect_owner_idx;
+        state.ftq_redirect_pending.owner_generation = redirect_owner_generation;
+        state.ftq_redirect_pending.surviving_lane_mask = redirect_surviving_mask;
+        state.ftq_read_request.valid = lookup_valid;
+        state.ftq_read_request.ftq_idx = lookup_idx;
+        state.ftq_read_request.generation = lookup_generation;
+        PipeSignals pipe;
+        if (!imem_resp_in.empty()) pipe.imem_resp.write(imem_resp_in.read());
+        boom::frontend_module(state, pipe);
+        if (!pipe.imem_req.empty()) imem_req_out.write(pipe.imem_req.read());
+    }
+
+    packet_accept = state.frontend.packet_accept;
+    fetch_buffer_enqueue = state.frontend.packet_accept;
+    ftq_alloc_ready = state.frontend.ftq_alloc_ready;
+    ftq_alloc_accepted = state.frontend.ftq_alloc_accepted;
+    reference_idx = state.frontend.ftq_alloc_idx;
+    reference_generation = state.frontend.ftq_alloc_generation;
+    final_mask = state.frontend.packet_accept ? state.frontend.accepted_packet_mask :
+        state.frontend.final_admission_mask;
+    live_mask = state.ftq_last_output.read_hit ?
+        state.ftq_last_output.read_entry.live_lane_mask : 0;
+    retire_accepted = state.ftq_last_output.retire_accepted;
+    redirect_accepted = state.ftq_last_output.redirect_accepted;
+    ftq_head = state.ftq_last_output.head;
+    ftq_tail = state.ftq_last_output.tail;
+    ftq_count = state.ftq_last_output.count;
+    ftq_full = state.ftq_last_output.full;
+    reclaimed = state.ftq_last_output.reclaimed;
+    lookup_hit = state.ftq_last_output.read_hit;
+    lookup_base_pc = state.ftq_last_output.read_entry.packet_base_pc;
+    lookup_prediction_valid = state.ftq_last_output.read_entry.prediction_valid;
+    lookup_predicted_taken = state.ftq_last_output.read_entry.predicted_taken;
+    lookup_target_valid = state.ftq_last_output.read_entry.target_valid;
+    lookup_target = state.ftq_last_output.read_entry.predicted_target;
+    lookup_cfi_lane = state.ftq_last_output.read_entry.cfi_lane;
+    lookup_cfi_type = state.ftq_last_output.read_entry.cfi_type;
+    lookup_metadata_index = state.ftq_last_output.read_entry.predictor_metadata_index;
+    lookup_predictor_generation = state.ftq_last_output.read_entry.predictor_generation;
+}
+
 void synth_fetch_buffer_integration_top(
         hls::stream<ImemRequest>& imem_req_out,
         hls::stream<ImemResponse>& imem_resp_in,

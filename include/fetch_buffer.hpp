@@ -13,6 +13,11 @@ struct FetchInstruction {
     uint32_t original_instruction;
     uint32_t fetch_id;
     uint64_t exception_cause;
+    uint32_t ftq_generation;
+    uint8_t ftq_idx;
+    uint8_t ftq_lane;
+    uint8_t ftq_halfword_offset;
+    bool ftq_valid;
     bool is_rvc;
     bool exception;
     bool exception_access_fault;
@@ -20,7 +25,8 @@ struct FetchInstruction {
 
     FetchInstruction()
         : pc(0), instruction(0), original_instruction(0), fetch_id(0),
-          exception_cause(0), is_rvc(false), exception(false),
+          exception_cause(0), ftq_generation(0), ftq_idx(0), ftq_lane(0),
+          ftq_halfword_offset(0), ftq_valid(false), is_rvc(false), exception(false),
           exception_access_fault(false), exception_misaligned(false) {}
 };
 

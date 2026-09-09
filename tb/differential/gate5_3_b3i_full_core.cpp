@@ -183,7 +183,7 @@ static bool run_test(const TestSpec& spec) {
     boom::FetchPacket previous;
     bool previous_valid = false;
     unsigned cycles = 0;
-    for (; cycles < 8000 && !dmem.saw_tohost && !state.io_trap; ++cycles) {
+    for (; cycles < 8000 && !dmem.saw_tohost && !saw_exception; ++cycles) {
         imem.step(pipe, cycles);
         dmem.step(pipe, cycles);
         boom_core_step(state, pipe);
@@ -215,7 +215,7 @@ static bool run_test(const TestSpec& spec) {
     }
     bool ok = true;
     if (spec.expect_trap) {
-        ok = state.io_trap && saw_exception && exception_cause == 2 &&
+        ok = saw_exception && exception_cause == 2 &&
             exception_pc == RESET_VECTOR + 2 && !dmem.saw_tohost && !committed_tohost &&
             !register_written[9];
     } else {

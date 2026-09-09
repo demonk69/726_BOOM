@@ -93,6 +93,10 @@ LOAD_RESPONSE_LDQ_SCAN:
 
     event.valid = true;
     event.uop = entry.uop;
+#ifdef __SYNTHESIS__
+    event.uop.ftq_generation =
+        state.rob.ftq_generations[state.lsu.pending_load_rob_idx];
+#endif
     event.mispredict = false;
     event.redirect_pc = 0;
     event.exception = response.exception;

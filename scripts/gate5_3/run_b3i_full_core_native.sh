@@ -2,7 +2,7 @@
 set -euo pipefail
 
 ROOT=${HLS_BOOM_ROOT:-"$(cd "$(dirname "${BASH_SOURCE[0]}")/../.." && pwd)"}
-BUILD="$ROOT/build/gate5_3_fetch_buffer/b3i"
+BUILD=${GATE5_3_B3I_BUILD_DIR:-"$ROOT/build/gate5_3_fetch_buffer/b3i"}
 REPORT="$ROOT/reports/gate5_3_fetch_buffer/b3i"
 mkdir -p "$BUILD" "$REPORT/logs"
 CXXFLAGS=(-std=c++11 -O2 -Wall -Wextra -Werror

@@ -63,6 +63,13 @@ void boom_core_reset_step(BoomCoreState& state, ResetControllerState& reset_ctrl
         predictor_reset.reset = true;
         predictor_reset.active_generation = ++state.predictor_generation;
         state.predictor.step(predictor_reset);
+        boom::FtqStepInput ftq_reset;
+        ftq_reset.reset = true;
+        state.ftq_last_output = state.ftq.step(ftq_reset);
+        state.ftq_retire_pending = boom::FtqLaneEvent();
+        state.ftq_redirect_pending = boom::FtqRedirect();
+        state.ftq_exception_retire_deferred = boom::FtqLaneEvent();
+        state.ftq_read_request = boom::FtqLaneEvent();
         state.frontend.pc = RESET_VECTOR;
         state.frontend.reset_done = false;
         state.frontend.request_sent = false;
@@ -101,6 +108,14 @@ void boom_core_reset_step(BoomCoreState& state, ResetControllerState& reset_ctrl
         state.frontend.predictor_predicted_taken = false;
         state.frontend.predictor_target_valid = false;
         state.frontend.predictor_target = 0;
+        state.frontend.prediction_resolved = false;
+        state.frontend.predictor_metadata_index = 0;
+        state.frontend.packet_accept = false;
+        state.frontend.ftq_alloc_ready = true;
+        state.frontend.ftq_alloc_accepted = false;
+        state.frontend.ftq_alloc_idx = 0;
+        state.frontend.ftq_alloc_generation = 0;
+        state.frontend.accepted_packet_mask = 0;
         boom::fetch_buffer_reset(state.frontend.fetch_buffer);
         state.frontend_redirect = FrontendRedirect();
         advance_reset(reset_ctrl, RESET_RENAME_MAP);

@@ -102,6 +102,17 @@ void exception_recovery_apply(BoomCoreState& state, const RobEntry& owner) {
     state.frontend_redirect.rob_idx = owner.uop.queue.rob_idx;
     state.frontend_redirect.allocation_id = owner.uop.queue.rob_allocation_id;
     state.frontend_redirect.branch_mask = owner.uop.branch.br_mask;
+    if (owner.uop.ftq_valid) {
+        state.ftq_redirect_pending.valid = true;
+        state.ftq_redirect_pending.owner_ftq_idx = owner.uop.ftq_idx;
+        state.ftq_redirect_pending.owner_generation = owner.uop.ftq_generation;
+        state.ftq_redirect_pending.surviving_lane_mask = static_cast<uint8_t>(
+            1u << owner.uop.ftq_lane);
+        state.ftq_exception_retire_deferred.valid = true;
+        state.ftq_exception_retire_deferred.ftq_idx = owner.uop.ftq_idx;
+        state.ftq_exception_retire_deferred.generation = owner.uop.ftq_generation;
+        state.ftq_exception_retire_deferred.lane = owner.uop.ftq_lane;
+    }
     clear_speculative_state(state);
 }
 
@@ -155,6 +166,9 @@ void rob_commit_module(BoomCoreState& state, PipeSignals& pipe) {
                 rob.last_commit = ce;
                 rob.commit_valid = true;
                 RobEntry owner = he;
+#ifdef __SYNTHESIS__
+                owner.uop.ftq_generation = rob.ftq_generations[rob.head];
+#endif
                 exception_recovery_apply(state, owner);
             }
         } else {
@@ -208,6 +222,16 @@ void rob_commit_module(BoomCoreState& state, PipeSignals& pipe) {
             }
             pipe.commit_trace.write(ce);
             rob.last_commit=ce; rob.commit_valid=true;
+            if (uop.ftq_valid) {
+                state.ftq_retire_pending.valid = true;
+                state.ftq_retire_pending.ftq_idx = uop.ftq_idx;
+#ifdef __SYNTHESIS__
+                state.ftq_retire_pending.generation = rob.ftq_generations[rob.head];
+#else
+                state.ftq_retire_pending.generation = uop.ftq_generation;
+#endif
+                state.ftq_retire_pending.lane = uop.ftq_lane;
+            }
             he.valid=false; rob.head=(rob.head+1)%ROB_DEPTH; rob.maybe_full=false;
         }
     }

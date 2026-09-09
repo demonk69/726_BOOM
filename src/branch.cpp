@@ -265,6 +265,14 @@ static void recover_mispredict(BoomCoreState& state, const BranchUpdate& update)
     uint8_t mispredict_mask = update.mispredict_mask;
     uint8_t keep_mask = update.uop.branch.br_mask;
 
+    if (update.uop.ftq_valid) {
+        state.ftq_redirect_pending.valid = true;
+        state.ftq_redirect_pending.owner_ftq_idx = update.uop.ftq_idx;
+        state.ftq_redirect_pending.owner_generation = update.uop.ftq_generation;
+        state.ftq_redirect_pending.surviving_lane_mask = static_cast<uint8_t>(
+            (1u << (update.uop.ftq_lane + 1u)) - 1u);
+    }
+
     state.branch_state.mispredicts++;
     state.branch_state.rollbacks++;
     kill_issue_state(state, mispredict_mask);

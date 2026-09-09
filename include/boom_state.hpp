@@ -6,6 +6,7 @@
 #include "divider.hpp"
 #include "fetch_buffer.hpp"
 #include "fetch_packet.hpp"
+#include "ftq.hpp"
 #include "predictor.hpp"
 #include "predecode.hpp"
 
@@ -52,6 +53,14 @@ struct FrontendState {
     bool     predictor_predicted_taken;
     bool     predictor_target_valid;
     uint64_t predictor_target;
+    bool     prediction_resolved;
+    uint8_t  predictor_metadata_index;
+    bool     packet_accept;
+    bool     ftq_alloc_ready;
+    bool     ftq_alloc_accepted;
+    uint8_t  ftq_alloc_idx;
+    uint32_t ftq_alloc_generation;
+    uint8_t  accepted_packet_mask;
     boom::FetchBufferState fetch_buffer;
 
     FrontendState() : pc(RESET_VECTOR), reset_done(false), request_sent(false),
@@ -69,6 +78,10 @@ struct FrontendState {
         predictor_response_valid(false), predictor_response_stale(false),
         predictor_prediction_valid(false), predictor_predicted_taken(false),
         predictor_target_valid(false), predictor_target(0),
+        prediction_resolved(false), predictor_metadata_index(0),
+        packet_accept(false), ftq_alloc_ready(true), ftq_alloc_accepted(false),
+        ftq_alloc_idx(0), ftq_alloc_generation(0),
+        accepted_packet_mask(0),
         fetch_buffer() {}
 };
 
@@ -189,6 +202,7 @@ struct ExecuteState {
 
 struct RobInternalState {
     RobEntry entries[ROB_DEPTH];
+    uint32_t ftq_generations[ROB_DEPTH];
     uint8_t  head, tail;
     uint32_t next_allocation_id;
     bool     maybe_full;
@@ -199,7 +213,10 @@ struct RobInternalState {
 
     RobInternalState() : head(0), tail(0), next_allocation_id(1), maybe_full(false), state(ROB_INIT),
         commit_count(0), last_commit(), commit_valid(false) {
-        for (int i=0; i<ROB_DEPTH; i++) entries[i]=RobEntry(); }
+        for (int i=0; i<ROB_DEPTH; i++) {
+            entries[i]=RobEntry();
+            ftq_generations[i]=0;
+        } }
 };
 
 struct CsrState {
@@ -303,6 +320,13 @@ struct BoomCoreState {
     BranchRecoveryState branch_state;
     boom::PredictorFoundation<256> predictor;
     uint32_t        predictor_generation;
+    boom::FtqFoundation<FTQ_DEPTH> ftq;
+    boom::FtqLaneEvent ftq_retire_pending;
+    boom::FtqRedirect ftq_redirect_pending;
+    boom::FtqLaneEvent ftq_exception_retire_deferred;
+    boom::FtqLaneEvent ftq_read_request;
+    boom::FtqStepOutput ftq_last_output;
+    bool            product_ftq_enabled;
     uint64_t        int_rf_bank0[INT_PHYS_REGS];
     uint64_t        int_rf_bank1[INT_PHYS_REGS];
     uint64_t        int_rf_latest_bank;
@@ -316,7 +340,10 @@ struct BoomCoreState {
     uint64_t        tohost;
     ExceptionCommitEvent exception_commit;
 
-    BoomCoreState() : cycle_count(0), predictor(), predictor_generation(0),
+    BoomCoreState() : cycle_count(0), predictor(), predictor_generation(0), ftq(),
+        ftq_retire_pending(), ftq_redirect_pending(),
+        ftq_exception_retire_deferred(), ftq_read_request(), ftq_last_output(),
+        product_ftq_enabled(false),
         int_rf_latest_bank(0), brupdate(), frontend_redirect(),
         global_flush(false), io_success(false), io_halted(false), io_trap(false),
         tohost(0), exception_commit() {

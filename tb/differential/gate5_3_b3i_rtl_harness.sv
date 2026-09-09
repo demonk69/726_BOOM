@@ -2,7 +2,7 @@
 module gate5_3_b3i_rtl_harness (
     input wire clk, input wire rst_n, input wire [7:0] scenario_code,
     output wire tohost_seen, output wire [63:0] tohost_value,
-    output wire tohost_commit_seen, output wire io_trap,
+    output wire tohost_commit_seen, output wire io_trap, output wire exception_valid,
     output wire protocol_error, output wire [31:0] commit_count,
     output wire [127:0] observed_imem_req, output wire observed_imem_transfer
 );
@@ -21,6 +21,7 @@ module gate5_3_b3i_rtl_harness (
     assign protocol_error = imem_protocol_error || dmem_protocol_error || trace_protocol_error;
     assign observed_imem_req = imem_req_tdata[127:0];
     assign observed_imem_transfer = imem_req_tvalid && imem_req_tready;
+    assign exception_valid = dut.state_exception_commit_valid;
 
     boom_core_top dut (
         .ap_local_block(ap_local_block), .ap_local_deadlock(ap_local_deadlock),

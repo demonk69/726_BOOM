@@ -370,6 +370,16 @@ PredictorFoundation<Entries, FullPayloadReset>::PredictorFoundation()
 }
 
 template <std::size_t Entries, bool FullPayloadReset>
+PredictorStepOutput PredictorFoundation<Entries, FullPayloadReset>::peek(
+        bool reset) const {
+    PredictorStepOutput output;
+    output.req_ready = !response_pending_ && !reset;
+    output.resp_valid = response_pending_ && !reset;
+    if (response_pending_) output.response = pending_response_;
+    return output;
+}
+
+template <std::size_t Entries, bool FullPayloadReset>
 PredictorStepOutput PredictorFoundation<Entries, FullPayloadReset>::step(
     const PredictorStepInput& input) {
 #if defined(BOOM_PREDICTOR_STORAGE_LUTRAM)
@@ -377,10 +387,7 @@ PredictorStepOutput PredictorFoundation<Entries, FullPayloadReset>::step(
 #elif defined(BOOM_PREDICTOR_STORAGE_BRAM)
 #pragma HLS bind_storage variable=counters_ type=RAM_2P impl=BRAM
 #endif
-    PredictorStepOutput output;
-    output.req_ready = !response_pending_ && !input.reset;
-    output.resp_valid = response_pending_ && !input.reset;
-    if (response_pending_) output.response = pending_response_;
+    PredictorStepOutput output = peek(input.reset);
 
     if (input.reset) {
         for (std::size_t i = 0; i < Entries; ++i) {
@@ -455,170 +462,6 @@ template class PredictorFoundation<256, true>;
 
 namespace boom {
 
-template <std::size_t Depth, bool FullPayloadReset>
-FtqFoundation<Depth, FullPayloadReset>::FtqFoundation()
-    : head_(0), tail_(0), count_(0), next_generation_(1) {
-    for (std::size_t i = 0; i < Depth; ++i) entries_[i].valid = false;
-}
-
-template <std::size_t Depth, bool FullPayloadReset>
-uint8_t FtqFoundation<Depth, FullPayloadReset>::advance(uint8_t index) {
-    return static_cast<uint8_t>((index + 1u) & (Depth - 1u));
-}
-
-template <std::size_t Depth, bool FullPayloadReset>
-bool FtqFoundation<Depth, FullPayloadReset>::entry_is_active(
-        uint8_t index, uint32_t generation) const {
-    return index < Depth && entries_[index].valid &&
-           entries_[index].generation == generation;
-}
-
-template <std::size_t Depth, bool FullPayloadReset>
-bool FtqFoundation<Depth, FullPayloadReset>::apply_lane_event(
-        const FtqLaneEvent& event) {
-    if (!event.valid || event.lane > 1 ||
-        !entry_is_active(event.ftq_idx, event.generation)) {
-        return false;
-    }
-    const uint8_t lane_bit = static_cast<uint8_t>(1u << event.lane);
-    FtqEntry& entry = entries_[event.ftq_idx];
-    if ((entry.packet_valid_mask & lane_bit) == 0 ||
-        (entry.live_lane_mask & lane_bit) == 0) {
-        return false;
-    }
-    entry.live_lane_mask = static_cast<uint8_t>(entry.live_lane_mask & ~lane_bit);
-    return true;
-}
-
-template <std::size_t Depth, bool FullPayloadReset>
-void FtqFoundation<Depth, FullPayloadReset>::reset_controls() {
-    for (std::size_t i = 0; i < Depth; ++i) {
-        entries_[i].valid = false;
-        entries_[i].live_lane_mask = 0;
-        if (FullPayloadReset) entries_[i] = FtqEntry();
-    }
-    head_ = 0;
-    tail_ = 0;
-    count_ = 0;
-    ++next_generation_;
-    if (next_generation_ == 0) next_generation_ = 1;
-}
-
-template <std::size_t Depth, bool FullPayloadReset>
-FtqStepOutput FtqFoundation<Depth, FullPayloadReset>::step(
-        const FtqStepInput& input) {
-#if defined(BOOM_FTQ_STORAGE_LUTRAM)
-#pragma HLS bind_storage variable=entries_ type=RAM_2P impl=LUTRAM
-#elif defined(BOOM_FTQ_STORAGE_BRAM)
-#pragma HLS bind_storage variable=entries_ type=RAM_2P impl=BRAM
-#endif
-    FtqStepOutput output;
-
-    if (input.reset) {
-        reset_controls();
-        output.head = head_;
-        output.tail = tail_;
-        output.count = count_;
-        output.empty = true;
-        return output;
-    }
-
-    if (input.redirect.valid) {
-        if (entry_is_active(input.redirect.owner_ftq_idx,
-                            input.redirect.owner_generation)) {
-            const uint8_t owner_distance = static_cast<uint8_t>(
-                (input.redirect.owner_ftq_idx + Depth - head_) & (Depth - 1u));
-            if (owner_distance < count_) {
-                for (std::size_t offset = 0; offset < Depth; ++offset) {
-                    if (offset > owner_distance && offset < count_) {
-                        const uint8_t index = static_cast<uint8_t>(
-                            (head_ + offset) & (Depth - 1u));
-                        entries_[index].valid = false;
-                        entries_[index].live_lane_mask = 0;
-                    }
-                }
-                FtqEntry& owner = entries_[input.redirect.owner_ftq_idx];
-                owner.live_lane_mask = static_cast<uint8_t>(
-                    owner.live_lane_mask & input.redirect.surviving_lane_mask &
-                    owner.packet_valid_mask);
-                tail_ = advance(input.redirect.owner_ftq_idx);
-                count_ = static_cast<uint8_t>(owner_distance + 1u);
-                output.redirect_accepted = true;
-            } else {
-                output.redirect_rejected = true;
-            }
-        } else {
-            output.redirect_rejected = true;
-        }
-        output.retire_rejected = input.retire.valid;
-        output.squash_rejected = input.squash.valid;
-    } else {
-        if (input.retire.valid) {
-            output.retire_accepted = apply_lane_event(input.retire);
-            output.retire_rejected = !output.retire_accepted;
-        }
-        if (input.squash.valid) {
-            output.squash_accepted = apply_lane_event(input.squash);
-            output.squash_rejected = !output.squash_accepted;
-        }
-    }
-
-    if (count_ != 0 && entries_[head_].valid &&
-        entries_[head_].live_lane_mask == 0) {
-        output.reclaimed = true;
-        output.reclaimed_ftq_idx = head_;
-        entries_[head_].valid = false;
-        head_ = advance(head_);
-        --count_;
-    }
-
-    output.alloc_ready = !input.redirect.valid && count_ < Depth;
-    const uint8_t mask = static_cast<uint8_t>(input.allocation.packet_valid_mask & 3u);
-    output.alloc_invalid_mask = input.alloc_valid &&
-        (input.allocation.packet_valid_mask != mask || mask == 2u);
-    if (input.alloc_valid && output.alloc_ready && !output.alloc_invalid_mask &&
-        mask != 0) {
-        FtqEntry entry;
-        entry.valid = true;
-        entry.packet_base_pc = input.allocation.packet_base_pc;
-        entry.packet_valid_mask = mask;
-        entry.live_lane_mask = mask;
-        entry.prediction_valid = input.allocation.prediction_valid;
-        entry.predicted_taken = input.allocation.prediction_valid &&
-                                input.allocation.predicted_taken;
-        entry.target_valid = input.allocation.prediction_valid &&
-                             input.allocation.target_valid;
-        entry.predicted_target = entry.target_valid ?
-            input.allocation.predicted_target : 0;
-        entry.cfi_lane = static_cast<uint8_t>(input.allocation.cfi_lane & 1u);
-        entry.cfi_type = static_cast<uint8_t>(input.allocation.cfi_type & 3u);
-        entry.predictor_metadata_index =
-            input.allocation.predictor_metadata_index;
-        entry.predictor_generation = input.allocation.predictor_generation;
-        entry.generation = next_generation_;
-        ++next_generation_;
-        if (next_generation_ == 0) next_generation_ = 1;
-        entries_[tail_] = entry;
-        output.alloc_accepted = true;
-        output.alloc_ftq_idx = tail_;
-        output.alloc_generation = entry.generation;
-        tail_ = advance(tail_);
-        ++count_;
-    }
-
-    if (input.read_valid &&
-        entry_is_active(input.read_ftq_idx, input.read_generation)) {
-        output.read_hit = true;
-        output.read_entry = entries_[input.read_ftq_idx];
-    }
-    output.head = head_;
-    output.tail = tail_;
-    output.count = count_;
-    output.empty = count_ == 0;
-    output.full = count_ == Depth;
-    return output;
-}
-
 template class FtqFoundation<2>;
 template class FtqFoundation<4>;
 template class FtqFoundation<8>;
@@ -671,6 +514,11 @@ static FetchInstruction buffer_entry(const MicroOp& uop, uint32_t fetch_id) {
     entry.exception_cause = uop.exc_cause;
     entry.exception_access_fault = uop.exc.xcpt_ae_if;
     entry.exception_misaligned = uop.exc.xcpt_ma_if;
+    entry.ftq_valid = uop.ftq_valid;
+    entry.ftq_idx = uop.ftq_idx;
+    entry.ftq_generation = uop.ftq_generation;
+    entry.ftq_lane = uop.ftq_lane;
+    entry.ftq_halfword_offset = uop.ftq_halfword_offset;
     return entry;
 }
 
@@ -687,6 +535,11 @@ static MicroOp buffer_uop(const FetchInstruction& entry) {
     uop.exc.exc_cause = entry.exception_cause;
     uop.exc.xcpt_ae_if = entry.exception_access_fault;
     uop.exc.xcpt_ma_if = entry.exception_misaligned;
+    uop.ftq_valid = entry.ftq_valid;
+    uop.ftq_idx = entry.ftq_idx;
+    uop.ftq_generation = entry.ftq_generation;
+    uop.ftq_lane = entry.ftq_lane;
+    uop.ftq_halfword_offset = entry.ftq_halfword_offset;
     return uop;
 }
 
@@ -699,6 +552,51 @@ static void clear_prediction_context(FrontendState& fe) {
     fe.prediction_epoch = 0;
     fe.prediction_generation = 0;
     fe.prediction_token = 0;
+    fe.prediction_resolved = false;
+    fe.predictor_metadata_index = 0;
+}
+
+static FtqAllocation packet_ftq_allocation(const BoomCoreState& state) {
+    const FrontendState& fe = state.frontend;
+    FtqAllocation allocation;
+    allocation.packet_base_pc = fe.pending_packet.slots[0].pc;
+    allocation.packet_valid_mask = fe.final_admission_mask;
+    allocation.predictor_generation = state.predictor_generation;
+    if (!fe.pending_predecode.packet_has_cfi) return allocation;
+
+    const CfiPredecodeResult& cfi = fe.pending_predecode.selected_cfi_result;
+    const uint8_t lane = fe.pending_predecode.selected_cfi_lane;
+    allocation.cfi_lane = lane;
+    allocation.cfi_type = cfi.cfi_type;
+    allocation.predictor_metadata_index = cfi.cfi_type == CFI_CONDITIONAL_BRANCH ?
+        fe.predictor_metadata_index : static_cast<uint8_t>(
+            (fe.pending_packet.slots[lane].pc >> 1) & 0xffu);
+    if (cfi.cfi_type == CFI_CONDITIONAL_BRANCH) {
+        allocation.prediction_valid = fe.predictor_prediction_valid;
+        allocation.predicted_taken = fe.predictor_predicted_taken;
+        allocation.target_valid = fe.predictor_target_valid;
+        allocation.predicted_target = fe.predictor_target;
+    } else if (cfi.cfi_type == CFI_JAL && cfi.static_target_valid) {
+        allocation.prediction_valid = true;
+        allocation.predicted_taken = true;
+        allocation.target_valid = true;
+        allocation.predicted_target = cfi.static_target;
+    }
+    return allocation;
+}
+
+static void stamp_ftq_reference(FetchPacket& packet, uint64_t base_pc,
+                                uint8_t idx, uint32_t generation) {
+    for (uint8_t lane = 0; lane < FETCH_PACKET_WIDTH; ++lane) {
+        if ((packet.valid_mask & static_cast<uint8_t>(1u << lane)) == 0) continue;
+        FetchInstruction& instruction = packet.slots[lane];
+        instruction.ftq_valid = true;
+        instruction.ftq_idx = idx;
+        instruction.ftq_generation = generation;
+        instruction.ftq_lane = lane;
+        instruction.ftq_halfword_offset = static_cast<uint8_t>(
+            ((instruction.pc - base_pc) >> 1) & 3u);
+    }
 }
 
 static bool fetch_buffer_can_accept(const FetchBufferState& buffer,
@@ -712,12 +610,16 @@ static bool fetch_buffer_can_accept(const FetchBufferState& buffer,
     return packet.valid && incoming <= available;
 }
 
-void frontend_module(BoomCoreState& state, PipeSignals& pipe) {
+template <bool ProductFtq>
+static void frontend_mode_module(BoomCoreState& state, PipeSignals& pipe) {
     FrontendState& fe = state.frontend;
 
     fe.predictor_request_accepted = false;
     fe.predictor_response_valid = false;
     fe.predictor_response_stale = false;
+    fe.packet_accept = false;
+    fe.ftq_alloc_accepted = false;
+    fe.accepted_packet_mask = 0;
 
     const bool reset_redirect = !fe.reset_done;
     if (reset_redirect) {
@@ -831,12 +733,14 @@ void frontend_module(BoomCoreState& state, PipeSignals& pipe) {
 
     FetchBufferResult buffer;
     bool buffer_stepped = false;
-    if (fe.pending_packet.valid && !fe.prediction_pending) {
+    if (!ProductFtq && fe.pending_packet.valid &&
+        !fe.prediction_pending) {
         buffer = fetch_buffer_step(fe.fetch_buffer, fe.pending_packet,
                                    decode_ready, redirect);
         buffer_stepped = true;
         fe.fetch_packet_valid = buffer.dequeue_valid;
         if (buffer.dequeue_valid) fe.fetch_uop = buffer_uop(buffer.dequeue_bits);
+        fe.packet_accept = buffer.enqueue_fire;
         if (buffer.enqueue_fire) {
             fe.pending_packet = FetchPacket();
             fe.producer_valid = false;
@@ -873,6 +777,10 @@ void frontend_module(BoomCoreState& state, PipeSignals& pipe) {
             fe.pending_predecode = CfiPacketPredecodeResult();
             fe.prediction_pending = false;
             fe.predictor_request_sent = false;
+            fe.predictor_prediction_valid = false;
+            fe.predictor_predicted_taken = false;
+            fe.predictor_target_valid = false;
+            fe.predictor_target = 0;
             packet_built = built.packet.valid;
 
             if (built.packet.valid) {
@@ -937,16 +845,15 @@ void frontend_module(BoomCoreState& state, PipeSignals& pipe) {
         predictor_input.request.generation = fe.prediction_generation;
         predictor_input.request.request_token = fe.prediction_token;
     }
-    const bool prediction_can_admit = fe.prediction_pending &&
+    const bool legacy_prediction_can_admit = fe.prediction_pending &&
         fe.predictor_request_sent && !packet_built && !redirect &&
         fetch_buffer_can_accept(fe.fetch_buffer, fe.pending_packet, decode_ready);
-    predictor_input.resp_ready = !fe.prediction_pending || prediction_can_admit;
-    const PredictorStepOutput predictor_output = state.predictor.step(predictor_input);
-    fe.predictor_response_valid = predictor_output.resp_valid;
-    fe.predictor_prediction_valid = predictor_output.response.prediction_valid;
-    fe.predictor_predicted_taken = predictor_output.response.taken;
-    fe.predictor_target_valid = predictor_output.response.target_valid;
-    fe.predictor_target = predictor_output.response.target;
+    predictor_input.resp_ready = ProductFtq ||
+        !fe.prediction_pending || legacy_prediction_can_admit;
+    const PredictorStepOutput predictor_output = state.predictor.peek(false);
+    state.predictor.step(predictor_input);
+    fe.predictor_response_valid = predictor_output.resp_valid ||
+        (fe.prediction_pending && fe.prediction_resolved);
 
     if (predictor_input.req_valid && predictor_output.req_ready) {
         fe.predictor_request_sent = true;
@@ -962,17 +869,73 @@ void frontend_module(BoomCoreState& state, PipeSignals& pipe) {
         fe.prediction_epoch == fe.epoch;
     if (predictor_output.resp_valid && !matching_prediction)
         fe.predictor_response_stale = true;
+    if (matching_prediction) {
+        fe.predictor_prediction_valid = predictor_output.response.prediction_valid;
+        fe.predictor_predicted_taken = predictor_output.response.taken;
+        fe.predictor_target_valid = predictor_output.response.target_valid;
+        fe.predictor_target = predictor_output.response.target;
+        fe.predictor_metadata_index = predictor_output.response.metadata_token;
+        fe.prediction_resolved = true;
+    }
 
+    const bool packet_final_valid = !packet_built && fe.pending_packet.valid &&
+        (!fe.prediction_pending || fe.prediction_resolved);
+    const bool fb_ready = packet_final_valid &&
+        fetch_buffer_can_accept(fe.fetch_buffer, fe.pending_packet, decode_ready);
+
+    FtqStepInput ftq_input;
     FetchPacket admission_packet;
-    if (!packet_built && fe.pending_packet.valid &&
-        (!fe.prediction_pending || matching_prediction))
+    if (ProductFtq) {
+        ftq_input.retire = state.ftq_retire_pending;
+        ftq_input.redirect = state.ftq_redirect_pending;
+        if (redirect && !reset_redirect && !ftq_input.redirect.valid)
+            ftq_input.reset = true;
+        ftq_input.read_valid = state.ftq_read_request.valid;
+        ftq_input.read_ftq_idx = state.ftq_read_request.ftq_idx;
+        ftq_input.read_generation = state.ftq_read_request.generation;
+        if (packet_final_valid && fb_ready && !redirect && !ftq_input.redirect.valid) {
+            ftq_input.alloc_valid = fe.final_admission_mask != 0;
+            ftq_input.allocation = packet_ftq_allocation(state);
+        }
+        state.ftq_last_output = state.ftq.step(ftq_input);
+        fe.ftq_alloc_ready = state.ftq_last_output.alloc_ready;
+        fe.ftq_alloc_accepted = state.ftq_last_output.alloc_accepted;
+        fe.ftq_alloc_idx = state.ftq_last_output.alloc_ftq_idx;
+        fe.ftq_alloc_generation = state.ftq_last_output.alloc_generation;
+        state.ftq_retire_pending = FtqLaneEvent();
+        state.ftq_redirect_pending = FtqRedirect();
+        state.ftq_read_request = FtqLaneEvent();
+        if (ftq_input.redirect.valid) {
+            if (state.ftq_last_output.retire_rejected)
+                state.ftq_retire_pending = ftq_input.retire;
+            if (!state.ftq_last_output.redirect_accepted)
+                state.ftq_exception_retire_deferred = FtqLaneEvent();
+        }
+        if (state.ftq_exception_retire_deferred.valid &&
+            !state.ftq_retire_pending.valid) {
+            state.ftq_retire_pending = state.ftq_exception_retire_deferred;
+            state.ftq_exception_retire_deferred = FtqLaneEvent();
+        }
+        if (state.ftq_last_output.alloc_accepted) {
+            admission_packet = fe.pending_packet;
+            stamp_ftq_reference(admission_packet,
+                                ftq_input.allocation.packet_base_pc,
+                                state.ftq_last_output.alloc_ftq_idx,
+                                state.ftq_last_output.alloc_generation);
+        }
+    } else if (packet_final_valid && fb_ready && !redirect) {
         admission_packet = fe.pending_packet;
+    }
     if (!buffer_stepped) {
         buffer = fetch_buffer_step(fe.fetch_buffer, admission_packet,
                                    decode_ready, redirect);
         fe.fetch_packet_valid = buffer.dequeue_valid;
         if (buffer.dequeue_valid) fe.fetch_uop = buffer_uop(buffer.dequeue_bits);
-        if (buffer.enqueue_fire) {
+        fe.packet_accept = ProductFtq ?
+            state.ftq_last_output.alloc_accepted && buffer.enqueue_fire :
+            buffer.enqueue_fire;
+        if (fe.packet_accept) {
+            fe.accepted_packet_mask = admission_packet.valid_mask;
             fe.pending_packet = FetchPacket();
             fe.producer_valid = false;
             clear_prediction_context(fe);
@@ -1004,6 +967,15 @@ void frontend_module(BoomCoreState& state, PipeSignals& pipe) {
             fe.request_sent = true;
         }
     }
+}
+
+void frontend_module(BoomCoreState& state, PipeSignals& pipe) {
+    if (state.product_ftq_enabled) frontend_mode_module<true>(state, pipe);
+    else frontend_mode_module<false>(state, pipe);
+}
+
+void frontend_product_module(BoomCoreState& state, PipeSignals& pipe) {
+    frontend_mode_module<true>(state, pipe);
 }
 
 }
@@ -1129,6 +1101,11 @@ void decode_module(BoomCoreState& state) {
     uop.debug_pc = pc;
     uop.debug_inst = state.frontend.fetch_uop.debug_inst;
     uop.is_rvc = state.frontend.fetch_uop.is_rvc;
+    uop.ftq_valid = state.frontend.fetch_uop.ftq_valid;
+    uop.ftq_idx = state.frontend.fetch_uop.ftq_idx;
+    uop.ftq_generation = state.frontend.fetch_uop.ftq_generation;
+    uop.ftq_lane = state.frontend.fetch_uop.ftq_lane;
+    uop.ftq_halfword_offset = state.frontend.fetch_uop.ftq_halfword_offset;
     uop.rename.lrs1 = (inst>>15)&0x1F;
     uop.rename.lrs2 = (inst>>20)&0x1F;
     uop.rename.ldst = (inst>>7)&0x1F;
@@ -1730,6 +1707,10 @@ LOAD_RESPONSE_LDQ_SCAN:
 
     event.valid = true;
     event.uop = entry.uop;
+#ifdef __SYNTHESIS__
+    event.uop.ftq_generation =
+        state.rob.ftq_generations[state.lsu.pending_load_rob_idx];
+#endif
     event.mispredict = false;
     event.redirect_pc = 0;
     event.exception = response.exception;
@@ -2537,11 +2518,16 @@ ROB_ALLOCATE_LANES:
         uint32_t allocation_id = rob.next_allocation_id++;
         if (allocation_id == 0) allocation_id = rob.next_allocation_id++;
         RobEntry& entry = rob.entries[rob.tail];
+        const uint32_t ftq_generation = uop.ftq_generation;
+#ifdef __SYNTHESIS__
+        uop.ftq_generation = 0;
+#endif
         entry = RobEntry();
         entry.valid=true; entry.busy=!uop.exception; entry.exception=uop.exception;
         uop.queue.rob_idx = rob.tail;
         uop.queue.rob_allocation_id = allocation_id;
         entry.uop = uop;
+        rob.ftq_generations[rob.tail] = ftq_generation;
         packet.uop.queue.rob_idx = rob.tail;
         packet.uop.queue.rob_allocation_id = allocation_id;
         packet.rob_allocated = true;
@@ -3477,6 +3463,14 @@ static void recover_mispredict(BoomCoreState& state, const BranchUpdate& update)
     uint8_t mispredict_mask = update.mispredict_mask;
     uint8_t keep_mask = update.uop.branch.br_mask;
 
+    if (update.uop.ftq_valid) {
+        state.ftq_redirect_pending.valid = true;
+        state.ftq_redirect_pending.owner_ftq_idx = update.uop.ftq_idx;
+        state.ftq_redirect_pending.owner_generation = update.uop.ftq_generation;
+        state.ftq_redirect_pending.surviving_lane_mask = static_cast<uint8_t>(
+            (1u << (update.uop.ftq_lane + 1u)) - 1u);
+    }
+
     state.branch_state.mispredicts++;
     state.branch_state.rollbacks++;
     kill_issue_state(state, mispredict_mask);
@@ -3852,6 +3846,17 @@ void exception_recovery_apply(BoomCoreState& state, const RobEntry& owner) {
     state.frontend_redirect.rob_idx = owner.uop.queue.rob_idx;
     state.frontend_redirect.allocation_id = owner.uop.queue.rob_allocation_id;
     state.frontend_redirect.branch_mask = owner.uop.branch.br_mask;
+    if (owner.uop.ftq_valid) {
+        state.ftq_redirect_pending.valid = true;
+        state.ftq_redirect_pending.owner_ftq_idx = owner.uop.ftq_idx;
+        state.ftq_redirect_pending.owner_generation = owner.uop.ftq_generation;
+        state.ftq_redirect_pending.surviving_lane_mask = static_cast<uint8_t>(
+            1u << owner.uop.ftq_lane);
+        state.ftq_exception_retire_deferred.valid = true;
+        state.ftq_exception_retire_deferred.ftq_idx = owner.uop.ftq_idx;
+        state.ftq_exception_retire_deferred.generation = owner.uop.ftq_generation;
+        state.ftq_exception_retire_deferred.lane = owner.uop.ftq_lane;
+    }
     clear_speculative_state(state);
 }
 
@@ -3905,6 +3910,9 @@ void rob_commit_module(BoomCoreState& state, PipeSignals& pipe) {
                 rob.last_commit = ce;
                 rob.commit_valid = true;
                 RobEntry owner = he;
+#ifdef __SYNTHESIS__
+                owner.uop.ftq_generation = rob.ftq_generations[rob.head];
+#endif
                 exception_recovery_apply(state, owner);
             }
         } else {
@@ -3958,6 +3966,16 @@ void rob_commit_module(BoomCoreState& state, PipeSignals& pipe) {
             }
             pipe.commit_trace.write(ce);
             rob.last_commit=ce; rob.commit_valid=true;
+            if (uop.ftq_valid) {
+                state.ftq_retire_pending.valid = true;
+                state.ftq_retire_pending.ftq_idx = uop.ftq_idx;
+#ifdef __SYNTHESIS__
+                state.ftq_retire_pending.generation = rob.ftq_generations[rob.head];
+#else
+                state.ftq_retire_pending.generation = uop.ftq_generation;
+#endif
+                state.ftq_retire_pending.lane = uop.ftq_lane;
+            }
             he.valid=false; rob.head=(rob.head+1)%ROB_DEPTH; rob.maybe_full=false;
         }
     }
@@ -3979,6 +3997,7 @@ void csr_module(BoomCoreState& state) {
 // ==== boom_core_step.cpp ====
 
 namespace boom {
+extern void frontend_product_module(BoomCoreState& state, PipeSignals& pipe);
 extern void decode_module(BoomCoreState& state);
 extern void rename_module(BoomCoreState& state);
 extern void issue_module(BoomCoreState& state);
@@ -4002,7 +4021,7 @@ void boom_core_step(BoomCoreState& state, PipeSignals& pipe) {
     boom::completion_service_cycle(state, pipe);
     boom::lsu_module(state, pipe);
     boom::rob_commit_module(state, pipe);
-    boom::frontend_module(state, pipe);
+    boom::frontend_product_module(state, pipe);
     boom::decode_module(state);
     boom::rename_module(state);
     boom::rob_allocate(state);
@@ -4080,6 +4099,13 @@ void boom_core_reset_step(BoomCoreState& state, ResetControllerState& reset_ctrl
         predictor_reset.reset = true;
         predictor_reset.active_generation = ++state.predictor_generation;
         state.predictor.step(predictor_reset);
+        boom::FtqStepInput ftq_reset;
+        ftq_reset.reset = true;
+        state.ftq_last_output = state.ftq.step(ftq_reset);
+        state.ftq_retire_pending = boom::FtqLaneEvent();
+        state.ftq_redirect_pending = boom::FtqRedirect();
+        state.ftq_exception_retire_deferred = boom::FtqLaneEvent();
+        state.ftq_read_request = boom::FtqLaneEvent();
         state.frontend.pc = RESET_VECTOR;
         state.frontend.reset_done = false;
         state.frontend.request_sent = false;
@@ -4118,6 +4144,14 @@ void boom_core_reset_step(BoomCoreState& state, ResetControllerState& reset_ctrl
         state.frontend.predictor_predicted_taken = false;
         state.frontend.predictor_target_valid = false;
         state.frontend.predictor_target = 0;
+        state.frontend.prediction_resolved = false;
+        state.frontend.predictor_metadata_index = 0;
+        state.frontend.packet_accept = false;
+        state.frontend.ftq_alloc_ready = true;
+        state.frontend.ftq_alloc_accepted = false;
+        state.frontend.ftq_alloc_idx = 0;
+        state.frontend.ftq_alloc_generation = 0;
+        state.frontend.accepted_packet_mask = 0;
         boom::fetch_buffer_reset(state.frontend.fetch_buffer);
         state.frontend_redirect = FrontendRedirect();
         advance_reset(reset_ctrl, RESET_RENAME_MAP);
@@ -4416,6 +4450,7 @@ void boom_core_top(hls::stream<ImemRequest>&  imem_req_out,
 
     static BoomCoreState state;
     static ResetControllerState reset_ctrl;
+#pragma HLS bind_storage variable=state.rob.ftq_generations type=RAM_2P impl=LUTRAM
 #pragma HLS RESET variable=reset_ctrl
 
     PipeSignals pipe;
@@ -5159,6 +5194,132 @@ void synth_pf2_predictor_frontend_top(
     pending_packet_valid = state.frontend.pending_packet.valid;
     frontend_pc = state.frontend.pc;
     fetch_buffer_count = state.frontend.fetch_buffer.count;
+}
+
+void synth_pf3_ftq_atomic_top(
+        hls::stream<ImemRequest>& imem_req_out,
+        hls::stream<ImemResponse>& imem_resp_in,
+        bool runtime_reset, bool packet_valid, uint8_t packet_mask,
+        uint64_t packet_base_pc, uint32_t lane0_instruction,
+        uint32_t lane1_instruction, bool lane0_rvc, bool lane1_rvc,
+        bool prediction_valid, bool predicted_taken, bool target_valid,
+        uint64_t predicted_target, uint8_t cfi_lane, uint8_t cfi_type,
+        uint8_t predictor_metadata_index, uint32_t predictor_generation,
+        bool fetch_buffer_blocked, bool retire_valid, uint8_t retire_ftq_idx,
+        uint32_t retire_generation, uint8_t retire_lane,
+        bool redirect_valid, uint8_t redirect_owner_idx,
+        uint32_t redirect_owner_generation, uint8_t redirect_surviving_mask,
+        bool lookup_valid, uint8_t lookup_idx, uint32_t lookup_generation,
+        bool& packet_accept, bool& fetch_buffer_enqueue,
+        bool& ftq_alloc_ready, bool& ftq_alloc_accepted,
+        uint8_t& reference_idx, uint32_t& reference_generation,
+        uint8_t& final_mask, uint8_t& live_mask,
+        bool& retire_accepted, bool& redirect_accepted,
+        uint8_t& ftq_head, uint8_t& ftq_tail, uint8_t& ftq_count,
+        bool& ftq_full, bool& reclaimed, bool& lookup_hit,
+        uint64_t& lookup_base_pc, bool& lookup_prediction_valid,
+        bool& lookup_predicted_taken, bool& lookup_target_valid,
+        uint64_t& lookup_target, uint8_t& lookup_cfi_lane,
+        uint8_t& lookup_cfi_type, uint8_t& lookup_metadata_index,
+        uint32_t& lookup_predictor_generation) {
+    static BoomCoreState state;
+    state.product_ftq_enabled = true;
+    state.frontend.reset_done = true;
+    state.frontend.pc = 1;
+    state.global_flush = false;
+    state.frontend_redirect = FrontendRedirect();
+    state.brupdate = BranchUpdate();
+
+    if (runtime_reset) {
+        boom::FtqStepInput reset;
+        reset.reset = true;
+        state.ftq_last_output = state.ftq.step(reset);
+        state.frontend.pending_packet = boom::FetchPacket();
+        state.frontend.fetch_buffer = boom::FetchBufferState();
+        state.ftq_retire_pending = boom::FtqLaneEvent();
+        state.ftq_redirect_pending = boom::FtqRedirect();
+    } else {
+        if (packet_valid && !state.frontend.pending_packet.valid) {
+            FrontendState& fe = state.frontend;
+            fe.pending_packet = boom::FetchPacket();
+            fe.pending_packet.valid = (packet_mask & 3u) != 0;
+            fe.pending_packet.valid_mask = packet_mask & 3u;
+            fe.pending_packet.slots[0].pc = packet_base_pc;
+            fe.pending_packet.slots[0].instruction = lane0_instruction;
+            fe.pending_packet.slots[0].is_rvc = lane0_rvc;
+            fe.pending_packet.slots[1].pc = packet_base_pc + (lane0_rvc ? 2u : 4u);
+            fe.pending_packet.slots[1].instruction = lane1_instruction;
+            fe.pending_packet.slots[1].is_rvc = lane1_rvc;
+            fe.original_packet_mask = packet_mask & 3u;
+            fe.final_admission_mask = packet_mask & 3u;
+            fe.pending_predecode = boom::predecode_cfi_packet(
+                packet_mask & 3u, fe.pending_packet.slots[0].pc,
+                lane0_instruction, lane0_rvc, fe.pending_packet.slots[1].pc,
+                lane1_instruction, lane1_rvc);
+            fe.prediction_pending = cfi_type == boom::CFI_CONDITIONAL_BRANCH;
+            fe.predictor_request_sent = fe.prediction_pending;
+            fe.prediction_resolved = fe.prediction_pending;
+            fe.predictor_prediction_valid = prediction_valid;
+            fe.predictor_predicted_taken = predicted_taken;
+            fe.predictor_target_valid = target_valid;
+            fe.predictor_target = predicted_target;
+            fe.predictor_metadata_index = predictor_metadata_index;
+            state.predictor_generation = predictor_generation;
+            if (fe.pending_predecode.packet_has_cfi) {
+                fe.pending_predecode.selected_cfi_lane = cfi_lane & 1u;
+                fe.pending_predecode.selected_cfi_result.cfi_type = cfi_type & 3u;
+            }
+        }
+        state.rename.dispatch_packets[0].valid = fetch_buffer_blocked;
+        if (fetch_buffer_blocked) {
+            state.frontend.fetch_buffer.count = FETCH_BUFFER_DEPTH;
+            state.frontend.fetch_buffer.head = 0;
+            state.frontend.fetch_buffer.tail = 0;
+        }
+        state.ftq_retire_pending.valid = retire_valid;
+        state.ftq_retire_pending.ftq_idx = retire_ftq_idx;
+        state.ftq_retire_pending.generation = retire_generation;
+        state.ftq_retire_pending.lane = retire_lane;
+        state.ftq_redirect_pending.valid = redirect_valid;
+        state.ftq_redirect_pending.owner_ftq_idx = redirect_owner_idx;
+        state.ftq_redirect_pending.owner_generation = redirect_owner_generation;
+        state.ftq_redirect_pending.surviving_lane_mask = redirect_surviving_mask;
+        state.ftq_read_request.valid = lookup_valid;
+        state.ftq_read_request.ftq_idx = lookup_idx;
+        state.ftq_read_request.generation = lookup_generation;
+        PipeSignals pipe;
+        if (!imem_resp_in.empty()) pipe.imem_resp.write(imem_resp_in.read());
+        boom::frontend_module(state, pipe);
+        if (!pipe.imem_req.empty()) imem_req_out.write(pipe.imem_req.read());
+    }
+
+    packet_accept = state.frontend.packet_accept;
+    fetch_buffer_enqueue = state.frontend.packet_accept;
+    ftq_alloc_ready = state.frontend.ftq_alloc_ready;
+    ftq_alloc_accepted = state.frontend.ftq_alloc_accepted;
+    reference_idx = state.frontend.ftq_alloc_idx;
+    reference_generation = state.frontend.ftq_alloc_generation;
+    final_mask = state.frontend.packet_accept ? state.frontend.accepted_packet_mask :
+        state.frontend.final_admission_mask;
+    live_mask = state.ftq_last_output.read_hit ?
+        state.ftq_last_output.read_entry.live_lane_mask : 0;
+    retire_accepted = state.ftq_last_output.retire_accepted;
+    redirect_accepted = state.ftq_last_output.redirect_accepted;
+    ftq_head = state.ftq_last_output.head;
+    ftq_tail = state.ftq_last_output.tail;
+    ftq_count = state.ftq_last_output.count;
+    ftq_full = state.ftq_last_output.full;
+    reclaimed = state.ftq_last_output.reclaimed;
+    lookup_hit = state.ftq_last_output.read_hit;
+    lookup_base_pc = state.ftq_last_output.read_entry.packet_base_pc;
+    lookup_prediction_valid = state.ftq_last_output.read_entry.prediction_valid;
+    lookup_predicted_taken = state.ftq_last_output.read_entry.predicted_taken;
+    lookup_target_valid = state.ftq_last_output.read_entry.target_valid;
+    lookup_target = state.ftq_last_output.read_entry.predicted_target;
+    lookup_cfi_lane = state.ftq_last_output.read_entry.cfi_lane;
+    lookup_cfi_type = state.ftq_last_output.read_entry.cfi_type;
+    lookup_metadata_index = state.ftq_last_output.read_entry.predictor_metadata_index;
+    lookup_predictor_generation = state.ftq_last_output.read_entry.predictor_generation;
 }
 
 void synth_fetch_buffer_integration_top(

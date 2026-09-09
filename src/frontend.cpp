@@ -48,6 +48,11 @@ static FetchInstruction buffer_entry(const MicroOp& uop, uint32_t fetch_id) {
     entry.exception_cause = uop.exc_cause;
     entry.exception_access_fault = uop.exc.xcpt_ae_if;
     entry.exception_misaligned = uop.exc.xcpt_ma_if;
+    entry.ftq_valid = uop.ftq_valid;
+    entry.ftq_idx = uop.ftq_idx;
+    entry.ftq_generation = uop.ftq_generation;
+    entry.ftq_lane = uop.ftq_lane;
+    entry.ftq_halfword_offset = uop.ftq_halfword_offset;
     return entry;
 }
 
@@ -64,6 +69,11 @@ static MicroOp buffer_uop(const FetchInstruction& entry) {
     uop.exc.exc_cause = entry.exception_cause;
     uop.exc.xcpt_ae_if = entry.exception_access_fault;
     uop.exc.xcpt_ma_if = entry.exception_misaligned;
+    uop.ftq_valid = entry.ftq_valid;
+    uop.ftq_idx = entry.ftq_idx;
+    uop.ftq_generation = entry.ftq_generation;
+    uop.ftq_lane = entry.ftq_lane;
+    uop.ftq_halfword_offset = entry.ftq_halfword_offset;
     return uop;
 }
 
@@ -76,6 +86,51 @@ static void clear_prediction_context(FrontendState& fe) {
     fe.prediction_epoch = 0;
     fe.prediction_generation = 0;
     fe.prediction_token = 0;
+    fe.prediction_resolved = false;
+    fe.predictor_metadata_index = 0;
+}
+
+static FtqAllocation packet_ftq_allocation(const BoomCoreState& state) {
+    const FrontendState& fe = state.frontend;
+    FtqAllocation allocation;
+    allocation.packet_base_pc = fe.pending_packet.slots[0].pc;
+    allocation.packet_valid_mask = fe.final_admission_mask;
+    allocation.predictor_generation = state.predictor_generation;
+    if (!fe.pending_predecode.packet_has_cfi) return allocation;
+
+    const CfiPredecodeResult& cfi = fe.pending_predecode.selected_cfi_result;
+    const uint8_t lane = fe.pending_predecode.selected_cfi_lane;
+    allocation.cfi_lane = lane;
+    allocation.cfi_type = cfi.cfi_type;
+    allocation.predictor_metadata_index = cfi.cfi_type == CFI_CONDITIONAL_BRANCH ?
+        fe.predictor_metadata_index : static_cast<uint8_t>(
+            (fe.pending_packet.slots[lane].pc >> 1) & 0xffu);
+    if (cfi.cfi_type == CFI_CONDITIONAL_BRANCH) {
+        allocation.prediction_valid = fe.predictor_prediction_valid;
+        allocation.predicted_taken = fe.predictor_predicted_taken;
+        allocation.target_valid = fe.predictor_target_valid;
+        allocation.predicted_target = fe.predictor_target;
+    } else if (cfi.cfi_type == CFI_JAL && cfi.static_target_valid) {
+        allocation.prediction_valid = true;
+        allocation.predicted_taken = true;
+        allocation.target_valid = true;
+        allocation.predicted_target = cfi.static_target;
+    }
+    return allocation;
+}
+
+static void stamp_ftq_reference(FetchPacket& packet, uint64_t base_pc,
+                                uint8_t idx, uint32_t generation) {
+    for (uint8_t lane = 0; lane < FETCH_PACKET_WIDTH; ++lane) {
+        if ((packet.valid_mask & static_cast<uint8_t>(1u << lane)) == 0) continue;
+        FetchInstruction& instruction = packet.slots[lane];
+        instruction.ftq_valid = true;
+        instruction.ftq_idx = idx;
+        instruction.ftq_generation = generation;
+        instruction.ftq_lane = lane;
+        instruction.ftq_halfword_offset = static_cast<uint8_t>(
+            ((instruction.pc - base_pc) >> 1) & 3u);
+    }
 }
 
 static bool fetch_buffer_can_accept(const FetchBufferState& buffer,
@@ -89,12 +144,16 @@ static bool fetch_buffer_can_accept(const FetchBufferState& buffer,
     return packet.valid && incoming <= available;
 }
 
-void frontend_module(BoomCoreState& state, PipeSignals& pipe) {
+template <bool ProductFtq>
+static void frontend_mode_module(BoomCoreState& state, PipeSignals& pipe) {
     FrontendState& fe = state.frontend;
 
     fe.predictor_request_accepted = false;
     fe.predictor_response_valid = false;
     fe.predictor_response_stale = false;
+    fe.packet_accept = false;
+    fe.ftq_alloc_accepted = false;
+    fe.accepted_packet_mask = 0;
 
     const bool reset_redirect = !fe.reset_done;
     if (reset_redirect) {
@@ -208,12 +267,14 @@ void frontend_module(BoomCoreState& state, PipeSignals& pipe) {
 
     FetchBufferResult buffer;
     bool buffer_stepped = false;
-    if (fe.pending_packet.valid && !fe.prediction_pending) {
+    if (!ProductFtq && fe.pending_packet.valid &&
+        !fe.prediction_pending) {
         buffer = fetch_buffer_step(fe.fetch_buffer, fe.pending_packet,
                                    decode_ready, redirect);
         buffer_stepped = true;
         fe.fetch_packet_valid = buffer.dequeue_valid;
         if (buffer.dequeue_valid) fe.fetch_uop = buffer_uop(buffer.dequeue_bits);
+        fe.packet_accept = buffer.enqueue_fire;
         if (buffer.enqueue_fire) {
             fe.pending_packet = FetchPacket();
             fe.producer_valid = false;
@@ -250,6 +311,10 @@ void frontend_module(BoomCoreState& state, PipeSignals& pipe) {
             fe.pending_predecode = CfiPacketPredecodeResult();
             fe.prediction_pending = false;
             fe.predictor_request_sent = false;
+            fe.predictor_prediction_valid = false;
+            fe.predictor_predicted_taken = false;
+            fe.predictor_target_valid = false;
+            fe.predictor_target = 0;
             packet_built = built.packet.valid;
 
             if (built.packet.valid) {
@@ -314,16 +379,15 @@ void frontend_module(BoomCoreState& state, PipeSignals& pipe) {
         predictor_input.request.generation = fe.prediction_generation;
         predictor_input.request.request_token = fe.prediction_token;
     }
-    const bool prediction_can_admit = fe.prediction_pending &&
+    const bool legacy_prediction_can_admit = fe.prediction_pending &&
         fe.predictor_request_sent && !packet_built && !redirect &&
         fetch_buffer_can_accept(fe.fetch_buffer, fe.pending_packet, decode_ready);
-    predictor_input.resp_ready = !fe.prediction_pending || prediction_can_admit;
-    const PredictorStepOutput predictor_output = state.predictor.step(predictor_input);
-    fe.predictor_response_valid = predictor_output.resp_valid;
-    fe.predictor_prediction_valid = predictor_output.response.prediction_valid;
-    fe.predictor_predicted_taken = predictor_output.response.taken;
-    fe.predictor_target_valid = predictor_output.response.target_valid;
-    fe.predictor_target = predictor_output.response.target;
+    predictor_input.resp_ready = ProductFtq ||
+        !fe.prediction_pending || legacy_prediction_can_admit;
+    const PredictorStepOutput predictor_output = state.predictor.peek(false);
+    state.predictor.step(predictor_input);
+    fe.predictor_response_valid = predictor_output.resp_valid ||
+        (fe.prediction_pending && fe.prediction_resolved);
 
     if (predictor_input.req_valid && predictor_output.req_ready) {
         fe.predictor_request_sent = true;
@@ -339,17 +403,73 @@ void frontend_module(BoomCoreState& state, PipeSignals& pipe) {
         fe.prediction_epoch == fe.epoch;
     if (predictor_output.resp_valid && !matching_prediction)
         fe.predictor_response_stale = true;
+    if (matching_prediction) {
+        fe.predictor_prediction_valid = predictor_output.response.prediction_valid;
+        fe.predictor_predicted_taken = predictor_output.response.taken;
+        fe.predictor_target_valid = predictor_output.response.target_valid;
+        fe.predictor_target = predictor_output.response.target;
+        fe.predictor_metadata_index = predictor_output.response.metadata_token;
+        fe.prediction_resolved = true;
+    }
 
+    const bool packet_final_valid = !packet_built && fe.pending_packet.valid &&
+        (!fe.prediction_pending || fe.prediction_resolved);
+    const bool fb_ready = packet_final_valid &&
+        fetch_buffer_can_accept(fe.fetch_buffer, fe.pending_packet, decode_ready);
+
+    FtqStepInput ftq_input;
     FetchPacket admission_packet;
-    if (!packet_built && fe.pending_packet.valid &&
-        (!fe.prediction_pending || matching_prediction))
+    if (ProductFtq) {
+        ftq_input.retire = state.ftq_retire_pending;
+        ftq_input.redirect = state.ftq_redirect_pending;
+        if (redirect && !reset_redirect && !ftq_input.redirect.valid)
+            ftq_input.reset = true;
+        ftq_input.read_valid = state.ftq_read_request.valid;
+        ftq_input.read_ftq_idx = state.ftq_read_request.ftq_idx;
+        ftq_input.read_generation = state.ftq_read_request.generation;
+        if (packet_final_valid && fb_ready && !redirect && !ftq_input.redirect.valid) {
+            ftq_input.alloc_valid = fe.final_admission_mask != 0;
+            ftq_input.allocation = packet_ftq_allocation(state);
+        }
+        state.ftq_last_output = state.ftq.step(ftq_input);
+        fe.ftq_alloc_ready = state.ftq_last_output.alloc_ready;
+        fe.ftq_alloc_accepted = state.ftq_last_output.alloc_accepted;
+        fe.ftq_alloc_idx = state.ftq_last_output.alloc_ftq_idx;
+        fe.ftq_alloc_generation = state.ftq_last_output.alloc_generation;
+        state.ftq_retire_pending = FtqLaneEvent();
+        state.ftq_redirect_pending = FtqRedirect();
+        state.ftq_read_request = FtqLaneEvent();
+        if (ftq_input.redirect.valid) {
+            if (state.ftq_last_output.retire_rejected)
+                state.ftq_retire_pending = ftq_input.retire;
+            if (!state.ftq_last_output.redirect_accepted)
+                state.ftq_exception_retire_deferred = FtqLaneEvent();
+        }
+        if (state.ftq_exception_retire_deferred.valid &&
+            !state.ftq_retire_pending.valid) {
+            state.ftq_retire_pending = state.ftq_exception_retire_deferred;
+            state.ftq_exception_retire_deferred = FtqLaneEvent();
+        }
+        if (state.ftq_last_output.alloc_accepted) {
+            admission_packet = fe.pending_packet;
+            stamp_ftq_reference(admission_packet,
+                                ftq_input.allocation.packet_base_pc,
+                                state.ftq_last_output.alloc_ftq_idx,
+                                state.ftq_last_output.alloc_generation);
+        }
+    } else if (packet_final_valid && fb_ready && !redirect) {
         admission_packet = fe.pending_packet;
+    }
     if (!buffer_stepped) {
         buffer = fetch_buffer_step(fe.fetch_buffer, admission_packet,
                                    decode_ready, redirect);
         fe.fetch_packet_valid = buffer.dequeue_valid;
         if (buffer.dequeue_valid) fe.fetch_uop = buffer_uop(buffer.dequeue_bits);
-        if (buffer.enqueue_fire) {
+        fe.packet_accept = ProductFtq ?
+            state.ftq_last_output.alloc_accepted && buffer.enqueue_fire :
+            buffer.enqueue_fire;
+        if (fe.packet_accept) {
+            fe.accepted_packet_mask = admission_packet.valid_mask;
             fe.pending_packet = FetchPacket();
             fe.producer_valid = false;
             clear_prediction_context(fe);
@@ -381,6 +501,15 @@ void frontend_module(BoomCoreState& state, PipeSignals& pipe) {
             fe.request_sent = true;
         }
     }
+}
+
+void frontend_module(BoomCoreState& state, PipeSignals& pipe) {
+    if (state.product_ftq_enabled) frontend_mode_module<true>(state, pipe);
+    else frontend_mode_module<false>(state, pipe);
+}
+
+void frontend_product_module(BoomCoreState& state, PipeSignals& pipe) {
+    frontend_mode_module<true>(state, pipe);
 }
 
 }

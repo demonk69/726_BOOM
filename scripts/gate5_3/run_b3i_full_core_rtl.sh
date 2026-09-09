@@ -2,8 +2,8 @@
 set -euo pipefail
 
 ROOT=${HLS_BOOM_ROOT:-"$(cd "$(dirname "${BASH_SOURCE[0]}")/../.." && pwd)"}
-REPORT="$ROOT/reports/gate5_3_fetch_buffer/b3i/rtl"
-BUILD_ROOT="$ROOT/build/gate5_3_fetch_buffer/b3i/rtl"
+REPORT=${GATE5_3_B3I_RTL_REPORT_DIR:-"$ROOT/reports/gate5_3_fetch_buffer/b3i/rtl"}
+BUILD_ROOT=${GATE5_3_B3I_RTL_BUILD_DIR:-"$ROOT/build/gate5_3_fetch_buffer/b3i/rtl"}
 VITIS_HLS_BIN=${VITIS_HLS:-/home/lab_726/Xilinx/Vitis_HLS/2021.2/bin/vitis_hls}
 XVLOG_BIN=${XVLOG:-/home/lab_726/Xilinx/Vivado/2021.2/bin/xvlog}
 XELAB_BIN=${XELAB:-/home/lab_726/Xilinx/Vivado/2021.2/bin/xelab}
@@ -69,16 +69,22 @@ if [[ -z "${GATE5_3_B3I_PREBUILT_RTL:-}" ]]; then
         -f "$ROOT/scripts/gate5_3/b3i_core_csynth.tcl" >"$REPORT/logs/csynth.log" 2>&1
     printf '%s\n' "$SOURCE_HASH" >"$RTL/.b3i_source_hash"
 else
+    [[ "${GATE5_3_B3I_PREBUILT_SOURCE_HASH:-}" == "$SOURCE_HASH" ]] || {
+        printf '%s\n' 'explicit B3I RTL source hash does not match current inputs' >&2
+        exit 3
+    }
     printf 'Using explicitly supplied B3I RTL: %s\n' "$RTL" >"$REPORT/logs/csynth.log"
 fi
 
 RTL_TOP="$RTL/boom_core_top.v"
 [[ -s "$RTL_TOP" ]] || { printf 'B3I boom_core_top RTL unavailable at %s\n' "$RTL_TOP" >&2; exit 3; }
-[[ -s "$RTL/.b3i_source_hash" ]] || { printf '%s\n' 'B3I RTL has no source-hash freshness stamp' >&2; exit 3; }
-[[ "$(<"$RTL/.b3i_source_hash")" == "$SOURCE_HASH" ]] || {
-    printf '%s\n' 'B3I RTL source-hash stamp does not match current source/header inputs' >&2
-    exit 3
-}
+if [[ -z "${GATE5_3_B3I_PREBUILT_RTL:-}" ]]; then
+    [[ -s "$RTL/.b3i_source_hash" ]] || { printf '%s\n' 'B3I RTL has no source-hash freshness stamp' >&2; exit 3; }
+    [[ "$(<"$RTL/.b3i_source_hash")" == "$SOURCE_HASH" ]] || {
+        printf '%s\n' 'B3I RTL source-hash stamp does not match current source/header inputs' >&2
+        exit 3
+    }
+fi
 [[ "$(hash_inputs)" == "$SOURCE_HASH" ]] || {
     printf '%s\n' 'source/header inputs changed during B3I RTL generation' >&2
     exit 3

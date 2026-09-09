@@ -45,8 +45,8 @@
 #define BR_MASK_BITS        8
 #define BR_TAG_BITS         3
 
-#define FTQ_DEPTH           16
-#define FTQ_IDX_BITS        4
+#define FTQ_DEPTH           32
+#define FTQ_IDX_BITS        5
 
 #ifndef FETCH_BUFFER_DEPTH
 #define FETCH_BUFFER_DEPTH  8
@@ -126,7 +126,7 @@ static_assert(LDQ_IDX_BITS >= 3, "LDQ_IDX_BITS too small");
 static_assert((1u << LDQ_IDX_BITS) >= LDQ_DEPTH, "LDQ_IDX_BITS insufficient for LDQ_DEPTH");
 static_assert(STQ_IDX_BITS >= 3, "STQ_IDX_BITS too small");
 static_assert((1u << STQ_IDX_BITS) >= STQ_DEPTH, "STQ_IDX_BITS insufficient for STQ_DEPTH");
-static_assert(FTQ_IDX_BITS >= 4, "FTQ_IDX_BITS too small");
+static_assert(FTQ_IDX_BITS >= 5, "FTQ_IDX_BITS too small");
 static_assert((1u << FTQ_IDX_BITS) >= FTQ_DEPTH, "FTQ_IDX_BITS insufficient for FTQ_DEPTH");
 static_assert(FETCH_BUFFER_DEPTH == 2 || FETCH_BUFFER_DEPTH == 4 ||
               FETCH_BUFFER_DEPTH == 8 || FETCH_BUFFER_DEPTH == 16,

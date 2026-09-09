@@ -41,11 +41,16 @@ ROB_ALLOCATE_LANES:
         uint32_t allocation_id = rob.next_allocation_id++;
         if (allocation_id == 0) allocation_id = rob.next_allocation_id++;
         RobEntry& entry = rob.entries[rob.tail];
+        const uint32_t ftq_generation = uop.ftq_generation;
+#ifdef __SYNTHESIS__
+        uop.ftq_generation = 0;
+#endif
         entry = RobEntry();
         entry.valid=true; entry.busy=!uop.exception; entry.exception=uop.exception;
         uop.queue.rob_idx = rob.tail;
         uop.queue.rob_allocation_id = allocation_id;
         entry.uop = uop;
+        rob.ftq_generations[rob.tail] = ftq_generation;
         packet.uop.queue.rob_idx = rob.tail;
         packet.uop.queue.rob_allocation_id = allocation_id;
         packet.rob_allocated = true;

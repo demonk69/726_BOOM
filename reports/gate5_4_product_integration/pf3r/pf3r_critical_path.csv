@@ -1,0 +1,4 @@
+design,module,state,state_delay_ns,full_core_period_ns,path_summary,status
+PF3_INITIAL,frontend_module,ST_8,6.73,6.739,"fetch-buffer dequeue/capacity -> legacy predictor resp_ready -> predictor step -> 64-bit request-token match -> response state stores",FAIL_LIMIT_6.5
+PF3R,frontend_mode_module_true_s,ST_2,4.93,6.341,"build_fetch_packet return and branch",PASS_FRONTEND_CONE_REPAIRED
+PF3R,execute_module,NA,6.34,6.341,"existing execute critical path",PASS_LIMIT_6.5

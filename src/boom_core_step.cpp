@@ -3,9 +3,10 @@
 #include "boom_state.hpp"
 #include "boom_interfaces.hpp"
 #include "completion.hpp"
+#include "frontend.hpp"
 
 namespace boom {
-extern void frontend_module(BoomCoreState& state, PipeSignals& pipe);
+extern void frontend_product_module(BoomCoreState& state, PipeSignals& pipe);
 extern void decode_module(BoomCoreState& state);
 extern void rename_module(BoomCoreState& state);
 extern void issue_module(BoomCoreState& state);
@@ -29,7 +30,7 @@ void boom_core_step(BoomCoreState& state, PipeSignals& pipe) {
     boom::completion_service_cycle(state, pipe);
     boom::lsu_module(state, pipe);
     boom::rob_commit_module(state, pipe);
-    boom::frontend_module(state, pipe);
+    boom::frontend_product_module(state, pipe);
     boom::decode_module(state);
     boom::rename_module(state);
     boom::rob_allocate(state);

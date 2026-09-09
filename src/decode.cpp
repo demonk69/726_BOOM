@@ -121,6 +121,11 @@ void decode_module(BoomCoreState& state) {
     uop.debug_pc = pc;
     uop.debug_inst = state.frontend.fetch_uop.debug_inst;
     uop.is_rvc = state.frontend.fetch_uop.is_rvc;
+    uop.ftq_valid = state.frontend.fetch_uop.ftq_valid;
+    uop.ftq_idx = state.frontend.fetch_uop.ftq_idx;
+    uop.ftq_generation = state.frontend.fetch_uop.ftq_generation;
+    uop.ftq_lane = state.frontend.fetch_uop.ftq_lane;
+    uop.ftq_halfword_offset = state.frontend.fetch_uop.ftq_halfword_offset;
     uop.rename.lrs1 = (inst>>15)&0x1F;
     uop.rename.lrs2 = (inst>>20)&0x1F;
     uop.rename.ldst = (inst>>7)&0x1F;
