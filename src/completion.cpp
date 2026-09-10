@@ -4,6 +4,8 @@ namespace boom {
 
 extern void branch_complete_event(BoomCoreState& state, const MicroOp& uop,
                                   bool mispredict, uint64_t redirect_pc);
+extern void branch_complete_event(BoomCoreState& state,
+                                  const RobCompleteEvent& event);
 extern bool lsu_accept_completion(BoomCoreState& state, const MicroOp& uop,
                                   bool is_load, bool is_store, bool signed_load,
                                   uint64_t memory_address, uint64_t store_data,
@@ -51,6 +53,10 @@ void completion_from_execute(const ExecuteState::AluResult& result,
     event.mispredict = result.mispredict;
     event.redirect_pc = result.redirect_pc;
     event.value = result.result;
+    event.actual_valid = result.actual_valid;
+    event.actual_taken = result.actual_taken;
+    event.actual_target = result.actual_target;
+    event.fallthrough_pc = result.fallthrough_pc;
     event.exception = result.exception;
     event.exc_cause = result.exc_cause;
     event.memory_valid = result.memory_valid;
@@ -213,8 +219,7 @@ bool apply_completion(BoomCoreState& state, const CompletionEvent& event) {
 #ifndef __SYNTHESIS__
     CompletionEvent resolved = event;
     if (event.kind == COMPLETION_BRANCH && !event.control_resolved) {
-        branch_complete_event(state, event.uop, event.mispredict,
-                              event.redirect_pc);
+        branch_complete_event(state, event);
         if (!completion_has_rob_owner(state, event)) return true;
         resolved.control_resolved = true;
     }
@@ -561,8 +566,7 @@ static void resolve_oldest_pending_branch(BoomCoreState& state) {
         }
     }
     if (selected < 0) return;
-    branch_complete_event(state, ports[selected].uop, ports[selected].mispredict,
-                          ports[selected].redirect_pc);
+    branch_complete_event(state, ports[selected]);
     mark_control_resolved(state, ports[selected].source);
 }
 

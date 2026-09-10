@@ -1,6 +1,11 @@
 # Predictor and FTQ Product Integration
 
-Gate 5.4 PF2 now integrates canonical P1 and P2 into Frontend. Conditional BIM results are `SHADOW_ONLY`; JAL static targets steer Frontend; JALR remains no-target prediction. FTQ, product update training, prediction metadata propagation, and predicted-vs-actual recovery remain absent. PF3 is the next gate and has not started.
+Gate 5.4 PF4 implements conditional BIM steering, effective-lane FTQ metadata,
+oldest-branch predicted-vs-actual comparison, correct-prediction no-work, and
+precise Frontend-owned recovery. Commit BIM training remains disabled for PF5.
+Native, CSim, focused RTL, current-source full-core RTL, preservation, and
+canonical synthesis gates pass. Evidence is under
+`reports/gate5_4_product_integration/pf4/`.
 
 Gate 5.4 PF0 freezes the integration architecture but implements no product Predictor, FTQ, or recovery changes. The evidence is under `reports/gate5_4_product_integration/pf0/`.
 
@@ -34,3 +39,24 @@ No-CFI and JAL bypass paths keep the same packet-admission boundary. A condition
 Current non-ECALL exception behavior enters a terminal `ROB_EXCEPTION` fence. It does not capture trap CSRs, redirect to `mtvec`, squash all younger backend/FTQ ownership, remove the fault owner, or return with MRET. This blocks safe FTQ product lifetime and reclaim semantics.
 
 The unique next gate is `GATE5_4_PF1_EXCEPTION_RECOVERY_FOUNDATION`. Product Predictor integration follows only after unified redirect/generation ownership and recoverable exception semantics are accepted. Product Predictor and FTQ readiness remain false after PF0.
+
+## PF3 Status
+
+Atomic allocation and lifetime focused evidence passes, including wrap,
+generation reuse, stale references, same-packet younger kill, and deferred
+exception-owner retire. `PRODUCT_FTQ_INTEGRATED=false` remains the product
+verdict until PF3 timing, BRAM, product-program, and full-core RTL blockers are
+closed. PF4 must not start from this result.
+
+## PF4 Status
+
+Conditional predicted-T and predicted-NT steering is active for the supported
+Product-FTQ path. Completion accepts only generation-, live-lane-, and
+CFI-qualified FTQ metadata; stale or invalid lookup redirects conservatively to
+the actual architectural next PC. Correct conditional/JAL results do not
+squash, while conditional corrections and unpredicted JALR recover younger
+state. Predicted-T masks a younger fault when the branch is actually taken; an
+actual-not-taken correction refetches and precisely takes that fault.
+
+`GATE5_4_PF4_BRANCH_PREDICTION_RECOVERY_VERIFIED=true` and
+`READY_FOR_GATE5_4_PF5_COMMIT_BIM_TRAINING=true`.

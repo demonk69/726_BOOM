@@ -7,6 +7,7 @@
 namespace boom {
 
 void frontend_module(BoomCoreState& state, PipeSignals& pipe);
+void frontend_product_module(BoomCoreState& state, PipeSignals& pipe);
 
 }  // namespace boom
 

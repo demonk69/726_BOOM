@@ -257,14 +257,14 @@ int main() {
     const std::vector<TestSpec> tests = {
         {"pf3_straight_commit", {{8, 11}, {9, 17}, {18, 28}, {19, 33}, {20, 42}}, false, false, 0, 0, 0},
         {"pf3_rvc_packets", {{8, 12}, {9, 4}, {18, 21}, {19, 33}}, false, false, 0, 0, 0},
-        {"pf3_jal_mask", {{8, 9}, {9, 13}}, false, false, 1, 0, 0},
+        {"pf3_jal_mask", {{8, 9}, {9, 13}}, false, false, 0, 0, 0},
         {"pf3_conditional_shadow", {{8, 5}, {9, 5}, {18, 19}, {19, 23}}, false, false, 1, 0, 0},
         {"pf3_branch_squash", {{8, 1}, {9, 2}, {18, 21}, {19, 29}}, false, false, 1, 0, 0},
         {"pf3_exception_flush", {{8, 27}}, true, false, 0, 0, 0},
         {"pf3_ftq_wrap", {{8, 72}, {9, 78}}, false, false, 0, 1, 1},
-        {"pf3_generation_reuse", {{8, 76}, {9, 79}}, false, false, 1, 1, 1},
+        {"pf3_generation_reuse", {{8, 76}, {9, 79}}, false, false, 0, 1, 1},
         {"pf3_rv64m", {{18, 126}, {19, 131}, {20, 786}}, false, false, 0, 0, 0},
-        {"pf3_mixed_control", {{18, 7}, {19, 15}, {20, 17}}, false, false, 2, 0, 0},
+        {"pf3_mixed_control", {{18, 7}, {19, 15}, {20, 17}}, false, false, 1, 0, 0},
         {"pf3_long_stream", {{8, 160}, {9, 161}, {18, 162}}, false, false, 0, 2, 32},
         {"pf3_reset_midstream", {{8, 48}, {9, 52}}, false, true, 0, 1, 1},
     };

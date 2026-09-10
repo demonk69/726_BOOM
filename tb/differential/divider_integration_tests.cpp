@@ -10,6 +10,7 @@
 #include <string>
 
 namespace boom {
+void frontend_module(BoomCoreState& state, PipeSignals& pipe);
 void issue_module(BoomCoreState& state);
 void execute_module(BoomCoreState& state);
 void branch_complete_event(BoomCoreState& state, const MicroOp& uop,
@@ -431,7 +432,11 @@ static void test_branch_kill_and_preservation() {
           "mispredict preserves older ROB owner");
     check(active.rob.entries[1].valid && !active.rob.entries[2].valid && active.rob.tail == 2,
           "mispredict preserves branch and removes younger divider ROB entry");
-    check(active.frontend.pc == (0x4444ULL & ~3ULL),
+    const bool branch_correction_published = active.brupdate.valid && active.brupdate.mispredict;
+    active.frontend.reset_done = true;
+    PipeSignals pipe;
+    boom::frontend_module(active, pipe);
+    check(branch_correction_published && active.frontend.pc == (0x4444ULL & ~3ULL),
           "divider kill accompanies canonical redirect");
 
     BoomCoreState pending;

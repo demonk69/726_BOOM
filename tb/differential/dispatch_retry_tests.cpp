@@ -237,7 +237,12 @@ static void t12_mispredict_kills() {
     result.uop.queue.rob_idx = 0;
     boom::branch_module(state);
     CHECK(!state.rename.dispatch_packets[0].valid, "wrong-path packet survived");
-    CHECK(state.frontend.pc == RESET_VECTOR + 0x80, "redirect was not applied");
+    const bool branch_correction_published = state.brupdate.valid && state.brupdate.mispredict;
+    state.frontend.reset_done = true;
+    PipeSignals pipe;
+    boom::frontend_module(state, pipe);
+    CHECK(branch_correction_published && state.frontend.pc == RESET_VECTOR + 0x80,
+          "redirect was not published and applied");
     PASS();
 }
 

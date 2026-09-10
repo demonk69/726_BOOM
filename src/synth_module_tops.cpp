@@ -25,6 +25,8 @@ extern void execute_module(BoomCoreState& state);
 extern void branch_module(BoomCoreState& state);
 extern void branch_complete_event(BoomCoreState& state, const MicroOp& uop,
                                   bool mispredict, uint64_t redirect_pc);
+extern void branch_complete_event(BoomCoreState& state,
+                                  const RobCompleteEvent& event);
 extern void lsu_module(BoomCoreState& state, PipeSignals& pipe);
 extern void rob_commit_module(BoomCoreState& state, PipeSignals& pipe);
 extern void exception_recovery_apply(BoomCoreState& state, const RobEntry& owner);
@@ -762,6 +764,166 @@ void synth_pf3_ftq_atomic_top(
     lookup_cfi_type = state.ftq_last_output.read_entry.cfi_type;
     lookup_metadata_index = state.ftq_last_output.read_entry.predictor_metadata_index;
     lookup_predictor_generation = state.ftq_last_output.read_entry.predictor_generation;
+}
+
+// Focused PF4 diagnostic. This seeds canonical predictor/FTQ/ROB state and
+// invokes the production branch resolution path; it is not a full-core model.
+void synth_pf4_branch_prediction_recovery_top(
+        uint8_t counter_state, uint8_t resolution_cfi_type,
+        uint8_t stored_cfi_type, uint8_t lane, uint8_t packet_mask,
+        bool is_rvc, bool stale_ftq_generation,
+        bool stale_predictor_generation, uint64_t pc,
+        uint64_t predicted_target, bool actual_taken,
+        uint64_t actual_target,
+        bool& lookup_valid, bool& cfi_match,
+        bool& prediction_valid, bool& predicted_taken,
+        bool& predicted_target_valid, uint64_t& lookup_target,
+        uint8_t& predictor_metadata_index,
+        bool& predictor_generation_match,
+        bool& resolved_actual_taken, uint64_t& resolved_actual_target,
+        uint64_t& resolved_fallthrough_pc,
+        bool& mispredict, bool& stale_lookup,
+        bool& direction_mispredict, bool& target_mispredict,
+        uint64_t& recovery_target, bool& frontend_redirect_indication,
+        bool& rob_younger_killed, bool& ftq_redirect_intent,
+        bool& ftq_squash_intent, uint8_t& ftq_owner_idx,
+        uint32_t& ftq_owner_generation, uint8_t& packet_surviving_mask) {
+    const uint32_t active_generation = 0x504u;
+    const uint8_t selected_lane = static_cast<uint8_t>(lane & 1u);
+    const uint8_t selected_counter = static_cast<uint8_t>(counter_state & 3u);
+    const uint8_t metadata_index = static_cast<uint8_t>((pc >> 1) & 63u);
+
+    boom::PredictorFoundation<64> predictor;
+    boom::PredictorStepInput predictor_reset;
+    predictor_reset.reset = true;
+    predictor_reset.active_generation = active_generation;
+    predictor.step(predictor_reset);
+
+    const uint8_t training_count = selected_counter == 3 ? 2 :
+        (selected_counter == 1 ? 0 : 1);
+    const bool training_taken = selected_counter >= 2;
+    for (uint8_t i = 0; i < 2; ++i) {
+        if (i >= training_count) continue;
+        boom::PredictorStepInput training;
+        training.active_generation = active_generation;
+        training.update.valid = true;
+        training.update.commit_qualified = true;
+        training.update.cfi_type = boom::CFI_CONDITIONAL_BRANCH;
+        training.update.pc = pc;
+        training.update.metadata_token = metadata_index;
+        training.update.taken = training_taken;
+        training.update.generation = active_generation;
+        predictor.step(training);
+    }
+
+    boom::PredictorStepInput request;
+    request.active_generation = active_generation;
+    request.req_valid = true;
+    request.request.pc = pc;
+    request.request.cfi_lane = selected_lane;
+    request.request.cfi_type = static_cast<uint8_t>(stored_cfi_type & 3u);
+    request.request.static_target_valid = true;
+    request.request.static_target = predicted_target;
+    request.request.generation = stale_predictor_generation ?
+        active_generation + 1u : active_generation;
+    request.request.request_token = 0x504u;
+    predictor.step(request);
+    const boom::PredictorStepOutput predictor_output = predictor.peek(false);
+
+    BoomCoreState state;
+    boom::FtqStepInput allocation;
+    allocation.alloc_valid = true;
+    allocation.allocation.packet_base_pc = pc -
+        (selected_lane ? (is_rvc ? 2u : 4u) : 0u);
+    allocation.allocation.packet_valid_mask = static_cast<uint8_t>(packet_mask & 3u);
+    allocation.allocation.prediction_valid =
+        predictor_output.response.prediction_valid;
+    allocation.allocation.predicted_taken = predictor_output.response.taken;
+    allocation.allocation.target_valid = predictor_output.response.target_valid;
+    allocation.allocation.predicted_target = predictor_output.response.target;
+    allocation.allocation.cfi_lane = selected_lane;
+    allocation.allocation.cfi_type = static_cast<uint8_t>(stored_cfi_type & 3u);
+    allocation.allocation.predictor_metadata_index =
+        static_cast<uint8_t>(predictor_output.response.metadata_token);
+    allocation.allocation.predictor_generation = predictor_output.response.generation;
+    const boom::FtqStepOutput owner_allocation = state.ftq.step(allocation);
+
+    boom::FtqStepInput younger_allocation;
+    younger_allocation.alloc_valid = true;
+    younger_allocation.allocation.packet_base_pc = pc + 8u;
+    younger_allocation.allocation.packet_valid_mask = 3;
+    state.ftq.step(younger_allocation);
+
+    const uint32_t referenced_generation = stale_ftq_generation ?
+        owner_allocation.alloc_generation + 1u : owner_allocation.alloc_generation;
+    const boom::FtqPredictionLookup before = state.ftq.lookup_prediction(
+        owner_allocation.alloc_ftq_idx, referenced_generation, selected_lane,
+        static_cast<uint8_t>(resolution_cfi_type & 3u));
+
+    const uint8_t tag = 1;
+    const uint8_t tag_mask = static_cast<uint8_t>(1u << tag);
+    state.rob.head = 4;
+    state.rob.tail = 6;
+    state.rob.entries[4].valid = true;
+    state.rob.entries[4].busy = true;
+    state.rob.entries[4].uop.queue.rob_idx = 4;
+    state.rob.entries[4].uop.queue.rob_allocation_id = 0x5041u;
+    state.rob.entries[5].valid = true;
+    state.rob.entries[5].busy = true;
+    state.rob.entries[5].uop.queue.rob_idx = 5;
+    state.rob.entries[5].uop.queue.rob_allocation_id = 0x5042u;
+    state.rob.entries[5].uop.branch.br_mask = tag_mask;
+    state.branch_state.active_mask = tag_mask;
+    state.branch_state.tag_valid[tag] = true;
+    state.branch_state.snapshot_valid[tag] = true;
+
+    RobCompleteEvent event;
+    event.valid = true;
+    event.kind = COMPLETION_BRANCH;
+    event.control_resolved = true;
+    event.actual_valid = true;
+    event.actual_taken = actual_taken;
+    event.actual_target = actual_target;
+    event.fallthrough_pc = pc + (is_rvc ? 2u : 4u);
+    event.uop = state.rob.entries[4].uop;
+    event.uop.debug_pc = pc;
+    event.uop.is_rvc = is_rvc;
+    event.uop.ftq_valid = true;
+    event.uop.ftq_idx = owner_allocation.alloc_ftq_idx;
+    event.uop.ftq_generation = referenced_generation;
+    event.uop.ftq_lane = selected_lane;
+    event.uop.branch.br_tag = tag;
+    event.uop.branch.is_br = resolution_cfi_type == boom::CFI_CONDITIONAL_BRANCH;
+    event.uop.branch.is_jal = resolution_cfi_type == boom::CFI_JAL;
+    event.uop.branch.is_jalr = resolution_cfi_type == boom::CFI_JALR;
+    state.rob.entries[4].uop = event.uop;
+
+    boom::branch_complete_event(state, event);
+
+    lookup_valid = before.reference_valid;
+    cfi_match = before.cfi_match;
+    prediction_valid = state.brupdate.prediction_valid;
+    predicted_taken = state.brupdate.predicted_taken;
+    predicted_target_valid = state.brupdate.predicted_target_valid;
+    lookup_target = state.brupdate.predicted_target;
+    predictor_metadata_index = before.predictor_metadata_index;
+    predictor_generation_match = before.reference_valid && before.cfi_match &&
+        before.predictor_generation == active_generation;
+    resolved_actual_taken = state.brupdate.taken;
+    resolved_actual_target = state.brupdate.actual_target;
+    resolved_fallthrough_pc = state.brupdate.fallthrough_pc;
+    mispredict = state.brupdate.mispredict;
+    stale_lookup = state.brupdate.stale_lookup;
+    direction_mispredict = state.brupdate.direction_mispredict;
+    target_mispredict = state.brupdate.target_mispredict;
+    recovery_target = state.brupdate.jalr_target;
+    frontend_redirect_indication = state.brupdate.valid && state.brupdate.mispredict;
+    rob_younger_killed = !state.rob.entries[5].valid;
+    ftq_redirect_intent = state.ftq_redirect_pending.valid;
+    ftq_squash_intent = state.ftq_redirect_pending.valid;
+    ftq_owner_idx = state.ftq_redirect_pending.owner_ftq_idx;
+    ftq_owner_generation = state.ftq_redirect_pending.owner_generation;
+    packet_surviving_mask = state.ftq_redirect_pending.surviving_lane_mask;
 }
 
 void synth_fetch_buffer_integration_top(

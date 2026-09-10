@@ -410,6 +410,15 @@ static void frontend_mode_module(BoomCoreState& state, PipeSignals& pipe) {
         fe.predictor_target = predictor_output.response.target;
         fe.predictor_metadata_index = predictor_output.response.metadata_token;
         fe.prediction_resolved = true;
+        if (ProductFtq && predictor_output.response.prediction_valid &&
+            predictor_output.response.taken &&
+            predictor_output.response.target_valid) {
+            fe.final_admission_mask = mask_younger_packet_lanes(
+                fe.final_admission_mask, fe.pending_predecode);
+            fe.pending_packet.valid_mask = fe.final_admission_mask;
+            fe.pc = predictor_output.response.target;
+            fe.halfword_valid = false;
+        }
     }
 
     const bool packet_final_valid = !packet_built && fe.pending_packet.valid &&

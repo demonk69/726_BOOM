@@ -43,6 +43,8 @@ Gate 3.10 status: LOCAL_PIPELINE_CHARACTERIZED_NO_ACCEPTED_CANDIDATE. R1 passes 
 | Gate 5.2 RV64C | VERIFIED_FOR_SUPPORTED_SUBSET | R2 focused native has 4,111 assertions/414 cases, persistent random passes 256x2048, focused RTL passes 58/58, and mixed full-core native/csim/RTL pass 10/10 each. R3 closes `C.EBREAK`, RV64 `C.SRLI shamt[5]`, and `C.JALR`; `GATE5_2_RVC_VERIFIED=true`. |
 | Gate 5.3 Fetch Buffer | VERIFIED_FOR_SUPPORTED_SUBSET | B1 standalone parameterization, B2 integration/decoupling, B3 architecture review, and B3I packet implementation pass. B3I directed/exhaustive/random checks, focused RTL 95/95, six-program native/csim/generated-RTL, preservation, and canonical csynth 11/11 pass. The canonical depth-8 AUTO CONTROL_ONLY buffer accepts two-lane packets and dequeues one wide. FTQ/predictor/ICache and backend IPC widening are not claimed. |
 | Gate 5.4 PF2 Predictor Frontend | VERIFIED_FOR_STAGED_SCOPE | Canonical P1/P2 are in Frontend; directed native/CSim 2233/2233 each, random 256x8192, product programs native/CSim 11/11 each, focused RTL 109/109, B3I 256x4096, W3 400/400, PF1 exception, RV64M, full-core RTL, and eight canonical csynth tops pass. Conditional steering/recovery metadata, Commit BIM training, and FTQ are not implemented. |
+| Gate 5.4 PF3 Product FTQ | IMPLEMENTED_NOT_ACCEPTED | Canonical F1 allocation/reference/lifetime focused tests pass: 481322 directed checks, bounded exhaustive, 256x8192 random, 1000000-step no-leak, CSim, and 100-case RTL. Acceptance is blocked by 6.739 ns full-core timing, BRAM 17, and missing product-program/full-core RTL matrices. Conditional steering, prediction comparison/recovery, and Commit BIM training remain absent. |
+| Gate 5.4 PF4 Branch Prediction Recovery | VERIFIED_FOR_SUPPORTED_SUBSET | Conditional BIM steering, FTQ-qualified oldest-branch comparison, correct-prediction no-work, precise younger recovery, stale fallback, RVC fallthrough, and JAL/JALR behavior pass directed/random/long-run, 140 focused RTL cases, native/CSim 12-program matrices, and current-source full-core RTL 12/12 plus predicted-T fault masking/refetch 2/2. Commit BIM training remains outside PF4. |
 
 ## Gate 1 Results
 
@@ -69,7 +71,7 @@ Gate 3.10 status: LOCAL_PIPELINE_CHARACTERIZED_NO_ACCEPTED_CANDIDATE. R1 passes 
 - Branch snapshot structural absence is no longer current for the supported HLS subset after Gate 3.3, but strict BOOM event/cycle equivalence for branch recovery remains INSUFFICIENT_EVIDENCE.
 - M004 remains VERIFIED only for the concrete JALR redirect test; it did not close branch snapshot recovery. Gate 3.3 branch recovery evidence is tracked separately under M009. See `docs/branch_snapshot_status.md`.
 - Only the integer ALU/control subset is implemented.
-- Full BOOM LSU, caches, MMU/Sv39, TLB, FPU, FTQ/predictor, TileLink, and L2 remain NOT_IMPLEMENTED. Gate 3.1C only adds a minimal integer LSU path for directed loads/stores and committed store-to-`tohost` termination. Gate 5.3 adds an instruction FIFO, not FTQ or ICache state.
+- Full BOOM LSU, caches, MMU/Sv39, TLB, FPU, advanced BOOM predictors, TileLink, and L2 remain NOT_IMPLEMENTED. Gate 3.1C only adds a minimal integer LSU path; Gate 5.4 PF4 adds the supported BIM/FTQ conditional steering and recovery subset, not BTB/TAGE/RAS or ICache.
 - Cycle equivalence remains INSUFFICIENT_EVIDENCE because Provisional Gate 3 normalized-cycle checks fail for BOOM-vs-HLS and the full official emulator path remains blocked.
 
 ## Gate 2 Result

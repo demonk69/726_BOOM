@@ -187,11 +187,14 @@ struct ExecuteState {
         bool valid; MicroOp uop; uint64_t result;
         bool exception; uint64_t exc_cause;
         bool mispredict; uint64_t redirect_pc;
+        bool actual_valid, actual_taken;
+        uint64_t actual_target, fallthrough_pc;
         bool memory_valid, is_load, is_store, signed_load;
         uint64_t memory_address, store_data;
         uint8_t memory_mask, memory_size;
         AluResult() : valid(false), uop(), result(0), exception(false),
-            exc_cause(0), mispredict(false), redirect_pc(0), memory_valid(false),
+            exc_cause(0), mispredict(false), redirect_pc(0), actual_valid(false),
+            actual_taken(false), actual_target(0), fallthrough_pc(0), memory_valid(false),
             is_load(false), is_store(false), signed_load(false), memory_address(0),
             store_data(0), memory_mask(0), memory_size(0) {}
     };

@@ -15,13 +15,16 @@ if [[ $# -gt 0 ]]; then PROGRAMS=("$@"); fi
 mkdir -p "$WORK" "$LOGS" "$TRACES"
 PF3_PROGRAM_BUILD="$PROGRAM_BUILD" bash "$ROOT/scripts/gate5_4/build_pf3_product_programs.sh" >"$LOGS/program_build.log"
 mapfile -t RTL_FILES < <(printf '%s\n' "$RTL"/*.v | sort)
+EXTRA_RTL=()
+if [[ -n "${PF3_PRODUCT_RTL_COMPAT:-}" ]]; then EXTRA_RTL+=("$PF3_PRODUCT_RTL_COMPAT"); fi
 cp "$RTL"/*.dat "$WORK"/ 2>/dev/null || true
 (
   cd "$WORK"
   /home/lab_726/Xilinx/Vivado/2021.2/bin/xvlog "${RTL_FILES[@]}"
   /home/lab_726/Xilinx/Vivado/2021.2/bin/xvlog --sv \
     "$ROOT/rtl_tb/axis_imem_model.sv" "$ROOT/rtl_tb/axis_dmem_model.sv" \
-    "$ROOT/rtl_tb/commit_trace_monitor.sv" "$ROOT/rtl_tb/pf3_product_rtl_harness.sv" \
+    "$ROOT/rtl_tb/commit_trace_monitor.sv" "${EXTRA_RTL[@]}" \
+    "$ROOT/rtl_tb/pf3_product_rtl_harness.sv" \
     "$ROOT/rtl_tb/pf3_product_rtl_tb.sv"
   /home/lab_726/Xilinx/Vivado/2021.2/bin/xelab pf3_product_rtl_tb \
     -s pf3_product_snapshot -timescale 1ns/1ps

@@ -101,6 +101,8 @@ struct RobCompleteEvent {
     MicroOp uop;
     bool writes_prf, mispredict, control_resolved;
     uint64_t redirect_pc, value;
+    bool actual_valid, actual_taken;
+    uint64_t actual_target, fallthrough_pc;
     bool exception;
     uint64_t exc_cause;
     bool memory_valid, is_load, is_store, signed_load;
@@ -109,7 +111,9 @@ struct RobCompleteEvent {
     uint32_t transaction_id;
     RobCompleteEvent() : valid(false), kind(COMPLETION_NONE),
         source(COMPLETION_SOURCE_LSU_LOAD), uop(), writes_prf(false),
-        mispredict(false), control_resolved(false), redirect_pc(0), value(0), exception(false),
+        mispredict(false), control_resolved(false), redirect_pc(0), value(0),
+        actual_valid(false), actual_taken(false), actual_target(0),
+        fallthrough_pc(0), exception(false),
         exc_cause(0), memory_valid(false), is_load(false), is_store(false),
         signed_load(false), memory_address(0), store_data(0), memory_mask(0),
         memory_size(0), transaction_id(0) {}
@@ -190,9 +194,17 @@ struct BranchUpdate {
     uint8_t resolve_mask, mispredict_mask, cfi_type, pc_sel, br_tag;
     bool valid, mispredict, taken;
     uint64_t jalr_target; int64_t target_offset;
+    bool prediction_lookup_valid, cfi_match, prediction_valid;
+    bool predicted_taken, predicted_target_valid;
+    bool direction_mispredict, target_mispredict, stale_lookup;
+    uint64_t predicted_target, actual_target, fallthrough_pc;
     MicroOp uop;
     BranchUpdate() : resolve_mask(0), mispredict_mask(0), cfi_type(0), pc_sel(0), br_tag(0),
-        valid(false), mispredict(false), taken(false), jalr_target(0), target_offset(0), uop() {}
+        valid(false), mispredict(false), taken(false), jalr_target(0), target_offset(0),
+        prediction_lookup_valid(false), cfi_match(false), prediction_valid(false),
+        predicted_taken(false), predicted_target_valid(false),
+        direction_mispredict(false), target_mispredict(false), stale_lookup(false),
+        predicted_target(0), actual_target(0), fallthrough_pc(0), uop() {}
 };
 
 enum FrontendRedirectCause : uint8_t {

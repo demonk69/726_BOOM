@@ -148,6 +148,71 @@ CORE_CYCLE:
     }
 }
 
+// Test-only full-core top used to verify the product FTQ path in generated RTL.
+void boom_core_pf4_rtl_top(hls::stream<ImemRequest>&  imem_req_out,
+                           hls::stream<ImemResponse>& imem_resp_in,
+                           hls::stream<DmemRequest>&  dmem_req_out,
+                           hls::stream<DmemResponse>& dmem_resp_in,
+                           hls::stream<CommitEntry>&  commit_trace_out,
+                           hls::stream<boom::PredictorUpdate>& test_seed_in,
+                           volatile bool* io_success,
+                           volatile bool* io_halted,
+                           volatile bool* io_trap,
+                           volatile bool* io_cycle_valid,
+                           volatile uint64_t* io_cycle,
+                           volatile uint64_t* io_instret) {
+#pragma HLS INTERFACE ap_ctrl_none port=return
+#pragma HLS INTERFACE axis port=imem_req_out
+#pragma HLS INTERFACE axis port=imem_resp_in
+#pragma HLS INTERFACE axis port=dmem_req_out
+#pragma HLS INTERFACE axis port=dmem_resp_in
+#pragma HLS INTERFACE axis port=commit_trace_out
+#pragma HLS INTERFACE axis port=test_seed_in
+#pragma HLS INTERFACE ap_none port=io_success
+#pragma HLS INTERFACE ap_none port=io_halted
+#pragma HLS INTERFACE ap_none port=io_trap
+#pragma HLS INTERFACE ap_none port=io_cycle_valid
+#pragma HLS INTERFACE ap_none port=io_cycle
+#pragma HLS INTERFACE ap_none port=io_instret
+
+    static BoomCoreState state;
+    static ResetControllerState reset_ctrl;
+#pragma HLS bind_storage variable=state.rob.ftq_generations type=RAM_2P impl=LUTRAM
+#pragma HLS RESET variable=reset_ctrl
+
+    PipeSignals pipe;
+    bool success, halted, trap, cycle_valid;
+    uint64_t cycle, instret;
+
+PF4_RTL_CORE_CYCLE:
+    while (true) {
+        state.product_ftq_enabled = true;
+        if (reset_ctrl.completed && !test_seed_in.empty()) {
+            boom::PredictorStepInput seed;
+            seed.active_generation = state.predictor_generation;
+            seed.update = test_seed_in.read();
+            seed.update.valid = true;
+            seed.update.commit_qualified = true;
+            seed.update.cfi_type = boom::CFI_CONDITIONAL_BRANCH;
+            seed.update.metadata_token = static_cast<uint16_t>(
+                (seed.update.pc >> 1) & 255u);
+            seed.update.generation = state.predictor_generation;
+            state.predictor.step(seed);
+        }
+        boom_core_cycle_or_reset(state, reset_ctrl, pipe,
+                                 imem_req_out, imem_resp_in,
+                                 dmem_req_out, dmem_resp_in, commit_trace_out,
+                                 success, halted, trap,
+                                 cycle_valid, cycle, instret);
+        *io_success = success;
+        *io_halted = halted;
+        *io_trap = trap;
+        *io_cycle_valid = cycle_valid;
+        *io_cycle = cycle;
+        *io_instret = instret;
+    }
+}
+
 void boom_core_step_top(hls::stream<ImemRequest>&  imem_req_out,
                         hls::stream<ImemResponse>& imem_resp_in,
                         hls::stream<DmemRequest>&  dmem_req_out,

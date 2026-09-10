@@ -118,11 +118,32 @@ struct FtqStepOutput {
           tail(0), count(0) {}
 };
 
+struct FtqPredictionLookup {
+    bool reference_valid;
+    bool cfi_match;
+    bool prediction_valid;
+    bool predicted_taken;
+    bool target_valid;
+    uint64_t predicted_target;
+    uint8_t cfi_type;
+    uint8_t predictor_metadata_index;
+    uint32_t predictor_generation;
+
+    FtqPredictionLookup()
+        : reference_valid(false), cfi_match(false), prediction_valid(false),
+          predicted_taken(false), target_valid(false), predicted_target(0),
+          cfi_type(CFI_NONE), predictor_metadata_index(0),
+          predictor_generation(0) {}
+};
+
 template <std::size_t Depth, bool FullPayloadReset = false>
 class FtqFoundation {
 public:
     FtqFoundation();
     FtqStepOutput step(const FtqStepInput& input);
+    FtqPredictionLookup lookup_prediction(uint8_t index, uint32_t generation,
+                                          uint8_t lane,
+                                          uint8_t expected_cfi_type) const;
 
 private:
     static_assert(Depth == 2 || Depth == 4 || Depth == 8 || Depth == 16 ||
@@ -140,6 +161,30 @@ private:
     bool entry_is_active(uint8_t index, uint32_t generation) const;
     void reset_controls();
 };
+
+template <std::size_t Depth, bool FullPayloadReset>
+FtqPredictionLookup FtqFoundation<Depth, FullPayloadReset>::lookup_prediction(
+        uint8_t index, uint32_t generation, uint8_t lane,
+        uint8_t expected_cfi_type) const {
+    FtqPredictionLookup output;
+    if (lane > 1 || !entry_is_active(index, generation)) return output;
+    const FtqEntry& entry = entries_[index];
+    const uint8_t lane_bit = static_cast<uint8_t>(1u << lane);
+    if ((entry.packet_valid_mask & lane_bit) == 0 ||
+        (entry.live_lane_mask & lane_bit) == 0) return output;
+    output.reference_valid = true;
+    output.cfi_match = entry.cfi_lane == lane &&
+        entry.cfi_type == expected_cfi_type;
+    if (!output.cfi_match) return output;
+    output.prediction_valid = entry.prediction_valid;
+    output.predicted_taken = entry.predicted_taken;
+    output.target_valid = entry.target_valid;
+    output.predicted_target = entry.predicted_target;
+    output.cfi_type = entry.cfi_type;
+    output.predictor_metadata_index = entry.predictor_metadata_index;
+    output.predictor_generation = entry.predictor_generation;
+    return output;
+}
 
 template <std::size_t Depth, bool FullPayloadReset>
 FtqFoundation<Depth, FullPayloadReset>::FtqFoundation()

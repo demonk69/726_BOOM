@@ -1,5 +1,25 @@
 # Implementation Status
 
+Gate 5.4 PF4 update: conditional BIM direction now steers the product Frontend,
+retains effective FTQ prediction metadata, compares oldest branch actual
+direction/target at Completion, and performs Frontend-owned precise recovery.
+Directed 12,949/12,949, random 256x8,192, one-million-step long-run, focused RTL
+140/140, product native/CSim 12/12, and current-source full-core RTL 12/12 pass;
+predicted-T younger-fault masking/refetch passes 2/2 and exact BIM counters are
+unchanged. Canonical PPA is 210,914 LUT, 46,551 FF, 16 BRAM, 3 DSP, 6.341 ns.
+`GATE5_4_PF4_BRANCH_PREDICTION_RECOVERY_VERIFIED=true` and
+`READY_FOR_GATE5_4_PF5_COMMIT_BIM_TRAINING=true`; Commit BIM training remains
+disabled.
+
+Gate 5.4 PF3 update: canonical F1 depth-32 LUTRAM state is wired into the
+product Frontend with atomic Fetch Buffer admission, 40-bit generation-safe
+references, predictor metadata retention, and commit/actual-branch/exception
+lifetime. Focused native, CSim, exhaustive, random, long-run, and generated RTL
+pass. PF3 is not accepted: `boom_core_top` is 202425 LUT, 44545 FF, 17 BRAM,
+3 DSP, and 6.739 ns; required product programs/full-core RTL are absent.
+Conditional steering, prediction comparison/recovery, and Commit BIM training
+remain disabled.
+
 Gate 5.4 PF2 update: canonical complete-instruction P1 predecode and canonical 256-entry P2 Predictor state are integrated into the product Frontend. Conditional BIM direction is verified in `SHADOW_ONLY` mode, including WT/ST taken results without PC steering or younger-lane masking. Static JAL steering is enabled; JALR remains no-target prediction. PF2 directed native/CSim pass 2233/2233 each and matching full-core native/CSim programs pass 11/11 each. Full-core csynth is 182549 LUT, 38385 FF, 16 BRAM, 3 DSP, and 6.341 ns. FTQ, conditional recovery metadata, and Commit training remain unimplemented.
 
 Gate 1 update: M003, M004, M006 are closed for the implemented integer/control subset.
@@ -66,7 +86,7 @@ Gate 4.0 W3 source scope: acceptance covers the modular `src/*.cpp` implementati
 - Integer RV64C parcel fetch/decompression for the supported subset, including retained-word reuse, one cross-word carry, `C.EBREAK`, RV64 `C.SRLI shamt[5]`, and `C.JALR` link semantics.
 - Eight-entry complete-instruction Fetch Buffer with AUTO storage, CONTROL_ONLY reset, atomic two-lane packet admission, flush/backpressure handling, and one-wide dequeue.
 - RV64 integer ALU subset used by directed tests.
-- JAL, JALR, and conditional branches with always-not-taken baseline redirect behavior.
+- JAL static steering, conditional BIM steering/recovery, and unpredicted JALR recovery.
 - Integer rename map/free-list/stale-pdst commit release for single dispatch lane.
 - ROB allocate, complete, commit, full backpressure, and wrap behavior for current tests.
 - Shared implemented issue queue dispatch/select/compact with fixed MEM/INT selection lanes and up to two accepted execute inputs.
@@ -93,7 +113,7 @@ Gate 4.0 W3 source scope: acceptance covers the modular `src/*.cpp` implementati
 
 - Full BOOM LSU behavior, DCache, ICache, MMU/Sv39, TLB, PTW, cache miss/replay, AMO/LRSC, and full memory-ordering semantics.
 - FPU and FP issue/register-read/writeback paths.
-- Full branch-prediction recovery, BTB, TAGE, RAS, and product FTQ. PF2 integrates BIM as a Frontend shadow path only; conditional steering and Commit training are absent.
+- BTB, TAGE, RAS, and Commit BIM training. PF4 implements the supported BIM/FTQ conditional steering and recovery subset.
 - TileLink, L2, interrupts, full CSR file, privilege transitions.
 
 ## Latest Verification

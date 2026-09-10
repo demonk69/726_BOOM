@@ -114,9 +114,10 @@ for name, registers in expected.items():
         failures.append(f"{name}: expected 13 M commits, got {len(m_commits)}")
     scenario = "R8_DOUBLE_RUNTIME_RESET" if name == "rv64m_reset_replay" else "N0_NORMAL_INDEPENDENT_ALU"
     status = "FAIL" if any(f.startswith(name + ":") for f in failures) else "PASS"
+    trace_display = trace_path.relative_to(root) if trace_path.is_relative_to(root) else trace_path
     rows.append((name, scenario, len(commits), len(m_commits),
-                 "PASS" if tohost else "FAIL", status,
-                 str(trace_path.relative_to(root))))
+                  "PASS" if tohost else "FAIL", status,
+                  str(trace_display)))
 
 with (report / "full_core_rtl_matrix.csv").open("w", newline="") as stream:
     writer = csv.writer(stream)

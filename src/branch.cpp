@@ -12,6 +12,13 @@ static bool branch_is_control_uop(const MicroOp& uop) {
     return uop.branch.is_br || uop.branch.is_jal || uop.branch.is_jalr;
 }
 
+static uint8_t branch_cfi_type(const MicroOp& uop) {
+    if (uop.branch.is_br) return boom::CFI_CONDITIONAL_BRANCH;
+    if (uop.branch.is_jal) return boom::CFI_JAL;
+    if (uop.branch.is_jalr) return boom::CFI_JALR;
+    return boom::CFI_NONE;
+}
+
 static bool killed_by_mask(const MicroOp& uop, uint8_t mask) {
     return (uop.branch.br_mask & mask) != 0;
 }
@@ -284,23 +291,6 @@ static void recover_mispredict(BoomCoreState& state, const BranchUpdate& update)
     if (state.rename.dispatch_packets[0].valid &&
         killed_by_mask(state.rename.dispatch_packets[0].uop, mispredict_mask))
         state.rename.dispatch_packets[0] = RenameDispatchPacket();
-    state.frontend.fetch_packet_valid = false;
-    state.frontend.producer_valid = false;
-    state.frontend.pending_packet = boom::FetchPacket();
-    state.frontend.pending_predecode = boom::CfiPacketPredecodeResult();
-    state.frontend.original_packet_mask = 0;
-    state.frontend.final_admission_mask = 0;
-    state.frontend.prediction_pending = false;
-    state.frontend.predictor_request_sent = false;
-    state.frontend.stalled = false;
-    boom::fetch_buffer_reset(state.frontend.fetch_buffer);
-    state.frontend.response_received = false;
-    state.frontend.request_sent = false;
-    state.frontend.halfword_valid = false;
-    state.frontend.flush = false;
-    state.frontend.epoch++;
-    state.frontend.pc = update.jalr_target;
-
     restore_map_snapshot(state, tag);
     rollback_free_list(state, tag);
     prune_recovered_tags(state, keep_mask, tag);
@@ -332,8 +322,75 @@ void branch_complete_event(BoomCoreState& state, const MicroOp& uop,
     else release_resolved_branch(state, tag, resolve_mask);
 }
 
+void branch_complete_event(BoomCoreState& state,
+                           const RobCompleteEvent& event) {
+    if (!event.actual_valid) {
+        branch_complete_event(state, event.uop, event.mispredict,
+                              event.redirect_pc);
+        return;
+    }
+
+    const MicroOp& uop = event.uop;
+    const uint8_t cfi_type = branch_cfi_type(uop);
+    const uint64_t actual_next = event.actual_taken ? event.actual_target :
+        event.fallthrough_pc;
+    bool correction = false;
+    FtqPredictionLookup prediction;
+    if (uop.ftq_valid) {
+        prediction = state.ftq.lookup_prediction(
+            uop.ftq_idx, uop.ftq_generation, uop.ftq_lane, cfi_type);
+        if (!prediction.reference_valid || !prediction.cfi_match) {
+            correction = true;
+        } else if (cfi_type == boom::CFI_JALR) {
+            correction = true;
+        } else if (!prediction.prediction_valid) {
+            correction = true;
+        } else {
+            const bool direction_mismatch =
+                prediction.predicted_taken != event.actual_taken;
+            const bool target_mismatch = prediction.predicted_taken &&
+                event.actual_taken &&
+                (!prediction.target_valid ||
+                 prediction.predicted_target != event.actual_target);
+            correction = direction_mismatch || target_mismatch;
+        }
+    } else {
+        correction = cfi_type == boom::CFI_JALR || event.actual_taken;
+    }
+
+    branch_complete_event(state, uop, correction, actual_next);
+    state.brupdate.cfi_type = cfi_type;
+    state.brupdate.taken = event.actual_taken;
+    state.brupdate.actual_target = event.actual_target;
+    state.brupdate.fallthrough_pc = event.fallthrough_pc;
+    state.brupdate.prediction_lookup_valid = prediction.reference_valid;
+    state.brupdate.cfi_match = prediction.cfi_match;
+    state.brupdate.prediction_valid = prediction.prediction_valid;
+    state.brupdate.predicted_taken = prediction.predicted_taken;
+    state.brupdate.predicted_target_valid = prediction.target_valid;
+    state.brupdate.predicted_target = prediction.predicted_target;
+    state.brupdate.stale_lookup = uop.ftq_valid &&
+        (!prediction.reference_valid || !prediction.cfi_match);
+    state.brupdate.direction_mispredict = prediction.reference_valid &&
+        prediction.cfi_match && prediction.prediction_valid &&
+        prediction.predicted_taken != event.actual_taken;
+    state.brupdate.target_mispredict = prediction.reference_valid &&
+        prediction.cfi_match && prediction.prediction_valid &&
+        prediction.predicted_taken && event.actual_taken &&
+        (!prediction.target_valid ||
+         prediction.predicted_target != event.actual_target);
+}
+
 void branch_complete(BoomCoreState& state, const ExecuteState::AluResult& r) {
-    branch_complete_event(state, r.uop, r.mispredict, r.redirect_pc);
+    RobCompleteEvent event;
+    event.uop = r.uop;
+    event.mispredict = r.mispredict;
+    event.redirect_pc = r.redirect_pc;
+    event.actual_valid = r.actual_valid;
+    event.actual_taken = r.actual_taken;
+    event.actual_target = r.actual_target;
+    event.fallthrough_pc = r.fallthrough_pc;
+    branch_complete_event(state, event);
 }
 
 void branch_module(BoomCoreState& state) {

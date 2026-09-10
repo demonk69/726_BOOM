@@ -1,0 +1,27 @@
+scope,test,result,runner,durable_evidence,ephemeral_run_path
+PF4,directed_native_12949_checks,PASS,run_pf4_branch_prediction_recovery_native.sh,pf4_preservation_matrix.csv,
+PF4,random_256x8192,PASS,run_pf4_branch_prediction_recovery_random.sh,pf4_preservation_matrix.csv,
+PF4,long_run_1000000,PASS,run_pf4_branch_prediction_recovery_random.sh,pf4_preservation_matrix.csv,
+PF4,focused_generated_rtl_140,PASS,run_pf4_branch_prediction_recovery_rtl.sh,pf4_preservation_matrix.csv,
+PF4,product_native_12,PASS,run_pf4_product_native.sh,pf4_preservation_matrix.csv,
+PF4,product_vitis_csim_12,PASS,run_pf4_product_csim.sh,pf4_preservation_matrix.csv,
+PF4,current_source_full_core_rtl_12,PASS,run_pf4_full_core_rtl.sh,full_core_rtl/full_core_rtl_matrix.csv,
+PF4,predicted_t_younger_fault_actual_t_and_nt_2,PASS,run_pf4_full_core_rtl.sh,full_core_rtl/generation_provenance.md,
+PF3,directed_native_481322,PASS,PF3 preservation rerun,pf4_preservation_matrix.csv,
+PF3,random_256x8192_and_long_run_1000000,PASS,PF3 preservation rerun,pf4_preservation_matrix.csv,
+PF3,focused_ftq_generated_rtl_100,PASS,run_pf3_ftq_atomic_rtl.sh,pf4_preservation_matrix.csv,
+PF3,product_generated_rtl_12,PASS,run_pf3_product_rtl.sh with Product-FTQ compatibility fixture,pf4_preservation_matrix.csv,
+PF2,directed_native_2239_and_random_256x8192,PASS,PF2 preservation rerun,pf4_preservation_matrix.csv,
+PF2,focused_predictor_frontend_rtl_116,PASS,run_pf2_predictor_frontend_rtl.sh,pf4_preservation_matrix.csv,
+PF1,directed_1817_random_256_and_programs_8,PASS,PF1 preservation rerun,pf4_preservation_matrix.csv,
+PF1,focused_exception_rtl_64,PASS,run_pf1_exception_rtl.sh,pf4_preservation_matrix.csv,
+PF1,full_core_exception_rtl_8,PASS,run_pf1_exception_full_core_rtl.sh,pf4_preservation_matrix.csv,
+Gate5.3,B3I_random_256x4096,PASS,B3I preservation rerun,pf4_preservation_matrix.csv,
+Gate5.3,B3I_current_source_full_core_rtl_6,PASS,B3I full-core preservation rerun,pf4_preservation_matrix.csv,/tmp/boom_hls/pf4/reports/b3i/rtl/full_core_rtl_matrix.csv
+Gate4.0,W3_canonical_400,PASS,W3 canonical preservation rerun,pf4_preservation_matrix.csv,/tmp/boom_hls/pf4/gate4/w3/report/regression_after.md
+Gate4.0,W4_multi_writeback_13,PASS,W4 multi-writeback preservation rerun,pf4_preservation_matrix.csv,/tmp/boom_hls/pf4/gate4/w4/w4_multi_writeback_tests
+Gate4.1,M3C_directed_1458_random_256_programs_15,PASS,M3C native preservation rerun,pf4_preservation_matrix.csv,/tmp/boom_hls/pf4/gate4_1/m3c/native_report/logs
+Gate4.1,M3C_focused_generated_rtl_30,PASS,M3C focused RTL preservation rerun,pf4_preservation_matrix.csv,/tmp/boom_hls/pf4/gate4_1/m3c/focused_rtl_report
+Gate4.1,M3C_full_core_generated_rtl_15,PASS,M3C full-core RTL preservation rerun,pf4_preservation_matrix.csv,/tmp/boom_hls/pf4/gate4_1/m3c/full_core_report/full_core_rtl_matrix.csv
+Gate5.2,RVC_decompress_65536_decode_cross_38551,PASS,direct current-source tests,pf4_preservation_matrix.csv,
+Gate5.2,RVC_full_core_rtl_11,PASS,RVC full-core preservation rerun,pf4_preservation_matrix.csv,/tmp/boom_hls/pf4/reports/rvc/full_core

@@ -1,0 +1,11 @@
+case,cfi,prediction_valid,predicted_taken,target_match,actual_taken,classification,recovery_pc,redirect,younger_squash
+1,conditional,true,false,NA,false,CORRECT,fallthrough,false,false
+2,conditional,true,false,NA,true,DIRECTION_MISPREDICT,actual_target,true,true
+3,conditional,true,true,true,true,CORRECT,actual_target,false,false
+4,conditional,true,true,NA,false,DIRECTION_MISPREDICT,branch_pc_plus_instruction_length,true,true
+5,conditional,true,true,false,true,TARGET_MISPREDICT,actual_target,true,true
+6,conditional,false,NA,NA,true,STALE_OR_UNPREDICTED_CONDITIONAL,actual_target,true,true
+7,conditional,false,NA,NA,false,STALE_OR_UNPREDICTED_CONDITIONAL,branch_pc_plus_instruction_length,true,true
+8,JAL,true,true,true,true,CORRECT,actual_target,false,false
+9,JAL,true,true,false,true,TARGET_MISPREDICT,actual_target,true,true
+10,JALR,false,NA,NA,true,NO_TARGET_PREDICTION,actual_target,true,true
