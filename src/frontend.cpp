@@ -237,7 +237,9 @@ static void frontend_mode_module(BoomCoreState& state, PipeSignals& pipe) {
         PredictorStepInput predictor_input;
         predictor_input.active_generation = state.predictor_generation;
         predictor_input.resp_ready = true;
+        predictor_input.update = state.predictor_update_pending;
         const PredictorStepOutput predictor_output = state.predictor.step(predictor_input);
+        state.predictor_update_pending = PredictorUpdate();
         fe.predictor_response_valid = predictor_output.resp_valid;
         fe.predictor_response_stale = predictor_output.resp_valid;
         fe.fetch_packet_valid = false;
@@ -367,6 +369,7 @@ static void frontend_mode_module(BoomCoreState& state, PipeSignals& pipe) {
 
     PredictorStepInput predictor_input;
     predictor_input.active_generation = state.predictor_generation;
+    predictor_input.update = state.predictor_update_pending;
     if (fe.prediction_pending && !fe.predictor_request_sent) {
         const uint8_t lane = fe.pending_predecode.selected_cfi_lane;
         const CfiPredecodeResult& cfi = fe.pending_predecode.selected_cfi_result;
@@ -386,6 +389,7 @@ static void frontend_mode_module(BoomCoreState& state, PipeSignals& pipe) {
         !fe.prediction_pending || legacy_prediction_can_admit;
     const PredictorStepOutput predictor_output = state.predictor.peek(false);
     state.predictor.step(predictor_input);
+    state.predictor_update_pending = PredictorUpdate();
     fe.predictor_response_valid = predictor_output.resp_valid ||
         (fe.prediction_pending && fe.prediction_resolved);
 

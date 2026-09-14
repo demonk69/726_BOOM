@@ -89,6 +89,17 @@ PredictorStepOutput PredictorFoundation<Entries, FullPayloadReset>::step(
     return output;
 }
 
+#ifndef __SYNTHESIS__
+template <std::size_t Entries, bool FullPayloadReset>
+uint8_t PredictorFoundation<Entries, FullPayloadReset>::debug_counter(
+        uint64_t pc, bool& valid) const {
+    const std::size_t index = static_cast<std::size_t>(
+        (pc >> 1) & static_cast<uint64_t>(Entries - 1));
+    valid = valid_[index];
+    return valid_[index] ? counters_[index] : static_cast<uint8_t>(1);
+}
+#endif
+
 template class PredictorFoundation<64>;
 template class PredictorFoundation<128>;
 template class PredictorFoundation<256>;

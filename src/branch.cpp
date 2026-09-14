@@ -332,6 +332,14 @@ void branch_complete_event(BoomCoreState& state,
 
     const MicroOp& uop = event.uop;
     const uint8_t cfi_type = branch_cfi_type(uop);
+    const uint8_t rob_idx = uop.queue.rob_idx;
+    if (cfi_type == boom::CFI_CONDITIONAL_BRANCH && rob_idx < ROB_DEPTH &&
+        state.rob.entries[rob_idx].valid &&
+        state.rob.entries[rob_idx].uop.queue.rob_allocation_id ==
+            uop.queue.rob_allocation_id) {
+        state.rob.entries[rob_idx].branch_resolved = true;
+        state.rob.entries[rob_idx].branch_actual_taken = event.actual_taken;
+    }
     const uint64_t actual_next = event.actual_taken ? event.actual_target :
         event.fallthrough_pc;
     bool correction = false;

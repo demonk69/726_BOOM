@@ -5,7 +5,7 @@ ROOT=${HLS_BOOM_ROOT:-"$(cd "$(dirname "${BASH_SOURCE[0]}")/../.." && pwd)"}
 source "$ROOT/scripts/common/gate_workspace.sh"
 gate_begin gate5_4 pf2_preservation
 BUILD=$(gate_build_dir gate5_3_b3i_random)
-REPORT="$ROOT/reports/gate5_3_fetch_buffer/b3i"
+REPORT=${GATE5_3_B3I_REPORT_DIR:-"$ROOT/reports/gate5_3_fetch_buffer/b3i"}
 mkdir -p "$REPORT/logs"
 trap 'gate_cleanup_success "$BUILD"' EXIT
 CXXFLAGS=(-std=c++11 -O2 -Wall -Wextra -Werror

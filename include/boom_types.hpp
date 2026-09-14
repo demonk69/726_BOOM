@@ -169,13 +169,15 @@ struct IssueGrant {
 struct RobEntry {
     bool valid, busy, unsafe, exception, exception_reported;
     MicroOp uop;
+    bool branch_resolved, branch_actual_taken;
     bool memory_valid, is_load, is_store, signed_load;
     bool memory_request_sent, memory_completed;
     uint64_t memory_address, memory_data;
     uint8_t memory_mask, memory_size;
     uint32_t memory_transaction_id;
     RobEntry() : valid(false), busy(false), unsafe(false), exception(false),
-        exception_reported(false), uop(),
+        exception_reported(false), uop(), branch_resolved(false),
+        branch_actual_taken(false),
         memory_valid(false), is_load(false), is_store(false), signed_load(false),
         memory_request_sent(false), memory_completed(false), memory_address(0),
         memory_data(0), memory_mask(0), memory_size(0), memory_transaction_id(0) {}

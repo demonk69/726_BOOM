@@ -2,20 +2,47 @@
 set -euo pipefail
 
 ROOT=${HLS_BOOM_ROOT:-"$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")/../.." && pwd -P)"}
-BUILD=${GATE5_4_PF4_RTL_BUILD_DIR:-/tmp/boom_hls/pf4/full_core_rtl}
+PF5_MODE=${PF5_TRAINING_EXPECTED:-0}
+if [[ "$PF5_MODE" == 1 ]]; then
+    BUILD=${GATE5_4_PF4_RTL_BUILD_DIR:-/tmp/boom_hls/pf5/full_core_rtl}
+    REPORT=${GATE5_4_PF4_RTL_REPORT_DIR:-"$ROOT/reports/gate5_4_product_integration/pf5/full_core_rtl"}
+    EVENT_PREFIX=PF5
+    TB_DEFINE=(--define PF5_TRAINING_EXPECTED)
+    PROGRAM_BUILD=${PF5_PROGRAM_BUILD:-/tmp/boom_hls/pf5/programs}
+    PROGRAM_BUILD_ENV=PF5_PROGRAM_BUILD
+    PROGRAM_BUILD_SCRIPT="$ROOT/scripts/gate5_4/build_pf5_product_programs.sh"
+    PROGRAMS=(pf5_pred_nt_actual_nt pf5_pred_nt_actual_t pf5_pred_t_actual_t
+              pf5_pred_t_actual_nt pf5_rvc_commit pf5_same_packet_kill
+              pf5_fault_no_training pf5_ftq_wrap_training pf5_jal_no_training
+              pf5_jalr_no_training pf5_exception_no_training pf5_mixed_long_training)
+    FAULT_PROGRAM=pf5_fault_no_training
+    PRED_T_T_PROGRAM=pf5_pred_t_actual_t
+    PRED_T_NT_PROGRAM=pf5_pred_t_actual_nt
+    PRED_T_NT_FAULT=pf5_pred_t_actual_nt_fault
+else
+    BUILD=${GATE5_4_PF4_RTL_BUILD_DIR:-/tmp/boom_hls/pf4/full_core_rtl}
+    REPORT=${GATE5_4_PF4_RTL_REPORT_DIR:-"$ROOT/reports/gate5_4_product_integration/pf4/full_core_rtl"}
+    EVENT_PREFIX=PF4
+    TB_DEFINE=()
+    PROGRAM_BUILD=${PF4_PROGRAM_BUILD:-/tmp/boom_hls/pf4/programs}
+    PROGRAM_BUILD_ENV=PF4_PROGRAM_BUILD
+    PROGRAM_BUILD_SCRIPT="$ROOT/scripts/gate5_4/build_pf4_product_programs.sh"
+    PROGRAMS=(pf4_pred_nt_actual_nt pf4_pred_nt_actual_t pf4_pred_t_actual_t
+              pf4_pred_t_actual_nt pf4_rvc_mispredict pf4_same_packet_kill
+              pf4_fault_refetch pf4_ftq_wrap_recovery pf4_jal_preservation
+              pf4_jalr_unpredicted pf4_exception_priority pf4_mixed_long_control)
+    FAULT_PROGRAM=pf4_fault_refetch
+    PRED_T_T_PROGRAM=pf4_pred_t_actual_t
+    PRED_T_NT_PROGRAM=pf4_pred_t_actual_nt
+    PRED_T_NT_FAULT=pf4_pred_t_actual_nt_fault
+fi
 PROJECT="$BUILD/boom_core_pf4_rtl_top_hls"
 RTL="$PROJECT/solution_pf4_rtl/syn/verilog"
 WORK="$BUILD/xsim"
-REPORT=${GATE5_4_PF4_RTL_REPORT_DIR:-"$ROOT/reports/gate5_4_product_integration/pf4/full_core_rtl"}
-PROGRAM_BUILD=${PF4_PROGRAM_BUILD:-/tmp/boom_hls/pf4/programs}
 VITIS_HLS_BIN=${VITIS_HLS:-/home/lab_726/Xilinx/Vitis_HLS/2021.2/bin/vitis_hls}
 XVLOG_BIN=${XVLOG:-/home/lab_726/Xilinx/Vivado/2021.2/bin/xvlog}
 XELAB_BIN=${XELAB:-/home/lab_726/Xilinx/Vivado/2021.2/bin/xelab}
 XSIM_BIN=${XSIM:-/home/lab_726/Xilinx/Vivado/2021.2/bin/xsim}
-PROGRAMS=(pf4_pred_nt_actual_nt pf4_pred_nt_actual_t pf4_pred_t_actual_t
-          pf4_pred_t_actual_nt pf4_rvc_mispredict pf4_same_packet_kill
-          pf4_fault_refetch pf4_ftq_wrap_recovery pf4_jal_preservation
-          pf4_jalr_unpredicted pf4_exception_priority pf4_mixed_long_control)
 
 mapfile -t CPP_INPUTS < <(printf '%s\n' "$ROOT"/src/*.cpp | sort)
 mapfile -t HEADER_INPUTS < <(printf '%s\n' "$ROOT"/include/*.hpp | sort)
@@ -42,8 +69,10 @@ PY
 }
 
 SOURCE_HASH=$(hash_inputs)
-mkdir -p -- "$BUILD" "$REPORT/logs" "$REPORT/traces"
-PF4_PROGRAM_BUILD="$PROGRAM_BUILD" "$ROOT/scripts/gate5_4/build_pf4_product_programs.sh" \
+mkdir -p -- "$BUILD" "$REPORT"
+rm -rf -- "$REPORT/logs" "$REPORT/traces"
+mkdir -p -- "$REPORT/logs" "$REPORT/traces"
+env "$PROGRAM_BUILD_ENV=$PROGRAM_BUILD" "$PROGRAM_BUILD_SCRIPT" \
     >"$REPORT/logs/program_build.log" 2>&1
 "$ROOT/scripts/generate_merged.sh" >"$REPORT/logs/generate_merged.log" 2>&1
 RTL_TOP="$RTL/boom_core_pf4_rtl_top.v"
@@ -85,7 +114,7 @@ mapfile -t RTL_FILES < <(printf '%s\n' "$RTL"/*.v | sort)
 (
     cd "$WORK"
     "$XVLOG_BIN" "${RTL_FILES[@]}"
-    "$XVLOG_BIN" --sv "$ROOT/rtl_tb/pf4_axis_imem_model.sv" \
+    "$XVLOG_BIN" --sv "${TB_DEFINE[@]}" "$ROOT/rtl_tb/pf4_axis_imem_model.sv" \
         "$ROOT/rtl_tb/axis_dmem_model.sv" "$ROOT/rtl_tb/commit_trace_monitor.sv" \
         "$ROOT/rtl_tb/pf4_full_core_rtl_harness.sv" "$ROOT/rtl_tb/pf4_full_core_rtl_tb.sv"
     "$XELAB_BIN" pf4_full_core_rtl_tb -s pf4_full_core_snapshot -timescale 1ns/1ps
@@ -102,28 +131,34 @@ run_case() {
             --testplusarg "TRACE=$REPORT/traces/$case_name.jsonl" \
             --testplusarg "MAX_CYCLES=1000000" --log "$REPORT/logs/$case_name.log"
     ) >"$REPORT/logs/$case_name.stdout.log" 2>&1
-    grep -q "PF4_FULL_CORE_RTL_PASS program=$case_name" "$REPORT/logs/$case_name.log"
+    grep -q "${EVENT_PREFIX}_FULL_CORE_RTL_PASS program=$case_name" "$REPORT/logs/$case_name.log"
 }
 
 for name in "${PROGRAMS[@]}"; do
     mode=0
-    [[ "$name" == pf4_fault_refetch ]] && mode=1
-    [[ "$name" == pf4_pred_t_actual_t ]] && mode=2
+    [[ "$name" == "$FAULT_PROGRAM" ]] && mode=1
+    [[ "$name" == "$PRED_T_T_PROGRAM" ]] && mode=2
     run_case "$name" "$name" "$mode"
 done
-run_case pf4_pred_t_actual_nt_fault pf4_pred_t_actual_nt 2
+run_case "$PRED_T_NT_FAULT" "$PRED_T_NT_PROGRAM" 2
 
-python3 - "$REPORT" "$SOURCE_HASH" "${PROGRAMS[@]}" <<'PY'
+python3 - "$REPORT" "$SOURCE_HASH" "$EVENT_PREFIX" "${PROGRAMS[@]}" <<'PY'
 import csv, json, re, sys
 from pathlib import Path
-report = Path(sys.argv[1]); source_hash = sys.argv[2]; programs = sys.argv[3:]
+report = Path(sys.argv[1]); source_hash = sys.argv[2]; prefix = sys.argv[3]; programs = sys.argv[4:]
 expected = {
 "pf4_pred_nt_actual_nt":{8:11,9:21,18:31}, "pf4_pred_nt_actual_t":{8:0,9:22,18:32},
 "pf4_pred_t_actual_t":{8:7,9:23,18:34}, "pf4_pred_t_actual_nt":{8:5,9:24,18:35},
 "pf4_rvc_mispredict":{8:6,9:25,18:37}, "pf4_same_packet_kill":{8:0,9:26,18:13,19:39},
 "pf4_fault_refetch":{8:27,9:37,18:47}, "pf4_ftq_wrap_recovery":{8:80,9:1,18:88},
 "pf4_jal_preservation":{8:29,9:39,18:49}, "pf4_jalr_unpredicted":{8:30,9:40,18:50},
-"pf4_exception_priority":{8:31,9:41,18:51}, "pf4_mixed_long_control":{8:12,18:52,19:62}}
+"pf4_exception_priority":{8:31,9:41,18:51}, "pf4_mixed_long_control":{8:12,18:52,19:62},
+"pf5_pred_nt_actual_nt":{8:11,9:21,18:31}, "pf5_pred_nt_actual_t":{8:0,9:22,18:32},
+"pf5_pred_t_actual_t":{8:7,9:23,18:34}, "pf5_pred_t_actual_nt":{8:5,9:24,18:35},
+"pf5_rvc_commit":{8:6,9:25,18:37}, "pf5_same_packet_kill":{8:0,9:26,18:13,19:39},
+"pf5_fault_no_training":{8:27,9:37,18:47}, "pf5_ftq_wrap_training":{8:80,9:1,18:88},
+"pf5_jal_no_training":{8:29,9:39,18:49}, "pf5_jalr_no_training":{8:30,9:40,18:50},
+"pf5_exception_no_training":{8:31,9:41,18:51}, "pf5_mixed_long_training":{8:12,18:52,19:62}}
 rows=[]
 for name in programs:
     records=[json.loads(line) for line in (report/"traces"/f"{name}.jsonl").read_text().splitlines() if line]
@@ -131,22 +166,25 @@ for name in programs:
     final={r.get("rd"):int(r["rd_value"],16) for r in commits if r.get("rd_valid")}
     signature=all(final.get(rd)==value for rd,value in expected[name].items())
     log=(report/"logs"/f"{name}.log").read_text(errors="replace")
-    event=re.search(r"PF4_FULL_CORE_RTL_PASS.*",log)
+    event=re.search(prefix + r"_FULL_CORE_RTL_PASS.*",log)
     status="PASS" if signature and event else "FAIL"
     rows.append((name,status,len(commits),"PASS" if signature else "FAIL",f"traces/{name}.jsonl"))
 with (report/"full_core_rtl_matrix.csv").open("w",newline="") as stream:
     writer=csv.writer(stream); writer.writerow(("program","status","commits","signature","trace")); writer.writerows(rows)
 passed=sum(row[1]=="PASS" for row in rows)
-fault_log=(report/"logs"/"pf4_pred_t_actual_nt_fault.log").read_text(errors="replace")
-fault_pass="PF4_FULL_CORE_RTL_PASS program=pf4_pred_t_actual_nt_fault" in fault_log
-if passed != 12 or not fault_pass: raise SystemExit(f"PF4 full-core RTL failed: programs={passed}/12 fault={fault_pass}")
+fault_name="pf5_pred_t_actual_nt_fault" if prefix == "PF5" else "pf4_pred_t_actual_nt_fault"
+fault_log=(report/"logs"/f"{fault_name}.log").read_text(errors="replace")
+fault_pass=f"{prefix}_FULL_CORE_RTL_PASS program={fault_name}" in fault_log
+if passed != 12 or not fault_pass: raise SystemExit(f"{prefix} full-core RTL failed: programs={passed}/12 fault={fault_pass}")
 (report/"generation_provenance.md").write_text(
-    "# PF4 Current-Source Full-Core RTL Provenance\n\n"
+    f"# {prefix} Current-Source Full-Core RTL Provenance\n\n"
     f"- Modular source/header SHA-256: `{source_hash}`.\n"
     "- `src/boom_all.cpp` excluded and untouched; generated merged source excluded from aggregate hash.\n"
     "- Test-only full-core top enables Product FTQ and accepts fixture-only BIM seeds; product ports are unchanged.\n"
     "- Product programs: `12/12 PASS`.\n"
     "- Predicted-T younger-fault checks: actual-T masked and actual-NT precise refetch/take, `2/2 PASS`.\n"
-    "- Seeded BIM entries retained their exact 2-bit values after execution.\n", encoding="utf-8")
-print(f"PF4_CURRENT_SOURCE_FULL_CORE_RTL_PASS 12/12 mandatory_fault=2/2 source_hash={source_hash}")
+    + ("- Eligible committed conditional branches changed canonical BIM state; excluded CFI classes did not train.\n"
+       if prefix == "PF5" else
+       "- Seeded BIM entries retained their exact 2-bit values after execution.\n"), encoding="utf-8")
+print(f"{prefix}_CURRENT_SOURCE_FULL_CORE_RTL_PASS 12/12 mandatory_fault=2/2 source_hash={source_hash}")
 PY

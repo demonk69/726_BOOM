@@ -19,6 +19,8 @@ void boom_core_reset_step(BoomCoreState& state, ResetControllerState& reset_ctrl
         state.brupdate.valid = false;
         state.brupdate.mispredict = false;
         state.exception_commit = ExceptionCommitEvent();
+        state.predictor_update_pending = boom::PredictorUpdate();
+        state.bim_training = BimTrainingStats();
         state.decode.dec_valids[0] = false;
         state.rename.dispatch_packets[0] = RenameDispatchPacket();
         state.issue.issued_valids[0] = false;

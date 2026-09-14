@@ -29,6 +29,10 @@ extern void branch_complete_event(BoomCoreState& state,
                                   const RobCompleteEvent& event);
 extern void lsu_module(BoomCoreState& state, PipeSignals& pipe);
 extern void rob_commit_module(BoomCoreState& state, PipeSignals& pipe);
+extern bool rob_commit_prepare_bim_update(const BoomCoreState& state,
+                                          const RobEntry& entry,
+                                          uint32_t ftq_generation,
+                                          PredictorUpdate& update);
 extern void exception_recovery_apply(BoomCoreState& state, const RobEntry& owner);
 }
 
@@ -924,6 +928,131 @@ void synth_pf4_branch_prediction_recovery_top(
     ftq_owner_idx = state.ftq_redirect_pending.owner_ftq_idx;
     ftq_owner_generation = state.ftq_redirect_pending.owner_generation;
     packet_surviving_mask = state.ftq_redirect_pending.surviving_lane_mask;
+}
+
+// Focused PF5 diagnostic: production Commit forms the update, then the
+// canonical predictor consumes it before the corresponding FTQ retire.
+void synth_pf5_commit_bim_training_top(
+        uint8_t counter_state, uint8_t cfi_type, bool actual_taken,
+        bool resolved, bool exception, bool stale_ftq_generation,
+        bool stale_predictor_generation, bool metadata_mismatch,
+        bool request_same_index, uint64_t pc,
+        bool& rob_commit_valid, bool& training_update_valid,
+        uint8_t& training_bim_index, bool& training_actual_taken,
+        bool& predictor_generation_match, bool& prediction_after_valid,
+        bool& prediction_after_taken, bool& retire_valid,
+        bool& retire_accepted, bool& ftq_reference_before,
+        bool& ftq_reference_after, bool& ftq_reclaimed) {
+    const uint32_t active_generation = 0x505u;
+    const uint8_t selected_counter = static_cast<uint8_t>(counter_state & 3u);
+    const uint8_t metadata_index = static_cast<uint8_t>((pc >> 1) & 255u);
+
+    BoomCoreState state;
+    state.rob.state = ROB_NORMAL;
+    state.product_ftq_enabled = true;
+    state.predictor_generation = active_generation;
+
+    const uint8_t training_count = selected_counter == 3 ? 2 :
+        (selected_counter == 1 ? 0 : 1);
+    const bool training_taken = selected_counter >= 2;
+    for (uint8_t i = 0; i < 2; ++i) {
+        if (i >= training_count) continue;
+        boom::PredictorStepInput seed;
+        seed.active_generation = active_generation;
+        seed.update.valid = true;
+        seed.update.commit_qualified = true;
+        seed.update.cfi_type = boom::CFI_CONDITIONAL_BRANCH;
+        seed.update.pc = pc;
+        seed.update.metadata_token = metadata_index;
+        seed.update.taken = training_taken;
+        seed.update.generation = active_generation;
+        state.predictor.step(seed);
+    }
+
+    boom::FtqStepInput allocation;
+    allocation.alloc_valid = true;
+    allocation.allocation.packet_base_pc = pc;
+    allocation.allocation.packet_valid_mask = 1;
+    allocation.allocation.prediction_valid = true;
+    allocation.allocation.cfi_lane = 0;
+    allocation.allocation.cfi_type = static_cast<uint8_t>(cfi_type & 3u);
+    allocation.allocation.predictor_metadata_index = static_cast<uint8_t>(
+        metadata_index ^ (metadata_mismatch ? 1u : 0u));
+    allocation.allocation.predictor_generation = stale_predictor_generation ?
+        active_generation + 1u : active_generation;
+    const boom::FtqStepOutput allocated = state.ftq.step(allocation);
+
+    MicroOp uop;
+    uop.debug_pc = pc;
+    uop.inst = 0x00000063u;
+    uop.uopc = cfi_type == boom::CFI_CONDITIONAL_BRANCH ? 31 :
+        (cfi_type == boom::CFI_JAL ? 29 : 30);
+    uop.branch.is_br = cfi_type == boom::CFI_CONDITIONAL_BRANCH;
+    uop.branch.is_jal = cfi_type == boom::CFI_JAL;
+    uop.branch.is_jalr = cfi_type == boom::CFI_JALR;
+    uop.ftq_valid = true;
+    uop.ftq_idx = allocated.alloc_ftq_idx;
+    uop.ftq_lane = 0;
+    uop.ftq_generation = allocated.alloc_generation +
+        (stale_ftq_generation ? 1u : 0u);
+    uop.queue.rob_idx = 0;
+    uop.queue.rob_allocation_id = 0x5051u;
+    state.rob.entries[0].valid = true;
+    state.rob.entries[0].busy = false;
+    state.rob.entries[0].exception = exception;
+    state.rob.entries[0].uop = uop;
+    state.rob.entries[0].branch_resolved = resolved;
+    state.rob.entries[0].branch_actual_taken = actual_taken;
+    state.rob.head = 0;
+    state.rob.tail = 1;
+
+    const boom::FtqPredictionLookup before = state.ftq.lookup_prediction(
+        uop.ftq_idx, uop.ftq_generation, uop.ftq_lane,
+        static_cast<uint8_t>(cfi_type & 3u));
+    boom::PredictorUpdate commit_update;
+    const bool update_eligible = !exception &&
+        boom::rob_commit_prepare_bim_update(
+            state, state.rob.entries[0], uop.ftq_generation, commit_update);
+    rob_commit_valid = !exception;
+    if (update_eligible) state.predictor_update_pending = commit_update;
+    if (!exception) {
+        state.ftq_retire_pending.valid = true;
+        state.ftq_retire_pending.ftq_idx = uop.ftq_idx;
+        state.ftq_retire_pending.generation = uop.ftq_generation;
+        state.ftq_retire_pending.lane = uop.ftq_lane;
+    }
+    training_update_valid = update_eligible;
+    training_bim_index = static_cast<uint8_t>(
+        state.predictor_update_pending.metadata_token);
+    training_actual_taken = state.predictor_update_pending.taken;
+    predictor_generation_match = state.predictor_update_pending.generation ==
+        active_generation;
+    retire_valid = state.ftq_retire_pending.valid;
+
+    boom::PredictorStepInput predictor_input;
+    predictor_input.active_generation = active_generation;
+    predictor_input.update = state.predictor_update_pending;
+    predictor_input.req_valid = true;
+    predictor_input.request.pc = request_same_index ? pc : pc + 2u;
+    predictor_input.request.cfi_type = boom::CFI_CONDITIONAL_BRANCH;
+    predictor_input.request.generation = active_generation;
+    predictor_input.request.request_token = 0x505u;
+    state.predictor.step(predictor_input);
+    const boom::PredictorStepOutput prediction = state.predictor.peek(false);
+    prediction_after_valid = prediction.resp_valid &&
+        prediction.response.prediction_valid;
+    prediction_after_taken = prediction.response.taken;
+
+    boom::FtqStepInput retire;
+    retire.retire = state.ftq_retire_pending;
+    const boom::FtqStepOutput retired = state.ftq.step(retire);
+    retire_accepted = retired.retire_accepted;
+    ftq_reclaimed = retired.reclaimed;
+    ftq_reference_before = before.reference_valid && before.cfi_match;
+    const boom::FtqPredictionLookup after = state.ftq.lookup_prediction(
+        allocated.alloc_ftq_idx, allocated.alloc_generation, 0,
+        static_cast<uint8_t>(cfi_type & 3u));
+    ftq_reference_after = after.reference_valid;
 }
 
 void synth_fetch_buffer_integration_top(

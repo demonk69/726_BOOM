@@ -81,6 +81,9 @@ public:
     PredictorFoundation();
     PredictorStepOutput peek(bool reset) const;
     PredictorStepOutput step(const PredictorStepInput& input);
+#ifndef __SYNTHESIS__
+    uint8_t debug_counter(uint64_t pc, bool& valid) const;
+#endif
 
 private:
     static_assert(Entries == 64 || Entries == 128 || Entries == 256 ||

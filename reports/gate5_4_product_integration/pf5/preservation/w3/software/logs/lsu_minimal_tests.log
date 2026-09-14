@@ -1,0 +1,18 @@
+=== BOOM-HLS Minimal LSU Tests ===
+
+  [LSU] SD tohost success uses committed DmemRequest               ... PASS
+  [LSU] store address/data/mask are correct                        ... PASS
+  [LSU] store request is not sent before store commit              ... PASS
+  [LSU] wrong-path store is flushed                                ... PASS
+  [LSU] exception before younger store suppresses store            ... PASS
+  [LSU] store request is not duplicated                            ... PASS
+  [LSU] LB sign extension                                          ... PASS
+  [LSU] LBU zero extension                                         ... PASS
+  [LSU] LB/LH/LW/LD execute through dmem                           ... PASS
+  [LSU] load response delay                                        ... PASS
+  [LSU] stale load response rejection                              ... PASS
+  [LSU] older store blocks younger same-address load until committed ... PASS
+  [LSU] dmem exception plumbing is present                         ... PASS
+  [LSU] reset clears outstanding transaction state                 ... PASS
+
+=== 14 passed, 0 failed ===

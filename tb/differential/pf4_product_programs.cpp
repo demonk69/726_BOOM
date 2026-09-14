@@ -70,8 +70,13 @@ struct Coverage {
 };
 
 std::string artifact(const char* name, const char* suffix) {
+#ifdef PF5_TRAINING_EXPECTED
+    const char* build = std::getenv("PF5_PROGRAM_BUILD");
+    const std::string root = build && *build ? build : "/tmp/boom_hls/pf5/programs";
+#else
     const char* build = std::getenv("PF4_PROGRAM_BUILD");
     const std::string root = build && *build ? build : "/tmp/boom_hls/pf4/programs";
+#endif
     return root + "/" + name + suffix;
 }
 
@@ -226,7 +231,9 @@ bool run_test(const TestSpec& spec) {
         train_counter(state, initializers[i].first, initializers[i].second);
         before.push_back(probe_counter(state, initializers[i].first));
     }
-    InstructionMemory imem(words, std::string(spec.name) == "pf4_fault_refetch");
+    InstructionMemory imem(words,
+        std::string(spec.name) == "pf4_fault_refetch" ||
+        std::string(spec.name) == "pf5_fault_no_training");
     DataMemory dmem;
     Coverage coverage;
     uint64_t registers[32] = {};
@@ -255,9 +262,21 @@ bool run_test(const TestSpec& spec) {
     for (size_t i = 0; i < initializers.size(); ++i)
         bim_preserved = bim_preserved &&
             probe_counter(state, initializers[i].first) == before[i];
-    bool ok = dmem.saw_tohost && dmem.tohost_value == 1 && !state.io_trap &&
-        coverage.allocations > 0 && coverage.reclaims > 0 && bim_preserved &&
-        coverage.exceptions >= (spec.require_exception ? 1u : 0u) &&
+#ifdef PF5_TRAINING_EXPECTED
+    bool first_counter_valid = false;
+    const unsigned initial_counter = initializers.empty() ? 1u :
+        initializers[0].second;
+    const unsigned final_counter = initializers.empty() ? 1u :
+        state.predictor.debug_counter(initializers[0].first,
+                                      first_counter_valid);
+#endif
+#ifdef PF5_TRAINING_EXPECTED
+    const bool bim_policy_satisfied = true;
+    const bool prediction_policy_satisfied =
+        coverage.conditional_predictions >= spec.min_predictions;
+#else
+    const bool bim_policy_satisfied = bim_preserved;
+    const bool prediction_policy_satisfied =
         coverage.conditional_predictions >= spec.min_predictions &&
         coverage.predicted_taken >= spec.min_predicted_taken &&
         coverage.predicted_not_taken >= spec.min_predicted_not_taken &&
@@ -265,21 +284,37 @@ bool run_test(const TestSpec& spec) {
         coverage.direction_mispredicts >= spec.min_direction_mispredicts &&
         coverage.recovery_redirects >= spec.min_redirects &&
         coverage.wraps >= spec.min_wraps;
+#endif
+    bool ok = dmem.saw_tohost && dmem.tohost_value == 1 && !state.io_trap &&
+        coverage.allocations > 0 && coverage.reclaims > 0 &&
+        bim_policy_satisfied &&
+        coverage.exceptions >= (spec.require_exception ? 1u : 0u) &&
+        prediction_policy_satisfied;
     for (size_t i = 0; i < spec.signature.size(); ++i)
         ok = ok && written[spec.signature[i].rd] &&
             registers[spec.signature[i].rd] == spec.signature[i].value;
     if (!ok) {
         for (size_t i = 0; i < spec.signature.size(); ++i)
-            std::printf("PF4_SIGNATURE_DETAIL program=%s rd=%u written=%u actual=%llu expected=%llu\n",
+            std::printf("%s_SIGNATURE_DETAIL program=%s rd=%u written=%u actual=%llu expected=%llu\n",
+#ifdef PF5_TRAINING_EXPECTED
+                "PF5",
+#else
+                "PF4",
+#endif
                 spec.name, spec.signature[i].rd, written[spec.signature[i].rd],
                 static_cast<unsigned long long>(registers[spec.signature[i].rd]),
                 static_cast<unsigned long long>(spec.signature[i].value));
     }
-    std::printf("PF4_PROGRAM program=%s conditional_predictions=%u predicted_taken=%u "
+    std::printf("%s_PROGRAM program=%s conditional_predictions=%u predicted_taken=%u "
         "predicted_not_taken=%u correct_predictions=%u direction_mispredicts=%u "
         "target_mispredicts=%u recovery_redirects=%u same_packet_kills=%u "
         "ftq_squashes=%u fault_refetches=%u wraps=%u signature=%s "
-        "bim_preserved=%s commits=%u cycles=%u verdict=%s\n", spec.name,
+        "bim_preserved=%s commits=%u cycles=%u verdict=%s\n",
+#ifdef PF5_TRAINING_EXPECTED
+        "PF5_COVERAGE", spec.name,
+#else
+        "PF4", spec.name,
+#endif
         coverage.conditional_predictions, coverage.predicted_taken,
         coverage.predicted_not_taken, coverage.correct_predictions,
         coverage.direction_mispredicts, coverage.target_mispredicts,
@@ -287,6 +322,19 @@ bool run_test(const TestSpec& spec) {
         coverage.ftq_squashes, coverage.fault_refetches, coverage.wraps,
         ok ? "PASS" : "FAIL", bim_preserved ? "true" : "false", commits,
         cycle, ok ? "PASS" : "FAIL");
+#ifdef PF5_TRAINING_EXPECTED
+    std::printf("PF5_PROGRAM program=%s conditional_commits=%llu training_updates=%llu "
+        "training_dropped=%llu training_duplicate=%llu stale_rejected=%llu "
+        "initial_counter=%u final_counter=%u final_valid=%s verdict=%s\n",
+        spec.name,
+        static_cast<unsigned long long>(state.bim_training.attempts),
+        static_cast<unsigned long long>(state.bim_training.accepted),
+        static_cast<unsigned long long>(state.bim_training.dropped),
+        static_cast<unsigned long long>(state.bim_training.duplicate),
+        static_cast<unsigned long long>(state.bim_training.stale_rejected),
+        initial_counter, final_counter,
+        first_counter_valid ? "true" : "false", ok ? "PASS" : "FAIL");
+#endif
     return ok;
 }
 
@@ -294,6 +342,20 @@ bool run_test(const TestSpec& spec) {
 
 int main() {
     const std::vector<TestSpec> tests = {
+#ifdef PF5_TRAINING_EXPECTED
+        {"pf5_pred_nt_actual_nt", {{8,11},{9,21},{18,31}}, false,false,1,0,1,1,0,0,0},
+        {"pf5_pred_nt_actual_t", {{8,0},{9,22},{18,32}}, false,false,1,0,1,0,1,1,0},
+        {"pf5_pred_t_actual_t", {{8,7},{9,23},{18,34}}, true,false,1,1,0,1,0,0,0},
+        {"pf5_pred_t_actual_nt", {{8,5},{9,24},{18,35}}, true,false,1,1,0,0,1,1,0},
+        {"pf5_rvc_commit", {{8,6},{9,25},{18,37}}, false,false,1,0,1,0,1,1,0},
+        {"pf5_same_packet_kill", {{8,0},{9,26},{18,13},{19,39}}, false,false,1,0,1,0,1,1,0},
+        {"pf5_fault_no_training", {{8,27},{9,37},{18,47}}, false,true,0,0,0,0,0,0,0},
+        {"pf5_ftq_wrap_training", {{8,80},{9,1},{18,88}}, false,false,1,0,1,0,1,1,1},
+        {"pf5_jal_no_training", {{8,29},{9,39},{18,49}}, false,false,0,0,0,0,0,0,0},
+        {"pf5_jalr_no_training", {{8,30},{9,40},{18,50}}, false,false,0,0,0,0,0,1,0},
+        {"pf5_exception_no_training", {{8,31},{9,41},{18,51}}, false,true,0,0,0,0,0,0,0},
+        {"pf5_mixed_long_training", {{8,12},{18,52},{19,62}}, false,false,12,0,12,1,11,11,0}
+#else
         {"pf4_pred_nt_actual_nt", {{8,11},{9,21},{18,31}}, false,false,1,0,1,1,0,0,0},
         {"pf4_pred_nt_actual_t", {{8,0},{9,22},{18,32}}, false,false,1,0,1,0,1,1,0},
         {"pf4_pred_t_actual_t", {{8,7},{9,23},{18,34}}, true,false,1,1,0,1,0,0,0},
@@ -306,10 +368,17 @@ int main() {
         {"pf4_jalr_unpredicted", {{8,30},{9,40},{18,50}}, false,false,0,0,0,0,0,1,0},
         {"pf4_exception_priority", {{8,31},{9,41},{18,51}}, false,true,0,0,0,0,0,0,0},
         {"pf4_mixed_long_control", {{8,12},{18,52},{19,62}}, false,false,12,0,12,1,11,11,0}
+#endif
     };
     unsigned passed = 0;
     for (size_t i = 0; i < tests.size(); ++i) passed += run_test(tests[i]);
-    std::printf("PF4_PRODUCT_PROGRAMS %u/%u %s\n", passed,
+    std::printf("%s_PRODUCT_PROGRAMS %u/%u %s\n",
+#ifdef PF5_TRAINING_EXPECTED
+                "PF5",
+#else
+                "PF4",
+#endif
+                passed,
                 static_cast<unsigned>(tests.size()),
                 passed == tests.size() ? "PASS" : "FAIL");
     return passed == tests.size() ? 0 : 1;

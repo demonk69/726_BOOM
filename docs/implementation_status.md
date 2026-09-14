@@ -1,5 +1,14 @@
 # Implementation Status
 
+Gate 5.4 PF5 accepted: architectural Commit BIM training is implemented
+and passes 6,205 directed checks, integrated 256x8192 random, a one-million-step
+run, 160 focused RTL cases, twelve standalone programs in native/CSim/full-core
+RTL, both mandatory fault cases, and all nine canonical synthesis tops. Current
+full-core PPA is 213436 LUT, 47337 FF, 16 BRAM, 3 DSP, and 6.341 ns. PF1-PF4,
+PF2 full-core, W3, W4, M3C, R2, and packet-aware B3I current-source preservation
+all pass. `GATE5_4_PF5_COMMIT_BIM_TRAINING_VERIFIED=true` and
+`READY_FOR_GATE5_4_PF6_FULL_RTL_PPA_ACCEPTANCE=true`.
+
 Gate 5.4 PF4 update: conditional BIM direction now steers the product Frontend,
 retains effective FTQ prediction metadata, compares oldest branch actual
 direction/target at Completion, and performs Frontend-owned precise recovery.

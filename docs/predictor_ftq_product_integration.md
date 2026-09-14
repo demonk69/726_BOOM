@@ -1,11 +1,12 @@
 # Predictor and FTQ Product Integration
 
-Gate 5.4 PF4 implements conditional BIM steering, effective-lane FTQ metadata,
-oldest-branch predicted-vs-actual comparison, correct-prediction no-work, and
-precise Frontend-owned recovery. Commit BIM training remains disabled for PF5.
-Native, CSim, focused RTL, current-source full-core RTL, preservation, and
-canonical synthesis gates pass. Evidence is under
-`reports/gate5_4_product_integration/pf4/`.
+Gate 5.4 PF5 adds architectural-commit BIM training to the PF4 conditional
+steering and recovery path. A committed conditional branch is qualified by its
+live FTQ allocation generation, effective lane, CFI type, predictor generation,
+and metadata index before one canonical saturating-counter update is queued.
+The update is consumed before FTQ reclaim; a busy update slot stalls another
+eligible commit instead of dropping training. Evidence is under
+`reports/gate5_4_product_integration/pf5/`.
 
 Gate 5.4 PF0 freezes the integration architecture but implements no product Predictor, FTQ, or recovery changes. The evidence is under `reports/gate5_4_product_integration/pf0/`.
 
@@ -60,3 +61,20 @@ actual-not-taken correction refetches and precisely takes that fault.
 
 `GATE5_4_PF4_BRANCH_PREDICTION_RECOVERY_VERIFIED=true` and
 `READY_FOR_GATE5_4_PF5_COMMIT_BIM_TRAINING=true`.
+
+## PF5 Status
+
+Commit-qualified conditional outcomes now train the canonical 256-entry BIM
+exactly once. Wrong-path, squashed, exceptional, non-conditional, stale FTQ,
+stale predictor-generation, and duplicate-retire candidates do not update it.
+Directed testing includes all four 2-bit transitions, saturation, aliasing,
+same-index request/update forwarding, reset, retry, and 64 continuous commits.
+Generated focused RTL passes 160 cases; current-source full-core RTL and fault
+checks pass 12/12 and 2/2. Canonical `boom_core_top` remains at 6.341 ns with
+16 BRAM and 3 DSP; LUT growth from PF4 is 1.1957%.
+
+The PF5 implementation is accepted. Directed, integrated random, long-run,
+twelve standalone native/CSim/full-core RTL programs, focused RTL, all nine
+canonical synthesis tops, and the complete required current-source preservation
+matrix pass. `GATE5_4_PF5_COMMIT_BIM_TRAINING_VERIFIED=true` and
+`READY_FOR_GATE5_4_PF6_FULL_RTL_PPA_ACCEPTANCE=true`.

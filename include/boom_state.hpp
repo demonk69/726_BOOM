@@ -309,6 +309,22 @@ struct CompletionPendingState {
     }
 };
 
+struct BimTrainingStats {
+    bool attempted_this_cycle;
+    bool accepted_this_cycle;
+    bool stale_rejected_this_cycle;
+    uint64_t attempts;
+    uint64_t accepted;
+    uint64_t dropped;
+    uint64_t duplicate;
+    uint64_t stale_rejected;
+
+    BimTrainingStats() : attempted_this_cycle(false),
+        accepted_this_cycle(false), stale_rejected_this_cycle(false),
+        attempts(0), accepted(0), dropped(0), duplicate(0),
+        stale_rejected(0) {}
+};
+
 struct BoomCoreState {
     uint64_t        cycle_count;
     FrontendState   frontend;
@@ -323,6 +339,8 @@ struct BoomCoreState {
     BranchRecoveryState branch_state;
     boom::PredictorFoundation<256> predictor;
     uint32_t        predictor_generation;
+    boom::PredictorUpdate predictor_update_pending;
+    BimTrainingStats bim_training;
     boom::FtqFoundation<FTQ_DEPTH> ftq;
     boom::FtqLaneEvent ftq_retire_pending;
     boom::FtqRedirect ftq_redirect_pending;
@@ -343,7 +361,8 @@ struct BoomCoreState {
     uint64_t        tohost;
     ExceptionCommitEvent exception_commit;
 
-    BoomCoreState() : cycle_count(0), predictor(), predictor_generation(0), ftq(),
+    BoomCoreState() : cycle_count(0), predictor(), predictor_generation(0),
+        predictor_update_pending(), bim_training(), ftq(),
         ftq_retire_pending(), ftq_redirect_pending(),
         ftq_exception_retire_deferred(), ftq_read_request(), ftq_last_output(),
         product_ftq_enabled(false),

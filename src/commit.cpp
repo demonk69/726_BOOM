@@ -135,10 +135,40 @@ static void free_preg_unique(RenameFreeListState& fl, uint8_t preg) {
     fl.count++;
 }
 
+bool rob_commit_prepare_bim_update(const BoomCoreState& state,
+                                   const RobEntry& entry,
+                                   uint32_t ftq_generation,
+                                   PredictorUpdate& update) {
+    const MicroOp& uop = entry.uop;
+    if (!uop.branch.is_br || !entry.branch_resolved || !uop.ftq_valid)
+        return false;
+    const FtqPredictionLookup metadata = state.ftq.lookup_prediction(
+        uop.ftq_idx, ftq_generation, uop.ftq_lane,
+        boom::CFI_CONDITIONAL_BRANCH);
+    const uint16_t pc_index = static_cast<uint16_t>(
+        (uop.debug_pc >> 1) & 255u);
+    if (!metadata.reference_valid || !metadata.cfi_match ||
+        metadata.predictor_generation != state.predictor_generation ||
+        metadata.predictor_metadata_index != pc_index)
+        return false;
+
+    update.valid = true;
+    update.commit_qualified = true;
+    update.cfi_type = boom::CFI_CONDITIONAL_BRANCH;
+    update.pc = uop.debug_pc;
+    update.metadata_token = metadata.predictor_metadata_index;
+    update.taken = entry.branch_actual_taken;
+    update.generation = metadata.predictor_generation;
+    return true;
+}
+
 void rob_commit_module(BoomCoreState& state, PipeSignals& pipe) {
     RobInternalState& rob = state.rob;
     rob.commit_valid = false;
     state.exception_commit.valid = false;
+    state.bim_training.attempted_this_cycle = false;
+    state.bim_training.accepted_this_cycle = false;
+    state.bim_training.stale_rejected_this_cycle = false;
 
     if (rob_branch_kill(state)) return;
 
@@ -174,6 +204,14 @@ void rob_commit_module(BoomCoreState& state, PipeSignals& pipe) {
         } else {
             if ((uop.ctrl.is_load || he.is_load) && !he.memory_completed) return;
             if (pipe.commit_trace.full()) return;
+            uint32_t ftq_generation = uop.ftq_generation;
+#ifdef __SYNTHESIS__
+            ftq_generation = rob.ftq_generations[rob.head];
+#endif
+            PredictorUpdate training_update;
+            const bool training_eligible = rob_commit_prepare_bim_update(
+                state, he, ftq_generation, training_update);
+            if (training_eligible && state.predictor_update_pending.valid) return;
             if (uop.ctrl.is_sta || he.is_store) {
                 if (!he.memory_valid) return;
                 if (!he.memory_request_sent) {
@@ -222,14 +260,25 @@ void rob_commit_module(BoomCoreState& state, PipeSignals& pipe) {
             }
             pipe.commit_trace.write(ce);
             rob.last_commit=ce; rob.commit_valid=true;
+            if (uop.branch.is_br) {
+                state.bim_training.attempted_this_cycle = true;
+                state.bim_training.attempts++;
+                if (!he.branch_resolved) {
+                    state.bim_training.dropped++;
+                } else if (!training_eligible) {
+                    state.bim_training.stale_rejected_this_cycle = true;
+                    state.bim_training.stale_rejected++;
+                }
+            }
+            if (training_eligible) {
+                state.predictor_update_pending = training_update;
+                state.bim_training.accepted_this_cycle = true;
+                state.bim_training.accepted++;
+            }
             if (uop.ftq_valid) {
                 state.ftq_retire_pending.valid = true;
                 state.ftq_retire_pending.ftq_idx = uop.ftq_idx;
-#ifdef __SYNTHESIS__
-                state.ftq_retire_pending.generation = rob.ftq_generations[rob.head];
-#else
-                state.ftq_retire_pending.generation = uop.ftq_generation;
-#endif
+                state.ftq_retire_pending.generation = ftq_generation;
                 state.ftq_retire_pending.lane = uop.ftq_lane;
             }
             he.valid=false; rob.head=(rob.head+1)%ROB_DEPTH; rob.maybe_full=false;

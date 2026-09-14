@@ -72,34 +72,63 @@ module pf4_full_core_rtl_tb;
         end
         @(negedge clk); start_fetch = 1;
         while (cycles < max_cycles &&
-               !(fault_mode == 2 && program_name == "pf4_pred_t_actual_nt_fault" ?
+               !(fault_mode == 2 && (program_name == "pf4_pred_t_actual_nt_fault" ||
+                                     program_name == "pf5_pred_t_actual_nt_fault") ?
                  (fault_sent && exceptions != 0) : (tohost_seen && tohost_commit_seen))) begin
             @(posedge clk); cycles = cycles + 1;
         end
         @(posedge clk);
         if (cycles >= max_cycles || protocol_error)
             $fatal(1, "PF4_FULL_CORE_RTL_FAIL program=%s timeout/protocol", program_name);
-        if (!(fault_mode == 2 && program_name == "pf4_pred_t_actual_nt_fault") &&
+        if (!(fault_mode == 2 && (program_name == "pf4_pred_t_actual_nt_fault" ||
+                                  program_name == "pf5_pred_t_actual_nt_fault")) &&
             (tohost_value != 1 || !tohost_commit_seen))
             $fatal(1, "PF4_FULL_CORE_RTL_FAIL program=%s completion", program_name);
-        if (program_name == "pf4_pred_t_actual_t" &&
+        if ((program_name == "pf4_pred_t_actual_t" ||
+             program_name == "pf5_pred_t_actual_t") &&
             (fault_site_requested || fault_sent || exceptions != 0))
             $fatal(1, "PF4_FULL_CORE_RTL_FAIL predicted-T actual-T exposed younger fault");
-        if (program_name == "pf4_pred_t_actual_nt_fault" &&
+        if ((program_name == "pf4_pred_t_actual_nt_fault" ||
+             program_name == "pf5_pred_t_actual_nt_fault") &&
             (!fault_site_requested || !fault_sent || exceptions == 0 || mispredicts == 0))
             $fatal(1, "PF4_FULL_CORE_RTL_FAIL predicted-T actual-NT did not refetch fault");
-        if (program_name == "pf4_fault_refetch" &&
+        if ((program_name == "pf4_fault_refetch" ||
+             program_name == "pf5_fault_no_training") &&
             (!fault_sent || exceptions == 0 || !trap_vector_requested))
             $fatal(1, "PF4_FULL_CORE_RTL_FAIL fault refetch contract");
+`ifdef PF5_TRAINING_EXPECTED
+        repeats = 0;
+        for (i = 0; i < init_count; i = i + 1) begin
+            if (harness.dut.state_predictor_valid_s_U.ram[((RESET_VECTOR + init_offset[i]) >> 1) & 8'hff] !==
+                    (init_counter[i] >= 2) ||
+                (harness.dut.state_predictor_valid_s_U.ram[((RESET_VECTOR + init_offset[i]) >> 1) & 8'hff] === 1'b1 &&
+                 harness.dut.state_predictor_counters_s_U.ram[((RESET_VECTOR + init_offset[i]) >> 1) & 8'hff] !== init_counter[i]))
+                repeats = repeats + 1;
+        end
+        if ((program_name == "pf5_pred_nt_actual_nt" ||
+             program_name == "pf5_pred_nt_actual_t" ||
+             program_name == "pf5_pred_t_actual_nt" ||
+             program_name == "pf5_rvc_commit" ||
+             program_name == "pf5_same_packet_kill" ||
+             program_name == "pf5_ftq_wrap_training" ||
+             program_name == "pf5_mixed_long_training") && repeats == 0)
+            $fatal(1, "PF5_FULL_CORE_RTL_FAIL no BIM training effect program=%s", program_name);
+`else
         for (i = 0; i < init_count; i = i + 1) begin
             if (init_counter[i] >= 2 &&
                 (harness.dut.state_predictor_valid_s_U.ram[((RESET_VECTOR + init_offset[i]) >> 1) & 8'hff] !== 1'b1 ||
                  harness.dut.state_predictor_counters_s_U.ram[((RESET_VECTOR + init_offset[i]) >> 1) & 8'hff] !== init_counter[i]))
                 $fatal(1, "PF4_FULL_CORE_RTL_FAIL BIM changed program=%s entry=%0d", program_name, i);
         end
+`endif
         harness.trace_monitor.finish_trace("pass");
+`ifdef PF5_TRAINING_EXPECTED
+        $display("PF5_FULL_CORE_RTL_PASS program=%s branches=%0d mispredicts=%0d exceptions=%0d commits=%0d cycles=%0d bim_entries=%0d",
+                 program_name, branch_updates, mispredicts, exceptions, commit_count, cycles, init_count);
+`else
         $display("PF4_FULL_CORE_RTL_PASS program=%s branches=%0d mispredicts=%0d exceptions=%0d commits=%0d cycles=%0d bim_entries=%0d",
                  program_name, branch_updates, mispredicts, exceptions, commit_count, cycles, init_count);
+`endif
         $finish;
     end
 endmodule
