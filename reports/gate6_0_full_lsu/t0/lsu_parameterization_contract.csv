@@ -1,0 +1,13 @@
+item,value,acceptance
+LQ_DEPTH_MIN,4,synthesis
+LQ_DEPTH_DEFAULT,8,functional and synthesis baseline
+LQ_DEPTH_STRETCH,16,synthesis
+SQ_DEPTH_MIN,4,synthesis
+SQ_DEPTH_DEFAULT,8,functional and synthesis baseline
+SQ_DEPTH_STRETCH,16,synthesis
+INDEX_DERIVATION,C++11 constexpr recursive clog2,no hardcoded 8 or fixed 3-bit index
+POWER_OF_TWO,true,static_assert 4/8/16 only for L1
+LQ_GENERATION_BITS,16,increment on allocation and compare on every completion/response
+SQ_GENERATION_BITS,16,increment on allocation and compare on every deferred reference
+ROB_REFERENCE,"rob_idx plus 32-bit allocation_id",must never use ROB index alone
+EXTERNAL_ID,32-bit transaction_id,no ID reuse while outstanding

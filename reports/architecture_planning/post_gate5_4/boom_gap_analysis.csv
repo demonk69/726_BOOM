@@ -1,0 +1,8 @@
+area,current_state,product_gap,gate
+LSU queues,"fixed 8/8 bookkeeping, ROB owns memory truth",parameterized canonical ownership and stable entry identity,L1
+forwarding,none,youngest-older byte-aware store-to-load forwarding,L2
+load concurrency,one outstanding,tagged multi-outstanding response routing,L3
+ordering,"all older stores block",dependency checks violation detection and recovery,L4
+closure,minimal directed tests,integrated regression PPA timing and lifecycle closure,L5
+DCache,absent,separate future architecture gate,OUT_OF_SCOPE
+MMU,absent,separate translation and protection gate,OUT_OF_SCOPE

@@ -1,0 +1,19 @@
+queue,state_or_field,width_bits,depth,owner,producer,consumer,reset,squash
+LQ,valid,1,8,LSU,completion acceptance,response/recovery,clear,remove tagged
+LQ,signed_load,1,8,LSU,completion acceptance,response extraction,constructor reset,retain/remove
+LQ,rob_idx,8,8,LSU,completion acceptance,response ownership,constructor reset,retain/remove
+LQ,size,8,8,LSU,completion acceptance,documentary ROB is active source,constructor reset,retain/remove
+LQ,branch_mask,8,8,branch/LSU,completion acceptance,branch recovery,constructor reset,clear resolved/remove
+LQ,transaction_id,32,8,declared inert,none,none,constructor reset,retain/remove
+LQ,rob_allocation_id,32,8,LSU,completion acceptance,response ownership,constructor reset,retain/remove
+LQ,address,64,8,LSU,completion acceptance,documentary ROB is active source,constructor reset,retain/remove
+LQ,result,64,8,declared inert,none,none,constructor reset,retain/remove
+LQ,"response_pending/completed/killed",3,8,declared mostly inert,none,none,partial staged reset,entry removal
+SQ,"valid/address_valid/data_valid",3,8,LSU,store completion,recovery,clear,remove tagged
+SQ,"committed/issued_to_memory/completed/killed",4,8,declared inert,none,none,partial staged reset,entry removal
+SQ,"rob_idx/mask/size/branch_mask",32,8,LSU,store completion,recovery/identity,constructor reset,clear resolved/remove
+SQ,rob_allocation_id,32,8,LSU,store completion,commit reclamation,constructor reset,retain/remove
+SQ,"address/data",128,8,LSU,store completion,documentary ROB is active source,constructor reset,retain/remove
+LSU,"ldq/stq head/tail/count",48,1,LSU,reclaim/allocation,capacity and scans,clear,rebuild
+LSU,next_transaction_id,32,1,LSU,load/store request,wire identity,preserved,preserved
+LSU,pending_load_tuple,73,1,LSU,load issue,response/recovery,clear,cancel owner

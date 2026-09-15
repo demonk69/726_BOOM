@@ -1,0 +1,7 @@
+parameter,min,default,stretch,implementation_contract
+LQ_DEPTH,4,8,16,power-of-two compile-time parameter
+SQ_DEPTH,4,8,16,power-of-two compile-time parameter
+LQ_INDEX_BITS,2,3,4,derived with C++11 constexpr recursive clog2
+SQ_INDEX_BITS,2,3,4,derived with C++11 constexpr recursive clog2
+LQ_GENERATION_BITS,16,16,16,per-slot generation plus bounded-lifetime assertion
+SQ_GENERATION_BITS,16,16,16,per-slot generation plus bounded-lifetime assertion

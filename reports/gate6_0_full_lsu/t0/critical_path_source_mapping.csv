@@ -1,0 +1,6 @@
+order,operation,delay_ns,source,evidence
+1,integer PRF bank1 read,1.240,include/boom_state.hpp:383-387,PF6 retained extraction
+2,execute rs2 selection mux,0.574,src/execute.cpp:35-47,PF6 retained extraction
+3,rs2 phi,0.000,src/execute.cpp:92-95,PF6 retained extraction
+4,unsigned 64x64 multiply,4.530,src/mul.cpp:17-20,PF6 retained extraction
+5,result selection,not_on_reported_endpoint,src/execute.cpp:146-153,source mapping

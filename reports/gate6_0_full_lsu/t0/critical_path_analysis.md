@@ -1,0 +1,7 @@
+# Critical Path Analysis
+
+PF6 retained evidence reports 6.341 ns in `execute_module`, State 11 (`SV=10`): PRF bank-1 load 1.24 ns, mux before `rs2` phi 0.574 ns, phi 0 ns, multiply 4.53 ns. Startpoint is `include/boom_state.hpp:387`; endpoint is `execute_mul()` at `src/execute.cpp:152`, whose 64x64 unsigned product is `src/mul.cpp:17-20`.
+
+The PF6 raw schedule and bind files were ephemeral `/tmp` artifacts and are not repository-resident (`raw_evidence_provenance.csv:7-8`). This review therefore relies on the retained PF6 source-mapped extraction and corroborates its operation form with repository-resident historical raw Vitis report `reports/gate4_0/w4/csynth_final/boom_core_top/verbose/execute_module.verbose.sched.rpt:889-895`; it does not claim to have reread missing PF6 bytes.
+
+The PRF is two 52x64 replicated banks plus a latest-bank bitmap, synthesized historically as AUTO 1R1W RAM, not a flat 52-way source mux. `execute_operand()` adds bypass/conflict/busy selection and can reread PRF even though Issue stores resolved operand data. Multiply consumes raw `rs1/rs2`; generic signed `op1/op2` and immediate conversion at `execute.cpp:122-125` are not in this path. RV64M uses one shared unsigned 64x64->128 product for MUL/MULH/MULHSU/MULHU and a separate 32x32 product expression for MULW. Variant selection is after product generation. Completion, ROB, Commit, and LSU do not participate in the reported data chain; LSU gates only the separate MEM issue lane.
