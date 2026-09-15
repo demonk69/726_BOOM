@@ -2,7 +2,7 @@
 set -euo pipefail
 
 ROOT=${HLS_BOOM_ROOT:-"$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")/../.." && pwd -P)"}
-WORK=/tmp/boom_hls/pf4
+WORK=${PF4_WORK:-/tmp/boom_hls/pf4}
 TOP=synth_pf4_branch_prediction_recovery_top
 VITIS_HLS=${VITIS_HLS:-/home/lab_726/Xilinx/Vitis_HLS/2021.2/bin/vitis_hls}
 XVLOG=${XVLOG:-/home/lab_726/Xilinx/Vivado/2021.2/bin/xvlog}
@@ -10,7 +10,7 @@ XELAB=${XELAB:-/home/lab_726/Xilinx/Vivado/2021.2/bin/xelab}
 XSIM=${XSIM:-/home/lab_726/Xilinx/Vivado/2021.2/bin/xsim}
 SENTINEL='PF4_BRANCH_PREDICTION_RECOVERY_RTL_PASS cases=140'
 
-mkdir -p -- /tmp/boom_hls
+mkdir -p -- "$(dirname -- "$WORK")"
 rm -rf -- "$WORK"
 mkdir -p -- "$WORK/sim"
 

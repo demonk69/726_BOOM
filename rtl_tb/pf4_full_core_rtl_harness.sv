@@ -9,7 +9,18 @@ module pf4_full_core_rtl_harness (
     output wire [31:0] commit_count, output wire reset_completed,
     output wire brupdate_valid, output wire brupdate_mispredict,
     output wire exception_valid, output wire fault_site_requested,
-    output wire fault_sent, output wire trap_vector_requested
+    output wire fault_sent, output wire trap_vector_requested,
+    output wire core_cycle_commit,
+    output wire prediction_valid, output wire prediction_taken,
+    output wire [63:0] prediction_token,
+    output wire [31:0] brupdate_ftq_generation,
+    output wire [5:0] brupdate_ftq_idx, output wire brupdate_ftq_lane,
+    output wire [63:0] bim_attempts, output wire [63:0] bim_updates,
+    output wire [63:0] bim_dropped, output wire [63:0] bim_stale_rejected,
+    output wire commit_training_emit, output wire commit_training_taken,
+    output wire [31:0] ftq_next_generation,
+    output wire [7:0] ftq_count, output wire [4:0] rob_head,
+    output wire [4:0] rob_tail, output wire rob_maybe_full
 );
     wire [191:0] imem_req_tdata; wire imem_req_tvalid, imem_req_tready;
     wire [255:0] imem_resp_tdata; wire imem_resp_tvalid, imem_resp_tready;
@@ -27,6 +38,30 @@ module pf4_full_core_rtl_harness (
     assign brupdate_valid = dut.state_brupdate_valid;
     assign brupdate_mispredict = dut.state_brupdate_mispredict;
     assign exception_valid = dut.state_exception_commit_valid;
+    assign core_cycle_commit = dut.ap_CS_fsm_state34 && dut.reset_ctrl_completed;
+    assign prediction_valid = dut.state_frontend_predictor_prediction_valid;
+    assign prediction_taken = dut.state_frontend_predictor_predicted_taken;
+    assign prediction_token = dut.state_frontend_prediction_token;
+    assign brupdate_ftq_generation = dut.state_brupdate_uop_ftq_generation;
+    assign brupdate_ftq_idx = dut.state_brupdate_uop_ftq_idx;
+    assign brupdate_ftq_lane = dut.state_brupdate_uop_ftq_lane;
+    assign bim_attempts = dut.state_bim_training_attempts;
+    assign bim_updates = dut.state_bim_training_accepted;
+    assign bim_dropped = dut.state_bim_training_dropped;
+    assign bim_stale_rejected = dut.state_bim_training_stale_rejected;
+    assign commit_training_emit =
+        dut.grp_boom_core_cycle_io_fu_7725.grp_boom_core_step_fu_2189.
+            grp_rob_commit_module_fu_3617_state_predictor_update_pending_valid_o_ap_vld &&
+        dut.grp_boom_core_cycle_io_fu_7725.grp_boom_core_step_fu_2189.
+            grp_rob_commit_module_fu_3617_state_predictor_update_pending_valid_o;
+    assign commit_training_taken =
+        dut.grp_boom_core_cycle_io_fu_7725.grp_boom_core_step_fu_2189.
+            grp_rob_commit_module_fu_3617_state_predictor_update_pending_taken;
+    assign ftq_next_generation = dut.state_ftq_next_generation_s;
+    assign ftq_count = dut.state_ftq_count_s;
+    assign rob_head = dut.state_rob_head;
+    assign rob_tail = dut.state_rob_tail;
+    assign rob_maybe_full = dut.state_rob_maybe_full;
 
     boom_core_pf4_rtl_top dut (
         .ap_local_block(ap_local_block), .ap_local_deadlock(ap_local_deadlock),

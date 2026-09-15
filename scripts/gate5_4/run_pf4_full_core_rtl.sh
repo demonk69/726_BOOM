@@ -19,6 +19,19 @@ if [[ "$PF5_MODE" == 1 ]]; then
     PRED_T_T_PROGRAM=pf5_pred_t_actual_t
     PRED_T_NT_PROGRAM=pf5_pred_t_actual_nt
     PRED_T_NT_FAULT=pf5_pred_t_actual_nt_fault
+    if [[ ${PF6_PF4_PROGRAMS:-0} == 1 ]]; then
+        PROGRAM_BUILD=${PF4_PROGRAM_BUILD:-/tmp/boom_hls/pf6/programs/pf4}
+        PROGRAM_BUILD_ENV=PF4_PROGRAM_BUILD
+        PROGRAM_BUILD_SCRIPT="$ROOT/scripts/gate5_4/build_pf4_product_programs.sh"
+        PROGRAMS=(pf4_pred_nt_actual_nt pf4_pred_nt_actual_t pf4_pred_t_actual_t
+                  pf4_pred_t_actual_nt pf4_rvc_mispredict pf4_same_packet_kill
+                  pf4_fault_refetch pf4_ftq_wrap_recovery pf4_jal_preservation
+                  pf4_jalr_unpredicted pf4_exception_priority pf4_mixed_long_control)
+        FAULT_PROGRAM=pf4_fault_refetch
+        PRED_T_T_PROGRAM=pf4_pred_t_actual_t
+        PRED_T_NT_PROGRAM=pf4_pred_t_actual_nt
+        PRED_T_NT_FAULT=pf4_pred_t_actual_nt_fault
+    fi
 else
     BUILD=${GATE5_4_PF4_RTL_BUILD_DIR:-/tmp/boom_hls/pf4/full_core_rtl}
     REPORT=${GATE5_4_PF4_RTL_REPORT_DIR:-"$ROOT/reports/gate5_4_product_integration/pf4/full_core_rtl"}
@@ -74,7 +87,12 @@ rm -rf -- "$REPORT/logs" "$REPORT/traces"
 mkdir -p -- "$REPORT/logs" "$REPORT/traces"
 env "$PROGRAM_BUILD_ENV=$PROGRAM_BUILD" "$PROGRAM_BUILD_SCRIPT" \
     >"$REPORT/logs/program_build.log" 2>&1
-"$ROOT/scripts/generate_merged.sh" >"$REPORT/logs/generate_merged.log" 2>&1
+if [[ ${GATE5_4_VERIFY_MERGED_ONLY:-0} == 1 ]]; then
+    printf 'Merged source pre-verified byte-exact; generation skipped.\n' \
+        >"$REPORT/logs/generate_merged.log"
+else
+    "$ROOT/scripts/generate_merged.sh" >"$REPORT/logs/generate_merged.log" 2>&1
+fi
 RTL_TOP="$RTL/boom_core_pf4_rtl_top.v"
 need_csynth=${GATE5_4_PF4_RTL_FORCE_CSYNTH:-0}
 for source in "${INPUTS[@]}"; do
@@ -142,10 +160,11 @@ for name in "${PROGRAMS[@]}"; do
 done
 run_case "$PRED_T_NT_FAULT" "$PRED_T_NT_PROGRAM" 2
 
-python3 - "$REPORT" "$SOURCE_HASH" "$EVENT_PREFIX" "${PROGRAMS[@]}" <<'PY'
+python3 - "$REPORT" "$SOURCE_HASH" "$EVENT_PREFIX" "$PRED_T_NT_FAULT" "${PROGRAMS[@]}" <<'PY'
 import csv, json, re, sys
 from pathlib import Path
-report = Path(sys.argv[1]); source_hash = sys.argv[2]; prefix = sys.argv[3]; programs = sys.argv[4:]
+report = Path(sys.argv[1]); source_hash = sys.argv[2]; prefix = sys.argv[3]
+fault_name = sys.argv[4]; programs = sys.argv[5:]
 expected = {
 "pf4_pred_nt_actual_nt":{8:11,9:21,18:31}, "pf4_pred_nt_actual_t":{8:0,9:22,18:32},
 "pf4_pred_t_actual_t":{8:7,9:23,18:34}, "pf4_pred_t_actual_nt":{8:5,9:24,18:35},
@@ -172,7 +191,6 @@ for name in programs:
 with (report/"full_core_rtl_matrix.csv").open("w",newline="") as stream:
     writer=csv.writer(stream); writer.writerow(("program","status","commits","signature","trace")); writer.writerows(rows)
 passed=sum(row[1]=="PASS" for row in rows)
-fault_name="pf5_pred_t_actual_nt_fault" if prefix == "PF5" else "pf4_pred_t_actual_nt_fault"
 fault_log=(report/"logs"/f"{fault_name}.log").read_text(errors="replace")
 fault_pass=f"{prefix}_FULL_CORE_RTL_PASS program={fault_name}" in fault_log
 if passed != 12 or not fault_pass: raise SystemExit(f"{prefix} full-core RTL failed: programs={passed}/12 fault={fault_pass}")

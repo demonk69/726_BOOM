@@ -1,0 +1,13 @@
+scenario,conditional_predictions,predicted_taken,predicted_not_taken,correct_predictions,mispredicts,mispredict_redirects,BIM_updates,BIM_taken_updates,BIM_not_taken_updates,FTQ_allocations,FTQ_reclaims,FTQ_squashes,FTQ_wraps,FTQ_slot_reuses,exceptions,fault_refetches,JAL_events,JALR_events,RVC_events,RV64M_events,ROB_commits,max_rob_occupancy,max_ftq_occupancy,signature,verdict_detail,verdict
+pf6_learning_loop,24,22,2,22,2,3,12,11,1,39,38,3,1,7,0,0,1,1,0,0,37,1,1,PASS,all counters measured,PASS_COMPOSITE_FRESH_RTL
+pf6_mispredict_train_recover,2,0,2,1,1,1,1,1,0,11,10,1,0,0,0,0,0,0,0,0,9,1,1,PASS,all counters measured,PASS_COMPOSITE_FRESH_RTL
+pf6_rvc_learning_recovery,2,0,2,1,1,1,1,1,0,10,9,1,0,0,0,0,0,0,4,0,10,1,2,PASS,all counters measured,PASS_COMPOSITE_FRESH_RTL
+pf6_jal_conditional_mix,0,0,0,0,0,0,0,0,0,11,10,0,0,0,0,0,1,0,0,0,9,1,1,PASS,all counters measured,PASS_COMPOSITE_FRESH_RTL
+pf6_jalr_conditional_mix,0,0,0,0,0,1,0,0,0,13,12,1,0,0,0,0,0,1,0,0,11,1,1,PASS,all counters measured,PASS_COMPOSITE_FRESH_RTL
+pf6_exception_vs_mispredict,0,0,0,0,0,0,0,0,0,11,10,0,0,0,1,0,0,0,0,0,9,1,1,PASS,all counters measured,PASS_COMPOSITE_FRESH_RTL
+pf6_fault_refetch_training,2,2,0,1,1,1,1,0,1,4,3,1,0,0,1,1,0,0,0,0,2,1,1,PASS,all counters measured,PASS_COMPOSITE_FRESH_RTL
+pf6_ftq_wrap_train_recover,2,0,2,1,1,1,1,1,0,91,90,1,2,59,0,0,0,0,0,0,89,1,1,PASS,all counters measured,PASS_COMPOSITE_FRESH_RTL
+pf6_generation_reuse_training,2,0,2,1,1,1,1,1,0,12,11,1,0,0,0,0,0,0,5,0,11,1,2,PASS,all counters measured,PASS_COMPOSITE_FRESH_RTL
+pf6_rv64m_control_mix,24,22,2,22,2,3,12,11,1,39,38,3,1,7,0,0,1,1,0,2,37,1,1,PASS,all counters measured,PASS_COMPOSITE_FRESH_RTL
+pf6_backpressure_control_mix,24,22,2,22,2,3,12,11,1,39,38,3,1,7,0,0,1,1,0,0,37,1,1,PASS,all counters measured,PASS_COMPOSITE_FRESH_RTL
+pf6_long_mixed_control,24,22,2,22,2,3,12,11,1,39,38,3,1,7,0,0,1,1,0,0,37,1,1,PASS,all counters measured,PASS_COMPOSITE_FRESH_RTL

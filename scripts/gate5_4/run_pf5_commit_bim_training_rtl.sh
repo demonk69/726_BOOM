@@ -2,7 +2,7 @@
 set -euo pipefail
 
 ROOT=${HLS_BOOM_ROOT:-"$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")/../.." && pwd -P)"}
-WORK=/tmp/boom_hls/pf5/focused_rtl
+WORK=${PF5_WORK:-/tmp/boom_hls/pf5/focused_rtl}
 TOP=synth_pf5_commit_bim_training_top
 VITIS_HLS=${VITIS_HLS:-/home/lab_726/Xilinx/Vitis_HLS/2021.2/bin/vitis_hls}
 XVLOG=${XVLOG:-/home/lab_726/Xilinx/Vivado/2021.2/bin/xvlog}
@@ -10,10 +10,12 @@ XELAB=${XELAB:-/home/lab_726/Xilinx/Vivado/2021.2/bin/xelab}
 XSIM=${XSIM:-/home/lab_726/Xilinx/Vivado/2021.2/bin/xsim}
 SENTINEL='PF5_COMMIT_BIM_TRAINING_RTL_PASS cases=160'
 
-mkdir -p -- /tmp/boom_hls/pf5
+mkdir -p -- "$(dirname -- "$WORK")"
 rm -rf -- "$WORK"
 mkdir -p -- "$WORK/sim"
-"$ROOT/scripts/generate_merged.sh"
+if [[ ${GATE5_4_VERIFY_MERGED_ONLY:-0} != 1 ]]; then
+    "$ROOT/scripts/generate_merged.sh"
+fi
 HLS_BOOM_ROOT="$ROOT" PF5_WORK="$WORK" \
     "$VITIS_HLS" -f "$ROOT/scripts/gate5_4/pf5_commit_bim_training_csynth.tcl" \
     >"$WORK/vitis_hls.log" 2>&1

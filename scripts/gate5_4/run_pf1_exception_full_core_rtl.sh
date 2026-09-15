@@ -5,7 +5,7 @@ ROOT=${HLS_BOOM_ROOT:-"$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")/../.." && pwd 
 : "${BOOM_BUILD_ROOT:=/tmp/boom_hls}"
 RTL=${PF1_FULL_CORE_RTL_DIR:?set PF1_FULL_CORE_RTL_DIR to generated boom_core_top Verilog directory}
 BUILD="$BOOM_BUILD_ROOT/gate5_4_product_integration/pf1/full_core_rtl"
-REPORT="$ROOT/reports/gate5_4_product_integration/pf1"
+REPORT=${PF1_FULL_CORE_REPORT_DIR:-"$ROOT/reports/gate5_4_product_integration/pf1"}
 mkdir -p -- "$BUILD" "$REPORT/logs"
 rm -rf -- "$BUILD/xsim"
 mkdir -p -- "$BUILD/xsim"

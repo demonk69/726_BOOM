@@ -1,0 +1,12 @@
+# PF6 Directive Audit
+
+- PF6_NEW_INLINE_DIRECTIVES=0
+- PF6_NEW_UNROLL_DIRECTIVES=0
+- PF6_NEW_DATAFLOW_DIRECTIVES=0
+- PF6_NEW_FALSE_DEPENDENCE_DIRECTIVES=0
+- PF6_NEW_COMPLETE_ARRAY_PARTITION_DIRECTIVES=0
+- CORE_CYCLE_PIPELINED=false
+- PF6_PRODUCT_FUNCTIONAL_DIFF_FILES=0
+
+The only `src/include` diff from `3795a2f07d1a91e74fe156eddae1306c786f077a` is the excluded historical
+`src/boom_all.cpp`. PF6 runner changes add no synthesis directives.
