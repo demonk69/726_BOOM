@@ -1,0 +1,34 @@
+=== BOOM-HLS Gate 3.3 Branch Snapshot Tests ===
+
+  [BR-SNAP] single pending branch correct releases tag                     ... PASS
+  [BR-SNAP] single branch mispredict restores map and releases tag         ... PASS
+  [BR-SNAP] two nested branches both correct release independently         ... PASS
+  [BR-SNAP] inner branch mispredict keeps outer branch active              ... PASS
+  [BR-SNAP] outer branch mispredict kills inner branch state               ... PASS
+  [BR-SNAP] outer mispredict after inner resolved stays precise            ... PASS
+  [BR-SNAP] branch tag pool exhaustion backpressures rename                ... PASS
+  [BR-SNAP] branch tag allocate after release reuses slot safely           ... PASS
+  [BR-SNAP] branch tag wrap after freeing tag zero                         ... PASS
+  [BR-SNAP] multiple post-branch pdst allocations tracked                  ... PASS
+  [BR-SNAP] map table restore uses branch snapshot                         ... PASS
+  [BR-SNAP] free-list rollback recovers wrong-path pdst                    ... PASS
+  [BR-SNAP] busy table clears wrong pdst and preserves correct busy pdst   ... PASS
+  [BR-SNAP] ROB younger entries clear on mispredict                        ... PASS
+  [BR-SNAP] IQ younger entries clear on mispredict                         ... PASS
+  [BR-SNAP] LDQ younger entries clear on mispredict                        ... PASS
+  [BR-SNAP] STQ younger entries clear on mispredict                        ... PASS
+  [BR-SNAP] wrong-path store produces no committed dmem request            ... PASS
+  [BR-SNAP] wrong-path writeback cannot pollute PRF                        ... PASS
+  [BR-SNAP] wrong-path ROB entry cannot commit                             ... PASS
+  [BR-SNAP] stale IMEM response rejected after redirect epoch              ... PASS
+  [BR-SNAP] branch mispredict and commit same cycle keeps branch precise   ... PASS
+  [BR-SNAP] mispredict masks simultaneous younger writeback                ... PASS
+  [BR-SNAP] mispredict kills younger exception before trap                 ... PASS
+  [BR-SNAP] multiple consecutive mispredicts do not leak tags              ... PASS
+  [BR-SNAP] free-list near exhaustion rollback restores count              ... PASS
+  [BR-SNAP] ROB wrap branch recovery resets tail after branch              ... PASS
+  [BR-SNAP] IQ full state clears all wrong-path entries                    ... PASS
+  [BR-SNAP] nested branch deterministic stress preserves outer maps        ... PASS
+  [BR-SNAP] branch mask/tag pressure smoke                                 ... PASS
+
+=== 30 passed, 0 failed ===

@@ -112,9 +112,8 @@ bool divider_accept(DividerState& state, const DividerRequest& request) {
     if (state.divisor_magnitude == 1) {
         uint64_t result = 0;
         if (!divider_is_remainder(request.operation)) {
-            result = state.quotient_negative
-                ? divider_negate(state.dividend_magnitude) & operand_mask
-                : state.dividend_magnitude;
+            result = divisor_negative
+                ? divider_negate(dividend) & operand_mask : dividend;
         }
         divider_finish(state, result);
         return true;

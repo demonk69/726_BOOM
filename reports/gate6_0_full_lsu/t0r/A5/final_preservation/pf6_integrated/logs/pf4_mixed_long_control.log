@@ -1,0 +1,23 @@
+#-----------------------------------------------------------
+# xsim v2021.2 (64-bit)
+# SW Build 3367213 on Tue Oct 19 02:47:39 MDT 2021
+# IP Build 3369179 on Thu Oct 21 08:25:16 MDT 2021
+# Start of session at: Wed Sep 16 20:05:46 2026
+# Process ID: 130185
+# Current directory: /home/lab_726/opencode_tmp/g6_t0r/A5/final_preservation/pf6_integrated/xsim
+# Command line: xsim -log /home/lab_726/boom/hls_boom/reports/gate6_0_full_lsu/t0r/A5/final_preservation/pf6_integrated/logs/pf4_mixed_long_control.log -mode tcl -source {xsim.dir/pf4_full_core_snapshot/xsim_script.tcl}
+# Log file: /home/lab_726/boom/hls_boom/reports/gate6_0_full_lsu/t0r/A5/final_preservation/pf6_integrated/logs/pf4_mixed_long_control.log
+# Journal file: /home/lab_726/opencode_tmp/g6_t0r/A5/final_preservation/pf6_integrated/xsim/xsim.jou
+# Running On: 726, OS: Linux, CPU Frequency: 2203.692 MHz, CPU Physical cores: 14, Host memory: 67148 MB
+#-----------------------------------------------------------
+source xsim.dir/pf4_full_core_snapshot/xsim_script.tcl
+# xsim {pf4_full_core_snapshot} -testplusarg PROGRAM=/home/lab_726/opencode_tmp/g6_t0r/A5/final_preservation/pf6_programs/pf4_mixed_long_control.words.hex -testplusarg INIT=/home/lab_726/opencode_tmp/g6_t0r/A5/final_preservation/pf6_programs/pf4_mixed_long_control.init -testplusarg PROGRAM_NAME=pf4_mixed_long_control -testplusarg FAULT_MODE=0 -testplusarg TRACE=/home/lab_726/boom/hls_boom/reports/gate6_0_full_lsu/t0r/A5/final_preservation/pf6_integrated/traces/pf4_mixed_long_control.jsonl -testplusarg MAX_CYCLES=1000000 -autoloadwcfg -runall -onerror quit
+Time resolution is 1 ps
+run -all
+PF5_FULL_CORE_RTL_PASS program=pf4_mixed_long_control branches=14 mispredicts=3 exceptions=0 commits=37 cycles=89273 bim_entries=1
+PF6_RTL_COVERAGE program=pf4_mixed_long_control conditional_predictions=24 predicted_taken=22 predicted_not_taken=2 correct_predictions=21 mispredict_redirects=3 BIM_attempts=12 BIM_updates=12 BIM_taken_updates=11 BIM_not_taken_updates=1 BIM_dropped=0 BIM_stale_rejected=0 FTQ_allocations=39 FTQ_reclaims=38 FTQ_squashes=3 FTQ_wraps=1 FTQ_slot_reuses=7 exceptions=0 fault_refetches=0 ROB_commits=37 max_rob_occupancy=1 max_ftq_occupancy=1
+$finish called at time : 917715 ns : File "/home/lab_726/boom/hls_boom/rtl_tb/pf4_full_core_rtl_tb.sv" Line 222
+run: Time (s): cpu = 00:00:00.37 ; elapsed = 00:00:19 . Memory (MB): peak = 2685.676 ; gain = 0.000 ; free physical = 31705 ; free virtual = 56326
+exit
+INFO: xsimkernel Simulation Memory Usage: 147444 KB (Peak: 200820 KB), Simulation CPU Usage: 18910 ms
+INFO: [Common 17-206] Exiting xsim at Wed Sep 16 20:06:09 2026...

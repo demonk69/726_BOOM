@@ -1,0 +1,443 @@
+
+****** Vitis HLS - High-Level Synthesis from C, C++ and OpenCL v2021.2 (64-bit)
+  **** SW Build 3367213 on Tue Oct 19 02:47:39 MDT 2021
+  **** IP Build 3369179 on Thu Oct 21 08:25:16 MDT 2021
+    ** Copyright 1986-2021 Xilinx, Inc. All Rights Reserved.
+
+source /home/lab_726/Xilinx/Vitis_HLS/2021.2/scripts/vitis_hls/hls.tcl -notrace
+INFO: [HLS 200-10] Running '/home/lab_726/Xilinx/Vitis_HLS/2021.2/bin/unwrapped/lnx64.o/vitis_hls'
+INFO: [HLS 200-10] For user 'lab_726' on host '726' (Linux_x86_64 version 6.8.0-138-generic) on Wed Sep 16 19:13:07 CST 2026
+INFO: [HLS 200-10] On os Ubuntu 22.04.5 LTS
+INFO: [HLS 200-10] In directory '/home/lab_726/opencode_tmp/g6_t0r/A4'
+Sourcing Tcl script '/home/lab_726/boom/hls_boom/scripts/module_csynth.tcl'
+INFO: [HLS 200-1510] Running: open_project -reset boom_hls_g6_t0r_A4_synth_execute_top 
+INFO: [HLS 200-10] Creating and opening project '/home/lab_726/opencode_tmp/g6_t0r/A4/boom_hls_g6_t0r_A4_synth_execute_top'.
+INFO: [HLS 200-1510] Running: set_top synth_execute_top 
+INFO: [HLS 200-1510] Running: add_files -cflags -std=c++11 -I/home/lab_726/boom/hls_boom/include -DBOOM_FTQ_STORAGE_LUTRAM -DBOOM_PREDICTOR_STORAGE_LUTRAM /home/lab_726/boom/hls_boom/src/boom_core_merged.cpp 
+INFO: [HLS 200-10] Adding design file '/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp' to the project
+INFO: [HLS 200-1510] Running: open_solution -reset solution_module 
+INFO: [HLS 200-10] Creating and opening solution '/home/lab_726/opencode_tmp/g6_t0r/A4/boom_hls_g6_t0r_A4_synth_execute_top/solution_module'.
+INFO: [HLS 200-10] Cleaning up the solution database.
+WARNING: [HLS 200-40] No /home/lab_726/opencode_tmp/g6_t0r/A4/boom_hls_g6_t0r_A4_synth_execute_top/solution_module/solution_module.aps file found.
+INFO: [HLS 200-1505] Using default flow_target 'vivado'
+Resolution: For help on HLS 200-1505 see www.xilinx.com/cgi-bin/docs/rdoc?v=2021.2;t=hls+guidance;d=200-1505.html
+INFO: [HLS 200-1510] Running: set_part xczu7ev-ffvc1156-2-e 
+INFO: [HLS 200-1611] Setting target device to 'xczu7ev-ffvc1156-2-e'
+INFO: [HLS 200-1510] Running: create_clock -period 10 -name default 
+INFO: [SYN 201-201] Setting up clock 'default' with a period of 10ns.
+INFO: [HLS 200-1510] Running: config_compile -pipeline_loops 0 
+INFO: [XFORM 203-1171] Pipeline the innermost loop with trip count more than 0 or its parent loop when its trip count is less than or equal 0.
+INFO: [HLS 200-1510] Running: csynth_design 
+INFO: [HLS 200-111] Finished File checks and directory preparation: CPU user time: 0 seconds. CPU system time: 0 seconds. Elapsed time: 0 seconds; current allocated memory: 1.321 GB.
+INFO: [HLS 200-10] Analyzing design file '/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp' ... 
+INFO: [HLS 200-111] Finished Source Code Analysis and Preprocessing: CPU user time: 2.99 seconds. CPU system time: 0.34 seconds. Elapsed time: 2.77 seconds; current allocated memory: 419.719 MB.
+INFO: [HLS 200-777] Using interface defaults for 'Vivado' flow target.
+INFO: [HLS 214-284] Auto array partition mode is set into default.
+INFO: [HLS 214-131] Inlining function 'boom::bypass_lookup(BoomCoreState const&, unsigned char, unsigned long&, bool&)' into 'boom::execute_operand(BoomCoreState const&, unsigned char, unsigned char, unsigned long)' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:3082:9)
+INFO: [HLS 214-131] Inlining function 'boom::prf_read(BoomCoreState const&, unsigned char)' into 'boom::execute_operand(BoomCoreState const&, unsigned char, unsigned char, unsigned long)' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:3084:61)
+INFO: [HLS 214-131] Inlining function 'boom::cancel_divider(ExecuteState&)' into 'boom::execute_module(BoomCoreState&)' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:3098:29)
+INFO: [HLS 214-131] Inlining function 'boom::cancel_divider(ExecuteState&)' into 'boom::execute_module(BoomCoreState&)' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:3102:13)
+INFO: [HLS 214-131] Inlining function 'boom::divider_owner_valid(BoomCoreState const&)' into 'boom::execute_module(BoomCoreState&)' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:3108:37)
+INFO: [HLS 214-131] Inlining function 'boom::cancel_divider(ExecuteState&)' into 'boom::execute_module(BoomCoreState&)' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:3108:65)
+INFO: [HLS 214-131] Inlining function 'boom::execute_operand(BoomCoreState const&, unsigned char, unsigned char, unsigned long)' into 'boom::execute_module(BoomCoreState&)' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:3134:13)
+INFO: [HLS 214-131] Inlining function 'boom::execute_operand(BoomCoreState const&, unsigned char, unsigned char, unsigned long)' into 'boom::execute_module(BoomCoreState&)' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:3137:13)
+INFO: [HLS 214-131] Inlining function 'boom::is_divider_uop(MicroOp const&)' into 'boom::execute_module(BoomCoreState&)' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:3141:13)
+INFO: [HLS 214-131] Inlining function 'boom::prf_seed(BoomCoreState&, unsigned char, unsigned long)' into 'synth_execute_top(unsigned char, unsigned long, unsigned long, unsigned long&)' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:6257:5)
+INFO: [HLS 214-131] Inlining function 'boom::prf_seed(BoomCoreState&, unsigned char, unsigned long)' into 'synth_execute_top(unsigned char, unsigned long, unsigned long, unsigned long&)' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:6258:5)
+INFO: [HLS 214-178] Inlining function 'boom::FetchInstruction::FetchInstruction()' into 'boom::FetchPacket::FetchPacket()' (/home/lab_726/boom/hls_boom/include/fetch_buffer.hpp:38:0)
+INFO: [HLS 214-178] Inlining function 'boom::CfiPredecodeResult::CfiPredecodeResult()' into 'boom::CfiPacketPredecodeResult::CfiPacketPredecodeResult()' (/home/lab_726/boom/hls_boom/include/predecode.hpp:43:0)
+INFO: [HLS 214-178] Inlining function 'boom::FetchInstruction::FetchInstruction()' into 'boom::FetchBufferState::FetchBufferState()' (/home/lab_726/boom/hls_boom/include/fetch_buffer.hpp:47:0)
+INFO: [HLS 214-178] Inlining function 'boom::FetchPacket::FetchPacket()' into 'FrontendState::FrontendState()' (/home/lab_726/boom/hls_boom/include/boom_state.hpp:88:0)
+INFO: [HLS 214-178] Inlining function 'boom::CfiPacketPredecodeResult::CfiPacketPredecodeResult()' into 'FrontendState::FrontendState()' (/home/lab_726/boom/hls_boom/include/boom_state.hpp:88:0)
+INFO: [HLS 214-178] Inlining function 'boom::FetchBufferState::FetchBufferState()' into 'FrontendState::FrontendState()' (/home/lab_726/boom/hls_boom/include/boom_state.hpp:88:0)
+INFO: [HLS 214-178] Inlining function 'MicroOp::MicroOp() (.3)' into 'RenameDispatchPacket::RenameDispatchPacket()' (/home/lab_726/boom/hls_boom/include/boom_state.hpp:135:0)
+INFO: [HLS 214-178] Inlining function 'RenameMapTableState::RenameMapTableState()' into 'RenameState::RenameState()' (/home/lab_726/boom/hls_boom/include/boom_state.hpp:138:0)
+INFO: [HLS 214-178] Inlining function 'RenameFreeListState::RenameFreeListState()' into 'RenameState::RenameState()' (/home/lab_726/boom/hls_boom/include/boom_state.hpp:138:0)
+INFO: [HLS 214-178] Inlining function 'RenameDispatchPacket::RenameDispatchPacket()' into 'RenameState::RenameState()' (/home/lab_726/boom/hls_boom/include/boom_state.hpp:138:0)
+INFO: [HLS 214-178] Inlining function 'MicroOp::MicroOp() (.3)' into 'IssueSlotEntry::IssueSlotEntry()' (/home/lab_726/boom/hls_boom/include/boom_types.hpp:193:0)
+INFO: [HLS 214-178] Inlining function 'MicroOp::MicroOp() (.3)' into 'IssueGrant::IssueGrant()' (/home/lab_726/boom/hls_boom/include/boom_types.hpp:167:0)
+INFO: [HLS 214-178] Inlining function 'MicroOp::MicroOp() (.3)' into 'ExecuteState::AluResult::AluResult()' (/home/lab_726/boom/hls_boom/include/boom_state.hpp:202:0)
+INFO: [HLS 214-178] Inlining function 'boom::divider_reset(boom::DividerState&) (.182)' into 'boom::DividerState::DividerState() (.179)' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:2908:0)
+INFO: [HLS 214-178] Inlining function 'boom::DividerState::DividerState() (.179)' into 'DividerExecutionState::DividerExecutionState()' (/home/lab_726/boom/hls_boom/include/boom_state.hpp:185:0)
+INFO: [HLS 214-178] Inlining function 'MicroOp::MicroOp() (.3)' into 'DividerExecutionState::DividerExecutionState()' (/home/lab_726/boom/hls_boom/include/boom_state.hpp:185:0)
+INFO: [HLS 214-178] Inlining function 'MicroOp::MicroOp() (.3)' into 'RobEntry::RobEntry()' (/home/lab_726/boom/hls_boom/include/boom_types.hpp:184:0)
+INFO: [HLS 214-178] Inlining function 'CommitEntry::CommitEntry()' into 'RobInternalState::RobInternalState()' (/home/lab_726/boom/hls_boom/include/boom_state.hpp:221:0)
+INFO: [HLS 214-178] Inlining function 'StoreQueueEntry::StoreQueueEntry()' into 'LsuState::LsuState()' (/home/lab_726/boom/hls_boom/include/boom_state.hpp:287:0)
+INFO: [HLS 214-178] Inlining function 'LoadQueueEntry::LoadQueueEntry()' into 'LsuState::LsuState()' (/home/lab_726/boom/hls_boom/include/boom_state.hpp:287:0)
+INFO: [HLS 214-178] Inlining function 'MicroOp::MicroOp() (.3)' into 'RobCompleteEvent::RobCompleteEvent()' (/home/lab_726/boom/hls_boom/include/boom_types.hpp:120:0)
+INFO: [HLS 214-178] Inlining function 'WritebackEvent::WritebackEvent()' into 'CompletionPendingState::CompletionPendingState()' (/home/lab_726/boom/hls_boom/include/boom_state.hpp:327:0)
+INFO: [HLS 214-178] Inlining function 'WakeupEvent::WakeupEvent()' into 'CompletionPendingState::CompletionPendingState()' (/home/lab_726/boom/hls_boom/include/boom_state.hpp:327:0)
+INFO: [HLS 214-178] Inlining function 'BypassEvent::BypassEvent()' into 'CompletionPendingState::CompletionPendingState()' (/home/lab_726/boom/hls_boom/include/boom_state.hpp:327:0)
+INFO: [HLS 214-178] Inlining function 'boom::PredictorResponse::PredictorResponse()' into 'boom::PredictorFoundation<256ul, false>::PredictorFoundation()' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:368:0)
+INFO: [HLS 214-178] Inlining function 'boom::FtqEntry::FtqEntry()' into 'boom::FtqFoundation<32ul, false>::FtqFoundation()' (/home/lab_726/boom/hls_boom/include/ftq.hpp:191:0)
+INFO: [HLS 214-178] Inlining function 'boom::FtqEntry::FtqEntry()' into 'boom::FtqStepOutput::FtqStepOutput()' (/home/lab_726/boom/hls_boom/include/ftq.hpp:118:0)
+INFO: [HLS 214-178] Inlining function 'MicroOp::MicroOp() (.3)' into 'BranchUpdate::BranchUpdate()' (/home/lab_726/boom/hls_boom/include/boom_types.hpp:210:0)
+INFO: [HLS 214-178] Inlining function 'CsrState::CsrState()' into 'BoomCoreState::BoomCoreState()' (/home/lab_726/boom/hls_boom/include/boom_state.hpp:394:0)
+INFO: [HLS 214-178] Inlining function 'LsuState::LsuState()' into 'BoomCoreState::BoomCoreState()' (/home/lab_726/boom/hls_boom/include/boom_state.hpp:394:0)
+INFO: [HLS 214-178] Inlining function 'BranchRecoveryState::BranchRecoveryState()' into 'BoomCoreState::BoomCoreState()' (/home/lab_726/boom/hls_boom/include/boom_state.hpp:394:0)
+INFO: [HLS 214-178] Inlining function 'boom::PredictorFoundation<256ul, false>::PredictorFoundation()' into 'BoomCoreState::BoomCoreState()' (/home/lab_726/boom/hls_boom/include/boom_state.hpp:394:0)
+INFO: [HLS 214-178] Inlining function 'boom::PredictorUpdate::PredictorUpdate()' into 'BoomCoreState::BoomCoreState()' (/home/lab_726/boom/hls_boom/include/boom_state.hpp:394:0)
+INFO: [HLS 214-178] Inlining function 'BimTrainingStats::BimTrainingStats()' into 'BoomCoreState::BoomCoreState()' (/home/lab_726/boom/hls_boom/include/boom_state.hpp:394:0)
+INFO: [HLS 214-178] Inlining function 'boom::FtqFoundation<32ul, false>::FtqFoundation()' into 'BoomCoreState::BoomCoreState()' (/home/lab_726/boom/hls_boom/include/boom_state.hpp:394:0)
+INFO: [HLS 214-178] Inlining function 'boom::FtqLaneEvent::FtqLaneEvent()' into 'BoomCoreState::BoomCoreState()' (/home/lab_726/boom/hls_boom/include/boom_state.hpp:394:0)
+INFO: [HLS 214-178] Inlining function 'boom::FtqRedirect::FtqRedirect()' into 'BoomCoreState::BoomCoreState()' (/home/lab_726/boom/hls_boom/include/boom_state.hpp:394:0)
+INFO: [HLS 214-178] Inlining function 'boom::FtqStepOutput::FtqStepOutput()' into 'BoomCoreState::BoomCoreState()' (/home/lab_726/boom/hls_boom/include/boom_state.hpp:394:0)
+INFO: [HLS 214-178] Inlining function 'FrontendRedirect::FrontendRedirect()' into 'BoomCoreState::BoomCoreState()' (/home/lab_726/boom/hls_boom/include/boom_state.hpp:394:0)
+INFO: [HLS 214-178] Inlining function 'ExceptionCommitEvent::ExceptionCommitEvent()' into 'BoomCoreState::BoomCoreState()' (/home/lab_726/boom/hls_boom/include/boom_state.hpp:394:0)
+INFO: [HLS 214-178] Inlining function 'boom::DividerResponse::DividerResponse()' into 'boom::divider_response(boom::DividerState const&)' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:3032:0)
+INFO: [HLS 214-178] Inlining function 'boom::divider_sign_extend_word(unsigned long)' into 'boom::divider_finish(boom::DividerState&, unsigned long)' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:2901:0)
+INFO: [HLS 214-178] Inlining function 'boom::divider_request_ready(boom::DividerState const&)' into 'boom::divider_accept(boom::DividerState&, boom::DividerRequest const&)' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:2932:0)
+INFO: [HLS 214-178] Inlining function 'boom::divider_is_word(boom::DivideOperation)' into 'boom::divider_accept(boom::DividerState&, boom::DividerRequest const&)' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:2932:0)
+INFO: [HLS 214-178] Inlining function 'boom::divider_is_signed(boom::DivideOperation)' into 'boom::divider_accept(boom::DividerState&, boom::DividerRequest const&)' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:2932:0)
+INFO: [HLS 214-178] Inlining function 'boom::divider_negate(unsigned long)' into 'boom::divider_accept(boom::DividerState&, boom::DividerRequest const&)' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:2932:0)
+INFO: [HLS 214-178] Inlining function 'boom::divider_is_remainder(boom::DivideOperation)' into 'boom::divider_accept(boom::DividerState&, boom::DividerRequest const&)' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:2932:0)
+INFO: [HLS 214-178] Inlining function 'boom::divider_finish(boom::DividerState&, unsigned long)' into 'boom::divider_accept(boom::DividerState&, boom::DividerRequest const&)' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:2932:0)
+INFO: [HLS 214-178] Inlining function 'boom::MulResponse::MulResponse()' into 'boom::execute_mul(boom::MulRequest const&)' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:2786:0)
+INFO: [HLS 214-178] Inlining function 'boom::divider_is_remainder(boom::DivideOperation)' into 'boom::divider_step(boom::DividerState&)' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:2999:0)
+INFO: [HLS 214-178] Inlining function 'boom::divider_negate(unsigned long)' into 'boom::divider_step(boom::DividerState&)' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:2999:0)
+INFO: [HLS 214-178] Inlining function 'boom::divider_finish(boom::DividerState&, unsigned long)' into 'boom::divider_step(boom::DividerState&)' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:2999:0)
+INFO: [HLS 214-178] Inlining function 'boom::divider_reset(boom::DividerState&) (.182)' into 'boom::execute_module(BoomCoreState&)' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:3089:0)
+INFO: [HLS 214-178] Inlining function 'boom::divider_response(boom::DividerState const&)' into 'boom::execute_module(BoomCoreState&)' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:3089:0)
+INFO: [HLS 214-178] Inlining function 'boom::divider_consume_response(boom::DividerState&)' into 'boom::execute_module(BoomCoreState&)' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:3089:0)
+INFO: [HLS 214-178] Inlining function 'classify_issue_port(MicroOp const&)' into 'boom::execute_module(BoomCoreState&)' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:3089:0)
+INFO: [HLS 214-178] Inlining function 'boom::DividerRequest::DividerRequest()' into 'boom::execute_module(BoomCoreState&)' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:3089:0)
+INFO: [HLS 214-178] Inlining function 'boom::divider_request_ready(boom::DividerState const&)' into 'boom::execute_module(BoomCoreState&)' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:3089:0)
+INFO: [HLS 214-178] Inlining function 'boom::sext32(long)' into 'boom::execute_module(BoomCoreState&)' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:3089:0)
+INFO: [HLS 214-178] Inlining function 'boom::MulRequest::MulRequest()' into 'boom::execute_module(BoomCoreState&)' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:3089:0)
+INFO: [HLS 214-178] Inlining function 'boom::execute_mul(boom::MulRequest const&)' into 'boom::execute_module(BoomCoreState&)' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:3089:0)
+INFO: [HLS 214-178] Inlining function 'boom::mask_for_size(unsigned char)' into 'boom::execute_module(BoomCoreState&)' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:3089:0)
+INFO: [HLS 214-178] Inlining function 'boom::divider_step(boom::DividerState&)' into 'boom::execute_module(BoomCoreState&)' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:3089:0)
+INFO: [HLS 214-270] Starting automatic array partition analysis...
+INFO: [HLS 200-111] Finished Compiling Optimization and Transform: CPU user time: 29.5 seconds. CPU system time: 0.37 seconds. Elapsed time: 29.88 seconds; current allocated memory: 447.648 MB.
+INFO: [HLS 200-111] Finished Checking Pragmas: CPU user time: 0.01 seconds. CPU system time: 0 seconds. Elapsed time: 0.01 seconds; current allocated memory: 447.648 MB.
+INFO: [HLS 200-10] Starting code transformations ...
+INFO: [HLS 200-111] Finished Standard Transforms: CPU user time: 0.42 seconds. CPU system time: 0 seconds. Elapsed time: 0.43 seconds; current allocated memory: 478.102 MB.
+INFO: [HLS 200-10] Checking synthesizability ...
+INFO: [HLS 200-111] Finished Checking Synthesizability: CPU user time: 0.15 seconds. CPU system time: 0.01 seconds. Elapsed time: 0.15 seconds; current allocated memory: 485.457 MB.
+INFO: [XFORM 203-102] Automatically partitioning small array 'state.issue.issued_valids' completely based on array size.
+INFO: [XFORM 203-102] Automatically partitioning small array 'state.issue.issued_uops.uopc' completely based on array size.
+INFO: [XFORM 203-102] Automatically partitioning small array 'state.issue.issued_uops.rename' completely based on array size.
+INFO: [XFORM 203-102] Automatically partitioning small array 'state.issue.issued_uops.queue' completely based on array size.
+INFO: [XFORM 203-102] Automatically partitioning small array 'state.issue.issued_uops.mem' completely based on array size.
+INFO: [XFORM 203-102] Automatically partitioning small array 'state.issue.issued_uops.iw_state' completely based on array size.
+INFO: [XFORM 203-102] Automatically partitioning small array 'state.issue.issued_uops.iw_p2_poisoned' completely based on array size.
+INFO: [XFORM 203-102] Automatically partitioning small array 'state.issue.issued_uops.iw_p1_poisoned.9' completely based on array size.
+INFO: [XFORM 203-102] Automatically partitioning small array 'state.issue.issued_uops.iw_p1_poisoned.17' completely based on array size.
+INFO: [XFORM 203-102] Automatically partitioning small array 'state.issue.issued_uops.iw_p1_poisoned.16' completely based on array size.
+INFO: [XFORM 203-102] Automatically partitioning small array 'state.issue.issued_uops.iw_p1_poisoned.15' completely based on array size.
+INFO: [XFORM 203-102] Automatically partitioning small array 'state.issue.issued_uops.iw_p1_poisoned.14' completely based on array size.
+INFO: [XFORM 203-102] Automatically partitioning small array 'state.issue.issued_uops.iw_p1_poisoned.13' completely based on array size.
+INFO: [XFORM 203-102] Automatically partitioning small array 'state.issue.issued_uops.iw_p1_poisoned.12' completely based on array size.
+INFO: [XFORM 203-102] Automatically partitioning small array 'state.issue.issued_uops.iw_p1_poisoned.11' completely based on array size.
+INFO: [XFORM 203-102] Automatically partitioning small array 'state.issue.issued_uops.iw_p1_poisoned.10' completely based on array size.
+INFO: [XFORM 203-102] Automatically partitioning small array 'state.issue.issued_uops.iw_p1_poisoned' completely based on array size.
+INFO: [XFORM 203-102] Automatically partitioning small array 'state.issue.issued_uops.is_unique.9' completely based on array size.
+INFO: [XFORM 203-102] Automatically partitioning small array 'state.issue.issued_uops.is_unique.8' completely based on array size.
+INFO: [XFORM 203-102] Automatically partitioning small array 'state.issue.issued_uops.is_unique.7' completely based on array size.
+INFO: [XFORM 203-102] Automatically partitioning small array 'state.issue.issued_uops.is_unique.6' completely based on array size.
+INFO: [XFORM 203-102] Automatically partitioning small array 'state.issue.issued_uops.is_unique.11' completely based on array size.
+INFO: [XFORM 203-102] Automatically partitioning small array 'state.issue.issued_uops.is_unique.10' completely based on array size.
+INFO: [XFORM 203-102] Automatically partitioning small array 'state.issue.issued_uops.is_unique' completely based on array size.
+INFO: [XFORM 203-102] Automatically partitioning small array 'state.issue.issued_uops.is_sys_pc2epc' completely based on array size.
+INFO: [XFORM 203-102] Automatically partitioning small array 'state.issue.issued_uops.is_rvc' completely based on array size.
+INFO: [XFORM 203-102] Automatically partitioning small array 'state.issue.issued_uops.iq_type.9' completely based on array size.
+INFO: [XFORM 203-102] Automatically partitioning small array 'state.issue.issued_uops.iq_type.17' completely based on array size.
+INFO: [XFORM 203-102] Automatically partitioning small array 'state.issue.issued_uops.iq_type.16' completely based on array size.
+INFO: [XFORM 203-102] Automatically partitioning small array 'state.issue.issued_uops.iq_type.15' completely based on array size.
+INFO: [XFORM 203-102] Automatically partitioning small array 'state.issue.issued_uops.iq_type.14' completely based on array size.
+INFO: [XFORM 203-102] Automatically partitioning small array 'state.issue.issued_uops.iq_type.13' completely based on array size.
+INFO: [XFORM 203-102] Automatically partitioning small array 'state.issue.issued_uops.iq_type.12' completely based on array size.
+INFO: [XFORM 203-102] Automatically partitioning small array 'state.issue.issued_uops.iq_type.11' completely based on array size.
+INFO: [XFORM 203-102] Automatically partitioning small array 'state.issue.issued_uops.iq_type.10' completely based on array size.
+INFO: [XFORM 203-102] Automatically partitioning small array 'state.issue.issued_uops.iq_type' completely based on array size.
+INFO: [XFORM 203-102] Automatically partitioning small array 'state.issue.issued_uops.inst' completely based on array size.
+INFO: [XFORM 203-102] Automatically partitioning small array 'state.issue.issued_uops.imm_packed.9' completely based on array size.
+INFO: [XFORM 203-102] Automatically partitioning small array 'state.issue.issued_uops.imm_packed.8' completely based on array size.
+INFO: [XFORM 203-102] Automatically partitioning small array 'state.issue.issued_uops.imm_packed.7' completely based on array size.
+INFO: [XFORM 203-102] Automatically partitioning small array 'state.issue.issued_uops.imm_packed.6' completely based on array size.
+INFO: [XFORM 203-102] Automatically partitioning small array 'state.issue.issued_uops.imm_packed.11' completely based on array size.
+INFO: [XFORM 203-102] Automatically partitioning small array 'state.issue.issued_uops.imm_packed.10' completely based on array size.
+INFO: [XFORM 203-102] Automatically partitioning small array 'state.issue.issued_uops.imm_packed' completely based on array size.
+INFO: [XFORM 203-102] Automatically partitioning small array 'state.issue.issued_uops.fu_code' completely based on array size.
+INFO: [XFORM 203-102] Automatically partitioning small array 'state.issue.issued_uops.ftq_valid' completely based on array size.
+INFO: [XFORM 203-102] Automatically partitioning small array 'state.issue.issued_uops.ftq_lane' completely based on array size.
+INFO: [XFORM 203-102] Automatically partitioning small array 'state.issue.issued_uops.ftq_idx' completely based on array size.
+INFO: [XFORM 203-102] Automatically partitioning small array 'state.issue.issued_uops.ftq_halfword_offset' completely based on array size.
+INFO: [XFORM 203-102] Automatically partitioning small array 'state.issue.issued_uops.ftq_generation' completely based on array size.
+INFO: [XFORM 203-102] Automatically partitioning small array 'state.issue.issued_uops.flush_on_commit.5' completely based on array size.
+INFO: [XFORM 203-102] Automatically partitioning small array 'state.issue.issued_uops.flush_on_commit.4' completely based on array size.
+INFO: [XFORM 203-102] Automatically partitioning small array 'state.issue.issued_uops.flush_on_commit.3' completely based on array size.
+INFO: [XFORM 203-102] Automatically partitioning small array 'state.issue.issued_uops.flush_on_commit' completely based on array size.
+INFO: [XFORM 203-102] Automatically partitioning small array 'state.issue.issued_uops.exception' completely based on array size.
+INFO: [XFORM 203-102] Automatically partitioning small array 'state.issue.issued_uops.exc_cause.9' completely based on array size.
+INFO: [XFORM 203-102] Automatically partitioning small array 'state.issue.issued_uops.exc_cause.17' completely based on array size.
+INFO: [XFORM 203-102] Automatically partitioning small array 'state.issue.issued_uops.exc_cause.16' completely based on array size.
+INFO: [XFORM 203-102] Automatically partitioning small array 'state.issue.issued_uops.exc_cause.15' completely based on array size.
+INFO: [XFORM 203-102] Automatically partitioning small array 'state.issue.issued_uops.exc_cause.14' completely based on array size.
+INFO: [XFORM 203-102] Automatically partitioning small array 'state.issue.issued_uops.exc_cause.13' completely based on array size.
+INFO: [XFORM 203-102] Automatically partitioning small array 'state.issue.issued_uops.exc_cause.12' completely based on array size.
+INFO: [XFORM 203-102] Automatically partitioning small array 'state.issue.issued_uops.exc_cause.11' completely based on array size.
+INFO: [XFORM 203-102] Automatically partitioning small array 'state.issue.issued_uops.exc_cause.10' completely based on array size.
+INFO: [XFORM 203-102] Automatically partitioning small array 'state.issue.issued_uops.exc_cause' completely based on array size.
+INFO: [XFORM 203-102] Automatically partitioning small array 'state.issue.issued_uops.debug_pc' completely based on array size.
+INFO: [XFORM 203-102] Automatically partitioning small array 'state.issue.issued_uops.debug_inst' completely based on array size.
+INFO: [XFORM 203-102] Automatically partitioning small array 'state.issue.issued_uops.ctrl' completely based on array size.
+INFO: [XFORM 203-102] Automatically partitioning small array 'state.issue.issued_uops.csr_addr.9' completely based on array size.
+INFO: [XFORM 203-102] Automatically partitioning small array 'state.issue.issued_uops.csr_addr.37' completely based on array size.
+INFO: [XFORM 203-102] Automatically partitioning small array 'state.issue.issued_uops.csr_addr.36' completely based on array size.
+INFO: [XFORM 203-102] Automatically partitioning small array 'state.issue.issued_uops.csr_addr.35' completely based on array size.
+INFO: [XFORM 203-102] Automatically partitioning small array 'state.issue.issued_uops.csr_addr.34' completely based on array size.
+INFO: [XFORM 203-102] Automatically partitioning small array 'state.issue.issued_uops.csr_addr.33' completely based on array size.
+INFO: [XFORM 203-102] Automatically partitioning small array 'state.issue.issued_uops.csr_addr.32' completely based on array size.
+INFO: [XFORM 203-102] Automatically partitioning small array 'state.issue.issued_uops.csr_addr.31' completely based on array size.
+INFO: [XFORM 203-102] Automatically partitioning small array 'state.issue.issued_uops.csr_addr.30' completely based on array size.
+INFO: [XFORM 203-102] Automatically partitioning small array 'state.issue.issued_uops.csr_addr.29' completely based on array size.
+INFO: [XFORM 203-102] Automatically partitioning small array 'state.issue.issued_uops.csr_addr.28' completely based on array size.
+INFO: [XFORM 203-102] Automatically partitioning small array 'state.issue.issued_uops.csr_addr.27' completely based on array size.
+INFO: [XFORM 203-102] Automatically partitioning small array 'state.issue.issued_uops.csr_addr.26' completely based on array size.
+INFO: [XFORM 203-102] Automatically partitioning small array 'state.issue.issued_uops.csr_addr.25' completely based on array size.
+INFO: [XFORM 203-102] Automatically partitioning small array 'state.issue.issued_uops.csr_addr.24' completely based on array size.
+INFO: [XFORM 203-102] Automatically partitioning small array 'state.issue.issued_uops.csr_addr.23' completely based on array size.
+INFO: [XFORM 203-102] Automatically partitioning small array 'state.issue.issued_uops.csr_addr.22' completely based on array size.
+INFO: [XFORM 203-102] Automatically partitioning small array 'state.issue.issued_uops.csr_addr.21' completely based on array size.
+INFO: [XFORM 203-102] Automatically partitioning small array 'state.issue.issued_uops.csr_addr.20' completely based on array size.
+INFO: [XFORM 203-102] Automatically partitioning small array 'state.issue.issued_uops.csr_addr' completely based on array size.
+INFO: [XFORM 203-102] Automatically partitioning small array 'state.issue.issued_uops.bypassable' completely based on array size.
+INFO: [XFORM 203-102] Automatically partitioning small array 'state.issue.issued_uops.branch' completely based on array size.
+INFO: [XFORM 203-102] Automatically partitioning small array 'state.issue.issued_prs2_data' completely based on array size.
+INFO: [XFORM 203-102] Automatically partitioning small array 'state.issue.issued_prs1_data' completely based on array size.
+INFO: [XFORM 203-102] Automatically partitioning small array 'state.execute.alu_results.valid' completely based on array size.
+INFO: [XFORM 203-102] Automatically partitioning small array 'state.execute.alu_results.result' completely based on array size.
+INFO: [XFORM 203-102] Automatically partitioning small array 'state.completion.bypass.value' completely based on array size.
+INFO: [XFORM 203-102] Automatically partitioning small array 'state.completion.bypass.valid' completely based on array size.
+INFO: [XFORM 203-102] Automatically partitioning small array 'state.completion.bypass.pdst' completely based on array size.
+INFO: [XFORM 203-101] Partitioning array 'state.issue.issued_valids' in dimension 1 completely.
+INFO: [XFORM 203-101] Partitioning array 'state.issue.issued_uops.uopc' in dimension 1 completely.
+INFO: [XFORM 203-101] Partitioning array 'state.issue.issued_uops.rename' in dimension 1 completely.
+INFO: [XFORM 203-101] Partitioning array 'state.issue.issued_uops.queue' in dimension 1 completely.
+INFO: [XFORM 203-101] Partitioning array 'state.issue.issued_uops.mem' in dimension 1 completely.
+INFO: [XFORM 203-101] Partitioning array 'state.issue.issued_uops.iw_state' in dimension 1 completely.
+INFO: [XFORM 203-101] Partitioning array 'state.issue.issued_uops.iw_p2_poisoned' in dimension 1 completely.
+INFO: [XFORM 203-101] Partitioning array 'state.issue.issued_uops.iw_p1_poisoned.9' in dimension 1 completely.
+INFO: [XFORM 203-101] Partitioning array 'state.issue.issued_uops.iw_p1_poisoned.17' in dimension 1 completely.
+INFO: [XFORM 203-101] Partitioning array 'state.issue.issued_uops.iw_p1_poisoned.16' in dimension 1 completely.
+INFO: [XFORM 203-101] Partitioning array 'state.issue.issued_uops.iw_p1_poisoned.15' in dimension 1 completely.
+INFO: [XFORM 203-101] Partitioning array 'state.issue.issued_uops.iw_p1_poisoned.14' in dimension 1 completely.
+INFO: [XFORM 203-101] Partitioning array 'state.issue.issued_uops.iw_p1_poisoned.13' in dimension 1 completely.
+INFO: [XFORM 203-101] Partitioning array 'state.issue.issued_uops.iw_p1_poisoned.12' in dimension 1 completely.
+INFO: [XFORM 203-101] Partitioning array 'state.issue.issued_uops.iw_p1_poisoned.11' in dimension 1 completely.
+INFO: [XFORM 203-101] Partitioning array 'state.issue.issued_uops.iw_p1_poisoned.10' in dimension 1 completely.
+INFO: [XFORM 203-101] Partitioning array 'state.issue.issued_uops.iw_p1_poisoned' in dimension 1 completely.
+INFO: [XFORM 203-101] Partitioning array 'state.issue.issued_uops.is_unique.9' in dimension 1 completely.
+INFO: [XFORM 203-101] Partitioning array 'state.issue.issued_uops.is_unique.8' in dimension 1 completely.
+INFO: [XFORM 203-101] Partitioning array 'state.issue.issued_uops.is_unique.7' in dimension 1 completely.
+INFO: [XFORM 203-101] Partitioning array 'state.issue.issued_uops.is_unique.6' in dimension 1 completely.
+INFO: [XFORM 203-101] Partitioning array 'state.issue.issued_uops.is_unique.11' in dimension 1 completely.
+INFO: [XFORM 203-101] Partitioning array 'state.issue.issued_uops.is_unique.10' in dimension 1 completely.
+INFO: [XFORM 203-101] Partitioning array 'state.issue.issued_uops.is_unique' in dimension 1 completely.
+INFO: [XFORM 203-101] Partitioning array 'state.issue.issued_uops.is_sys_pc2epc' in dimension 1 completely.
+INFO: [XFORM 203-101] Partitioning array 'state.issue.issued_uops.is_rvc' in dimension 1 completely.
+INFO: [XFORM 203-101] Partitioning array 'state.issue.issued_uops.iq_type.9' in dimension 1 completely.
+INFO: [XFORM 203-101] Partitioning array 'state.issue.issued_uops.iq_type.17' in dimension 1 completely.
+INFO: [XFORM 203-101] Partitioning array 'state.issue.issued_uops.iq_type.16' in dimension 1 completely.
+INFO: [XFORM 203-101] Partitioning array 'state.issue.issued_uops.iq_type.15' in dimension 1 completely.
+INFO: [XFORM 203-101] Partitioning array 'state.issue.issued_uops.iq_type.14' in dimension 1 completely.
+INFO: [XFORM 203-101] Partitioning array 'state.issue.issued_uops.iq_type.13' in dimension 1 completely.
+INFO: [XFORM 203-101] Partitioning array 'state.issue.issued_uops.iq_type.12' in dimension 1 completely.
+INFO: [XFORM 203-101] Partitioning array 'state.issue.issued_uops.iq_type.11' in dimension 1 completely.
+INFO: [XFORM 203-101] Partitioning array 'state.issue.issued_uops.iq_type.10' in dimension 1 completely.
+INFO: [XFORM 203-101] Partitioning array 'state.issue.issued_uops.iq_type' in dimension 1 completely.
+INFO: [XFORM 203-101] Partitioning array 'state.issue.issued_uops.inst' in dimension 1 completely.
+INFO: [XFORM 203-101] Partitioning array 'state.issue.issued_uops.imm_packed.9' in dimension 1 completely.
+INFO: [XFORM 203-101] Partitioning array 'state.issue.issued_uops.imm_packed.8' in dimension 1 completely.
+INFO: [XFORM 203-101] Partitioning array 'state.issue.issued_uops.imm_packed.7' in dimension 1 completely.
+INFO: [XFORM 203-101] Partitioning array 'state.issue.issued_uops.imm_packed.6' in dimension 1 completely.
+INFO: [XFORM 203-101] Partitioning array 'state.issue.issued_uops.imm_packed.11' in dimension 1 completely.
+INFO: [XFORM 203-101] Partitioning array 'state.issue.issued_uops.imm_packed.10' in dimension 1 completely.
+INFO: [XFORM 203-101] Partitioning array 'state.issue.issued_uops.imm_packed' in dimension 1 completely.
+INFO: [XFORM 203-101] Partitioning array 'state.issue.issued_uops.fu_code' in dimension 1 completely.
+INFO: [XFORM 203-101] Partitioning array 'state.issue.issued_uops.ftq_valid' in dimension 1 completely.
+INFO: [XFORM 203-101] Partitioning array 'state.issue.issued_uops.ftq_lane' in dimension 1 completely.
+INFO: [XFORM 203-101] Partitioning array 'state.issue.issued_uops.ftq_idx' in dimension 1 completely.
+INFO: [XFORM 203-101] Partitioning array 'state.issue.issued_uops.ftq_halfword_offset' in dimension 1 completely.
+INFO: [XFORM 203-101] Partitioning array 'state.issue.issued_uops.ftq_generation' in dimension 1 completely.
+INFO: [XFORM 203-101] Partitioning array 'state.issue.issued_uops.flush_on_commit.5' in dimension 1 completely.
+INFO: [XFORM 203-101] Partitioning array 'state.issue.issued_uops.flush_on_commit.4' in dimension 1 completely.
+INFO: [XFORM 203-101] Partitioning array 'state.issue.issued_uops.flush_on_commit.3' in dimension 1 completely.
+INFO: [XFORM 203-101] Partitioning array 'state.issue.issued_uops.flush_on_commit' in dimension 1 completely.
+INFO: [XFORM 203-101] Partitioning array 'state.issue.issued_uops.exception' in dimension 1 completely.
+INFO: [XFORM 203-101] Partitioning array 'state.issue.issued_uops.exc_cause.9' in dimension 1 completely.
+INFO: [XFORM 203-101] Partitioning array 'state.issue.issued_uops.exc_cause.17' in dimension 1 completely.
+INFO: [XFORM 203-101] Partitioning array 'state.issue.issued_uops.exc_cause.16' in dimension 1 completely.
+INFO: [XFORM 203-101] Partitioning array 'state.issue.issued_uops.exc_cause.15' in dimension 1 completely.
+INFO: [XFORM 203-101] Partitioning array 'state.issue.issued_uops.exc_cause.14' in dimension 1 completely.
+INFO: [XFORM 203-101] Partitioning array 'state.issue.issued_uops.exc_cause.13' in dimension 1 completely.
+INFO: [XFORM 203-101] Partitioning array 'state.issue.issued_uops.exc_cause.12' in dimension 1 completely.
+INFO: [XFORM 203-101] Partitioning array 'state.issue.issued_uops.exc_cause.11' in dimension 1 completely.
+INFO: [XFORM 203-101] Partitioning array 'state.issue.issued_uops.exc_cause.10' in dimension 1 completely.
+INFO: [XFORM 203-101] Partitioning array 'state.issue.issued_uops.exc_cause' in dimension 1 completely.
+INFO: [XFORM 203-101] Partitioning array 'state.issue.issued_uops.debug_pc' in dimension 1 completely.
+INFO: [XFORM 203-101] Partitioning array 'state.issue.issued_uops.debug_inst' in dimension 1 completely.
+INFO: [XFORM 203-101] Partitioning array 'state.issue.issued_uops.ctrl' in dimension 1 completely.
+INFO: [XFORM 203-101] Partitioning array 'state.issue.issued_uops.csr_addr.9' in dimension 1 completely.
+INFO: [XFORM 203-101] Partitioning array 'state.issue.issued_uops.csr_addr.37' in dimension 1 completely.
+INFO: [XFORM 203-101] Partitioning array 'state.issue.issued_uops.csr_addr.36' in dimension 1 completely.
+INFO: [XFORM 203-101] Partitioning array 'state.issue.issued_uops.csr_addr.35' in dimension 1 completely.
+INFO: [XFORM 203-101] Partitioning array 'state.issue.issued_uops.csr_addr.34' in dimension 1 completely.
+INFO: [XFORM 203-101] Partitioning array 'state.issue.issued_uops.csr_addr.33' in dimension 1 completely.
+INFO: [XFORM 203-101] Partitioning array 'state.issue.issued_uops.csr_addr.32' in dimension 1 completely.
+INFO: [XFORM 203-101] Partitioning array 'state.issue.issued_uops.csr_addr.31' in dimension 1 completely.
+INFO: [XFORM 203-101] Partitioning array 'state.issue.issued_uops.csr_addr.30' in dimension 1 completely.
+INFO: [XFORM 203-101] Partitioning array 'state.issue.issued_uops.csr_addr.29' in dimension 1 completely.
+INFO: [XFORM 203-101] Partitioning array 'state.issue.issued_uops.csr_addr.28' in dimension 1 completely.
+INFO: [XFORM 203-101] Partitioning array 'state.issue.issued_uops.csr_addr.27' in dimension 1 completely.
+INFO: [XFORM 203-101] Partitioning array 'state.issue.issued_uops.csr_addr.26' in dimension 1 completely.
+INFO: [XFORM 203-101] Partitioning array 'state.issue.issued_uops.csr_addr.25' in dimension 1 completely.
+INFO: [XFORM 203-101] Partitioning array 'state.issue.issued_uops.csr_addr.24' in dimension 1 completely.
+INFO: [XFORM 203-101] Partitioning array 'state.issue.issued_uops.csr_addr.23' in dimension 1 completely.
+INFO: [XFORM 203-101] Partitioning array 'state.issue.issued_uops.csr_addr.22' in dimension 1 completely.
+INFO: [XFORM 203-101] Partitioning array 'state.issue.issued_uops.csr_addr.21' in dimension 1 completely.
+INFO: [XFORM 203-101] Partitioning array 'state.issue.issued_uops.csr_addr.20' in dimension 1 completely.
+INFO: [XFORM 203-101] Partitioning array 'state.issue.issued_uops.csr_addr' in dimension 1 completely.
+INFO: [XFORM 203-101] Partitioning array 'state.issue.issued_uops.bypassable' in dimension 1 completely.
+INFO: [XFORM 203-101] Partitioning array 'state.issue.issued_uops.branch' in dimension 1 completely.
+INFO: [XFORM 203-101] Partitioning array 'state.issue.issued_prs2_data' in dimension 1 completely.
+INFO: [XFORM 203-101] Partitioning array 'state.issue.issued_prs1_data' in dimension 1 completely.
+INFO: [XFORM 203-101] Partitioning array 'state.execute.alu_results.valid' in dimension 1 completely.
+INFO: [XFORM 203-101] Partitioning array 'state.execute.alu_results.result' in dimension 1 completely.
+INFO: [XFORM 203-101] Partitioning array 'state.completion.bypass.value' in dimension 1 completely.
+INFO: [XFORM 203-101] Partitioning array 'state.completion.bypass.valid' in dimension 1 completely.
+INFO: [XFORM 203-101] Partitioning array 'state.completion.bypass.pdst' in dimension 1 completely.
+INFO: [XFORM 203-401] Performing if-conversion on hyperblock from (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:6241:34) to (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:6263:1) in function 'synth_execute_top'... converting 3 basic blocks.
+INFO: [XFORM 203-401] Performing if-conversion on hyperblock from (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:2570:13) to (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:3127:13) in function 'boom::execute_module'... converting 12 basic blocks.
+INFO: [XFORM 203-401] Performing if-conversion on hyperblock from (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:3190:28) to (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:3195:26) in function 'boom::execute_module'... converting 7 basic blocks.
+INFO: [XFORM 203-401] Performing if-conversion on hyperblock from (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:3019:35) to (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:3030:1) in function 'boom::execute_module'... converting 6 basic blocks.
+INFO: [XFORM 203-401] Performing if-conversion on hyperblock from (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:2887:50) to (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:2969:9) in function 'boom::divider_accept'... converting 3 basic blocks.
+INFO: [XFORM 203-401] Performing if-conversion on hyperblock from (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:2887:50) to (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:2976:9) in function 'boom::divider_accept'... converting 3 basic blocks.
+INFO: [XFORM 203-401] Performing if-conversion on hyperblock from (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:2887:50) to (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:2992:9) in function 'boom::divider_accept'... converting 5 basic blocks.
+INFO: [XFORM 203-603] Inlining function 'aesl_mux_load.3i1P0A.i2' into 'boom::execute_module' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:2102).
+INFO: [XFORM 203-603] Inlining function 'aesl_mux_load.3i1P0A.i2' into 'boom::execute_module' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:2102).
+INFO: [XFORM 203-603] Inlining function 'aesl_mux_load.3i8P0A.i2' into 'boom::execute_module' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:2102).
+INFO: [XFORM 203-603] Inlining function 'aesl_mux_load.3i8P0A.i2' into 'boom::execute_module' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:2102).
+INFO: [XFORM 203-603] Inlining function 'aesl_mux_load.3i64P0A.i2' into 'boom::execute_module' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:2104).
+INFO: [XFORM 203-603] Inlining function 'aesl_mux_load.3i64P0A.i2' into 'boom::execute_module' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:2104).
+INFO: [XFORM 203-11] Balancing expressions in function 'boom::execute_module' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:1:13)...13 expression(s) balanced.
+INFO: [XFORM 203-11] Balancing expressions in function 'boom::divider_accept' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:2878:5)...9 expression(s) balanced.
+INFO: [HLS 200-111] Finished Loop, function and other optimizations: CPU user time: 0.57 seconds. CPU system time: 0.01 seconds. Elapsed time: 0.57 seconds; current allocated memory: 524.035 MB.
+INFO: [HLS 200-472] Inferring partial write operation for 'state.rename.int_free_list.busy_table' (/home/lab_726/boom/hls_boom/include/boom_state.hpp:111:83)
+INFO: [HLS 200-472] Inferring partial write operation for 'state.rename.int_free_list.busy_table' (/home/lab_726/boom/hls_boom/include/boom_state.hpp:112:38)
+INFO: [HLS 200-472] Inferring partial write operation for 'state.rob.entries.valid' (/home/lab_726/boom/hls_boom/include/boom_types.hpp:179:18)
+INFO: [HLS 200-472] Inferring partial write operation for 'state.rob.entries.busy' (/home/lab_726/boom/hls_boom/include/boom_types.hpp:179:32)
+INFO: [HLS 200-472] Inferring partial write operation for 'state.rob.entries.uop.imm_packed' (/home/lab_726/boom/hls_boom/include/boom_types.hpp:92:14)
+INFO: [HLS 200-472] Inferring partial write operation for 'state.rob.entries.valid' (/home/lab_726/boom/hls_boom/include/boom_state.hpp:223:23)
+INFO: [HLS 200-472] Inferring partial write operation for 'state.int_rf_bank0' (/home/lab_726/boom/hls_boom/include/boom_state.hpp:396:28)
+INFO: [HLS 200-472] Inferring partial write operation for 'state.int_rf_bank1' (/home/lab_726/boom/hls_boom/include/boom_state.hpp:397:28)
+INFO: [HLS 200-472] Inferring partial write operation for 'state.int_rf_bank0' (/home/lab_726/boom/hls_boom/include/boom_state.hpp:400:24)
+INFO: [HLS 200-472] Inferring partial write operation for 'state.int_rf_bank1' (/home/lab_726/boom/hls_boom/include/boom_state.hpp:400:43)
+INFO: [HLS 200-472] Inferring partial write operation for 'state.rob.entries.valid' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:6254:32)
+INFO: [HLS 200-472] Inferring partial write operation for 'state.rob.entries.busy' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:6255:31)
+INFO: [HLS 200-472] Inferring partial write operation for 'state.rob.entries.uop.imm_packed' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:6256:54)
+INFO: [HLS 200-472] Inferring partial write operation for 'state.int_rf_bank0' (/home/lab_726/boom/hls_boom/include/boom_state.hpp:416:30)
+INFO: [HLS 200-472] Inferring partial write operation for 'state.int_rf_bank1' (/home/lab_726/boom/hls_boom/include/boom_state.hpp:417:30)
+INFO: [HLS 200-111] Finished Architecture Synthesis: CPU user time: 0.41 seconds. CPU system time: 0.02 seconds. Elapsed time: 0.43 seconds; current allocated memory: 566.691 MB.
+INFO: [HLS 200-10] Starting hardware synthesis ...
+INFO: [HLS 200-10] Synthesizing 'synth_execute_top' ...
+INFO: [HLS 200-10] ----------------------------------------------------------------
+INFO: [HLS 200-42] -- Implementing module 'divider_accept' 
+INFO: [HLS 200-10] ----------------------------------------------------------------
+INFO: [SCHED 204-11] Starting scheduling ...
+INFO: [SCHED 204-11] Finished scheduling.
+INFO: [HLS 200-111] Finished Scheduling: CPU user time: 0.06 seconds. CPU system time: 0.01 seconds. Elapsed time: 0.07 seconds; current allocated memory: 568.980 MB.
+INFO: [BIND 205-100] Starting micro-architecture generation ...
+INFO: [BIND 205-101] Performing variable lifetime analysis.
+INFO: [BIND 205-101] Exploring resource sharing.
+INFO: [BIND 205-101] Binding ...
+INFO: [BIND 205-100] Finished micro-architecture generation.
+INFO: [HLS 200-111] Finished Binding: CPU user time: 0.04 seconds. CPU system time: 0 seconds. Elapsed time: 0.05 seconds; current allocated memory: 568.980 MB.
+INFO: [HLS 200-10] ----------------------------------------------------------------
+INFO: [HLS 200-42] -- Implementing module 'execute_module' 
+INFO: [HLS 200-10] ----------------------------------------------------------------
+INFO: [SCHED 204-11] Starting scheduling ...
+INFO: [SCHED 204-11] Finished scheduling.
+INFO: [HLS 200-111] Finished Scheduling: CPU user time: 0.18 seconds. CPU system time: 0 seconds. Elapsed time: 0.18 seconds; current allocated memory: 573.676 MB.
+INFO: [BIND 205-100] Starting micro-architecture generation ...
+INFO: [BIND 205-101] Performing variable lifetime analysis.
+INFO: [BIND 205-101] Exploring resource sharing.
+INFO: [BIND 205-101] Binding ...
+INFO: [BIND 205-100] Starting global binding ...
+INFO: [BIND 205-100] Finished micro-architecture generation.
+INFO: [HLS 200-111] Finished Binding: CPU user time: 0.17 seconds. CPU system time: 0.01 seconds. Elapsed time: 0.17 seconds; current allocated memory: 573.676 MB.
+INFO: [HLS 200-10] ----------------------------------------------------------------
+INFO: [HLS 200-42] -- Implementing module 'synth_execute_top' 
+INFO: [HLS 200-10] ----------------------------------------------------------------
+INFO: [SCHED 204-11] Starting scheduling ...
+INFO: [SCHED 204-11] Finished scheduling.
+INFO: [HLS 200-111] Finished Scheduling: CPU user time: 0.28 seconds. CPU system time: 0 seconds. Elapsed time: 0.28 seconds; current allocated memory: 574.453 MB.
+INFO: [BIND 205-100] Starting micro-architecture generation ...
+INFO: [BIND 205-101] Performing variable lifetime analysis.
+INFO: [BIND 205-101] Exploring resource sharing.
+INFO: [BIND 205-101] Binding ...
+INFO: [BIND 205-100] Finished micro-architecture generation.
+INFO: [HLS 200-111] Finished Binding: CPU user time: 0.11 seconds. CPU system time: 0 seconds. Elapsed time: 0.11 seconds; current allocated memory: 574.453 MB.
+INFO: [HLS 200-10] ----------------------------------------------------------------
+INFO: [HLS 200-10] -- Generating RTL for module 'divider_accept' 
+INFO: [HLS 200-10] ----------------------------------------------------------------
+INFO: [RTGEN 206-100] Finished creating RTL model for 'divider_accept'.
+INFO: [HLS 200-111] Finished Creating RTL model: CPU user time: 0.24 seconds. CPU system time: 0 seconds. Elapsed time: 0.24 seconds; current allocated memory: 574.812 MB.
+INFO: [HLS 200-10] ----------------------------------------------------------------
+INFO: [HLS 200-10] -- Generating RTL for module 'execute_module' 
+INFO: [HLS 200-10] ----------------------------------------------------------------
+INFO: [RTGEN 206-100] Generating core module 'mul_65s_65s_128_1_1': 1 instance(s).
+INFO: [RTGEN 206-100] Finished creating RTL model for 'execute_module'.
+INFO: [HLS 200-111] Finished Creating RTL model: CPU user time: 0.24 seconds. CPU system time: 0 seconds. Elapsed time: 0.25 seconds; current allocated memory: 579.824 MB.
+INFO: [HLS 200-10] ----------------------------------------------------------------
+INFO: [HLS 200-10] -- Generating RTL for module 'synth_execute_top' 
+INFO: [HLS 200-10] ----------------------------------------------------------------
+INFO: [RTGEN 206-500] Setting interface mode on port 'synth_execute_top/seed_uopc' to 'ap_none'.
+INFO: [RTGEN 206-500] Setting interface mode on port 'synth_execute_top/seed_rs1' to 'ap_none'.
+INFO: [RTGEN 206-500] Setting interface mode on port 'synth_execute_top/seed_rs2' to 'ap_none'.
+INFO: [RTGEN 206-500] Setting interface mode on port 'synth_execute_top/observable' to 'ap_vld'.
+INFO: [RTGEN 206-500] Setting interface mode on function 'synth_execute_top' to 'ap_ctrl_hs'.
+WARNING: [RTGEN 206-101] Register 'guard_variable_for_synth_execute_top_unsigned_char_unsigned_long_unsigned_long_unsigned_long_state' is power-on initialization.
+WARNING: [RTGEN 206-101] Register 'state_execute_divider_arithmetic_busy' is power-on initialization.
+WARNING: [RTGEN 206-101] Register 'state_execute_divider_arithmetic_result_pending' is power-on initialization.
+WARNING: [RTGEN 206-101] Register 'state_execute_divider_arithmetic_operation' is power-on initialization.
+WARNING: [RTGEN 206-101] Register 'state_execute_divider_arithmetic_original_dividend' is power-on initialization.
+WARNING: [RTGEN 206-101] Register 'state_execute_divider_arithmetic_dividend_magnitude' is power-on initialization.
+WARNING: [RTGEN 206-101] Register 'state_execute_divider_arithmetic_divisor_magnitude' is power-on initialization.
+WARNING: [RTGEN 206-101] Register 'state_execute_divider_arithmetic_quotient' is power-on initialization.
+WARNING: [RTGEN 206-101] Register 'state_execute_divider_arithmetic_remainder' is power-on initialization.
+WARNING: [RTGEN 206-101] Register 'state_execute_divider_arithmetic_iteration' is power-on initialization.
+WARNING: [RTGEN 206-101] Register 'state_execute_divider_arithmetic_quotient_negative' is power-on initialization.
+WARNING: [RTGEN 206-101] Register 'state_execute_divider_arithmetic_remainder_negative' is power-on initialization.
+WARNING: [RTGEN 206-101] Register 'state_execute_divider_arithmetic_word_operation' is power-on initialization.
+WARNING: [RTGEN 206-101] Register 'state_execute_divider_token_valid' is power-on initialization.
+WARNING: [RTGEN 206-101] Register 'state_execute_divider_rob_idx' is power-on initialization.
+WARNING: [RTGEN 206-101] Register 'state_execute_divider_allocation_id' is power-on initialization.
+WARNING: [RTGEN 206-101] Register 'state_int_rf_latest_bank' is power-on initialization.
+WARNING: [RTGEN 206-101] Register 'state_execute_alu_results_valid_1' is power-on initialization.
+WARNING: [RTGEN 206-101] Register 'state_execute_alu_results_result_1' is power-on initialization.
+WARNING: [RTGEN 206-101] Register 'state_issue_issued_valids_1' is power-on initialization.
+WARNING: [RTGEN 206-101] Register 'state_issue_issued_uops_uopc_1' is power-on initialization.
+WARNING: [RTGEN 206-101] Register 'state_issue_issued_uops_ftq_halfword_offset_1' is power-on initialization.
+WARNING: [RTGEN 206-101] Register 'state_issue_issued_uops_ftq_valid_1' is power-on initialization.
+WARNING: [RTGEN 206-101] Register 'state_issue_issued_uops_csr_addr_32_1' is power-on initialization.
+WARNING: [RTGEN 206-101] Register 'state_issue_issued_uops_csr_addr_33_1' is power-on initialization.
+WARNING: [RTGEN 206-101] Register 'state_issue_issued_uops_imm_packed_6_1' is power-on initialization.
+WARNING: [RTGEN 206-101] Register 'state_issue_issued_uops_imm_packed_10_1' is power-on initialization.
+WARNING: [RTGEN 206-101] Register 'state_issue_issued_prs1_data_1' is power-on initialization.
+WARNING: [RTGEN 206-101] Register 'state_issue_issued_prs2_data_1' is power-on initialization.
+INFO: [RTGEN 206-100] Finished creating RTL model for 'synth_execute_top'.
+INFO: [HLS 200-111] Finished Creating RTL model: CPU user time: 0.58 seconds. CPU system time: 0.01 seconds. Elapsed time: 0.59 seconds; current allocated memory: 587.910 MB.
+INFO: [RTMG 210-278] Implementing memory 'synth_execute_top_state_rename_int_free_list_busy_table_RAM_AUTO_1R1W_ram (RAM)' using auto RAMs with power-on initialization.
+INFO: [RTMG 210-278] Implementing memory 'synth_execute_top_state_rob_entries_valid_RAM_AUTO_1R1W_ram (RAM)' using auto RAMs with power-on initialization.
+INFO: [RTMG 210-278] Implementing memory 'synth_execute_top_state_int_rf_bank0_RAM_AUTO_1R1W_ram (RAM)' using auto RAMs with power-on initialization.
+INFO: [HLS 200-111] Finished Generating all RTL models: CPU user time: 0.58 seconds. CPU system time: 0.01 seconds. Elapsed time: 0.59 seconds; current allocated memory: 593.137 MB.
+INFO: [HLS 200-111] Finished Updating report files: CPU user time: 0.27 seconds. CPU system time: 0.01 seconds. Elapsed time: 0.28 seconds; current allocated memory: 595.211 MB.
+INFO: [VHDL 208-304] Generating VHDL RTL for synth_execute_top.
+INFO: [VLOG 209-307] Generating Verilog RTL for synth_execute_top.
+INFO: [HLS 200-790] **** Loop Constraint Status: All loop constraints were satisfied.
+INFO: [HLS 200-789] **** Estimated Fmax: 155.99 MHz
+INFO: [HLS 200-111] Finished Command csynth_design CPU user time: 36.83 seconds. CPU system time: 0.8 seconds. Elapsed time: 37.1 seconds; current allocated memory: -756.754 MB.
+INFO: [HLS 200-112] Total CPU user time: 38.24 seconds. Total CPU system time: 1.17 seconds. Total elapsed time: 38.18 seconds; peak allocated memory: 1.321 GB.
+INFO: [Common 17-206] Exiting vitis_hls at Wed Sep 16 19:13:45 2026...

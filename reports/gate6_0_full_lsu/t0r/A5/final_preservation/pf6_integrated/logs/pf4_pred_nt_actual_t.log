@@ -1,0 +1,22 @@
+#-----------------------------------------------------------
+# xsim v2021.2 (64-bit)
+# SW Build 3367213 on Tue Oct 19 02:47:39 MDT 2021
+# IP Build 3369179 on Thu Oct 21 08:25:16 MDT 2021
+# Start of session at: Wed Sep 16 20:03:38 2026
+# Process ID: 129625
+# Current directory: /home/lab_726/opencode_tmp/g6_t0r/A5/final_preservation/pf6_integrated/xsim
+# Command line: xsim -log /home/lab_726/boom/hls_boom/reports/gate6_0_full_lsu/t0r/A5/final_preservation/pf6_integrated/logs/pf4_pred_nt_actual_t.log -mode tcl -source {xsim.dir/pf4_full_core_snapshot/xsim_script.tcl}
+# Log file: /home/lab_726/boom/hls_boom/reports/gate6_0_full_lsu/t0r/A5/final_preservation/pf6_integrated/logs/pf4_pred_nt_actual_t.log
+# Journal file: /home/lab_726/opencode_tmp/g6_t0r/A5/final_preservation/pf6_integrated/xsim/xsim.jou
+# Running On: 726, OS: Linux, CPU Frequency: 800.000 MHz, CPU Physical cores: 14, Host memory: 67148 MB
+#-----------------------------------------------------------
+source xsim.dir/pf4_full_core_snapshot/xsim_script.tcl
+# xsim {pf4_full_core_snapshot} -testplusarg PROGRAM=/home/lab_726/opencode_tmp/g6_t0r/A5/final_preservation/pf6_programs/pf4_pred_nt_actual_t.words.hex -testplusarg INIT=/home/lab_726/opencode_tmp/g6_t0r/A5/final_preservation/pf6_programs/pf4_pred_nt_actual_t.init -testplusarg PROGRAM_NAME=pf4_pred_nt_actual_t -testplusarg FAULT_MODE=0 -testplusarg TRACE=/home/lab_726/boom/hls_boom/reports/gate6_0_full_lsu/t0r/A5/final_preservation/pf6_integrated/traces/pf4_pred_nt_actual_t.jsonl -testplusarg MAX_CYCLES=1000000 -autoloadwcfg -runall -onerror quit
+Time resolution is 1 ps
+run -all
+PF5_FULL_CORE_RTL_PASS program=pf4_pred_nt_actual_t branches=1 mispredicts=1 exceptions=0 commits=9 cycles=22244 bim_entries=1
+PF6_RTL_COVERAGE program=pf4_pred_nt_actual_t conditional_predictions=2 predicted_taken=0 predicted_not_taken=2 correct_predictions=1 mispredict_redirects=1 BIM_attempts=1 BIM_updates=1 BIM_taken_updates=1 BIM_not_taken_updates=0 BIM_dropped=0 BIM_stale_rejected=0 FTQ_allocations=11 FTQ_reclaims=10 FTQ_squashes=1 FTQ_wraps=0 FTQ_slot_reuses=0 exceptions=0 fault_refetches=0 ROB_commits=9 max_rob_occupancy=1 max_ftq_occupancy=1
+$finish called at time : 247425 ns : File "/home/lab_726/boom/hls_boom/rtl_tb/pf4_full_core_rtl_tb.sv" Line 222
+run: Time (s): cpu = 00:00:00.38 ; elapsed = 00:00:05 . Memory (MB): peak = 2685.676 ; gain = 0.000 ; free physical = 31622 ; free virtual = 56243
+exit
+INFO: [Common 17-206] Exiting xsim at Wed Sep 16 20:03:47 2026...

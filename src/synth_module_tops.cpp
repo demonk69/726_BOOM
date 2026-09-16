@@ -1430,6 +1430,8 @@ void synth_execute_top(uint8_t seed_uopc, uint64_t seed_rs1, uint64_t seed_rs2, 
     state.rob.entries[1].uop.queue.rob_allocation_id = 1;
     boom::prf_seed(state, 1, seed_rs1);
     boom::prf_seed(state, 2, seed_rs2);
+    state.issue.issued_prs1_data[INT_ISSUE_LANE] = seed_rs1;
+    state.issue.issued_prs2_data[INT_ISSUE_LANE] = seed_rs2;
     boom::execute_module(state);
     observable = state.execute.alu_results[INT_ISSUE_LANE].result;
 }

@@ -1,0 +1,30 @@
+/usr/bin/ld: /tmp/ccuxb6R0.o: in function `void boom::frontend_mode_module<true>(BoomCoreState&, PipeSignals&)':
+frontend.cpp:(.text+0xb05): undefined reference to `boom::fetch_buffer_reset(boom::FetchBufferState&)'
+/usr/bin/ld: frontend.cpp:(.text+0xeb3): undefined reference to `boom::fetch_buffer_reset(boom::FetchBufferState&)'
+/usr/bin/ld: frontend.cpp:(.text+0x1421): undefined reference to `boom::PredictorFoundation<256ul, false>::step(boom::PredictorStepInput const&)'
+/usr/bin/ld: frontend.cpp:(.text+0x164b): undefined reference to `boom::fetch_buffer_reset(boom::FetchBufferState&)'
+/usr/bin/ld: frontend.cpp:(.text+0x18d5): undefined reference to `boom::build_fetch_packet(boom::FetchPacketInput const&)'
+/usr/bin/ld: frontend.cpp:(.text+0x1c95): undefined reference to `boom::predecode_cfi_packet(unsigned char, unsigned long, unsigned int, bool, unsigned long, unsigned int, bool)'
+/usr/bin/ld: frontend.cpp:(.text+0x1e22): undefined reference to `boom::mask_younger_packet_lanes(unsigned char, boom::CfiPacketPredecodeResult const&)'
+/usr/bin/ld: frontend.cpp:(.text+0x21e4): undefined reference to `boom::PredictorFoundation<256ul, false>::peek(bool) const'
+/usr/bin/ld: frontend.cpp:(.text+0x220b): undefined reference to `boom::PredictorFoundation<256ul, false>::step(boom::PredictorStepInput const&)'
+/usr/bin/ld: frontend.cpp:(.text+0x2475): undefined reference to `boom::mask_younger_packet_lanes(unsigned char, boom::CfiPacketPredecodeResult const&)'
+/usr/bin/ld: frontend.cpp:(.text+0x2b2b): undefined reference to `boom::fetch_buffer_step(boom::FetchBufferState&, boom::FetchPacket const&, bool, bool)'
+/usr/bin/ld: /tmp/ccuxb6R0.o: in function `void boom::frontend_mode_module<false>(BoomCoreState&, PipeSignals&)':
+frontend.cpp:(.text+0x333a): undefined reference to `boom::fetch_buffer_reset(boom::FetchBufferState&)'
+/usr/bin/ld: frontend.cpp:(.text+0x36e8): undefined reference to `boom::fetch_buffer_reset(boom::FetchBufferState&)'
+/usr/bin/ld: frontend.cpp:(.text+0x3c56): undefined reference to `boom::PredictorFoundation<256ul, false>::step(boom::PredictorStepInput const&)'
+/usr/bin/ld: frontend.cpp:(.text+0x3e80): undefined reference to `boom::fetch_buffer_reset(boom::FetchBufferState&)'
+/usr/bin/ld: frontend.cpp:(.text+0x4042): undefined reference to `boom::fetch_buffer_step(boom::FetchBufferState&, boom::FetchPacket const&, bool, bool)'
+/usr/bin/ld: frontend.cpp:(.text+0x44da): undefined reference to `boom::build_fetch_packet(boom::FetchPacketInput const&)'
+/usr/bin/ld: frontend.cpp:(.text+0x489a): undefined reference to `boom::predecode_cfi_packet(unsigned char, unsigned long, unsigned int, bool, unsigned long, unsigned int, bool)'
+/usr/bin/ld: frontend.cpp:(.text+0x4a27): undefined reference to `boom::mask_younger_packet_lanes(unsigned char, boom::CfiPacketPredecodeResult const&)'
+/usr/bin/ld: frontend.cpp:(.text+0x4e12): undefined reference to `boom::PredictorFoundation<256ul, false>::peek(bool) const'
+/usr/bin/ld: frontend.cpp:(.text+0x4e39): undefined reference to `boom::PredictorFoundation<256ul, false>::step(boom::PredictorStepInput const&)'
+/usr/bin/ld: frontend.cpp:(.text+0x52ec): undefined reference to `boom::fetch_buffer_step(boom::FetchBufferState&, boom::FetchPacket const&, bool, bool)'
+/usr/bin/ld: /tmp/cc91IzAe.o: in function `boom_core_reset_step(BoomCoreState&, ResetControllerState&)':
+reset.cpp:(.text+0x975): undefined reference to `boom::PredictorFoundation<256ul, false>::step(boom::PredictorStepInput const&)'
+/usr/bin/ld: reset.cpp:(.text+0xf48): undefined reference to `boom::fetch_buffer_reset(boom::FetchBufferState&)'
+/usr/bin/ld: /tmp/cc0SBzjl.o: in function `BoomCoreState::BoomCoreState()':
+m2b_execute_tests.cpp:(.text._ZN13BoomCoreStateC2Ev[_ZN13BoomCoreStateC5Ev]+0xdb): undefined reference to `boom::PredictorFoundation<256ul, false>::PredictorFoundation()'
+collect2: error: ld returned 1 exit status

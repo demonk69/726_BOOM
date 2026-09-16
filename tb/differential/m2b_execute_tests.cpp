@@ -40,6 +40,8 @@ static bool run_vector(uint8_t uopc, uint64_t lhs, uint64_t rhs,
     uop.queue.rob_allocation_id = allocation_id;
     boom::prf_seed(state, 1, lhs);
     boom::prf_seed(state, 2, rhs);
+    state.issue.issued_prs1_data[INT_ISSUE_LANE] = lhs;
+    state.issue.issued_prs2_data[INT_ISSUE_LANE] = rhs;
     boom::execute_module(state);
 
     const ExecuteState::AluResult first = state.execute.alu_results[INT_ISSUE_LANE];

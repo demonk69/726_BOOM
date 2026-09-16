@@ -1,0 +1,88 @@
+
+****** Vitis HLS - High-Level Synthesis from C, C++ and OpenCL v2021.2 (64-bit)
+  **** SW Build 3367213 on Tue Oct 19 02:47:39 MDT 2021
+  **** IP Build 3369179 on Thu Oct 21 08:25:16 MDT 2021
+    ** Copyright 1986-2021 Xilinx, Inc. All Rights Reserved.
+
+source /home/lab_726/Xilinx/Vitis_HLS/2021.2/scripts/vitis_hls/hls.tcl -notrace
+INFO: [HLS 200-10] Running '/home/lab_726/Xilinx/Vitis_HLS/2021.2/bin/unwrapped/lnx64.o/vitis_hls'
+INFO: [HLS 200-10] For user 'lab_726' on host '726' (Linux_x86_64 version 6.8.0-138-generic) on Wed Sep 16 19:54:01 CST 2026
+INFO: [HLS 200-10] On os Ubuntu 22.04.5 LTS
+INFO: [HLS 200-10] In directory '/home/lab_726/boom/hls_boom'
+Sourcing Tcl script 'scripts/gate6_0/l1_parameterized_csim.tcl'
+INFO: [HLS 200-1510] Running: open_project -reset g6_l1_csim_8_8 
+INFO: [HLS 200-10] Creating and opening project '/home/lab_726/opencode_tmp/g6_t0r/A5/final_preservation/l1_representative/8_8/g6_l1_csim_8_8'.
+INFO: [HLS 200-1510] Running: set_top boom_core_step 
+INFO: [HLS 200-1510] Running: add_files -cflags -std=c++11 -I/home/lab_726/boom/hls_boom/include -DLQ_DEPTH=8 -DSQ_DEPTH=8 /home/lab_726/boom/hls_boom/src/boom_core_merged.cpp 
+INFO: [HLS 200-10] Adding design file '/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp' to the project
+INFO: [HLS 200-1510] Running: add_files -tb -cflags -std=c++11 -I/home/lab_726/boom/hls_boom/include -DLQ_DEPTH=8 -DSQ_DEPTH=8 /home/lab_726/boom/hls_boom/tb/differential/g6_l1_parameterized_lq_sq_tests.cpp 
+INFO: [HLS 200-10] Adding test bench file '/home/lab_726/boom/hls_boom/tb/differential/g6_l1_parameterized_lq_sq_tests.cpp' to the project
+INFO: [HLS 200-1510] Running: open_solution -reset solution_8_8 
+INFO: [HLS 200-10] Creating and opening solution '/home/lab_726/opencode_tmp/g6_t0r/A5/final_preservation/l1_representative/8_8/g6_l1_csim_8_8/solution_8_8'.
+INFO: [HLS 200-10] Cleaning up the solution database.
+WARNING: [HLS 200-40] No /home/lab_726/opencode_tmp/g6_t0r/A5/final_preservation/l1_representative/8_8/g6_l1_csim_8_8/solution_8_8/solution_8_8.aps file found.
+INFO: [HLS 200-1505] Using default flow_target 'vivado'
+Resolution: For help on HLS 200-1505 see www.xilinx.com/cgi-bin/docs/rdoc?v=2021.2;t=hls+guidance;d=200-1505.html
+INFO: [HLS 200-1510] Running: set_part xczu7ev-ffvc1156-2-e 
+INFO: [HLS 200-1611] Setting target device to 'xczu7ev-ffvc1156-2-e'
+INFO: [HLS 200-1510] Running: create_clock -period 10 -name default 
+INFO: [SYN 201-201] Setting up clock 'default' with a period of 10ns.
+INFO: [HLS 200-1510] Running: csim_design 
+INFO: [SIM 211-2] *************** CSIM start ***************
+INFO: [SIM 211-4] CSIM will launch GCC as the compiler.
+   Compiling ../../../../../../../../../../boom/hls_boom/tb/differential/g6_l1_parameterized_lq_sq_tests.cpp in debug mode
+   Compiling ../../../../../../../../../../boom/hls_boom/src/boom_core_merged.cpp in debug mode
+   Generating csim.exe
+G6 L1 parameterized LQ/SQ: LQ=8 SQ=8
+WARNING: Hls::stream 'hls::stream<DmemRequest, 0>0' contains leftover data, which may result in RTL simulation hanging.
+WARNING: Hls::stream 'hls::stream<DmemRequest, 0>1' contains leftover data, which may result in RTL simulation hanging.
+WARNING: Hls::stream 'hls::stream<DmemRequest, 0>2' contains leftover data, which may result in RTL simulation hanging.
+WARNING: Hls::stream 'hls::stream<DmemRequest, 0>3' contains leftover data, which may result in RTL simulation hanging.
+WARNING: Hls::stream 'hls::stream<DmemRequest, 0>4' contains leftover data, which may result in RTL simulation hanging.
+WARNING: Hls::stream 'hls::stream<DmemRequest, 0>5' contains leftover data, which may result in RTL simulation hanging.
+WARNING: Hls::stream 'hls::stream<DmemRequest, 0>6' contains leftover data, which may result in RTL simulation hanging.
+WARNING: Hls::stream 'hls::stream<DmemRequest, 0>7' contains leftover data, which may result in RTL simulation hanging.
+WARNING: Hls::stream 'hls::stream<DmemRequest, 0>8' contains leftover data, which may result in RTL simulation hanging.
+WARNING: Hls::stream 'hls::stream<DmemRequest, 0>9' contains leftover data, which may result in RTL simulation hanging.
+WARNING: Hls::stream 'hls::stream<DmemRequest, 0>10' contains leftover data, which may result in RTL simulation hanging.
+WARNING: Hls::stream 'hls::stream<DmemRequest, 0>11' contains leftover data, which may result in RTL simulation hanging.
+WARNING: Hls::stream 'hls::stream<DmemRequest, 0>12' contains leftover data, which may result in RTL simulation hanging.
+WARNING: Hls::stream 'hls::stream<DmemRequest, 0>13' contains leftover data, which may result in RTL simulation hanging.
+WARNING: Hls::stream 'hls::stream<DmemRequest, 0>14' contains leftover data, which may result in RTL simulation hanging.
+WARNING: Hls::stream 'hls::stream<DmemRequest, 0>15' contains leftover data, which may result in RTL simulation hanging.
+WARNING: Hls::stream 'hls::stream<DmemRequest, 0>16' contains leftover data, which may result in RTL simulation hanging.
+WARNING: Hls::stream 'hls::stream<DmemRequest, 0>17' contains leftover data, which may result in RTL simulation hanging.
+WARNING: Hls::stream 'hls::stream<DmemRequest, 0>18' contains leftover data, which may result in RTL simulation hanging.
+WARNING: Hls::stream 'hls::stream<DmemRequest, 0>19' contains leftover data, which may result in RTL simulation hanging.
+WARNING: Hls::stream 'hls::stream<DmemRequest, 0>20' contains leftover data, which may result in RTL simulation hanging.
+WARNING: Hls::stream 'hls::stream<DmemRequest, 0>21' contains leftover data, which may result in RTL simulation hanging.
+WARNING: Hls::stream 'hls::stream<DmemRequest, 0>22' contains leftover data, which may result in RTL simulation hanging.
+WARNING: Hls::stream 'hls::stream<DmemRequest, 0>23' contains leftover data, which may result in RTL simulation hanging.
+WARNING: Hls::stream 'hls::stream<DmemRequest, 0>24' contains leftover data, which may result in RTL simulation hanging.
+WARNING: Hls::stream 'hls::stream<DmemRequest, 0>25' contains leftover data, which may result in RTL simulation hanging.
+WARNING: Hls::stream 'hls::stream<DmemRequest, 0>26' contains leftover data, which may result in RTL simulation hanging.
+WARNING: Hls::stream 'hls::stream<DmemRequest, 0>27' contains leftover data, which may result in RTL simulation hanging.
+WARNING: Hls::stream 'hls::stream<DmemRequest, 0>28' contains leftover data, which may result in RTL simulation hanging.
+WARNING: Hls::stream 'hls::stream<DmemRequest, 0>29' contains leftover data, which may result in RTL simulation hanging.
+WARNING: Hls::stream 'hls::stream<DmemRequest, 0>30' contains leftover data, which may result in RTL simulation hanging.
+WARNING: Hls::stream 'hls::stream<DmemRequest, 0>31' contains leftover data, which may result in RTL simulation hanging.
+WARNING: Hls::stream 'hls::stream<DmemRequest, 0>32' contains leftover data, which may result in RTL simulation hanging.
+WARNING: Hls::stream 'hls::stream<DmemRequest, 0>33' contains leftover data, which may result in RTL simulation hanging.
+WARNING: Hls::stream 'hls::stream<DmemRequest, 0>34' contains leftover data, which may result in RTL simulation hanging.
+WARNING: Hls::stream 'hls::stream<DmemRequest, 0>35' contains leftover data, which may result in RTL simulation hanging.
+WARNING: Hls::stream 'hls::stream<DmemRequest, 0>36' contains leftover data, which may result in RTL simulation hanging.
+WARNING: Hls::stream 'hls::stream<DmemRequest, 0>37' contains leftover data, which may result in RTL simulation hanging.
+WARNING: Hls::stream 'hls::stream<DmemRequest, 0>38' contains leftover data, which may result in RTL simulation hanging.
+WARNING: Hls::stream 'hls::stream<DmemRequest, 0>39' contains leftover data, which may result in RTL simulation hanging.
+WARNING: Hls::stream 'hls::stream<CommitEntry, 0>41' contains leftover data, which may result in RTL simulation hanging.
+WARNING: Hls::stream 'hls::stream<DmemRequest, 0>41' contains leftover data, which may result in RTL simulation hanging.
+WARNING: Hls::stream 'hls::stream<DmemRequest, 0>40' contains leftover data, which may result in RTL simulation hanging.
+WARNING: Hls::stream 'hls::stream<CommitEntry, 0>42' contains leftover data, which may result in RTL simulation hanging.
+WARNING: Hls::stream 'hls::stream<DmemRequest, 0>42' contains leftover data, which may result in RTL simulation hanging.
+checks=3146179 errors=0 lq_count_error=0 sq_count_error=0 lq_owner_error=0 sq_owner_error=0 generation_error=0 stale_mutation_error=0 reset_error=0 squash_error=0 flush_error=0 blocking_policy_error=0 memory_behavior_change_error=0
+exhaustive_states=0 random_seeds=256 cycles_per_seed=4096
+INFO: [SIM 211-1] CSim done with 0 errors.
+INFO: [SIM 211-3] *************** CSIM finish ***************
+INFO: [HLS 200-111] Finished Command csim_design CPU user time: 1.92 seconds. CPU system time: 0.26 seconds. Elapsed time: 1.63 seconds; current allocated memory: -937.109 MB.
+INFO: [HLS 200-112] Total CPU user time: 3.26 seconds. Total CPU system time: 0.63 seconds. Total elapsed time: 2.67 seconds; peak allocated memory: 415.512 MB.
+INFO: [Common 17-206] Exiting vitis_hls at Wed Sep 16 19:54:04 2026...

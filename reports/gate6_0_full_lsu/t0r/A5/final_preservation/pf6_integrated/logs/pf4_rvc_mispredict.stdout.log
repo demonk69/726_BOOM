@@ -1,0 +1,15 @@
+
+****** xsim v2021.2 (64-bit)
+  **** SW Build 3367213 on Tue Oct 19 02:47:39 MDT 2021
+  **** IP Build 3369179 on Thu Oct 21 08:25:16 MDT 2021
+    ** Copyright 1986-2021 Xilinx, Inc. All Rights Reserved.
+
+source xsim.dir/pf4_full_core_snapshot/xsim_script.tcl
+# xsim {pf4_full_core_snapshot} -testplusarg PROGRAM=/home/lab_726/opencode_tmp/g6_t0r/A5/final_preservation/pf6_programs/pf4_rvc_mispredict.words.hex -testplusarg INIT=/home/lab_726/opencode_tmp/g6_t0r/A5/final_preservation/pf6_programs/pf4_rvc_mispredict.init -testplusarg PROGRAM_NAME=pf4_rvc_mispredict -testplusarg FAULT_MODE=0 -testplusarg TRACE=/home/lab_726/boom/hls_boom/reports/gate6_0_full_lsu/t0r/A5/final_preservation/pf6_integrated/traces/pf4_rvc_mispredict.jsonl -testplusarg MAX_CYCLES=1000000 -autoloadwcfg -runall -onerror quit
+Time resolution is 1 ps
+run -all
+PF5_FULL_CORE_RTL_PASS program=pf4_rvc_mispredict branches=1 mispredicts=1 exceptions=0 commits=10 cycles=21700 bim_entries=1
+PF6_RTL_COVERAGE program=pf4_rvc_mispredict conditional_predictions=2 predicted_taken=0 predicted_not_taken=2 correct_predictions=1 mispredict_redirects=1 BIM_attempts=1 BIM_updates=1 BIM_taken_updates=1 BIM_not_taken_updates=0 BIM_dropped=0 BIM_stale_rejected=0 FTQ_allocations=10 FTQ_reclaims=9 FTQ_squashes=1 FTQ_wraps=0 FTQ_slot_reuses=0 exceptions=0 fault_refetches=0 ROB_commits=10 max_rob_occupancy=1 max_ftq_occupancy=2
+$finish called at time : 241985 ns : File "/home/lab_726/boom/hls_boom/rtl_tb/pf4_full_core_rtl_tb.sv" Line 222
+exit
+INFO: [Common 17-206] Exiting xsim at Wed Sep 16 20:04:16 2026...

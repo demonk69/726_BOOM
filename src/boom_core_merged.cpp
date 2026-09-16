@@ -2984,9 +2984,8 @@ bool divider_accept(DividerState& state, const DividerRequest& request) {
     if (state.divisor_magnitude == 1) {
         uint64_t result = 0;
         if (!divider_is_remainder(request.operation)) {
-            result = state.quotient_negative
-                ? divider_negate(state.dividend_magnitude) & operand_mask
-                : state.dividend_magnitude;
+            result = divisor_negative
+                ? divider_negate(dividend) & operand_mask : dividend;
         }
         divider_finish(state, result);
         return true;
@@ -3129,10 +3128,14 @@ void execute_module(BoomCoreState& state) {
         if (state.brupdate.valid && state.brupdate.mispredict &&
             ((uop.branch.br_mask & state.brupdate.mispredict_mask) != 0)) continue;
 
-        uint64_t rs1 = execute_operand(state, (uint8_t)i, uop.rename.prs1,
-                                       iss.issued_prs1_data[i]);
-        uint64_t rs2 = execute_operand(state, (uint8_t)i, uop.rename.prs2,
-                                       iss.issued_prs2_data[i]);
+        const bool is_mul = uop.fu_code == FU_MUL &&
+                            uop.uopc >= 16 && uop.uopc <= 20;
+        uint64_t rs1 = is_mul ? iss.issued_prs1_data[i] :
+            execute_operand(state, (uint8_t)i, uop.rename.prs1,
+                            iss.issued_prs1_data[i]);
+        uint64_t rs2 = is_mul ? iss.issued_prs2_data[i] :
+            execute_operand(state, (uint8_t)i, uop.rename.prs2,
+                            iss.issued_prs2_data[i]);
         uint64_t pc = uop.debug_pc;
 
         if (is_divider_uop(uop)) {
@@ -6253,6 +6256,8 @@ void synth_execute_top(uint8_t seed_uopc, uint64_t seed_rs1, uint64_t seed_rs2, 
     state.rob.entries[1].uop.queue.rob_allocation_id = 1;
     boom::prf_seed(state, 1, seed_rs1);
     boom::prf_seed(state, 2, seed_rs2);
+    state.issue.issued_prs1_data[INT_ISSUE_LANE] = seed_rs1;
+    state.issue.issued_prs2_data[INT_ISSUE_LANE] = seed_rs2;
     boom::execute_module(state);
     observable = state.execute.alu_results[INT_ISSUE_LANE].result;
 }

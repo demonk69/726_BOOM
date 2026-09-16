@@ -89,10 +89,14 @@ void execute_module(BoomCoreState& state) {
         if (state.brupdate.valid && state.brupdate.mispredict &&
             ((uop.branch.br_mask & state.brupdate.mispredict_mask) != 0)) continue;
 
-        uint64_t rs1 = execute_operand(state, (uint8_t)i, uop.rename.prs1,
-                                       iss.issued_prs1_data[i]);
-        uint64_t rs2 = execute_operand(state, (uint8_t)i, uop.rename.prs2,
-                                       iss.issued_prs2_data[i]);
+        const bool is_mul = uop.fu_code == FU_MUL &&
+                            uop.uopc >= 16 && uop.uopc <= 20;
+        uint64_t rs1 = is_mul ? iss.issued_prs1_data[i] :
+            execute_operand(state, (uint8_t)i, uop.rename.prs1,
+                            iss.issued_prs1_data[i]);
+        uint64_t rs2 = is_mul ? iss.issued_prs2_data[i] :
+            execute_operand(state, (uint8_t)i, uop.rename.prs2,
+                            iss.issued_prs2_data[i]);
         uint64_t pc = uop.debug_pc;
 
         if (is_divider_uop(uop)) {
