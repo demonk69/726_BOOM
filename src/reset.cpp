@@ -236,11 +236,13 @@ RESET_ROB_INIT:
         state.execute.divider.pdst = 0;
         state.execute.divider.allocation_id = 0;
         state.execute.divider.branch_mask = 0;
+        reset_ctrl.lq_index = 0;
+        reset_ctrl.sq_index = 0;
         advance_reset(reset_ctrl, RESET_LSU);
         break;
 
     case RESET_LSU:
-        if (index == 0) {
+        if (reset_ctrl.lq_index == 0 && reset_ctrl.sq_index == 0) {
             state.lsu.ldq_head = 0;
             state.lsu.ldq_tail = 0;
             state.lsu.ldq_count = 0;
@@ -251,16 +253,19 @@ RESET_ROB_INIT:
             state.lsu.pending_load_transaction_id = 0;
             state.lsu.pending_load_rob_idx = 0;
             state.lsu.pending_load_allocation_id = 0;
+            state.lsu.pending_load_lq_index = 0;
+            state.lsu.pending_load_lq_generation = 0;
         }
-        state.lsu.ldq[index].valid = false;
-        state.lsu.ldq[index].response_pending = false;
-        state.lsu.stq[index].valid = false;
-        state.lsu.stq[index].committed = false;
-        state.lsu.stq[index].issued_to_memory = false;
-        if (index + 1 == LDQ_DEPTH) {
+        if (reset_ctrl.lq_index < LQ_DEPTH) {
+            state.lsu.ldq[reset_ctrl.lq_index] = LoadQueueEntry();
+            reset_ctrl.lq_index++;
+        }
+        if (reset_ctrl.sq_index < SQ_DEPTH) {
+            state.lsu.stq[reset_ctrl.sq_index] = StoreQueueEntry();
+            reset_ctrl.sq_index++;
+        }
+        if (reset_ctrl.lq_index == LQ_DEPTH && reset_ctrl.sq_index == SQ_DEPTH) {
             advance_reset(reset_ctrl, RESET_CSR);
-        } else {
-            reset_ctrl.index = index + 1;
         }
         break;
 

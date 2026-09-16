@@ -1,0 +1,20 @@
+#-----------------------------------------------------------
+# xsim v2021.2 (64-bit)
+# SW Build 3367213 on Tue Oct 19 02:47:39 MDT 2021
+# IP Build 3369179 on Thu Oct 21 08:25:16 MDT 2021
+# Start of session at: Wed Sep 16 10:58:00 2026
+# Process ID: 46444
+# Current directory: /home/lab_726/opencode_tmp/g6_l1_focused_80/image_3_load_response/sim
+# Command line: xsim -log /home/lab_726/boom/hls_boom/reports/gate6_0_full_lsu/l1/focused_rtl_redesign/logs/case_16_correct_load_response.log -mode tcl -source {xsim.dir/load_response_snapshot/xsim_script.tcl}
+# Log file: /home/lab_726/boom/hls_boom/reports/gate6_0_full_lsu/l1/focused_rtl_redesign/logs/case_16_correct_load_response.log
+# Journal file: /home/lab_726/opencode_tmp/g6_l1_focused_80/image_3_load_response/sim/xsim.jou
+# Running On: 726, OS: Linux, CPU Frequency: 5000.000 MHz, CPU Physical cores: 14, Host memory: 67148 MB
+#-----------------------------------------------------------
+source xsim.dir/load_response_snapshot/xsim_script.tcl
+# xsim {load_response_snapshot} -testplusarg CASE_ID=16 -testplusarg EXP0=0000000000000007 -testplusarg EXP1=0000000000000800 -testplusarg EXP2=1122334455660010 -testplusarg EXP3=1122334455660010 -testplusarg EXP4=0000000000000000 -testplusarg EXP5=0000000000000002 -testplusarg EXP6=0000000000000705 -testplusarg EXP7=00000000001010ff -autoloadwcfg -runall -onerror quit
+Time resolution is 1 ps
+run -all
+G6_L1R80_CASE_PASS id=16 cycles=53
+$finish called at time : 605 ns : File "/home/lab_726/boom/hls_boom/rtl_tb/gate6_0/g6_l1r_focused_80_path_a_tb.sv" Line 338
+exit
+INFO: [Common 17-206] Exiting xsim at Wed Sep 16 10:58:05 2026...

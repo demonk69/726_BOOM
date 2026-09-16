@@ -1,0 +1,24 @@
+#-----------------------------------------------------------
+# xsim v2021.2 (64-bit)
+# SW Build 3367213 on Tue Oct 19 02:47:39 MDT 2021
+# IP Build 3369179 on Thu Oct 21 08:25:16 MDT 2021
+# Start of session at: Tue Sep 15 18:38:55 2026
+# Process ID: 45412
+# Current directory: /tmp/boom_hls/g6_l1_closure/pf3/product_rtl
+# Command line: xsim -log /home/lab_726/boom/hls_boom/reports/gate6_0_full_lsu/l1/pf3/logs/pf3_generation_reuse.log -mode tcl -source {xsim.dir/pf3_product_snapshot/xsim_script.tcl}
+# Log file: /home/lab_726/boom/hls_boom/reports/gate6_0_full_lsu/l1/pf3/logs/pf3_generation_reuse.log
+# Journal file: /tmp/boom_hls/g6_l1_closure/pf3/product_rtl/xsim.jou
+# Running On: 726, OS: Linux, CPU Frequency: 3373.213 MHz, CPU Physical cores: 14, Host memory: 67148 MB
+#-----------------------------------------------------------
+source xsim.dir/pf3_product_snapshot/xsim_script.tcl
+# xsim {pf3_product_snapshot} -testplusarg PROGRAM=/tmp/boom_hls/g6_l1_closure/pf3/programs/pf3_generation_reuse.hex -testplusarg PROGRAM_NAME=pf3_generation_reuse -testplusarg EXPECT_TRAP=0 -testplusarg RESET_MIDSTREAM=0 -testplusarg TRACE=/home/lab_726/boom/hls_boom/reports/gate6_0_full_lsu/l1/pf3/traces/pf3_generation_reuse.jsonl -autoloadwcfg -runall -onerror quit
+Time resolution is 1 ps
+run -all
+GATE3_8_IMEM program=/tmp/boom_hls/g6_l1_closure/pf3/programs/pf3_generation_reuse.hex
+PF3_RTL_EVENT program=pf3_generation_reuse alloc=91 reclaim=87 redirect=1 wrap=2 reuse=59 generation_retry=51 reset=0 max_occupancy=1 commits=87 cycles=163182
+PF3_PRODUCT_RTL_PASS program=pf3_generation_reuse
+$finish called at time : 1631875 ns : File "/home/lab_726/boom/hls_boom/rtl_tb/pf3_product_rtl_tb.sv" Line 119
+run: Time (s): cpu = 00:00:00.38 ; elapsed = 00:00:33 . Memory (MB): peak = 2685.672 ; gain = 0.000 ; free physical = 50436 ; free virtual = 58527
+exit
+INFO: xsimkernel Simulation Memory Usage: 147376 KB (Peak: 200752 KB), Simulation CPU Usage: 33270 ms
+INFO: [Common 17-206] Exiting xsim at Tue Sep 15 18:39:32 2026...

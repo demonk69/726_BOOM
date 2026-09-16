@@ -1,0 +1,358 @@
+
+****** Vitis HLS - High-Level Synthesis from C, C++ and OpenCL v2021.2 (64-bit)
+  **** SW Build 3367213 on Tue Oct 19 02:47:39 MDT 2021
+  **** IP Build 3369179 on Thu Oct 21 08:25:16 MDT 2021
+    ** Copyright 1986-2021 Xilinx, Inc. All Rights Reserved.
+
+source /home/lab_726/Xilinx/Vitis_HLS/2021.2/scripts/vitis_hls/hls.tcl -notrace
+INFO: [HLS 200-10] Running '/home/lab_726/Xilinx/Vitis_HLS/2021.2/bin/unwrapped/lnx64.o/vitis_hls'
+INFO: [HLS 200-10] For user 'lab_726' on host '726' (Linux_x86_64 version 6.8.0-138-generic) on Wed Sep 16 11:08:29 CST 2026
+INFO: [HLS 200-10] On os Ubuntu 22.04.5 LTS
+INFO: [HLS 200-10] In directory '/home/lab_726/boom/hls_boom'
+Sourcing Tcl script '/home/lab_726/boom/hls_boom/scripts/gate6_0/l1r_focused_80_csynth.tcl'
+INFO: [HLS 200-1510] Running: open_project -reset hls_project 
+INFO: [HLS 200-10] Creating and opening project '/home/lab_726/opencode_tmp/g6_l1_focused_80/image_5_global_flush/hls_project'.
+INFO: [HLS 200-1510] Running: set_top g6_l1r80_global_flush 
+INFO: [HLS 200-1510] Running: add_files -cflags -std=c++11 -DLQ_DEPTH=8 -DSQ_DEPTH=8 -DBOOM_FTQ_STORAGE_LUTRAM -DBOOM_PREDICTOR_STORAGE_LUTRAM -I/home/lab_726/boom/hls_boom/include /home/lab_726/boom/hls_boom/src/boom_core_merged.cpp 
+INFO: [HLS 200-10] Adding design file '/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp' to the project
+INFO: [HLS 200-1510] Running: add_files -cflags -std=c++11 -DLQ_DEPTH=8 -DSQ_DEPTH=8 -DBOOM_FTQ_STORAGE_LUTRAM -DBOOM_PREDICTOR_STORAGE_LUTRAM -I/home/lab_726/boom/hls_boom/include /home/lab_726/boom/hls_boom/tb/differential/g6_l1r_focused_80_tops.cpp 
+INFO: [HLS 200-10] Adding design file '/home/lab_726/boom/hls_boom/tb/differential/g6_l1r_focused_80_tops.cpp' to the project
+INFO: [HLS 200-1510] Running: open_solution -reset solution 
+INFO: [HLS 200-10] Creating and opening solution '/home/lab_726/opencode_tmp/g6_l1_focused_80/image_5_global_flush/hls_project/solution'.
+INFO: [HLS 200-10] Cleaning up the solution database.
+WARNING: [HLS 200-40] No /home/lab_726/opencode_tmp/g6_l1_focused_80/image_5_global_flush/hls_project/solution/solution.aps file found.
+INFO: [HLS 200-1505] Using default flow_target 'vivado'
+Resolution: For help on HLS 200-1505 see www.xilinx.com/cgi-bin/docs/rdoc?v=2021.2;t=hls+guidance;d=200-1505.html
+INFO: [HLS 200-1510] Running: set_part xczu7ev-ffvc1156-2-e 
+INFO: [HLS 200-1611] Setting target device to 'xczu7ev-ffvc1156-2-e'
+INFO: [HLS 200-1510] Running: create_clock -period 10 -name default 
+INFO: [SYN 201-201] Setting up clock 'default' with a period of 10ns.
+INFO: [HLS 200-1510] Running: csynth_design 
+INFO: [HLS 200-111] Finished File checks and directory preparation: CPU user time: 0 seconds. CPU system time: 0 seconds. Elapsed time: 0 seconds; current allocated memory: 1.321 GB.
+INFO: [HLS 200-10] Analyzing design file '/home/lab_726/boom/hls_boom/tb/differential/g6_l1r_focused_80_tops.cpp' ... 
+INFO: [HLS 200-10] Analyzing design file '/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp' ... 
+INFO: [HLS 200-111] Finished Source Code Analysis and Preprocessing: CPU user time: 4.42 seconds. CPU system time: 0.55 seconds. Elapsed time: 4.42 seconds; current allocated memory: 420.383 MB.
+INFO: [HLS 200-777] Using interface defaults for 'Vivado' flow target.
+INFO: [HLS 214-284] Auto array partition mode is set into default.
+INFO: [HLS 214-178] Inlining function 'boom::FetchInstruction::FetchInstruction()' into 'boom::FetchPacket::FetchPacket()' (/home/lab_726/boom/hls_boom/include/fetch_buffer.hpp:38:0)
+INFO: [HLS 214-178] Inlining function 'boom::CfiPredecodeResult::CfiPredecodeResult()' into 'boom::CfiPacketPredecodeResult::CfiPacketPredecodeResult()' (/home/lab_726/boom/hls_boom/include/predecode.hpp:43:0)
+INFO: [HLS 214-178] Inlining function 'boom::FetchInstruction::FetchInstruction()' into 'boom::FetchBufferState::FetchBufferState()' (/home/lab_726/boom/hls_boom/include/fetch_buffer.hpp:47:0)
+INFO: [HLS 214-178] Inlining function 'boom::FetchPacket::FetchPacket()' into 'FrontendState::FrontendState()' (/home/lab_726/boom/hls_boom/include/boom_state.hpp:88:0)
+INFO: [HLS 214-178] Inlining function 'boom::CfiPacketPredecodeResult::CfiPacketPredecodeResult()' into 'FrontendState::FrontendState()' (/home/lab_726/boom/hls_boom/include/boom_state.hpp:88:0)
+INFO: [HLS 214-178] Inlining function 'boom::FetchBufferState::FetchBufferState()' into 'FrontendState::FrontendState()' (/home/lab_726/boom/hls_boom/include/boom_state.hpp:88:0)
+INFO: [HLS 214-178] Inlining function 'MicroOp::MicroOp() (.5)' into 'RenameDispatchPacket::RenameDispatchPacket()' (/home/lab_726/boom/hls_boom/include/boom_state.hpp:135:0)
+INFO: [HLS 214-178] Inlining function 'RenameMapTableState::RenameMapTableState()' into 'RenameState::RenameState()' (/home/lab_726/boom/hls_boom/include/boom_state.hpp:138:0)
+INFO: [HLS 214-178] Inlining function 'RenameFreeListState::RenameFreeListState()' into 'RenameState::RenameState()' (/home/lab_726/boom/hls_boom/include/boom_state.hpp:138:0)
+INFO: [HLS 214-178] Inlining function 'RenameDispatchPacket::RenameDispatchPacket()' into 'RenameState::RenameState()' (/home/lab_726/boom/hls_boom/include/boom_state.hpp:138:0)
+INFO: [HLS 214-178] Inlining function 'MicroOp::MicroOp() (.5)' into 'IssueSlotEntry::IssueSlotEntry()' (/home/lab_726/boom/hls_boom/include/boom_types.hpp:193:0)
+INFO: [HLS 214-178] Inlining function 'MicroOp::MicroOp() (.5)' into 'IssueGrant::IssueGrant()' (/home/lab_726/boom/hls_boom/include/boom_types.hpp:167:0)
+INFO: [HLS 214-178] Inlining function 'MicroOp::MicroOp() (.5)' into 'ExecuteState::AluResult::AluResult()' (/home/lab_726/boom/hls_boom/include/boom_state.hpp:202:0)
+INFO: [HLS 214-178] Inlining function 'boom::divider_reset(boom::DividerState&)' into 'boom::DividerState::DividerState()' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:2908:0)
+INFO: [HLS 214-178] Inlining function 'boom::DividerState::DividerState()' into 'DividerExecutionState::DividerExecutionState()' (/home/lab_726/boom/hls_boom/include/boom_state.hpp:185:0)
+INFO: [HLS 214-178] Inlining function 'MicroOp::MicroOp() (.5)' into 'DividerExecutionState::DividerExecutionState()' (/home/lab_726/boom/hls_boom/include/boom_state.hpp:185:0)
+INFO: [HLS 214-178] Inlining function 'MicroOp::MicroOp() (.5)' into 'RobEntry::RobEntry()' (/home/lab_726/boom/hls_boom/include/boom_types.hpp:184:0)
+INFO: [HLS 214-178] Inlining function 'CommitEntry::CommitEntry()' into 'RobInternalState::RobInternalState()' (/home/lab_726/boom/hls_boom/include/boom_state.hpp:221:0)
+INFO: [HLS 214-178] Inlining function 'StoreQueueEntry::StoreQueueEntry()' into 'LsuState::LsuState()' (/home/lab_726/boom/hls_boom/include/boom_state.hpp:287:0)
+INFO: [HLS 214-178] Inlining function 'LoadQueueEntry::LoadQueueEntry()' into 'LsuState::LsuState()' (/home/lab_726/boom/hls_boom/include/boom_state.hpp:287:0)
+INFO: [HLS 214-178] Inlining function 'MicroOp::MicroOp() (.5)' into 'RobCompleteEvent::RobCompleteEvent()' (/home/lab_726/boom/hls_boom/include/boom_types.hpp:120:0)
+INFO: [HLS 214-178] Inlining function 'WritebackEvent::WritebackEvent()' into 'CompletionPendingState::CompletionPendingState()' (/home/lab_726/boom/hls_boom/include/boom_state.hpp:327:0)
+INFO: [HLS 214-178] Inlining function 'WakeupEvent::WakeupEvent()' into 'CompletionPendingState::CompletionPendingState()' (/home/lab_726/boom/hls_boom/include/boom_state.hpp:327:0)
+INFO: [HLS 214-178] Inlining function 'BypassEvent::BypassEvent()' into 'CompletionPendingState::CompletionPendingState()' (/home/lab_726/boom/hls_boom/include/boom_state.hpp:327:0)
+INFO: [HLS 214-178] Inlining function 'boom::PredictorResponse::PredictorResponse()' into 'boom::PredictorFoundation<256ul, false>::PredictorFoundation()' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:368:0)
+INFO: [HLS 214-178] Inlining function 'boom::FtqEntry::FtqEntry()' into 'boom::FtqFoundation<32ul, false>::FtqFoundation()' (/home/lab_726/boom/hls_boom/include/ftq.hpp:191:0)
+INFO: [HLS 214-178] Inlining function 'boom::FtqEntry::FtqEntry()' into 'boom::FtqStepOutput::FtqStepOutput()' (/home/lab_726/boom/hls_boom/include/ftq.hpp:118:0)
+INFO: [HLS 214-178] Inlining function 'MicroOp::MicroOp() (.5)' into 'BranchUpdate::BranchUpdate()' (/home/lab_726/boom/hls_boom/include/boom_types.hpp:210:0)
+INFO: [HLS 214-178] Inlining function 'CsrState::CsrState()' into 'BoomCoreState::BoomCoreState()' (/home/lab_726/boom/hls_boom/include/boom_state.hpp:394:0)
+INFO: [HLS 214-178] Inlining function 'LsuState::LsuState()' into 'BoomCoreState::BoomCoreState()' (/home/lab_726/boom/hls_boom/include/boom_state.hpp:394:0)
+INFO: [HLS 214-178] Inlining function 'BranchRecoveryState::BranchRecoveryState()' into 'BoomCoreState::BoomCoreState()' (/home/lab_726/boom/hls_boom/include/boom_state.hpp:394:0)
+INFO: [HLS 214-178] Inlining function 'boom::PredictorFoundation<256ul, false>::PredictorFoundation()' into 'BoomCoreState::BoomCoreState()' (/home/lab_726/boom/hls_boom/include/boom_state.hpp:394:0)
+INFO: [HLS 214-178] Inlining function 'boom::PredictorUpdate::PredictorUpdate()' into 'BoomCoreState::BoomCoreState()' (/home/lab_726/boom/hls_boom/include/boom_state.hpp:394:0)
+INFO: [HLS 214-178] Inlining function 'BimTrainingStats::BimTrainingStats()' into 'BoomCoreState::BoomCoreState()' (/home/lab_726/boom/hls_boom/include/boom_state.hpp:394:0)
+INFO: [HLS 214-178] Inlining function 'boom::FtqFoundation<32ul, false>::FtqFoundation()' into 'BoomCoreState::BoomCoreState()' (/home/lab_726/boom/hls_boom/include/boom_state.hpp:394:0)
+INFO: [HLS 214-178] Inlining function 'boom::FtqLaneEvent::FtqLaneEvent()' into 'BoomCoreState::BoomCoreState()' (/home/lab_726/boom/hls_boom/include/boom_state.hpp:394:0)
+INFO: [HLS 214-178] Inlining function 'boom::FtqRedirect::FtqRedirect()' into 'BoomCoreState::BoomCoreState()' (/home/lab_726/boom/hls_boom/include/boom_state.hpp:394:0)
+INFO: [HLS 214-178] Inlining function 'boom::FtqStepOutput::FtqStepOutput()' into 'BoomCoreState::BoomCoreState()' (/home/lab_726/boom/hls_boom/include/boom_state.hpp:394:0)
+INFO: [HLS 214-178] Inlining function 'FrontendRedirect::FrontendRedirect()' into 'BoomCoreState::BoomCoreState()' (/home/lab_726/boom/hls_boom/include/boom_state.hpp:394:0)
+INFO: [HLS 214-178] Inlining function 'ExceptionCommitEvent::ExceptionCommitEvent()' into 'BoomCoreState::BoomCoreState()' (/home/lab_726/boom/hls_boom/include/boom_state.hpp:394:0)
+INFO: [HLS 214-178] Inlining function 'MicroOp::MicroOp() (.5)' into 'focused_80_uop(unsigned char, unsigned int, unsigned char, bool)' (/home/lab_726/boom/hls_boom/tb/differential/g6_l1r_focused_80_tops.cpp:30:0)
+INFO: [HLS 214-178] Inlining function 'boom::enqueue_store(BoomCoreState&, MicroOp const&, unsigned long, unsigned long, unsigned char, unsigned char, RobEntry&) (.152.173.182.203.212.233.242.263.326.350.367.392.409.434.451.476.493.518.535.560.577.605.622.648.665.690.707.733.750.775.792.818.835.860.877.904.921.950.967.998.1015.1046.1063.1094.1111.1142.1159.1185.1202.1229.1246.1273.1290.1317.1334.1361.1378.1405.1422.1449.1466.1493.1510.1537.1555.1580.1599.1624.1643.1670.1689.1714.1733.1758.1777.1802.1821.1846.1865.1890.1909.1934.1953.1978.1997.2022.2041.2066.2084.2109.2126.2156.2179.2212.2235.2268.2291.2324.2347.2380.2400.2426.2443.2470.2487.2514.2531.2558.2575.2602.2619.2648.2665.2692.2709.2736.2753.2780.2797.2824.2841.2866.2883.2908.2925.2950.2967.2992.3009.3035.3052.3079.3096.3123.3140.3167.3184.3211.3228.3256.3273.3302.3319.3348.3365.3394.3411.3440.3457.3483.3500.3527.3544.3571.3588.3615.3632.3659.3676.3705.3722.3751.3768.3793.3810.3835.3852.3877.3894.3919.3936.3961.3978.4008.4025.4053.4070.4098.4115.4140.4157.4182.4199.4224.4241.4266.4283.4308.4325.4350.4367.4392.4409.4434)' into 'boom::lsu_accept_completion(BoomCoreState&, MicroOp const&, bool, bool, bool, unsigned long, unsigned long, unsigned char, unsigned char)' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:3750:0)
+INFO: [HLS 214-178] Inlining function 'boom::enqueue_load(BoomCoreState&, MicroOp const&, bool, unsigned long, unsigned char, unsigned char, RobEntry&) (.149.170.179.200.209.230.239.260.323.347.364.389.406.431.448.473.490.515.532.557.574.602.619.645.662.687.704.730.747.772.789.815.832.857.874.901.918.947.964.995.1012.1043.1060.1091.1108.1139.1156.1182.1199.1226.1243.1270.1287.1314.1331.1358.1375.1402.1419.1446.1463.1490.1507.1534.1552.1577.1596.1621.1640.1667.1686.1711.1730.1755.1774.1799.1818.1843.1862.1887.1906.1931.1950.1975.1994.2019.2038.2063.2081.2106.2123.2150.2173.2206.2229.2262.2285.2318.2341.2374.2397.2423.2440.2467.2484.2511.2528.2555.2572.2599.2616.2645.2662.2689.2706.2733.2750.2777.2794.2821.2838.2863.2880.2905.2922.2947.2964.2989.3006.3032.3049.3076.3093.3120.3137.3164.3181.3208.3225.3253.3270.3299.3316.3345.3362.3391.3408.3437.3454.3480.3497.3524.3541.3568.3585.3612.3629.3656.3673.3702.3719.3748.3765.3790.3807.3832.3849.3874.3891.3916.3933.3958.3975.4005.4022.4050.4067.4095.4112.4137.4154.4179.4196.4221.4238.4263.4280.4305.4322.4347.4364.4389.4406.4431)' into 'boom::lsu_accept_completion(BoomCoreState&, MicroOp const&, bool, bool, bool, unsigned long, unsigned long, unsigned char, unsigned char)' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:3750:0)
+INFO: [HLS 214-178] Inlining function 'boom::older_store_in_rob(BoomCoreState const&, unsigned char)' into 'boom::try_issue_load(BoomCoreState&, PipeSignals&, unsigned char)' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:3668:0)
+INFO: [HLS 214-178] Inlining function 'DmemRequest::DmemRequest()' into 'boom::try_issue_load(BoomCoreState&, PipeSignals&, unsigned char)' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:3668:0)
+INFO: [HLS 214-178] Inlining function 'boom::clear_lsu_queues(LsuState&)' into 'boom::lsu_module(BoomCoreState&, PipeSignals&)' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:3856:0)
+INFO: [HLS 214-178] Inlining function 'boom::lsu_module(BoomCoreState&, PipeSignals&)' into 'g6_l1r80_global_flush' (/home/lab_726/boom/hls_boom/tb/differential/g6_l1r_focused_80_tops.cpp:452:0)
+INFO: [HLS 214-178] Inlining function 'focused_80_valid_lq(BoomCoreState const&)' into 'g6_l1r80_global_flush' (/home/lab_726/boom/hls_boom/tb/differential/g6_l1r_focused_80_tops.cpp:452:0)
+INFO: [HLS 214-178] Inlining function 'focused_80_valid_sq(BoomCoreState const&)' into 'g6_l1r80_global_flush' (/home/lab_726/boom/hls_boom/tb/differential/g6_l1r_focused_80_tops.cpp:452:0)
+INFO: [HLS 214-270] Starting automatic array partition analysis...
+INFO: [HLS 200-111] Finished Compiling Optimization and Transform: CPU user time: 80.78 seconds. CPU system time: 0.61 seconds. Elapsed time: 81.42 seconds; current allocated memory: 438.121 MB.
+INFO: [HLS 200-111] Finished Checking Pragmas: CPU user time: 0 seconds. CPU system time: 0 seconds. Elapsed time: 0 seconds; current allocated memory: 438.121 MB.
+INFO: [HLS 200-10] Starting code transformations ...
+INFO: [HLS 200-111] Finished Standard Transforms: CPU user time: 0.86 seconds. CPU system time: 0.01 seconds. Elapsed time: 0.87 seconds; current allocated memory: 476.793 MB.
+INFO: [HLS 200-10] Checking synthesizability ...
+INFO: [HLS 200-111] Finished Checking Synthesizability: CPU user time: 0.13 seconds. CPU system time: 0 seconds. Elapsed time: 0.14 seconds; current allocated memory: 480.879 MB.
+INFO: [XFORM 203-510] Pipelining loop 'FIND_FREE_STQ' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:3720) in function 'boom::lsu_accept_completion' automatically.
+INFO: [XFORM 203-510] Pipelining loop 'FIND_FREE_LDQ' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:3832) in function 'boom::lsu_accept_completion' automatically.
+INFO: [XFORM 203-510] Pipelining loop 'CLEAR_LDQ' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:3660) in function 'g6_l1r80_global_flush' automatically.
+INFO: [XFORM 203-510] Pipelining loop 'CLEAR_STQ' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:3665) in function 'g6_l1r80_global_flush' automatically.
+INFO: [XFORM 203-510] Pipelining loop 'VITIS_LOOP_53_1' (/home/lab_726/boom/hls_boom/tb/differential/g6_l1r_focused_80_tops.cpp:52) in function 'g6_l1r80_global_flush' automatically.
+INFO: [XFORM 203-510] Pipelining loop 'VITIS_LOOP_59_1' (/home/lab_726/boom/hls_boom/tb/differential/g6_l1r_focused_80_tops.cpp:58) in function 'g6_l1r80_global_flush' automatically.
+INFO: [XFORM 203-602] Inlining function 'focused_80_uop' into 'g6_l1r80_global_flush' (/home/lab_726/boom/hls_boom/tb/differential/g6_l1r_focused_80_tops.cpp:460) automatically.
+INFO: [XFORM 203-602] Inlining function 'focused_80_install' into 'g6_l1r80_global_flush' (/home/lab_726/boom/hls_boom/tb/differential/g6_l1r_focused_80_tops.cpp:461) automatically.
+INFO: [XFORM 203-401] Performing if-conversion on hyperblock from (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:3720:13) in function 'boom::lsu_accept_completion'... converting 3 basic blocks.
+INFO: [XFORM 203-401] Performing if-conversion on hyperblock from (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:3832:13) in function 'boom::lsu_accept_completion'... converting 3 basic blocks.
+INFO: [HLS 200-111] Finished Loop, function and other optimizations: CPU user time: 0.2 seconds. CPU system time: 0.01 seconds. Elapsed time: 0.21 seconds; current allocated memory: 518.164 MB.
+INFO: [HLS 200-472] Inferring partial write operation for 'state_rob_entries_memory_valid' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:3709:24)
+INFO: [HLS 200-472] Inferring partial write operation for 'state_rob_entries_is_store' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:3710:20)
+INFO: [HLS 200-472] Inferring partial write operation for 'state_rob_entries_is_load' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:3711:19)
+INFO: [HLS 200-472] Inferring partial write operation for 'state_rob_entries_memory_completed' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:3712:28)
+INFO: [HLS 200-472] Inferring partial write operation for 'state_rob_entries_memory_address' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:3713:26)
+INFO: [HLS 200-472] Inferring partial write operation for 'state_rob_entries_memory_data' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:3714:23)
+INFO: [HLS 200-472] Inferring partial write operation for 'state_rob_entries_memory_mask' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:3715:23)
+INFO: [HLS 200-472] Inferring partial write operation for 'state_rob_entries_memory_size' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:3716:23)
+INFO: [HLS 200-472] Inferring partial write operation for 'state_lsu_stq_committed' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:3728:13)
+INFO: [HLS 200-472] Inferring partial write operation for 'state_lsu_stq_generation' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:3729:24)
+INFO: [HLS 200-472] Inferring partial write operation for 'state_lsu_stq_valid' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:3730:19)
+INFO: [HLS 200-472] Inferring partial write operation for 'state_lsu_stq_rob_idx' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:3731:21)
+INFO: [HLS 200-472] Inferring partial write operation for 'state_lsu_stq_rob_allocation_id' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:3732:31)
+INFO: [HLS 200-472] Inferring partial write operation for 'state_lsu_stq_address_valid' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:3733:27)
+INFO: [HLS 200-472] Inferring partial write operation for 'state_lsu_stq_address' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:3734:21)
+INFO: [HLS 200-472] Inferring partial write operation for 'state_lsu_stq_data_valid' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:3735:24)
+INFO: [HLS 200-472] Inferring partial write operation for 'state_lsu_stq_data' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:3736:18)
+INFO: [HLS 200-472] Inferring partial write operation for 'state_lsu_stq_mask' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:3737:18)
+INFO: [HLS 200-472] Inferring partial write operation for 'state_lsu_stq_size' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:3738:18)
+INFO: [HLS 200-472] Inferring partial write operation for 'state_lsu_stq_branch_mask' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:3739:25)
+INFO: [HLS 200-472] Inferring partial write operation for 'state_rob_entries_uop_imm_packed.2' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:3740:33)
+INFO: [HLS 200-472] Inferring partial write operation for 'state_rob_entries_uop_imm_packed.6' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:3741:40)
+INFO: [HLS 200-472] Inferring partial write operation for 'state_rob_entries_memory_valid' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:3822:24)
+INFO: [HLS 200-472] Inferring partial write operation for 'state_rob_entries_is_load' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:3823:19)
+INFO: [HLS 200-472] Inferring partial write operation for 'state_rob_entries_is_store' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:3824:20)
+INFO: [HLS 200-472] Inferring partial write operation for 'state_rob_entries_signed_load' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:3825:23)
+INFO: [HLS 200-472] Inferring partial write operation for 'state_rob_entries_memory_address' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:3826:26)
+INFO: [HLS 200-472] Inferring partial write operation for 'state_rob_entries_memory_mask' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:3827:23)
+INFO: [HLS 200-472] Inferring partial write operation for 'state_rob_entries_memory_size' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:3828:23)
+INFO: [HLS 200-472] Inferring partial write operation for 'state_lsu_ldq_response_pending' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:3840:13)
+INFO: [HLS 200-472] Inferring partial write operation for 'state_lsu_ldq_generation' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:3841:24)
+INFO: [HLS 200-472] Inferring partial write operation for 'state_lsu_ldq_valid' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:3842:19)
+INFO: [HLS 200-472] Inferring partial write operation for 'state_lsu_ldq_rob_idx' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:3843:21)
+INFO: [HLS 200-472] Inferring partial write operation for 'state_lsu_ldq_rob_allocation_id' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:3844:31)
+INFO: [HLS 200-472] Inferring partial write operation for 'state_lsu_ldq_address' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:3845:21)
+INFO: [HLS 200-472] Inferring partial write operation for 'state_lsu_ldq_size' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:3846:18)
+INFO: [HLS 200-472] Inferring partial write operation for 'state_lsu_ldq_signed_load' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:3847:25)
+INFO: [HLS 200-472] Inferring partial write operation for 'state_lsu_ldq_branch_mask' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:3848:25)
+INFO: [HLS 200-472] Inferring partial write operation for 'state_rob_entries_uop_imm_packed.1' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:3849:33)
+INFO: [HLS 200-472] Inferring partial write operation for 'state_rob_entries_uop_imm_packed.5' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:3850:40)
+INFO: [HLS 200-472] Inferring partial write operation for 'state.rob.entries.valid' (/home/lab_726/boom/hls_boom/tb/differential/g6_l1r_focused_80_tops.cpp:454:19)
+INFO: [HLS 200-472] Inferring partial write operation for 'state.lsu.ldq.generation' (/home/lab_726/boom/hls_boom/tb/differential/g6_l1r_focused_80_tops.cpp:458:43)
+INFO: [HLS 200-472] Inferring partial write operation for 'state.lsu.stq.generation' (/home/lab_726/boom/hls_boom/tb/differential/g6_l1r_focused_80_tops.cpp:459:43)
+INFO: [HLS 200-472] Inferring partial write operation for 'state.rob.entries.memory_valid' (/home/lab_726/boom/hls_boom/tb/differential/g6_l1r_focused_80_tops.cpp:45:11)
+INFO: [HLS 200-472] Inferring partial write operation for 'state.rob.entries.valid' (/home/lab_726/boom/hls_boom/tb/differential/g6_l1r_focused_80_tops.cpp:46:17)
+INFO: [HLS 200-472] Inferring partial write operation for 'state.rob.entries.uop.imm_packed' (/home/lab_726/boom/hls_boom/tb/differential/g6_l1r_focused_80_tops.cpp:48:15)
+INFO: [HLS 200-472] Inferring partial write operation for 'state.rob.entries.memory_valid' (/home/lab_726/boom/hls_boom/tb/differential/g6_l1r_focused_80_tops.cpp:45:11)
+INFO: [HLS 200-472] Inferring partial write operation for 'state.rob.entries.valid' (/home/lab_726/boom/hls_boom/tb/differential/g6_l1r_focused_80_tops.cpp:46:17)
+INFO: [HLS 200-472] Inferring partial write operation for 'state.rob.entries.uop.imm_packed' (/home/lab_726/boom/hls_boom/tb/differential/g6_l1r_focused_80_tops.cpp:48:15)
+INFO: [HLS 200-472] Inferring partial write operation for 'state.lsu.ldq.response_pending' (/home/lab_726/boom/hls_boom/tb/differential/g6_l1r_focused_80_tops.cpp:471:25)
+INFO: [HLS 200-472] Inferring partial write operation for 'state.lsu.ldq.transaction_id' (/home/lab_726/boom/hls_boom/tb/differential/g6_l1r_focused_80_tops.cpp:472:23)
+INFO: [HLS 200-472] Inferring partial write operation for 'state.lsu.ldq.valid' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:3661:26)
+INFO: [HLS 200-472] Inferring partial write operation for 'state.lsu.ldq.response_pending' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:3662:37)
+INFO: [HLS 200-472] Inferring partial write operation for 'state.lsu.stq.valid' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:3665:50)
+INFO: [HLS 200-111] Finished Architecture Synthesis: CPU user time: 0.18 seconds. CPU system time: 0.01 seconds. Elapsed time: 0.19 seconds; current allocated memory: 587.246 MB.
+INFO: [HLS 200-10] Starting hardware synthesis ...
+INFO: [HLS 200-10] Synthesizing 'g6_l1r80_global_flush' ...
+INFO: [HLS 200-10] ----------------------------------------------------------------
+INFO: [HLS 200-42] -- Implementing module 'lsu_accept_completion_Pipeline_FIND_FREE_LDQ' 
+INFO: [HLS 200-10] ----------------------------------------------------------------
+INFO: [SCHED 204-11] Starting scheduling ...
+INFO: [SCHED 204-61] Pipelining loop 'FIND_FREE_LDQ'.
+INFO: [HLS 200-1470] Pipelining result : Target II = NA, Final II = 1, Depth = 2, loop 'FIND_FREE_LDQ'
+INFO: [SCHED 204-11] Finished scheduling.
+INFO: [HLS 200-111] Finished Scheduling: CPU user time: 0.14 seconds. CPU system time: 0.02 seconds. Elapsed time: 0.14 seconds; current allocated memory: 588.520 MB.
+INFO: [BIND 205-100] Starting micro-architecture generation ...
+INFO: [BIND 205-101] Performing variable lifetime analysis.
+INFO: [BIND 205-101] Exploring resource sharing.
+INFO: [BIND 205-101] Binding ...
+INFO: [BIND 205-100] Finished micro-architecture generation.
+INFO: [HLS 200-111] Finished Binding: CPU user time: 0.01 seconds. CPU system time: 0 seconds. Elapsed time: 0.01 seconds; current allocated memory: 588.520 MB.
+INFO: [HLS 200-10] ----------------------------------------------------------------
+INFO: [HLS 200-42] -- Implementing module 'lsu_accept_completion_Pipeline_FIND_FREE_STQ' 
+INFO: [HLS 200-10] ----------------------------------------------------------------
+INFO: [SCHED 204-11] Starting scheduling ...
+INFO: [SCHED 204-61] Pipelining loop 'FIND_FREE_STQ'.
+INFO: [HLS 200-1470] Pipelining result : Target II = NA, Final II = 1, Depth = 2, loop 'FIND_FREE_STQ'
+INFO: [SCHED 204-11] Finished scheduling.
+INFO: [HLS 200-111] Finished Scheduling: CPU user time: 0.02 seconds. CPU system time: 0 seconds. Elapsed time: 0.02 seconds; current allocated memory: 588.871 MB.
+INFO: [BIND 205-100] Starting micro-architecture generation ...
+INFO: [BIND 205-101] Performing variable lifetime analysis.
+INFO: [BIND 205-101] Exploring resource sharing.
+INFO: [BIND 205-101] Binding ...
+INFO: [BIND 205-100] Finished micro-architecture generation.
+INFO: [HLS 200-111] Finished Binding: CPU user time: 0.01 seconds. CPU system time: 0 seconds. Elapsed time: 0.01 seconds; current allocated memory: 588.871 MB.
+INFO: [HLS 200-10] ----------------------------------------------------------------
+INFO: [HLS 200-42] -- Implementing module 'lsu_accept_completion' 
+INFO: [HLS 200-10] ----------------------------------------------------------------
+INFO: [SCHED 204-11] Starting scheduling ...
+INFO: [SCHED 204-11] Finished scheduling.
+INFO: [HLS 200-111] Finished Scheduling: CPU user time: 0.06 seconds. CPU system time: 0 seconds. Elapsed time: 0.06 seconds; current allocated memory: 590.371 MB.
+INFO: [BIND 205-100] Starting micro-architecture generation ...
+INFO: [BIND 205-101] Performing variable lifetime analysis.
+INFO: [BIND 205-101] Exploring resource sharing.
+INFO: [BIND 205-101] Binding ...
+INFO: [BIND 205-100] Finished micro-architecture generation.
+INFO: [HLS 200-111] Finished Binding: CPU user time: 0.04 seconds. CPU system time: 0.01 seconds. Elapsed time: 0.05 seconds; current allocated memory: 590.371 MB.
+INFO: [HLS 200-10] ----------------------------------------------------------------
+INFO: [HLS 200-42] -- Implementing module 'g6_l1r80_global_flush_Pipeline_CLEAR_LDQ' 
+INFO: [HLS 200-10] ----------------------------------------------------------------
+INFO: [SCHED 204-11] Starting scheduling ...
+INFO: [SCHED 204-61] Pipelining loop 'CLEAR_LDQ'.
+INFO: [HLS 200-1470] Pipelining result : Target II = NA, Final II = 1, Depth = 1, loop 'CLEAR_LDQ'
+INFO: [SCHED 204-11] Finished scheduling.
+INFO: [HLS 200-111] Finished Scheduling: CPU user time: 0.05 seconds. CPU system time: 0 seconds. Elapsed time: 0.05 seconds; current allocated memory: 590.438 MB.
+INFO: [BIND 205-100] Starting micro-architecture generation ...
+INFO: [BIND 205-101] Performing variable lifetime analysis.
+INFO: [BIND 205-101] Exploring resource sharing.
+INFO: [BIND 205-101] Binding ...
+INFO: [BIND 205-100] Finished micro-architecture generation.
+INFO: [HLS 200-111] Finished Binding: CPU user time: 0.01 seconds. CPU system time: 0 seconds. Elapsed time: 0.01 seconds; current allocated memory: 590.438 MB.
+INFO: [HLS 200-10] ----------------------------------------------------------------
+INFO: [HLS 200-42] -- Implementing module 'g6_l1r80_global_flush_Pipeline_CLEAR_STQ' 
+INFO: [HLS 200-10] ----------------------------------------------------------------
+INFO: [SCHED 204-11] Starting scheduling ...
+INFO: [SCHED 204-61] Pipelining loop 'CLEAR_STQ'.
+INFO: [HLS 200-1470] Pipelining result : Target II = NA, Final II = 1, Depth = 1, loop 'CLEAR_STQ'
+INFO: [SCHED 204-11] Finished scheduling.
+INFO: [HLS 200-111] Finished Scheduling: CPU user time: 0.01 seconds. CPU system time: 0 seconds. Elapsed time: 0.02 seconds; current allocated memory: 590.758 MB.
+INFO: [BIND 205-100] Starting micro-architecture generation ...
+INFO: [BIND 205-101] Performing variable lifetime analysis.
+INFO: [BIND 205-101] Exploring resource sharing.
+INFO: [BIND 205-101] Binding ...
+INFO: [BIND 205-100] Finished micro-architecture generation.
+INFO: [HLS 200-111] Finished Binding: CPU user time: 0.01 seconds. CPU system time: 0 seconds. Elapsed time: 0.01 seconds; current allocated memory: 590.758 MB.
+INFO: [HLS 200-10] ----------------------------------------------------------------
+INFO: [HLS 200-42] -- Implementing module 'g6_l1r80_global_flush_Pipeline_VITIS_LOOP_53_1' 
+INFO: [HLS 200-10] ----------------------------------------------------------------
+INFO: [SCHED 204-11] Starting scheduling ...
+INFO: [SCHED 204-61] Pipelining loop 'VITIS_LOOP_53_1'.
+INFO: [HLS 200-1470] Pipelining result : Target II = NA, Final II = 1, Depth = 2, loop 'VITIS_LOOP_53_1'
+INFO: [SCHED 204-11] Finished scheduling.
+INFO: [HLS 200-111] Finished Scheduling: CPU user time: 0.02 seconds. CPU system time: 0 seconds. Elapsed time: 0.02 seconds; current allocated memory: 590.977 MB.
+INFO: [BIND 205-100] Starting micro-architecture generation ...
+INFO: [BIND 205-101] Performing variable lifetime analysis.
+INFO: [BIND 205-101] Exploring resource sharing.
+INFO: [BIND 205-101] Binding ...
+INFO: [BIND 205-100] Finished micro-architecture generation.
+INFO: [HLS 200-111] Finished Binding: CPU user time: 0.01 seconds. CPU system time: 0 seconds. Elapsed time: 0.01 seconds; current allocated memory: 590.977 MB.
+INFO: [HLS 200-10] ----------------------------------------------------------------
+INFO: [HLS 200-42] -- Implementing module 'g6_l1r80_global_flush_Pipeline_VITIS_LOOP_59_1' 
+INFO: [HLS 200-10] ----------------------------------------------------------------
+INFO: [SCHED 204-11] Starting scheduling ...
+INFO: [SCHED 204-61] Pipelining loop 'VITIS_LOOP_59_1'.
+INFO: [HLS 200-1470] Pipelining result : Target II = NA, Final II = 1, Depth = 2, loop 'VITIS_LOOP_59_1'
+INFO: [SCHED 204-11] Finished scheduling.
+INFO: [HLS 200-111] Finished Scheduling: CPU user time: 0.02 seconds. CPU system time: 0 seconds. Elapsed time: 0.02 seconds; current allocated memory: 591.223 MB.
+INFO: [BIND 205-100] Starting micro-architecture generation ...
+INFO: [BIND 205-101] Performing variable lifetime analysis.
+INFO: [BIND 205-101] Exploring resource sharing.
+INFO: [BIND 205-101] Binding ...
+INFO: [BIND 205-100] Finished micro-architecture generation.
+INFO: [HLS 200-111] Finished Binding: CPU user time: 0.01 seconds. CPU system time: 0 seconds. Elapsed time: 0.01 seconds; current allocated memory: 591.223 MB.
+INFO: [HLS 200-10] ----------------------------------------------------------------
+INFO: [HLS 200-42] -- Implementing module 'g6_l1r80_global_flush' 
+INFO: [HLS 200-10] ----------------------------------------------------------------
+INFO: [SCHED 204-11] Starting scheduling ...
+INFO: [SCHED 204-11] Finished scheduling.
+INFO: [HLS 200-111] Finished Scheduling: CPU user time: 0.37 seconds. CPU system time: 0.01 seconds. Elapsed time: 0.37 seconds; current allocated memory: 602.113 MB.
+INFO: [BIND 205-100] Starting micro-architecture generation ...
+INFO: [BIND 205-101] Performing variable lifetime analysis.
+INFO: [BIND 205-101] Exploring resource sharing.
+INFO: [BIND 205-101] Binding ...
+INFO: [BIND 205-100] Finished micro-architecture generation.
+INFO: [HLS 200-111] Finished Binding: CPU user time: 0.2 seconds. CPU system time: 0 seconds. Elapsed time: 0.21 seconds; current allocated memory: 602.113 MB.
+INFO: [HLS 200-10] ----------------------------------------------------------------
+INFO: [HLS 200-10] -- Generating RTL for module 'lsu_accept_completion_Pipeline_FIND_FREE_LDQ' 
+INFO: [HLS 200-10] ----------------------------------------------------------------
+INFO: [HLS 200-1030] Apply Unified Pipeline Control on module 'lsu_accept_completion_Pipeline_FIND_FREE_LDQ' pipeline 'FIND_FREE_LDQ' pipeline type 'loop pipeline'
+INFO: [RTGEN 206-100] Finished creating RTL model for 'lsu_accept_completion_Pipeline_FIND_FREE_LDQ'.
+INFO: [HLS 200-111] Finished Creating RTL model: CPU user time: 0.16 seconds. CPU system time: 0 seconds. Elapsed time: 0.16 seconds; current allocated memory: 602.113 MB.
+INFO: [HLS 200-10] ----------------------------------------------------------------
+INFO: [HLS 200-10] -- Generating RTL for module 'lsu_accept_completion_Pipeline_FIND_FREE_STQ' 
+INFO: [HLS 200-10] ----------------------------------------------------------------
+INFO: [HLS 200-1030] Apply Unified Pipeline Control on module 'lsu_accept_completion_Pipeline_FIND_FREE_STQ' pipeline 'FIND_FREE_STQ' pipeline type 'loop pipeline'
+INFO: [RTGEN 206-100] Finished creating RTL model for 'lsu_accept_completion_Pipeline_FIND_FREE_STQ'.
+INFO: [HLS 200-111] Finished Creating RTL model: CPU user time: 0.04 seconds. CPU system time: 0 seconds. Elapsed time: 0.04 seconds; current allocated memory: 602.113 MB.
+INFO: [HLS 200-10] ----------------------------------------------------------------
+INFO: [HLS 200-10] -- Generating RTL for module 'lsu_accept_completion' 
+INFO: [HLS 200-10] ----------------------------------------------------------------
+INFO: [RTGEN 206-100] Finished creating RTL model for 'lsu_accept_completion'.
+INFO: [HLS 200-111] Finished Creating RTL model: CPU user time: 0.04 seconds. CPU system time: 0 seconds. Elapsed time: 0.04 seconds; current allocated memory: 602.113 MB.
+INFO: [HLS 200-10] ----------------------------------------------------------------
+INFO: [HLS 200-10] -- Generating RTL for module 'g6_l1r80_global_flush_Pipeline_CLEAR_LDQ' 
+INFO: [HLS 200-10] ----------------------------------------------------------------
+INFO: [RTGEN 206-100] Finished creating RTL model for 'g6_l1r80_global_flush_Pipeline_CLEAR_LDQ'.
+INFO: [HLS 200-111] Finished Creating RTL model: CPU user time: 0.1 seconds. CPU system time: 0.01 seconds. Elapsed time: 0.1 seconds; current allocated memory: 605.332 MB.
+INFO: [HLS 200-10] ----------------------------------------------------------------
+INFO: [HLS 200-10] -- Generating RTL for module 'g6_l1r80_global_flush_Pipeline_CLEAR_STQ' 
+INFO: [HLS 200-10] ----------------------------------------------------------------
+INFO: [RTGEN 206-100] Finished creating RTL model for 'g6_l1r80_global_flush_Pipeline_CLEAR_STQ'.
+INFO: [HLS 200-111] Finished Creating RTL model: CPU user time: 0.01 seconds. CPU system time: 0 seconds. Elapsed time: 0.02 seconds; current allocated memory: 605.711 MB.
+INFO: [HLS 200-10] ----------------------------------------------------------------
+INFO: [HLS 200-10] -- Generating RTL for module 'g6_l1r80_global_flush_Pipeline_VITIS_LOOP_53_1' 
+INFO: [HLS 200-10] ----------------------------------------------------------------
+INFO: [HLS 200-1030] Apply Unified Pipeline Control on module 'g6_l1r80_global_flush_Pipeline_VITIS_LOOP_53_1' pipeline 'VITIS_LOOP_53_1' pipeline type 'loop pipeline'
+INFO: [RTGEN 206-100] Finished creating RTL model for 'g6_l1r80_global_flush_Pipeline_VITIS_LOOP_53_1'.
+INFO: [HLS 200-111] Finished Creating RTL model: CPU user time: 0.02 seconds. CPU system time: 0 seconds. Elapsed time: 0.02 seconds; current allocated memory: 606.270 MB.
+INFO: [HLS 200-10] ----------------------------------------------------------------
+INFO: [HLS 200-10] -- Generating RTL for module 'g6_l1r80_global_flush_Pipeline_VITIS_LOOP_59_1' 
+INFO: [HLS 200-10] ----------------------------------------------------------------
+INFO: [HLS 200-1030] Apply Unified Pipeline Control on module 'g6_l1r80_global_flush_Pipeline_VITIS_LOOP_59_1' pipeline 'VITIS_LOOP_59_1' pipeline type 'loop pipeline'
+INFO: [RTGEN 206-100] Finished creating RTL model for 'g6_l1r80_global_flush_Pipeline_VITIS_LOOP_59_1'.
+INFO: [HLS 200-111] Finished Creating RTL model: CPU user time: 0.03 seconds. CPU system time: 0 seconds. Elapsed time: 0.03 seconds; current allocated memory: 606.938 MB.
+INFO: [HLS 200-10] ----------------------------------------------------------------
+INFO: [HLS 200-10] -- Generating RTL for module 'g6_l1r80_global_flush' 
+INFO: [HLS 200-10] ----------------------------------------------------------------
+INFO: [RTGEN 206-500] Setting interface mode on port 'g6_l1r80_global_flush/lq_slot' to 'ap_none'.
+INFO: [RTGEN 206-500] Setting interface mode on port 'g6_l1r80_global_flush/sq_slot' to 'ap_none'.
+INFO: [RTGEN 206-500] Setting interface mode on port 'g6_l1r80_global_flush/generation' to 'ap_none'.
+INFO: [RTGEN 206-500] Setting interface mode on port 'g6_l1r80_global_flush/allocation' to 'ap_none'.
+INFO: [RTGEN 206-500] Setting interface mode on port 'g6_l1r80_global_flush/transaction_r' to 'ap_none'.
+INFO: [RTGEN 206-500] Setting interface mode on port 'g6_l1r80_global_flush/branch_mask' to 'ap_none'.
+INFO: [RTGEN 206-500] Setting interface mode on port 'g6_l1r80_global_flush/obs0' to 'ap_none'.
+WARNING: [RTGEN 206-101] Port 'obs0' with mode 'ap_none' may require an associated data valid signal to correctly communicate with other blocks or a test bench; automatic C/RTL co-simulation may not be able to verify such a port.
+INFO: [RTGEN 206-500] Setting interface mode on port 'g6_l1r80_global_flush/obs1' to 'ap_none'.
+WARNING: [RTGEN 206-101] Port 'obs1' with mode 'ap_none' may require an associated data valid signal to correctly communicate with other blocks or a test bench; automatic C/RTL co-simulation may not be able to verify such a port.
+INFO: [RTGEN 206-500] Setting interface mode on port 'g6_l1r80_global_flush/obs2' to 'ap_none'.
+WARNING: [RTGEN 206-101] Port 'obs2' with mode 'ap_none' may require an associated data valid signal to correctly communicate with other blocks or a test bench; automatic C/RTL co-simulation may not be able to verify such a port.
+INFO: [RTGEN 206-500] Setting interface mode on port 'g6_l1r80_global_flush/obs3' to 'ap_none'.
+WARNING: [RTGEN 206-101] Port 'obs3' with mode 'ap_none' may require an associated data valid signal to correctly communicate with other blocks or a test bench; automatic C/RTL co-simulation may not be able to verify such a port.
+INFO: [RTGEN 206-500] Setting interface mode on port 'g6_l1r80_global_flush/obs4' to 'ap_none'.
+WARNING: [RTGEN 206-101] Port 'obs4' with mode 'ap_none' may require an associated data valid signal to correctly communicate with other blocks or a test bench; automatic C/RTL co-simulation may not be able to verify such a port.
+INFO: [RTGEN 206-500] Setting interface mode on port 'g6_l1r80_global_flush/obs5' to 'ap_none'.
+WARNING: [RTGEN 206-101] Port 'obs5' with mode 'ap_none' may require an associated data valid signal to correctly communicate with other blocks or a test bench; automatic C/RTL co-simulation may not be able to verify such a port.
+INFO: [RTGEN 206-500] Setting interface mode on port 'g6_l1r80_global_flush/obs6' to 'ap_none'.
+WARNING: [RTGEN 206-101] Port 'obs6' with mode 'ap_none' may require an associated data valid signal to correctly communicate with other blocks or a test bench; automatic C/RTL co-simulation may not be able to verify such a port.
+INFO: [RTGEN 206-500] Setting interface mode on port 'g6_l1r80_global_flush/obs7' to 'ap_none'.
+WARNING: [RTGEN 206-101] Port 'obs7' with mode 'ap_none' may require an associated data valid signal to correctly communicate with other blocks or a test bench; automatic C/RTL co-simulation may not be able to verify such a port.
+INFO: [RTGEN 206-500] Setting interface mode on function 'g6_l1r80_global_flush' to 'ap_ctrl_hs'.
+INFO: [RTGEN 206-100] Finished creating RTL model for 'g6_l1r80_global_flush'.
+INFO: [HLS 200-111] Finished Creating RTL model: CPU user time: 0.13 seconds. CPU system time: 0.01 seconds. Elapsed time: 0.13 seconds; current allocated memory: 612.727 MB.
+INFO: [RTMG 210-278] Implementing memory 'g6_l1r80_global_flush_state_rob_entries_valid_RAM_AUTO_1R1W_ram (RAM)' using auto RAMs.
+INFO: [RTMG 210-278] Implementing memory 'g6_l1r80_global_flush_state_rob_entries_uop_imm_packed_RAM_AUTO_0R0W_ram (RAM)' using auto RAMs.
+INFO: [RTMG 210-278] Implementing memory 'g6_l1r80_global_flush_state_rob_entries_uop_imm_packed_2_RAM_AUTO_1R1W_ram (RAM)' using auto RAMs.
+INFO: [RTMG 210-278] Implementing memory 'g6_l1r80_global_flush_state_rob_entries_uop_imm_packed_3_RAM_AUTO_0R0W_ram (RAM)' using auto RAMs.
+INFO: [RTMG 210-278] Implementing memory 'g6_l1r80_global_flush_state_rob_entries_memory_valid_RAM_AUTO_0R0W_ram (RAM)' using auto RAMs.
+INFO: [RTMG 210-278] Implementing memory 'g6_l1r80_global_flush_state_rob_entries_memory_data_RAM_AUTO_0R0W_ram (RAM)' using auto RAMs.
+INFO: [RTMG 210-278] Implementing memory 'g6_l1r80_global_flush_state_rob_entries_memory_size_RAM_AUTO_0R0W_ram (RAM)' using auto RAMs.
+INFO: [RTMG 210-278] Implementing memory 'g6_l1r80_global_flush_state_lsu_stq_valid_RAM_AUTO_1R1W_ram (RAM)' using auto RAMs.
+INFO: [RTMG 210-278] Implementing memory 'g6_l1r80_global_flush_state_lsu_stq_address_valid_RAM_AUTO_0R0W_ram (RAM)' using auto RAMs.
+INFO: [RTMG 210-278] Implementing memory 'g6_l1r80_global_flush_state_lsu_stq_rob_idx_RAM_AUTO_0R0W_ram (RAM)' using auto RAMs.
+INFO: [RTMG 210-278] Implementing memory 'g6_l1r80_global_flush_state_lsu_stq_mask_RAM_AUTO_0R0W_ram (RAM)' using auto RAMs.
+INFO: [RTMG 210-278] Implementing memory 'g6_l1r80_global_flush_state_lsu_stq_rob_allocation_id_RAM_AUTO_0R0W_ram (RAM)' using auto RAMs.
+INFO: [RTMG 210-278] Implementing memory 'g6_l1r80_global_flush_state_lsu_stq_generation_RAM_AUTO_1R1W_ram (RAM)' using auto RAMs.
+INFO: [RTMG 210-278] Implementing memory 'g6_l1r80_global_flush_state_lsu_stq_address_RAM_AUTO_0R0W_ram (RAM)' using auto RAMs.
+INFO: [HLS 200-111] Finished Generating all RTL models: CPU user time: 0.67 seconds. CPU system time: 0.03 seconds. Elapsed time: 0.7 seconds; current allocated memory: 644.789 MB.
+INFO: [HLS 200-111] Finished Updating report files: CPU user time: 0.36 seconds. CPU system time: 0.01 seconds. Elapsed time: 0.37 seconds; current allocated memory: 646.352 MB.
+INFO: [VHDL 208-304] Generating VHDL RTL for g6_l1r80_global_flush.
+INFO: [VLOG 209-307] Generating Verilog RTL for g6_l1r80_global_flush.
+INFO: [HLS 200-790] **** Loop Constraint Status: All loop constraints were satisfied.
+INFO: [HLS 200-789] **** Estimated Fmax: 279.52 MHz
+INFO: [HLS 200-111] Finished Command csynth_design CPU user time: 89.15 seconds. CPU system time: 1.29 seconds. Elapsed time: 89.91 seconds; current allocated memory: -705.621 MB.
+INFO: [HLS 200-112] Total CPU user time: 90.54 seconds. Total CPU system time: 1.68 seconds. Total elapsed time: 91.01 seconds; peak allocated memory: 1.321 GB.
+INFO: [Common 17-206] Exiting vitis_hls at Wed Sep 16 11:10:00 2026...

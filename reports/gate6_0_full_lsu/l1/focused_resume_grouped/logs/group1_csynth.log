@@ -1,0 +1,598 @@
+
+****** Vitis HLS - High-Level Synthesis from C, C++ and OpenCL v2021.2 (64-bit)
+  **** SW Build 3367213 on Tue Oct 19 02:47:39 MDT 2021
+  **** IP Build 3369179 on Thu Oct 21 08:25:16 MDT 2021
+    ** Copyright 1986-2021 Xilinx, Inc. All Rights Reserved.
+
+source /home/lab_726/Xilinx/Vitis_HLS/2021.2/scripts/vitis_hls/hls.tcl -notrace
+INFO: [HLS 200-10] Running '/home/lab_726/Xilinx/Vitis_HLS/2021.2/bin/unwrapped/lnx64.o/vitis_hls'
+INFO: [HLS 200-10] For user 'lab_726' on host '726' (Linux_x86_64 version 6.8.0-138-generic) on Tue Sep 15 23:51:21 CST 2026
+INFO: [HLS 200-10] On os Ubuntu 22.04.5 LTS
+INFO: [HLS 200-10] In directory '/home/lab_726/boom/hls_boom'
+Sourcing Tcl script 'scripts/gate6_0/l1r_focused_csynth.tcl'
+INFO: [HLS 200-1510] Running: open_project -reset hls_project 
+INFO: [HLS 200-10] Creating and opening project '/home/lab_726/boom_hls_runtime/g6_l1r_group1_pilot/hls_project'.
+INFO: [HLS 200-1510] Running: set_top g6_l1r_focused_top 
+INFO: [HLS 200-1510] Running: add_files -cflags -std=c++11 -DLQ_DEPTH=8 -DSQ_DEPTH=8 -DG6_L1R_FOCUSED_GROUP=1 -DBOOM_FTQ_STORAGE_LUTRAM -DBOOM_PREDICTOR_STORAGE_LUTRAM -I/home/lab_726/boom/hls_boom/include -DBOOM_HLS_W4A_COMPLETION_DIAGNOSTIC /home/lab_726/boom/hls_boom/src/boom_core_merged.cpp 
+INFO: [HLS 200-10] Adding design file '/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp' to the project
+INFO: [HLS 200-1510] Running: add_files -cflags -std=c++11 -DLQ_DEPTH=8 -DSQ_DEPTH=8 -DG6_L1R_FOCUSED_GROUP=1 -DBOOM_FTQ_STORAGE_LUTRAM -DBOOM_PREDICTOR_STORAGE_LUTRAM -I/home/lab_726/boom/hls_boom/include -DBOOM_HLS_W4A_COMPLETION_DIAGNOSTIC /home/lab_726/boom/hls_boom/tb/differential/g6_l1r_focused_top.cpp 
+INFO: [HLS 200-10] Adding design file '/home/lab_726/boom/hls_boom/tb/differential/g6_l1r_focused_top.cpp' to the project
+INFO: [HLS 200-1510] Running: open_solution -reset solution 
+INFO: [HLS 200-10] Creating and opening solution '/home/lab_726/boom_hls_runtime/g6_l1r_group1_pilot/hls_project/solution'.
+INFO: [HLS 200-10] Cleaning up the solution database.
+WARNING: [HLS 200-40] No /home/lab_726/boom_hls_runtime/g6_l1r_group1_pilot/hls_project/solution/solution.aps file found.
+INFO: [HLS 200-1505] Using default flow_target 'vivado'
+Resolution: For help on HLS 200-1505 see www.xilinx.com/cgi-bin/docs/rdoc?v=2021.2;t=hls+guidance;d=200-1505.html
+INFO: [HLS 200-1510] Running: set_part xczu7ev-ffvc1156-2-e 
+INFO: [HLS 200-1611] Setting target device to 'xczu7ev-ffvc1156-2-e'
+INFO: [HLS 200-1510] Running: create_clock -period 10 -name default 
+INFO: [SYN 201-201] Setting up clock 'default' with a period of 10ns.
+INFO: [HLS 200-1510] Running: csynth_design 
+INFO: [HLS 200-111] Finished File checks and directory preparation: CPU user time: 0 seconds. CPU system time: 0 seconds. Elapsed time: 0 seconds; current allocated memory: 1.321 GB.
+INFO: [HLS 200-10] Analyzing design file '/home/lab_726/boom/hls_boom/tb/differential/g6_l1r_focused_top.cpp' ... 
+INFO: [HLS 200-10] Analyzing design file '/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp' ... 
+INFO: [HLS 200-111] Finished Source Code Analysis and Preprocessing: CPU user time: 4.26 seconds. CPU system time: 0.59 seconds. Elapsed time: 4.28 seconds; current allocated memory: 420.094 MB.
+INFO: [HLS 200-777] Using interface defaults for 'Vivado' flow target.
+INFO: [HLS 214-284] Auto array partition mode is set into default.
+INFO: [HLS 214-131] Inlining function 'boom::completion_writes_integer(RobCompleteEvent const&)' into 'boom::apply_completion_selected(BoomCoreState&, RobCompleteEvent const&, bool, bool)' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:1823:27)
+INFO: [HLS 214-131] Inlining function 'boom::prf_seed(BoomCoreState&, unsigned char, unsigned long)' into 'boom::apply_completion_selected(BoomCoreState&, RobCompleteEvent const&, bool, bool)' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:1842:9)
+INFO: [HLS 214-131] Inlining function 'boom::apply_completion_selected(BoomCoreState&, RobCompleteEvent const&, bool, bool)' into 'boom::apply_completion(BoomCoreState&, RobCompleteEvent const&)' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:1864:12)
+INFO: [HLS 214-131] Inlining function 'boom::completion_from_execute(ExecuteState::AluResult const&, CompletionSourceId, RobCompleteEvent&)' into 'boom::completion_service_execute_w4a(BoomCoreState&)' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:2433:5)
+INFO: [HLS 214-131] Inlining function 'boom::completion_from_execute(ExecuteState::AluResult const&, CompletionSourceId, RobCompleteEvent&)' into 'boom::completion_service_execute_w4a(BoomCoreState&)' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:2435:5)
+INFO: [HLS 214-131] Inlining function 'boom::select_completion_serial(BoomCoreState const&, RobCompleteEvent const&, RobCompleteEvent const&, bool&)' into 'boom::completion_service_execute_w4a(BoomCoreState&)' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:2442:35)
+INFO: [HLS 214-131] Inlining function 'boom::completion_from_load_response(BoomCoreState const&, DmemResponse const&, RobCompleteEvent&)' into 'boom::completion_service_cycle(BoomCoreState&, PipeSignals&)' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:2496:5)
+INFO: [HLS 214-131] Inlining function 'boom::prf_read(BoomCoreState const&, unsigned char)' into 'g6_l1r_focused_top' (/home/lab_726/boom/hls_boom/tb/differential/g6_l1r_focused_top.cpp:388:12)
+INFO: [HLS 214-131] Inlining function 'boom::prf_seed(BoomCoreState&, unsigned char, unsigned long)' into 'g6_l1r_focused_top' (/home/lab_726/boom/hls_boom/tb/differential/g6_l1r_focused_top.cpp:326:13)
+INFO: [HLS 214-178] Inlining function 'StoreQueueEntry::StoreQueueEntry() (.3353)' into 'LsuState::LsuState()' (/home/lab_726/boom/hls_boom/include/boom_state.hpp:287:0)
+INFO: [HLS 214-178] Inlining function 'LoadQueueEntry::LoadQueueEntry() (.3346)' into 'LsuState::LsuState()' (/home/lab_726/boom/hls_boom/include/boom_state.hpp:287:0)
+INFO: [HLS 214-178] Inlining function 'LsuState::LsuState()' into '__cxx_global_var_init' (/home/lab_726/boom/hls_boom/tb/differential/g6_l1r_focused_top.cpp:39:0)
+INFO: [HLS 214-178] Inlining function 'MicroOp::MicroOp() (.11.17.23.29.35.41.47.53)' into 'RobEntry::RobEntry() (.5)' (/home/lab_726/boom/hls_boom/include/boom_types.hpp:184:0)
+INFO: [HLS 214-178] Inlining function 'CommitEntry::CommitEntry() (.305)' into 'RobInternalState::RobInternalState()' (/home/lab_726/boom/hls_boom/include/boom_state.hpp:221:0)
+INFO: [HLS 214-178] Inlining function 'MicroOp::MicroOp() (.11.17.23.29.35.41.47.53)' into 'RobCompleteEvent::RobCompleteEvent() (.194.200.206.212.218.224.230.236.242)' (/home/lab_726/boom/hls_boom/include/boom_types.hpp:120:0)
+INFO: [HLS 214-178] Inlining function 'WritebackEvent::WritebackEvent() (.188)' into 'CompletionPendingState::CompletionPendingState()' (/home/lab_726/boom/hls_boom/include/boom_state.hpp:327:0)
+INFO: [HLS 214-178] Inlining function 'WakeupEvent::WakeupEvent() (.182)' into 'CompletionPendingState::CompletionPendingState()' (/home/lab_726/boom/hls_boom/include/boom_state.hpp:327:0)
+INFO: [HLS 214-178] Inlining function 'BypassEvent::BypassEvent() (.176)' into 'CompletionPendingState::CompletionPendingState()' (/home/lab_726/boom/hls_boom/include/boom_state.hpp:327:0)
+INFO: [HLS 214-178] Inlining function 'ResetControllerState::ResetControllerState()' into '__cxx_global_var_init.8' (/home/lab_726/boom/hls_boom/tb/differential/g6_l1r_focused_top.cpp:51:0)
+INFO: [HLS 214-178] Inlining function 'DmemRequest::DmemRequest()' into '__cxx_global_var_init.9' (/home/lab_726/boom/hls_boom/tb/differential/g6_l1r_focused_top.cpp:52:0)
+INFO: [HLS 214-178] Inlining function '__cxx_global_var_init' into '_GLOBAL__sub_I_g6_l1r_focused_top.pp.0.cpp' (/home/lab_726/boom_hls_runtime/g6_l1r_group1_pilot/hls_project/solution/.autopilot/db/g6_l1r_focused_top.pp.0.cpp:0:0)
+INFO: [HLS 214-178] Inlining function '__cxx_global_var_init.1' into '_GLOBAL__sub_I_g6_l1r_focused_top.pp.0.cpp' (/home/lab_726/boom_hls_runtime/g6_l1r_group1_pilot/hls_project/solution/.autopilot/db/g6_l1r_focused_top.pp.0.cpp:0:0)
+INFO: [HLS 214-178] Inlining function '__cxx_global_var_init.3' into '_GLOBAL__sub_I_g6_l1r_focused_top.pp.0.cpp' (/home/lab_726/boom_hls_runtime/g6_l1r_group1_pilot/hls_project/solution/.autopilot/db/g6_l1r_focused_top.pp.0.cpp:0:0)
+INFO: [HLS 214-178] Inlining function '__cxx_global_var_init.8' into '_GLOBAL__sub_I_g6_l1r_focused_top.pp.0.cpp' (/home/lab_726/boom_hls_runtime/g6_l1r_group1_pilot/hls_project/solution/.autopilot/db/g6_l1r_focused_top.pp.0.cpp:0:0)
+INFO: [HLS 214-178] Inlining function '__cxx_global_var_init.9' into '_GLOBAL__sub_I_g6_l1r_focused_top.pp.0.cpp' (/home/lab_726/boom_hls_runtime/g6_l1r_group1_pilot/hls_project/solution/.autopilot/db/g6_l1r_focused_top.pp.0.cpp:0:0)
+INFO: [HLS 214-178] Inlining function 'boom::FetchInstruction::FetchInstruction()' into 'boom::FetchPacket::FetchPacket()' (/home/lab_726/boom/hls_boom/include/fetch_buffer.hpp:38:0)
+INFO: [HLS 214-178] Inlining function 'boom::CfiPredecodeResult::CfiPredecodeResult()' into 'boom::CfiPacketPredecodeResult::CfiPacketPredecodeResult()' (/home/lab_726/boom/hls_boom/include/predecode.hpp:43:0)
+INFO: [HLS 214-178] Inlining function 'boom::FetchInstruction::FetchInstruction()' into 'boom::FetchBufferState::FetchBufferState()' (/home/lab_726/boom/hls_boom/include/fetch_buffer.hpp:47:0)
+INFO: [HLS 214-178] Inlining function 'boom::FetchPacket::FetchPacket()' into 'FrontendState::FrontendState()' (/home/lab_726/boom/hls_boom/include/boom_state.hpp:88:0)
+INFO: [HLS 214-178] Inlining function 'boom::CfiPacketPredecodeResult::CfiPacketPredecodeResult()' into 'FrontendState::FrontendState()' (/home/lab_726/boom/hls_boom/include/boom_state.hpp:88:0)
+INFO: [HLS 214-178] Inlining function 'boom::FetchBufferState::FetchBufferState()' into 'FrontendState::FrontendState()' (/home/lab_726/boom/hls_boom/include/boom_state.hpp:88:0)
+INFO: [HLS 214-178] Inlining function 'MicroOp::MicroOp() (.11.17.23.29.35.41.47.53)' into 'RenameDispatchPacket::RenameDispatchPacket()' (/home/lab_726/boom/hls_boom/include/boom_state.hpp:135:0)
+INFO: [HLS 214-178] Inlining function 'RenameMapTableState::RenameMapTableState()' into 'RenameState::RenameState()' (/home/lab_726/boom/hls_boom/include/boom_state.hpp:138:0)
+INFO: [HLS 214-178] Inlining function 'RenameFreeListState::RenameFreeListState()' into 'RenameState::RenameState()' (/home/lab_726/boom/hls_boom/include/boom_state.hpp:138:0)
+INFO: [HLS 214-178] Inlining function 'RenameDispatchPacket::RenameDispatchPacket()' into 'RenameState::RenameState()' (/home/lab_726/boom/hls_boom/include/boom_state.hpp:138:0)
+INFO: [HLS 214-178] Inlining function 'MicroOp::MicroOp() (.11.17.23.29.35.41.47.53)' into 'IssueSlotEntry::IssueSlotEntry()' (/home/lab_726/boom/hls_boom/include/boom_types.hpp:193:0)
+INFO: [HLS 214-178] Inlining function 'MicroOp::MicroOp() (.11.17.23.29.35.41.47.53)' into 'IssueGrant::IssueGrant()' (/home/lab_726/boom/hls_boom/include/boom_types.hpp:167:0)
+INFO: [HLS 214-178] Inlining function 'MicroOp::MicroOp() (.11.17.23.29.35.41.47.53)' into 'ExecuteState::AluResult::AluResult()' (/home/lab_726/boom/hls_boom/include/boom_state.hpp:202:0)
+INFO: [HLS 214-178] Inlining function 'boom::divider_reset(boom::DividerState&)' into 'boom::DividerState::DividerState()' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:2908:0)
+INFO: [HLS 214-178] Inlining function 'boom::DividerState::DividerState()' into 'DividerExecutionState::DividerExecutionState()' (/home/lab_726/boom/hls_boom/include/boom_state.hpp:185:0)
+INFO: [HLS 214-178] Inlining function 'MicroOp::MicroOp() (.11.17.23.29.35.41.47.53)' into 'DividerExecutionState::DividerExecutionState()' (/home/lab_726/boom/hls_boom/include/boom_state.hpp:185:0)
+INFO: [HLS 214-178] Inlining function 'boom::PredictorResponse::PredictorResponse()' into 'boom::PredictorFoundation<256ul, false>::PredictorFoundation()' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:368:0)
+INFO: [HLS 214-178] Inlining function 'boom::FtqEntry::FtqEntry()' into 'boom::FtqFoundation<32ul, false>::FtqFoundation()' (/home/lab_726/boom/hls_boom/include/ftq.hpp:191:0)
+INFO: [HLS 214-178] Inlining function 'boom::FtqEntry::FtqEntry()' into 'boom::FtqStepOutput::FtqStepOutput()' (/home/lab_726/boom/hls_boom/include/ftq.hpp:118:0)
+INFO: [HLS 214-178] Inlining function 'MicroOp::MicroOp() (.11.17.23.29.35.41.47.53)' into 'BranchUpdate::BranchUpdate()' (/home/lab_726/boom/hls_boom/include/boom_types.hpp:210:0)
+INFO: [HLS 214-178] Inlining function 'CsrState::CsrState()' into 'BoomCoreState::BoomCoreState()' (/home/lab_726/boom/hls_boom/include/boom_state.hpp:394:0)
+INFO: [HLS 214-178] Inlining function 'LsuState::LsuState()' into 'BoomCoreState::BoomCoreState()' (/home/lab_726/boom/hls_boom/include/boom_state.hpp:394:0)
+INFO: [HLS 214-178] Inlining function 'BranchRecoveryState::BranchRecoveryState()' into 'BoomCoreState::BoomCoreState()' (/home/lab_726/boom/hls_boom/include/boom_state.hpp:394:0)
+INFO: [HLS 214-178] Inlining function 'boom::PredictorFoundation<256ul, false>::PredictorFoundation()' into 'BoomCoreState::BoomCoreState()' (/home/lab_726/boom/hls_boom/include/boom_state.hpp:394:0)
+INFO: [HLS 214-178] Inlining function 'boom::PredictorUpdate::PredictorUpdate()' into 'BoomCoreState::BoomCoreState()' (/home/lab_726/boom/hls_boom/include/boom_state.hpp:394:0)
+INFO: [HLS 214-178] Inlining function 'BimTrainingStats::BimTrainingStats()' into 'BoomCoreState::BoomCoreState()' (/home/lab_726/boom/hls_boom/include/boom_state.hpp:394:0)
+INFO: [HLS 214-178] Inlining function 'boom::FtqFoundation<32ul, false>::FtqFoundation()' into 'BoomCoreState::BoomCoreState()' (/home/lab_726/boom/hls_boom/include/boom_state.hpp:394:0)
+INFO: [HLS 214-178] Inlining function 'boom::FtqLaneEvent::FtqLaneEvent()' into 'BoomCoreState::BoomCoreState()' (/home/lab_726/boom/hls_boom/include/boom_state.hpp:394:0)
+INFO: [HLS 214-178] Inlining function 'boom::FtqRedirect::FtqRedirect()' into 'BoomCoreState::BoomCoreState()' (/home/lab_726/boom/hls_boom/include/boom_state.hpp:394:0)
+INFO: [HLS 214-178] Inlining function 'boom::FtqStepOutput::FtqStepOutput()' into 'BoomCoreState::BoomCoreState()' (/home/lab_726/boom/hls_boom/include/boom_state.hpp:394:0)
+INFO: [HLS 214-178] Inlining function 'FrontendRedirect::FrontendRedirect()' into 'BoomCoreState::BoomCoreState()' (/home/lab_726/boom/hls_boom/include/boom_state.hpp:394:0)
+INFO: [HLS 214-178] Inlining function 'ExceptionCommitEvent::ExceptionCommitEvent()' into 'BoomCoreState::BoomCoreState()' (/home/lab_726/boom/hls_boom/include/boom_state.hpp:394:0)
+INFO: [HLS 214-178] Inlining function 'DmemRequest::DmemRequest()' into 'focused_initialize(BoomCoreState&)' (/home/lab_726/boom/hls_boom/tb/differential/g6_l1r_focused_top.cpp:107:0)
+INFO: [HLS 214-178] Inlining function 'DmemResponse::DmemResponse()' into 'focused_initialize(BoomCoreState&)' (/home/lab_726/boom/hls_boom/tb/differential/g6_l1r_focused_top.cpp:107:0)
+INFO: [HLS 214-178] Inlining function 'MicroOp::MicroOp() (.11.17.23.29.35.41.47.53)' into 'focused_uop(unsigned char, unsigned int, unsigned char, unsigned char)' (/home/lab_726/boom/hls_boom/tb/differential/g6_l1r_focused_top.cpp:134:0)
+INFO: [HLS 214-178] Inlining function 'boom::enqueue_store(BoomCoreState&, MicroOp const&, unsigned long, unsigned long, unsigned char, unsigned char, RobEntry&) (.397.427.445.475.493.523.541.571.649.716.736.804.824.892.912.980.1000.1068.1088.1156.1176.1247.1267.1336.1356.1424.1444.1513.1533.1601.1621.1690.1710.1777.1797.1865.1885.1953.1973.2041.2061.2129.2149.2217.2237.2305.2325.2393.2413.2481.2501.2569.2589.2657.2677.2745.2765.2833.2853.2921.2941.3009.3029.3097.3117.3191.3211.3285.3305.3385.3405.3479.3499.3573.3593.3667.3687.3761.3781.3855.3875.3949.3969.4043.4063.4137.4157.4231.4251.4318.4338.4409.4435.4509.4535.4609.4635.4709.4735.4809.4832.4901.4921.4991.5011.5081.5101.5171.5191.5261.5281.5353.5373.5447.5471.5545.5569.5643.5667.5741.5765.5833.5853.5921.5941.6009.6029.6097.6117.6186.6206.6276.6296.6366.6386.6456.6476.6546.6566.6637.6657.6729.6749.6821.6841.6913.6933.7005.7025.7094.7114.7184.7204.7274.7294.7364.7384.7454.7474.7546.7566.7638.7658.7726.7746.7814.7834.7902.7922.7990.8010.8078.8098.8171.8191.8262.8282.8353.8373.8441.8461.8529.8549.8617.8637.8705.8725.8793.8813.8881.8901.8969.8989.9057)' into 'boom::lsu_accept_completion(BoomCoreState&, MicroOp const&, bool, bool, bool, unsigned long, unsigned long, unsigned char, unsigned char) (.391.421.439.469.487.517.535.565.643.710.730.798.818.886.906.974.994.1062.1082.1150.1170.1241.1261.1330.1350.1418.1438.1507.1527.1595.1615.1684.1704.1771.1791.1859.1879.1947.1967.2035.2055.2123.2143.2211.2231.2299.2319.2387.2407.2475.2495.2563.2583.2651.2671.2739.2759.2827.2847.2915.2935.3003.3023.3091.3111.3185.3205.3279.3299.3379.3399.3473.3493.3567.3587.3661.3681.3755.3775.3849.3869.3943.3963.4037.4057.4131.4151.4225.4245.4312.4332.4400.4426.4500.4526.4600.4626.4700.4726.4800.4826.4895.4915.4985.5005.5075.5095.5165.5185.5255.5275.5347.5367.5441.5465.5539.5563.5637.5661.5735.5759.5827.5847.5915.5935.6003.6023.6091.6111.6180.6200.6270.6290.6360.6380.6450.6470.6540.6560.6631.6651.6723.6743.6815.6835.6907.6927.6999.7019.7088.7108.7178.7198.7268.7288.7358.7378.7448.7468.7540.7560.7632.7652.7720.7740.7808.7828.7896.7916.7984.8004.8072.8092.8165.8185.8256.8276.8347.8367.8435.8455.8523.8543.8611.8631.8699.8719.8787.8807.8875.8895.8963.8983.9051)' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:3750:0)
+INFO: [HLS 214-178] Inlining function 'boom::enqueue_load(BoomCoreState&, MicroOp const&, bool, unsigned long, unsigned char, unsigned char, RobEntry&) (.394.424.442.472.490.520.538.568.646.713.733.801.821.889.909.977.997.1065.1085.1153.1173.1244.1264.1333.1353.1421.1441.1510.1530.1598.1618.1687.1707.1774.1794.1862.1882.1950.1970.2038.2058.2126.2146.2214.2234.2302.2322.2390.2410.2478.2498.2566.2586.2654.2674.2742.2762.2830.2850.2918.2938.3006.3026.3094.3114.3188.3208.3282.3302.3382.3402.3476.3496.3570.3590.3664.3684.3758.3778.3852.3872.3946.3966.4040.4060.4134.4154.4228.4248.4315.4335.4403.4429.4503.4529.4603.4629.4703.4729.4803.4829.4898.4918.4988.5008.5078.5098.5168.5188.5258.5278.5350.5370.5444.5468.5542.5566.5640.5664.5738.5762.5830.5850.5918.5938.6006.6026.6094.6114.6183.6203.6273.6293.6363.6383.6453.6473.6543.6563.6634.6654.6726.6746.6818.6838.6910.6930.7002.7022.7091.7111.7181.7201.7271.7291.7361.7381.7451.7471.7543.7563.7635.7655.7723.7743.7811.7831.7899.7919.7987.8007.8075.8095.8168.8188.8259.8279.8350.8370.8438.8458.8526.8546.8614.8634.8702.8722.8790.8810.8878.8898.8966.8986.9054)' into 'boom::lsu_accept_completion(BoomCoreState&, MicroOp const&, bool, bool, bool, unsigned long, unsigned long, unsigned char, unsigned char) (.391.421.439.469.487.517.535.565.643.710.730.798.818.886.906.974.994.1062.1082.1150.1170.1241.1261.1330.1350.1418.1438.1507.1527.1595.1615.1684.1704.1771.1791.1859.1879.1947.1967.2035.2055.2123.2143.2211.2231.2299.2319.2387.2407.2475.2495.2563.2583.2651.2671.2739.2759.2827.2847.2915.2935.3003.3023.3091.3111.3185.3205.3279.3299.3379.3399.3473.3493.3567.3587.3661.3681.3755.3775.3849.3869.3943.3963.4037.4057.4131.4151.4225.4245.4312.4332.4400.4426.4500.4526.4600.4626.4700.4726.4800.4826.4895.4915.4985.5005.5075.5095.5165.5185.5255.5275.5347.5367.5441.5465.5539.5563.5637.5661.5735.5759.5827.5847.5915.5935.6003.6023.6091.6111.6180.6200.6270.6290.6360.6380.6450.6470.6540.6560.6631.6651.6723.6743.6815.6835.6907.6927.6999.7019.7088.7108.7178.7198.7268.7288.7358.7378.7448.7468.7540.7560.7632.7652.7720.7740.7808.7828.7896.7916.7984.8004.8072.8092.8165.8185.8256.8276.8347.8367.8435.8455.8523.8543.8611.8631.8699.8719.8787.8807.8875.8895.8963.8983.9051)' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:3750:0)
+INFO: [HLS 214-178] Inlining function 'boom::older_store_in_rob(BoomCoreState const&, unsigned char)' into 'boom::try_issue_load(BoomCoreState&, PipeSignals&, unsigned char)' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:3668:0)
+INFO: [HLS 214-178] Inlining function 'DmemRequest::DmemRequest()' into 'boom::try_issue_load(BoomCoreState&, PipeSignals&, unsigned char)' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:3668:0)
+INFO: [HLS 214-178] Inlining function 'boom::clear_lsu_queues(LsuState&)' into 'boom::lsu_module(BoomCoreState&, PipeSignals&)' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:3856:0)
+INFO: [HLS 214-178] Inlining function 'boom::completion_has_rob_owner(BoomCoreState const&, RobCompleteEvent const&) (.373.385.412.433.460.481.508.529.556.665.701.752.789.840.877.928.965.1016.1053.1104.1141.1192.1232.1283.1321.1372.1409.1460.1498.1549.1586.1637.1675.1726.1762.1813.1850.1901.1938.1989.2026.2077.2114.2165.2202.2253.2290.2341.2378.2429.2466.2517.2554.2605.2642.2693.2730.2781.2818.2869.2906.2957.2994.3045.3082.3133.3176.3227.3270.3321.3370.3421.3464.3515.3558.3609.3652.3703.3746.3797.3840.3891.3934.3985.4028.4079.4122.4173.4216.4267.4303.4354.4391.4454.4491.4554.4591.4654.4691.4754.4791.4848.4886.4937.4976.5027.5066.5117.5156.5207.5246.5297.5338.5389.5432.5487.5530.5585.5628.5683.5726.5781.5818.5869.5906.5957.5994.6045.6082.6133.6171.6222.6261.6312.6351.6402.6441.6492.6531.6582.6622.6673.6714.6765.6806.6857.6898.6949.6990.7041.7079.7130.7169.7220.7259.7310.7349.7400.7439.7490.7531.7582.7623.7674.7711.7762.7799.7850.7887.7938.7975.8026.8063.8114.8156.8207.8247.8298.8338.8389.8426.8477.8514.8565.8602.8653.8690.8741.8778.8829.8866.8917.8954.9005.9042)' into 'boom::completion_is_valid(BoomCoreState const&, RobCompleteEvent const&) (.370.382.409.430.457.478.505.526.553.662.698.749.786.837.874.925.962.1013.1050.1101.1138.1189.1229.1280.1318.1369.1406.1457.1495.1546.1583.1634.1672.1723.1759.1810.1847.1898.1935.1986.2023.2074.2111.2162.2199.2250.2287.2338.2375.2426.2463.2514.2551.2602.2639.2690.2727.2778.2815.2866.2903.2954.2991.3042.3079.3130.3173.3224.3267.3318.3367.3418.3461.3512.3555.3606.3649.3700.3743.3794.3837.3888.3931.3982.4025.4076.4119.4170.4213.4264.4300.4351.4388.4451.4488.4551.4588.4651.4688.4751.4788.4845.4883.4934.4973.5024.5063.5114.5153.5204.5243.5294.5335.5386.5429.5484.5527.5582.5625.5680.5723.5778.5815.5866.5903.5954.5991.6042.6079.6130.6168.6219.6258.6309.6348.6399.6438.6489.6528.6579.6619.6670.6711.6762.6803.6854.6895.6946.6987.7038.7076.7127.7166.7217.7256.7307.7346.7397.7436.7487.7528.7579.7620.7671.7708.7759.7796.7847.7884.7935.7972.8023.8060.8111.8153.8204.8244.8295.8335.8386.8423.8474.8511.8562.8599.8650.8687.8738.8775.8826.8863.8914.8951.9002.9039)' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:1770:0)
+INFO: [HLS 214-178] Inlining function 'boom::completion_is_valid(BoomCoreState const&, RobCompleteEvent const&) (.370.382.409.430.457.478.505.526.553.662.698.749.786.837.874.925.962.1013.1050.1101.1138.1189.1229.1280.1318.1369.1406.1457.1495.1546.1583.1634.1672.1723.1759.1810.1847.1898.1935.1986.2023.2074.2111.2162.2199.2250.2287.2338.2375.2426.2463.2514.2551.2602.2639.2690.2727.2778.2815.2866.2903.2954.2991.3042.3079.3130.3173.3224.3267.3318.3367.3418.3461.3512.3555.3606.3649.3700.3743.3794.3837.3888.3931.3982.4025.4076.4119.4170.4213.4264.4300.4351.4388.4451.4488.4551.4588.4651.4688.4751.4788.4845.4883.4934.4973.5024.5063.5114.5153.5204.5243.5294.5335.5386.5429.5484.5527.5582.5625.5680.5723.5778.5815.5866.5903.5954.5991.6042.6079.6130.6168.6219.6258.6309.6348.6399.6438.6489.6528.6579.6619.6670.6711.6762.6803.6854.6895.6946.6987.7038.7076.7127.7166.7217.7256.7307.7346.7397.7436.7487.7528.7579.7620.7671.7708.7759.7796.7847.7884.7935.7972.8023.8060.8111.8153.8204.8244.8295.8335.8386.8423.8474.8511.8562.8599.8650.8687.8738.8775.8826.8863.8914.8951.9002.9039)' into 'boom::apply_completion(BoomCoreState&, RobCompleteEvent const&)' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:1854:0)
+INFO: [HLS 214-178] Inlining function 'boom::is_branch(MicroOp const&)' into 'boom::completion_service_execute_w4a(BoomCoreState&)' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:2427:0)
+INFO: [HLS 214-178] Inlining function 'boom::completion_age(BoomCoreState const&, RobCompleteEvent const&)' into 'boom::completion_service_execute_w4a(BoomCoreState&)' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:2427:0)
+INFO: [HLS 214-178] Inlining function 'boom::record_w4a_completion(BoomCoreState&, RobCompleteEvent const&)' into 'boom::completion_service_execute_w4a(BoomCoreState&)' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:2427:0)
+INFO: [HLS 214-178] Inlining function 'boom::sign_extend(unsigned long, unsigned char)' into 'boom::load_value(unsigned long, unsigned long, unsigned char, bool)' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:1666:0)
+INFO: [HLS 214-178] Inlining function 'boom::reclaim_ldq(BoomCoreState&, ap_uint<3>, unsigned short, unsigned char, unsigned int)' into 'boom::lsu_finish_load_response(BoomCoreState&, unsigned char, unsigned int, unsigned int)' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:3779:0)
+INFO: [HLS 214-178] Inlining function 'DmemResponse::DmemResponse()' into 'boom::completion_service_cycle(BoomCoreState&, PipeSignals&)' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:2469:0)
+INFO: [HLS 214-178] Inlining function 'boom::load_value(unsigned long, unsigned long, unsigned char, bool)' into 'boom::completion_service_cycle(BoomCoreState&, PipeSignals&)' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:2469:0)
+INFO: [HLS 214-178] Inlining function 'boom::lsu_finish_load_response(BoomCoreState&, unsigned char, unsigned int, unsigned int)' into 'boom::completion_service_cycle(BoomCoreState&, PipeSignals&)' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:2469:0)
+INFO: [HLS 214-178] Inlining function 'boom::record_w4a_completion(BoomCoreState&, RobCompleteEvent const&)' into 'boom::completion_service_cycle(BoomCoreState&, PipeSignals&)' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:2469:0)
+INFO: [HLS 214-178] Inlining function 'focused_uop(unsigned char, unsigned int, unsigned char, unsigned char)' into 'g6_l1r_focused_top' (/home/lab_726/boom/hls_boom/tb/differential/g6_l1r_focused_top.cpp:173:0)
+INFO: [HLS 214-178] Inlining function 'boom::lsu_module(BoomCoreState&, PipeSignals&)' into 'g6_l1r_focused_top' (/home/lab_726/boom/hls_boom/tb/differential/g6_l1r_focused_top.cpp:173:0)
+INFO: [HLS 214-178] Inlining function 'DmemResponse::DmemResponse()' into 'g6_l1r_focused_top' (/home/lab_726/boom/hls_boom/tb/differential/g6_l1r_focused_top.cpp:173:0)
+INFO: [HLS 214-178] Inlining function 'boom::lsu_reclaim_store(BoomCoreState&, ap_uint<3>, unsigned short, unsigned char, unsigned int)' into 'g6_l1r_focused_top' (/home/lab_726/boom/hls_boom/tb/differential/g6_l1r_focused_top.cpp:173:0)
+INFO: [HLS 214-178] Inlining function 'boom::lsu_store_owner_matches(BoomCoreState const&, ap_uint<3>, unsigned short, unsigned char, unsigned int)' into 'g6_l1r_focused_top' (/home/lab_726/boom/hls_boom/tb/differential/g6_l1r_focused_top.cpp:173:0)
+INFO: [HLS 214-178] Inlining function 'DmemRequest::DmemRequest()' into 'g6_l1r_focused_top' (/home/lab_726/boom/hls_boom/tb/differential/g6_l1r_focused_top.cpp:173:0)
+INFO: [HLS 214-178] Inlining function 'focused_valid_lq(BoomCoreState const&)' into 'g6_l1r_focused_top' (/home/lab_726/boom/hls_boom/tb/differential/g6_l1r_focused_top.cpp:173:0)
+INFO: [HLS 214-178] Inlining function 'focused_valid_sq(BoomCoreState const&)' into 'g6_l1r_focused_top' (/home/lab_726/boom/hls_boom/tb/differential/g6_l1r_focused_top.cpp:173:0)
+INFO: [HLS 214-270] Starting automatic array partition analysis...
+INFO: [HLS 214-131] Inlining function '_llvm.fpga.pack.none.i320.s_struct.DmemRequests' into 'boom::try_issue_load(BoomCoreState&, PipeSignals&, unsigned char) (.1)' (/home/lab_726/Xilinx/Vitis_HLS/2021.2/common/technology/autopilot/hls_stream_39.h:173:9)
+INFO: [HLS 214-131] Inlining function '_llvm.fpga.pack.none.i384.s_struct.DmemResponses' into 'g6_l1r_focused_top' (/home/lab_726/Xilinx/Vitis_HLS/2021.2/common/technology/autopilot/hls_stream_39.h:173:9)
+INFO: [HLS 214-131] Inlining function '_llvm.fpga.pack.none.i320.s_struct.DmemRequests' into 'g6_l1r_focused_top' (/home/lab_726/Xilinx/Vitis_HLS/2021.2/common/technology/autopilot/hls_stream_39.h:173:9)
+INFO: [HLS 200-111] Finished Compiling Optimization and Transform: CPU user time: 122.24 seconds. CPU system time: 1.45 seconds. Elapsed time: 123.71 seconds; current allocated memory: 608.867 MB.
+INFO: [HLS 200-111] Finished Checking Pragmas: CPU user time: 0.02 seconds. CPU system time: 0 seconds. Elapsed time: 0.02 seconds; current allocated memory: 608.867 MB.
+INFO: [HLS 200-10] Starting code transformations ...
+INFO: [HLS 200-111] Finished Standard Transforms: CPU user time: 21.39 seconds. CPU system time: 0.03 seconds. Elapsed time: 21.42 seconds; current allocated memory: 686.262 MB.
+INFO: [HLS 200-10] Checking synthesizability ...
+INFO: [HLS 200-111] Finished Checking Synthesizability: CPU user time: 11.82 seconds. CPU system time: 0.02 seconds. Elapsed time: 11.84 seconds; current allocated memory: 735.992 MB.
+INFO: [XFORM 203-510] Pipelining loop 'FIND_FREE_STQ' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:3720) in function 'boom::lsu_accept_completion' automatically.
+INFO: [XFORM 203-510] Pipelining loop 'FIND_FREE_LDQ' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:3832) in function 'boom::lsu_accept_completion' automatically.
+INFO: [XFORM 203-510] Pipelining loop 'VITIS_LOOP_100_1' (/home/lab_726/boom/hls_boom/tb/differential/g6_l1r_focused_top.cpp:100) in function 'focused_save_state' automatically.
+INFO: [XFORM 203-510] Pipelining loop 'VITIS_LOOP_74_1' (/home/lab_726/boom/hls_boom/tb/differential/g6_l1r_focused_top.cpp:74) in function 'focused_load_state' automatically.
+INFO: [XFORM 203-510] Pipelining loop 'VITIS_LOOP_109_1' (/home/lab_726/boom/hls_boom/tb/differential/g6_l1r_focused_top.cpp:109) in function 'focused_initialize' automatically.
+INFO: [XFORM 203-510] Pipelining loop 'VITIS_LOOP_110_2' (/home/lab_726/boom/hls_boom/tb/differential/g6_l1r_focused_top.cpp:110) in function 'focused_initialize' automatically.
+INFO: [XFORM 203-510] Pipelining loop 'Loop-4' (/home/lab_726/boom/hls_boom/include/boom_state.hpp:315) in function 'focused_initialize' automatically.
+INFO: [XFORM 203-510] Pipelining loop 'Loop-5' (/home/lab_726/boom/hls_boom/include/boom_state.hpp:315) in function 'focused_initialize' automatically.
+INFO: [XFORM 203-510] Pipelining loop 'Loop-6' (/home/lab_726/boom/hls_boom/include/boom_state.hpp:315) in function 'focused_initialize' automatically.
+INFO: [XFORM 203-510] Pipelining loop 'VITIS_LOOP_328_1' (/home/lab_726/boom/hls_boom/include/boom_state.hpp:328) in function 'focused_initialize' automatically.
+INFO: [XFORM 203-510] Pipelining loop 'VITIS_LOOP_329_2' (/home/lab_726/boom/hls_boom/include/boom_state.hpp:329) in function 'focused_initialize' automatically.
+INFO: [XFORM 203-510] Pipelining loop 'VITIS_LOOP_330_3' (/home/lab_726/boom/hls_boom/include/boom_state.hpp:330) in function 'focused_initialize' automatically.
+INFO: [XFORM 203-510] Pipelining loop 'VITIS_LOOP_331_4' (/home/lab_726/boom/hls_boom/include/boom_state.hpp:331) in function 'focused_initialize' automatically.
+INFO: [XFORM 203-510] Pipelining loop 'VITIS_LOOP_119_3' (/home/lab_726/boom/hls_boom/tb/differential/g6_l1r_focused_top.cpp:119) in function 'focused_initialize' automatically.
+INFO: [XFORM 203-510] Pipelining loop 'CLEAR_LDQ' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:3660) in function 'g6_l1r_focused_top' automatically.
+INFO: [XFORM 203-510] Pipelining loop 'CLEAR_STQ' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:3665) in function 'g6_l1r_focused_top' automatically.
+INFO: [XFORM 203-510] Pipelining loop 'LSU_LOAD_ISSUE_SCAN' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:3863) in function 'g6_l1r_focused_top' automatically.
+INFO: [XFORM 203-510] Pipelining loop 'VITIS_LOOP_157_1' (/home/lab_726/boom/hls_boom/tb/differential/g6_l1r_focused_top.cpp:156) in function 'g6_l1r_focused_top' automatically.
+INFO: [XFORM 203-510] Pipelining loop 'VITIS_LOOP_163_1' (/home/lab_726/boom/hls_boom/tb/differential/g6_l1r_focused_top.cpp:162) in function 'g6_l1r_focused_top' automatically.
+INFO: [XFORM 203-502] Unrolling all loops for pipelining in function 'boom::try_issue_load' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:139:5).
+INFO: [HLS 200-489] Unrolling loop 'OLDER_STORE_SCAN' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:3639) in function 'boom::try_issue_load' completely with a factor of 32.
+INFO: [XFORM 203-102] Partitioning array 'focused_state.execute.alu_results.valid' (/home/lab_726/boom/hls_boom/tb/differential/g6_l1r_focused_top.cpp:202) automatically.
+INFO: [XFORM 203-102] Partitioning array 'focused_state.execute.alu_results.uop.uopc' (/home/lab_726/boom/hls_boom/tb/differential/g6_l1r_focused_top.cpp:202) automatically.
+INFO: [XFORM 203-102] Partitioning array 'focused_state.execute.alu_results.uop.inst' (/home/lab_726/boom/hls_boom/tb/differential/g6_l1r_focused_top.cpp:202) automatically.
+INFO: [XFORM 203-102] Partitioning array 'focused_state.execute.alu_results.uop.debug_inst' (/home/lab_726/boom/hls_boom/tb/differential/g6_l1r_focused_top.cpp:202) automatically.
+INFO: [XFORM 203-102] Partitioning array 'focused_state.execute.alu_results.uop.is_rvc' (/home/lab_726/boom/hls_boom/tb/differential/g6_l1r_focused_top.cpp:202) automatically.
+INFO: [XFORM 203-102] Partitioning array 'focused_state.execute.alu_results.uop.debug_pc' (/home/lab_726/boom/hls_boom/tb/differential/g6_l1r_focused_top.cpp:202) automatically.
+INFO: [XFORM 203-102] Partitioning array 'focused_state.execute.alu_results.uop.ftq_generation' (/home/lab_726/boom/hls_boom/tb/differential/g6_l1r_focused_top.cpp:202) automatically.
+INFO: [XFORM 203-102] Partitioning array 'focused_state.execute.alu_results.uop.ftq_idx' (/home/lab_726/boom/hls_boom/tb/differential/g6_l1r_focused_top.cpp:202) automatically.
+INFO: [XFORM 203-102] Partitioning array 'focused_state.execute.alu_results.uop.ftq_lane' (/home/lab_726/boom/hls_boom/tb/differential/g6_l1r_focused_top.cpp:202) automatically.
+INFO: [XFORM 203-102] Partitioning array 'focused_state.execute.alu_results.uop.ftq_halfword_offset' (/home/lab_726/boom/hls_boom/tb/differential/g6_l1r_focused_top.cpp:202) automatically.
+INFO: [XFORM 203-102] Partitioning array 'focused_state.execute.alu_results.uop.ftq_valid' (/home/lab_726/boom/hls_boom/tb/differential/g6_l1r_focused_top.cpp:202) automatically.
+INFO: [XFORM 203-102] Partitioning array 'focused_state.execute.alu_results.uop.iq_type' (/home/lab_726/boom/hls_boom/tb/differential/g6_l1r_focused_top.cpp:202) automatically.
+INFO: [XFORM 203-102] Partitioning array 'focused_state.execute.alu_results.uop.iq_type.19' (/home/lab_726/boom/hls_boom/tb/differential/g6_l1r_focused_top.cpp:202) automatically.
+INFO: [XFORM 203-102] Partitioning array 'focused_state.execute.alu_results.uop.iq_type.20' (/home/lab_726/boom/hls_boom/tb/differential/g6_l1r_focused_top.cpp:202) automatically.
+INFO: [XFORM 203-102] Partitioning array 'focused_state.execute.alu_results.uop.iq_type.21' (/home/lab_726/boom/hls_boom/tb/differential/g6_l1r_focused_top.cpp:202) automatically.
+INFO: [XFORM 203-102] Partitioning array 'focused_state.execute.alu_results.uop.iq_type.22' (/home/lab_726/boom/hls_boom/tb/differential/g6_l1r_focused_top.cpp:202) automatically.
+INFO: [XFORM 203-102] Partitioning array 'focused_state.execute.alu_results.uop.iq_type.23' (/home/lab_726/boom/hls_boom/tb/differential/g6_l1r_focused_top.cpp:202) automatically.
+INFO: [XFORM 203-102] Partitioning array 'focused_state.execute.alu_results.uop.iq_type.24' (/home/lab_726/boom/hls_boom/tb/differential/g6_l1r_focused_top.cpp:202) automatically.
+INFO: [XFORM 203-102] Partitioning array 'focused_state.execute.alu_results.uop.iq_type.25' (/home/lab_726/boom/hls_boom/tb/differential/g6_l1r_focused_top.cpp:202) automatically.
+INFO: [XFORM 203-102] Partitioning array 'focused_state.execute.alu_results.uop.iq_type.26' (/home/lab_726/boom/hls_boom/tb/differential/g6_l1r_focused_top.cpp:202) automatically.
+INFO: [XFORM 203-102] Partitioning array 'focused_state.execute.alu_results.uop.iq_type.27' (/home/lab_726/boom/hls_boom/tb/differential/g6_l1r_focused_top.cpp:202) automatically.
+INFO: [XFORM 203-102] Partitioning array 'focused_state.execute.alu_results.uop.fu_code' (/home/lab_726/boom/hls_boom/tb/differential/g6_l1r_focused_top.cpp:202) automatically.
+INFO: [XFORM 203-102] Partitioning array 'focused_state.execute.alu_results.uop.ctrl' (/home/lab_726/boom/hls_boom/tb/differential/g6_l1r_focused_top.cpp:202) automatically.
+INFO: [XFORM 203-102] Partitioning array 'focused_state.execute.alu_results.uop.iw_state' (/home/lab_726/boom/hls_boom/tb/differential/g6_l1r_focused_top.cpp:202) automatically.
+INFO: [XFORM 203-102] Partitioning array 'focused_state.execute.alu_results.uop.iw_p1_poisoned' (/home/lab_726/boom/hls_boom/tb/differential/g6_l1r_focused_top.cpp:202) automatically.
+INFO: [XFORM 203-102] Partitioning array 'focused_state.execute.alu_results.uop.iw_p1_poisoned.19' (/home/lab_726/boom/hls_boom/tb/differential/g6_l1r_focused_top.cpp:202) automatically.
+INFO: [XFORM 203-102] Partitioning array 'focused_state.execute.alu_results.uop.iw_p1_poisoned.20' (/home/lab_726/boom/hls_boom/tb/differential/g6_l1r_focused_top.cpp:202) automatically.
+INFO: [XFORM 203-102] Partitioning array 'focused_state.execute.alu_results.uop.iw_p1_poisoned.21' (/home/lab_726/boom/hls_boom/tb/differential/g6_l1r_focused_top.cpp:202) automatically.
+INFO: [XFORM 203-102] Partitioning array 'focused_state.execute.alu_results.uop.iw_p1_poisoned.22' (/home/lab_726/boom/hls_boom/tb/differential/g6_l1r_focused_top.cpp:202) automatically.
+INFO: [XFORM 203-102] Partitioning array 'focused_state.execute.alu_results.uop.iw_p1_poisoned.23' (/home/lab_726/boom/hls_boom/tb/differential/g6_l1r_focused_top.cpp:202) automatically.
+INFO: [XFORM 203-102] Partitioning array 'focused_state.execute.alu_results.uop.iw_p1_poisoned.24' (/home/lab_726/boom/hls_boom/tb/differential/g6_l1r_focused_top.cpp:202) automatically.
+INFO: [XFORM 203-102] Partitioning array 'focused_state.execute.alu_results.uop.iw_p1_poisoned.25' (/home/lab_726/boom/hls_boom/tb/differential/g6_l1r_focused_top.cpp:202) automatically.
+INFO: [XFORM 203-102] Partitioning array 'focused_state.execute.alu_results.uop.iw_p1_poisoned.26' (/home/lab_726/boom/hls_boom/tb/differential/g6_l1r_focused_top.cpp:202) automatically.
+INFO: [XFORM 203-102] Partitioning array 'focused_state.execute.alu_results.uop.iw_p1_poisoned.27' (/home/lab_726/boom/hls_boom/tb/differential/g6_l1r_focused_top.cpp:202) automatically.
+INFO: [XFORM 203-102] Partitioning array 'focused_state.execute.alu_results.uop.iw_p2_poisoned' (/home/lab_726/boom/hls_boom/tb/differential/g6_l1r_focused_top.cpp:202) automatically.
+INFO: [XFORM 203-102] Partitioning array 'focused_state.execute.alu_results.uop.branch' (/home/lab_726/boom/hls_boom/tb/differential/g6_l1r_focused_top.cpp:202) automatically.
+INFO: [XFORM 203-102] Partitioning array 'focused_state.execute.alu_results.uop.imm_packed' (/home/lab_726/boom/hls_boom/tb/differential/g6_l1r_focused_top.cpp:202) automatically.
+INFO: [XFORM 203-102] Partitioning array 'focused_state.execute.alu_results.uop.imm_packed.13' (/home/lab_726/boom/hls_boom/tb/differential/g6_l1r_focused_top.cpp:202) automatically.
+INFO: [XFORM 203-102] Partitioning array 'focused_state.execute.alu_results.uop.imm_packed.14' (/home/lab_726/boom/hls_boom/tb/differential/g6_l1r_focused_top.cpp:202) automatically.
+INFO: [XFORM 203-102] Partitioning array 'focused_state.execute.alu_results.uop.imm_packed.15' (/home/lab_726/boom/hls_boom/tb/differential/g6_l1r_focused_top.cpp:202) automatically.
+INFO: [XFORM 203-102] Partitioning array 'focused_state.execute.alu_results.uop.imm_packed.16' (/home/lab_726/boom/hls_boom/tb/differential/g6_l1r_focused_top.cpp:202) automatically.
+INFO: [XFORM 203-102] Partitioning array 'focused_state.execute.alu_results.uop.imm_packed.17' (/home/lab_726/boom/hls_boom/tb/differential/g6_l1r_focused_top.cpp:202) automatically.
+INFO: [XFORM 203-102] Partitioning array 'focused_state.execute.alu_results.uop.imm_packed.18' (/home/lab_726/boom/hls_boom/tb/differential/g6_l1r_focused_top.cpp:202) automatically.
+INFO: [XFORM 203-102] Partitioning array 'focused_state.execute.alu_results.uop.csr_addr' (/home/lab_726/boom/hls_boom/tb/differential/g6_l1r_focused_top.cpp:202) automatically.
+INFO: [XFORM 203-102] Partitioning array 'focused_state.execute.alu_results.uop.csr_addr.39' (/home/lab_726/boom/hls_boom/tb/differential/g6_l1r_focused_top.cpp:202) automatically.
+INFO: [XFORM 203-102] Partitioning array 'focused_state.execute.alu_results.uop.csr_addr.40' (/home/lab_726/boom/hls_boom/tb/differential/g6_l1r_focused_top.cpp:202) automatically.
+INFO: [XFORM 203-102] Partitioning array 'focused_state.execute.alu_results.uop.csr_addr.41' (/home/lab_726/boom/hls_boom/tb/differential/g6_l1r_focused_top.cpp:202) automatically.
+INFO: [XFORM 203-102] Partitioning array 'focused_state.execute.alu_results.uop.csr_addr.42' (/home/lab_726/boom/hls_boom/tb/differential/g6_l1r_focused_top.cpp:202) automatically.
+INFO: [XFORM 203-102] Partitioning array 'focused_state.execute.alu_results.uop.csr_addr.43' (/home/lab_726/boom/hls_boom/tb/differential/g6_l1r_focused_top.cpp:202) automatically.
+INFO: [XFORM 203-102] Partitioning array 'focused_state.execute.alu_results.uop.csr_addr.44' (/home/lab_726/boom/hls_boom/tb/differential/g6_l1r_focused_top.cpp:202) automatically.
+INFO: [XFORM 203-102] Partitioning array 'focused_state.execute.alu_results.uop.csr_addr.45' (/home/lab_726/boom/hls_boom/tb/differential/g6_l1r_focused_top.cpp:202) automatically.
+INFO: [XFORM 203-102] Partitioning array 'focused_state.execute.alu_results.uop.csr_addr.46' (/home/lab_726/boom/hls_boom/tb/differential/g6_l1r_focused_top.cpp:202) automatically.
+INFO: [XFORM 203-102] Partitioning array 'focused_state.execute.alu_results.uop.csr_addr.47' (/home/lab_726/boom/hls_boom/tb/differential/g6_l1r_focused_top.cpp:202) automatically.
+INFO: [XFORM 203-102] Partitioning array 'focused_state.execute.alu_results.uop.csr_addr.48' (/home/lab_726/boom/hls_boom/tb/differential/g6_l1r_focused_top.cpp:202) automatically.
+INFO: [XFORM 203-102] Partitioning array 'focused_state.execute.alu_results.uop.csr_addr.49' (/home/lab_726/boom/hls_boom/tb/differential/g6_l1r_focused_top.cpp:202) automatically.
+INFO: [XFORM 203-102] Partitioning array 'focused_state.execute.alu_results.uop.csr_addr.50' (/home/lab_726/boom/hls_boom/tb/differential/g6_l1r_focused_top.cpp:202) automatically.
+INFO: [XFORM 203-102] Partitioning array 'focused_state.execute.alu_results.uop.csr_addr.51' (/home/lab_726/boom/hls_boom/tb/differential/g6_l1r_focused_top.cpp:202) automatically.
+INFO: [XFORM 203-102] Partitioning array 'focused_state.execute.alu_results.uop.csr_addr.52' (/home/lab_726/boom/hls_boom/tb/differential/g6_l1r_focused_top.cpp:202) automatically.
+INFO: [XFORM 203-102] Partitioning array 'focused_state.execute.alu_results.uop.csr_addr.53' (/home/lab_726/boom/hls_boom/tb/differential/g6_l1r_focused_top.cpp:202) automatically.
+INFO: [XFORM 203-102] Partitioning array 'focused_state.execute.alu_results.uop.csr_addr.54' (/home/lab_726/boom/hls_boom/tb/differential/g6_l1r_focused_top.cpp:202) automatically.
+INFO: [XFORM 203-102] Partitioning array 'focused_state.execute.alu_results.uop.csr_addr.55' (/home/lab_726/boom/hls_boom/tb/differential/g6_l1r_focused_top.cpp:202) automatically.
+INFO: [XFORM 203-102] Partitioning array 'focused_state.execute.alu_results.uop.csr_addr.56' (/home/lab_726/boom/hls_boom/tb/differential/g6_l1r_focused_top.cpp:202) automatically.
+INFO: [XFORM 203-102] Partitioning array 'focused_state.execute.alu_results.uop.csr_addr.57' (/home/lab_726/boom/hls_boom/tb/differential/g6_l1r_focused_top.cpp:202) automatically.
+INFO: [XFORM 203-102] Partitioning array 'focused_state.execute.alu_results.uop.queue' (/home/lab_726/boom/hls_boom/tb/differential/g6_l1r_focused_top.cpp:202) automatically.
+INFO: [XFORM 203-102] Partitioning array 'focused_state.execute.alu_results.uop.rename' (/home/lab_726/boom/hls_boom/tb/differential/g6_l1r_focused_top.cpp:202) automatically.
+INFO: [XFORM 203-102] Partitioning array 'focused_state.execute.alu_results.uop.exception' (/home/lab_726/boom/hls_boom/tb/differential/g6_l1r_focused_top.cpp:202) automatically.
+INFO: [XFORM 203-102] Partitioning array 'focused_state.execute.alu_results.uop.exc_cause' (/home/lab_726/boom/hls_boom/tb/differential/g6_l1r_focused_top.cpp:202) automatically.
+INFO: [XFORM 203-102] Partitioning array 'focused_state.execute.alu_results.uop.exc_cause.19' (/home/lab_726/boom/hls_boom/tb/differential/g6_l1r_focused_top.cpp:202) automatically.
+INFO: [XFORM 203-102] Partitioning array 'focused_state.execute.alu_results.uop.exc_cause.20' (/home/lab_726/boom/hls_boom/tb/differential/g6_l1r_focused_top.cpp:202) automatically.
+INFO: [XFORM 203-102] Partitioning array 'focused_state.execute.alu_results.uop.exc_cause.21' (/home/lab_726/boom/hls_boom/tb/differential/g6_l1r_focused_top.cpp:202) automatically.
+INFO: [XFORM 203-102] Partitioning array 'focused_state.execute.alu_results.uop.exc_cause.22' (/home/lab_726/boom/hls_boom/tb/differential/g6_l1r_focused_top.cpp:202) automatically.
+INFO: [XFORM 203-102] Partitioning array 'focused_state.execute.alu_results.uop.exc_cause.23' (/home/lab_726/boom/hls_boom/tb/differential/g6_l1r_focused_top.cpp:202) automatically.
+INFO: [XFORM 203-102] Partitioning array 'focused_state.execute.alu_results.uop.exc_cause.24' (/home/lab_726/boom/hls_boom/tb/differential/g6_l1r_focused_top.cpp:202) automatically.
+INFO: [XFORM 203-102] Partitioning array 'focused_state.execute.alu_results.uop.exc_cause.25' (/home/lab_726/boom/hls_boom/tb/differential/g6_l1r_focused_top.cpp:202) automatically.
+INFO: [XFORM 203-102] Partitioning array 'focused_state.execute.alu_results.uop.exc_cause.26' (/home/lab_726/boom/hls_boom/tb/differential/g6_l1r_focused_top.cpp:202) automatically.
+INFO: [XFORM 203-102] Partitioning array 'focused_state.execute.alu_results.uop.exc_cause.27' (/home/lab_726/boom/hls_boom/tb/differential/g6_l1r_focused_top.cpp:202) automatically.
+INFO: [XFORM 203-102] Partitioning array 'focused_state.execute.alu_results.uop.bypassable' (/home/lab_726/boom/hls_boom/tb/differential/g6_l1r_focused_top.cpp:202) automatically.
+INFO: [XFORM 203-102] Partitioning array 'focused_state.execute.alu_results.uop.mem' (/home/lab_726/boom/hls_boom/tb/differential/g6_l1r_focused_top.cpp:202) automatically.
+INFO: [XFORM 203-102] Partitioning array 'focused_state.execute.alu_results.uop.is_sys_pc2epc' (/home/lab_726/boom/hls_boom/tb/differential/g6_l1r_focused_top.cpp:202) automatically.
+INFO: [XFORM 203-102] Partitioning array 'focused_state.execute.alu_results.uop.is_unique' (/home/lab_726/boom/hls_boom/tb/differential/g6_l1r_focused_top.cpp:202) automatically.
+INFO: [XFORM 203-102] Partitioning array 'focused_state.execute.alu_results.uop.is_unique.13' (/home/lab_726/boom/hls_boom/tb/differential/g6_l1r_focused_top.cpp:202) automatically.
+INFO: [XFORM 203-102] Partitioning array 'focused_state.execute.alu_results.uop.is_unique.14' (/home/lab_726/boom/hls_boom/tb/differential/g6_l1r_focused_top.cpp:202) automatically.
+INFO: [XFORM 203-102] Partitioning array 'focused_state.execute.alu_results.uop.is_unique.15' (/home/lab_726/boom/hls_boom/tb/differential/g6_l1r_focused_top.cpp:202) automatically.
+INFO: [XFORM 203-102] Partitioning array 'focused_state.execute.alu_results.uop.is_unique.16' (/home/lab_726/boom/hls_boom/tb/differential/g6_l1r_focused_top.cpp:202) automatically.
+INFO: [XFORM 203-102] Partitioning array 'focused_state.execute.alu_results.uop.is_unique.17' (/home/lab_726/boom/hls_boom/tb/differential/g6_l1r_focused_top.cpp:202) automatically.
+INFO: [XFORM 203-102] Partitioning array 'focused_state.execute.alu_results.uop.is_unique.18' (/home/lab_726/boom/hls_boom/tb/differential/g6_l1r_focused_top.cpp:202) automatically.
+INFO: [XFORM 203-102] Partitioning array 'focused_state.execute.alu_results.uop.flush_on_commit' (/home/lab_726/boom/hls_boom/tb/differential/g6_l1r_focused_top.cpp:202) automatically.
+INFO: [XFORM 203-102] Partitioning array 'focused_state.execute.alu_results.uop.flush_on_commit.7' (/home/lab_726/boom/hls_boom/tb/differential/g6_l1r_focused_top.cpp:202) automatically.
+INFO: [XFORM 203-102] Partitioning array 'focused_state.execute.alu_results.uop.flush_on_commit.8' (/home/lab_726/boom/hls_boom/tb/differential/g6_l1r_focused_top.cpp:202) automatically.
+INFO: [XFORM 203-102] Partitioning array 'focused_state.execute.alu_results.uop.flush_on_commit.9' (/home/lab_726/boom/hls_boom/tb/differential/g6_l1r_focused_top.cpp:202) automatically.
+INFO: [XFORM 203-102] Partitioning array 'focused_state.execute.alu_results.result' (/home/lab_726/boom/hls_boom/tb/differential/g6_l1r_focused_top.cpp:202) automatically.
+INFO: [XFORM 203-102] Partitioning array 'focused_state.execute.alu_results.exception' (/home/lab_726/boom/hls_boom/tb/differential/g6_l1r_focused_top.cpp:202) automatically.
+INFO: [XFORM 203-102] Partitioning array 'focused_state.execute.alu_results.exc_cause' (/home/lab_726/boom/hls_boom/tb/differential/g6_l1r_focused_top.cpp:202) automatically.
+INFO: [XFORM 203-102] Partitioning array 'focused_state.execute.alu_results.mispredict' (/home/lab_726/boom/hls_boom/tb/differential/g6_l1r_focused_top.cpp:202) automatically.
+INFO: [XFORM 203-102] Partitioning array 'focused_state.execute.alu_results.redirect_pc' (/home/lab_726/boom/hls_boom/tb/differential/g6_l1r_focused_top.cpp:202) automatically.
+INFO: [XFORM 203-102] Partitioning array 'focused_state.execute.alu_results.actual_valid' (/home/lab_726/boom/hls_boom/tb/differential/g6_l1r_focused_top.cpp:202) automatically.
+INFO: [XFORM 203-102] Partitioning array 'focused_state.execute.alu_results.actual_taken' (/home/lab_726/boom/hls_boom/tb/differential/g6_l1r_focused_top.cpp:202) automatically.
+INFO: [XFORM 203-102] Partitioning array 'focused_state.execute.alu_results.actual_target' (/home/lab_726/boom/hls_boom/tb/differential/g6_l1r_focused_top.cpp:202) automatically.
+INFO: [XFORM 203-102] Partitioning array 'focused_state.execute.alu_results.fallthrough_pc' (/home/lab_726/boom/hls_boom/tb/differential/g6_l1r_focused_top.cpp:202) automatically.
+INFO: [XFORM 203-102] Partitioning array 'focused_state.execute.alu_results.memory_valid' (/home/lab_726/boom/hls_boom/tb/differential/g6_l1r_focused_top.cpp:202) automatically.
+INFO: [XFORM 203-102] Partitioning array 'focused_state.execute.alu_results.is_load' (/home/lab_726/boom/hls_boom/tb/differential/g6_l1r_focused_top.cpp:202) automatically.
+INFO: [XFORM 203-102] Partitioning array 'focused_state.execute.alu_results.is_store' (/home/lab_726/boom/hls_boom/tb/differential/g6_l1r_focused_top.cpp:202) automatically.
+INFO: [XFORM 203-102] Partitioning array 'focused_state.execute.alu_results.signed_load' (/home/lab_726/boom/hls_boom/tb/differential/g6_l1r_focused_top.cpp:202) automatically.
+INFO: [XFORM 203-102] Partitioning array 'focused_state.execute.alu_results.memory_address' (/home/lab_726/boom/hls_boom/tb/differential/g6_l1r_focused_top.cpp:202) automatically.
+INFO: [XFORM 203-102] Partitioning array 'focused_state.execute.alu_results.store_data' (/home/lab_726/boom/hls_boom/tb/differential/g6_l1r_focused_top.cpp:202) automatically.
+INFO: [XFORM 203-102] Partitioning array 'focused_state.execute.alu_results.memory_mask' (/home/lab_726/boom/hls_boom/tb/differential/g6_l1r_focused_top.cpp:202) automatically.
+INFO: [XFORM 203-102] Partitioning array 'focused_state.execute.alu_results.memory_size' (/home/lab_726/boom/hls_boom/tb/differential/g6_l1r_focused_top.cpp:202) automatically.
+INFO: [XFORM 203-102] Partitioning array 'focused_state.completion.writebacks.valid' (/home/lab_726/boom/hls_boom/tb/differential/g6_l1r_focused_top.cpp:202) automatically.
+INFO: [XFORM 203-102] Partitioning array 'focused_state.completion.writebacks.pdst' (/home/lab_726/boom/hls_boom/tb/differential/g6_l1r_focused_top.cpp:202) automatically.
+INFO: [XFORM 203-102] Partitioning array 'focused_state.completion.writebacks.value' (/home/lab_726/boom/hls_boom/tb/differential/g6_l1r_focused_top.cpp:202) automatically.
+INFO: [XFORM 203-102] Partitioning array 'focused_state.completion.writebacks.rob_idx' (/home/lab_726/boom/hls_boom/tb/differential/g6_l1r_focused_top.cpp:202) automatically.
+INFO: [XFORM 203-102] Partitioning array 'focused_state.completion.writebacks.rob_allocation_id' (/home/lab_726/boom/hls_boom/tb/differential/g6_l1r_focused_top.cpp:202) automatically.
+INFO: [XFORM 203-102] Partitioning array 'focused_state.completion.writebacks.source' (/home/lab_726/boom/hls_boom/tb/differential/g6_l1r_focused_top.cpp:202) automatically.
+INFO: [XFORM 203-102] Partitioning array 'focused_state.completion.wakeups.valid' (/home/lab_726/boom/hls_boom/tb/differential/g6_l1r_focused_top.cpp:202) automatically.
+INFO: [XFORM 203-102] Partitioning array 'focused_state.completion.wakeups.pdst' (/home/lab_726/boom/hls_boom/tb/differential/g6_l1r_focused_top.cpp:202) automatically.
+INFO: [XFORM 203-102] Partitioning array 'focused_state.completion.wakeups.value' (/home/lab_726/boom/hls_boom/tb/differential/g6_l1r_focused_top.cpp:202) automatically.
+INFO: [XFORM 203-102] Partitioning array 'focused_state.completion.wakeups.rob_idx' (/home/lab_726/boom/hls_boom/tb/differential/g6_l1r_focused_top.cpp:202) automatically.
+INFO: [XFORM 203-102] Partitioning array 'focused_state.completion.wakeups.rob_allocation_id' (/home/lab_726/boom/hls_boom/tb/differential/g6_l1r_focused_top.cpp:202) automatically.
+INFO: [XFORM 203-102] Partitioning array 'focused_state.completion.wakeups.branch_mask' (/home/lab_726/boom/hls_boom/tb/differential/g6_l1r_focused_top.cpp:202) automatically.
+INFO: [XFORM 203-102] Partitioning array 'focused_state.completion.wakeups.source' (/home/lab_726/boom/hls_boom/tb/differential/g6_l1r_focused_top.cpp:202) automatically.
+INFO: [XFORM 203-102] Partitioning array 'focused_state.completion.bypass.valid' (/home/lab_726/boom/hls_boom/tb/differential/g6_l1r_focused_top.cpp:202) automatically.
+INFO: [XFORM 203-102] Partitioning array 'focused_state.completion.bypass.pdst' (/home/lab_726/boom/hls_boom/tb/differential/g6_l1r_focused_top.cpp:202) automatically.
+INFO: [XFORM 203-102] Partitioning array 'focused_state.completion.bypass.value' (/home/lab_726/boom/hls_boom/tb/differential/g6_l1r_focused_top.cpp:202) automatically.
+INFO: [XFORM 203-102] Partitioning array 'focused_state.completion.bypass.rob_idx' (/home/lab_726/boom/hls_boom/tb/differential/g6_l1r_focused_top.cpp:202) automatically.
+INFO: [XFORM 203-102] Partitioning array 'focused_state.completion.bypass.rob_allocation_id' (/home/lab_726/boom/hls_boom/tb/differential/g6_l1r_focused_top.cpp:202) automatically.
+INFO: [XFORM 203-102] Partitioning array 'focused_state.completion.bypass.branch_mask' (/home/lab_726/boom/hls_boom/tb/differential/g6_l1r_focused_top.cpp:202) automatically.
+INFO: [XFORM 203-102] Partitioning array 'focused_state.completion.bypass.source' (/home/lab_726/boom/hls_boom/tb/differential/g6_l1r_focused_top.cpp:202) automatically.
+INFO: [XFORM 203-102] Partitioning array 'focused_state.completion.wakeup_sent' (/home/lab_726/boom/hls_boom/tb/differential/g6_l1r_focused_top.cpp:202) automatically.
+INFO: [XFORM 203-102] Partitioning array 'focused_rob.ftq_generations' automatically.
+INFO: [XFORM 203-102] Partitioning array 'focused_rob.entries.valid' automatically.
+INFO: [XFORM 203-102] Partitioning array 'focused_rob.entries.uop.uopc' automatically.
+INFO: [XFORM 203-102] Partitioning array 'focused_rob.entries.uop.rename' automatically.
+INFO: [XFORM 203-102] Partitioning array 'focused_rob.entries.uop.queue' automatically.
+INFO: [XFORM 203-102] Partitioning array 'focused_rob.entries.uop.mem' automatically.
+INFO: [XFORM 203-102] Partitioning array 'focused_rob.entries.uop.iw_state' automatically.
+INFO: [XFORM 203-102] Partitioning array 'focused_rob.entries.uop.iw_p2_poisoned' automatically.
+INFO: [XFORM 203-102] Partitioning array 'focused_rob.entries.uop.iw_p1_poisoned.9' automatically.
+INFO: [XFORM 203-102] Partitioning array 'focused_rob.entries.uop.iw_p1_poisoned.17' automatically.
+INFO: [XFORM 203-102] Partitioning array 'focused_rob.entries.uop.iw_p1_poisoned.16' automatically.
+INFO: [XFORM 203-102] Partitioning array 'focused_rob.entries.uop.iw_p1_poisoned.15' automatically.
+INFO: [XFORM 203-102] Partitioning array 'focused_rob.entries.uop.iw_p1_poisoned.14' automatically.
+INFO: [XFORM 203-102] Partitioning array 'focused_rob.entries.uop.iw_p1_poisoned.13' automatically.
+INFO: [XFORM 203-102] Partitioning array 'focused_rob.entries.uop.iw_p1_poisoned.12' automatically.
+INFO: [XFORM 203-102] Partitioning array 'focused_rob.entries.uop.iw_p1_poisoned.11' automatically.
+INFO: [XFORM 203-102] Partitioning array 'focused_rob.entries.uop.iw_p1_poisoned.10' automatically.
+INFO: [XFORM 203-102] Partitioning array 'focused_rob.entries.uop.iw_p1_poisoned' automatically.
+INFO: [XFORM 203-102] Partitioning array 'focused_rob.entries.uop.is_unique.9' automatically.
+INFO: [XFORM 203-102] Partitioning array 'focused_rob.entries.uop.is_unique.8' automatically.
+INFO: [XFORM 203-102] Partitioning array 'focused_rob.entries.uop.is_unique.7' automatically.
+INFO: [XFORM 203-102] Partitioning array 'focused_rob.entries.uop.is_unique.6' automatically.
+INFO: [XFORM 203-102] Partitioning array 'focused_rob.entries.uop.is_unique.11' automatically.
+INFO: [XFORM 203-102] Partitioning array 'focused_rob.entries.uop.is_unique.10' automatically.
+INFO: [XFORM 203-102] Partitioning array 'focused_rob.entries.uop.is_unique' automatically.
+INFO: [XFORM 203-102] Partitioning array 'focused_rob.entries.uop.is_sys_pc2epc' automatically.
+INFO: [XFORM 203-102] Partitioning array 'focused_rob.entries.uop.is_rvc' automatically.
+INFO: [XFORM 203-102] Partitioning array 'focused_rob.entries.uop.iq_type.9' automatically.
+INFO: [XFORM 203-102] Partitioning array 'focused_rob.entries.uop.iq_type.17' automatically.
+INFO: [XFORM 203-102] Partitioning array 'focused_rob.entries.uop.iq_type.16' automatically.
+INFO: [XFORM 203-102] Partitioning array 'focused_rob.entries.uop.iq_type.15' automatically.
+INFO: [XFORM 203-102] Partitioning array 'focused_rob.entries.uop.iq_type.14' automatically.
+INFO: [XFORM 203-102] Partitioning array 'focused_rob.entries.uop.iq_type.13' automatically.
+INFO: [XFORM 203-102] Partitioning array 'focused_rob.entries.uop.iq_type.12' automatically.
+INFO: [XFORM 203-102] Partitioning array 'focused_rob.entries.uop.iq_type.11' automatically.
+INFO: [XFORM 203-102] Partitioning array 'focused_rob.entries.uop.iq_type.10' automatically.
+INFO: [XFORM 203-102] Partitioning array 'focused_rob.entries.uop.iq_type' automatically.
+INFO: [XFORM 203-102] Partitioning array 'focused_rob.entries.uop.inst' automatically.
+INFO: [XFORM 203-102] Partitioning array 'focused_rob.entries.uop.imm_packed.9' automatically.
+INFO: [XFORM 203-102] Partitioning array 'focused_rob.entries.uop.imm_packed.8' automatically.
+INFO: [XFORM 203-102] Partitioning array 'focused_rob.entries.uop.imm_packed.7' automatically.
+INFO: [XFORM 203-102] Partitioning array 'focused_rob.entries.uop.imm_packed.6' automatically.
+INFO: [XFORM 203-102] Partitioning array 'focused_rob.entries.uop.imm_packed.11' automatically.
+INFO: [XFORM 203-102] Partitioning array 'focused_rob.entries.uop.imm_packed.10' automatically.
+INFO: [XFORM 203-102] Partitioning array 'focused_rob.entries.uop.imm_packed' automatically.
+INFO: [XFORM 203-102] Partitioning array 'focused_rob.entries.uop.fu_code' automatically.
+INFO: [XFORM 203-102] Partitioning array 'focused_rob.entries.uop.ftq_valid' automatically.
+INFO: [XFORM 203-102] Partitioning array 'focused_rob.entries.uop.ftq_lane' automatically.
+INFO: [XFORM 203-102] Partitioning array 'focused_rob.entries.uop.ftq_idx' automatically.
+INFO: [XFORM 203-102] Partitioning array 'focused_rob.entries.uop.ftq_halfword_offset' automatically.
+INFO: [XFORM 203-102] Partitioning array 'focused_rob.entries.uop.ftq_generation' automatically.
+INFO: [XFORM 203-102] Partitioning array 'focused_rob.entries.uop.flush_on_commit.5' automatically.
+INFO: [XFORM 203-102] Partitioning array 'focused_rob.entries.uop.flush_on_commit.4' automatically.
+INFO: [XFORM 203-102] Partitioning array 'focused_rob.entries.uop.flush_on_commit.3' automatically.
+INFO: [XFORM 203-102] Partitioning array 'focused_rob.entries.uop.flush_on_commit' automatically.
+INFO: [XFORM 203-102] Partitioning array 'focused_rob.entries.uop.exception' automatically.
+INFO: [XFORM 203-102] Partitioning array 'focused_rob.entries.uop.exc_cause.9' automatically.
+INFO: [XFORM 203-102] Partitioning array 'focused_rob.entries.uop.exc_cause.17' automatically.
+INFO: [XFORM 203-102] Partitioning array 'focused_rob.entries.uop.exc_cause.16' automatically.
+INFO: [XFORM 203-102] Partitioning array 'focused_rob.entries.uop.exc_cause.15' automatically.
+INFO: [XFORM 203-102] Partitioning array 'focused_rob.entries.uop.exc_cause.14' automatically.
+INFO: [XFORM 203-102] Partitioning array 'focused_rob.entries.uop.exc_cause.13' automatically.
+INFO: [XFORM 203-102] Partitioning array 'focused_rob.entries.uop.exc_cause.12' automatically.
+INFO: [XFORM 203-102] Partitioning array 'focused_rob.entries.uop.exc_cause.11' automatically.
+INFO: [XFORM 203-102] Partitioning array 'focused_rob.entries.uop.exc_cause.10' automatically.
+INFO: [XFORM 203-102] Partitioning array 'focused_rob.entries.uop.exc_cause' automatically.
+INFO: [XFORM 203-102] Partitioning array 'focused_rob.entries.uop.debug_pc' automatically.
+INFO: [XFORM 203-102] Partitioning array 'focused_rob.entries.uop.debug_inst' automatically.
+INFO: [XFORM 203-102] Partitioning array 'focused_rob.entries.uop.ctrl' automatically.
+INFO: [XFORM 203-102] Partitioning array 'focused_rob.entries.uop.csr_addr.9' automatically.
+INFO: [XFORM 203-102] Partitioning array 'focused_rob.entries.uop.csr_addr.37' automatically.
+INFO: [XFORM 203-102] Partitioning array 'focused_rob.entries.uop.csr_addr.36' automatically.
+INFO: [XFORM 203-102] Partitioning array 'focused_rob.entries.uop.csr_addr.35' automatically.
+INFO: [XFORM 203-102] Partitioning array 'focused_rob.entries.uop.csr_addr.34' automatically.
+INFO: [XFORM 203-102] Partitioning array 'focused_rob.entries.uop.csr_addr.33' automatically.
+INFO: [XFORM 203-102] Partitioning array 'focused_rob.entries.uop.csr_addr.32' automatically.
+INFO: [XFORM 203-102] Partitioning array 'focused_rob.entries.uop.csr_addr.31' automatically.
+INFO: [XFORM 203-102] Partitioning array 'focused_rob.entries.uop.csr_addr.30' automatically.
+INFO: [XFORM 203-102] Partitioning array 'focused_rob.entries.uop.csr_addr.29' automatically.
+INFO: [XFORM 203-102] Partitioning array 'focused_rob.entries.uop.csr_addr.28' automatically.
+INFO: [XFORM 203-102] Partitioning array 'focused_rob.entries.uop.csr_addr.27' automatically.
+INFO: [XFORM 203-102] Partitioning array 'focused_rob.entries.uop.csr_addr.26' automatically.
+INFO: [XFORM 203-102] Partitioning array 'focused_rob.entries.uop.csr_addr.25' automatically.
+INFO: [XFORM 203-102] Partitioning array 'focused_rob.entries.uop.csr_addr.24' automatically.
+INFO: [XFORM 203-102] Partitioning array 'focused_rob.entries.uop.csr_addr.23' automatically.
+INFO: [XFORM 203-102] Partitioning array 'focused_rob.entries.uop.csr_addr.22' automatically.
+INFO: [XFORM 203-102] Partitioning array 'focused_rob.entries.uop.csr_addr.21' automatically.
+INFO: [XFORM 203-102] Partitioning array 'focused_rob.entries.uop.csr_addr.20' automatically.
+INFO: [XFORM 203-102] Partitioning array 'focused_rob.entries.uop.csr_addr' automatically.
+INFO: [XFORM 203-102] Partitioning array 'focused_rob.entries.uop.bypassable' automatically.
+INFO: [XFORM 203-102] Partitioning array 'focused_rob.entries.uop.branch' automatically.
+INFO: [XFORM 203-102] Partitioning array 'focused_rob.entries.unsafe' automatically.
+INFO: [XFORM 203-102] Partitioning array 'focused_rob.entries.signed_load' automatically.
+INFO: [XFORM 203-102] Partitioning array 'focused_rob.entries.memory_valid' automatically.
+INFO: [XFORM 203-102] Partitioning array 'focused_rob.entries.memory_transaction_id' automatically.
+INFO: [XFORM 203-102] Partitioning array 'focused_rob.entries.memory_size' automatically.
+INFO: [XFORM 203-102] Partitioning array 'focused_rob.entries.memory_request_sent' automatically.
+INFO: [XFORM 203-102] Partitioning array 'focused_rob.entries.memory_mask' automatically.
+INFO: [XFORM 203-102] Partitioning array 'focused_rob.entries.memory_data' automatically.
+INFO: [XFORM 203-102] Partitioning array 'focused_rob.entries.memory_completed' automatically.
+INFO: [XFORM 203-102] Partitioning array 'focused_rob.entries.memory_address' automatically.
+INFO: [XFORM 203-102] Partitioning array 'focused_rob.entries.is_store' automatically.
+INFO: [XFORM 203-102] Partitioning array 'focused_rob.entries.is_load' automatically.
+INFO: [XFORM 203-102] Partitioning array 'focused_rob.entries.exception_reported' automatically.
+INFO: [XFORM 203-102] Partitioning array 'focused_rob.entries.exception' automatically.
+INFO: [XFORM 203-102] Partitioning array 'focused_rob.entries.busy' automatically.
+INFO: [XFORM 203-102] Partitioning array 'focused_rob.entries.branch_resolved' automatically.
+INFO: [XFORM 203-102] Partitioning array 'focused_rob.entries.branch_actual_taken' automatically.
+INFO: [XFORM 203-102] Automatically partitioning small array 'this.writebacks.valid' completely based on array size.
+INFO: [XFORM 203-102] Automatically partitioning small array 'this.writebacks.pdst' completely based on array size.
+INFO: [XFORM 203-102] Automatically partitioning small array 'this.writebacks.value' completely based on array size.
+INFO: [XFORM 203-102] Automatically partitioning small array 'this.writebacks.rob_idx' completely based on array size.
+INFO: [XFORM 203-102] Automatically partitioning small array 'this.writebacks.rob_allocation_id' completely based on array size.
+INFO: [XFORM 203-102] Automatically partitioning small array 'this.writebacks.source' completely based on array size.
+INFO: [XFORM 203-102] Automatically partitioning small array 'this.wakeups.valid' completely based on array size.
+INFO: [XFORM 203-102] Automatically partitioning small array 'this.wakeups.pdst' completely based on array size.
+INFO: [XFORM 203-102] Automatically partitioning small array 'this.wakeups.value' completely based on array size.
+INFO: [XFORM 203-102] Automatically partitioning small array 'this.wakeups.rob_idx' completely based on array size.
+INFO: [XFORM 203-102] Automatically partitioning small array 'this.wakeups.rob_allocation_id' completely based on array size.
+INFO: [XFORM 203-102] Automatically partitioning small array 'this.wakeups.branch_mask' completely based on array size.
+INFO: [XFORM 203-102] Automatically partitioning small array 'this.wakeups.source' completely based on array size.
+INFO: [XFORM 203-102] Automatically partitioning small array 'this.bypass.valid' completely based on array size.
+INFO: [XFORM 203-102] Automatically partitioning small array 'this.bypass.pdst' completely based on array size.
+INFO: [XFORM 203-102] Automatically partitioning small array 'this.bypass.value' completely based on array size.
+INFO: [XFORM 203-102] Automatically partitioning small array 'this.bypass.rob_idx' completely based on array size.
+INFO: [XFORM 203-102] Automatically partitioning small array 'this.bypass.rob_allocation_id' completely based on array size.
+INFO: [XFORM 203-102] Automatically partitioning small array 'this.bypass.branch_mask' completely based on array size.
+INFO: [XFORM 203-102] Automatically partitioning small array 'this.bypass.source' completely based on array size.
+INFO: [XFORM 203-102] Automatically partitioning small array 'this.wakeup_sent' completely based on array size.
+INFO: [XFORM 203-401] Performing if-conversion on hyperblock from (/home/lab_726/boom/hls_boom/tb/differential/g6_l1r_focused_top.cpp:348:32) to (/home/lab_726/boom/hls_boom/tb/differential/g6_l1r_focused_top.cpp:391:1) in function 'g6_l1r_focused_top'... converting 5 basic blocks.
+INFO: [XFORM 203-401] Performing if-conversion on hyperblock to (/home/lab_726/boom/hls_boom/include/boom_state.hpp:315:5) in function 'focused_initialize'... converting 22 basic blocks.
+INFO: [XFORM 203-401] Performing if-conversion on hyperblock to (/home/lab_726/boom/hls_boom/include/boom_state.hpp:315:5) in function 'focused_initialize'... converting 22 basic blocks.
+INFO: [XFORM 203-401] Performing if-conversion on hyperblock from (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:3720:13) in function 'boom::lsu_accept_completion'... converting 3 basic blocks.
+INFO: [XFORM 203-401] Performing if-conversion on hyperblock from (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:3832:13) in function 'boom::lsu_accept_completion'... converting 3 basic blocks.
+INFO: [XFORM 203-401] Performing if-conversion on hyperblock from (/home/lab_726/Xilinx/Vitis_HLS/2021.2/common/technology/autopilot/hls_stream_39.h:144:9) to (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:2497:9) in function 'boom::completion_service_cycle'... converting 22 basic blocks.
+INFO: [XFORM 203-401] Performing if-conversion on hyperblock from (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:2411:45) to (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:2502:5) in function 'boom::completion_service_cycle'... converting 3 basic blocks.
+INFO: [XFORM 203-401] Performing if-conversion on hyperblock from (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:1812:46) to (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:1827:49) in function 'boom::apply_completion'... converting 3 basic blocks.
+INFO: [XFORM 203-602] Inlining function 'boom::completion_is_valid' into 'boom::completion_service_execute_w4a' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:1798) automatically.
+INFO: [XFORM 203-11] Balancing expressions in function 'g6_l1r_focused_top' (/home/lab_726/boom/hls_boom/tb/differential/g6_l1r_focused_top.cpp:168)...21 expression(s) balanced.
+INFO: [XFORM 203-11] Balancing expressions in function 'boom::try_issue_load' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:139:5)...3 expression(s) balanced.
+INFO: [XFORM 203-11] Balancing expressions in function 'boom::completion_service_cycle' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:135:5)...25 expression(s) balanced.
+INFO: [HLS 200-111] Finished Loop, function and other optimizations: CPU user time: 25.29 seconds. CPU system time: 0.04 seconds. Elapsed time: 25.41 seconds; current allocated memory: 800.656 MB.
+INFO: [HLS 200-472] Inferring partial write operation for 'state.6.0.12' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:3693:31)
+INFO: [HLS 200-472] Inferring partial write operation for 'state.6.0.18' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:3694:33)
+INFO: [HLS 200-472] Inferring partial write operation for 'state.8.7.8' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:3701:44)
+INFO: [HLS 200-472] Inferring partial write operation for 'state.8.7.2' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:3702:46)
+INFO: [HLS 200-472] Inferring partial write operation for 'state_rob_entries_memory_valid' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:3709:24)
+INFO: [HLS 200-472] Inferring partial write operation for 'state_rob_entries_is_store' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:3710:20)
+INFO: [HLS 200-472] Inferring partial write operation for 'state_rob_entries_is_load' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:3711:19)
+INFO: [HLS 200-472] Inferring partial write operation for 'state_rob_entries_memory_completed' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:3712:28)
+INFO: [HLS 200-472] Inferring partial write operation for 'state_rob_entries_memory_address' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:3713:26)
+INFO: [HLS 200-472] Inferring partial write operation for 'state_rob_entries_memory_data' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:3714:23)
+INFO: [HLS 200-472] Inferring partial write operation for 'state_rob_entries_memory_mask' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:3715:23)
+INFO: [HLS 200-472] Inferring partial write operation for 'state_rob_entries_memory_size' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:3716:23)
+INFO: [HLS 200-472] Inferring partial write operation for 'state_lsu_stq_committed' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:3728:13)
+INFO: [HLS 200-472] Inferring partial write operation for 'state_lsu_stq_generation' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:3729:24)
+INFO: [HLS 200-472] Inferring partial write operation for 'state_lsu_stq_valid' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:3730:19)
+INFO: [HLS 200-472] Inferring partial write operation for 'state_lsu_stq_rob_idx' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:3731:21)
+INFO: [HLS 200-472] Inferring partial write operation for 'state_lsu_stq_rob_allocation_id' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:3732:31)
+INFO: [HLS 200-472] Inferring partial write operation for 'state_lsu_stq_address_valid' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:3733:27)
+INFO: [HLS 200-472] Inferring partial write operation for 'state_lsu_stq_address' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:3734:21)
+INFO: [HLS 200-472] Inferring partial write operation for 'state_lsu_stq_data_valid' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:3735:24)
+INFO: [HLS 200-472] Inferring partial write operation for 'state_lsu_stq_data' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:3736:18)
+INFO: [HLS 200-472] Inferring partial write operation for 'state_lsu_stq_mask' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:3737:18)
+INFO: [HLS 200-472] Inferring partial write operation for 'state_lsu_stq_size' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:3738:18)
+INFO: [HLS 200-472] Inferring partial write operation for 'state_lsu_stq_branch_mask' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:3739:25)
+INFO: [HLS 200-472] Inferring partial write operation for 'state_rob_entries_uop_imm_packed.2' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:3740:33)
+INFO: [HLS 200-472] Inferring partial write operation for 'state_rob_entries_uop_imm_packed.6' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:3741:40)
+INFO: [HLS 200-472] Inferring partial write operation for 'state_rob_entries_memory_valid' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:3822:24)
+INFO: [HLS 200-472] Inferring partial write operation for 'state_rob_entries_is_load' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:3823:19)
+INFO: [HLS 200-472] Inferring partial write operation for 'state_rob_entries_is_store' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:3824:20)
+INFO: [HLS 200-472] Inferring partial write operation for 'state_rob_entries_signed_load' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:3825:23)
+INFO: [HLS 200-472] Inferring partial write operation for 'state_rob_entries_memory_address' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:3826:26)
+INFO: [HLS 200-472] Inferring partial write operation for 'state_rob_entries_memory_mask' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:3827:23)
+INFO: [HLS 200-472] Inferring partial write operation for 'state_rob_entries_memory_size' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:3828:23)
+INFO: [HLS 200-472] Inferring partial write operation for 'state_lsu_ldq_response_pending' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:3840:13)
+INFO: [HLS 200-472] Inferring partial write operation for 'state_lsu_ldq_generation' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:3841:24)
+INFO: [HLS 200-472] Inferring partial write operation for 'state_lsu_ldq_valid' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:3842:19)
+INFO: [HLS 200-472] Inferring partial write operation for 'state_lsu_ldq_rob_idx' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:3843:21)
+INFO: [HLS 200-472] Inferring partial write operation for 'state_lsu_ldq_rob_allocation_id' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:3844:31)
+INFO: [HLS 200-472] Inferring partial write operation for 'state_lsu_ldq_address' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:3845:21)
+INFO: [HLS 200-472] Inferring partial write operation for 'state_lsu_ldq_size' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:3846:18)
+INFO: [HLS 200-472] Inferring partial write operation for 'state_lsu_ldq_signed_load' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:3847:25)
+INFO: [HLS 200-472] Inferring partial write operation for 'state_lsu_ldq_branch_mask' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:3848:25)
+INFO: [HLS 200-472] Inferring partial write operation for 'state_rob_entries_uop_imm_packed.1' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:3849:33)
+INFO: [HLS 200-472] Inferring partial write operation for 'state_rob_entries_uop_imm_packed.5' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:3850:40)
+INFO: [HLS 200-472] Inferring partial write operation for 'focused_state.rename.int_free_list.busy_table' (/home/lab_726/boom/hls_boom/tb/differential/g6_l1r_focused_top.cpp:202:19)
+INFO: [HLS 200-472] Inferring partial write operation for 'focused_state.lsu.stq.valid' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:3805:17)
+INFO: [HLS 200-472] Inferring partial write operation for 'focused_state.lsu.stq.generation' (/home/lab_726/boom/hls_boom/tb/differential/g6_l1r_focused_top.cpp:298:69)
+INFO: [HLS 200-472] Inferring partial write operation for 'focused_state.lsu.ldq.generation' (/home/lab_726/boom/hls_boom/tb/differential/g6_l1r_focused_top.cpp:299:59)
+INFO: [HLS 200-472] Inferring partial write operation for 'focused_state.rob.entries.uop.imm_packed.16' (/home/lab_726/boom/hls_boom/tb/differential/g6_l1r_focused_top.cpp:301:72)
+INFO: [HLS 200-472] Inferring partial write operation for 'focused_state.rob.entries.valid' (/home/lab_726/boom/hls_boom/tb/differential/g6_l1r_focused_top.cpp:304:25)
+INFO: [HLS 200-472] Inferring partial write operation for 'focused_state.rob.entries.busy' (/home/lab_726/boom/hls_boom/tb/differential/g6_l1r_focused_top.cpp:304:56)
+INFO: [HLS 200-472] Inferring partial write operation for 'focused_state.rob.entries.exception' (/home/lab_726/boom/hls_boom/tb/differential/g6_l1r_focused_top.cpp:305:29)
+INFO: [HLS 200-472] Inferring partial write operation for 'focused_state.rob.entries.uop.rename' (/home/lab_726/boom/hls_boom/tb/differential/g6_l1r_focused_top.cpp:305:69)
+INFO: [HLS 200-472] Inferring partial write operation for 'focused_state.rob.entries.memory_request_sent' (/home/lab_726/boom/hls_boom/tb/differential/g6_l1r_focused_top.cpp:306:39)
+INFO: [HLS 200-472] Inferring partial write operation for 'focused_state.rob.entries.memory_completed' (/home/lab_726/boom/hls_boom/tb/differential/g6_l1r_focused_top.cpp:307:36)
+INFO: [HLS 200-472] Inferring partial write operation for 'focused_state.rob.entries.memory_transaction_id' (/home/lab_726/boom/hls_boom/tb/differential/g6_l1r_focused_top.cpp:308:41)
+INFO: [HLS 200-472] Inferring partial write operation for 'focused_state.lsu.ldq.valid' (/home/lab_726/boom/hls_boom/tb/differential/g6_l1r_focused_top.cpp:318:25)
+INFO: [HLS 200-472] Inferring partial write operation for 'focused_state.lsu.ldq.response_pending' (/home/lab_726/boom/hls_boom/tb/differential/g6_l1r_focused_top.cpp:318:68)
+INFO: [HLS 200-472] Inferring partial write operation for 'focused_state.lsu.ldq.rob_idx' (/home/lab_726/boom/hls_boom/tb/differential/g6_l1r_focused_top.cpp:319:27)
+INFO: [HLS 200-472] Inferring partial write operation for 'focused_state.lsu.ldq.rob_allocation_id' (/home/lab_726/boom/hls_boom/tb/differential/g6_l1r_focused_top.cpp:319:58)
+INFO: [HLS 200-472] Inferring partial write operation for 'focused_state.lsu.ldq.generation' (/home/lab_726/boom/hls_boom/tb/differential/g6_l1r_focused_top.cpp:320:30)
+INFO: [HLS 200-472] Inferring partial write operation for 'focused_state.lsu.ldq.transaction_id' (/home/lab_726/boom/hls_boom/tb/differential/g6_l1r_focused_top.cpp:320:65)
+INFO: [HLS 200-472] Inferring partial write operation for 'focused_state.int_rf_bank0' (/home/lab_726/boom/hls_boom/include/boom_state.hpp:416:30)
+INFO: [HLS 200-472] Inferring partial write operation for 'focused_state.int_rf_bank1' (/home/lab_726/boom/hls_boom/include/boom_state.hpp:417:30)
+INFO: [HLS 200-472] Inferring partial write operation for 'state_lsu_stq_valid' (/home/lab_726/boom/hls_boom/tb/differential/g6_l1r_focused_top.cpp:56:15)
+INFO: [HLS 200-472] Inferring partial write operation for 'state_rob_entries_valid' (/home/lab_726/boom/hls_boom/tb/differential/g6_l1r_focused_top.cpp:57:15)
+INFO: [HLS 200-472] Inferring partial write operation for 'focused_state_rob_entries_unsafe' (/home/lab_726/boom/hls_boom/tb/differential/g6_l1r_focused_top.cpp:149:11)
+INFO: [HLS 200-472] Inferring partial write operation for 'focused_state_rob_entries_valid' (/home/lab_726/boom/hls_boom/tb/differential/g6_l1r_focused_top.cpp:150:17)
+INFO: [HLS 200-472] Inferring partial write operation for 'focused_state_rob_entries_busy' (/home/lab_726/boom/hls_boom/tb/differential/g6_l1r_focused_top.cpp:151:16)
+INFO: [HLS 200-472] Inferring partial write operation for 'focused_state_rob_entries_uop_uopc' (/home/lab_726/boom/hls_boom/tb/differential/g6_l1r_focused_top.cpp:152:15)
+INFO: [HLS 200-472] Inferring partial write operation for 'focused_state_lsu_stq_valid' (/home/lab_726/boom/hls_boom/tb/differential/g6_l1r_focused_top.cpp:108:23)
+INFO: [HLS 200-472] Inferring partial write operation for 'focused_state_rob_entries_valid' (/home/lab_726/boom/hls_boom/tb/differential/g6_l1r_focused_top.cpp:111:23)
+INFO: [HLS 200-472] Inferring partial write operation for 'state_lsu_ldq_valid' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:3771:17)
+INFO: [HLS 200-472] Inferring partial write operation for 'state_lsu_ldq_response_pending' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:3772:28)
+INFO: [HLS 200-472] Inferring partial write operation for 'state_rob_entries_busy' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:1834:35)
+INFO: [HLS 200-472] Inferring partial write operation for 'state_rob_entries_exception' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:1836:25)
+INFO: [HLS 200-472] Inferring partial write operation for 'state_rob_entries_uop_queue' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:1837:29)
+INFO: [HLS 200-472] Inferring partial write operation for 'state_rob_entries_uop_rename' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:1838:29)
+INFO: [HLS 200-472] Inferring partial write operation for 'state_rename_int_free_list_busy_table' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:1845:70)
+INFO: [HLS 200-472] Inferring partial write operation for 'state_rob_entries_memory_completed' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:1848:32)
+INFO: [HLS 200-472] Inferring partial write operation for 'state_rob_entries_memory_data' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:1849:49)
+INFO: [HLS 200-472] Inferring partial write operation for 'focused_state.lsu.ldq.valid' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:3661:26)
+INFO: [HLS 200-472] Inferring partial write operation for 'focused_state.lsu.ldq.response_pending' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:3662:37)
+INFO: [HLS 200-472] Inferring partial write operation for 'focused_state.lsu.stq.valid' (/home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:3665:50)
+INFO: [HLS 200-472] Inferring partial write operation for 'focused_int_rf_bank0' (/home/lab_726/boom/hls_boom/tb/differential/g6_l1r_focused_top.cpp:101:33)
+INFO: [HLS 200-472] Inferring partial write operation for 'focused_int_rf_bank1' (/home/lab_726/boom/hls_boom/tb/differential/g6_l1r_focused_top.cpp:102:33)
+INFO: [HLS 200-472] Inferring partial write operation for 'state_int_rf_bank0' (/home/lab_726/boom/hls_boom/tb/differential/g6_l1r_focused_top.cpp:75:31)
+INFO: [HLS 200-472] Inferring partial write operation for 'state_int_rf_bank1' (/home/lab_726/boom/hls_boom/tb/differential/g6_l1r_focused_top.cpp:76:31)
+INFO: [HLS 200-472] Inferring partial write operation for 'focused_state_lsu_ldq_valid' (/home/lab_726/boom/hls_boom/tb/differential/g6_l1r_focused_top.cpp:109:76)
+INFO: [HLS 200-472] Inferring partial write operation for 'focused_state_lsu_stq_valid' (/home/lab_726/boom/hls_boom/tb/differential/g6_l1r_focused_top.cpp:110:76)
+INFO: [HLS 200-472] Inferring partial write operation for 'focused_state_int_rf_bank0' (/home/lab_726/boom/hls_boom/tb/differential/g6_l1r_focused_top.cpp:120:39)
+INFO: [HLS 200-472] Inferring partial write operation for 'focused_state_int_rf_bank1' (/home/lab_726/boom/hls_boom/tb/differential/g6_l1r_focused_top.cpp:121:39)
+INFO: [HLS 200-111] Finished Architecture Synthesis: CPU user time: 23.21 seconds. CPU system time: 0.12 seconds. Elapsed time: 23.36 seconds; current allocated memory: 1.293 GB.
+INFO: [HLS 200-10] Starting hardware synthesis ...
+INFO: [HLS 200-10] Synthesizing 'g6_l1r_focused_top' ...
+INFO: [HLS 200-10] ----------------------------------------------------------------
+INFO: [HLS 200-42] -- Implementing module 'focused_load_state_Pipeline_VITIS_LOOP_74_1' 
+INFO: [HLS 200-10] ----------------------------------------------------------------
+INFO: [SCHED 204-11] Starting scheduling ...
+INFO: [SCHED 204-61] Pipelining loop 'VITIS_LOOP_74_1'.
+INFO: [HLS 200-1470] Pipelining result : Target II = NA, Final II = 1, Depth = 2, loop 'VITIS_LOOP_74_1'
+INFO: [SCHED 204-11] Finished scheduling.
+INFO: [HLS 200-111] Finished Scheduling: CPU user time: 16.86 seconds. CPU system time: 0.06 seconds. Elapsed time: 16.94 seconds; current allocated memory: 1.318 GB.
+INFO: [BIND 205-100] Starting micro-architecture generation ...
+INFO: [BIND 205-101] Performing variable lifetime analysis.
+INFO: [BIND 205-101] Exploring resource sharing.
+INFO: [BIND 205-101] Binding ...
+INFO: [BIND 205-100] Finished micro-architecture generation.
+INFO: [HLS 200-111] Finished Binding: CPU user time: 0.02 seconds. CPU system time: 0 seconds. Elapsed time: 0.01 seconds; current allocated memory: 1.318 GB.
+INFO: [HLS 200-10] ----------------------------------------------------------------
+INFO: [HLS 200-42] -- Implementing module 'focused_load_state' 
+INFO: [HLS 200-10] ----------------------------------------------------------------
+INFO: [SCHED 204-11] Starting scheduling ...
+INFO: [SCHED 204-11] Finished scheduling.
+INFO: [HLS 200-111] Finished Scheduling: CPU user time: 5.91 seconds. CPU system time: 0.03 seconds. Elapsed time: 5.93 seconds; current allocated memory: 1.391 GB.
+INFO: [BIND 205-100] Starting micro-architecture generation ...
+INFO: [BIND 205-101] Performing variable lifetime analysis.
+INFO: [BIND 205-101] Exploring resource sharing.
+INFO: [BIND 205-101] Binding ...
+INFO: [BIND 205-100] Finished micro-architecture generation.
+INFO: [HLS 200-111] Finished Binding: CPU user time: 3.68 seconds. CPU system time: 0.01 seconds. Elapsed time: 3.69 seconds; current allocated memory: 1.391 GB.
+INFO: [HLS 200-10] ----------------------------------------------------------------
+INFO: [HLS 200-42] -- Implementing module 'completion_service_execute_w4a' 
+INFO: [HLS 200-10] ----------------------------------------------------------------
+INFO: [SCHED 204-11] Starting scheduling ...
+INFO: [SCHED 204-11] Finished scheduling.
+INFO: [HLS 200-111] Finished Scheduling: CPU user time: 0.7 seconds. CPU system time: 0.02 seconds. Elapsed time: 0.74 seconds; current allocated memory: 1.391 GB.
+INFO: [BIND 205-100] Starting micro-architecture generation ...
+INFO: [BIND 205-101] Performing variable lifetime analysis.
+INFO: [BIND 205-101] Exploring resource sharing.
+INFO: [BIND 205-101] Binding ...
+INFO: [BIND 205-100] Finished micro-architecture generation.
+INFO: [HLS 200-111] Finished Binding: CPU user time: 0.01 seconds. CPU system time: 0 seconds. Elapsed time: 0.01 seconds; current allocated memory: 1.391 GB.
+INFO: [HLS 200-10] ----------------------------------------------------------------
+INFO: [HLS 200-42] -- Implementing module 'apply_completion' 
+INFO: [HLS 200-10] ----------------------------------------------------------------
+INFO: [SCHED 204-11] Starting scheduling ...
+INFO: [SCHED 204-11] Finished scheduling.
+INFO: [HLS 200-111] Finished Scheduling: CPU user time: 0.06 seconds. CPU system time: 0 seconds. Elapsed time: 0.06 seconds; current allocated memory: 1.391 GB.
+INFO: [BIND 205-100] Starting micro-architecture generation ...
+INFO: [BIND 205-101] Performing variable lifetime analysis.
+INFO: [BIND 205-101] Exploring resource sharing.
+INFO: [BIND 205-101] Binding ...
+INFO: [BIND 205-100] Finished micro-architecture generation.
+INFO: [HLS 200-111] Finished Binding: CPU user time: 0.03 seconds. CPU system time: 0.01 seconds. Elapsed time: 0.04 seconds; current allocated memory: 1.391 GB.
+INFO: [HLS 200-10] ----------------------------------------------------------------
+INFO: [HLS 200-42] -- Implementing module 'completion_service_cycle' 
+INFO: [HLS 200-10] ----------------------------------------------------------------
+INFO: [SCHED 204-11] Starting scheduling ...
+INFO: [SCHED 204-11] Finished scheduling.
+INFO: [HLS 200-111] Finished Scheduling: CPU user time: 0.12 seconds. CPU system time: 0 seconds. Elapsed time: 0.13 seconds; current allocated memory: 1.391 GB.
+INFO: [BIND 205-100] Starting micro-architecture generation ...
+INFO: [BIND 205-101] Performing variable lifetime analysis.
+INFO: [BIND 205-101] Exploring resource sharing.
+INFO: [BIND 205-101] Binding ...
+INFO: [BIND 205-100] Finished micro-architecture generation.
+INFO: [HLS 200-111] Finished Binding: CPU user time: 0.08 seconds. CPU system time: 0 seconds. Elapsed time: 0.08 seconds; current allocated memory: 1.391 GB.
+INFO: [HLS 200-10] ----------------------------------------------------------------
+INFO: [HLS 200-42] -- Implementing module 'try_issue_load' 
+INFO: [HLS 200-10] ----------------------------------------------------------------
+INFO: [SCHED 204-11] Starting scheduling ...
+INFO: [SCHED 204-61] Pipelining function 'try_issue_load'.
+WARNING: [HLS 200-880] The II Violation in module 'try_issue_load' (function 'try_issue_load'): Unable to enforce a carried dependence constraint (II = 1, distance = 1, offset = 1) between 'store' operation ('state_6_0_12_addr_write_ln3693', /home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:3693) of constant 1 on array 'state_6_0_12' and 'load' operation ('state_6_0_12_load', /home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:3670) on array 'state_6_0_12'.
+Resolution: For help on HLS 200-880 see www.xilinx.com/cgi-bin/docs/rdoc?v=2021.2;t=hls+guidance;d=200-880.html
+WARNING: [HLS 200-880] The II Violation in module 'try_issue_load' (function 'try_issue_load'): Unable to enforce a carried dependence constraint (II = 2, distance = 1, offset = 1) between 'store' operation ('state_6_0_12_addr_write_ln3693', /home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:3693) of constant 1 on array 'state_6_0_12' and 'load' operation ('state_6_0_12_load', /home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:3670) on array 'state_6_0_12'.
+Resolution: For help on HLS 200-880 see www.xilinx.com/cgi-bin/docs/rdoc?v=2021.2;t=hls+guidance;d=200-880.html
+WARNING: [HLS 200-880] The II Violation in module 'try_issue_load' (function 'try_issue_load'): Unable to enforce a carried dependence constraint (II = 3, distance = 1, offset = 1) between 'store' operation ('state_6_0_12_addr_write_ln3693', /home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:3693) of constant 1 on array 'state_6_0_12' and 'load' operation ('state_6_0_12_load', /home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:3670) on array 'state_6_0_12'.
+Resolution: For help on HLS 200-880 see www.xilinx.com/cgi-bin/docs/rdoc?v=2021.2;t=hls+guidance;d=200-880.html
+WARNING: [HLS 200-880] The II Violation in module 'try_issue_load' (function 'try_issue_load'): Unable to enforce a carried dependence constraint (II = 4, distance = 1, offset = 1) between 'store' operation ('state_6_0_12_addr_write_ln3693', /home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:3693) of constant 1 on array 'state_6_0_12' and 'load' operation ('state_6_0_12_load', /home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:3670) on array 'state_6_0_12'.
+Resolution: For help on HLS 200-880 see www.xilinx.com/cgi-bin/docs/rdoc?v=2021.2;t=hls+guidance;d=200-880.html
+WARNING: [HLS 200-880] The II Violation in module 'try_issue_load' (function 'try_issue_load'): Unable to enforce a carried dependence constraint (II = 67, distance = 1, offset = 1) between 'store' operation ('state_6_0_12_addr_write_ln3693', /home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:3693) of constant 1 on array 'state_6_0_12' and 'load' operation ('state_6_0_12_load', /home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:3670) on array 'state_6_0_12'.
+Resolution: For help on HLS 200-880 see www.xilinx.com/cgi-bin/docs/rdoc?v=2021.2;t=hls+guidance;d=200-880.html
+WARNING: [HLS 200-880] The II Violation in module 'try_issue_load' (function 'try_issue_load'): Unable to enforce a carried dependence constraint (II = 70, distance = 1, offset = 1) between 'store' operation ('state_6_0_12_addr_write_ln3693', /home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:3693) of constant 1 on array 'state_6_0_12' and 'load' operation ('state_6_0_12_load', /home/lab_726/boom/hls_boom/src/boom_core_merged.cpp:3670) on array 'state_6_0_12'.
+Resolution: For help on HLS 200-880 see www.xilinx.com/cgi-bin/docs/rdoc?v=2021.2;t=hls+guidance;d=200-880.html
+INFO: [HLS 200-1470] Pipelining result : Target II = NA, Final II = 71, Depth = 75, function 'try_issue_load'
+INFO: [SCHED 204-11] Finished scheduling.
+INFO: [HLS 200-111] Finished Scheduling: CPU user time: 0.52 seconds. CPU system time: 0 seconds. Elapsed time: 0.53 seconds; current allocated memory: 1.399 GB.

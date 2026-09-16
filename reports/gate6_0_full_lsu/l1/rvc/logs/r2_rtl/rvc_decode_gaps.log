@@ -1,0 +1,23 @@
+#-----------------------------------------------------------
+# xsim v2021.2 (64-bit)
+# SW Build 3367213 on Tue Oct 19 02:47:39 MDT 2021
+# IP Build 3369179 on Thu Oct 21 08:25:16 MDT 2021
+# Start of session at: Tue Sep 15 18:44:10 2026
+# Process ID: 46908
+# Current directory: /tmp/boom_hls/g6_l1_closure/rvc_rtl/xsim
+# Command line: xsim -log /home/lab_726/boom/hls_boom/reports/gate6_0_full_lsu/l1/rvc/logs/r2_rtl/rvc_decode_gaps.log -mode tcl -source {xsim.dir/gate5_2_r2_snapshot/xsim_script.tcl}
+# Log file: /home/lab_726/boom/hls_boom/reports/gate6_0_full_lsu/l1/rvc/logs/r2_rtl/rvc_decode_gaps.log
+# Journal file: /tmp/boom_hls/g6_l1_closure/rvc_rtl/xsim/xsim.jou
+# Running On: 726, OS: Linux, CPU Frequency: 4233.885 MHz, CPU Physical cores: 14, Host memory: 67148 MB
+#-----------------------------------------------------------
+source xsim.dir/gate5_2_r2_snapshot/xsim_script.tcl
+# xsim {gate5_2_r2_snapshot} -testplusarg PROGRAM=/home/lab_726/boom/hls_boom/tb/programs/rvc_fetch/build/rvc_decode_gaps.hex -testplusarg PROGRAM_NAME=rvc_decode_gaps -testplusarg SCENARIO=R0_POWER_ON_RESET -testplusarg MAX_CYCLES=1000000 -testplusarg TRACE=/home/lab_726/boom/hls_boom/reports/gate6_0_full_lsu/l1/rvc/r2_rtl_traces/rvc_decode_gaps.jsonl -autoloadwcfg -runall -onerror quit
+Time resolution is 1 ps
+run -all
+GATE3_8_IMEM program=/home/lab_726/boom/hls_boom/tb/programs/rvc_fetch/build/rvc_decode_gaps.hex
+GATE3_8_START scenario=R0_POWER_ON_RESET code=0 program=rvc_decode_gaps max_cycles=1000000
+GATE3_8_PASS scenario=R0_POWER_ON_RESET cycles=36915 commits=16 resets=1 imem=21 dmem=1 loads=0 stores=1 tohost=0000000000000001
+$finish called at time : 369195 ns : File "/home/lab_726/boom/hls_boom/rtl_tb/boom_core_rtl_tb.sv" Line 282
+run: Time (s): cpu = 00:00:00.37 ; elapsed = 00:00:08 . Memory (MB): peak = 2685.672 ; gain = 0.000 ; free physical = 50310 ; free virtual = 58460
+exit
+INFO: [Common 17-206] Exiting xsim at Tue Sep 15 18:44:21 2026...

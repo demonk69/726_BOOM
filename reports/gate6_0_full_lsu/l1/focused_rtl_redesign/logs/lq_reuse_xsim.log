@@ -1,0 +1,20 @@
+#-----------------------------------------------------------
+# xsim v2021.2 (64-bit)
+# SW Build 3367213 on Tue Oct 19 02:47:39 MDT 2021
+# IP Build 3369179 on Thu Oct 21 08:25:16 MDT 2021
+# Start of session at: Wed Sep 16 09:16:06 2026
+# Process ID: 15517
+# Current directory: /home/lab_726/opencode_tmp/g6_l1_focused_stateless_pilot/image_2_lq_reuse/sim
+# Command line: xsim -log /home/lab_726/boom/hls_boom/reports/gate6_0_full_lsu/l1/focused_rtl_redesign/logs/lq_reuse_xsim.log -mode tcl -source {xsim.dir/lq_reuse_snapshot/xsim_script.tcl}
+# Log file: /home/lab_726/boom/hls_boom/reports/gate6_0_full_lsu/l1/focused_rtl_redesign/logs/lq_reuse_xsim.log
+# Journal file: /home/lab_726/opencode_tmp/g6_l1_focused_stateless_pilot/image_2_lq_reuse/sim/xsim.jou
+# Running On: 726, OS: Linux, CPU Frequency: 5058.893 MHz, CPU Physical cores: 14, Host memory: 67148 MB
+#-----------------------------------------------------------
+source xsim.dir/lq_reuse_snapshot/xsim_script.tcl
+# xsim {lq_reuse_snapshot} -autoloadwcfg -runall -onerror quit
+Time resolution is 1 ps
+run -all
+G6_L1R_STATELESS_PILOT_PASS image=2 cycles=57
+$finish called at time : 645 ns : File "/home/lab_726/boom/hls_boom/rtl_tb/gate6_0/g6_l1r_stateless_pilot_tb.sv" Line 59
+exit
+INFO: [Common 17-206] Exiting xsim at Wed Sep 16 09:16:11 2026...

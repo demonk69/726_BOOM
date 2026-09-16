@@ -9,6 +9,9 @@
 #include "ftq.hpp"
 #include "predictor.hpp"
 #include "predecode.hpp"
+#if defined(BOOM_USE_AP_INT) || defined(__SYNTHESIS__)
+#include <ap_int.h>
+#endif
 
 struct FrontendState {
     uint64_t pc;
@@ -234,24 +237,41 @@ struct StoreQueueEntry {
     bool valid, address_valid, data_valid, committed, issued_to_memory, completed, killed;
     uint8_t rob_idx, mask, size, branch_mask;
     uint32_t rob_allocation_id;
+    uint16_t generation;
     uint64_t address, data;
     StoreQueueEntry() : valid(false), address_valid(false), data_valid(false), committed(false),
         issued_to_memory(false), completed(false), killed(false), rob_idx(0), mask(0),
-        size(0), branch_mask(0), rob_allocation_id(0), address(0), data(0) {}
+        size(0), branch_mask(0), rob_allocation_id(0), generation(0), address(0), data(0) {}
 };
 
 struct LoadQueueEntry {
     bool valid, signed_load, response_pending, completed, killed;
     uint8_t rob_idx, size, branch_mask;
     uint32_t transaction_id, rob_allocation_id;
+    uint16_t generation;
     uint64_t address, result;
     LoadQueueEntry() : valid(false), signed_load(false), response_pending(false),
         completed(false), killed(false), rob_idx(0), size(0), branch_mask(0),
-        transaction_id(0), rob_allocation_id(0), address(0), result(0) {}
+        transaction_id(0), rob_allocation_id(0), generation(0), address(0), result(0) {}
 };
 
+#if defined(BOOM_USE_AP_INT) || defined(__SYNTHESIS__)
+typedef ap_uint<LQ_INDEX_BITS> LqIndex;
+typedef ap_uint<SQ_INDEX_BITS> SqIndex;
+typedef ap_uint<LQ_COUNT_BITS> LqCount;
+typedef ap_uint<SQ_COUNT_BITS> SqCount;
+#else
+typedef uint8_t LqIndex;
+typedef uint8_t SqIndex;
+typedef uint8_t LqCount;
+typedef uint8_t SqCount;
+#endif
+
 struct LsuState {
-    uint8_t ldq_head, ldq_tail, ldq_count, stq_head, stq_tail, stq_count;
+    LqIndex ldq_head, ldq_tail;
+    LqCount ldq_count;
+    SqIndex stq_head, stq_tail;
+    SqCount stq_count;
     StoreQueueEntry stq[STQ_DEPTH];
     LoadQueueEntry ldq[LDQ_DEPTH];
     uint32_t next_transaction_id;
@@ -259,9 +279,12 @@ struct LsuState {
     uint32_t pending_load_transaction_id;
     uint8_t pending_load_rob_idx;
     uint32_t pending_load_allocation_id;
+    LqIndex pending_load_lq_index;
+    uint16_t pending_load_lq_generation;
     LsuState() : ldq_head(0), ldq_tail(0), ldq_count(0), stq_head(0), stq_tail(0), stq_count(0),
         next_transaction_id(1), load_response_pending(false), pending_load_transaction_id(0),
-        pending_load_rob_idx(0), pending_load_allocation_id(0) {}
+        pending_load_rob_idx(0), pending_load_allocation_id(0), pending_load_lq_index(0),
+        pending_load_lq_generation(0) {}
 };
 
 struct CompletionPendingState {

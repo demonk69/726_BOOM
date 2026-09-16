@@ -22,9 +22,12 @@ enum ResetPhase : uint8_t {
 struct ResetControllerState {
     uint8_t phase;
     uint8_t index;
+    uint8_t lq_index;
+    uint8_t sq_index;
     bool completed;
 
-    ResetControllerState() : phase(RESET_CONTROL), index(0), completed(false) {}
+    ResetControllerState() : phase(RESET_CONTROL), index(0), lq_index(0), sq_index(0),
+        completed(false) {}
 };
 
 void boom_core_reset_step(BoomCoreState& state, ResetControllerState& reset_ctrl);

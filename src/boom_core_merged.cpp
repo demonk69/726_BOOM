@@ -1726,14 +1726,12 @@ void completion_from_load_response(const BoomCoreState& state,
         !entry.memory_request_sent || entry.memory_completed ||
         entry.uop.queue.rob_allocation_id != state.lsu.pending_load_allocation_id ||
         entry.memory_transaction_id != response.transaction_id) return;
-    bool owns_ldq = false;
-LOAD_RESPONSE_LDQ_SCAN:
-    for (int i = 0; i < LDQ_DEPTH; i++)
-        if (state.lsu.ldq[i].valid &&
-            state.lsu.ldq[i].rob_idx == state.lsu.pending_load_rob_idx &&
-            state.lsu.ldq[i].rob_allocation_id == state.lsu.pending_load_allocation_id)
-            owns_ldq = true;
-    if (!owns_ldq) return;
+    const LoadQueueEntry& owner =
+        state.lsu.ldq[(int)state.lsu.pending_load_lq_index];
+    if (!owner.valid || owner.generation != state.lsu.pending_load_lq_generation ||
+        owner.rob_idx != state.lsu.pending_load_rob_idx ||
+        owner.rob_allocation_id != state.lsu.pending_load_allocation_id ||
+        owner.transaction_id != response.transaction_id || !owner.response_pending) return;
 
     event.valid = true;
     event.uop = entry.uop;
@@ -3382,44 +3380,32 @@ static void kill_execute_state(BoomCoreState& state, uint8_t mispredict_mask) {
 
 static void kill_lsu_state(BoomCoreState& state, uint8_t mispredict_mask) {
     LsuState& lsu = state.lsu;
-    LoadQueueEntry new_ldq[LDQ_DEPTH];
-    StoreQueueEntry new_stq[STQ_DEPTH];
-    int lw = 0;
-    int sw = 0;
-
-    for (int i=0; i<LDQ_DEPTH; i++) {
+    for (int i=0; i<LQ_DEPTH; i++) {
         LoadQueueEntry& e = lsu.ldq[i];
         if (e.valid && (e.branch_mask & mispredict_mask) != 0) {
-            if (lsu.load_response_pending && lsu.pending_load_rob_idx == e.rob_idx) {
-                if (lsu.pending_load_allocation_id != e.rob_allocation_id) continue;
+            if (lsu.load_response_pending && (int)lsu.pending_load_lq_index == i &&
+                lsu.pending_load_lq_generation == e.generation &&
+                lsu.pending_load_rob_idx == e.rob_idx &&
+                lsu.pending_load_allocation_id == e.rob_allocation_id) {
                 lsu.load_response_pending = false;
                 lsu.pending_load_transaction_id = 0;
                 lsu.pending_load_rob_idx = 0;
                 lsu.pending_load_allocation_id = 0;
+                lsu.pending_load_lq_index = 0;
+                lsu.pending_load_lq_generation = 0;
             }
-            e = LoadQueueEntry();
-        } else if (e.valid) {
-            new_ldq[lw++] = e;
+            e.valid = false;
+            e.response_pending = false;
+            if (lsu.ldq_count != 0) lsu.ldq_count--;
         }
     }
-    for (int i=0; i<STQ_DEPTH; i++) {
+    for (int i=0; i<SQ_DEPTH; i++) {
         StoreQueueEntry& e = lsu.stq[i];
         if (e.valid && (e.branch_mask & mispredict_mask) != 0) {
-            e = StoreQueueEntry();
-        } else if (e.valid) {
-            new_stq[sw++] = e;
+            e.valid = false;
+            if (lsu.stq_count != 0) lsu.stq_count--;
         }
     }
-    for (int i=lw; i<LDQ_DEPTH; i++) new_ldq[i] = LoadQueueEntry();
-    for (int i=sw; i<STQ_DEPTH; i++) new_stq[i] = StoreQueueEntry();
-    for (int i=0; i<LDQ_DEPTH; i++) lsu.ldq[i] = new_ldq[i];
-    for (int i=0; i<STQ_DEPTH; i++) lsu.stq[i] = new_stq[i];
-    lsu.ldq_head = 0;
-    lsu.ldq_tail = (uint8_t)(lw % LDQ_DEPTH);
-    lsu.ldq_count = (uint8_t)lw;
-    lsu.stq_head = 0;
-    lsu.stq_tail = (uint8_t)(sw % STQ_DEPTH);
-    lsu.stq_count = (uint8_t)sw;
 }
 
 static void kill_rob_younger_than(BoomCoreState& state, uint8_t branch_rob_idx, uint8_t mispredict_mask) {
@@ -3668,16 +3654,28 @@ static void clear_lsu_queues(LsuState& lsu) {
     lsu.pending_load_transaction_id = 0;
     lsu.pending_load_rob_idx = 0;
     lsu.pending_load_allocation_id = 0;
+    lsu.pending_load_lq_index = 0;
+    lsu.pending_load_lq_generation = 0;
 CLEAR_LDQ:
-    for (int i = 0; i < LDQ_DEPTH; i++) lsu.ldq[i] = LoadQueueEntry();
+    for (int i = 0; i < LQ_DEPTH; i++) {
+        lsu.ldq[i].valid = false;
+        lsu.ldq[i].response_pending = false;
+    }
 CLEAR_STQ:
-    for (int i = 0; i < STQ_DEPTH; i++) lsu.stq[i] = StoreQueueEntry();
+    for (int i = 0; i < SQ_DEPTH; i++) lsu.stq[i].valid = false;
 }
 
 static bool try_issue_load(BoomCoreState& state, PipeSignals& pipe, uint8_t rob_idx) {
     RobEntry& entry = state.rob.entries[rob_idx];
     if (!entry.valid || !entry.is_load || !entry.memory_valid || entry.memory_request_sent) return false;
     if (state.lsu.load_response_pending || older_store_in_rob(state, rob_idx) || pipe.dmem_req.full()) return false;
+
+    if (entry.uop.queue.ldq_idx >= LQ_DEPTH) return false;
+    int lq_index = entry.uop.queue.ldq_idx;
+    const LoadQueueEntry& owner = state.lsu.ldq[lq_index];
+    if (!owner.valid || owner.generation != entry.uop.queue.ldq_generation ||
+        owner.rob_idx != rob_idx ||
+        owner.rob_allocation_id != entry.uop.queue.rob_allocation_id) return false;
 
     uint32_t tx = state.lsu.next_transaction_id++;
     DmemRequest req;
@@ -3698,6 +3696,10 @@ static bool try_issue_load(BoomCoreState& state, PipeSignals& pipe, uint8_t rob_
     state.lsu.pending_load_transaction_id = tx;
     state.lsu.pending_load_rob_idx = rob_idx;
     state.lsu.pending_load_allocation_id = entry.uop.queue.rob_allocation_id;
+    state.lsu.pending_load_lq_index = (LqIndex)lq_index;
+    state.lsu.pending_load_lq_generation = state.lsu.ldq[lq_index].generation;
+    state.lsu.ldq[lq_index].transaction_id = tx;
+    state.lsu.ldq[lq_index].response_pending = true;
     return true;
 }
 
@@ -3714,8 +3716,17 @@ static void enqueue_store(BoomCoreState& state, const MicroOp& uop,
     entry.memory_size = size;
 
     LsuState& lsu = state.lsu;
-    if (lsu.stq_count < STQ_DEPTH) {
-        StoreQueueEntry& stq = lsu.stq[lsu.stq_tail];
+    if (lsu.stq_count < SQ_DEPTH) {
+        int slot = -1;
+FIND_FREE_STQ:
+        for (int offset = 0; offset < SQ_DEPTH; offset++) {
+            int candidate = ((int)lsu.stq_tail + offset) % SQ_DEPTH;
+            if (slot < 0 && !lsu.stq[candidate].valid) slot = candidate;
+        }
+        StoreQueueEntry& stq = lsu.stq[slot];
+        uint16_t generation = (uint16_t)(stq.generation + 1);
+        stq = StoreQueueEntry();
+        stq.generation = generation;
         stq.valid = true;
         stq.rob_idx = uop.queue.rob_idx;
         stq.rob_allocation_id = uop.queue.rob_allocation_id;
@@ -3726,7 +3737,9 @@ static void enqueue_store(BoomCoreState& state, const MicroOp& uop,
         stq.mask = mask;
         stq.size = size;
         stq.branch_mask = uop.branch.br_mask;
-        lsu.stq_tail = (lsu.stq_tail + 1) % STQ_DEPTH;
+        entry.uop.queue.stq_idx = (uint8_t)slot;
+        entry.uop.queue.stq_generation = generation;
+        lsu.stq_tail = (SqIndex)((slot + 1) % SQ_DEPTH);
         lsu.stq_count++;
     }
 }
@@ -3750,15 +3763,15 @@ bool lsu_accept_completion(BoomCoreState& state, const MicroOp& uop,
     return true;
 }
 
-static void reclaim_ldq(BoomCoreState& state, uint8_t rob_idx, uint32_t allocation_id) {
-    LoadQueueEntry compacted[LDQ_DEPTH];
-    int count=0;
-    for (int i=0; i<LDQ_DEPTH; i++)
-        if (state.lsu.ldq[i].valid && (state.lsu.ldq[i].rob_idx!=rob_idx ||
-            state.lsu.ldq[i].rob_allocation_id!=allocation_id)) compacted[count++]=state.lsu.ldq[i];
-    for (int i=count; i<LDQ_DEPTH; i++) compacted[i]=LoadQueueEntry();
-    for (int i=0; i<LDQ_DEPTH; i++) state.lsu.ldq[i]=compacted[i];
-    state.lsu.ldq_head=0; state.lsu.ldq_tail=(uint8_t)(count%LDQ_DEPTH); state.lsu.ldq_count=(uint8_t)count;
+static void reclaim_ldq(BoomCoreState& state, LqIndex lq_index, uint16_t generation,
+                        uint8_t rob_idx, uint32_t allocation_id) {
+    LoadQueueEntry& entry = state.lsu.ldq[(int)lq_index];
+    if (!entry.valid || entry.generation != generation || entry.rob_idx != rob_idx ||
+        entry.rob_allocation_id != allocation_id) return;
+    entry.valid = false;
+    entry.response_pending = false;
+    if (state.lsu.ldq_count != 0) state.lsu.ldq_count--;
+    state.lsu.ldq_head = lq_index;
 }
 
 bool lsu_finish_load_response(BoomCoreState& state, uint8_t rob_idx,
@@ -3768,30 +3781,39 @@ bool lsu_finish_load_response(BoomCoreState& state, uint8_t rob_idx,
         state.lsu.pending_load_transaction_id != transaction_id ||
         state.lsu.pending_load_rob_idx != rob_idx ||
         state.lsu.pending_load_allocation_id != allocation_id) return false;
-    bool owns_ldq = false;
-LSU_RESPONSE_OWNERSHIP_SCAN:
-    for (int i = 0; i < LDQ_DEPTH; i++)
-        if (state.lsu.ldq[i].valid && state.lsu.ldq[i].rob_idx == rob_idx &&
-            state.lsu.ldq[i].rob_allocation_id == allocation_id)
-            owns_ldq = true;
-    if (!owns_ldq) return false;
+    LqIndex lq_index = state.lsu.pending_load_lq_index;
+    uint16_t generation = state.lsu.pending_load_lq_generation;
+    const LoadQueueEntry& owner = state.lsu.ldq[(int)lq_index];
+    if (!owner.valid || owner.generation != generation || owner.rob_idx != rob_idx ||
+        owner.rob_allocation_id != allocation_id || owner.transaction_id != transaction_id ||
+        !owner.response_pending) return false;
     state.lsu.load_response_pending = false;
     state.lsu.pending_load_transaction_id = 0;
     state.lsu.pending_load_rob_idx = 0;
     state.lsu.pending_load_allocation_id = 0;
-    reclaim_ldq(state, rob_idx, allocation_id);
+    state.lsu.pending_load_lq_index = 0;
+    state.lsu.pending_load_lq_generation = 0;
+    reclaim_ldq(state, lq_index, generation, rob_idx, allocation_id);
     return true;
 }
 
-void lsu_reclaim_store(BoomCoreState& state, uint8_t rob_idx, uint32_t allocation_id) {
-    StoreQueueEntry compacted[STQ_DEPTH];
-    int count=0;
-    for (int i=0; i<STQ_DEPTH; i++)
-        if (state.lsu.stq[i].valid && (state.lsu.stq[i].rob_idx!=rob_idx ||
-            state.lsu.stq[i].rob_allocation_id!=allocation_id)) compacted[count++]=state.lsu.stq[i];
-    for (int i=count; i<STQ_DEPTH; i++) compacted[i]=StoreQueueEntry();
-    for (int i=0; i<STQ_DEPTH; i++) state.lsu.stq[i]=compacted[i];
-    state.lsu.stq_head=0; state.lsu.stq_tail=(uint8_t)(count%STQ_DEPTH); state.lsu.stq_count=(uint8_t)count;
+bool lsu_reclaim_store(BoomCoreState& state, SqIndex sq_index, uint16_t generation,
+                       uint8_t rob_idx, uint32_t allocation_id) {
+    StoreQueueEntry& entry = state.lsu.stq[(int)sq_index];
+    if (!entry.valid || entry.generation != generation || entry.rob_idx != rob_idx ||
+        entry.rob_allocation_id != allocation_id) return false;
+    entry.valid = false;
+    if (state.lsu.stq_count != 0) state.lsu.stq_count--;
+    state.lsu.stq_head = sq_index;
+    return true;
+}
+
+bool lsu_store_owner_matches(const BoomCoreState& state, SqIndex sq_index,
+                             uint16_t generation, uint8_t rob_idx,
+                             uint32_t allocation_id) {
+    const StoreQueueEntry& entry = state.lsu.stq[(int)sq_index];
+    return entry.valid && entry.generation == generation && entry.rob_idx == rob_idx &&
+           entry.rob_allocation_id == allocation_id;
 }
 
 static void enqueue_load(BoomCoreState& state, const MicroOp& uop,
@@ -3806,8 +3828,17 @@ static void enqueue_load(BoomCoreState& state, const MicroOp& uop,
     entry.memory_size = size;
 
     LsuState& lsu = state.lsu;
-    if (lsu.ldq_count < LDQ_DEPTH) {
-        LoadQueueEntry& ldq = lsu.ldq[lsu.ldq_tail];
+    if (lsu.ldq_count < LQ_DEPTH) {
+        int slot = -1;
+FIND_FREE_LDQ:
+        for (int offset = 0; offset < LQ_DEPTH; offset++) {
+            int candidate = ((int)lsu.ldq_tail + offset) % LQ_DEPTH;
+            if (slot < 0 && !lsu.ldq[candidate].valid) slot = candidate;
+        }
+        LoadQueueEntry& ldq = lsu.ldq[slot];
+        uint16_t generation = (uint16_t)(ldq.generation + 1);
+        ldq = LoadQueueEntry();
+        ldq.generation = generation;
         ldq.valid = true;
         ldq.rob_idx = uop.queue.rob_idx;
         ldq.rob_allocation_id = uop.queue.rob_allocation_id;
@@ -3815,7 +3846,9 @@ static void enqueue_load(BoomCoreState& state, const MicroOp& uop,
         ldq.size = size;
         ldq.signed_load = signed_load;
         ldq.branch_mask = uop.branch.br_mask;
-        lsu.ldq_tail = (lsu.ldq_tail + 1) % LDQ_DEPTH;
+        entry.uop.queue.ldq_idx = (uint8_t)slot;
+        entry.uop.queue.ldq_generation = generation;
+        lsu.ldq_tail = (LqIndex)((slot + 1) % LQ_DEPTH);
         lsu.ldq_count++;
     }
 }
@@ -3844,7 +3877,12 @@ namespace boom {
 
 extern bool rob_branch_kill(BoomCoreState& state);
 extern void rob_complete(BoomCoreState& state);
-extern void lsu_reclaim_store(BoomCoreState& state, uint8_t rob_idx, uint32_t allocation_id);
+extern bool lsu_reclaim_store(BoomCoreState& state, SqIndex sq_index,
+                              uint16_t generation, uint8_t rob_idx,
+                              uint32_t allocation_id);
+extern bool lsu_store_owner_matches(const BoomCoreState& state, SqIndex sq_index,
+                                    uint16_t generation, uint8_t rob_idx,
+                                    uint32_t allocation_id);
 
 static bool preg_is_committed(const RenameMapTableState& mt, uint8_t preg) {
     if (preg == 0) return true;
@@ -3872,6 +3910,10 @@ static void restore_committed_rename(BoomCoreState& state) {
 static void clear_speculative_state(BoomCoreState& state) {
     const uint32_t next_allocation_id = state.rob.next_allocation_id;
     const uint32_t next_transaction_id = state.lsu.next_transaction_id;
+    uint16_t lq_generations[LQ_DEPTH];
+    uint16_t sq_generations[SQ_DEPTH];
+    for (int i=0; i<LQ_DEPTH; i++) lq_generations[i] = state.lsu.ldq[i].generation;
+    for (int i=0; i<SQ_DEPTH; i++) sq_generations[i] = state.lsu.stq[i].generation;
     for (int i=0; i<ROB_DEPTH; i++) state.rob.entries[i] = RobEntry();
     state.rob.head = 0;
     state.rob.tail = 0;
@@ -3895,6 +3937,8 @@ static void clear_speculative_state(BoomCoreState& state) {
     state.completion = CompletionPendingState();
     state.lsu = LsuState();
     state.lsu.next_transaction_id = next_transaction_id;
+    for (int i=0; i<LQ_DEPTH; i++) state.lsu.ldq[i].generation = lq_generations[i];
+    for (int i=0; i<SQ_DEPTH; i++) state.lsu.stq[i].generation = sq_generations[i];
 
     state.branch_state.active_mask = 0;
     for (int t=0; t<MAX_BRANCH_COUNT; t++) {
@@ -4052,6 +4096,11 @@ void rob_commit_module(BoomCoreState& state, PipeSignals& pipe) {
             if (uop.ctrl.is_sta || he.is_store) {
                 if (!he.memory_valid) return;
                 if (!he.memory_request_sent) {
+                    if (uop.queue.stq_idx >= SQ_DEPTH ||
+                        !lsu_store_owner_matches(state, (SqIndex)uop.queue.stq_idx,
+                                                 uop.queue.stq_generation,
+                                                 uop.queue.rob_idx,
+                                                 uop.queue.rob_allocation_id)) return;
                     if (pipe.dmem_req.full()) return;
                     DmemRequest req;
                     req.transaction_id = state.lsu.next_transaction_id++;
@@ -4070,7 +4119,9 @@ void rob_commit_module(BoomCoreState& state, PipeSignals& pipe) {
                     he.memory_request_sent = true;
                     he.memory_completed = true;
                     state.tohost = he.memory_data;
-                    lsu_reclaim_store(state, uop.queue.rob_idx, uop.queue.rob_allocation_id);
+                    lsu_reclaim_store(state, (SqIndex)uop.queue.stq_idx,
+                                      uop.queue.stq_generation, uop.queue.rob_idx,
+                                      uop.queue.rob_allocation_id);
                 }
             }
             state.csr.instret++;
@@ -4414,11 +4465,13 @@ RESET_ROB_INIT:
         state.execute.divider.pdst = 0;
         state.execute.divider.allocation_id = 0;
         state.execute.divider.branch_mask = 0;
+        reset_ctrl.lq_index = 0;
+        reset_ctrl.sq_index = 0;
         advance_reset(reset_ctrl, RESET_LSU);
         break;
 
     case RESET_LSU:
-        if (index == 0) {
+        if (reset_ctrl.lq_index == 0 && reset_ctrl.sq_index == 0) {
             state.lsu.ldq_head = 0;
             state.lsu.ldq_tail = 0;
             state.lsu.ldq_count = 0;
@@ -4429,16 +4482,19 @@ RESET_ROB_INIT:
             state.lsu.pending_load_transaction_id = 0;
             state.lsu.pending_load_rob_idx = 0;
             state.lsu.pending_load_allocation_id = 0;
+            state.lsu.pending_load_lq_index = 0;
+            state.lsu.pending_load_lq_generation = 0;
         }
-        state.lsu.ldq[index].valid = false;
-        state.lsu.ldq[index].response_pending = false;
-        state.lsu.stq[index].valid = false;
-        state.lsu.stq[index].committed = false;
-        state.lsu.stq[index].issued_to_memory = false;
-        if (index + 1 == LDQ_DEPTH) {
+        if (reset_ctrl.lq_index < LQ_DEPTH) {
+            state.lsu.ldq[reset_ctrl.lq_index] = LoadQueueEntry();
+            reset_ctrl.lq_index++;
+        }
+        if (reset_ctrl.sq_index < SQ_DEPTH) {
+            state.lsu.stq[reset_ctrl.sq_index] = StoreQueueEntry();
+            reset_ctrl.sq_index++;
+        }
+        if (reset_ctrl.lq_index == LQ_DEPTH && reset_ctrl.sq_index == SQ_DEPTH) {
             advance_reset(reset_ctrl, RESET_CSR);
-        } else {
-            reset_ctrl.index = index + 1;
         }
         break;
 
@@ -7443,11 +7499,16 @@ void synth_w4_core_step_retention_top(uint8_t seed, uint8_t phase,
     state.lsu.pending_load_transaction_id = 80 + seed;
     state.lsu.pending_load_rob_idx = 4;
     state.lsu.pending_load_allocation_id = allocation + 4;
+    state.lsu.pending_load_lq_index = 0;
+    state.lsu.pending_load_lq_generation = 1;
     state.lsu.ldq_count = 1;
     state.lsu.ldq_tail = 1;
     state.lsu.ldq[0].valid = true;
     state.lsu.ldq[0].rob_idx = 4;
     state.lsu.ldq[0].rob_allocation_id = allocation + 4;
+    state.lsu.ldq[0].generation = 1;
+    state.lsu.ldq[0].transaction_id = 80 + seed;
+    state.lsu.ldq[0].response_pending = true;
 
     DmemResponse queued;
     queued.transaction_id = 80 + seed;

@@ -156,44 +156,32 @@ static void kill_execute_state(BoomCoreState& state, uint8_t mispredict_mask) {
 
 static void kill_lsu_state(BoomCoreState& state, uint8_t mispredict_mask) {
     LsuState& lsu = state.lsu;
-    LoadQueueEntry new_ldq[LDQ_DEPTH];
-    StoreQueueEntry new_stq[STQ_DEPTH];
-    int lw = 0;
-    int sw = 0;
-
-    for (int i=0; i<LDQ_DEPTH; i++) {
+    for (int i=0; i<LQ_DEPTH; i++) {
         LoadQueueEntry& e = lsu.ldq[i];
         if (e.valid && (e.branch_mask & mispredict_mask) != 0) {
-            if (lsu.load_response_pending && lsu.pending_load_rob_idx == e.rob_idx) {
-                if (lsu.pending_load_allocation_id != e.rob_allocation_id) continue;
+            if (lsu.load_response_pending && (int)lsu.pending_load_lq_index == i &&
+                lsu.pending_load_lq_generation == e.generation &&
+                lsu.pending_load_rob_idx == e.rob_idx &&
+                lsu.pending_load_allocation_id == e.rob_allocation_id) {
                 lsu.load_response_pending = false;
                 lsu.pending_load_transaction_id = 0;
                 lsu.pending_load_rob_idx = 0;
                 lsu.pending_load_allocation_id = 0;
+                lsu.pending_load_lq_index = 0;
+                lsu.pending_load_lq_generation = 0;
             }
-            e = LoadQueueEntry();
-        } else if (e.valid) {
-            new_ldq[lw++] = e;
+            e.valid = false;
+            e.response_pending = false;
+            if (lsu.ldq_count != 0) lsu.ldq_count--;
         }
     }
-    for (int i=0; i<STQ_DEPTH; i++) {
+    for (int i=0; i<SQ_DEPTH; i++) {
         StoreQueueEntry& e = lsu.stq[i];
         if (e.valid && (e.branch_mask & mispredict_mask) != 0) {
-            e = StoreQueueEntry();
-        } else if (e.valid) {
-            new_stq[sw++] = e;
+            e.valid = false;
+            if (lsu.stq_count != 0) lsu.stq_count--;
         }
     }
-    for (int i=lw; i<LDQ_DEPTH; i++) new_ldq[i] = LoadQueueEntry();
-    for (int i=sw; i<STQ_DEPTH; i++) new_stq[i] = StoreQueueEntry();
-    for (int i=0; i<LDQ_DEPTH; i++) lsu.ldq[i] = new_ldq[i];
-    for (int i=0; i<STQ_DEPTH; i++) lsu.stq[i] = new_stq[i];
-    lsu.ldq_head = 0;
-    lsu.ldq_tail = (uint8_t)(lw % LDQ_DEPTH);
-    lsu.ldq_count = (uint8_t)lw;
-    lsu.stq_head = 0;
-    lsu.stq_tail = (uint8_t)(sw % STQ_DEPTH);
-    lsu.stq_count = (uint8_t)sw;
 }
 
 static void kill_rob_younger_than(BoomCoreState& state, uint8_t branch_rob_idx, uint8_t mispredict_mask) {

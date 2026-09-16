@@ -7,7 +7,12 @@ namespace boom {
 
 extern bool rob_branch_kill(BoomCoreState& state);
 extern void rob_complete(BoomCoreState& state);
-extern void lsu_reclaim_store(BoomCoreState& state, uint8_t rob_idx, uint32_t allocation_id);
+extern bool lsu_reclaim_store(BoomCoreState& state, SqIndex sq_index,
+                              uint16_t generation, uint8_t rob_idx,
+                              uint32_t allocation_id);
+extern bool lsu_store_owner_matches(const BoomCoreState& state, SqIndex sq_index,
+                                    uint16_t generation, uint8_t rob_idx,
+                                    uint32_t allocation_id);
 
 static bool preg_is_committed(const RenameMapTableState& mt, uint8_t preg) {
     if (preg == 0) return true;
@@ -35,6 +40,10 @@ static void restore_committed_rename(BoomCoreState& state) {
 static void clear_speculative_state(BoomCoreState& state) {
     const uint32_t next_allocation_id = state.rob.next_allocation_id;
     const uint32_t next_transaction_id = state.lsu.next_transaction_id;
+    uint16_t lq_generations[LQ_DEPTH];
+    uint16_t sq_generations[SQ_DEPTH];
+    for (int i=0; i<LQ_DEPTH; i++) lq_generations[i] = state.lsu.ldq[i].generation;
+    for (int i=0; i<SQ_DEPTH; i++) sq_generations[i] = state.lsu.stq[i].generation;
     for (int i=0; i<ROB_DEPTH; i++) state.rob.entries[i] = RobEntry();
     state.rob.head = 0;
     state.rob.tail = 0;
@@ -58,6 +67,8 @@ static void clear_speculative_state(BoomCoreState& state) {
     state.completion = CompletionPendingState();
     state.lsu = LsuState();
     state.lsu.next_transaction_id = next_transaction_id;
+    for (int i=0; i<LQ_DEPTH; i++) state.lsu.ldq[i].generation = lq_generations[i];
+    for (int i=0; i<SQ_DEPTH; i++) state.lsu.stq[i].generation = sq_generations[i];
 
     state.branch_state.active_mask = 0;
     for (int t=0; t<MAX_BRANCH_COUNT; t++) {
@@ -215,6 +226,11 @@ void rob_commit_module(BoomCoreState& state, PipeSignals& pipe) {
             if (uop.ctrl.is_sta || he.is_store) {
                 if (!he.memory_valid) return;
                 if (!he.memory_request_sent) {
+                    if (uop.queue.stq_idx >= SQ_DEPTH ||
+                        !lsu_store_owner_matches(state, (SqIndex)uop.queue.stq_idx,
+                                                 uop.queue.stq_generation,
+                                                 uop.queue.rob_idx,
+                                                 uop.queue.rob_allocation_id)) return;
                     if (pipe.dmem_req.full()) return;
                     DmemRequest req;
                     req.transaction_id = state.lsu.next_transaction_id++;
@@ -233,7 +249,9 @@ void rob_commit_module(BoomCoreState& state, PipeSignals& pipe) {
                     he.memory_request_sent = true;
                     he.memory_completed = true;
                     state.tohost = he.memory_data;
-                    lsu_reclaim_store(state, uop.queue.rob_idx, uop.queue.rob_allocation_id);
+                    lsu_reclaim_store(state, (SqIndex)uop.queue.stq_idx,
+                                      uop.queue.stq_generation, uop.queue.rob_idx,
+                                      uop.queue.rob_allocation_id);
                 }
             }
             state.csr.instret++;

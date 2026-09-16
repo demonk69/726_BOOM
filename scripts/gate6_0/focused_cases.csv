@@ -1,0 +1,81 @@
+case_id,case_name,category,variant_dimensions,asserted_requirement
+0,queues_empty,LQ SQ empty,empty,Both queues and counts are empty after focused initialization
+1,lq_single_count,LQ single count,allocate,LQ single allocation updates count and valid population together
+2,sq_single_count,SQ single count,allocate,SQ single allocation updates count and valid population together
+3,lq_full_reject,LQ full,depth=8,LQ rejects ninth allocation and preserves full count
+4,sq_full_reject,SQ full,depth=8,SQ rejects ninth allocation and preserves full count
+5,lq_wrap_boundary,LQ wrap,slots=7_to_0,LQ allocation wraps across the last and first slots
+6,sq_wrap_boundary,SQ wrap,slots=7_to_0,SQ allocation wraps across the last and first slots
+7,lq_reuse_generation,LQ reuse,free_then_slot0,LQ response reclaim permits slot reuse with next generation
+8,sq_reuse_generation,SQ reuse,reclaim_then_slot0,SQ owner reclaim permits slot reuse with next generation
+9,lq_generation_fffe,LQ generation FFFE,slot=0;fffe_to_ffff,LQ reaches generation FFFF
+10,sq_generation_fffe,SQ generation FFFE,slot=1;fffe_to_ffff,SQ reaches generation FFFF
+11,lq_generation_ffff,LQ generation FFFF,slot=2;ffff_to_0000,LQ generation wraps to zero
+12,sq_generation_ffff,SQ generation FFFF,slot=3;ffff_to_0000,SQ generation wraps to zero
+13,stale_lq_issue,stale LQ,generation_mismatch,Stale LQ owner generation cannot issue
+14,stale_sq_match,stale SQ,generation_mismatch,Stale SQ generation cannot match owner
+15,stale_sq_reclaim,stale SQ,generation_mismatch,Stale SQ generation cannot reclaim owner
+16,correct_load_response,correct response,transaction_owner,Correct response completes ROB reclaims LQ and writes destination
+17,response_wrong_tx,response mismatch,transaction_id,Wrong response transaction cannot mutate state
+18,response_wrong_rob,response mismatch,pending_rob,Wrong pending ROB identity cannot complete
+19,response_wrong_allocation,response mismatch,pending_allocation,Wrong pending allocation identity cannot complete
+20,response_wrong_generation,response mismatch,pending_generation,Wrong pending generation identity cannot complete
+21,response_wrong_owner_tx,response mismatch,queue_transaction,Wrong queue transaction identity cannot complete
+22,response_not_pending,response protection,response_pending_clear,Response cannot complete owner whose pending flag is clear
+23,stale_response_reused_lq,reuse protection,flush_reallocate_late_response,Stale response cannot clear a reused LQ entry
+24,stale_response_reused_rob,ROB reuse,allocation_changed,Stale response cannot complete a reused ROB entry
+25,stale_response_no_prf,response protection,wrong_tx_seeded_prf,Stale response cannot write the physical register file
+26,same_address_no_forwarding,no forwarding,same_address_disjoint_masks,Same-address younger load remains blocked because forwarding is absent
+27,different_address_older_store,older store,different_address,Any older store blocks younger load issue
+28,load_request_backpressure,backpressure,dmem_request_fifo_full,Actual full request channel blocks load issue until drained
+29,committed_store_backpressure,backpressure,committed_store_fifo_full,Actual full request channel blocks committed store request and reclaim
+30,branch_clear_lq,branch clear,LQ_correct_resolution,Correct branch resolution clears LQ branch mask without squash
+31,branch_clear_sq,branch clear,SQ_correct_resolution,Correct branch resolution clears SQ branch mask without squash
+32,branch_squash_lq,branch squash,LQ_mispredict,Mispredict removes tagged LQ owner and repairs count
+33,branch_squash_sq,branch squash,SQ_mispredict,Mispredict removes tagged SQ owner and repairs count
+34,branch_pending_kill,pending kill,pending_load_mispredict,Mispredict clears pending ownership and tagged LQ owner
+35,branch_late_response,late response,post_branch_kill,Late response after branch kill cannot complete or write PRF
+36,exception_flush_queues_late,exception flush,LQ_SQ_pending_late_response,Exception flush clears LQ SQ and rejects the late response
+37,global_flush_both,flush,LQ_SQ,Global flush empties both queues and counts
+38,reset_empty,reset,empty,Staged reset completes from empty queues
+39,reset_partial,reset,partial,Staged reset completes from partial occupancy
+40,reset_full,reset,full,Staged reset completes from full SQ and nonempty LQ
+41,lq_count_lifecycle,count lifecycle,LQ_allocate_allocate_response,LQ count follows two allocations and one response reclaim
+42,sq_count_lifecycle,count lifecycle,SQ_allocate_reclaim,SQ count follows allocation and owner reclaim
+43,lq_full_free_allocate,full-free-allocate,LQ,LQ full response-free-allocate returns to full
+44,sq_full_free_allocate,full-free-allocate,SQ,SQ full owner-free-allocate returns to full
+45,lq_owner_tuple,owner tuple,LQ_rob_allocation_generation_transaction,LQ response rejects wrong ROB tuple component
+46,sq_owner_tuple,owner tuple,SQ_slot_generation_rob_allocation,SQ match accepts exact tuple and rejects wrong ROB
+47,rob_reuse_stale_issue,ROB reuse,allocation_changed,Reused ROB allocation cannot issue stale LQ owner
+48,simultaneous_commit_lsu,simultaneous ordering,commit_then_load_issue,Committed older store request ordering prevents simultaneous younger load issue
+49,reset_pending_lifecycle,reset lifecycle,pending_response,Reset clears pending response queue counts and owner state
+50,variant_slot2_gen0_mask01,variant,slot=2;generation=0000;mask=01;tx=00000001;order=load_response,Boundary and identity variant 00
+51,variant_slot3_gen1_mask02,variant,slot=3;generation=0001;mask=02;tx=00010102;order=store_reclaim,Boundary and identity variant 01
+52,variant_slot4_gen7fff_mask04,variant,slot=4;generation=7fff;mask=04;tx=00020203;order=stale_then_response,Boundary and identity variant 02
+53,variant_slot5_genfffd_mask08,variant,slot=5;generation=fffd;mask=08;tx=00030304;order=allocate_flush,Boundary and identity variant 03
+54,variant_slot6_genfffe_mask10,variant,slot=6;generation=fffe;mask=10;tx=00040405;order=allocate_squash,Boundary and identity variant 04
+55,variant_slot7_genffff_mask20,variant,slot=7;generation=ffff;mask=20;tx=00050506;order=full_free_allocate,Boundary and identity variant 05
+56,variant_slot0_gen0_mask40,variant,slot=0;generation=0000;mask=40;tx=00060607;order=load_response,Boundary and identity variant 06
+57,variant_slot1_gen1_mask80,variant,slot=1;generation=0001;mask=80;tx=00070708;order=store_reclaim,Boundary and identity variant 07
+58,variant_slot2_gen7fff_mask3f,variant,slot=2;generation=7fff;mask=3f;tx=00080809;order=stale_then_response,Boundary and identity variant 08
+59,variant_slot3_genfffd_mask1f,variant,slot=3;generation=fffd;mask=1f;tx=0009090a;order=allocate_flush,Boundary and identity variant 09
+60,variant_slot4_genfffe_mask0f,variant,slot=4;generation=fffe;mask=0f;tx=000a0a0b;order=allocate_squash,Boundary and identity variant 10
+61,variant_slot5_genffff_mask07,variant,slot=5;generation=ffff;mask=07;tx=000b0b0c;order=full_free_allocate,Boundary and identity variant 11
+62,variant_slot6_gen0_mask03,variant,slot=6;generation=0000;mask=03;tx=000c0c0d;order=load_response,Boundary and identity variant 12
+63,variant_slot7_gen1_mask01,variant,slot=7;generation=0001;mask=01;tx=000d0d0e;order=store_reclaim,Boundary and identity variant 13
+64,variant_slot0_gen7fff_mask00,variant,slot=0;generation=7fff;mask=00;tx=000e0e0f;order=stale_then_response,Boundary and identity variant 14
+65,variant_slot1_genfffd_mask00,variant,slot=1;generation=fffd;mask=00;tx=000f0f10;order=allocate_flush,Boundary and identity variant 15
+66,variant_slot2_genfffe_maskb5,variant,slot=2;generation=fffe;mask=b5;tx=00101011;order=allocate_squash,Boundary and identity variant 16
+67,variant_slot3_genffff_maskb4,variant,slot=3;generation=ffff;mask=b4;tx=00111112;order=full_free_allocate,Boundary and identity variant 17
+68,variant_slot4_gen0_maskb7,variant,slot=4;generation=0000;mask=b7;tx=00121213;order=load_response,Boundary and identity variant 18
+69,variant_slot5_gen1_maskb6,variant,slot=5;generation=0001;mask=b6;tx=00131314;order=store_reclaim,Boundary and identity variant 19
+70,variant_slot6_gen7fff_maskb1,variant,slot=6;generation=7fff;mask=b1;tx=00141415;order=stale_then_response,Boundary and identity variant 20
+71,variant_slot7_genfffd_maskb0,variant,slot=7;generation=fffd;mask=b0;tx=00151516;order=allocate_flush,Boundary and identity variant 21
+72,variant_slot0_genfffe_maskb3,variant,slot=0;generation=fffe;mask=b3;tx=00161617;order=allocate_squash,Boundary and identity variant 22
+73,variant_slot1_genffff_maskb2,variant,slot=1;generation=ffff;mask=b2;tx=00171718;order=full_free_allocate,Boundary and identity variant 23
+74,variant_slot2_gen0_maskbd,variant,slot=2;generation=0000;mask=bd;tx=00181819;order=load_response,Boundary and identity variant 24
+75,variant_slot3_gen1_maskbc,variant,slot=3;generation=0001;mask=bc;tx=0019191a;order=store_reclaim,Boundary and identity variant 25
+76,variant_slot4_gen7fff_maskbf,variant,slot=4;generation=7fff;mask=bf;tx=001a1a1b;order=stale_then_response,Boundary and identity variant 26
+77,variant_slot5_genfffd_maskbe,variant,slot=5;generation=fffd;mask=be;tx=001b1b1c;order=allocate_flush,Boundary and identity variant 27
+78,variant_slot6_genfffe_maskb9,variant,slot=6;generation=fffe;mask=b9;tx=001c1c1d;order=allocate_squash,Boundary and identity variant 28
+79,variant_slot7_genffff_maskb8,variant,slot=7;generation=ffff;mask=b8;tx=001d1d1e;order=full_free_allocate,Boundary and identity variant 29

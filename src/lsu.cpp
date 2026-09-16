@@ -30,16 +30,28 @@ static void clear_lsu_queues(LsuState& lsu) {
     lsu.pending_load_transaction_id = 0;
     lsu.pending_load_rob_idx = 0;
     lsu.pending_load_allocation_id = 0;
+    lsu.pending_load_lq_index = 0;
+    lsu.pending_load_lq_generation = 0;
 CLEAR_LDQ:
-    for (int i = 0; i < LDQ_DEPTH; i++) lsu.ldq[i] = LoadQueueEntry();
+    for (int i = 0; i < LQ_DEPTH; i++) {
+        lsu.ldq[i].valid = false;
+        lsu.ldq[i].response_pending = false;
+    }
 CLEAR_STQ:
-    for (int i = 0; i < STQ_DEPTH; i++) lsu.stq[i] = StoreQueueEntry();
+    for (int i = 0; i < SQ_DEPTH; i++) lsu.stq[i].valid = false;
 }
 
 static bool try_issue_load(BoomCoreState& state, PipeSignals& pipe, uint8_t rob_idx) {
     RobEntry& entry = state.rob.entries[rob_idx];
     if (!entry.valid || !entry.is_load || !entry.memory_valid || entry.memory_request_sent) return false;
     if (state.lsu.load_response_pending || older_store_in_rob(state, rob_idx) || pipe.dmem_req.full()) return false;
+
+    if (entry.uop.queue.ldq_idx >= LQ_DEPTH) return false;
+    int lq_index = entry.uop.queue.ldq_idx;
+    const LoadQueueEntry& owner = state.lsu.ldq[lq_index];
+    if (!owner.valid || owner.generation != entry.uop.queue.ldq_generation ||
+        owner.rob_idx != rob_idx ||
+        owner.rob_allocation_id != entry.uop.queue.rob_allocation_id) return false;
 
     uint32_t tx = state.lsu.next_transaction_id++;
     DmemRequest req;
@@ -60,6 +72,10 @@ static bool try_issue_load(BoomCoreState& state, PipeSignals& pipe, uint8_t rob_
     state.lsu.pending_load_transaction_id = tx;
     state.lsu.pending_load_rob_idx = rob_idx;
     state.lsu.pending_load_allocation_id = entry.uop.queue.rob_allocation_id;
+    state.lsu.pending_load_lq_index = (LqIndex)lq_index;
+    state.lsu.pending_load_lq_generation = state.lsu.ldq[lq_index].generation;
+    state.lsu.ldq[lq_index].transaction_id = tx;
+    state.lsu.ldq[lq_index].response_pending = true;
     return true;
 }
 
@@ -76,8 +92,17 @@ static void enqueue_store(BoomCoreState& state, const MicroOp& uop,
     entry.memory_size = size;
 
     LsuState& lsu = state.lsu;
-    if (lsu.stq_count < STQ_DEPTH) {
-        StoreQueueEntry& stq = lsu.stq[lsu.stq_tail];
+    if (lsu.stq_count < SQ_DEPTH) {
+        int slot = -1;
+FIND_FREE_STQ:
+        for (int offset = 0; offset < SQ_DEPTH; offset++) {
+            int candidate = ((int)lsu.stq_tail + offset) % SQ_DEPTH;
+            if (slot < 0 && !lsu.stq[candidate].valid) slot = candidate;
+        }
+        StoreQueueEntry& stq = lsu.stq[slot];
+        uint16_t generation = (uint16_t)(stq.generation + 1);
+        stq = StoreQueueEntry();
+        stq.generation = generation;
         stq.valid = true;
         stq.rob_idx = uop.queue.rob_idx;
         stq.rob_allocation_id = uop.queue.rob_allocation_id;
@@ -88,7 +113,9 @@ static void enqueue_store(BoomCoreState& state, const MicroOp& uop,
         stq.mask = mask;
         stq.size = size;
         stq.branch_mask = uop.branch.br_mask;
-        lsu.stq_tail = (lsu.stq_tail + 1) % STQ_DEPTH;
+        entry.uop.queue.stq_idx = (uint8_t)slot;
+        entry.uop.queue.stq_generation = generation;
+        lsu.stq_tail = (SqIndex)((slot + 1) % SQ_DEPTH);
         lsu.stq_count++;
     }
 }
@@ -112,15 +139,15 @@ bool lsu_accept_completion(BoomCoreState& state, const MicroOp& uop,
     return true;
 }
 
-static void reclaim_ldq(BoomCoreState& state, uint8_t rob_idx, uint32_t allocation_id) {
-    LoadQueueEntry compacted[LDQ_DEPTH];
-    int count=0;
-    for (int i=0; i<LDQ_DEPTH; i++)
-        if (state.lsu.ldq[i].valid && (state.lsu.ldq[i].rob_idx!=rob_idx ||
-            state.lsu.ldq[i].rob_allocation_id!=allocation_id)) compacted[count++]=state.lsu.ldq[i];
-    for (int i=count; i<LDQ_DEPTH; i++) compacted[i]=LoadQueueEntry();
-    for (int i=0; i<LDQ_DEPTH; i++) state.lsu.ldq[i]=compacted[i];
-    state.lsu.ldq_head=0; state.lsu.ldq_tail=(uint8_t)(count%LDQ_DEPTH); state.lsu.ldq_count=(uint8_t)count;
+static void reclaim_ldq(BoomCoreState& state, LqIndex lq_index, uint16_t generation,
+                        uint8_t rob_idx, uint32_t allocation_id) {
+    LoadQueueEntry& entry = state.lsu.ldq[(int)lq_index];
+    if (!entry.valid || entry.generation != generation || entry.rob_idx != rob_idx ||
+        entry.rob_allocation_id != allocation_id) return;
+    entry.valid = false;
+    entry.response_pending = false;
+    if (state.lsu.ldq_count != 0) state.lsu.ldq_count--;
+    state.lsu.ldq_head = lq_index;
 }
 
 bool lsu_finish_load_response(BoomCoreState& state, uint8_t rob_idx,
@@ -130,30 +157,39 @@ bool lsu_finish_load_response(BoomCoreState& state, uint8_t rob_idx,
         state.lsu.pending_load_transaction_id != transaction_id ||
         state.lsu.pending_load_rob_idx != rob_idx ||
         state.lsu.pending_load_allocation_id != allocation_id) return false;
-    bool owns_ldq = false;
-LSU_RESPONSE_OWNERSHIP_SCAN:
-    for (int i = 0; i < LDQ_DEPTH; i++)
-        if (state.lsu.ldq[i].valid && state.lsu.ldq[i].rob_idx == rob_idx &&
-            state.lsu.ldq[i].rob_allocation_id == allocation_id)
-            owns_ldq = true;
-    if (!owns_ldq) return false;
+    LqIndex lq_index = state.lsu.pending_load_lq_index;
+    uint16_t generation = state.lsu.pending_load_lq_generation;
+    const LoadQueueEntry& owner = state.lsu.ldq[(int)lq_index];
+    if (!owner.valid || owner.generation != generation || owner.rob_idx != rob_idx ||
+        owner.rob_allocation_id != allocation_id || owner.transaction_id != transaction_id ||
+        !owner.response_pending) return false;
     state.lsu.load_response_pending = false;
     state.lsu.pending_load_transaction_id = 0;
     state.lsu.pending_load_rob_idx = 0;
     state.lsu.pending_load_allocation_id = 0;
-    reclaim_ldq(state, rob_idx, allocation_id);
+    state.lsu.pending_load_lq_index = 0;
+    state.lsu.pending_load_lq_generation = 0;
+    reclaim_ldq(state, lq_index, generation, rob_idx, allocation_id);
     return true;
 }
 
-void lsu_reclaim_store(BoomCoreState& state, uint8_t rob_idx, uint32_t allocation_id) {
-    StoreQueueEntry compacted[STQ_DEPTH];
-    int count=0;
-    for (int i=0; i<STQ_DEPTH; i++)
-        if (state.lsu.stq[i].valid && (state.lsu.stq[i].rob_idx!=rob_idx ||
-            state.lsu.stq[i].rob_allocation_id!=allocation_id)) compacted[count++]=state.lsu.stq[i];
-    for (int i=count; i<STQ_DEPTH; i++) compacted[i]=StoreQueueEntry();
-    for (int i=0; i<STQ_DEPTH; i++) state.lsu.stq[i]=compacted[i];
-    state.lsu.stq_head=0; state.lsu.stq_tail=(uint8_t)(count%STQ_DEPTH); state.lsu.stq_count=(uint8_t)count;
+bool lsu_reclaim_store(BoomCoreState& state, SqIndex sq_index, uint16_t generation,
+                       uint8_t rob_idx, uint32_t allocation_id) {
+    StoreQueueEntry& entry = state.lsu.stq[(int)sq_index];
+    if (!entry.valid || entry.generation != generation || entry.rob_idx != rob_idx ||
+        entry.rob_allocation_id != allocation_id) return false;
+    entry.valid = false;
+    if (state.lsu.stq_count != 0) state.lsu.stq_count--;
+    state.lsu.stq_head = sq_index;
+    return true;
+}
+
+bool lsu_store_owner_matches(const BoomCoreState& state, SqIndex sq_index,
+                             uint16_t generation, uint8_t rob_idx,
+                             uint32_t allocation_id) {
+    const StoreQueueEntry& entry = state.lsu.stq[(int)sq_index];
+    return entry.valid && entry.generation == generation && entry.rob_idx == rob_idx &&
+           entry.rob_allocation_id == allocation_id;
 }
 
 static void enqueue_load(BoomCoreState& state, const MicroOp& uop,
@@ -168,8 +204,17 @@ static void enqueue_load(BoomCoreState& state, const MicroOp& uop,
     entry.memory_size = size;
 
     LsuState& lsu = state.lsu;
-    if (lsu.ldq_count < LDQ_DEPTH) {
-        LoadQueueEntry& ldq = lsu.ldq[lsu.ldq_tail];
+    if (lsu.ldq_count < LQ_DEPTH) {
+        int slot = -1;
+FIND_FREE_LDQ:
+        for (int offset = 0; offset < LQ_DEPTH; offset++) {
+            int candidate = ((int)lsu.ldq_tail + offset) % LQ_DEPTH;
+            if (slot < 0 && !lsu.ldq[candidate].valid) slot = candidate;
+        }
+        LoadQueueEntry& ldq = lsu.ldq[slot];
+        uint16_t generation = (uint16_t)(ldq.generation + 1);
+        ldq = LoadQueueEntry();
+        ldq.generation = generation;
         ldq.valid = true;
         ldq.rob_idx = uop.queue.rob_idx;
         ldq.rob_allocation_id = uop.queue.rob_allocation_id;
@@ -177,7 +222,9 @@ static void enqueue_load(BoomCoreState& state, const MicroOp& uop,
         ldq.size = size;
         ldq.signed_load = signed_load;
         ldq.branch_mask = uop.branch.br_mask;
-        lsu.ldq_tail = (lsu.ldq_tail + 1) % LDQ_DEPTH;
+        entry.uop.queue.ldq_idx = (uint8_t)slot;
+        entry.uop.queue.ldq_generation = generation;
+        lsu.ldq_tail = (LqIndex)((slot + 1) % LQ_DEPTH);
         lsu.ldq_count++;
     }
 }

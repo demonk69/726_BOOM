@@ -1,0 +1,22 @@
+#-----------------------------------------------------------
+# xsim v2021.2 (64-bit)
+# SW Build 3367213 on Tue Oct 19 02:47:39 MDT 2021
+# IP Build 3369179 on Thu Oct 21 08:25:16 MDT 2021
+# Start of session at: Tue Sep 15 18:59:51 2026
+# Process ID: 50725
+# Current directory: /tmp/boom_hls/g6_l1_closure/integrated/xsim
+# Command line: xsim -log /home/lab_726/boom/hls_boom/reports/gate6_0_full_lsu/l1/pf6_integrated/logs/pf4_fault_refetch.log -mode tcl -source {xsim.dir/pf4_full_core_snapshot/xsim_script.tcl}
+# Log file: /home/lab_726/boom/hls_boom/reports/gate6_0_full_lsu/l1/pf6_integrated/logs/pf4_fault_refetch.log
+# Journal file: /tmp/boom_hls/g6_l1_closure/integrated/xsim/xsim.jou
+# Running On: 726, OS: Linux, CPU Frequency: 5200.000 MHz, CPU Physical cores: 14, Host memory: 67148 MB
+#-----------------------------------------------------------
+source xsim.dir/pf4_full_core_snapshot/xsim_script.tcl
+# xsim {pf4_full_core_snapshot} -testplusarg PROGRAM=/tmp/boom_hls/g6_l1_closure/programs/pf4/pf4_fault_refetch.words.hex -testplusarg INIT=/tmp/boom_hls/g6_l1_closure/programs/pf4/pf4_fault_refetch.init -testplusarg PROGRAM_NAME=pf4_fault_refetch -testplusarg FAULT_MODE=1 -testplusarg TRACE=/home/lab_726/boom/hls_boom/reports/gate6_0_full_lsu/l1/pf6_integrated/traces/pf4_fault_refetch.jsonl -testplusarg MAX_CYCLES=1000000 -autoloadwcfg -runall -onerror quit
+Time resolution is 1 ps
+run -all
+PF5_FULL_CORE_RTL_PASS program=pf4_fault_refetch branches=0 mispredicts=0 exceptions=1 commits=9 cycles=24659 bim_entries=0
+PF6_RTL_COVERAGE program=pf4_fault_refetch conditional_predictions=0 predicted_taken=0 predicted_not_taken=0 correct_predictions=0 mispredict_redirects=0 BIM_attempts=0 BIM_updates=0 BIM_taken_updates=0 BIM_not_taken_updates=0 BIM_dropped=0 BIM_stale_rejected=0 FTQ_allocations=11 FTQ_reclaims=10 FTQ_squashes=0 FTQ_wraps=0 FTQ_slot_reuses=0 exceptions=1 fault_refetches=1 ROB_commits=9 max_rob_occupancy=1 max_ftq_occupancy=1
+$finish called at time : 271575 ns : File "/home/lab_726/boom/hls_boom/rtl_tb/pf4_full_core_rtl_tb.sv" Line 222
+run: Time (s): cpu = 00:00:00.39 ; elapsed = 00:00:05 . Memory (MB): peak = 2685.672 ; gain = 0.000 ; free physical = 49472 ; free virtual = 58335
+exit
+INFO: [Common 17-206] Exiting xsim at Tue Sep 15 19:00:00 2026...

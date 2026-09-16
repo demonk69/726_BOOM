@@ -1,0 +1,20 @@
+#-----------------------------------------------------------
+# xsim v2021.2 (64-bit)
+# SW Build 3367213 on Tue Oct 19 02:47:39 MDT 2021
+# IP Build 3369179 on Thu Oct 21 08:25:16 MDT 2021
+# Start of session at: Wed Sep 16 11:07:58 2026
+# Process ID: 53233
+# Current directory: /home/lab_726/opencode_tmp/g6_l1_focused_80/image_4_branch_recovery/sim
+# Command line: xsim -log /home/lab_726/boom/hls_boom/reports/gate6_0_full_lsu/l1/focused_rtl_redesign/logs/case_66_variant_slot2_genfffe_maskb5.log -mode tcl -source {xsim.dir/branch_recovery_snapshot/xsim_script.tcl}
+# Log file: /home/lab_726/boom/hls_boom/reports/gate6_0_full_lsu/l1/focused_rtl_redesign/logs/case_66_variant_slot2_genfffe_maskb5.log
+# Journal file: /home/lab_726/opencode_tmp/g6_l1_focused_80/image_4_branch_recovery/sim/xsim.jou
+# Running On: 726, OS: Linux, CPU Frequency: 2930.601 MHz, CPU Physical cores: 14, Host memory: 67148 MB
+#-----------------------------------------------------------
+source xsim.dir/branch_recovery_snapshot/xsim_script.tcl
+# xsim {branch_recovery_snapshot} -testplusarg CASE_ID=66 -testplusarg EXP0=0000000000000000 -testplusarg EXP1=0000000000000000 -testplusarg EXP2=00000000000000b4 -testplusarg EXP3=0000000000000000 -testplusarg EXP4=0000000000010103 -testplusarg EXP5=0000000000000000 -testplusarg EXP6=000000fffeffff01 -testplusarg EXP7=aaaaaaaaaaaaaaaa -autoloadwcfg -runall -onerror quit
+Time resolution is 1 ps
+run -all
+G6_L1R80_CASE_PASS id=66 cycles=1102
+$finish called at time : 11095 ns : File "/home/lab_726/boom/hls_boom/rtl_tb/gate6_0/g6_l1r_focused_80_path_a_tb.sv" Line 345
+exit
+INFO: [Common 17-206] Exiting xsim at Wed Sep 16 11:08:03 2026...

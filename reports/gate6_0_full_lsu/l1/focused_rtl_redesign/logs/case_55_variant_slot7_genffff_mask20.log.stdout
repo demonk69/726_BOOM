@@ -1,0 +1,14 @@
+
+****** xsim v2021.2 (64-bit)
+  **** SW Build 3367213 on Tue Oct 19 02:47:39 MDT 2021
+  **** IP Build 3369179 on Thu Oct 21 08:25:16 MDT 2021
+    ** Copyright 1986-2021 Xilinx, Inc. All Rights Reserved.
+
+source xsim.dir/queue_lifecycle_snapshot/xsim_script.tcl
+# xsim {queue_lifecycle_snapshot} -testplusarg CASE_ID=55 -testplusarg EXP0=000000000000000c -testplusarg EXP1=0000000008070808 -testplusarg EXP2=0000000000000000 -testplusarg EXP3=0000000000000007 -testplusarg EXP4=0000000000000001 -testplusarg EXP5=0000000000000008 -testplusarg EXP6=0000000000ffff07 -testplusarg EXP7=0000000005050620 -autoloadwcfg -runall -onerror quit
+Time resolution is 1 ps
+run -all
+G6_L1R80_CASE_PASS id=55 cycles=62
+$finish called at time : 695 ns : File "/home/lab_726/boom/hls_boom/rtl_tb/gate6_0/g6_l1r_focused_80_path_a_tb.sv" Line 338
+exit
+INFO: [Common 17-206] Exiting xsim at Wed Sep 16 10:54:53 2026...

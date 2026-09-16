@@ -1,0 +1,17 @@
+
+****** xsim v2021.2 (64-bit)
+  **** SW Build 3367213 on Tue Oct 19 02:47:39 MDT 2021
+  **** IP Build 3369179 on Thu Oct 21 08:25:16 MDT 2021
+    ** Copyright 1986-2021 Xilinx, Inc. All Rights Reserved.
+
+source xsim.dir/pf3_product_snapshot/xsim_script.tcl
+# xsim {pf3_product_snapshot} -testplusarg PROGRAM=/tmp/boom_hls/g6_l1_closure/pf3/programs/pf3_rvc_packets.hex -testplusarg PROGRAM_NAME=pf3_rvc_packets -testplusarg EXPECT_TRAP=0 -testplusarg RESET_MIDSTREAM=0 -testplusarg TRACE=/home/lab_726/boom/hls_boom/reports/gate6_0_full_lsu/l1/pf3/traces/pf3_rvc_packets.jsonl -autoloadwcfg -runall -onerror quit
+Time resolution is 1 ps
+run -all
+GATE3_8_IMEM program=/tmp/boom_hls/g6_l1_closure/pf3/programs/pf3_rvc_packets.hex
+PF3_RTL_EVENT program=pf3_rvc_packets alloc=16 reclaim=12 redirect=1 wrap=0 reuse=0 generation_retry=51 reset=0 max_occupancy=2 commits=15 cycles=29031
+PF3_PRODUCT_RTL_PASS program=pf3_rvc_packets
+$finish called at time : 290365 ns : File "/home/lab_726/boom/hls_boom/rtl_tb/pf3_product_rtl_tb.sv" Line 119
+run: Time (s): cpu = 00:00:00.38 ; elapsed = 00:00:06 . Memory (MB): peak = 2685.672 ; gain = 0.000 ; free physical = 50156 ; free virtual = 58246
+exit
+INFO: [Common 17-206] Exiting xsim at Tue Sep 15 18:37:36 2026...

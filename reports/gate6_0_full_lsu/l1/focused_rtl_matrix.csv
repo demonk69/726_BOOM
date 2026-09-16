@@ -1,0 +1,6 @@
+record_class,scope,cases_passed,cases_required,status,notes
+HISTORICAL_PROVENANCE,default_8_8_lsu_full_core_subset,17,80,INCOMPLETE,"Checkpoint only; all executed current-source cases passed, but the 80-case focused threshold had not yet been met"
+HISTORICAL_PROVENANCE,compact_command_engine_native,8,8,PASS,"Infrastructure diagnostic only; not counted as RTL cases"
+HISTORICAL_PROVENANCE,compact_command_engine_rtl,0,80,BLOCKED,"Exact current input aggregate 2175dd25e80f791d038f289bedbf8290c95ae17c99240da2ebd1bb0f90e926c4; Vitis RTL generation OOM-killed after 2708.69 s and 305G workspace"
+HISTORICAL_PROVENANCE,sliced_command_engine_rtl,0,80,BLOCKED,"State-sliced pilot exceeded 20GB workspace watchdog before RTL generation"
+HISTORICAL_PROVENANCE,grouped_lsu_response_rtl,0,80,BLOCKED,"Branch-free product diagnostic pilot exceeded 20GB workspace watchdog in try_issue_load RTL generation"

@@ -2676,11 +2676,16 @@ void synth_w4_core_step_retention_top(uint8_t seed, uint8_t phase,
     state.lsu.pending_load_transaction_id = 80 + seed;
     state.lsu.pending_load_rob_idx = 4;
     state.lsu.pending_load_allocation_id = allocation + 4;
+    state.lsu.pending_load_lq_index = 0;
+    state.lsu.pending_load_lq_generation = 1;
     state.lsu.ldq_count = 1;
     state.lsu.ldq_tail = 1;
     state.lsu.ldq[0].valid = true;
     state.lsu.ldq[0].rob_idx = 4;
     state.lsu.ldq[0].rob_allocation_id = allocation + 4;
+    state.lsu.ldq[0].generation = 1;
+    state.lsu.ldq[0].transaction_id = 80 + seed;
+    state.lsu.ldq[0].response_pending = true;
 
     DmemResponse queued;
     queued.transaction_id = 80 + seed;

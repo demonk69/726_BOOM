@@ -36,10 +36,31 @@
 #define ISSUE_QUEUE_FPU_DEPTH   8
 #define ISSUE_QUEUE_IDX_BITS    3
 
-#define LDQ_DEPTH           8
-#define STQ_DEPTH           8
-#define LDQ_IDX_BITS        3
-#define STQ_IDX_BITS        3
+#ifndef LQ_DEPTH
+#define LQ_DEPTH            8
+#endif
+#ifndef SQ_DEPTH
+#define SQ_DEPTH            8
+#endif
+
+// Retain the established names for existing source and test consumers.
+#define LDQ_DEPTH           LQ_DEPTH
+#define STQ_DEPTH           SQ_DEPTH
+
+constexpr unsigned boom_clog2(unsigned value) {
+    return value <= 1 ? 0 : 1 + boom_clog2((value + 1) / 2);
+}
+
+enum {
+    LQ_INDEX_BITS = boom_clog2(LQ_DEPTH),
+    SQ_INDEX_BITS = boom_clog2(SQ_DEPTH),
+    LQ_COUNT_BITS = boom_clog2(LQ_DEPTH + 1),
+    SQ_COUNT_BITS = boom_clog2(SQ_DEPTH + 1),
+    LQ_GENERATION_BITS = 16,
+    SQ_GENERATION_BITS = 16,
+    LDQ_IDX_BITS = LQ_INDEX_BITS,
+    STQ_IDX_BITS = SQ_INDEX_BITS
+};
 
 #define MAX_BRANCH_COUNT    8
 #define BR_MASK_BITS        8
@@ -122,10 +143,14 @@ static_assert((1u << PHYS_REG_BITS) >= INT_PHYS_REGS, "PHYS_REG_BITS insufficien
 static_assert((1u << PHYS_REG_BITS) >= FP_PHYS_REGS, "PHYS_REG_BITS insufficient for FP_PHYS_REGS");
 static_assert(BR_TAG_BITS >= 3, "BR_TAG_BITS too small");
 static_assert((1u << BR_TAG_BITS) >= MAX_BRANCH_COUNT, "BR_TAG_BITS insufficient for MAX_BRANCH_COUNT");
-static_assert(LDQ_IDX_BITS >= 3, "LDQ_IDX_BITS too small");
-static_assert((1u << LDQ_IDX_BITS) >= LDQ_DEPTH, "LDQ_IDX_BITS insufficient for LDQ_DEPTH");
-static_assert(STQ_IDX_BITS >= 3, "STQ_IDX_BITS too small");
-static_assert((1u << STQ_IDX_BITS) >= STQ_DEPTH, "STQ_IDX_BITS insufficient for STQ_DEPTH");
+static_assert(LQ_DEPTH == 4 || LQ_DEPTH == 8 || LQ_DEPTH == 16,
+              "LQ_DEPTH must be 4, 8, or 16");
+static_assert(SQ_DEPTH == 4 || SQ_DEPTH == 8 || SQ_DEPTH == 16,
+              "SQ_DEPTH must be 4, 8, or 16");
+static_assert((1u << LQ_INDEX_BITS) == LQ_DEPTH, "LQ index width must exactly cover LQ_DEPTH");
+static_assert((1u << SQ_INDEX_BITS) == SQ_DEPTH, "SQ index width must exactly cover SQ_DEPTH");
+static_assert((1u << LQ_COUNT_BITS) > LQ_DEPTH, "LQ count width must represent full");
+static_assert((1u << SQ_COUNT_BITS) > SQ_DEPTH, "SQ count width must represent full");
 static_assert(FTQ_IDX_BITS >= 5, "FTQ_IDX_BITS too small");
 static_assert((1u << FTQ_IDX_BITS) >= FTQ_DEPTH, "FTQ_IDX_BITS insufficient for FTQ_DEPTH");
 static_assert(FETCH_BUFFER_DEPTH == 2 || FETCH_BUFFER_DEPTH == 4 ||

@@ -88,14 +88,12 @@ void completion_from_load_response(const BoomCoreState& state,
         !entry.memory_request_sent || entry.memory_completed ||
         entry.uop.queue.rob_allocation_id != state.lsu.pending_load_allocation_id ||
         entry.memory_transaction_id != response.transaction_id) return;
-    bool owns_ldq = false;
-LOAD_RESPONSE_LDQ_SCAN:
-    for (int i = 0; i < LDQ_DEPTH; i++)
-        if (state.lsu.ldq[i].valid &&
-            state.lsu.ldq[i].rob_idx == state.lsu.pending_load_rob_idx &&
-            state.lsu.ldq[i].rob_allocation_id == state.lsu.pending_load_allocation_id)
-            owns_ldq = true;
-    if (!owns_ldq) return;
+    const LoadQueueEntry& owner =
+        state.lsu.ldq[(int)state.lsu.pending_load_lq_index];
+    if (!owner.valid || owner.generation != state.lsu.pending_load_lq_generation ||
+        owner.rob_idx != state.lsu.pending_load_rob_idx ||
+        owner.rob_allocation_id != state.lsu.pending_load_allocation_id ||
+        owner.transaction_id != response.transaction_id || !owner.response_pending) return;
 
     event.valid = true;
     event.uop = entry.uop;

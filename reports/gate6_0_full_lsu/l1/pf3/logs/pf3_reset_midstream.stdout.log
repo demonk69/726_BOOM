@@ -1,0 +1,18 @@
+
+****** xsim v2021.2 (64-bit)
+  **** SW Build 3367213 on Tue Oct 19 02:47:39 MDT 2021
+  **** IP Build 3369179 on Thu Oct 21 08:25:16 MDT 2021
+    ** Copyright 1986-2021 Xilinx, Inc. All Rights Reserved.
+
+source xsim.dir/pf3_product_snapshot/xsim_script.tcl
+# xsim {pf3_product_snapshot} -testplusarg PROGRAM=/tmp/boom_hls/g6_l1_closure/pf3/programs/pf3_reset_midstream.hex -testplusarg PROGRAM_NAME=pf3_reset_midstream -testplusarg EXPECT_TRAP=0 -testplusarg RESET_MIDSTREAM=1 -testplusarg TRACE=/home/lab_726/boom/hls_boom/reports/gate6_0_full_lsu/l1/pf3/traces/pf3_reset_midstream.jsonl -autoloadwcfg -runall -onerror quit
+Time resolution is 1 ps
+run -all
+GATE3_8_IMEM program=/tmp/boom_hls/g6_l1_closure/pf3/programs/pf3_reset_midstream.hex
+PF3_RTL_EVENT program=pf3_reset_midstream alloc=84 reclaim=79 redirect=2 wrap=2 reuse=52 generation_retry=102 reset=1 max_occupancy=1 commits=78 cycles=152861
+PF3_PRODUCT_RTL_PASS program=pf3_reset_midstream
+$finish called at time : 1528665 ns : File "/home/lab_726/boom/hls_boom/rtl_tb/pf3_product_rtl_tb.sv" Line 119
+run: Time (s): cpu = 00:00:00.39 ; elapsed = 00:00:31 . Memory (MB): peak = 2685.672 ; gain = 0.000 ; free physical = 50475 ; free virtual = 58567
+exit
+INFO: xsimkernel Simulation Memory Usage: 147376 KB (Peak: 200752 KB), Simulation CPU Usage: 31060 ms
+INFO: [Common 17-206] Exiting xsim at Tue Sep 15 18:41:41 2026...

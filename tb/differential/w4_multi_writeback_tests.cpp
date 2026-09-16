@@ -42,9 +42,13 @@ static void two(BoomCoreState& s,uint8_t a=1,uint8_t b=2,uint8_t pa=10,uint8_t p
 }
 static void seed_load(BoomCoreState& s,PipeSignals& p,uint8_t i,uint32_t a,uint8_t pdst,uint32_t tx,uint64_t value) {
     owner(s,i,a,pdst); RobEntry& e=s.rob.entries[i]; e.is_load=e.memory_valid=e.memory_request_sent=true;
-    e.memory_transaction_id=tx; e.memory_size=3; s.lsu.load_response_pending=true;
+    e.memory_transaction_id=tx; e.memory_size=3; e.uop.queue.ldq_idx=0; e.uop.queue.ldq_generation=1;
+    s.lsu.load_response_pending=true;
     s.lsu.pending_load_transaction_id=tx; s.lsu.pending_load_rob_idx=i; s.lsu.pending_load_allocation_id=a;
-    s.lsu.ldq_count=1; s.lsu.ldq[0].valid=true; s.lsu.ldq[0].rob_idx=i; s.lsu.ldq[0].rob_allocation_id=a;
+    s.lsu.pending_load_lq_index=0; s.lsu.pending_load_lq_generation=1;
+    s.lsu.ldq_count=1; s.lsu.ldq[0].valid=true; s.lsu.ldq[0].generation=1;
+    s.lsu.ldq[0].rob_idx=i; s.lsu.ldq[0].rob_allocation_id=a;
+    s.lsu.ldq[0].transaction_id=tx; s.lsu.ldq[0].response_pending=true;
     DmemResponse d; d.transaction_id=tx; d.data=d.read_data=value; p.dmem_resp.write(d);
 }
 

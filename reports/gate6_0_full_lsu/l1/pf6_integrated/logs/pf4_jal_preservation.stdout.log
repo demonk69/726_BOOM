@@ -1,0 +1,15 @@
+
+****** xsim v2021.2 (64-bit)
+  **** SW Build 3367213 on Tue Oct 19 02:47:39 MDT 2021
+  **** IP Build 3369179 on Thu Oct 21 08:25:16 MDT 2021
+    ** Copyright 1986-2021 Xilinx, Inc. All Rights Reserved.
+
+source xsim.dir/pf4_full_core_snapshot/xsim_script.tcl
+# xsim {pf4_full_core_snapshot} -testplusarg PROGRAM=/tmp/boom_hls/g6_l1_closure/programs/pf4/pf4_jal_preservation.words.hex -testplusarg INIT=/tmp/boom_hls/g6_l1_closure/programs/pf4/pf4_jal_preservation.init -testplusarg PROGRAM_NAME=pf4_jal_preservation -testplusarg FAULT_MODE=0 -testplusarg TRACE=/home/lab_726/boom/hls_boom/reports/gate6_0_full_lsu/l1/pf6_integrated/traces/pf4_jal_preservation.jsonl -testplusarg MAX_CYCLES=1000000 -autoloadwcfg -runall -onerror quit
+Time resolution is 1 ps
+run -all
+PF5_FULL_CORE_RTL_PASS program=pf4_jal_preservation branches=1 mispredicts=0 exceptions=0 commits=9 cycles=18823 bim_entries=0
+PF6_RTL_COVERAGE program=pf4_jal_preservation conditional_predictions=0 predicted_taken=0 predicted_not_taken=0 correct_predictions=0 mispredict_redirects=0 BIM_attempts=0 BIM_updates=0 BIM_taken_updates=0 BIM_not_taken_updates=0 BIM_dropped=0 BIM_stale_rejected=0 FTQ_allocations=11 FTQ_reclaims=10 FTQ_squashes=0 FTQ_wraps=0 FTQ_slot_reuses=0 exceptions=0 fault_refetches=0 ROB_commits=9 max_rob_occupancy=1 max_ftq_occupancy=1
+$finish called at time : 213215 ns : File "/home/lab_726/boom/hls_boom/rtl_tb/pf4_full_core_rtl_tb.sv" Line 222
+exit
+INFO: [Common 17-206] Exiting xsim at Tue Sep 15 19:00:49 2026...
