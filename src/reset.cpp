@@ -261,7 +261,10 @@ RESET_ROB_INIT:
             reset_ctrl.lq_index++;
         }
         if (reset_ctrl.sq_index < SQ_DEPTH) {
-            state.lsu.stq[reset_ctrl.sq_index] = StoreQueueEntry();
+            const int sq_index = reset_ctrl.sq_index;
+            state.lsu.stq[sq_index] = StoreQueueEntry();
+            state.lsu.stq_address[sq_index] = 0;
+            state.lsu.stq_data[sq_index] = 0;
             reset_ctrl.sq_index++;
         }
         if (reset_ctrl.lq_index == LQ_DEPTH && reset_ctrl.sq_index == SQ_DEPTH) {

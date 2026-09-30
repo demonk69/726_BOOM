@@ -1,0 +1,15 @@
+area,test,status,evidence
+functional,native five configurations,PASS,reports/gate6_0_full_lsu/l2/l2_results.md
+functional,Vitis CSim five configurations,PASS,reports/gate6_0_full_lsu/l2/l2_results.md
+functional,PATH_A focused RTL 48/48,PASS,reports/gate6_0_full_lsu/l2/focused_rtl_acceptance.csv
+functional,PATH_B full-core RTL 6/6,PASS,reports/gate6_0_full_lsu/l2/path_b/path_b_acceptance.csv
+preservation,M3C directed/random/program,PASS,reports/gate6_0_full_lsu/l2/preservation/m3c/logs
+preservation,W4 current-source multi-writeback 13/13,PASS,reports/gate6_0_full_lsu/l2/preservation/w4/regression/w4e/logs/w4_multi_writeback_tests_current.log
+preservation,RVC native 11/11,PASS,reports/gate6_0_full_lsu/l2/preservation/rvc/current/logs/r2_native.log
+preservation,RVC CSim 11/11,PASS,reports/gate6_0_full_lsu/l2/preservation/rvc/current/logs/r2_csim.log
+preservation,RVC repaired 8/8 RTL 11/11,PASS,reports/gate6_0_full_lsu/l2/preservation/rvc/current/rtl
+preservation,PF6 current-source programs 12/12,PASS,reports/gate6_0_full_lsu/l2/preservation/pf6/current/full_core_rtl_matrix.csv
+preservation,PF6 mandatory predicted-taken faults 2/2,PASS,reports/gate6_0_full_lsu/l2/preservation/pf6/current/logs
+synthesis,4/4,PASS,reports/gate6_0_full_lsu/l2/synthesis/parameter_csynth.csv
+synthesis,8/8,PASS,reports/gate6_0_full_lsu/l2/synthesis/parameter_csynth.csv
+synthesis,16/16 BRAM repair,PASS,reports/gate6_0_full_lsu/l2/synthesis/parameter_csynth.csv

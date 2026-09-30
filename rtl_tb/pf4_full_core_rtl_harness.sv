@@ -38,7 +38,7 @@ module pf4_full_core_rtl_harness (
     assign brupdate_valid = dut.state_brupdate_valid;
     assign brupdate_mispredict = dut.state_brupdate_mispredict;
     assign exception_valid = dut.state_exception_commit_valid;
-    assign core_cycle_commit = dut.ap_CS_fsm_state34 && dut.reset_ctrl_completed;
+    assign core_cycle_commit = dut.ap_CS_fsm_state35 && dut.reset_ctrl_completed;
     assign prediction_valid = dut.state_frontend_predictor_prediction_valid;
     assign prediction_taken = dut.state_frontend_predictor_predicted_taken;
     assign prediction_token = dut.state_frontend_prediction_token;
@@ -50,13 +50,13 @@ module pf4_full_core_rtl_harness (
     assign bim_dropped = dut.state_bim_training_dropped;
     assign bim_stale_rejected = dut.state_bim_training_stale_rejected;
     assign commit_training_emit =
-        dut.grp_boom_core_cycle_io_fu_7725.grp_boom_core_step_fu_2189.
-            grp_rob_commit_module_fu_3617_state_predictor_update_pending_valid_o_ap_vld &&
-        dut.grp_boom_core_cycle_io_fu_7725.grp_boom_core_step_fu_2189.
-            grp_rob_commit_module_fu_3617_state_predictor_update_pending_valid_o;
+        dut.grp_boom_core_cycle_io_fu_7823.
+            grp_rob_commit_module_fu_3682_state_predictor_update_pending_valid_o_ap_vld &&
+        dut.grp_boom_core_cycle_io_fu_7823.
+            grp_rob_commit_module_fu_3682_state_predictor_update_pending_valid_o;
     assign commit_training_taken =
-        dut.grp_boom_core_cycle_io_fu_7725.grp_boom_core_step_fu_2189.
-            grp_rob_commit_module_fu_3617_state_predictor_update_pending_taken;
+        dut.grp_boom_core_cycle_io_fu_7823.
+            grp_rob_commit_module_fu_3682_state_predictor_update_pending_taken;
     assign ftq_next_generation = dut.state_ftq_next_generation_s;
     assign ftq_count = dut.state_ftq_count_s;
     assign rob_head = dut.state_rob_head;

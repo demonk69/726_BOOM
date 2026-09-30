@@ -95,21 +95,58 @@ else
 fi
 RTL_TOP="$RTL/boom_core_pf4_rtl_top.v"
 need_csynth=${GATE5_4_PF4_RTL_FORCE_CSYNTH:-0}
-for source in "${INPUTS[@]}"; do
-    [[ -s "$RTL_TOP" && ! "$source" -nt "$RTL_TOP" ]] || need_csynth=1
-done
+reuse_verified_rtl=${GATE5_4_PF4_RTL_REUSE_VERIFIED:-0}
+if [[ "$reuse_verified_rtl" != 1 ]]; then
+    for source in "${INPUTS[@]}"; do
+        [[ -s "$RTL_TOP" && ! "$source" -nt "$RTL_TOP" ]] || need_csynth=1
+    done
+fi
 if [[ "$need_csynth" == 1 ]]; then
     GATE5_4_PF4_RTL_HLS_PROJECT="$PROJECT" "$VITIS_HLS_BIN" \
         -f "$ROOT/scripts/gate5_4/pf4_full_core_rtl_csynth.tcl" \
         >"$REPORT/logs/csynth.log" 2>&1
+elif [[ "$reuse_verified_rtl" == 1 ]]; then
+    printf 'Reusing hash-verified current-source PF4 RTL at %s\n' "$RTL" >"$REPORT/logs/csynth.log"
 else
     printf 'Reusing fresh current-source PF4 RTL at %s\n' "$RTL" >"$REPORT/logs/csynth.log"
 fi
 [[ -s "$RTL_TOP" ]] || { printf 'PF4 full-core RTL unavailable\n' >&2; exit 3; }
 [[ "$(hash_inputs)" == "$SOURCE_HASH" ]] || { printf 'PF4 source changed during RTL generation\n' >&2; exit 3; }
-for source in "${INPUTS[@]}"; do
-    [[ ! "$source" -nt "$RTL_TOP" ]] || { printf 'PF4 RTL older than %s\n' "$source" >&2; exit 3; }
-done
+if [[ "$reuse_verified_rtl" == 1 ]]; then
+    expected_source=${GATE5_4_PF4_RTL_EXPECTED_SOURCE_HASH:-}
+    rtl_hash_manifest=${GATE5_4_PF4_RTL_HASH_MANIFEST:-}
+    [[ -n "$expected_source" && -s "$rtl_hash_manifest" ]] || {
+        printf 'PF4 verified reuse requires an expected source hash and RTL hash manifest\n' >&2
+        exit 3
+    }
+    [[ "$SOURCE_HASH" == "$expected_source" ]] || {
+        printf 'PF4 verified reuse source hash mismatch\n' >&2
+        exit 3
+    }
+    python3 - "$RTL" "$rtl_hash_manifest" <<'PY'
+import hashlib, sys
+from pathlib import Path
+root, manifest = Path(sys.argv[1]), Path(sys.argv[2])
+expected = {}
+for line in manifest.read_text().splitlines():
+    digest, name = line.split(None, 1)
+    name = name.lstrip("*")
+    if Path(name).name != name or name in expected:
+        raise SystemExit("invalid PF4 RTL hash manifest")
+    expected[name] = digest
+paths = sorted(root.glob("*.v")) + sorted(root.glob("*.dat"))
+if set(expected) != {path.name for path in paths}:
+    raise SystemExit("PF4 RTL hash manifest file set mismatch")
+for path in paths:
+    if hashlib.sha256(path.read_bytes()).hexdigest() != expected[path.name]:
+        raise SystemExit("PF4 RTL hash manifest content mismatch: " + path.name)
+PY
+fi
+if [[ "$reuse_verified_rtl" != 1 ]]; then
+    for source in "${INPUTS[@]}"; do
+        [[ ! "$source" -nt "$RTL_TOP" ]] || { printf 'PF4 RTL older than %s\n' "$source" >&2; exit 3; }
+    done
+fi
 
 python3 - "$ROOT" "$REPORT/source_freshness_manifest.csv" "$SOURCE_HASH" "${INPUTS[@]}" <<'PY'
 import csv, hashlib, sys

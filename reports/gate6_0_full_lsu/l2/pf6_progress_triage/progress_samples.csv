@@ -1,0 +1,6 @@
+probe,sim_time_start,sim_time_end,clock_edges_seen,reset_asserted_edges,reset_deasserted_edges,imem_req_count,imem_resp_count,dmem_req_count,commit_count,trace_count,tohost_value,last_pc,wallclock_sec,status
+1_cycle,0_ns,10_ns,1,1,0,0,0,0,0,0,0,unavailable,5.17,PASS
+10_cycles,0_ns,100_ns,10,5,5,0,0,0,0,0,0,partial_reset_value,5.14,PASS
+100_cycles,0_ns,1000_ns,100,5,95,0,0,0,0,0,0,partial_reset_value,5.23,PASS
+1000_diagnostic,post_reset,35065_ns,1000,0,1000,1,1,0,0,0,0,0x10040,5.80,EXPECTED_SHORT_TIMEOUT
+full_smoke,post_reset,252485_ns,22742,0,22742,12,12,1,10,10,1,0x10040,5.80,PASS

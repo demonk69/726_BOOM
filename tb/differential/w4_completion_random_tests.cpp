@@ -1145,7 +1145,8 @@ struct Harness {
             const QueueOwner& q=model.stq[i]; const StoreQueueEntry& d=dut.lsu.stq[i];
             const Owner& o=model.rob[q.rob];
             if (!check(d.valid&&d.rob_idx==q.rob&&d.rob_allocation_id==q.allocation&&
-                d.address_valid&&d.address==o.address&&d.data_valid&&d.data==o.memory_data&&
+                d.address_valid&&dut.lsu.stq_address[i]==o.address&&d.data_valid&&
+                dut.lsu.stq_data[i]==o.memory_data&&
                 d.mask==o.memory_mask&&d.size==o.memory_size&&d.branch_mask==q.branch_mask&&
                 !d.killed,"LSU","full STQ entry mismatch")) return false;
         }

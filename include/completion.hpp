@@ -11,6 +11,9 @@ void completion_from_execute(const ExecuteState::AluResult& result,
 void completion_from_load_response(const BoomCoreState& state,
                                    const DmemResponse& response,
                                    CompletionEvent& event);
+void completion_from_forwarded_load(const RobEntry& entry, uint64_t value,
+                                    CompletionEvent& event);
+uint64_t extend_load_value(uint64_t value, uint8_t size, bool signed_load);
 bool completion_has_rob_owner(const BoomCoreState& state,
                               const CompletionEvent& event);
 bool completion_is_valid(const BoomCoreState& state,

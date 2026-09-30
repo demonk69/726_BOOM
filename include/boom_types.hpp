@@ -100,7 +100,7 @@ struct RobCompleteEvent {
     CompletionKind kind;
     CompletionSourceId source;
     MicroOp uop;
-    bool writes_prf, mispredict, control_resolved;
+    bool writes_prf, mispredict, control_resolved, forwarded_load;
     uint64_t redirect_pc, value;
     bool actual_valid, actual_taken;
     uint64_t actual_target, fallthrough_pc;
@@ -112,7 +112,8 @@ struct RobCompleteEvent {
     uint32_t transaction_id;
     RobCompleteEvent() : valid(false), kind(COMPLETION_NONE),
         source(COMPLETION_SOURCE_LSU_LOAD), uop(), writes_prf(false),
-        mispredict(false), control_resolved(false), redirect_pc(0), value(0),
+        mispredict(false), control_resolved(false), forwarded_load(false),
+        redirect_pc(0), value(0),
         actual_valid(false), actual_taken(false), actual_target(0),
         fallthrough_pc(0), exception(false),
         exc_cause(0), memory_valid(false), is_load(false), is_store(false),

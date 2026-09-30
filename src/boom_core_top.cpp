@@ -123,6 +123,10 @@ void boom_core_top(hls::stream<ImemRequest>&  imem_req_out,
     static BoomCoreState state;
     static ResetControllerState reset_ctrl;
 #pragma HLS bind_storage variable=state.rob.ftq_generations type=RAM_2P impl=LUTRAM
+#if SQ_DEPTH >= 16
+#pragma HLS ARRAY_PARTITION variable=state.lsu.stq_address cyclic factor=2 dim=1
+#pragma HLS ARRAY_PARTITION variable=state.lsu.stq_data cyclic factor=2 dim=1
+#endif
 #pragma HLS RESET variable=reset_ctrl
 
     PipeSignals pipe;

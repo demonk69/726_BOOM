@@ -1651,6 +1651,9 @@ extern bool lsu_accept_completion(BoomCoreState& state, const MicroOp& uop,
 extern bool lsu_finish_load_response(BoomCoreState& state, uint8_t rob_idx,
                                      uint32_t allocation_id,
                                      uint32_t transaction_id);
+extern bool lsu_finish_forwarded_load(BoomCoreState& state, LqIndex lq_index,
+                                     uint16_t generation, uint8_t rob_idx,
+                                     uint32_t allocation_id);
 
 static bool is_branch(const MicroOp& uop) {
     return uop.branch.is_br || uop.branch.is_jal || uop.branch.is_jalr;
@@ -1662,14 +1665,18 @@ static uint64_t sign_extend(uint64_t value, uint8_t bits) {
     return (value ^ sign) - sign;
 }
 
-static uint64_t load_value(uint64_t data, uint64_t address, uint8_t size,
-                           bool signed_load) {
+uint64_t extend_load_value(uint64_t value, uint8_t size, bool signed_load) {
     uint8_t bytes = (uint8_t)(1u << (size & 0x3));
     uint8_t bits = (uint8_t)(bytes * 8);
-    uint8_t shift = (uint8_t)((address & 0x7) * 8);
     uint64_t mask = bits >= 64 ? ~0ULL : ((1ULL << bits) - 1ULL);
-    uint64_t value = (data >> shift) & mask;
+    value &= mask;
     return signed_load ? sign_extend(value, bits) : value;
+}
+
+static uint64_t load_value(uint64_t data, uint64_t address, uint8_t size,
+                           bool signed_load) {
+    uint8_t shift = (uint8_t)((address & 0x7) * 8);
+    return extend_load_value(data >> shift, size, signed_load);
 }
 
 void completion_from_execute(const ExecuteState::AluResult& result,
@@ -1688,6 +1695,7 @@ void completion_from_execute(const ExecuteState::AluResult& result,
                        result.uop.rename.dst_rtype == DST_INT &&
                        result.uop.rename.pdst != 0;
     event.control_resolved = false;
+    event.forwarded_load = false;
     event.mispredict = result.mispredict;
     event.redirect_pc = result.redirect_pc;
     event.value = result.result;
@@ -1717,6 +1725,7 @@ void completion_from_load_response(const BoomCoreState& state,
     event.source = COMPLETION_SOURCE_LSU_LOAD;
     event.transaction_id = response.transaction_id;
     event.writes_prf = false;
+    event.forwarded_load = false;
     if (!state.lsu.load_response_pending ||
         response.transaction_id != state.lsu.pending_load_transaction_id ||
         state.lsu.pending_load_rob_idx >= ROB_DEPTH) return;
@@ -1755,6 +1764,26 @@ void completion_from_load_response(const BoomCoreState& state,
     event.value = load_value(data, entry.memory_address, entry.memory_size,
                              entry.signed_load);
     event.writes_prf = !event.exception && entry.uop.rename.dst_rtype == DST_INT &&
+                        entry.uop.rename.pdst != 0;
+}
+
+void completion_from_forwarded_load(const RobEntry& entry, uint64_t value,
+                                    CompletionEvent& event) {
+#pragma HLS INLINE
+    event = CompletionEvent();
+    event.valid = true;
+    event.kind = COMPLETION_LOAD_RESPONSE;
+    event.source = COMPLETION_SOURCE_LSU_LOAD;
+    event.uop = entry.uop;
+    event.forwarded_load = true;
+    event.value = value;
+    event.memory_valid = true;
+    event.is_load = true;
+    event.signed_load = entry.signed_load;
+    event.memory_address = entry.memory_address;
+    event.memory_mask = entry.memory_mask;
+    event.memory_size = entry.memory_size;
+    event.writes_prf = entry.uop.rename.dst_rtype == DST_INT &&
                        entry.uop.rename.pdst != 0;
 }
 
@@ -1778,10 +1807,21 @@ bool completion_is_valid(const BoomCoreState& state,
         return !entry.memory_valid && !entry.memory_completed;
     if (event.kind == COMPLETION_STORE)
         return !entry.memory_completed;
-    if (event.kind == COMPLETION_LOAD_RESPONSE)
-        return entry.is_load && entry.memory_request_sent &&
-            !entry.memory_completed &&
-            entry.memory_transaction_id == event.transaction_id;
+    if (event.kind == COMPLETION_LOAD_RESPONSE) {
+        if (!entry.is_load || entry.memory_completed) return false;
+        if (!event.forwarded_load)
+            return entry.memory_request_sent &&
+                entry.memory_transaction_id == event.transaction_id;
+        if (entry.memory_request_sent || entry.uop.queue.ldq_idx >= LQ_DEPTH)
+            return false;
+        const LoadQueueEntry& owner =
+            state.lsu.ldq[entry.uop.queue.ldq_idx];
+        return owner.valid &&
+            owner.generation == entry.uop.queue.ldq_generation &&
+            owner.rob_idx == event.uop.queue.rob_idx &&
+            owner.rob_allocation_id == event.uop.queue.rob_allocation_id &&
+            !owner.response_pending;
+    }
     return true;
 }
 
@@ -2329,9 +2369,16 @@ SERVICE_FIXED_PENDING:
             uint8_t rob_idx = ports[0].uop.queue.rob_idx;
             uint32_t allocation = ports[0].uop.queue.rob_allocation_id;
             uint32_t transaction = ports[0].transaction_id;
+            bool forwarded = ports[0].forwarded_load;
             accepted = apply_completion_selected(state, ports[0], true, false);
             if (accepted) {
-                lsu_finish_load_response(state, rob_idx, allocation, transaction);
+                if (forwarded)
+                    lsu_finish_forwarded_load(
+                        state, (LqIndex)ports[0].uop.queue.ldq_idx,
+                        ports[0].uop.queue.ldq_generation, rob_idx, allocation);
+                else
+                    lsu_finish_load_response(state, rob_idx, allocation,
+                                             transaction);
                 state.completion.load_response = RobCompleteEvent();
                 state.completion.wakeup_sent[ROB_COMPLETE_PORT_LSU_LOAD] = false;
             }
@@ -3637,17 +3684,99 @@ static void enqueue_load(BoomCoreState& state, const MicroOp& uop,
                          bool signed_load, uint64_t address,
                          uint8_t mask, uint8_t size, RobEntry& entry);
 
-static bool older_store_in_rob(const BoomCoreState& state, uint8_t rob_idx) {
+enum LoadIssueAction : uint8_t {
+    LOAD_ISSUE_BLOCK = 0,
+    LOAD_ISSUE_MEMORY = 1,
+    LOAD_ISSUE_FORWARD = 2
+};
+
+struct LoadIssuePlan {
+    LoadIssueAction action;
+    SqIndex sq_index;
+    LoadIssuePlan() : action(LOAD_ISSUE_BLOCK), sq_index(0) {}
+};
+
+static uint8_t store_load_coverage(uint64_t store_address,
+                                   uint8_t store_mask,
+                                   const RobEntry& load) {
+    uint8_t load_bytes = (uint8_t)(1u << (load.memory_size & 0x3));
+    uint8_t coverage = 0;
+STORE_COVERAGE_LOAD_BYTES:
+    for (int load_byte = 0; load_byte < 8; load_byte++) {
+        if (load_byte >= load_bytes) continue;
+        uint64_t load_address = load.memory_address + (uint64_t)load_byte;
+        if (load_address < store_address) continue;
+        uint64_t store_offset = load_address - store_address;
+        if (store_offset < 8 &&
+            ((store_mask >> (uint8_t)store_offset) & 1u) != 0)
+            coverage |= (uint8_t)(1u << load_byte);
+    }
+    return coverage;
+}
+
+static uint64_t extract_forwarded_load_data(uint64_t store_address,
+                                            uint64_t store_data,
+                                            const RobEntry& load) {
+    uint8_t load_bytes = (uint8_t)(1u << (load.memory_size & 0x3));
+    uint64_t value = 0;
+EXTRACT_LOAD_BYTES:
+    for (int load_byte = 0; load_byte < 8; load_byte++) {
+        if (load_byte >= load_bytes) continue;
+        uint64_t load_address = load.memory_address + (uint64_t)load_byte;
+        uint8_t store_offset = (uint8_t)(load_address - store_address);
+        uint8_t byte_value = (uint8_t)(store_data >> (store_offset * 8));
+        value |= (uint64_t)byte_value << (load_byte * 8);
+    }
+    return value;
+}
+
+static LoadIssuePlan plan_load_issue(const BoomCoreState& state,
+                                     uint8_t rob_idx) {
+    LoadIssuePlan plan;
     const RobInternalState& rob = state.rob;
+    const RobEntry& load = rob.entries[rob_idx];
     uint8_t idx = rob.head;
+    bool reached_load = false;
+    bool overlap_found = false;
 OLDER_STORE_SCAN:
     for (int i = 0; i < ROB_DEPTH; i++) {
-        if (idx == rob_idx) return false;
+        if (idx == rob_idx) {
+            reached_load = true;
+            break;
+        }
         const RobEntry& entry = rob.entries[idx];
-        if (entry.valid && entry.uop.ctrl.is_sta) return true;
+        if (entry.valid && entry.uop.ctrl.is_sta) {
+            if (!entry.memory_valid || !entry.is_store ||
+                entry.uop.queue.stq_idx >= SQ_DEPTH)
+                return plan;
+            SqIndex sq_index = (SqIndex)entry.uop.queue.stq_idx;
+            const StoreQueueEntry& store = state.lsu.stq[(int)sq_index];
+            if (!store.valid || !store.address_valid || !store.data_valid ||
+                store.generation != entry.uop.queue.stq_generation ||
+                store.rob_idx != idx ||
+                store.rob_allocation_id != entry.uop.queue.rob_allocation_id)
+                return plan;
+            if (store_load_coverage(state.lsu.stq_address[(int)sq_index],
+                                    store.mask, load) != 0) {
+                overlap_found = true;
+                plan.sq_index = sq_index;
+            }
+        }
         idx = (idx + 1) % ROB_DEPTH;
     }
-    return false;
+    if (!reached_load) return plan;
+    if (!overlap_found) {
+        plan.action = LOAD_ISSUE_MEMORY;
+        return plan;
+    }
+    const StoreQueueEntry& selected = state.lsu.stq[(int)plan.sq_index];
+    uint8_t load_bytes = (uint8_t)(1u << (load.memory_size & 0x3));
+    uint8_t requested = load_bytes == 8 ? 0xffu :
+        (uint8_t)((1u << load_bytes) - 1u);
+    if (store_load_coverage(state.lsu.stq_address[(int)plan.sq_index],
+                            selected.mask, load) == requested)
+        plan.action = LOAD_ISSUE_FORWARD;
+    return plan;
 }
 
 static void clear_lsu_queues(LsuState& lsu) {
@@ -3670,8 +3799,10 @@ CLEAR_STQ:
 
 static bool try_issue_load(BoomCoreState& state, PipeSignals& pipe, uint8_t rob_idx) {
     RobEntry& entry = state.rob.entries[rob_idx];
-    if (!entry.valid || !entry.is_load || !entry.memory_valid || entry.memory_request_sent) return false;
-    if (state.lsu.load_response_pending || older_store_in_rob(state, rob_idx) || pipe.dmem_req.full()) return false;
+    if (!entry.valid || !entry.busy || !entry.is_load || !entry.memory_valid ||
+        entry.memory_request_sent || entry.memory_completed) return false;
+    if (state.lsu.load_response_pending ||
+        state.completion.load_response.valid) return false;
 
     if (entry.uop.queue.ldq_idx >= LQ_DEPTH) return false;
     int lq_index = entry.uop.queue.ldq_idx;
@@ -3679,6 +3810,20 @@ static bool try_issue_load(BoomCoreState& state, PipeSignals& pipe, uint8_t rob_
     if (!owner.valid || owner.generation != entry.uop.queue.ldq_generation ||
         owner.rob_idx != rob_idx ||
         owner.rob_allocation_id != entry.uop.queue.rob_allocation_id) return false;
+
+    LoadIssuePlan plan = plan_load_issue(state, rob_idx);
+    if (plan.action == LOAD_ISSUE_BLOCK) return false;
+    if (plan.action == LOAD_ISSUE_FORWARD) {
+        uint64_t low_bytes = extract_forwarded_load_data(
+            state.lsu.stq_address[(int)plan.sq_index],
+            state.lsu.stq_data[(int)plan.sq_index], entry);
+        uint64_t value = extend_load_value(low_bytes, entry.memory_size,
+                                           entry.signed_load);
+        completion_from_forwarded_load(entry, value,
+                                       state.completion.load_response);
+        return true;
+    }
+    if (pipe.dmem_req.full()) return false;
 
     uint32_t tx = state.lsu.next_transaction_id++;
     DmemRequest req;
@@ -3734,9 +3879,9 @@ FIND_FREE_STQ:
         stq.rob_idx = uop.queue.rob_idx;
         stq.rob_allocation_id = uop.queue.rob_allocation_id;
         stq.address_valid = true;
-        stq.address = address;
+        lsu.stq_address[slot] = address;
         stq.data_valid = true;
-        stq.data = data;
+        lsu.stq_data[slot] = data;
         stq.mask = mask;
         stq.size = size;
         stq.branch_mask = uop.branch.br_mask;
@@ -3775,6 +3920,18 @@ static void reclaim_ldq(BoomCoreState& state, LqIndex lq_index, uint16_t generat
     entry.response_pending = false;
     if (state.lsu.ldq_count != 0) state.lsu.ldq_count--;
     state.lsu.ldq_head = lq_index;
+}
+
+bool lsu_finish_forwarded_load(BoomCoreState& state, LqIndex lq_index,
+                               uint16_t generation, uint8_t rob_idx,
+                               uint32_t allocation_id) {
+    const LoadQueueEntry& owner = state.lsu.ldq[(int)lq_index];
+    if (!owner.valid || owner.generation != generation ||
+        owner.rob_idx != rob_idx ||
+        owner.rob_allocation_id != allocation_id || owner.response_pending)
+        return false;
+    reclaim_ldq(state, lq_index, generation, rob_idx, allocation_id);
+    return true;
 }
 
 bool lsu_finish_load_response(BoomCoreState& state, uint8_t rob_idx,
@@ -3866,7 +4023,8 @@ LSU_LOAD_ISSUE_SCAN:
     for (int i = 0; i < ROB_DEPTH; i++) {
         uint8_t idx = (state.rob.head + i) % ROB_DEPTH;
         try_issue_load(state, pipe, idx);
-        if (state.lsu.load_response_pending) break;
+        if (state.lsu.load_response_pending ||
+            state.completion.load_response.valid) break;
     }
 }
 
@@ -4493,7 +4651,10 @@ RESET_ROB_INIT:
             reset_ctrl.lq_index++;
         }
         if (reset_ctrl.sq_index < SQ_DEPTH) {
-            state.lsu.stq[reset_ctrl.sq_index] = StoreQueueEntry();
+            const int sq_index = reset_ctrl.sq_index;
+            state.lsu.stq[sq_index] = StoreQueueEntry();
+            state.lsu.stq_address[sq_index] = 0;
+            state.lsu.stq_data[sq_index] = 0;
             reset_ctrl.sq_index++;
         }
         if (reset_ctrl.lq_index == LQ_DEPTH && reset_ctrl.sq_index == SQ_DEPTH) {
@@ -4654,6 +4815,10 @@ void boom_core_top(hls::stream<ImemRequest>&  imem_req_out,
     static BoomCoreState state;
     static ResetControllerState reset_ctrl;
 #pragma HLS bind_storage variable=state.rob.ftq_generations type=RAM_2P impl=LUTRAM
+#if SQ_DEPTH >= 16
+#pragma HLS ARRAY_PARTITION variable=state.lsu.stq_address cyclic factor=2 dim=1
+#pragma HLS ARRAY_PARTITION variable=state.lsu.stq_data cyclic factor=2 dim=1
+#endif
 #pragma HLS RESET variable=reset_ctrl
 
     PipeSignals pipe;

@@ -13,6 +13,9 @@ extern bool lsu_accept_completion(BoomCoreState& state, const MicroOp& uop,
 extern bool lsu_finish_load_response(BoomCoreState& state, uint8_t rob_idx,
                                      uint32_t allocation_id,
                                      uint32_t transaction_id);
+extern bool lsu_finish_forwarded_load(BoomCoreState& state, LqIndex lq_index,
+                                     uint16_t generation, uint8_t rob_idx,
+                                     uint32_t allocation_id);
 
 static bool is_branch(const MicroOp& uop) {
     return uop.branch.is_br || uop.branch.is_jal || uop.branch.is_jalr;
@@ -24,14 +27,18 @@ static uint64_t sign_extend(uint64_t value, uint8_t bits) {
     return (value ^ sign) - sign;
 }
 
-static uint64_t load_value(uint64_t data, uint64_t address, uint8_t size,
-                           bool signed_load) {
+uint64_t extend_load_value(uint64_t value, uint8_t size, bool signed_load) {
     uint8_t bytes = (uint8_t)(1u << (size & 0x3));
     uint8_t bits = (uint8_t)(bytes * 8);
-    uint8_t shift = (uint8_t)((address & 0x7) * 8);
     uint64_t mask = bits >= 64 ? ~0ULL : ((1ULL << bits) - 1ULL);
-    uint64_t value = (data >> shift) & mask;
+    value &= mask;
     return signed_load ? sign_extend(value, bits) : value;
+}
+
+static uint64_t load_value(uint64_t data, uint64_t address, uint8_t size,
+                           bool signed_load) {
+    uint8_t shift = (uint8_t)((address & 0x7) * 8);
+    return extend_load_value(data >> shift, size, signed_load);
 }
 
 void completion_from_execute(const ExecuteState::AluResult& result,
@@ -50,6 +57,7 @@ void completion_from_execute(const ExecuteState::AluResult& result,
                        result.uop.rename.dst_rtype == DST_INT &&
                        result.uop.rename.pdst != 0;
     event.control_resolved = false;
+    event.forwarded_load = false;
     event.mispredict = result.mispredict;
     event.redirect_pc = result.redirect_pc;
     event.value = result.result;
@@ -79,6 +87,7 @@ void completion_from_load_response(const BoomCoreState& state,
     event.source = COMPLETION_SOURCE_LSU_LOAD;
     event.transaction_id = response.transaction_id;
     event.writes_prf = false;
+    event.forwarded_load = false;
     if (!state.lsu.load_response_pending ||
         response.transaction_id != state.lsu.pending_load_transaction_id ||
         state.lsu.pending_load_rob_idx >= ROB_DEPTH) return;
@@ -117,6 +126,26 @@ void completion_from_load_response(const BoomCoreState& state,
     event.value = load_value(data, entry.memory_address, entry.memory_size,
                              entry.signed_load);
     event.writes_prf = !event.exception && entry.uop.rename.dst_rtype == DST_INT &&
+                        entry.uop.rename.pdst != 0;
+}
+
+void completion_from_forwarded_load(const RobEntry& entry, uint64_t value,
+                                    CompletionEvent& event) {
+#pragma HLS INLINE
+    event = CompletionEvent();
+    event.valid = true;
+    event.kind = COMPLETION_LOAD_RESPONSE;
+    event.source = COMPLETION_SOURCE_LSU_LOAD;
+    event.uop = entry.uop;
+    event.forwarded_load = true;
+    event.value = value;
+    event.memory_valid = true;
+    event.is_load = true;
+    event.signed_load = entry.signed_load;
+    event.memory_address = entry.memory_address;
+    event.memory_mask = entry.memory_mask;
+    event.memory_size = entry.memory_size;
+    event.writes_prf = entry.uop.rename.dst_rtype == DST_INT &&
                        entry.uop.rename.pdst != 0;
 }
 
@@ -140,10 +169,21 @@ bool completion_is_valid(const BoomCoreState& state,
         return !entry.memory_valid && !entry.memory_completed;
     if (event.kind == COMPLETION_STORE)
         return !entry.memory_completed;
-    if (event.kind == COMPLETION_LOAD_RESPONSE)
-        return entry.is_load && entry.memory_request_sent &&
-            !entry.memory_completed &&
-            entry.memory_transaction_id == event.transaction_id;
+    if (event.kind == COMPLETION_LOAD_RESPONSE) {
+        if (!entry.is_load || entry.memory_completed) return false;
+        if (!event.forwarded_load)
+            return entry.memory_request_sent &&
+                entry.memory_transaction_id == event.transaction_id;
+        if (entry.memory_request_sent || entry.uop.queue.ldq_idx >= LQ_DEPTH)
+            return false;
+        const LoadQueueEntry& owner =
+            state.lsu.ldq[entry.uop.queue.ldq_idx];
+        return owner.valid &&
+            owner.generation == entry.uop.queue.ldq_generation &&
+            owner.rob_idx == event.uop.queue.rob_idx &&
+            owner.rob_allocation_id == event.uop.queue.rob_allocation_id &&
+            !owner.response_pending;
+    }
     return true;
 }
 
@@ -691,9 +731,16 @@ SERVICE_FIXED_PENDING:
             uint8_t rob_idx = ports[0].uop.queue.rob_idx;
             uint32_t allocation = ports[0].uop.queue.rob_allocation_id;
             uint32_t transaction = ports[0].transaction_id;
+            bool forwarded = ports[0].forwarded_load;
             accepted = apply_completion_selected(state, ports[0], true, false);
             if (accepted) {
-                lsu_finish_load_response(state, rob_idx, allocation, transaction);
+                if (forwarded)
+                    lsu_finish_forwarded_load(
+                        state, (LqIndex)ports[0].uop.queue.ldq_idx,
+                        ports[0].uop.queue.ldq_generation, rob_idx, allocation);
+                else
+                    lsu_finish_load_response(state, rob_idx, allocation,
+                                             transaction);
                 state.completion.load_response = RobCompleteEvent();
                 state.completion.wakeup_sent[ROB_COMPLETE_PORT_LSU_LOAD] = false;
             }

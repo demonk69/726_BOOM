@@ -1,0 +1,81 @@
+case_id,case_name,classification,reason,current_l2_evidence
+0,queues_empty,PRESERVED,requirement is independent of the replaced all-older-store barrier,preservation suites and frozen L1 RTL acceptance
+1,lq_single_count,PRESERVED,requirement is independent of the replaced all-older-store barrier,preservation suites and frozen L1 RTL acceptance
+2,sq_single_count,PRESERVED,requirement is independent of the replaced all-older-store barrier,preservation suites and frozen L1 RTL acceptance
+3,lq_full_reject,PRESERVED,requirement is independent of the replaced all-older-store barrier,preservation suites and frozen L1 RTL acceptance
+4,sq_full_reject,PRESERVED,requirement is independent of the replaced all-older-store barrier,preservation suites and frozen L1 RTL acceptance
+5,lq_wrap_boundary,PRESERVED,requirement is independent of the replaced all-older-store barrier,preservation suites and frozen L1 RTL acceptance
+6,sq_wrap_boundary,PRESERVED,requirement is independent of the replaced all-older-store barrier,preservation suites and frozen L1 RTL acceptance
+7,lq_reuse_generation,PRESERVED,requirement is independent of the replaced all-older-store barrier,preservation suites and frozen L1 RTL acceptance
+8,sq_reuse_generation,PRESERVED,requirement is independent of the replaced all-older-store barrier,preservation suites and frozen L1 RTL acceptance
+9,lq_generation_fffe,PRESERVED,requirement is independent of the replaced all-older-store barrier,preservation suites and frozen L1 RTL acceptance
+10,sq_generation_fffe,PRESERVED,requirement is independent of the replaced all-older-store barrier,preservation suites and frozen L1 RTL acceptance
+11,lq_generation_ffff,PRESERVED,requirement is independent of the replaced all-older-store barrier,preservation suites and frozen L1 RTL acceptance
+12,sq_generation_ffff,PRESERVED,requirement is independent of the replaced all-older-store barrier,preservation suites and frozen L1 RTL acceptance
+13,stale_lq_issue,PRESERVED,requirement is independent of the replaced all-older-store barrier,path_b/path_b_acceptance.csv (current full-core RTL)
+14,stale_sq_match,PRESERVED,requirement is independent of the replaced all-older-store barrier,preservation suites and frozen L1 RTL acceptance
+15,stale_sq_reclaim,PRESERVED,requirement is independent of the replaced all-older-store barrier,preservation suites and frozen L1 RTL acceptance
+16,correct_load_response,PRESERVED,requirement is independent of the replaced all-older-store barrier,preservation suites and frozen L1 RTL acceptance
+17,response_wrong_tx,PRESERVED,requirement is independent of the replaced all-older-store barrier,preservation suites and frozen L1 RTL acceptance
+18,response_wrong_rob,PRESERVED,requirement is independent of the replaced all-older-store barrier,preservation suites and frozen L1 RTL acceptance
+19,response_wrong_allocation,PRESERVED,requirement is independent of the replaced all-older-store barrier,preservation suites and frozen L1 RTL acceptance
+20,response_wrong_generation,PRESERVED,requirement is independent of the replaced all-older-store barrier,preservation suites and frozen L1 RTL acceptance
+21,response_wrong_owner_tx,PRESERVED,requirement is independent of the replaced all-older-store barrier,preservation suites and frozen L1 RTL acceptance
+22,response_not_pending,PRESERVED,requirement is independent of the replaced all-older-store barrier,preservation suites and frozen L1 RTL acceptance
+23,stale_response_reused_lq,PRESERVED,requirement is independent of the replaced all-older-store barrier,preservation suites and frozen L1 RTL acceptance
+24,stale_response_reused_rob,PRESERVED,requirement is independent of the replaced all-older-store barrier,preservation suites and frozen L1 RTL acceptance
+25,stale_response_no_prf,PRESERVED,requirement is independent of the replaced all-older-store barrier,preservation suites and frozen L1 RTL acceptance
+26,same_address_no_forwarding,SUPERSEDED_BY_L2_SEMANTICS,known disjoint byte masks no longer alias and issue to MEMORY,focused_rtl_acceptance.csv
+27,different_address_older_store,SUPERSEDED_BY_L2_SEMANTICS,known non-alias older store no longer blocks and load issues to MEMORY,focused_rtl_acceptance.csv
+28,load_request_backpressure,PRESERVED,requirement is independent of the replaced all-older-store barrier,native/CSim randomized backpressure/reset coverage plus frozen L1 RTL acceptance
+29,committed_store_backpressure,PRESERVED,requirement is independent of the replaced all-older-store barrier,preservation/l1_80/logs/case_29.log (current full-core RTL)
+30,branch_clear_lq,PRESERVED,requirement is independent of the replaced all-older-store barrier,preservation suites and frozen L1 RTL acceptance
+31,branch_clear_sq,PRESERVED,requirement is independent of the replaced all-older-store barrier,preservation suites and frozen L1 RTL acceptance
+32,branch_squash_lq,PRESERVED,requirement is independent of the replaced all-older-store barrier,preservation suites and frozen L1 RTL acceptance
+33,branch_squash_sq,PRESERVED,requirement is independent of the replaced all-older-store barrier,preservation suites and frozen L1 RTL acceptance
+34,branch_pending_kill,PRESERVED,requirement is independent of the replaced all-older-store barrier,preservation suites and frozen L1 RTL acceptance
+35,branch_late_response,PRESERVED,requirement is independent of the replaced all-older-store barrier,preservation suites and frozen L1 RTL acceptance
+36,exception_flush_queues_late,PRESERVED,requirement is independent of the replaced all-older-store barrier,preservation/l1_80/logs/case_36.log (current full-core RTL)
+37,global_flush_both,PRESERVED,requirement is independent of the replaced all-older-store barrier,preservation suites and frozen L1 RTL acceptance
+38,reset_empty,PRESERVED,requirement is independent of the replaced all-older-store barrier,preservation/l1_80/logs/case_38.log (current full-core RTL)
+39,reset_partial,PRESERVED,requirement is independent of the replaced all-older-store barrier,preservation/l1_80/logs/case_39.log (current full-core RTL)
+40,reset_full,PRESERVED,requirement is independent of the replaced all-older-store barrier,preservation/l1_80/logs/case_40.log (current full-core RTL)
+41,lq_count_lifecycle,PRESERVED,requirement is independent of the replaced all-older-store barrier,preservation suites and frozen L1 RTL acceptance
+42,sq_count_lifecycle,PRESERVED,requirement is independent of the replaced all-older-store barrier,preservation suites and frozen L1 RTL acceptance
+43,lq_full_free_allocate,PRESERVED,requirement is independent of the replaced all-older-store barrier,preservation suites and frozen L1 RTL acceptance
+44,sq_full_free_allocate,PRESERVED,requirement is independent of the replaced all-older-store barrier,preservation suites and frozen L1 RTL acceptance
+45,lq_owner_tuple,PRESERVED,requirement is independent of the replaced all-older-store barrier,preservation suites and frozen L1 RTL acceptance
+46,sq_owner_tuple,PRESERVED,requirement is independent of the replaced all-older-store barrier,preservation suites and frozen L1 RTL acceptance
+47,rob_reuse_stale_issue,PRESERVED,requirement is independent of the replaced all-older-store barrier,path_b/path_b_acceptance.csv (current full-core RTL)
+48,simultaneous_commit_lsu,SUPERSEDED_BY_L2_SEMANTICS,full-cover older store may forward before committed store request acceptance,path_b/path_b_acceptance.csv
+49,reset_pending_lifecycle,PRESERVED,requirement is independent of the replaced all-older-store barrier,native/CSim randomized backpressure/reset coverage plus frozen L1 RTL acceptance
+50,variant_slot2_gen0_mask01,PRESERVED,requirement is independent of the replaced all-older-store barrier,preservation suites and frozen L1 RTL acceptance
+51,variant_slot3_gen1_mask02,PRESERVED,requirement is independent of the replaced all-older-store barrier,preservation suites and frozen L1 RTL acceptance
+52,variant_slot4_gen7fff_mask04,PRESERVED,requirement is independent of the replaced all-older-store barrier,preservation suites and frozen L1 RTL acceptance
+53,variant_slot5_genfffd_mask08,PRESERVED,requirement is independent of the replaced all-older-store barrier,preservation suites and frozen L1 RTL acceptance
+54,variant_slot6_genfffe_mask10,PRESERVED,requirement is independent of the replaced all-older-store barrier,preservation suites and frozen L1 RTL acceptance
+55,variant_slot7_genffff_mask20,PRESERVED,requirement is independent of the replaced all-older-store barrier,preservation suites and frozen L1 RTL acceptance
+56,variant_slot0_gen0_mask40,PRESERVED,requirement is independent of the replaced all-older-store barrier,preservation suites and frozen L1 RTL acceptance
+57,variant_slot1_gen1_mask80,PRESERVED,requirement is independent of the replaced all-older-store barrier,preservation suites and frozen L1 RTL acceptance
+58,variant_slot2_gen7fff_mask3f,PRESERVED,requirement is independent of the replaced all-older-store barrier,preservation suites and frozen L1 RTL acceptance
+59,variant_slot3_genfffd_mask1f,PRESERVED,requirement is independent of the replaced all-older-store barrier,preservation suites and frozen L1 RTL acceptance
+60,variant_slot4_genfffe_mask0f,PRESERVED,requirement is independent of the replaced all-older-store barrier,preservation suites and frozen L1 RTL acceptance
+61,variant_slot5_genffff_mask07,PRESERVED,requirement is independent of the replaced all-older-store barrier,preservation suites and frozen L1 RTL acceptance
+62,variant_slot6_gen0_mask03,PRESERVED,requirement is independent of the replaced all-older-store barrier,preservation suites and frozen L1 RTL acceptance
+63,variant_slot7_gen1_mask01,PRESERVED,requirement is independent of the replaced all-older-store barrier,preservation suites and frozen L1 RTL acceptance
+64,variant_slot0_gen7fff_mask00,PRESERVED,requirement is independent of the replaced all-older-store barrier,preservation suites and frozen L1 RTL acceptance
+65,variant_slot1_genfffd_mask00,PRESERVED,requirement is independent of the replaced all-older-store barrier,preservation suites and frozen L1 RTL acceptance
+66,variant_slot2_genfffe_maskb5,PRESERVED,requirement is independent of the replaced all-older-store barrier,preservation suites and frozen L1 RTL acceptance
+67,variant_slot3_genffff_maskb4,PRESERVED,requirement is independent of the replaced all-older-store barrier,preservation suites and frozen L1 RTL acceptance
+68,variant_slot4_gen0_maskb7,PRESERVED,requirement is independent of the replaced all-older-store barrier,preservation suites and frozen L1 RTL acceptance
+69,variant_slot5_gen1_maskb6,PRESERVED,requirement is independent of the replaced all-older-store barrier,preservation suites and frozen L1 RTL acceptance
+70,variant_slot6_gen7fff_maskb1,PRESERVED,requirement is independent of the replaced all-older-store barrier,preservation suites and frozen L1 RTL acceptance
+71,variant_slot7_genfffd_maskb0,PRESERVED,requirement is independent of the replaced all-older-store barrier,preservation suites and frozen L1 RTL acceptance
+72,variant_slot0_genfffe_maskb3,PRESERVED,requirement is independent of the replaced all-older-store barrier,preservation suites and frozen L1 RTL acceptance
+73,variant_slot1_genffff_maskb2,PRESERVED,requirement is independent of the replaced all-older-store barrier,preservation suites and frozen L1 RTL acceptance
+74,variant_slot2_gen0_maskbd,PRESERVED,requirement is independent of the replaced all-older-store barrier,preservation suites and frozen L1 RTL acceptance
+75,variant_slot3_gen1_maskbc,PRESERVED,requirement is independent of the replaced all-older-store barrier,preservation suites and frozen L1 RTL acceptance
+76,variant_slot4_gen7fff_maskbf,PRESERVED,requirement is independent of the replaced all-older-store barrier,preservation suites and frozen L1 RTL acceptance
+77,variant_slot5_genfffd_maskbe,PRESERVED,requirement is independent of the replaced all-older-store barrier,preservation suites and frozen L1 RTL acceptance
+78,variant_slot6_genfffe_maskb9,PRESERVED,requirement is independent of the replaced all-older-store barrier,preservation suites and frozen L1 RTL acceptance
+79,variant_slot7_genffff_maskb8,PRESERVED,requirement is independent of the replaced all-older-store barrier,preservation suites and frozen L1 RTL acceptance

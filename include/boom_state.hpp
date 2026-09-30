@@ -238,10 +238,9 @@ struct StoreQueueEntry {
     uint8_t rob_idx, mask, size, branch_mask;
     uint32_t rob_allocation_id;
     uint16_t generation;
-    uint64_t address, data;
     StoreQueueEntry() : valid(false), address_valid(false), data_valid(false), committed(false),
         issued_to_memory(false), completed(false), killed(false), rob_idx(0), mask(0),
-        size(0), branch_mask(0), rob_allocation_id(0), generation(0), address(0), data(0) {}
+        size(0), branch_mask(0), rob_allocation_id(0), generation(0) {}
 };
 
 struct LoadQueueEntry {
@@ -273,6 +272,8 @@ struct LsuState {
     SqIndex stq_head, stq_tail;
     SqCount stq_count;
     StoreQueueEntry stq[STQ_DEPTH];
+    uint64_t stq_address[STQ_DEPTH];
+    uint64_t stq_data[STQ_DEPTH];
     LoadQueueEntry ldq[LDQ_DEPTH];
     uint32_t next_transaction_id;
     bool load_response_pending;
@@ -284,7 +285,12 @@ struct LsuState {
     LsuState() : ldq_head(0), ldq_tail(0), ldq_count(0), stq_head(0), stq_tail(0), stq_count(0),
         next_transaction_id(1), load_response_pending(false), pending_load_transaction_id(0),
         pending_load_rob_idx(0), pending_load_allocation_id(0), pending_load_lq_index(0),
-        pending_load_lq_generation(0) {}
+        pending_load_lq_generation(0) {
+        for (int i = 0; i < STQ_DEPTH; i++) {
+            stq_address[i] = 0;
+            stq_data[i] = 0;
+        }
+    }
 };
 
 struct CompletionPendingState {
