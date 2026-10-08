@@ -1,0 +1,9 @@
+TARGET_TEST_SHA256=5d134a4c430f6fd049954a5179e156df4744551d637cacfdcd37a5178b52ff2c
+TARGET_RUNNER_SHA256=2bcb5194927677e8e0dda21cc61c413656de472678f7a023bcba4f125c67e65c
+SEARCH_SCOPE=git rev-list --objects --all -- tb/differential/rvc_fetch_tests.cpp scripts/gate5_2/run_r2_native_tests.sh
+
+MATCH oid=4739613e7bad4affa1725d2e07efefeaa7d1489f sha256=2bcb5194927677e8e0dda21cc61c413656de472678f7a023bcba4f125c67e65c path=scripts/gate5_2/run_r2_native_tests.sh
+MATCH oid=c6a177b12596551255391a9cae1a7524ce06ec81 sha256=5d134a4c430f6fd049954a5179e156df4744551d637cacfdcd37a5178b52ff2c path=tb/differential/rvc_fetch_tests.cpp
+
+OBJECTS_CHECKED=5
+MATCHES=2

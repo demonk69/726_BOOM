@@ -1,0 +1,115 @@
+diff --git a/scripts/gate5_2/run_r2_native_tests.sh b/scripts/gate5_2/run_r2_native_tests.sh
+index 4739613..43eceeb 100755
+--- a/scripts/gate5_2/run_r2_native_tests.sh
++++ b/scripts/gate5_2/run_r2_native_tests.sh
+@@ -5,25 +5,39 @@ ROOT=${HLS_BOOM_ROOT:-"$(cd "$(dirname "${BASH_SOURCE[0]}")/../.." && pwd)"}
+ BUILD=${BOOM_R2_BUILD_DIR:-"$ROOT/build/gate5_2_rvc/r2/native_final"}
+ REPORT=${BOOM_R2_REPORT_DIR:-"$ROOT/reports/gate5_2_rvc/r2"}
+ CXXFLAGS=(-std=c++11 -O2 -Wall -Wextra -Werror -Wno-error=misleading-indentation
+-          -Wno-unknown-pragmas -I"$ROOT/include")
++          -Wno-error=unused-label -Wno-unknown-pragmas -I"$ROOT/include")
+
+ mkdir -p "$BUILD" "$REPORT/logs"
+
+ g++ "${CXXFLAGS[@]}" "$ROOT/tb/differential/rvc_fetch_tests.cpp" \
+-  "$ROOT/src/frontend.cpp" "$ROOT/src/rvc.cpp" "$ROOT/src/decode.cpp" \
++  "$ROOT/src/frontend.cpp" "$ROOT/src/fetch_packet.cpp" "$ROOT/src/fetch_buffer.cpp" \
++  "$ROOT/src/predecode.cpp" "$ROOT/src/predictor.cpp" \
++  "$ROOT/src/rvc.cpp" "$ROOT/src/decode.cpp" \
+   "$ROOT/src/branch.cpp" "$ROOT/src/divider.cpp" \
+   -o "$BUILD/rvc_fetch_tests" \
+   2>"$REPORT/logs/rvc_fetch_tests_compile.log"
+ "$BUILD/rvc_fetch_tests" | tee "$REPORT/logs/rvc_fetch_tests.log"
+
+ g++ "${CXXFLAGS[@]}" "$ROOT/tb/differential/rvc_fetch_random_tests.cpp" \
+-  "$ROOT/src/frontend.cpp" "$ROOT/src/rvc.cpp" "$ROOT/src/divider.cpp" \
++  "$ROOT/src/frontend.cpp" "$ROOT/src/fetch_packet.cpp" "$ROOT/src/fetch_buffer.cpp" \
++  "$ROOT/src/predecode.cpp" "$ROOT/src/predictor.cpp" \
++  "$ROOT/src/rvc.cpp" "$ROOT/src/divider.cpp" \
+   -o "$BUILD/rvc_fetch_random_tests" \
+   2>"$REPORT/logs/rvc_fetch_random_tests_compile.log"
+ "$BUILD/rvc_fetch_random_tests" | tee "$REPORT/logs/rvc_fetch_random_tests.log"
+
++g++ "${CXXFLAGS[@]}" "$ROOT/tb/differential/rvc_execute_gap_tests.cpp" \
++  "$ROOT/src/execute.cpp" "$ROOT/src/issue.cpp" "$ROOT/src/completion.cpp" \
++  "$ROOT/src/branch.cpp" "$ROOT/src/lsu.cpp" "$ROOT/src/mul.cpp" \
++  "$ROOT/src/divider.cpp" \
++  -o "$BUILD/rvc_execute_gap_tests" \
++  2>"$REPORT/logs/rvc_execute_gap_tests_compile.log"
++"$BUILD/rvc_execute_gap_tests" | tee "$REPORT/logs/rvc_execute_gap_tests.log"
++
+ g++ "${CXXFLAGS[@]}" "$ROOT/tb/differential/gate5_2_r2_native_throughput_audit.cpp" \
+-  "$ROOT/src/frontend.cpp" "$ROOT/src/rvc.cpp" "$ROOT/src/decode.cpp" \
++  "$ROOT/src/frontend.cpp" "$ROOT/src/fetch_packet.cpp" "$ROOT/src/fetch_buffer.cpp" \
++  "$ROOT/src/predecode.cpp" "$ROOT/src/predictor.cpp" \
++  "$ROOT/src/rvc.cpp" "$ROOT/src/decode.cpp" \
+   -o "$BUILD/rvc_throughput_audit" \
+   2>"$REPORT/logs/rvc_throughput_compile.log"
+ "$BUILD/rvc_throughput_audit" "$REPORT/cycle_trace.csv" \
+diff --git a/tb/differential/rvc_fetch_tests.cpp b/tb/differential/rvc_fetch_tests.cpp
+index c6a177b..2bdc741 100644
+--- a/tb/differential/rvc_fetch_tests.cpp
++++ b/tb/differential/rvc_fetch_tests.cpp
+@@ -554,9 +554,14 @@ void test_protected_decode_gaps() {
+         pipe.imem_resp.write(response_for(request, parcel));
+         boom::frontend_module(state, pipe);
+         check(state.frontend.fetch_packet_valid, "protected C.EBREAK packet missing");
+-        check(state.frontend.fetch_uop.exception && state.frontend.fetch_uop.exc_cause == 2,
+-              "protected C.EBREAK was allowed through frontend");
++        check(!state.frontend.fetch_uop.exception,
++              "C.EBREAK was rejected before base Decode");
+         check(state.frontend.fetch_uop.debug_inst == parcel, "C.EBREAK debug parcel mismatch");
++        boom::decode_module(state);
++        check(state.decode.dec_valids[0] && state.decode.dec_uops[0].uopc == 66,
++              "C.EBREAK Decode uopc mismatch");
++        check(state.decode.dec_uops[0].exception && state.decode.dec_uops[0].exc_cause == 3,
++              "C.EBREAK did not raise breakpoint cause 3");
+         ++metrics.rvc_protected;
+         count_case();
+     }
+@@ -580,17 +585,21 @@ void test_protected_decode_gaps() {
+             boom::frontend_module(state, pipe);
+             check(state.frontend.fetch_packet_valid, "protected C.SRLI packet missing");
+             check(state.frontend.fetch_uop.is_rvc, "protected C.SRLI lost RVC attribution");
+-            check(state.frontend.fetch_uop.exception, "protected C.SRLI did not fault");
+-            check(state.frontend.fetch_uop.exc_cause == 2,
+-                  "protected C.SRLI fault cause mismatch");
++            check(!state.frontend.fetch_uop.exception,
++                  "RV64 C.SRLI shamt[5] was rejected before Decode");
+             check(state.frontend.fetch_uop.debug_inst == parcel,
+-                  "protected C.SRLI debug parcel mismatch");
++                  "C.SRLI debug parcel mismatch");
++            boom::decode_module(state);
++            check(state.decode.dec_valids[0] && state.decode.dec_uops[0].uopc == 55,
++                  "RV64 C.SRLI shamt[5] Decode mismatch");
++            check(!state.decode.dec_uops[0].exception,
++                  "RV64 C.SRLI shamt[5] Decode faulted");
+             ++metrics.rvc_protected;
+             count_case();
+         }
+     }
+
+-    // C.JALR requires a PC+2 link value, while the frozen backend writes PC+4.
++    // Every legal C.JALR form must retain compressed attribution for PC+2 link.
+     for (unsigned rd = 1; rd < 32; ++rd) {
+         const uint16_t parcel = static_cast<uint16_t>(0x9002u | (rd << 7));
+         const boom::RvcDecodeResult decoded = boom::decompress_rvc(parcel);
+@@ -602,10 +611,15 @@ void test_protected_decode_gaps() {
+         pipe.imem_resp.write(response_for(request, parcel));
+         boom::frontend_module(state, pipe);
+         check(state.frontend.fetch_packet_valid, "protected C.JALR packet missing");
+-        check(state.frontend.fetch_uop.exception && state.frontend.fetch_uop.exc_cause == 2,
+-              "protected C.JALR was allowed into the frozen PC+4 backend");
++        check(!state.frontend.fetch_uop.exception,
++              "C.JALR was rejected before Decode");
+         check(state.frontend.fetch_uop.debug_inst == parcel,
+-              "protected C.JALR debug parcel mismatch");
++              "C.JALR debug parcel mismatch");
++        boom::decode_module(state);
++        check(state.decode.dec_valids[0] && state.decode.dec_uops[0].uopc == 30,
++              "C.JALR Decode uopc mismatch");
++        check(state.decode.dec_uops[0].is_rvc && !state.decode.dec_uops[0].exception,
++              "C.JALR Decode metadata mismatch");
+         ++metrics.rvc_protected;
+         count_case();
+     }

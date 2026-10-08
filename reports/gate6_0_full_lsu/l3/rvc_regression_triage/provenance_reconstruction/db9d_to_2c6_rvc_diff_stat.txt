@@ -1,0 +1,12 @@
+ include/boom_state.hpp                 | 139 +++++++++-
+ scripts/gate5_2/run_r2_native_tests.sh |  22 +-
+ src/branch.cpp                         | 138 ++++++---
+ src/decode.cpp                         |  22 +-
+ src/divider.cpp                        |   5 +-
+ src/fetch_buffer.cpp                   |  89 ++++++
+ src/fetch_packet.cpp                   | 137 +++++++++
+ src/frontend.cpp                       | 492 +++++++++++++++++++++++++++------
+ src/predecode.cpp                      | 105 +++++++
+ src/predictor.cpp                      | 109 ++++++++
+ tb/differential/rvc_fetch_tests.cpp    |  34 ++-
+ 11 files changed, 1137 insertions(+), 155 deletions(-)
