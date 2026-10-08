@@ -1,0 +1,14 @@
+/home/lab_726/boom/hls_boom/src/decode.cpp: In function ‘uint32_t boom::extract_imm_b(uint32_t)’:
+/home/lab_726/boom/hls_boom/src/decode.cpp:89:5: warning: this ‘if’ clause does not guard... [-Wmisleading-indentation]
+   89 |     if(v&0x1000) v|=0xFFFFE000; return (uint32_t)v; }
+      |     ^~
+/home/lab_726/boom/hls_boom/src/decode.cpp:89:33: note: ...this statement, but the latter is misleadingly indented as if it were guarded by the ‘if’
+   89 |     if(v&0x1000) v|=0xFFFFE000; return (uint32_t)v; }
+      |                                 ^~~~~~
+/home/lab_726/boom/hls_boom/src/decode.cpp: In function ‘uint32_t boom::extract_imm_j(uint32_t)’:
+/home/lab_726/boom/hls_boom/src/decode.cpp:93:5: warning: this ‘if’ clause does not guard... [-Wmisleading-indentation]
+   93 |     if(v&0x100000) v|=0xFFE00000; return (uint32_t)v; }
+      |     ^~
+/home/lab_726/boom/hls_boom/src/decode.cpp:93:35: note: ...this statement, but the latter is misleadingly indented as if it were guarded by the ‘if’
+   93 |     if(v&0x100000) v|=0xFFE00000; return (uint32_t)v; }
+      |                                   ^~~~~~

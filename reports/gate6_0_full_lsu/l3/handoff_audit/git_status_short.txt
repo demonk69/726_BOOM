@@ -1,0 +1,1282 @@
+ M .gitignore
+ M docs/critical_path_analysis.md
+ M include/boom_state.hpp
+ M reports/equivalence/provisional_gate3/hls_csim_trace.log
+ M reports/gate3_3/module_csynth/synth_commit_top.log
+ M reports/gate3_3/module_csynth/synth_commit_top.time
+ M reports/gate3_3/module_csynth/synth_core_step_top.log
+ M reports/gate3_3/module_csynth/synth_core_step_top.time
+ M reports/gate3_3/module_csynth/synth_decode_top.log
+ M reports/gate3_3/module_csynth/synth_decode_top.time
+ M reports/gate3_3/module_csynth/synth_execute_top.log
+ M reports/gate3_3/module_csynth/synth_execute_top.time
+ M reports/gate3_3/module_csynth/synth_frontend_top.log
+ M reports/gate3_3/module_csynth/synth_frontend_top.time
+ M reports/gate3_3/module_csynth/synth_issue_top.log
+ M reports/gate3_3/module_csynth/synth_issue_top.time
+ M reports/gate3_3/module_csynth/synth_lsu_top.log
+ M reports/gate3_3/module_csynth/synth_lsu_top.time
+ M reports/gate3_3/module_csynth/synth_rename_top.log
+ M reports/gate3_3/module_csynth/synth_rename_top.time
+ M reports/gate3_3/module_csynth/synth_rob_top.log
+ M reports/gate3_3/module_csynth/synth_rob_top.time
+ M reports/gate3_3/module_csynth_summary.csv
+ M reports/gate3_9/regression_after_artifacts/logs/generate_merged.log
+ M reports/gate3_9/regression_after_artifacts/logs/merged_compile.log
+ M reports/gate4_0/w3/regression/artifact_hashes.csv
+ M reports/gate4_0/w3/regression/hls_traces/branch_not_taken_hls_cpp_full.jsonl
+ M reports/gate4_0/w3/regression/hls_traces/branch_not_taken_hls_csim_full.jsonl
+ M reports/gate4_0/w3/regression/hls_traces/branch_taken_hls_cpp_full.jsonl
+ M reports/gate4_0/w3/regression/hls_traces/branch_taken_hls_csim_full.jsonl
+ M reports/gate4_0/w3/regression/hls_traces/independent_alu_hls_cpp_full.jsonl
+ M reports/gate4_0/w3/regression/hls_traces/independent_alu_hls_csim_full.jsonl
+ M reports/gate4_0/w3/regression/hls_traces/load_store_hls_cpp_full.jsonl
+ M reports/gate4_0/w3/regression/hls_traces/load_store_hls_csim_full.jsonl
+ M reports/gate4_0/w3/regression/hls_traces/nested_branch_hls_cpp_full.jsonl
+ M reports/gate4_0/w3/regression/hls_traces/nested_branch_hls_csim_full.jsonl
+ M reports/gate4_0/w3/regression/hls_traces/raw_chain_hls_cpp_full.jsonl
+ M reports/gate4_0/w3/regression/hls_traces/raw_chain_hls_csim_full.jsonl
+ M reports/gate4_0/w3/regression/hls_traces/tohost_hls_cpp_full.jsonl
+ M reports/gate4_0/w3/regression/hls_traces/tohost_hls_csim_full.jsonl
+ M reports/gate4_0/w3/regression/logs/directed_tests.log
+ M reports/gate4_0/w3/regression/logs/dispatch_retry_tests.log
+ M reports/gate4_0/w3/regression/logs/generate_merged.log
+ M reports/gate4_0/w3/regression/logs/hls_csim_trace.log
+ M reports/gate4_0/w3/regression/logs/w2_dual_grant_random_tests.log
+ M reports/gate4_0/w3/regression/logs/w3_completion_buffer_tests.log
+ M reports/gate4_0/w3/regression/logs/w3_dual_execute_random_tests.log
+ M reports/gate4_0/w3/regression/normalized/branch_not_taken_hls_cpp.jsonl
+ M reports/gate4_0/w3/regression/normalized/branch_not_taken_hls_csim.jsonl
+ M reports/gate4_0/w3/regression/normalized/branch_taken_hls_cpp.jsonl
+ M reports/gate4_0/w3/regression/normalized/branch_taken_hls_csim.jsonl
+ M reports/gate4_0/w3/regression/normalized/independent_alu_hls_cpp.jsonl
+ M reports/gate4_0/w3/regression/normalized/independent_alu_hls_csim.jsonl
+ M reports/gate4_0/w3/regression/normalized/load_store_hls_cpp.jsonl
+ M reports/gate4_0/w3/regression/normalized/load_store_hls_csim.jsonl
+ M reports/gate4_0/w3/regression/normalized/nested_branch_hls_cpp.jsonl
+ M reports/gate4_0/w3/regression/normalized/nested_branch_hls_csim.jsonl
+ M reports/gate4_0/w3/regression/normalized/raw_chain_hls_cpp.jsonl
+ M reports/gate4_0/w3/regression/normalized/raw_chain_hls_csim.jsonl
+ M reports/gate4_0/w3/regression/normalized/tohost_hls_cpp.jsonl
+ M reports/gate4_0/w3/regression/normalized/tohost_hls_csim.jsonl
+ M reports/gate4_0/w3/regression/random_metrics.csv
+ M reports/gate4_0/w3/regression/source_hashes_after.txt
+ M reports/gate4_0/w3/regression/suite_results.csv
+ M reports/gate4_0/w3/regression/trace_comparison.csv
+ M reports/gate4_0/w3/rtl_logs/branch_kill.log
+ M reports/gate4_0/w3/rtl_logs/branch_kill.stdout.log
+ M reports/gate4_0/w3/rtl_logs/dmem_backpressure.log
+ M reports/gate4_0/w3/rtl_logs/dmem_backpressure.stdout.log
+ M reports/gate4_0/w3/rtl_logs/dual_accept.log
+ M reports/gate4_0/w3/rtl_logs/dual_accept.stdout.log
+ M reports/gate4_0/w3/rtl_logs/dual_pending.log
+ M reports/gate4_0/w3/rtl_logs/dual_pending.stdout.log
+ M reports/gate4_0/w3/rtl_logs/hls_branch_kill_generation.log
+ M reports/gate4_0/w3/rtl_logs/hls_completion_generation.log
+ M reports/gate4_0/w3/rtl_logs/hls_dual_pending_generation.log
+ M reports/gate4_0/w3/rtl_logs/hls_generation.log
+ M reports/gate4_0/w3/rtl_logs/hls_rob_wrap_generation.log
+ M reports/gate4_0/w3/rtl_logs/int_blocked_mem_forward.log
+ M reports/gate4_0/w3/rtl_logs/int_blocked_mem_forward.stdout.log
+ M reports/gate4_0/w3/rtl_logs/load_response_int_conflict.log
+ M reports/gate4_0/w3/rtl_logs/load_response_int_conflict.stdout.log
+ M reports/gate4_0/w3/rtl_logs/mem_blocked_int_forward.log
+ M reports/gate4_0/w3/rtl_logs/mem_blocked_int_forward.stdout.log
+ M reports/gate4_0/w3/rtl_logs/reset_clear.log
+ M reports/gate4_0/w3/rtl_logs/reset_clear.stdout.log
+ M reports/gate4_0/w3/rtl_logs/rob_wrap_multiple_identity.log
+ M reports/gate4_0/w3/rtl_logs/rob_wrap_multiple_identity.stdout.log
+ M reports/gate4_0/w3/rtl_logs/stale_completion_identity.log
+ M reports/gate4_0/w3/rtl_logs/stale_completion_identity.stdout.log
+ M reports/gate4_0/w3/rtl_logs/trace_backpressure.log
+ M reports/gate4_0/w3/rtl_logs/trace_backpressure.stdout.log
+ M reports/gate4_0/w3/rtl_logs/xsim_build.log
+ M reports/gate4_0/w4/regression/w4e/logs/w4_completion_random_tests.log
+ M reports/gate4_0/w4/regression/w4e/logs/w4a_completion_interface_tests.log
+ M reports/gate4_0/w4/regression/w4e/product_full/artifact_hashes.csv
+ M reports/gate4_0/w4/regression/w4e/product_full/hls_traces/branch_not_taken_hls_cpp_full.jsonl
+ M reports/gate4_0/w4/regression/w4e/product_full/hls_traces/branch_not_taken_hls_csim_full.jsonl
+ M reports/gate4_0/w4/regression/w4e/product_full/hls_traces/branch_taken_hls_cpp_full.jsonl
+ M reports/gate4_0/w4/regression/w4e/product_full/hls_traces/branch_taken_hls_csim_full.jsonl
+ M reports/gate4_0/w4/regression/w4e/product_full/hls_traces/independent_alu_hls_cpp_full.jsonl
+ M reports/gate4_0/w4/regression/w4e/product_full/hls_traces/independent_alu_hls_csim_full.jsonl
+ M reports/gate4_0/w4/regression/w4e/product_full/hls_traces/load_store_hls_cpp_full.jsonl
+ M reports/gate4_0/w4/regression/w4e/product_full/hls_traces/load_store_hls_csim_full.jsonl
+ M reports/gate4_0/w4/regression/w4e/product_full/hls_traces/nested_branch_hls_cpp_full.jsonl
+ M reports/gate4_0/w4/regression/w4e/product_full/hls_traces/nested_branch_hls_csim_full.jsonl
+ M reports/gate4_0/w4/regression/w4e/product_full/hls_traces/raw_chain_hls_cpp_full.jsonl
+ M reports/gate4_0/w4/regression/w4e/product_full/hls_traces/raw_chain_hls_csim_full.jsonl
+ M reports/gate4_0/w4/regression/w4e/product_full/hls_traces/tohost_hls_cpp_full.jsonl
+ M reports/gate4_0/w4/regression/w4e/product_full/hls_traces/tohost_hls_csim_full.jsonl
+ M reports/gate4_0/w4/regression/w4e/product_full/logs/directed_tests.log
+ M reports/gate4_0/w4/regression/w4e/product_full/logs/dispatch_retry_tests.log
+ M reports/gate4_0/w4/regression/w4e/product_full/logs/generate_merged.log
+ M reports/gate4_0/w4/regression/w4e/product_full/logs/hls_csim_trace.log
+ M reports/gate4_0/w4/regression/w4e/product_full/normalized/branch_not_taken_hls_cpp.jsonl
+ M reports/gate4_0/w4/regression/w4e/product_full/normalized/branch_not_taken_hls_csim.jsonl
+ M reports/gate4_0/w4/regression/w4e/product_full/normalized/branch_taken_hls_cpp.jsonl
+ M reports/gate4_0/w4/regression/w4e/product_full/normalized/branch_taken_hls_csim.jsonl
+ M reports/gate4_0/w4/regression/w4e/product_full/normalized/independent_alu_hls_cpp.jsonl
+ M reports/gate4_0/w4/regression/w4e/product_full/normalized/independent_alu_hls_csim.jsonl
+ M reports/gate4_0/w4/regression/w4e/product_full/normalized/load_store_hls_cpp.jsonl
+ M reports/gate4_0/w4/regression/w4e/product_full/normalized/load_store_hls_csim.jsonl
+ M reports/gate4_0/w4/regression/w4e/product_full/normalized/nested_branch_hls_cpp.jsonl
+ M reports/gate4_0/w4/regression/w4e/product_full/normalized/nested_branch_hls_csim.jsonl
+ M reports/gate4_0/w4/regression/w4e/product_full/normalized/raw_chain_hls_cpp.jsonl
+ M reports/gate4_0/w4/regression/w4e/product_full/normalized/raw_chain_hls_csim.jsonl
+ M reports/gate4_0/w4/regression/w4e/product_full/normalized/tohost_hls_cpp.jsonl
+ M reports/gate4_0/w4/regression/w4e/product_full/normalized/tohost_hls_csim.jsonl
+ M reports/gate4_0/w4/regression/w4e/product_full/source_hashes_after.txt
+ M reports/gate4_0/w4/regression/w4e/product_full/suite_results.csv
+ M reports/gate4_0/w4/regression/w4e/product_full/trace_comparison.csv
+ M reports/gate4_1/m3/m3c/logs/rv64m_full_core_tests.log
+ M reports/gate5_2_rvc/r1/logs/rvc_decode_cross_tests.log
+ M reports/gate5_2_rvc/r2/logs/canonical_csynth/core_csynth_summary.csv
+ M reports/gate5_2_rvc/r2/logs/canonical_csynth/module_csynth_summary.csv
+ M reports/gate5_2_rvc/r2/logs/gate5_1_preservation/xsim.log
+ M reports/gate5_2_rvc/r2/logs/r2_csim.log
+ M reports/gate5_2_rvc/r2/logs/r2_native.log
+ M reports/gate5_2_rvc/r2/logs/rvc_fetch_random_tests.log
+ M reports/gate5_2_rvc/r2/logs/rvc_fetch_tests.log
+ M reports/gate5_2_rvc/r2/logs/xsim.log
+ M reports/gate5_2_rvc/r2/r2_full_core_rtl_matrix.csv
+ M reports/gate5_2_rvc/r2/r2_rtl_traces/rvc_addi.jsonl
+ M reports/gate5_2_rvc/r2/r2_rtl_traces/rvc_branch.jsonl
+ M reports/gate5_2_rvc/r2/r2_rtl_traces/rvc_cross_boundary.jsonl
+ M reports/gate5_2_rvc/r2/r2_rtl_traces/rvc_jump.jsonl
+ M reports/gate5_2_rvc/r2/r2_rtl_traces/rvc_load_store.jsonl
+ M reports/gate5_2_rvc/r2/r2_rtl_traces/rvc_mixed_16_32.jsonl
+ M reports/gate5_2_rvc/r2/r2_rtl_traces/rvc_redirect_halfword.jsonl
+ M reports/gate5_2_rvc/r2/r2_rtl_traces/rvc_rv64m_mix.jsonl
+ M reports/gate5_2_rvc/r2/r2_rtl_traces/rvc_tohost.jsonl
+ M reports/gate5_2_rvc/r2/r2_rtl_traces/rvc_word_ops.jsonl
+ M reports/gate5_2_rvc/r2/rtl_test_matrix.csv
+ M reports/gate5_3_fetch_buffer/b1/logs/csynth/d16_auto.log
+ M reports/gate5_3_fetch_buffer/b1/logs/csynth/d2_auto.log
+ M reports/gate5_3_fetch_buffer/b1/logs/csynth/d4_auto.log
+ M reports/gate5_3_fetch_buffer/b1/logs/csynth/d8_auto.log
+ M reports/gate5_3_fetch_buffer/b1/logs/csynth/d8_bram.log
+ M reports/gate5_3_fetch_buffer/b1/logs/csynth/d8_lutram.log
+ M reports/gate5_3_fetch_buffer/b1/logs/csynth/d8_payload_reset.log
+ M reports/gate5_3_fetch_buffer/b3i/logs/full_core_native.log
+ M reports/gate5_3_fetch_buffer/b3i/logs/utilization.log
+ M reports/gate5_3_fetch_buffer/b3i/packet_utilization.csv
+ M reports/gate5_3_fetch_buffer/b3i/rtl/full_core_rtl_matrix.csv
+ M reports/gate5_3_fetch_buffer/b3i/rtl/generation_provenance.md
+ M reports/gate5_3_fetch_buffer/b3i/rtl/source_freshness_manifest.csv
+ M reports/gate5_3_fetch_buffer/b3i/rtl/traces/packet_atomic_backpressure.jsonl
+ M reports/gate5_3_fetch_buffer/b3i/rtl/traces/packet_carry_plus_rvc.jsonl
+ M reports/gate5_3_fetch_buffer/b3i/rtl/traces/packet_fault.jsonl
+ M reports/gate5_3_fetch_buffer/b3i/rtl/traces/packet_redirect.jsonl
+ M reports/gate5_3_fetch_buffer/b3i/rtl/traces/packet_rvc_rvc_long.jsonl
+ M reports/gate5_3_fetch_buffer/b3i/rtl/traces/packet_two_rvc.jsonl
+ M reports/gate5_3_fetch_buffer/b3i/throughput_analysis.md
+ M reports/gate5_3_fetch_buffer/b3i/throughput_comparison.csv
+ M reports/gate5_4_product_integration/pf1/logs/pf1_exception_csim.log
+ M reports/gate5_4_product_integration/pf1/logs/pf1_exception_rtl.log
+ M reports/gate5_4_product_integration/pf1/logs/pf1_full_core_rtl_0.log
+ M reports/gate5_4_product_integration/pf1/logs/pf1_full_core_rtl_1.log
+ M reports/gate5_4_product_integration/pf1/logs/pf1_full_core_rtl_2.log
+ M reports/gate5_4_product_integration/pf1/logs/pf1_full_core_rtl_3.log
+ M reports/gate5_4_product_integration/pf1/logs/pf1_full_core_rtl_4.log
+ M reports/gate5_4_product_integration/pf1/logs/pf1_full_core_rtl_5.log
+ M reports/gate5_4_product_integration/pf1/logs/pf1_full_core_rtl_6.log
+ M reports/gate5_4_product_integration/pf1/logs/pf1_full_core_rtl_7.log
+ M reports/gate5_4_product_integration/pf2/logs/pf2_predictor_frontend_csim.log
+ M scripts/create_project.tcl
+ M scripts/gate4_0/run_w3_regressions.sh
+ M scripts/gate4_0/run_w4_rtl.sh
+ M scripts/gate5_3/run_b3i_full_core_rtl.sh
+ M scripts/gate5_4/run_pf3_product_rtl.sh
+ M scripts/run_module_csynth.sh
+ M src/boom_all.cpp
+ M src/boom_core_merged.cpp
+ M src/branch.cpp
+ M src/commit.cpp
+ M src/completion.cpp
+ M src/lsu.cpp
+ M src/reset.cpp
+ M src/synth_module_tops.cpp
+ M vitis_hls.log
+?? cycle_trace.csv
+?? docs/predictor_predecode.md
+?? docs/project_audit_GLM.md
+?? reports/gate3_4/hls_prefix_trace_tb
+?? reports/gate3_8/logs/branch_not_taken_I3_IMEM_RESPONSE_DELAY_4_68536.backup.log
+?? reports/gate3_8/logs/branch_not_taken_I3_IMEM_RESPONSE_DELAY_4_73720.backup.log
+?? reports/gate3_8/logs/branch_not_taken_N3_NORMAL_BRANCH_NOT_TAKEN_70000.backup.log
+?? reports/gate3_8/logs/branch_not_taken_N3_NORMAL_BRANCH_NOT_TAKEN_75096.backup.log
+?? reports/gate3_8/logs/branch_taken_B2_TRACE_STALL_BURST_65974.backup.log
+?? reports/gate3_8/logs/branch_taken_B2_TRACE_STALL_BURST_66973.backup.log
+?? reports/gate3_8/logs/branch_taken_B2_TRACE_STALL_BURST_67417.backup.log
+?? reports/gate3_8/logs/branch_taken_B2_TRACE_STALL_BURST_68147.backup.log
+?? reports/gate3_8/logs/branch_taken_B2_TRACE_STALL_BURST_73306.backup.log
+?? reports/gate3_8/logs/branch_taken_B4_TRACE_STALL_AT_BRANCH_COMMIT_68253.backup.log
+?? reports/gate3_8/logs/branch_taken_B4_TRACE_STALL_AT_BRANCH_COMMIT_73439.backup.log
+?? reports/gate3_8/logs/branch_taken_D6_STORE_DURING_BRANCH_FLUSH_69109.backup.log
+?? reports/gate3_8/logs/branch_taken_D6_STORE_DURING_BRANCH_FLUSH_74302.backup.log
+?? reports/gate3_8/logs/branch_taken_I5_IMEM_STALE_RESPONSE_AFTER_REDIRECT_68648.backup.log
+?? reports/gate3_8/logs/branch_taken_I5_IMEM_STALE_RESPONSE_AFTER_REDIRECT_73833.backup.log
+?? reports/gate3_8/logs/branch_taken_N2_NORMAL_BRANCH_TAKEN_67080.backup.log
+?? reports/gate3_8/logs/branch_taken_N2_NORMAL_BRANCH_TAKEN_69930.backup.log
+?? reports/gate3_8/logs/branch_taken_N2_NORMAL_BRANCH_TAKEN_75036.backup.log
+?? reports/gate3_8/logs/branch_taken_P0_RESET_AND_BRANCH_MISPREDICT_69274.backup.log
+?? reports/gate3_8/logs/branch_taken_P0_RESET_AND_BRANCH_MISPREDICT_72326.backup.log
+?? reports/gate3_8/logs/branch_taken_P0_RESET_AND_BRANCH_MISPREDICT_74473.backup.log
+?? reports/gate3_8/logs/branch_taken_P0_RESET_AND_BRANCH_MISPREDICT_75796.backup.log
+?? reports/gate3_8/logs/branch_taken_P3_EXCEPTION_AND_BRANCH_MISPREDICT_69454.backup.log
+?? reports/gate3_8/logs/branch_taken_P3_EXCEPTION_AND_BRANCH_MISPREDICT_74637.backup.log
+?? reports/gate3_8/logs/branch_taken_P7_REDIRECT_AND_IMEM_RESPONSE_69734.backup.log
+?? reports/gate3_8/logs/branch_taken_P7_REDIRECT_AND_IMEM_RESPONSE_74860.backup.log
+?? reports/gate3_8/logs/branch_taken_R6_RESET_BRANCH_RECOVERY_67921.backup.log
+?? reports/gate3_8/logs/branch_taken_R6_RESET_BRANCH_RECOVERY_72282.backup.log
+?? reports/gate3_8/logs/branch_taken_R6_RESET_BRANCH_RECOVERY_73084.backup.log
+?? reports/gate3_8/logs/branch_taken_R6_RESET_BRANCH_RECOVERY_75715.backup.log
+?? reports/gate3_8/logs/independent_alu_B0_TRACE_READY_ALWAYS_68029.backup.log
+?? reports/gate3_8/logs/independent_alu_B0_TRACE_READY_ALWAYS_73196.backup.log
+?? reports/gate3_8/logs/independent_alu_B5_TRACE_STALL_AT_STORE_COMMIT_68306.backup.log
+?? reports/gate3_8/logs/independent_alu_B5_TRACE_STALL_AT_STORE_COMMIT_73493.backup.log
+?? reports/gate3_8/logs/independent_alu_D1_STORE_REQ_STALL_68818.backup.log
+?? reports/gate3_8/logs/independent_alu_D1_STORE_REQ_STALL_72278.backup.log
+?? reports/gate3_8/logs/independent_alu_D1_STORE_REQ_STALL_72646.backup.log
+?? reports/gate3_8/logs/independent_alu_D1_STORE_REQ_STALL_74024.backup.log
+?? reports/gate3_8/logs/independent_alu_I0_IMEM_READY_ALWAYS_68360.backup.log
+?? reports/gate3_8/logs/independent_alu_I0_IMEM_READY_ALWAYS_73550.backup.log
+?? reports/gate3_8/logs/independent_alu_I2_IMEM_RESPONSE_DELAY_1_68483.backup.log
+?? reports/gate3_8/logs/independent_alu_I2_IMEM_RESPONSE_DELAY_1_73661.backup.log
+?? reports/gate3_8/logs/independent_alu_I6_IMEM_RESPONSE_DURING_RESET_68701.backup.log
+?? reports/gate3_8/logs/independent_alu_I6_IMEM_RESPONSE_DURING_RESET_73890.backup.log
+?? reports/gate3_8/logs/independent_alu_N0_NORMAL_INDEPENDENT_ALU_69805.backup.log
+?? reports/gate3_8/logs/independent_alu_N0_NORMAL_INDEPENDENT_ALU_74916.backup.log
+?? reports/gate3_8/logs/independent_alu_P5_COMMIT_AND_TRACE_BACKPRESSURE_69597.backup.log
+?? reports/gate3_8/logs/independent_alu_P5_COMMIT_AND_TRACE_BACKPRESSURE_74746.backup.log
+?? reports/gate3_8/logs/independent_alu_R0_POWER_ON_RESET_65458.backup.log
+?? reports/gate3_8/logs/independent_alu_R0_POWER_ON_RESET_65547.backup.log
+?? reports/gate3_8/logs/independent_alu_R0_POWER_ON_RESET_67565.backup.log
+?? reports/gate3_8/logs/independent_alu_R0_POWER_ON_RESET_72749.backup.log
+?? reports/gate3_8/logs/independent_alu_R1_RESET_FRONTEND_OUTSTANDING_66042.backup.log
+?? reports/gate3_8/logs/independent_alu_R1_RESET_FRONTEND_OUTSTANDING_67620.backup.log
+?? reports/gate3_8/logs/independent_alu_R1_RESET_FRONTEND_OUTSTANDING_72805.backup.log
+?? reports/gate3_8/logs/independent_alu_R7_RESET_TRACE_BACKPRESSURE_67975.backup.log
+?? reports/gate3_8/logs/independent_alu_R7_RESET_TRACE_BACKPRESSURE_73140.backup.log
+?? reports/gate3_8/logs/load_store_D0_DMEM_READY_ALWAYS_65920.backup.log
+?? reports/gate3_8/logs/load_store_D0_DMEM_READY_ALWAYS_68764.backup.log
+?? reports/gate3_8/logs/load_store_D0_DMEM_READY_ALWAYS_73945.backup.log
+?? reports/gate3_8/logs/load_store_D2_LOAD_REQ_STALL_68872.backup.log
+?? reports/gate3_8/logs/load_store_D2_LOAD_REQ_STALL_72281.backup.log
+?? reports/gate3_8/logs/load_store_D2_LOAD_REQ_STALL_74079.backup.log
+?? reports/gate3_8/logs/load_store_D3_LOAD_RESPONSE_DELAY_68926.backup.log
+?? reports/gate3_8/logs/load_store_D3_LOAD_RESPONSE_DELAY_74136.backup.log
+?? reports/gate3_8/logs/load_store_D4_LOAD_RANDOM_DELAY_68979.backup.log
+?? reports/gate3_8/logs/load_store_D4_LOAD_RANDOM_DELAY_74191.backup.log
+?? reports/gate3_8/logs/load_store_D5_STALE_LOAD_RESPONSE_AFTER_FLUSH_69056.backup.log
+?? reports/gate3_8/logs/load_store_D5_STALE_LOAD_RESPONSE_AFTER_FLUSH_74247.backup.log
+?? reports/gate3_8/logs/load_store_D7_DMEM_RESPONSE_DURING_RESET_69165.backup.log
+?? reports/gate3_8/logs/load_store_D7_DMEM_RESPONSE_DURING_RESET_74365.backup.log
+?? reports/gate3_8/logs/load_store_N5_NORMAL_LOAD_STORE_70145.backup.log
+?? reports/gate3_8/logs/load_store_N5_NORMAL_LOAD_STORE_75208.backup.log
+?? reports/gate3_8/logs/load_store_P1_RESET_AND_LOAD_RESPONSE_69328.backup.log
+?? reports/gate3_8/logs/load_store_P1_RESET_AND_LOAD_RESPONSE_74528.backup.log
+?? reports/gate3_8/logs/load_store_P4_BRANCH_MISPREDICT_AND_LOAD_RESPONSE_69544.backup.log
+?? reports/gate3_8/logs/load_store_P4_BRANCH_MISPREDICT_AND_LOAD_RESPONSE_74691.backup.log
+?? reports/gate3_8/logs/load_store_R4_RESET_LOAD_PENDING_67798.backup.log
+?? reports/gate3_8/logs/load_store_R4_RESET_LOAD_PENDING_72975.backup.log
+?? reports/gate3_8/logs/nested_branch_B3_TRACE_RANDOM_STALL_68200.backup.log
+?? reports/gate3_8/logs/nested_branch_B3_TRACE_RANDOM_STALL_73382.backup.log
+?? reports/gate3_8/logs/nested_branch_I4_IMEM_RANDOM_DELAY_68592.backup.log
+?? reports/gate3_8/logs/nested_branch_I4_IMEM_RANDOM_DELAY_73777.backup.log
+?? reports/gate3_8/logs/nested_branch_N4_NORMAL_NESTED_BRANCH_70067.backup.log
+?? reports/gate3_8/logs/nested_branch_N4_NORMAL_NESTED_BRANCH_75153.backup.log
+?? reports/gate3_8/logs/raw_chain_B1_TRACE_STALL_1_68093.backup.log
+?? reports/gate3_8/logs/raw_chain_B1_TRACE_STALL_1_73250.backup.log
+?? reports/gate3_8/logs/raw_chain_I1_IMEM_REQ_STALL_68426.backup.log
+?? reports/gate3_8/logs/raw_chain_I1_IMEM_REQ_STALL_73607.backup.log
+?? reports/gate3_8/logs/raw_chain_N1_NORMAL_RAW_CHAIN_69858.backup.log
+?? reports/gate3_8/logs/raw_chain_N1_NORMAL_RAW_CHAIN_74981.backup.log
+?? reports/gate3_8/logs/raw_chain_R2_RESET_ROB_NONEMPTY_67688.backup.log
+?? reports/gate3_8/logs/raw_chain_R2_RESET_ROB_NONEMPTY_72226.backup.log
+?? reports/gate3_8/logs/raw_chain_R2_RESET_ROB_NONEMPTY_72862.backup.log
+?? reports/gate3_8/logs/raw_chain_R3_RESET_IQ_NONEMPTY_67744.backup.log
+?? reports/gate3_8/logs/raw_chain_R3_RESET_IQ_NONEMPTY_72920.backup.log
+?? reports/gate3_8/logs/tohost_D8_TOHOST_STORE_BACKPRESSURE_69220.backup.log
+?? reports/gate3_8/logs/tohost_D8_TOHOST_STORE_BACKPRESSURE_72277.backup.log
+?? reports/gate3_8/logs/tohost_D8_TOHOST_STORE_BACKPRESSURE_74419.backup.log
+?? reports/gate3_8/logs/tohost_N6_NORMAL_TOHOST_70218.backup.log
+?? reports/gate3_8/logs/tohost_N6_NORMAL_TOHOST_75263.backup.log
+?? reports/gate3_8/logs/tohost_P2_RESET_AND_STORE_ACCEPT_69395.backup.log
+?? reports/gate3_8/logs/tohost_P2_RESET_AND_STORE_ACCEPT_72425.backup.log
+?? reports/gate3_8/logs/tohost_P2_RESET_AND_STORE_ACCEPT_74582.backup.log
+?? reports/gate3_8/logs/tohost_P6_COMMIT_AND_STORE_BACKPRESSURE_69663.backup.log
+?? reports/gate3_8/logs/tohost_P6_COMMIT_AND_STORE_BACKPRESSURE_72426.backup.log
+?? reports/gate3_8/logs/tohost_P6_COMMIT_AND_STORE_BACKPRESSURE_74804.backup.log
+?? reports/gate3_8/logs/tohost_R5_RESET_STORE_PENDING_67866.backup.log
+?? reports/gate3_8/logs/tohost_R5_RESET_STORE_PENDING_72284.backup.log
+?? reports/gate3_8/logs/tohost_R5_RESET_STORE_PENDING_73029.backup.log
+?? reports/gate4_0/w2/issue_rtl/logs/both_busy_retain_208307.backup.log
+?? reports/gate4_0/w2/issue_rtl/logs/both_busy_retain_212483.backup.log
+?? reports/gate4_0/w2/issue_rtl/logs/both_busy_retain_218285.backup.log
+?? reports/gate4_0/w2/issue_rtl/logs/branch_kill_mem_208357.backup.log
+?? reports/gate4_0/w2/issue_rtl/logs/branch_kill_mem_212532.backup.log
+?? reports/gate4_0/w2/issue_rtl/logs/branch_kill_mem_218337.backup.log
+?? reports/gate4_0/w2/issue_rtl/logs/dual_ready_207636.backup.log
+?? reports/gate4_0/w2/issue_rtl/logs/dual_ready_208157.backup.log
+?? reports/gate4_0/w2/issue_rtl/logs/dual_ready_212333.backup.log
+?? reports/gate4_0/w2/issue_rtl/logs/dual_ready_218135.backup.log
+?? reports/gate4_0/w2/issue_rtl/logs/int_busy_mem_accept_208258.backup.log
+?? reports/gate4_0/w2/issue_rtl/logs/int_busy_mem_accept_212432.backup.log
+?? reports/gate4_0/w2/issue_rtl/logs/int_busy_mem_accept_218234.backup.log
+?? reports/gate4_0/w2/issue_rtl/logs/mem_busy_int_accept_208209.backup.log
+?? reports/gate4_0/w2/issue_rtl/logs/mem_busy_int_accept_212383.backup.log
+?? reports/gate4_0/w2/issue_rtl/logs/mem_busy_int_accept_218185.backup.log
+?? reports/gate4_0/w2/rtl_logs/branch_not_taken_I3_IMEM_RESPONSE_DELAY_4_209575.backup.log
+?? reports/gate4_0/w2/rtl_logs/branch_not_taken_I3_IMEM_RESPONSE_DELAY_4_213725.backup.log
+?? reports/gate4_0/w2/rtl_logs/branch_not_taken_I3_IMEM_RESPONSE_DELAY_4_219535.backup.log
+?? reports/gate4_0/w2/rtl_logs/branch_not_taken_N3_NORMAL_BRANCH_NOT_TAKEN_210902.backup.log
+?? reports/gate4_0/w2/rtl_logs/branch_not_taken_N3_NORMAL_BRANCH_NOT_TAKEN_215045.backup.log
+?? reports/gate4_0/w2/rtl_logs/branch_not_taken_N3_NORMAL_BRANCH_NOT_TAKEN_220856.backup.log
+?? reports/gate4_0/w2/rtl_logs/branch_taken_B2_TRACE_STALL_BURST_209185.backup.log
+?? reports/gate4_0/w2/rtl_logs/branch_taken_B2_TRACE_STALL_BURST_213337.backup.log
+?? reports/gate4_0/w2/rtl_logs/branch_taken_B2_TRACE_STALL_BURST_219152.backup.log
+?? reports/gate4_0/w2/rtl_logs/branch_taken_B4_TRACE_STALL_AT_BRANCH_COMMIT_209295.backup.log
+?? reports/gate4_0/w2/rtl_logs/branch_taken_B4_TRACE_STALL_AT_BRANCH_COMMIT_213450.backup.log
+?? reports/gate4_0/w2/rtl_logs/branch_taken_B4_TRACE_STALL_AT_BRANCH_COMMIT_219263.backup.log
+?? reports/gate4_0/w2/rtl_logs/branch_taken_D6_STORE_DURING_BRANCH_FLUSH_210127.backup.log
+?? reports/gate4_0/w2/rtl_logs/branch_taken_D6_STORE_DURING_BRANCH_FLUSH_214278.backup.log
+?? reports/gate4_0/w2/rtl_logs/branch_taken_D6_STORE_DURING_BRANCH_FLUSH_220088.backup.log
+?? reports/gate4_0/w2/rtl_logs/branch_taken_I5_IMEM_STALE_RESPONSE_AFTER_REDIRECT_209684.backup.log
+?? reports/gate4_0/w2/rtl_logs/branch_taken_I5_IMEM_STALE_RESPONSE_AFTER_REDIRECT_213835.backup.log
+?? reports/gate4_0/w2/rtl_logs/branch_taken_I5_IMEM_STALE_RESPONSE_AFTER_REDIRECT_219651.backup.log
+?? reports/gate4_0/w2/rtl_logs/branch_taken_N2_NORMAL_BRANCH_TAKEN_210847.backup.log
+?? reports/gate4_0/w2/rtl_logs/branch_taken_N2_NORMAL_BRANCH_TAKEN_214991.backup.log
+?? reports/gate4_0/w2/rtl_logs/branch_taken_N2_NORMAL_BRANCH_TAKEN_220801.backup.log
+?? reports/gate4_0/w2/rtl_logs/branch_taken_P0_RESET_AND_BRANCH_MISPREDICT_210291.backup.log
+?? reports/gate4_0/w2/rtl_logs/branch_taken_P0_RESET_AND_BRANCH_MISPREDICT_214441.backup.log
+?? reports/gate4_0/w2/rtl_logs/branch_taken_P0_RESET_AND_BRANCH_MISPREDICT_220252.backup.log
+?? reports/gate4_0/w2/rtl_logs/branch_taken_P3_EXCEPTION_AND_BRANCH_MISPREDICT_210454.backup.log
+?? reports/gate4_0/w2/rtl_logs/branch_taken_P3_EXCEPTION_AND_BRANCH_MISPREDICT_214609.backup.log
+?? reports/gate4_0/w2/rtl_logs/branch_taken_P3_EXCEPTION_AND_BRANCH_MISPREDICT_220421.backup.log
+?? reports/gate4_0/w2/rtl_logs/branch_taken_P7_REDIRECT_AND_IMEM_RESPONSE_210673.backup.log
+?? reports/gate4_0/w2/rtl_logs/branch_taken_P7_REDIRECT_AND_IMEM_RESPONSE_214827.backup.log
+?? reports/gate4_0/w2/rtl_logs/branch_taken_P7_REDIRECT_AND_IMEM_RESPONSE_220638.backup.log
+?? reports/gate4_0/w2/rtl_logs/branch_taken_R6_RESET_BRANCH_RECOVERY_208963.backup.log
+?? reports/gate4_0/w2/rtl_logs/branch_taken_R6_RESET_BRANCH_RECOVERY_213114.backup.log
+?? reports/gate4_0/w2/rtl_logs/branch_taken_R6_RESET_BRANCH_RECOVERY_218928.backup.log
+?? reports/gate4_0/w2/rtl_logs/independent_alu_B0_TRACE_READY_ALWAYS_209073.backup.log
+?? reports/gate4_0/w2/rtl_logs/independent_alu_B0_TRACE_READY_ALWAYS_213224.backup.log
+?? reports/gate4_0/w2/rtl_logs/independent_alu_B0_TRACE_READY_ALWAYS_219042.backup.log
+?? reports/gate4_0/w2/rtl_logs/independent_alu_B5_TRACE_STALL_AT_STORE_COMMIT_209353.backup.log
+?? reports/gate4_0/w2/rtl_logs/independent_alu_B5_TRACE_STALL_AT_STORE_COMMIT_213505.backup.log
+?? reports/gate4_0/w2/rtl_logs/independent_alu_B5_TRACE_STALL_AT_STORE_COMMIT_219317.backup.log
+?? reports/gate4_0/w2/rtl_logs/independent_alu_D1_STORE_REQ_STALL_209848.backup.log
+?? reports/gate4_0/w2/rtl_logs/independent_alu_D1_STORE_REQ_STALL_214002.backup.log
+?? reports/gate4_0/w2/rtl_logs/independent_alu_D1_STORE_REQ_STALL_219816.backup.log
+?? reports/gate4_0/w2/rtl_logs/independent_alu_I0_IMEM_READY_ALWAYS_209407.backup.log
+?? reports/gate4_0/w2/rtl_logs/independent_alu_I0_IMEM_READY_ALWAYS_213561.backup.log
+?? reports/gate4_0/w2/rtl_logs/independent_alu_I0_IMEM_READY_ALWAYS_219371.backup.log
+?? reports/gate4_0/w2/rtl_logs/independent_alu_I2_IMEM_RESPONSE_DELAY_1_209521.backup.log
+?? reports/gate4_0/w2/rtl_logs/independent_alu_I2_IMEM_RESPONSE_DELAY_1_213671.backup.log
+?? reports/gate4_0/w2/rtl_logs/independent_alu_I2_IMEM_RESPONSE_DELAY_1_219481.backup.log
+?? reports/gate4_0/w2/rtl_logs/independent_alu_I6_IMEM_RESPONSE_DURING_RESET_209739.backup.log
+?? reports/gate4_0/w2/rtl_logs/independent_alu_I6_IMEM_RESPONSE_DURING_RESET_213890.backup.log
+?? reports/gate4_0/w2/rtl_logs/independent_alu_I6_IMEM_RESPONSE_DURING_RESET_219707.backup.log
+?? reports/gate4_0/w2/rtl_logs/independent_alu_N0_NORMAL_INDEPENDENT_ALU_210733.backup.log
+?? reports/gate4_0/w2/rtl_logs/independent_alu_N0_NORMAL_INDEPENDENT_ALU_214882.backup.log
+?? reports/gate4_0/w2/rtl_logs/independent_alu_N0_NORMAL_INDEPENDENT_ALU_220693.backup.log
+?? reports/gate4_0/w2/rtl_logs/independent_alu_P5_COMMIT_AND_TRACE_BACKPRESSURE_210564.backup.log
+?? reports/gate4_0/w2/rtl_logs/independent_alu_P5_COMMIT_AND_TRACE_BACKPRESSURE_214717.backup.log
+?? reports/gate4_0/w2/rtl_logs/independent_alu_P5_COMMIT_AND_TRACE_BACKPRESSURE_220529.backup.log
+?? reports/gate4_0/w2/rtl_logs/independent_alu_R0_POWER_ON_RESET_208628.backup.log
+?? reports/gate4_0/w2/rtl_logs/independent_alu_R0_POWER_ON_RESET_212789.backup.log
+?? reports/gate4_0/w2/rtl_logs/independent_alu_R0_POWER_ON_RESET_218596.backup.log
+?? reports/gate4_0/w2/rtl_logs/independent_alu_R10_RESET_IMMEDIATELY_AFTER_RELEASE_211231.backup.log
+?? reports/gate4_0/w2/rtl_logs/independent_alu_R10_RESET_IMMEDIATELY_AFTER_RELEASE_215377.backup.log
+?? reports/gate4_0/w2/rtl_logs/independent_alu_R10_RESET_IMMEDIATELY_AFTER_RELEASE_221189.backup.log
+?? reports/gate4_0/w2/rtl_logs/independent_alu_R1_RESET_FRONTEND_OUTSTANDING_208686.backup.log
+?? reports/gate4_0/w2/rtl_logs/independent_alu_R1_RESET_FRONTEND_OUTSTANDING_212843.backup.log
+?? reports/gate4_0/w2/rtl_logs/independent_alu_R1_RESET_FRONTEND_OUTSTANDING_218651.backup.log
+?? reports/gate4_0/w2/rtl_logs/independent_alu_R7_RESET_TRACE_BACKPRESSURE_209019.backup.log
+?? reports/gate4_0/w2/rtl_logs/independent_alu_R7_RESET_TRACE_BACKPRESSURE_213168.backup.log
+?? reports/gate4_0/w2/rtl_logs/independent_alu_R7_RESET_TRACE_BACKPRESSURE_218985.backup.log
+?? reports/gate4_0/w2/rtl_logs/independent_alu_R8_DOUBLE_RUNTIME_RESET_211121.backup.log
+?? reports/gate4_0/w2/rtl_logs/independent_alu_R8_DOUBLE_RUNTIME_RESET_215267.backup.log
+?? reports/gate4_0/w2/rtl_logs/independent_alu_R8_DOUBLE_RUNTIME_RESET_221078.backup.log
+?? reports/gate4_0/w2/rtl_logs/independent_alu_R9_RESET_DURING_RESET_INITIALIZATION_211176.backup.log
+?? reports/gate4_0/w2/rtl_logs/independent_alu_R9_RESET_DURING_RESET_INITIALIZATION_215322.backup.log
+?? reports/gate4_0/w2/rtl_logs/independent_alu_R9_RESET_DURING_RESET_INITIALIZATION_221135.backup.log
+?? reports/gate4_0/w2/rtl_logs/load_store_D0_DMEM_READY_ALWAYS_209794.backup.log
+?? reports/gate4_0/w2/rtl_logs/load_store_D0_DMEM_READY_ALWAYS_213946.backup.log
+?? reports/gate4_0/w2/rtl_logs/load_store_D0_DMEM_READY_ALWAYS_219761.backup.log
+?? reports/gate4_0/w2/rtl_logs/load_store_D2_LOAD_REQ_STALL_209903.backup.log
+?? reports/gate4_0/w2/rtl_logs/load_store_D2_LOAD_REQ_STALL_214058.backup.log
+?? reports/gate4_0/w2/rtl_logs/load_store_D2_LOAD_REQ_STALL_219870.backup.log
+?? reports/gate4_0/w2/rtl_logs/load_store_D3_LOAD_RESPONSE_DELAY_209957.backup.log
+?? reports/gate4_0/w2/rtl_logs/load_store_D3_LOAD_RESPONSE_DELAY_214114.backup.log
+?? reports/gate4_0/w2/rtl_logs/load_store_D3_LOAD_RESPONSE_DELAY_219924.backup.log
+?? reports/gate4_0/w2/rtl_logs/load_store_D4_LOAD_RANDOM_DELAY_210012.backup.log
+?? reports/gate4_0/w2/rtl_logs/load_store_D4_LOAD_RANDOM_DELAY_214168.backup.log
+?? reports/gate4_0/w2/rtl_logs/load_store_D4_LOAD_RANDOM_DELAY_219979.backup.log
+?? reports/gate4_0/w2/rtl_logs/load_store_D5_STALE_LOAD_RESPONSE_AFTER_FLUSH_210068.backup.log
+?? reports/gate4_0/w2/rtl_logs/load_store_D5_STALE_LOAD_RESPONSE_AFTER_FLUSH_214224.backup.log
+?? reports/gate4_0/w2/rtl_logs/load_store_D5_STALE_LOAD_RESPONSE_AFTER_FLUSH_220034.backup.log
+?? reports/gate4_0/w2/rtl_logs/load_store_D7_DMEM_RESPONSE_DURING_RESET_210181.backup.log
+?? reports/gate4_0/w2/rtl_logs/load_store_D7_DMEM_RESPONSE_DURING_RESET_214332.backup.log
+?? reports/gate4_0/w2/rtl_logs/load_store_D7_DMEM_RESPONSE_DURING_RESET_220142.backup.log
+?? reports/gate4_0/w2/rtl_logs/load_store_N5_NORMAL_LOAD_STORE_211012.backup.log
+?? reports/gate4_0/w2/rtl_logs/load_store_N5_NORMAL_LOAD_STORE_215155.backup.log
+?? reports/gate4_0/w2/rtl_logs/load_store_N5_NORMAL_LOAD_STORE_220968.backup.log
+?? reports/gate4_0/w2/rtl_logs/load_store_P1_RESET_AND_LOAD_RESPONSE_210345.backup.log
+?? reports/gate4_0/w2/rtl_logs/load_store_P1_RESET_AND_LOAD_RESPONSE_214496.backup.log
+?? reports/gate4_0/w2/rtl_logs/load_store_P1_RESET_AND_LOAD_RESPONSE_220310.backup.log
+?? reports/gate4_0/w2/rtl_logs/load_store_P4_BRANCH_MISPREDICT_AND_LOAD_RESPONSE_210510.backup.log
+?? reports/gate4_0/w2/rtl_logs/load_store_P4_BRANCH_MISPREDICT_AND_LOAD_RESPONSE_214663.backup.log
+?? reports/gate4_0/w2/rtl_logs/load_store_P4_BRANCH_MISPREDICT_AND_LOAD_RESPONSE_220475.backup.log
+?? reports/gate4_0/w2/rtl_logs/load_store_R4_RESET_LOAD_PENDING_208853.backup.log
+?? reports/gate4_0/w2/rtl_logs/load_store_R4_RESET_LOAD_PENDING_213006.backup.log
+?? reports/gate4_0/w2/rtl_logs/load_store_R4_RESET_LOAD_PENDING_218815.backup.log
+?? reports/gate4_0/w2/rtl_logs/nested_branch_B3_TRACE_RANDOM_STALL_209240.backup.log
+?? reports/gate4_0/w2/rtl_logs/nested_branch_B3_TRACE_RANDOM_STALL_213395.backup.log
+?? reports/gate4_0/w2/rtl_logs/nested_branch_B3_TRACE_RANDOM_STALL_219206.backup.log
+?? reports/gate4_0/w2/rtl_logs/nested_branch_I4_IMEM_RANDOM_DELAY_209630.backup.log
+?? reports/gate4_0/w2/rtl_logs/nested_branch_I4_IMEM_RANDOM_DELAY_213780.backup.log
+?? reports/gate4_0/w2/rtl_logs/nested_branch_I4_IMEM_RANDOM_DELAY_219595.backup.log
+?? reports/gate4_0/w2/rtl_logs/nested_branch_N4_NORMAL_NESTED_BRANCH_210956.backup.log
+?? reports/gate4_0/w2/rtl_logs/nested_branch_N4_NORMAL_NESTED_BRANCH_215100.backup.log
+?? reports/gate4_0/w2/rtl_logs/nested_branch_N4_NORMAL_NESTED_BRANCH_220911.backup.log
+?? reports/gate4_0/w2/rtl_logs/raw_chain_B1_TRACE_STALL_1_209127.backup.log
+?? reports/gate4_0/w2/rtl_logs/raw_chain_B1_TRACE_STALL_1_213281.backup.log
+?? reports/gate4_0/w2/rtl_logs/raw_chain_B1_TRACE_STALL_1_219097.backup.log
+?? reports/gate4_0/w2/rtl_logs/raw_chain_I1_IMEM_REQ_STALL_209463.backup.log
+?? reports/gate4_0/w2/rtl_logs/raw_chain_I1_IMEM_REQ_STALL_213615.backup.log
+?? reports/gate4_0/w2/rtl_logs/raw_chain_I1_IMEM_REQ_STALL_219426.backup.log
+?? reports/gate4_0/w2/rtl_logs/raw_chain_N1_NORMAL_RAW_CHAIN_210793.backup.log
+?? reports/gate4_0/w2/rtl_logs/raw_chain_N1_NORMAL_RAW_CHAIN_214937.backup.log
+?? reports/gate4_0/w2/rtl_logs/raw_chain_N1_NORMAL_RAW_CHAIN_220747.backup.log
+?? reports/gate4_0/w2/rtl_logs/raw_chain_R2_RESET_ROB_NONEMPTY_208741.backup.log
+?? reports/gate4_0/w2/rtl_logs/raw_chain_R2_RESET_ROB_NONEMPTY_212897.backup.log
+?? reports/gate4_0/w2/rtl_logs/raw_chain_R2_RESET_ROB_NONEMPTY_218706.backup.log
+?? reports/gate4_0/w2/rtl_logs/raw_chain_R3_RESET_IQ_NONEMPTY_208797.backup.log
+?? reports/gate4_0/w2/rtl_logs/raw_chain_R3_RESET_IQ_NONEMPTY_212951.backup.log
+?? reports/gate4_0/w2/rtl_logs/raw_chain_R3_RESET_IQ_NONEMPTY_218760.backup.log
+?? reports/gate4_0/w2/rtl_logs/tohost_D8_TOHOST_STORE_BACKPRESSURE_210237.backup.log
+?? reports/gate4_0/w2/rtl_logs/tohost_D8_TOHOST_STORE_BACKPRESSURE_214386.backup.log
+?? reports/gate4_0/w2/rtl_logs/tohost_D8_TOHOST_STORE_BACKPRESSURE_220198.backup.log
+?? reports/gate4_0/w2/rtl_logs/tohost_N6_NORMAL_TOHOST_211067.backup.log
+?? reports/gate4_0/w2/rtl_logs/tohost_N6_NORMAL_TOHOST_215210.backup.log
+?? reports/gate4_0/w2/rtl_logs/tohost_N6_NORMAL_TOHOST_221024.backup.log
+?? reports/gate4_0/w2/rtl_logs/tohost_P2_RESET_AND_STORE_ACCEPT_210400.backup.log
+?? reports/gate4_0/w2/rtl_logs/tohost_P2_RESET_AND_STORE_ACCEPT_214550.backup.log
+?? reports/gate4_0/w2/rtl_logs/tohost_P2_RESET_AND_STORE_ACCEPT_220366.backup.log
+?? reports/gate4_0/w2/rtl_logs/tohost_P6_COMMIT_AND_STORE_BACKPRESSURE_210619.backup.log
+?? reports/gate4_0/w2/rtl_logs/tohost_P6_COMMIT_AND_STORE_BACKPRESSURE_214772.backup.log
+?? reports/gate4_0/w2/rtl_logs/tohost_P6_COMMIT_AND_STORE_BACKPRESSURE_220583.backup.log
+?? reports/gate4_0/w2/rtl_logs/tohost_R11_RESET_AFTER_TOHOST_CLEAR_AND_RESTART_211287.backup.log
+?? reports/gate4_0/w2/rtl_logs/tohost_R11_RESET_AFTER_TOHOST_CLEAR_AND_RESTART_215431.backup.log
+?? reports/gate4_0/w2/rtl_logs/tohost_R11_RESET_AFTER_TOHOST_CLEAR_AND_RESTART_221243.backup.log
+?? reports/gate4_0/w2/rtl_logs/tohost_R5_RESET_STORE_PENDING_208909.backup.log
+?? reports/gate4_0/w2/rtl_logs/tohost_R5_RESET_STORE_PENDING_213060.backup.log
+?? reports/gate4_0/w2/rtl_logs/tohost_R5_RESET_STORE_PENDING_218873.backup.log
+?? reports/gate4_0/w3/focused_rtl_work/
+?? reports/gate4_0/w3/full_core_artifact_hashes.csv
+?? reports/gate4_0/w3/full_core_rtl/
+?? reports/gate4_0/w3/full_core_rtl_hashes.txt
+?? reports/gate4_0/w4/full_core_rtl/hls_project/hls.app
+?? reports/gate4_0/w4/full_core_rtl/hls_project/solution_w4_full_core_rtl/.autopilot/
+?? reports/gate4_0/w4/full_core_rtl/hls_project/solution_w4_full_core_rtl/.debug/
+?? reports/gate4_0/w4/full_core_rtl/hls_project/solution_w4_full_core_rtl/impl/
+?? reports/gate4_0/w4/full_core_rtl/hls_project/solution_w4_full_core_rtl/solution_w4_full_core_rtl.aps
+?? reports/gate4_0/w4/full_core_rtl/hls_project/solution_w4_full_core_rtl/solution_w4_full_core_rtl.directive
+?? reports/gate4_0/w4/full_core_rtl/hls_project/solution_w4_full_core_rtl/solution_w4_full_core_rtl.funcunit
+?? reports/gate4_0/w4/full_core_rtl/hls_project/solution_w4_full_core_rtl/solution_w4_full_core_rtl.log
+?? reports/gate4_0/w4/full_core_rtl/hls_project/solution_w4_full_core_rtl/solution_w4_full_core_rtl_data.json
+?? reports/gate4_0/w4/full_core_rtl/hls_project/solution_w4_full_core_rtl/syn/report/
+?? reports/gate4_0/w4/full_core_rtl/hls_project/solution_w4_full_core_rtl/syn/vhdl/
+?? reports/gate4_0/w4/full_core_rtl/run_hls.tcl
+?? reports/gate4_0/w4/full_core_rtl/vitis_hls.log
+?? reports/gate4_0/w4/full_core_rtl/xsim/
+?? reports/gate4_0/w4/rtl_logs/alu_store_agu_dual_complete_217988.backup.log
+?? reports/gate4_0/w4/rtl_logs/alu_store_agu_dual_complete_221768.backup.log
+?? reports/gate4_0/w4/rtl_logs/alu_store_agu_dual_complete_224054.backup.log
+?? reports/gate4_0/w4/rtl_logs/alu_store_agu_dual_complete_226379.backup.log
+?? reports/gate4_0/w4/rtl_logs/alu_store_agu_dual_complete_228005.backup.log
+?? reports/gate4_0/w4/rtl_logs/branch_load_dual_rob_complete_217937.backup.log
+?? reports/gate4_0/w4/rtl_logs/branch_load_dual_rob_complete_221716.backup.log
+?? reports/gate4_0/w4/rtl_logs/branch_load_dual_rob_complete_224002.backup.log
+?? reports/gate4_0/w4/rtl_logs/branch_load_dual_rob_complete_226328.backup.log
+?? reports/gate4_0/w4/rtl_logs/branch_load_dual_rob_complete_227952.backup.log
+?? reports/gate4_0/w4/rtl_logs/bypass_dependent_chain_218088.backup.log
+?? reports/gate4_0/w4/rtl_logs/bypass_dependent_chain_221870.backup.log
+?? reports/gate4_0/w4/rtl_logs/bypass_dependent_chain_224156.backup.log
+?? reports/gate4_0/w4/rtl_logs/bypass_dependent_chain_226481.backup.log
+?? reports/gate4_0/w4/rtl_logs/bypass_dependent_chain_228106.backup.log
+?? reports/gate4_0/w4/rtl_logs/core_step_queued_response_retention_218516.backup.log
+?? reports/gate4_0/w4/rtl_logs/core_step_queued_response_retention_222297.backup.log
+?? reports/gate4_0/w4/rtl_logs/core_step_queued_response_retention_224580.backup.log
+?? reports/gate4_0/w4/rtl_logs/core_step_queued_response_retention_226905.backup.log
+?? reports/gate4_0/w4/rtl_logs/core_step_queued_response_retention_228535.backup.log
+?? reports/gate4_0/w4/rtl_logs/correct_branch_cross_conflict_218363.backup.log
+?? reports/gate4_0/w4/rtl_logs/correct_branch_cross_conflict_222143.backup.log
+?? reports/gate4_0/w4/rtl_logs/correct_branch_cross_conflict_224428.backup.log
+?? reports/gate4_0/w4/rtl_logs/correct_branch_cross_conflict_226754.backup.log
+?? reports/gate4_0/w4/rtl_logs/correct_branch_cross_conflict_228382.backup.log
+?? reports/gate4_0/w4/rtl_logs/helper_level_response_retention_218466.backup.log
+?? reports/gate4_0/w4/rtl_logs/helper_level_response_retention_222245.backup.log
+?? reports/gate4_0/w4/rtl_logs/helper_level_response_retention_224529.backup.log
+?? reports/gate4_0/w4/rtl_logs/helper_level_response_retention_226855.backup.log
+?? reports/gate4_0/w4/rtl_logs/helper_level_response_retention_228485.backup.log
+?? reports/gate4_0/w4/rtl_logs/int_load_dual_writeback_217886.backup.log
+?? reports/gate4_0/w4/rtl_logs/int_load_dual_writeback_221666.backup.log
+?? reports/gate4_0/w4/rtl_logs/int_load_dual_writeback_223952.backup.log
+?? reports/gate4_0/w4/rtl_logs/int_load_dual_writeback_226277.backup.log
+?? reports/gate4_0/w4/rtl_logs/int_load_dual_writeback_227901.backup.log
+?? reports/gate4_0/w4/rtl_logs/lane2_inactive_218312.backup.log
+?? reports/gate4_0/w4/rtl_logs/lane2_inactive_222093.backup.log
+?? reports/gate4_0/w4/rtl_logs/lane2_inactive_224378.backup.log
+?? reports/gate4_0/w4/rtl_logs/lane2_inactive_226700.backup.log
+?? reports/gate4_0/w4/rtl_logs/lane2_inactive_228328.backup.log
+?? reports/gate4_0/w4/rtl_logs/mispredict_killed_nonconflict_218567.backup.log
+?? reports/gate4_0/w4/rtl_logs/mispredict_killed_nonconflict_222348.backup.log
+?? reports/gate4_0/w4/rtl_logs/mispredict_killed_nonconflict_224632.backup.log
+?? reports/gate4_0/w4/rtl_logs/mispredict_killed_nonconflict_226955.backup.log
+?? reports/gate4_0/w4/rtl_logs/mispredict_killed_nonconflict_228585.backup.log
+?? reports/gate4_0/w4/rtl_logs/persistent_precise_fault_fence_218416.backup.log
+?? reports/gate4_0/w4/rtl_logs/persistent_precise_fault_fence_222193.backup.log
+?? reports/gate4_0/w4/rtl_logs/persistent_precise_fault_fence_224479.backup.log
+?? reports/gate4_0/w4/rtl_logs/persistent_precise_fault_fence_226804.backup.log
+?? reports/gate4_0/w4/rtl_logs/persistent_precise_fault_fence_228434.backup.log
+?? reports/gate4_0/w4/rtl_logs/production_order_response_retention_176248.backup.log
+?? reports/gate4_0/w4/rtl_logs/repeated_dual_completion_stress_218210.backup.log
+?? reports/gate4_0/w4/rtl_logs/repeated_dual_completion_stress_221990.backup.log
+?? reports/gate4_0/w4/rtl_logs/repeated_dual_completion_stress_224274.backup.log
+?? reports/gate4_0/w4/rtl_logs/repeated_dual_completion_stress_226599.backup.log
+?? reports/gate4_0/w4/rtl_logs/repeated_dual_completion_stress_228228.backup.log
+?? reports/gate4_0/w4/rtl_logs/tohost_program_status_output_218261.backup.log
+?? reports/gate4_0/w4/rtl_logs/tohost_program_status_output_222042.backup.log
+?? reports/gate4_0/w4/rtl_logs/tohost_program_status_output_224327.backup.log
+?? reports/gate4_0/w4/rtl_logs/tohost_program_status_output_226649.backup.log
+?? reports/gate4_0/w4/rtl_logs/tohost_program_status_output_228278.backup.log
+?? reports/gate4_0/w4/rtl_logs/two_producers_wake_two_consumers_218038.backup.log
+?? reports/gate4_0/w4/rtl_logs/two_producers_wake_two_consumers_221818.backup.log
+?? reports/gate4_0/w4/rtl_logs/two_producers_wake_two_consumers_224105.backup.log
+?? reports/gate4_0/w4/rtl_logs/two_producers_wake_two_consumers_226431.backup.log
+?? reports/gate4_0/w4/rtl_logs/two_producers_wake_two_consumers_228055.backup.log
+?? reports/gate4_0/w4/rtl_logs/write_port_conflict_retention_precise_fault_218140.backup.log
+?? reports/gate4_0/w4/rtl_logs/write_port_conflict_retention_precise_fault_221921.backup.log
+?? reports/gate4_0/w4/rtl_logs/write_port_conflict_retention_precise_fault_224206.backup.log
+?? reports/gate4_0/w4/rtl_logs/write_port_conflict_retention_precise_fault_226531.backup.log
+?? reports/gate4_0/w4/rtl_logs/write_port_conflict_retention_precise_fault_228157.backup.log
+?? reports/gate4_0/w4/status_xsim_independent_alu_33266.backup.log
+?? reports/gate4_1_m3a/
+?? reports/gate5_0/
+?? reports/gate5_1_frontend/repair/r2/logs/xsim_31486.backup.log
+?? reports/gate5_1_frontend/repair/r2/logs/xsim_31695.backup.log
+?? reports/gate5_1_frontend/repair/r2/logs/xsim_33810.backup.log
+?? reports/gate5_1_frontend/repair/r3/throughput_rtl/latency_0_34544.backup.log
+?? reports/gate5_1_frontend/repair/r3/throughput_rtl/latency_0_34750.backup.log
+?? reports/gate5_1_frontend/repair/r3/throughput_rtl/latency_1_34798.backup.log
+?? reports/gate5_1_frontend/repair/r3/throughput_rtl/latency_3_34848.backup.log
+?? reports/gate5_1_frontend/repair/r3/throughput_rtl/latency_4_34896.backup.log
+?? reports/gate5_1_frontend/repair/r4/gate3_9/logs/branch_not_taken_I3_IMEM_RESPONSE_DELAY_4_44919.backup.log
+?? reports/gate5_1_frontend/repair/r4/gate3_9/logs/branch_not_taken_N3_NORMAL_BRANCH_NOT_TAKEN_46310.backup.log
+?? reports/gate5_1_frontend/repair/r4/gate3_9/logs/branch_taken_B2_TRACE_STALL_BURST_44514.backup.log
+?? reports/gate5_1_frontend/repair/r4/gate3_9/logs/branch_taken_B4_TRACE_STALL_AT_BRANCH_COMMIT_44628.backup.log
+?? reports/gate5_1_frontend/repair/r4/gate3_9/logs/branch_taken_D6_STORE_DURING_BRANCH_FLUSH_45500.backup.log
+?? reports/gate5_1_frontend/repair/r4/gate3_9/logs/branch_taken_I5_IMEM_STALE_RESPONSE_AFTER_REDIRECT_45037.backup.log
+?? reports/gate5_1_frontend/repair/r4/gate3_9/logs/branch_taken_N2_NORMAL_BRANCH_TAKEN_46250.backup.log
+?? reports/gate5_1_frontend/repair/r4/gate3_9/logs/branch_taken_P0_RESET_AND_BRANCH_MISPREDICT_45675.backup.log
+?? reports/gate5_1_frontend/repair/r4/gate3_9/logs/branch_taken_P3_EXCEPTION_AND_BRANCH_MISPREDICT_45847.backup.log
+?? reports/gate5_1_frontend/repair/r4/gate3_9/logs/branch_taken_P7_REDIRECT_AND_IMEM_RESPONSE_46078.backup.log
+?? reports/gate5_1_frontend/repair/r4/gate3_9/logs/branch_taken_R6_RESET_BRANCH_RECOVERY_44279.backup.log
+?? reports/gate5_1_frontend/repair/r4/gate3_9/logs/independent_alu_B0_TRACE_READY_ALWAYS_44396.backup.log
+?? reports/gate5_1_frontend/repair/r4/gate3_9/logs/independent_alu_B5_TRACE_STALL_AT_STORE_COMMIT_44687.backup.log
+?? reports/gate5_1_frontend/repair/r4/gate3_9/logs/independent_alu_D1_STORE_REQ_STALL_45211.backup.log
+?? reports/gate5_1_frontend/repair/r4/gate3_9/logs/independent_alu_I0_IMEM_READY_ALWAYS_44746.backup.log
+?? reports/gate5_1_frontend/repair/r4/gate3_9/logs/independent_alu_I2_IMEM_RESPONSE_DELAY_1_44861.backup.log
+?? reports/gate5_1_frontend/repair/r4/gate3_9/logs/independent_alu_I6_IMEM_RESPONSE_DURING_RESET_45095.backup.log
+?? reports/gate5_1_frontend/repair/r4/gate3_9/logs/independent_alu_N0_NORMAL_INDEPENDENT_ALU_46136.backup.log
+?? reports/gate5_1_frontend/repair/r4/gate3_9/logs/independent_alu_P5_COMMIT_AND_TRACE_BACKPRESSURE_45963.backup.log
+?? reports/gate5_1_frontend/repair/r4/gate3_9/logs/independent_alu_R0_POWER_ON_RESET_43931.backup.log
+?? reports/gate5_1_frontend/repair/r4/gate3_9/logs/independent_alu_R10_RESET_IMMEDIATELY_AFTER_RELEASE_46655.backup.log
+?? reports/gate5_1_frontend/repair/r4/gate3_9/logs/independent_alu_R1_RESET_FRONTEND_OUTSTANDING_43991.backup.log
+?? reports/gate5_1_frontend/repair/r4/gate3_9/logs/independent_alu_R7_RESET_TRACE_BACKPRESSURE_44337.backup.log
+?? reports/gate5_1_frontend/repair/r4/gate3_9/logs/independent_alu_R8_DOUBLE_RUNTIME_RESET_46541.backup.log
+?? reports/gate5_1_frontend/repair/r4/gate3_9/logs/independent_alu_R9_RESET_DURING_RESET_INITIALIZATION_46598.backup.log
+?? reports/gate5_1_frontend/repair/r4/gate3_9/logs/load_store_D0_DMEM_READY_ALWAYS_45154.backup.log
+?? reports/gate5_1_frontend/repair/r4/gate3_9/logs/load_store_D2_LOAD_REQ_STALL_45270.backup.log
+?? reports/gate5_1_frontend/repair/r4/gate3_9/logs/load_store_D3_LOAD_RESPONSE_DELAY_45327.backup.log
+?? reports/gate5_1_frontend/repair/r4/gate3_9/logs/load_store_D4_LOAD_RANDOM_DELAY_45385.backup.log
+?? reports/gate5_1_frontend/repair/r4/gate3_9/logs/load_store_D5_STALE_LOAD_RESPONSE_AFTER_FLUSH_45443.backup.log
+?? reports/gate5_1_frontend/repair/r4/gate3_9/logs/load_store_D7_DMEM_RESPONSE_DURING_RESET_45559.backup.log
+?? reports/gate5_1_frontend/repair/r4/gate3_9/logs/load_store_N5_NORMAL_LOAD_STORE_46425.backup.log
+?? reports/gate5_1_frontend/repair/r4/gate3_9/logs/load_store_P1_RESET_AND_LOAD_RESPONSE_45732.backup.log
+?? reports/gate5_1_frontend/repair/r4/gate3_9/logs/load_store_P4_BRANCH_MISPREDICT_AND_LOAD_RESPONSE_45906.backup.log
+?? reports/gate5_1_frontend/repair/r4/gate3_9/logs/load_store_R4_RESET_LOAD_PENDING_44163.backup.log
+?? reports/gate5_1_frontend/repair/r4/gate3_9/logs/nested_branch_B3_TRACE_RANDOM_STALL_44571.backup.log
+?? reports/gate5_1_frontend/repair/r4/gate3_9/logs/nested_branch_I4_IMEM_RANDOM_DELAY_44979.backup.log
+?? reports/gate5_1_frontend/repair/r4/gate3_9/logs/nested_branch_N4_NORMAL_NESTED_BRANCH_46367.backup.log
+?? reports/gate5_1_frontend/repair/r4/gate3_9/logs/raw_chain_B1_TRACE_STALL_1_44456.backup.log
+?? reports/gate5_1_frontend/repair/r4/gate3_9/logs/raw_chain_I1_IMEM_REQ_STALL_44803.backup.log
+?? reports/gate5_1_frontend/repair/r4/gate3_9/logs/raw_chain_N1_NORMAL_RAW_CHAIN_46193.backup.log
+?? reports/gate5_1_frontend/repair/r4/gate3_9/logs/raw_chain_R2_RESET_ROB_NONEMPTY_44048.backup.log
+?? reports/gate5_1_frontend/repair/r4/gate3_9/logs/raw_chain_R3_RESET_IQ_NONEMPTY_44106.backup.log
+?? reports/gate5_1_frontend/repair/r4/gate3_9/logs/tohost_D8_TOHOST_STORE_BACKPRESSURE_45617.backup.log
+?? reports/gate5_1_frontend/repair/r4/gate3_9/logs/tohost_N6_NORMAL_TOHOST_46483.backup.log
+?? reports/gate5_1_frontend/repair/r4/gate3_9/logs/tohost_P2_RESET_AND_STORE_ACCEPT_45789.backup.log
+?? reports/gate5_1_frontend/repair/r4/gate3_9/logs/tohost_P6_COMMIT_AND_STORE_BACKPRESSURE_46021.backup.log
+?? reports/gate5_1_frontend/repair/r4/gate3_9/logs/tohost_R11_RESET_AFTER_TOHOST_CLEAR_AND_RESTART_46716.backup.log
+?? reports/gate5_1_frontend/repair/r4/gate3_9/logs/tohost_R5_RESET_STORE_PENDING_44221.backup.log
+?? reports/gate5_1_frontend_final/
+?? reports/gate5_1_frontend_repair_r2/
+?? reports/gate5_1_frontend_repair_r3_s0/
+?? reports/gate5_1_frontend_repair_r3_s1/
+?? reports/gate5_1_frontend_repair_r3_s3/
+?? reports/gate5_1_frontend_repair_r3_verify/
+?? reports/gate5_1_frontend_repair_r4/
+?? reports/gate5_2_rvc/r1/old_regression/frontend/
+?? reports/gate5_2_rvc/r1/old_regression/m3c/
+?? reports/gate5_2_rvc/r1/old_regression/repair/frontend/compile.log
+?? reports/gate5_2_rvc/r1/old_regression/repair/m3c/logs/generate_programs.log
+?? reports/gate5_2_rvc/r1/old_regression/repair/m3c/logs/rv64m_full_core_tests_compile.log
+?? reports/gate5_2_rvc/r1/old_regression/repair/m3c/logs/rv64m_full_random_tests_compile.log
+?? reports/gate5_2_rvc/r1/old_regression/repair/m3c/logs/rv64m_full_tests_compile.log
+?? reports/gate5_2_rvc/r1/old_regression/repair/w3/artifact_hashes.csv
+?? reports/gate5_2_rvc/r1/old_regression/repair/w3/full_program_architectural_diff.csv
+?? reports/gate5_2_rvc/r1/old_regression/repair/w3/full_program_architectural_diff.md
+?? reports/gate5_2_rvc/r1/old_regression/repair/w3/hls_traces/
+?? reports/gate5_2_rvc/r1/old_regression/repair/w3/logs/
+?? reports/gate5_2_rvc/r1/old_regression/repair/w3/normalized/
+?? reports/gate5_2_rvc/r1/old_regression/repair/w3/normalized_trace_diff.csv
+?? reports/gate5_2_rvc/r1/old_regression/repair/w3/random_metrics.csv
+?? reports/gate5_2_rvc/r1/old_regression/repair/w3/source_hashes_after.txt
+?? reports/gate5_2_rvc/r1/old_regression/repair/w3/suite_results.csv
+?? reports/gate5_2_rvc/r1/old_regression/repair/w3/trace_comparison.csv
+?? reports/gate5_2_rvc/r1/old_regression/w4e/
+?? reports/gate5_2_rvc/r2/logs/canonical_csynth/core_tops.log
+?? reports/gate5_2_rvc/r2/logs/canonical_csynth/module_tops.log
+?? reports/gate5_2_rvc/r2/logs/final_gate3_9_build.log
+?? reports/gate5_2_rvc/r2/logs/final_rv64m_csim.log
+?? reports/gate5_2_rvc/r2/logs/frontend_foundation_tests.log
+?? reports/gate5_2_rvc/r2/logs/gate5_1_preservation/csynth.log
+?? reports/gate5_2_rvc/r2/logs/gate5_1_preservation/xsim.stdout.log
+?? reports/gate5_2_rvc/r2/logs/gate5_1_preservation/xsim_120996.backup.log
+?? reports/gate5_2_rvc/r2/logs/gate5_1_preservation/xsim_137493.backup.log
+?? reports/gate5_2_rvc/r2/logs/gate5_1_preservation/xsim_139134.backup.log
+?? reports/gate5_2_rvc/r2/logs/gate5_1_preservation/xsim_148533.backup.log
+?? reports/gate5_2_rvc/r2/logs/gate5_1_preservation/xsim_166183.backup.log
+?? reports/gate5_2_rvc/r2/logs/gate5_1_preservation/xsim_build.log
+?? reports/gate5_2_rvc/r2/logs/r2_csim_program_build.log
+?? reports/gate5_2_rvc/r2/logs/r2_native_compile.log
+?? reports/gate5_2_rvc/r2/logs/r2_program_build.log
+?? reports/gate5_2_rvc/r2/logs/r2_rtl/
+?? reports/gate5_2_rvc/r2/logs/rvc_execute_gap_tests.log
+?? reports/gate5_2_rvc/r2/logs/rvc_execute_gap_tests_compile.log
+?? reports/gate5_2_rvc/r2/logs/rvc_fetch_random_tests_compile.log
+?? reports/gate5_2_rvc/r2/logs/rvc_fetch_tests_compile.log
+?? reports/gate5_2_rvc/r2/logs/rvc_throughput_compile.log
+?? reports/gate5_2_rvc/r2/logs/tool_versions.log
+?? reports/gate5_2_rvc/r2/logs/vitis_hls.log
+?? reports/gate5_2_rvc/r2/logs/xsim.stdout.log
+?? reports/gate5_2_rvc/r2/logs/xsim_119147.backup.log
+?? reports/gate5_2_rvc/r2/logs/xsim_135716.backup.log
+?? reports/gate5_2_rvc/r2/logs/xsim_138946.backup.log
+?? reports/gate5_2_rvc/r2/logs/xsim_146991.backup.log
+?? reports/gate5_2_rvc/r2/logs/xsim_98159.backup.log
+?? reports/gate5_2_rvc/r2/logs/xsim_build.log
+?? reports/gate5_2_rvc/r2/old_regression/current_gate3_9/logs/
+?? reports/gate5_2_rvc/r2/old_regression/current_gate3_9/reset_latency.csv
+?? reports/gate5_2_rvc/r2/old_regression/current_gate3_9/rtl_test_matrix.csv
+?? reports/gate5_2_rvc/r2/old_regression/current_gate3_9/rtl_traces/
+?? reports/gate5_2_rvc/r2/old_regression/current_m3c/logs/generate_programs.log
+?? reports/gate5_2_rvc/r2/old_regression/current_m3c/logs/rv64m_full_core_tests_compile.log
+?? reports/gate5_2_rvc/r2/old_regression/current_m3c/logs/rv64m_full_random_tests.log
+?? reports/gate5_2_rvc/r2/old_regression/current_m3c/logs/rv64m_full_random_tests_compile.log
+?? reports/gate5_2_rvc/r2/old_regression/current_m3c/logs/rv64m_full_tests.log
+?? reports/gate5_2_rvc/r2/old_regression/current_m3c/logs/rv64m_full_tests_compile.log
+?? reports/gate5_2_rvc/r2/old_regression/current_m3c_csim/generate_merged.log
+?? reports/gate5_2_rvc/r2/old_regression/current_m3c_focused_rtl/csynth_reports/
+?? reports/gate5_2_rvc/r2/old_regression/current_m3c_focused_rtl/logs/
+?? reports/gate5_2_rvc/r2/old_regression/current_m3c_focused_rtl/runtime.csv
+?? reports/gate5_2_rvc/r2/old_regression/current_m3c_full_rtl/logs/
+?? reports/gate5_2_rvc/r2/old_regression/current_m3c_full_rtl/runtime.csv
+?? reports/gate5_2_rvc/r2/old_regression/current_m3c_full_rtl/traces/
+?? reports/gate5_2_rvc/r2/old_regression/current_w3_focused_rtl/rtl_logs/
+?? reports/gate5_2_rvc/r2/old_regression/current_w4_focused_rtl/diagnostic_rtl_hashes.txt
+?? reports/gate5_2_rvc/r2/old_regression/current_w4_focused_rtl/rtl_focused_summary.json
+?? reports/gate5_2_rvc/r2/old_regression/current_w4_focused_rtl/rtl_logs/
+?? reports/gate5_2_rvc/r2/old_regression/current_w4_focused_rtl/tool_versions.txt
+?? reports/gate5_2_rvc/r2/old_regression/current_w4_focused_rtl/w3_current/
+?? reports/gate5_2_rvc/r2/old_regression/current_w4e/concurrency_metrics.csv
+?? reports/gate5_2_rvc/r2/old_regression/current_w4e/regression/w4e/latency_metrics.csv
+?? reports/gate5_2_rvc/r2/old_regression/current_w4e/regression/w4e/logs/
+?? reports/gate5_2_rvc/r2/old_regression/current_w4e/regression/w4e/product_full/artifact_hashes.csv
+?? reports/gate5_2_rvc/r2/old_regression/current_w4e/regression/w4e/product_full/full_program_architectural_diff.csv
+?? reports/gate5_2_rvc/r2/old_regression/current_w4e/regression/w4e/product_full/full_program_architectural_diff.md
+?? reports/gate5_2_rvc/r2/old_regression/current_w4e/regression/w4e/product_full/hls_traces/
+?? reports/gate5_2_rvc/r2/old_regression/current_w4e/regression/w4e/product_full/logs/
+?? reports/gate5_2_rvc/r2/old_regression/current_w4e/regression/w4e/product_full/normalized/
+?? reports/gate5_2_rvc/r2/old_regression/current_w4e/regression/w4e/product_full/normalized_trace_diff.csv
+?? reports/gate5_2_rvc/r2/old_regression/current_w4e/regression/w4e/product_full/random_metrics.csv
+?? reports/gate5_2_rvc/r2/old_regression/current_w4e/regression/w4e/product_full/source_hashes_after.txt
+?? reports/gate5_2_rvc/r2/old_regression/current_w4e/regression/w4e/product_full/suite_results.csv
+?? reports/gate5_2_rvc/r2/old_regression/current_w4e/regression/w4e/product_full/trace_comparison.csv
+?? reports/gate5_2_rvc/r2/old_regression/current_w4e/regression/w4e/suite_results.csv
+?? reports/gate5_2_rvc/r2/old_regression/final_gate3_9/
+?? reports/gate5_2_rvc/r2/old_regression/final_m3c/
+?? reports/gate5_2_rvc/r2/old_regression/final_m3c_focused_rtl/
+?? reports/gate5_2_rvc/r2/old_regression/final_m3c_full_rtl/
+?? reports/gate5_2_rvc/r2/old_regression/final_w3_focused_rtl/
+?? reports/gate5_2_rvc/r2/old_regression/final_w4_focused_rtl/
+?? reports/gate5_2_rvc/r2/old_regression/final_w4e/
+?? reports/gate5_2_rvc/r2/old_regression/gate3_9/
+?? reports/gate5_2_rvc/r2/old_regression/m3c/
+?? reports/gate5_2_rvc/r2/old_regression/m3c_focused_rtl/
+?? reports/gate5_2_rvc/r2/old_regression/m3c_full_rtl/
+?? reports/gate5_2_rvc/r2/old_regression/w3_focused_rtl/
+?? reports/gate5_2_rvc/r2/old_regression/w4_focused_rtl/
+?? reports/gate5_2_rvc/r2/old_regression/w4e/
+?? reports/gate5_2_rvc/r2/r2_rtl_traces/rvc_decode_gaps.jsonl
+?? reports/gate5_2_rvc/r3/regression/
+?? reports/gate5_2_rvc_r1/
+?? reports/gate5_2_rvc_r1_repair/
+?? reports/gate5_2_rvc_r2/
+?? reports/gate5_2_rvc_r2_core/
+?? reports/gate5_2_rvc_r2_final/
+?? reports/gate5_2_rvc_r2_final_core/
+?? reports/gate5_2_rvc_r2_final_verify/
+?? reports/gate5_2_rvc_r2_repair/
+?? reports/gate5_2_rvc_r2_repair_core/
+?? reports/gate5_2_rvc_r2_repair_verify/
+?? reports/gate5_2_rvc_r2_verify/
+?? reports/gate5_2_rvc_r3/
+?? reports/gate5_2_rvc_r3_core/
+?? reports/gate5_2_rvc_r3_verify/
+?? reports/gate5_3_b2_phase_e_frontend/
+?? reports/gate5_3_b3i_preservation_frontend/
+?? reports/gate5_3_fetch_buffer/b2/logs/b2_csim.log
+?? reports/gate5_3_fetch_buffer/b2/logs/b2_csim_program_build.log
+?? reports/gate5_3_fetch_buffer/b2/logs/canonical_csynth/core.log
+?? reports/gate5_3_fetch_buffer/b2/logs/canonical_csynth/fetch_buffer.log
+?? reports/gate5_3_fetch_buffer/b2/logs/canonical_csynth/modules.log
+?? reports/gate5_3_fetch_buffer/b2/logs/canonical_csynth/phase_f_driver.log
+?? reports/gate5_3_fetch_buffer/b2/logs/decoupling_compile.log
+?? reports/gate5_3_fetch_buffer/b2/logs/focused.log
+?? reports/gate5_3_fetch_buffer/b2/logs/focused_compile.log
+?? reports/gate5_3_fetch_buffer/b2/logs/focused_integrity_compile.log
+?? reports/gate5_3_fetch_buffer/b2/logs/full_core_rvc_compile.log
+?? reports/gate5_3_fetch_buffer/b2/logs/integration_csynth.log
+?? reports/gate5_3_fetch_buffer/b2/logs/integration_generate_merged.log
+?? reports/gate5_3_fetch_buffer/b2/logs/integration_rtl.stdout.log
+?? reports/gate5_3_fetch_buffer/b2/logs/integration_rtl_193736.backup.log
+?? reports/gate5_3_fetch_buffer/b2/logs/integration_rtl_194033.backup.log
+?? reports/gate5_3_fetch_buffer/b2/logs/integration_rtl_194328.backup.log
+?? reports/gate5_3_fetch_buffer/b2/logs/integration_rtl_198989.backup.log
+?? reports/gate5_3_fetch_buffer/b2/logs/integration_rtl_199294.backup.log
+?? reports/gate5_3_fetch_buffer/b2/logs/integration_rtl_build.log
+?? reports/gate5_3_fetch_buffer/b2/logs/m3c_program_build.log
+?? reports/gate5_3_fetch_buffer/b2/logs/random_compile.log
+?? reports/gate5_3_fetch_buffer/b2/logs/rv64m_full_core.log
+?? reports/gate5_3_fetch_buffer/b2/logs/rv64m_full_core_compile.log
+?? reports/gate5_3_fetch_buffer/b2/logs/rvc_program_build.log
+?? reports/gate5_3_fetch_buffer/b2/phase_d/full_core_rtl_matrix.csv
+?? reports/gate5_3_fetch_buffer/b2/phase_d/logs/
+?? reports/gate5_3_fetch_buffer/b2/phase_d/source_freshness_manifest.csv
+?? reports/gate5_3_fetch_buffer/b2/phase_d/traces/
+?? reports/gate5_3_fetch_buffer/b2/regression/gate3_9/
+?? reports/gate5_3_fetch_buffer/b2/regression/logs/gate3_9.log
+?? reports/gate5_3_fetch_buffer/b2/regression/logs/gate3_9_build.log
+?? reports/gate5_3_fetch_buffer/b2/regression/logs/gate5_1_csynth.log
+?? reports/gate5_3_fetch_buffer/b2/regression/logs/gate5_1_focused_rtl.log
+?? reports/gate5_3_fetch_buffer/b2/regression/logs/gate5_1_xsim.stdout.log
+?? reports/gate5_3_fetch_buffer/b2/regression/logs/gate5_1_xsim_18368.backup.log
+?? reports/gate5_3_fetch_buffer/b2/regression/logs/gate5_1_xsim_27879.backup.log
+?? reports/gate5_3_fetch_buffer/b2/regression/logs/gate5_1_xsim_37495.backup.log
+?? reports/gate5_3_fetch_buffer/b2/regression/logs/gate5_1_xsim_8414.backup.log
+?? reports/gate5_3_fetch_buffer/b2/regression/logs/gate5_1_xsim_build.log
+?? reports/gate5_3_fetch_buffer/b2/regression/logs/gate5_2_rvc.log
+?? reports/gate5_3_fetch_buffer/b2/regression/logs/m3c_csim.log
+?? reports/gate5_3_fetch_buffer/b2/regression/logs/m3c_focused_rtl.log
+?? reports/gate5_3_fetch_buffer/b2/regression/logs/m3c_full_rtl.log
+?? reports/gate5_3_fetch_buffer/b2/regression/logs/m3c_native.log
+?? reports/gate5_3_fetch_buffer/b2/regression/logs/phase_d_rtl_freshness.log
+?? reports/gate5_3_fetch_buffer/b2/regression/logs/rvc_decode_cross_compile.log
+?? reports/gate5_3_fetch_buffer/b2/regression/logs/rvc_decompress_compile.log
+?? reports/gate5_3_fetch_buffer/b2/regression/logs/w3_w4_focused_rtl.log
+?? reports/gate5_3_fetch_buffer/b2/regression/logs/w4e.log
+?? reports/gate5_3_fetch_buffer/b2/regression/m3c/csim/
+?? reports/gate5_3_fetch_buffer/b2/regression/m3c/focused_rtl/
+?? reports/gate5_3_fetch_buffer/b2/regression/m3c/full_core_rtl/
+?? reports/gate5_3_fetch_buffer/b2/regression/m3c/native/logs/generate_programs.log
+?? reports/gate5_3_fetch_buffer/b2/regression/m3c/native/logs/rv64m_full_core_tests_compile.log
+?? reports/gate5_3_fetch_buffer/b2/regression/m3c/native/logs/rv64m_full_random_tests_compile.log
+?? reports/gate5_3_fetch_buffer/b2/regression/m3c/native/logs/rv64m_full_tests_compile.log
+?? reports/gate5_3_fetch_buffer/b2/regression/w3_w4_focused/diagnostic_rtl_hashes.txt
+?? reports/gate5_3_fetch_buffer/b2/regression/w3_w4_focused/rtl_focused_summary.json
+?? reports/gate5_3_fetch_buffer/b2/regression/w3_w4_focused/rtl_logs/
+?? reports/gate5_3_fetch_buffer/b2/regression/w3_w4_focused/tool_versions.txt
+?? reports/gate5_3_fetch_buffer/b2/regression/w3_w4_focused/traces/
+?? reports/gate5_3_fetch_buffer/b2/regression/w3_w4_focused/w3_current/rtl_logs/
+?? reports/gate5_3_fetch_buffer/b2/regression/w4e/concurrency_metrics.csv
+?? reports/gate5_3_fetch_buffer/b2/regression/w4e/regression/w4e/latency_metrics.csv
+?? reports/gate5_3_fetch_buffer/b2/regression/w4e/regression/w4e/logs/
+?? reports/gate5_3_fetch_buffer/b2/regression/w4e/regression/w4e/product_full/artifact_hashes.csv
+?? reports/gate5_3_fetch_buffer/b2/regression/w4e/regression/w4e/product_full/full_program_architectural_diff.csv
+?? reports/gate5_3_fetch_buffer/b2/regression/w4e/regression/w4e/product_full/full_program_architectural_diff.md
+?? reports/gate5_3_fetch_buffer/b2/regression/w4e/regression/w4e/product_full/hls_traces/
+?? reports/gate5_3_fetch_buffer/b2/regression/w4e/regression/w4e/product_full/logs/branch_snapshot_random_tests.log
+?? reports/gate5_3_fetch_buffer/b2/regression/w4e/regression/w4e/product_full/logs/branch_snapshot_random_tests_compile.log
+?? reports/gate5_3_fetch_buffer/b2/regression/w4e/regression/w4e/product_full/logs/branch_snapshot_tests.log
+?? reports/gate5_3_fetch_buffer/b2/regression/w4e/regression/w4e/product_full/logs/branch_snapshot_tests_compile.log
+?? reports/gate5_3_fetch_buffer/b2/regression/w4e/regression/w4e/product_full/logs/core_top_compile.log
+?? reports/gate5_3_fetch_buffer/b2/regression/w4e/regression/w4e/product_full/logs/directed_tests.log
+?? reports/gate5_3_fetch_buffer/b2/regression/w4e/regression/w4e/product_full/logs/directed_tests_compile.log
+?? reports/gate5_3_fetch_buffer/b2/regression/w4e/regression/w4e/product_full/logs/dispatch_retry_tests.log
+?? reports/gate5_3_fetch_buffer/b2/regression/w4e/regression/w4e/product_full/logs/dispatch_retry_tests_compile.log
+?? reports/gate5_3_fetch_buffer/b2/regression/w4e/regression/w4e/product_full/logs/full_program_arch_diff.log
+?? reports/gate5_3_fetch_buffer/b2/regression/w4e/regression/w4e/product_full/logs/gate1_regression_tests.log
+?? reports/gate5_3_fetch_buffer/b2/regression/w4e/regression/w4e/product_full/logs/gate1_regression_tests_compile.log
+?? reports/gate5_3_fetch_buffer/b2/regression/w4e/regression/w4e/product_full/logs/gate4_w1_lane_interface_tests.log
+?? reports/gate5_3_fetch_buffer/b2/regression/w4e/regression/w4e/product_full/logs/gate4_w1_lane_interface_tests_compile.log
+?? reports/gate5_3_fetch_buffer/b2/regression/w4e/regression/w4e/product_full/logs/generate_merged.log
+?? reports/gate5_3_fetch_buffer/b2/regression/w4e/regression/w4e/product_full/logs/hls_cpp_trace.log
+?? reports/gate5_3_fetch_buffer/b2/regression/w4e/regression/w4e/product_full/logs/hls_csim_trace.log
+?? reports/gate5_3_fetch_buffer/b2/regression/w4e/regression/w4e/product_full/logs/hls_prefix_trace_tb_compile.log
+?? reports/gate5_3_fetch_buffer/b2/regression/w4e/regression/w4e/product_full/logs/iq_compaction_tests.log
+?? reports/gate5_3_fetch_buffer/b2/regression/w4e/regression/w4e/product_full/logs/iq_compaction_tests_compile.log
+?? reports/gate5_3_fetch_buffer/b2/regression/w4e/regression/w4e/product_full/logs/lsu_minimal_tests.log
+?? reports/gate5_3_fetch_buffer/b2/regression/w4e/regression/w4e/product_full/logs/lsu_minimal_tests_compile.log
+?? reports/gate5_3_fetch_buffer/b2/regression/w4e/regression/w4e/product_full/logs/merged_compile.log
+?? reports/gate5_3_fetch_buffer/b2/regression/w4e/regression/w4e/product_full/logs/partial_order_compile.log
+?? reports/gate5_3_fetch_buffer/b2/regression/w4e/regression/w4e/product_full/logs/reset_architecture_pipelined_tests.log
+?? reports/gate5_3_fetch_buffer/b2/regression/w4e/regression/w4e/product_full/logs/reset_architecture_pipelined_tests_compile.log
+?? reports/gate5_3_fetch_buffer/b2/regression/w4e/regression/w4e/product_full/logs/reset_architecture_tests.log
+?? reports/gate5_3_fetch_buffer/b2/regression/w4e/regression/w4e/product_full/logs/reset_architecture_tests_compile.log
+?? reports/gate5_3_fetch_buffer/b2/regression/w4e/regression/w4e/product_full/logs/synth_tops_compile.log
+?? reports/gate5_3_fetch_buffer/b2/regression/w4e/regression/w4e/product_full/logs/w2_dual_grant_random_tests.log
+?? reports/gate5_3_fetch_buffer/b2/regression/w4e/regression/w4e/product_full/logs/w2_dual_grant_random_tests_compile.log
+?? reports/gate5_3_fetch_buffer/b2/regression/w4e/regression/w4e/product_full/logs/w2_dual_grant_tests.log
+?? reports/gate5_3_fetch_buffer/b2/regression/w4e/regression/w4e/product_full/logs/w2_dual_grant_tests_compile.log
+?? reports/gate5_3_fetch_buffer/b2/regression/w4e/regression/w4e/product_full/logs/w3_completion_buffer_tests.log
+?? reports/gate5_3_fetch_buffer/b2/regression/w4e/regression/w4e/product_full/logs/w3_completion_buffer_tests_compile.log
+?? reports/gate5_3_fetch_buffer/b2/regression/w4e/regression/w4e/product_full/logs/w3_dual_execute_random_tests.log
+?? reports/gate5_3_fetch_buffer/b2/regression/w4e/regression/w4e/product_full/logs/w3_dual_execute_random_tests_compile.log
+?? reports/gate5_3_fetch_buffer/b2/regression/w4e/regression/w4e/product_full/logs/w3_dual_execute_tests.log
+?? reports/gate5_3_fetch_buffer/b2/regression/w4e/regression/w4e/product_full/logs/w3_dual_execute_tests_compile.log
+?? reports/gate5_3_fetch_buffer/b2/regression/w4e/regression/w4e/product_full/normalized/
+?? reports/gate5_3_fetch_buffer/b2/regression/w4e/regression/w4e/product_full/normalized_trace_diff.csv
+?? reports/gate5_3_fetch_buffer/b2/regression/w4e/regression/w4e/product_full/random_metrics.csv
+?? reports/gate5_3_fetch_buffer/b2/regression/w4e/regression/w4e/product_full/source_hashes_after.txt
+?? reports/gate5_3_fetch_buffer/b2/regression/w4e/regression/w4e/product_full/suite_results.csv
+?? reports/gate5_3_fetch_buffer/b2/regression/w4e/regression/w4e/product_full/trace_comparison.csv
+?? reports/gate5_3_fetch_buffer/b2/regression/w4e/regression/w4e/suite_results.csv
+?? reports/gate5_3_fetch_buffer/b2/rtl_test_matrix.csv
+?? reports/gate5_3_fetch_buffer/b3i/git_status_before.txt
+?? reports/gate5_3_fetch_buffer/b3i/logs/canonical_csynth/
+?? reports/gate5_3_fetch_buffer/b3i/logs/csim_program_build.log
+?? reports/gate5_3_fetch_buffer/b3i/logs/directed_compile.log
+?? reports/gate5_3_fetch_buffer/b3i/logs/full_core_native_compile.log
+?? reports/gate5_3_fetch_buffer/b3i/logs/full_core_native_program_build.log
+?? reports/gate5_3_fetch_buffer/b3i/logs/native.log
+?? reports/gate5_3_fetch_buffer/b3i/logs/native_compile.log
+?? reports/gate5_3_fetch_buffer/b3i/logs/packet_csynth.log
+?? reports/gate5_3_fetch_buffer/b3i/logs/packet_frontend_csynth.log
+?? reports/gate5_3_fetch_buffer/b3i/logs/packet_frontend_rtl.stdout.log
+?? reports/gate5_3_fetch_buffer/b3i/logs/packet_frontend_rtl_93332.backup.log
+?? reports/gate5_3_fetch_buffer/b3i/logs/packet_frontend_rtl_93517.backup.log
+?? reports/gate5_3_fetch_buffer/b3i/logs/packet_frontend_rtl_93661.backup.log
+?? reports/gate5_3_fetch_buffer/b3i/logs/packet_frontend_rtl_93805.backup.log
+?? reports/gate5_3_fetch_buffer/b3i/logs/packet_frontend_rtl_94381.backup.log
+?? reports/gate5_3_fetch_buffer/b3i/logs/packet_frontend_rtl_build.log
+?? reports/gate5_3_fetch_buffer/b3i/logs/packet_rtl.stdout.log
+?? reports/gate5_3_fetch_buffer/b3i/logs/packet_rtl_91160.backup.log
+?? reports/gate5_3_fetch_buffer/b3i/logs/packet_rtl_91747.backup.log
+?? reports/gate5_3_fetch_buffer/b3i/logs/packet_rtl_92328.backup.log
+?? reports/gate5_3_fetch_buffer/b3i/logs/packet_rtl_93150.backup.log
+?? reports/gate5_3_fetch_buffer/b3i/logs/packet_rtl_94199.backup.log
+?? reports/gate5_3_fetch_buffer/b3i/logs/packet_rtl_build.log
+?? reports/gate5_3_fetch_buffer/b3i/logs/program_build.log
+?? reports/gate5_3_fetch_buffer/b3i/logs/random_compile.log
+?? reports/gate5_3_fetch_buffer/b3i/logs/utilization_compile.log
+?? reports/gate5_3_fetch_buffer/b3i/regression/commands.log
+?? reports/gate5_3_fetch_buffer/b3i/regression/gate3_9/logs/
+?? reports/gate5_3_fetch_buffer/b3i/regression/gate3_9/reset_latency.csv
+?? reports/gate5_3_fetch_buffer/b3i/regression/gate3_9/rtl_run_status.csv
+?? reports/gate5_3_fetch_buffer/b3i/regression/gate3_9/rtl_traces/
+?? reports/gate5_3_fetch_buffer/b3i/regression/logs/gate3_9.log
+?? reports/gate5_3_fetch_buffer/b3i/regression/logs/gate3_9_build.log
+?? reports/gate5_3_fetch_buffer/b3i/regression/logs/gate5_1_csynth.log
+?? reports/gate5_3_fetch_buffer/b3i/regression/logs/gate5_1_focused_rtl.log
+?? reports/gate5_3_fetch_buffer/b3i/regression/logs/gate5_1_xsim.stdout.log
+?? reports/gate5_3_fetch_buffer/b3i/regression/logs/gate5_1_xsim_102094.backup.log
+?? reports/gate5_3_fetch_buffer/b3i/regression/logs/gate5_1_xsim_113025.backup.log
+?? reports/gate5_3_fetch_buffer/b3i/regression/logs/gate5_1_xsim_96728.backup.log
+?? reports/gate5_3_fetch_buffer/b3i/regression/logs/gate5_1_xsim_build.log
+?? reports/gate5_3_fetch_buffer/b3i/regression/logs/gate5_2_rvc.log
+?? reports/gate5_3_fetch_buffer/b3i/regression/logs/m3c_csim.log
+?? reports/gate5_3_fetch_buffer/b3i/regression/logs/m3c_focused_rtl.log
+?? reports/gate5_3_fetch_buffer/b3i/regression/logs/m3c_full_rtl.log
+?? reports/gate5_3_fetch_buffer/b3i/regression/logs/m3c_native.log
+?? reports/gate5_3_fetch_buffer/b3i/regression/logs/phase_d_rtl_freshness.log
+?? reports/gate5_3_fetch_buffer/b3i/regression/logs/rvc_decode_cross_compile.log
+?? reports/gate5_3_fetch_buffer/b3i/regression/logs/rvc_decompress_compile.log
+?? reports/gate5_3_fetch_buffer/b3i/regression/logs/w3_w4_focused_rtl.log
+?? reports/gate5_3_fetch_buffer/b3i/regression/logs/w4e.log
+?? reports/gate5_3_fetch_buffer/b3i/regression/m3c/csim/generate_merged.log
+?? reports/gate5_3_fetch_buffer/b3i/regression/m3c/focused_rtl/csynth_reports/
+?? reports/gate5_3_fetch_buffer/b3i/regression/m3c/focused_rtl/logs/
+?? reports/gate5_3_fetch_buffer/b3i/regression/m3c/focused_rtl/runtime.csv
+?? reports/gate5_3_fetch_buffer/b3i/regression/m3c/full_core_rtl/logs/
+?? reports/gate5_3_fetch_buffer/b3i/regression/m3c/full_core_rtl/runtime.csv
+?? reports/gate5_3_fetch_buffer/b3i/regression/m3c/full_core_rtl/traces/
+?? reports/gate5_3_fetch_buffer/b3i/regression/m3c/native/logs/generate_programs.log
+?? reports/gate5_3_fetch_buffer/b3i/regression/m3c/native/logs/rv64m_full_core_tests_compile.log
+?? reports/gate5_3_fetch_buffer/b3i/regression/m3c/native/logs/rv64m_full_random_tests_compile.log
+?? reports/gate5_3_fetch_buffer/b3i/regression/m3c/native/logs/rv64m_full_tests_compile.log
+?? reports/gate5_3_fetch_buffer/b3i/regression/w3_w4_focused/diagnostic_rtl_hashes.txt
+?? reports/gate5_3_fetch_buffer/b3i/regression/w3_w4_focused/rtl_focused_summary.json
+?? reports/gate5_3_fetch_buffer/b3i/regression/w3_w4_focused/rtl_logs/
+?? reports/gate5_3_fetch_buffer/b3i/regression/w3_w4_focused/tool_versions.txt
+?? reports/gate5_3_fetch_buffer/b3i/regression/w3_w4_focused/traces/
+?? reports/gate5_3_fetch_buffer/b3i/regression/w3_w4_focused/w3_current/rtl_logs/
+?? reports/gate5_3_fetch_buffer/b3i/regression/w4e/concurrency_metrics.csv
+?? reports/gate5_3_fetch_buffer/b3i/regression/w4e/regression/w4e/latency_metrics.csv
+?? reports/gate5_3_fetch_buffer/b3i/regression/w4e/regression/w4e/logs/
+?? reports/gate5_3_fetch_buffer/b3i/regression/w4e/regression/w4e/product_full/artifact_hashes.csv
+?? reports/gate5_3_fetch_buffer/b3i/regression/w4e/regression/w4e/product_full/full_program_architectural_diff.md
+?? reports/gate5_3_fetch_buffer/b3i/regression/w4e/regression/w4e/product_full/hls_traces/
+?? reports/gate5_3_fetch_buffer/b3i/regression/w4e/regression/w4e/product_full/logs/branch_snapshot_random_tests.log
+?? reports/gate5_3_fetch_buffer/b3i/regression/w4e/regression/w4e/product_full/logs/branch_snapshot_random_tests_compile.log
+?? reports/gate5_3_fetch_buffer/b3i/regression/w4e/regression/w4e/product_full/logs/branch_snapshot_tests.log
+?? reports/gate5_3_fetch_buffer/b3i/regression/w4e/regression/w4e/product_full/logs/branch_snapshot_tests_compile.log
+?? reports/gate5_3_fetch_buffer/b3i/regression/w4e/regression/w4e/product_full/logs/core_top_compile.log
+?? reports/gate5_3_fetch_buffer/b3i/regression/w4e/regression/w4e/product_full/logs/directed_tests.log
+?? reports/gate5_3_fetch_buffer/b3i/regression/w4e/regression/w4e/product_full/logs/directed_tests_compile.log
+?? reports/gate5_3_fetch_buffer/b3i/regression/w4e/regression/w4e/product_full/logs/dispatch_retry_tests.log
+?? reports/gate5_3_fetch_buffer/b3i/regression/w4e/regression/w4e/product_full/logs/dispatch_retry_tests_compile.log
+?? reports/gate5_3_fetch_buffer/b3i/regression/w4e/regression/w4e/product_full/logs/full_program_arch_diff.log
+?? reports/gate5_3_fetch_buffer/b3i/regression/w4e/regression/w4e/product_full/logs/gate1_regression_tests.log
+?? reports/gate5_3_fetch_buffer/b3i/regression/w4e/regression/w4e/product_full/logs/gate1_regression_tests_compile.log
+?? reports/gate5_3_fetch_buffer/b3i/regression/w4e/regression/w4e/product_full/logs/gate4_w1_lane_interface_tests.log
+?? reports/gate5_3_fetch_buffer/b3i/regression/w4e/regression/w4e/product_full/logs/gate4_w1_lane_interface_tests_compile.log
+?? reports/gate5_3_fetch_buffer/b3i/regression/w4e/regression/w4e/product_full/logs/generate_merged.log
+?? reports/gate5_3_fetch_buffer/b3i/regression/w4e/regression/w4e/product_full/logs/hls_cpp_trace.log
+?? reports/gate5_3_fetch_buffer/b3i/regression/w4e/regression/w4e/product_full/logs/hls_csim_trace.log
+?? reports/gate5_3_fetch_buffer/b3i/regression/w4e/regression/w4e/product_full/logs/hls_prefix_trace_tb_compile.log
+?? reports/gate5_3_fetch_buffer/b3i/regression/w4e/regression/w4e/product_full/logs/iq_compaction_tests.log
+?? reports/gate5_3_fetch_buffer/b3i/regression/w4e/regression/w4e/product_full/logs/iq_compaction_tests_compile.log
+?? reports/gate5_3_fetch_buffer/b3i/regression/w4e/regression/w4e/product_full/logs/lsu_minimal_tests.log
+?? reports/gate5_3_fetch_buffer/b3i/regression/w4e/regression/w4e/product_full/logs/lsu_minimal_tests_compile.log
+?? reports/gate5_3_fetch_buffer/b3i/regression/w4e/regression/w4e/product_full/logs/merged_compile.log
+?? reports/gate5_3_fetch_buffer/b3i/regression/w4e/regression/w4e/product_full/logs/partial_order_compile.log
+?? reports/gate5_3_fetch_buffer/b3i/regression/w4e/regression/w4e/product_full/logs/reset_architecture_pipelined_tests.log
+?? reports/gate5_3_fetch_buffer/b3i/regression/w4e/regression/w4e/product_full/logs/reset_architecture_pipelined_tests_compile.log
+?? reports/gate5_3_fetch_buffer/b3i/regression/w4e/regression/w4e/product_full/logs/reset_architecture_tests.log
+?? reports/gate5_3_fetch_buffer/b3i/regression/w4e/regression/w4e/product_full/logs/reset_architecture_tests_compile.log
+?? reports/gate5_3_fetch_buffer/b3i/regression/w4e/regression/w4e/product_full/logs/synth_tops_compile.log
+?? reports/gate5_3_fetch_buffer/b3i/regression/w4e/regression/w4e/product_full/logs/w2_dual_grant_random_tests.log
+?? reports/gate5_3_fetch_buffer/b3i/regression/w4e/regression/w4e/product_full/logs/w2_dual_grant_random_tests_compile.log
+?? reports/gate5_3_fetch_buffer/b3i/regression/w4e/regression/w4e/product_full/logs/w2_dual_grant_tests.log
+?? reports/gate5_3_fetch_buffer/b3i/regression/w4e/regression/w4e/product_full/logs/w2_dual_grant_tests_compile.log
+?? reports/gate5_3_fetch_buffer/b3i/regression/w4e/regression/w4e/product_full/logs/w3_completion_buffer_tests.log
+?? reports/gate5_3_fetch_buffer/b3i/regression/w4e/regression/w4e/product_full/logs/w3_completion_buffer_tests_compile.log
+?? reports/gate5_3_fetch_buffer/b3i/regression/w4e/regression/w4e/product_full/logs/w3_dual_execute_random_tests.log
+?? reports/gate5_3_fetch_buffer/b3i/regression/w4e/regression/w4e/product_full/logs/w3_dual_execute_random_tests_compile.log
+?? reports/gate5_3_fetch_buffer/b3i/regression/w4e/regression/w4e/product_full/logs/w3_dual_execute_tests.log
+?? reports/gate5_3_fetch_buffer/b3i/regression/w4e/regression/w4e/product_full/logs/w3_dual_execute_tests_compile.log
+?? reports/gate5_3_fetch_buffer/b3i/regression/w4e/regression/w4e/product_full/normalized/
+?? reports/gate5_3_fetch_buffer/b3i/regression/w4e/regression/w4e/product_full/normalized_trace_diff.csv
+?? reports/gate5_3_fetch_buffer/b3i/regression/w4e/regression/w4e/product_full/random_metrics.csv
+?? reports/gate5_3_fetch_buffer/b3i/regression/w4e/regression/w4e/product_full/source_hashes_after.txt
+?? reports/gate5_3_fetch_buffer/b3i/regression/w4e/regression/w4e/product_full/suite_results.csv
+?? reports/gate5_3_fetch_buffer/b3i/regression/w4e/regression/w4e/product_full/trace_comparison.csv
+?? reports/gate5_3_fetch_buffer/b3i/regression/w4e/regression/w4e/suite_results.csv
+?? reports/gate5_3_fetch_buffer/b3i/rtl/logs/
+?? reports/gate5_3_fetch_buffer_b2/
+?? reports/gate5_3_fetch_buffer_b2_core/
+?? reports/gate5_3_fetch_buffer_b3i/
+?? reports/gate5_3_fetch_buffer_b3i_core/
+?? reports/gate5_4_ftq/f0/
+?? reports/gate5_4_p1/
+?? reports/gate5_4_p2_bram/
+?? reports/gate5_4_p2_depth/
+?? reports/gate5_4_p2_lutram/
+?? reports/gate5_4_p2_preserve/
+?? reports/gate5_4_pf1_final2/module_csynth/
+?? reports/gate5_4_pf2_exception/
+?? reports/gate5_4_pf2_final/
+?? reports/gate5_4_pf2_focused/
+?? reports/gate5_4_pf2_repair_final/
+?? reports/gate5_4_pf2_repair_focused/
+?? reports/gate5_4_pf2_repair_pf1/
+?? reports/gate5_4_pf3/module_csynth/
+?? reports/gate5_4_pf3_canonical/module_csynth/
+?? reports/gate5_4_pf3_synth/
+?? reports/gate5_4_pf3a_canonical/module_csynth/
+?? reports/gate5_4_pf3a_pf1/module_csynth/
+?? reports/gate5_4_pf3a_pf2/module_csynth/
+?? reports/gate5_4_pf3a_pf3/module_csynth/
+?? reports/gate5_4_pf3r_canonical/module_csynth/
+?? reports/gate5_4_pf4_canonical/module_csynth/synth_completion_top.log
+?? reports/gate5_4_pf4_canonical/module_csynth/synth_completion_top.time
+?? reports/gate5_4_pf4_canonical/module_csynth/synth_core_step_top.log
+?? reports/gate5_4_pf4_canonical/module_csynth/synth_core_step_top.time
+?? reports/gate5_4_pf4_canonical/module_csynth/synth_execute_top.log
+?? reports/gate5_4_pf4_canonical/module_csynth/synth_execute_top.time
+?? reports/gate5_4_pf4_canonical/module_csynth/synth_frontend_top.log
+?? reports/gate5_4_pf4_canonical/module_csynth/synth_frontend_top.time
+?? reports/gate5_4_pf4_canonical/module_csynth/synth_ftq_top.log
+?? reports/gate5_4_pf4_canonical/module_csynth/synth_ftq_top.time
+?? reports/gate5_4_pf4_canonical/module_csynth/synth_issue_top.log
+?? reports/gate5_4_pf4_canonical/module_csynth/synth_issue_top.time
+?? reports/gate5_4_pf4_canonical/module_csynth/synth_predictor_foundation_top.log
+?? reports/gate5_4_pf4_canonical/module_csynth/synth_predictor_foundation_top.time
+?? reports/gate5_4_pf4_canonical/module_csynth/synth_rob_top.log
+?? reports/gate5_4_pf4_canonical/module_csynth/synth_rob_top.time
+?? reports/gate5_4_pf4_preservation_pf1/module_csynth/
+?? reports/gate5_4_pf4_preservation_pf2/module_csynth/
+?? reports/gate5_4_pf4_preservation_pf3/module_csynth/
+?? reports/gate5_4_pf5_canonical/
+?? reports/gate5_4_pf5_canonical_current/
+?? reports/gate5_4_pf5_canonical_final/module_csynth/
+?? reports/gate5_4_pf5_canonical_remaining/
+?? reports/gate5_4_pf5_pf1_preservation/
+?? reports/gate5_4_pf5_preservation_pf1/
+?? reports/gate5_4_pf5_preservation_pf2/
+?? reports/gate5_4_predictor/p1/logs/predecode_directed_compile.log
+?? reports/gate5_4_predictor/p1/logs/predecode_packet_compile.log
+?? reports/gate5_4_predictor/p1/logs/predecode_random_compile.log
+?? reports/gate5_4_predictor/p1/logs/rtl/xelab.log
+?? reports/gate5_4_predictor/p1/logs/rtl/xvlog.log
+?? reports/gate5_4_predictor/p1/regression/
+?? reports/gate5_4_predictor/p2/logs/predictor_composition_compile.log
+?? reports/gate5_4_predictor/p2/logs/predictor_directed_compile.log
+?? reports/gate5_4_predictor/p2/logs/predictor_random_compile.log
+?? reports/gate5_4_predictor/p2/logs/rtl/xelab.log
+?? reports/gate5_4_predictor/p2/logs/rtl/xvlog.log
+?? reports/gate5_4_predictor/p2/regression/
+?? reports/gate5_4_product_integration/pf1/logs/exception_recovery_program_tests_compile.log
+?? reports/gate5_4_product_integration/pf1/logs/exception_recovery_random_tests_compile.log
+?? reports/gate5_4_product_integration/pf1/logs/exception_recovery_tests_compile.log
+?? reports/gate5_4_product_integration/pf1/logs/pf1_exception_rtl.stdout.log
+?? reports/gate5_4_product_integration/pf1/logs/pf1_exception_rtl_23365.backup.log
+?? reports/gate5_4_product_integration/pf1/logs/pf1_exception_rtl_35881.backup.log
+?? reports/gate5_4_product_integration/pf1/logs/pf1_exception_rtl_50524.backup.log
+?? reports/gate5_4_product_integration/pf1/logs/pf1_exception_rtl_51265.backup.log
+?? reports/gate5_4_product_integration/pf1/logs/pf1_exception_rtl_70918.backup.log
+?? reports/gate5_4_product_integration/pf1/logs/pf1_exception_rtl_build.log
+?? reports/gate5_4_product_integration/pf1/logs/pf1_full_core_rtl_0.stdout.log
+?? reports/gate5_4_product_integration/pf1/logs/pf1_full_core_rtl_0_14816.backup.log
+?? reports/gate5_4_product_integration/pf1/logs/pf1_full_core_rtl_0_26201.backup.log
+?? reports/gate5_4_product_integration/pf1/logs/pf1_full_core_rtl_0_39878.backup.log
+?? reports/gate5_4_product_integration/pf1/logs/pf1_full_core_rtl_0_47068.backup.log
+?? reports/gate5_4_product_integration/pf1/logs/pf1_full_core_rtl_0_72312.backup.log
+?? reports/gate5_4_product_integration/pf1/logs/pf1_full_core_rtl_1.stdout.log
+?? reports/gate5_4_product_integration/pf1/logs/pf1_full_core_rtl_1_14926.backup.log
+?? reports/gate5_4_product_integration/pf1/logs/pf1_full_core_rtl_1_26250.backup.log
+?? reports/gate5_4_product_integration/pf1/logs/pf1_full_core_rtl_1_39928.backup.log
+?? reports/gate5_4_product_integration/pf1/logs/pf1_full_core_rtl_1_47174.backup.log
+?? reports/gate5_4_product_integration/pf1/logs/pf1_full_core_rtl_1_72499.backup.log
+?? reports/gate5_4_product_integration/pf1/logs/pf1_full_core_rtl_2.stdout.log
+?? reports/gate5_4_product_integration/pf1/logs/pf1_full_core_rtl_2_15024.backup.log
+?? reports/gate5_4_product_integration/pf1/logs/pf1_full_core_rtl_2_26300.backup.log
+?? reports/gate5_4_product_integration/pf1/logs/pf1_full_core_rtl_2_39978.backup.log
+?? reports/gate5_4_product_integration/pf1/logs/pf1_full_core_rtl_2_47271.backup.log
+?? reports/gate5_4_product_integration/pf1/logs/pf1_full_core_rtl_2_72646.backup.log
+?? reports/gate5_4_product_integration/pf1/logs/pf1_full_core_rtl_3.stdout.log
+?? reports/gate5_4_product_integration/pf1/logs/pf1_full_core_rtl_3_15120.backup.log
+?? reports/gate5_4_product_integration/pf1/logs/pf1_full_core_rtl_3_26350.backup.log
+?? reports/gate5_4_product_integration/pf1/logs/pf1_full_core_rtl_3_40027.backup.log
+?? reports/gate5_4_product_integration/pf1/logs/pf1_full_core_rtl_3_47367.backup.log
+?? reports/gate5_4_product_integration/pf1/logs/pf1_full_core_rtl_3_72792.backup.log
+?? reports/gate5_4_product_integration/pf1/logs/pf1_full_core_rtl_4.stdout.log
+?? reports/gate5_4_product_integration/pf1/logs/pf1_full_core_rtl_4_15213.backup.log
+?? reports/gate5_4_product_integration/pf1/logs/pf1_full_core_rtl_4_26401.backup.log
+?? reports/gate5_4_product_integration/pf1/logs/pf1_full_core_rtl_4_40080.backup.log
+?? reports/gate5_4_product_integration/pf1/logs/pf1_full_core_rtl_4_47458.backup.log
+?? reports/gate5_4_product_integration/pf1/logs/pf1_full_core_rtl_4_72933.backup.log
+?? reports/gate5_4_product_integration/pf1/logs/pf1_full_core_rtl_5.stdout.log
+?? reports/gate5_4_product_integration/pf1/logs/pf1_full_core_rtl_5_15314.backup.log
+?? reports/gate5_4_product_integration/pf1/logs/pf1_full_core_rtl_5_26452.backup.log
+?? reports/gate5_4_product_integration/pf1/logs/pf1_full_core_rtl_5_40130.backup.log
+?? reports/gate5_4_product_integration/pf1/logs/pf1_full_core_rtl_5_47551.backup.log
+?? reports/gate5_4_product_integration/pf1/logs/pf1_full_core_rtl_5_73031.backup.log
+?? reports/gate5_4_product_integration/pf1/logs/pf1_full_core_rtl_6.stdout.log
+?? reports/gate5_4_product_integration/pf1/logs/pf1_full_core_rtl_6_15372.backup.log
+?? reports/gate5_4_product_integration/pf1/logs/pf1_full_core_rtl_6_26504.backup.log
+?? reports/gate5_4_product_integration/pf1/logs/pf1_full_core_rtl_6_40180.backup.log
+?? reports/gate5_4_product_integration/pf1/logs/pf1_full_core_rtl_6_47610.backup.log
+?? reports/gate5_4_product_integration/pf1/logs/pf1_full_core_rtl_6_73168.backup.log
+?? reports/gate5_4_product_integration/pf1/logs/pf1_full_core_rtl_7.stdout.log
+?? reports/gate5_4_product_integration/pf1/logs/pf1_full_core_rtl_7_15472.backup.log
+?? reports/gate5_4_product_integration/pf1/logs/pf1_full_core_rtl_7_26554.backup.log
+?? reports/gate5_4_product_integration/pf1/logs/pf1_full_core_rtl_7_40231.backup.log
+?? reports/gate5_4_product_integration/pf1/logs/pf1_full_core_rtl_7_47706.backup.log
+?? reports/gate5_4_product_integration/pf1/logs/pf1_full_core_rtl_7_73276.backup.log
+?? reports/gate5_4_product_integration/pf1/logs/pf1_full_core_rtl_build.log
+?? reports/gate5_4_product_integration/pf2/gate3_9_preservation/
+?? reports/gate5_4_product_integration/pf3/git_status_before.txt
+?? reports/gate5_4_product_integration/pf4/full_core_rtl/logs/
+?? reports/gate5_4_product_integration/pf5/full_core_rtl/logs/
+?? reports/gate5_4_product_integration/pf5/pf5_product_csim.log
+?? reports/gate5_4_product_integration/pf5/preservation/b3i/logs/full_core_native_compile.log
+?? reports/gate5_4_product_integration/pf5/preservation/b3i/logs/full_core_native_program_build.log
+?? reports/gate5_4_product_integration/pf5/preservation/b3i/logs/random_compile.log
+?? reports/gate5_4_product_integration/pf5/preservation/b3i/rtl/logs/
+?? reports/gate5_4_product_integration/pf5/preservation/m3c/logs/generate_programs.log
+?? reports/gate5_4_product_integration/pf5/preservation/m3c/logs/rv64m_full_core_tests_compile.log
+?? reports/gate5_4_product_integration/pf5/preservation/m3c/logs/rv64m_full_random_tests_compile.log
+?? reports/gate5_4_product_integration/pf5/preservation/m3c/logs/rv64m_full_tests_compile.log
+?? reports/gate5_4_product_integration/pf5/preservation/pf2_full_core/logs/
+?? reports/gate5_4_product_integration/pf5/preservation/r2/logs/r2_csim.log
+?? reports/gate5_4_product_integration/pf5/preservation/r2/logs/r2_csim_program_build.log
+?? reports/gate5_4_product_integration/pf5/preservation/r2/logs/r2_native_compile.log
+?? reports/gate5_4_product_integration/pf5/preservation/r2/logs/r2_program_build.log
+?? reports/gate5_4_product_integration/pf5/preservation/w3/focused/rtl_logs/branch_kill.stdout.log
+?? reports/gate5_4_product_integration/pf5/preservation/w3/focused/rtl_logs/dmem_backpressure.stdout.log
+?? reports/gate5_4_product_integration/pf5/preservation/w3/focused/rtl_logs/dual_accept.stdout.log
+?? reports/gate5_4_product_integration/pf5/preservation/w3/focused/rtl_logs/dual_pending.stdout.log
+?? reports/gate5_4_product_integration/pf5/preservation/w3/focused/rtl_logs/hls_branch_kill_generation.log
+?? reports/gate5_4_product_integration/pf5/preservation/w3/focused/rtl_logs/hls_completion_generation.log
+?? reports/gate5_4_product_integration/pf5/preservation/w3/focused/rtl_logs/hls_dual_pending_generation.log
+?? reports/gate5_4_product_integration/pf5/preservation/w3/focused/rtl_logs/hls_generation.log
+?? reports/gate5_4_product_integration/pf5/preservation/w3/focused/rtl_logs/hls_rob_wrap_generation.log
+?? reports/gate5_4_product_integration/pf5/preservation/w3/focused/rtl_logs/int_blocked_mem_forward.stdout.log
+?? reports/gate5_4_product_integration/pf5/preservation/w3/focused/rtl_logs/load_response_int_conflict.stdout.log
+?? reports/gate5_4_product_integration/pf5/preservation/w3/focused/rtl_logs/mem_blocked_int_forward.stdout.log
+?? reports/gate5_4_product_integration/pf5/preservation/w3/focused/rtl_logs/reset_clear.stdout.log
+?? reports/gate5_4_product_integration/pf5/preservation/w3/focused/rtl_logs/rob_wrap_multiple_identity.stdout.log
+?? reports/gate5_4_product_integration/pf5/preservation/w3/focused/rtl_logs/stale_completion_identity.stdout.log
+?? reports/gate5_4_product_integration/pf5/preservation/w3/focused/rtl_logs/trace_backpressure.stdout.log
+?? reports/gate5_4_product_integration/pf5/preservation/w3/focused/rtl_logs/wrapper_cpp.log
+?? reports/gate5_4_product_integration/pf5/preservation/w3/focused/rtl_logs/xsim_build.log
+?? reports/gate5_4_product_integration/pf5/preservation/w3/software/hls_traces/
+?? reports/gate5_4_product_integration/pf5/preservation/w3/software/logs/branch_snapshot_random_tests_compile.log
+?? reports/gate5_4_product_integration/pf5/preservation/w3/software/logs/branch_snapshot_tests_compile.log
+?? reports/gate5_4_product_integration/pf5/preservation/w3/software/logs/core_top_compile.log
+?? reports/gate5_4_product_integration/pf5/preservation/w3/software/logs/directed_tests_compile.log
+?? reports/gate5_4_product_integration/pf5/preservation/w3/software/logs/dispatch_retry_tests_compile.log
+?? reports/gate5_4_product_integration/pf5/preservation/w3/software/logs/full_program_arch_diff.log
+?? reports/gate5_4_product_integration/pf5/preservation/w3/software/logs/gate1_regression_tests_compile.log
+?? reports/gate5_4_product_integration/pf5/preservation/w3/software/logs/gate4_w1_lane_interface_tests_compile.log
+?? reports/gate5_4_product_integration/pf5/preservation/w3/software/logs/generate_merged.log
+?? reports/gate5_4_product_integration/pf5/preservation/w3/software/logs/hls_cpp_trace.log
+?? reports/gate5_4_product_integration/pf5/preservation/w3/software/logs/hls_csim_trace.log
+?? reports/gate5_4_product_integration/pf5/preservation/w3/software/logs/hls_prefix_trace_tb_compile.log
+?? reports/gate5_4_product_integration/pf5/preservation/w3/software/logs/iq_compaction_tests_compile.log
+?? reports/gate5_4_product_integration/pf5/preservation/w3/software/logs/lsu_minimal_tests_compile.log
+?? reports/gate5_4_product_integration/pf5/preservation/w3/software/logs/merged_compile.log
+?? reports/gate5_4_product_integration/pf5/preservation/w3/software/logs/partial_order.log
+?? reports/gate5_4_product_integration/pf5/preservation/w3/software/logs/partial_order_compile.log
+?? reports/gate5_4_product_integration/pf5/preservation/w3/software/logs/reset_architecture_pipelined_tests_compile.log
+?? reports/gate5_4_product_integration/pf5/preservation/w3/software/logs/reset_architecture_tests_compile.log
+?? reports/gate5_4_product_integration/pf5/preservation/w3/software/logs/synth_tops_compile.log
+?? reports/gate5_4_product_integration/pf5/preservation/w3/software/logs/w2_dual_grant_random_tests_compile.log
+?? reports/gate5_4_product_integration/pf5/preservation/w3/software/logs/w2_dual_grant_tests_compile.log
+?? reports/gate5_4_product_integration/pf5/preservation/w3/software/logs/w3_completion_buffer_tests_compile.log
+?? reports/gate5_4_product_integration/pf5/preservation/w3/software/logs/w3_dual_execute_random_tests_compile.log
+?? reports/gate5_4_product_integration/pf5/preservation/w3/software/logs/w3_dual_execute_tests_compile.log
+?? reports/gate5_4_product_integration/pf5/preservation/w3/software/normalized/
+?? reports/gate5_4_product_integration/pf5/preservation/w4/logs/w4_multi_writeback_compile.log
+?? reports/gate6_0_full_lsu/l1/focused_rtl_redesign/logs/case_0_queues_empty_36652.backup.log
+?? reports/gate6_0_full_lsu/l1/focused_rtl_redesign/logs/case_10_sq_generation_fffe_37127.backup.log
+?? reports/gate6_0_full_lsu/l1/focused_rtl_redesign/logs/case_11_lq_generation_ffff_37181.backup.log
+?? reports/gate6_0_full_lsu/l1/focused_rtl_redesign/logs/case_12_sq_generation_ffff_37246.backup.log
+?? reports/gate6_0_full_lsu/l1/focused_rtl_redesign/logs/case_1_lq_single_count_36707.backup.log
+?? reports/gate6_0_full_lsu/l1/focused_rtl_redesign/logs/case_26_same_address_no_forwarding_61303.backup.log
+?? reports/gate6_0_full_lsu/l1/focused_rtl_redesign/logs/case_2_sq_single_count_36767.backup.log
+?? reports/gate6_0_full_lsu/l1/focused_rtl_redesign/logs/case_3_lq_full_reject_36826.backup.log
+?? reports/gate6_0_full_lsu/l1/focused_rtl_redesign/logs/case_45_lq_owner_tuple_47035.backup.log
+?? reports/gate6_0_full_lsu/l1/focused_rtl_redesign/logs/case_4_sq_full_reject_36885.backup.log
+?? reports/gate6_0_full_lsu/l1/focused_rtl_redesign/logs/case_5_lq_wrap_boundary_36955.backup.log
+?? reports/gate6_0_full_lsu/l1/focused_rtl_redesign/logs/case_6_sq_wrap_boundary_37015.backup.log
+?? reports/gate6_0_full_lsu/l1/focused_rtl_redesign/logs/case_7_lq_reuse_generation_38576.backup.log
+?? reports/gate6_0_full_lsu/l1/focused_rtl_redesign/logs/case_7_lq_reuse_generation_39986.backup.log
+?? reports/gate6_0_full_lsu/l1/focused_rtl_redesign/logs/case_9_lq_generation_fffe_37070.backup.log
+?? reports/gate6_0_full_lsu/l2/artifact_hashes.csv
+?? reports/gate6_0_full_lsu/l2/focused_rtl/
+?? reports/gate6_0_full_lsu/l2/path_b/logs/
+?? reports/gate6_0_full_lsu/l2/pf6_progress_triage/exact_duration_probe.tcl
+?? reports/gate6_0_full_lsu/l2/pf6_progress_triage/harness_recompile.log
+?? reports/gate6_0_full_lsu/l2/pf6_progress_triage/harness_rexelab.log
+?? reports/gate6_0_full_lsu/l2/pf6_progress_triage/pf6_exact_1000ns.jsonl
+?? reports/gate6_0_full_lsu/l2/pf6_progress_triage/pf6_exact_1000ns.log
+?? reports/gate6_0_full_lsu/l2/pf6_progress_triage/pf6_exact_1000ns.stdout.log
+?? reports/gate6_0_full_lsu/l2/pf6_progress_triage/pf6_exact_1000ns.time
+?? reports/gate6_0_full_lsu/l2/pf6_progress_triage/pf6_exact_100ns.jsonl
+?? reports/gate6_0_full_lsu/l2/pf6_progress_triage/pf6_exact_100ns.log
+?? reports/gate6_0_full_lsu/l2/pf6_progress_triage/pf6_exact_100ns.stdout.log
+?? reports/gate6_0_full_lsu/l2/pf6_progress_triage/pf6_exact_100ns.time
+?? reports/gate6_0_full_lsu/l2/pf6_progress_triage/pf6_exact_10ns.jsonl
+?? reports/gate6_0_full_lsu/l2/pf6_progress_triage/pf6_exact_10ns.log
+?? reports/gate6_0_full_lsu/l2/pf6_progress_triage/pf6_exact_10ns.stdout.log
+?? reports/gate6_0_full_lsu/l2/pf6_progress_triage/pf6_exact_10ns.time
+?? reports/gate6_0_full_lsu/l2/pf6_progress_triage/pf6_probe.jsonl
+?? reports/gate6_0_full_lsu/l2/pf6_progress_triage/pf6_probe.log
+?? reports/gate6_0_full_lsu/l2/pf6_progress_triage/pf6_probe.time
+?? reports/gate6_0_full_lsu/l2/pf6_progress_triage/pf6_probe_10000clocks.jsonl
+?? reports/gate6_0_full_lsu/l2/pf6_progress_triage/pf6_probe_10000clocks.log
+?? reports/gate6_0_full_lsu/l2/pf6_progress_triage/pf6_probe_10000clocks.time
+?? reports/gate6_0_full_lsu/l2/pf6_progress_triage/pf6_probe_1000clocks.jsonl
+?? reports/gate6_0_full_lsu/l2/pf6_progress_triage/pf6_probe_1000clocks.log
+?? reports/gate6_0_full_lsu/l2/pf6_progress_triage/pf6_probe_1000clocks.time
+?? reports/gate6_0_full_lsu/l2/pf6_progress_triage/pf6_probe_100cycles.jsonl
+?? reports/gate6_0_full_lsu/l2/pf6_progress_triage/pf6_probe_100cycles.log
+?? reports/gate6_0_full_lsu/l2/pf6_progress_triage/pf6_probe_100cycles.time
+?? reports/gate6_0_full_lsu/l2/pf6_progress_triage/pf6_repaired_probe.jsonl
+?? reports/gate6_0_full_lsu/l2/pf6_progress_triage/pf6_repaired_probe.log
+?? reports/gate6_0_full_lsu/l2/pf6_progress_triage/pf6_repaired_probe.time
+?? reports/gate6_0_full_lsu/l2/pf6_progress_triage/pf6_smoke.jsonl
+?? reports/gate6_0_full_lsu/l2/pf6_progress_triage/pf6_smoke.log
+?? reports/gate6_0_full_lsu/l2/pf6_progress_triage/pf6_smoke.time
+?? reports/gate6_0_full_lsu/l2/pf6_progress_triage/progress_probe.tcl
+?? reports/gate6_0_full_lsu/l2/pf6_progress_triage/rvc_probe_10000clocks.jsonl
+?? reports/gate6_0_full_lsu/l2/pf6_progress_triage/rvc_probe_10000clocks.log
+?? reports/gate6_0_full_lsu/l2/pf6_progress_triage/rvc_probe_10000clocks.time
+?? reports/gate6_0_full_lsu/l2/pf6_progress_triage/rvc_probe_1000clocks.jsonl
+?? reports/gate6_0_full_lsu/l2/pf6_progress_triage/rvc_probe_1000clocks.log
+?? reports/gate6_0_full_lsu/l2/pf6_progress_triage/rvc_probe_1000clocks.time
+?? reports/gate6_0_full_lsu/l2/pf6_progress_triage/rvc_progress_probe.tcl
+?? reports/gate6_0_full_lsu/l2/preservation/l1_80/
+?? reports/gate6_0_full_lsu/l2/preservation/m3b/
+?? reports/gate6_0_full_lsu/l2/preservation/m3c/
+?? reports/gate6_0_full_lsu/l2/preservation/pf6/current/logs/
+?? reports/gate6_0_full_lsu/l2/preservation/pf6/current/traces/
+?? reports/gate6_0_full_lsu/l2/preservation/pf6/full_core_rtl_matrix.csv
+?? reports/gate6_0_full_lsu/l2/preservation/pf6/generation_provenance.md
+?? reports/gate6_0_full_lsu/l2/preservation/pf6/logs/
+?? reports/gate6_0_full_lsu/l2/preservation/pf6/source_freshness_manifest.csv
+?? reports/gate6_0_full_lsu/l2/preservation/pf6/traces/
+?? reports/gate6_0_full_lsu/l2/preservation/rvc/
+?? reports/gate6_0_full_lsu/l2/preservation/w4/
+?? reports/gate6_0_full_lsu/l2/synthesis/16_16.log
+?? reports/gate6_0_full_lsu/l2/synthesis/4_4.log
+?? reports/gate6_0_full_lsu/l2/synthesis/8_8.log
+?? reports/gate6_0_full_lsu/l2/workspace_hygiene.md
+?? reports/gate6_0_full_lsu/l3/
+?? reports/maintenance/repository_hygiene_r1/active_process_paths.txt
+?? reports/maintenance/repository_hygiene_r1/active_processes.txt
+?? reports/maintenance/repository_hygiene_r1/cleanup_script_default_dry_run.txt
+?? reports/maintenance/repository_hygiene_r1/deleted_tracked_files.txt
+?? reports/maintenance/repository_hygiene_r1/disk_usage_after.bytes
+?? reports/maintenance/repository_hygiene_r1/disk_usage_before.bytes
+?? reports/maintenance/repository_hygiene_r1/functional_source_after.sha256
+?? reports/maintenance/repository_hygiene_r1/functional_source_before.sha256
+?? reports/maintenance/repository_hygiene_r1/src_boom_all_after.sha256
+?? reports/maintenance/repository_hygiene_r1/src_boom_all_before.sha256
+?? reports/maintenance/repository_hygiene_r1/workspace_size_check.txt
+?? reports/workspace_cleanup/
+?? rtl_tb/gate6_0/g6_l2_path_a_tb.sv
+?? scripts/gate6_0/l2_focused_path_a_csynth.tcl
+?? scripts/gate6_0/l3_multi_outstanding_csim.tcl
+?? scripts/gate6_0/run_l3_multi_outstanding_csim.sh
+?? scripts/gate6_0/run_l3_multi_outstanding_native.sh
+?? tb/differential/g6_l2_focused_native.cpp
+?? tb/differential/g6_l2_path_a_oracle.cpp
+?? tb/differential/g6_l2_path_a_top.cpp
+?? tb/differential/g6_l3_multi_outstanding_tests.cpp
+?? tb/differential/gate5_2_r2_csim_build/
+?? tb/programs/b3i_packet/build/
+?? tb/programs/rvc_fetch/build/
+?? throughput_analysis.md
+?? xelab.log
+?? xelab.pb
+?? xvlog.log
+?? xvlog.pb

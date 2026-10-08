@@ -1,0 +1,1253 @@
+FAIL[9]: C/C: request outside constructed image at 0x20004
+FAIL[11]: C/C: request outside constructed image at 0x20004
+FAIL[19]: C/C: request outside constructed image at 0x20008
+FAIL[27]: C/C: final sequential PC is not exact
+FAIL[38]: C/32: request outside constructed image at 0x21008
+FAIL[46]: C/32: request outside constructed image at 0x21008
+FAIL[53]: C/32: final sequential PC is not exact
+FAIL[64]: 32/C: request outside constructed image at 0x22008
+FAIL[71]: 32/C: request outside constructed image at 0x22008
+FAIL[79]: 32/C: final sequential PC is not exact
+FAIL[90]: 32/32: request outside constructed image at 0x23008
+FAIL[97]: 32/32: request outside constructed image at 0x23008
+FAIL[104]: 32/32: final sequential PC is not exact
+FAIL[735]: long-mixed: request outside constructed image at 0x24134
+FAIL[748]: long-mixed: request outside constructed image at 0x24134
+FAIL[755]: long-mixed: request outside constructed image at 0x24138
+FAIL[763]: long-mixed: request outside constructed image at 0x24138
+FAIL[770]: long-mixed: request outside constructed image at 0x2413c
+FAIL[777]: long-mixed: request outside constructed image at 0x2413c
+FAIL[785]: long-mixed: request outside constructed image at 0x24140
+FAIL[792]: long-mixed: request outside constructed image at 0x24140
+FAIL[800]: long-mixed: final sequential PC is not exact
+FAIL[807]: PC%4=2 redirect parcel not delivered
+FAIL[808]: PC%4=2 redirect target was masked architecturally
+FAIL[809]: upper compressed redirect parcel not marked RVC
+FAIL[814]: odd redirect did not produce a fault
+FAIL[815]: odd redirect fault bit missing
+FAIL[817]: odd redirect missing MA-IF detail
+FAIL[818]: odd redirect target was masked
+FAIL[842]: matching delayed upper did not emit packet
+FAIL[844]: cross-word assembly mismatch
+FAIL[845]: cross-word packet PC mismatch
+FAIL[846]: cross-word instruction did not advance PC by four
+FAIL[858]: decode stall did not retain response
+FAIL[860]: retained stalled response was not emitted
+FAIL[862]: held packet instruction changed
+FAIL[863]: held packet PC changed
+FAIL[867]: compressed-position fault missing
+FAIL[868]: compressed fault: exception bit missing
+FAIL[869]: compressed fault: nested exception bit missing
+FAIL[870]: compressed fault: exception cause mismatch
+FAIL[871]: compressed fault: fault PC mismatch
+FAIL[872]: compressed fault: access-fault detail mismatch
+FAIL[876]: aligned-32 fault: exception bit missing
+FAIL[877]: aligned-32 fault: nested exception bit missing
+FAIL[878]: aligned-32 fault: exception cause mismatch
+FAIL[879]: aligned-32 fault: fault PC mismatch
+FAIL[880]: aligned-32 fault: access-fault detail mismatch
+FAIL[890]: delayed upper fault missing
+FAIL[891]: cross-upper fault: exception bit missing
+FAIL[892]: cross-upper fault: nested exception bit missing
+FAIL[893]: cross-upper fault: exception cause mismatch
+FAIL[894]: cross-upper fault: fault PC mismatch
+FAIL[895]: cross-upper fault: access-fault detail mismatch
+FAIL[942]: production branch recovery retained carry
+FAIL[943]: production branch recovery retained request
+FAIL[944]: production branch recovery target mismatch
+FAIL[945]: production branch recovery did not change epoch
+FAIL[948]: branch recovery requested stale carry address
+FAIL[954]: illegal RVC packet missing
+FAIL[955]: illegal RVC lost compressed attribution
+FAIL[956]: illegal RVC did not fault
+FAIL[957]: illegal RVC cause is not illegal instruction
+FAIL[963]: illegal RVC packet missing
+FAIL[964]: illegal RVC lost compressed attribution
+FAIL[965]: illegal RVC did not fault
+FAIL[966]: illegal RVC cause is not illegal instruction
+FAIL[967]: illegal RVC debug parcel mismatch
+FAIL[972]: illegal RVC packet missing
+FAIL[973]: illegal RVC lost compressed attribution
+FAIL[974]: illegal RVC did not fault
+FAIL[975]: illegal RVC cause is not illegal instruction
+FAIL[976]: illegal RVC debug parcel mismatch
+FAIL[981]: illegal RVC packet missing
+FAIL[982]: illegal RVC lost compressed attribution
+FAIL[983]: illegal RVC did not fault
+FAIL[984]: illegal RVC cause is not illegal instruction
+FAIL[985]: illegal RVC debug parcel mismatch
+FAIL[990]: illegal RVC packet missing
+FAIL[991]: illegal RVC lost compressed attribution
+FAIL[992]: illegal RVC did not fault
+FAIL[993]: illegal RVC cause is not illegal instruction
+FAIL[994]: illegal RVC debug parcel mismatch
+FAIL[999]: illegal RVC packet missing
+FAIL[1000]: illegal RVC lost compressed attribution
+FAIL[1001]: illegal RVC did not fault
+FAIL[1002]: illegal RVC cause is not illegal instruction
+FAIL[1003]: illegal RVC debug parcel mismatch
+FAIL[1008]: illegal RVC packet missing
+FAIL[1009]: illegal RVC lost compressed attribution
+FAIL[1010]: illegal RVC did not fault
+FAIL[1011]: illegal RVC cause is not illegal instruction
+FAIL[1012]: illegal RVC debug parcel mismatch
+FAIL[1017]: illegal RVC packet missing
+FAIL[1018]: illegal RVC lost compressed attribution
+FAIL[1019]: illegal RVC did not fault
+FAIL[1020]: illegal RVC cause is not illegal instruction
+FAIL[1021]: illegal RVC debug parcel mismatch
+FAIL[1025]: reserved long encoding packet missing
+FAIL[1026]: reserved long encoding did not fault
+FAIL[1027]: reserved long encoding cause mismatch
+FAIL[1034]: protected C.EBREAK packet missing
+FAIL[1036]: C.EBREAK debug parcel mismatch
+FAIL[1037]: C.EBREAK Decode uopc mismatch
+FAIL[1038]: C.EBREAK did not raise breakpoint cause 3
+FAIL[1045]: protected C.SRLI packet missing
+FAIL[1046]: protected C.SRLI lost RVC attribution
+FAIL[1048]: C.SRLI debug parcel mismatch
+FAIL[1049]: RV64 C.SRLI shamt[5] Decode mismatch
+FAIL[1057]: protected C.SRLI packet missing
+FAIL[1058]: protected C.SRLI lost RVC attribution
+FAIL[1060]: C.SRLI debug parcel mismatch
+FAIL[1061]: RV64 C.SRLI shamt[5] Decode mismatch
+FAIL[1069]: protected C.SRLI packet missing
+FAIL[1070]: protected C.SRLI lost RVC attribution
+FAIL[1072]: C.SRLI debug parcel mismatch
+FAIL[1073]: RV64 C.SRLI shamt[5] Decode mismatch
+FAIL[1081]: protected C.SRLI packet missing
+FAIL[1082]: protected C.SRLI lost RVC attribution
+FAIL[1084]: C.SRLI debug parcel mismatch
+FAIL[1085]: RV64 C.SRLI shamt[5] Decode mismatch
+FAIL[1093]: protected C.SRLI packet missing
+FAIL[1094]: protected C.SRLI lost RVC attribution
+FAIL[1096]: C.SRLI debug parcel mismatch
+FAIL[1097]: RV64 C.SRLI shamt[5] Decode mismatch
+FAIL[1105]: protected C.SRLI packet missing
+FAIL[1106]: protected C.SRLI lost RVC attribution
+FAIL[1108]: C.SRLI debug parcel mismatch
+FAIL[1109]: RV64 C.SRLI shamt[5] Decode mismatch
+FAIL[1117]: protected C.SRLI packet missing
+FAIL[1118]: protected C.SRLI lost RVC attribution
+FAIL[1120]: C.SRLI debug parcel mismatch
+FAIL[1121]: RV64 C.SRLI shamt[5] Decode mismatch
+FAIL[1129]: protected C.SRLI packet missing
+FAIL[1130]: protected C.SRLI lost RVC attribution
+FAIL[1132]: C.SRLI debug parcel mismatch
+FAIL[1133]: RV64 C.SRLI shamt[5] Decode mismatch
+FAIL[1141]: protected C.SRLI packet missing
+FAIL[1142]: protected C.SRLI lost RVC attribution
+FAIL[1144]: C.SRLI debug parcel mismatch
+FAIL[1145]: RV64 C.SRLI shamt[5] Decode mismatch
+FAIL[1153]: protected C.SRLI packet missing
+FAIL[1154]: protected C.SRLI lost RVC attribution
+FAIL[1156]: C.SRLI debug parcel mismatch
+FAIL[1157]: RV64 C.SRLI shamt[5] Decode mismatch
+FAIL[1165]: protected C.SRLI packet missing
+FAIL[1166]: protected C.SRLI lost RVC attribution
+FAIL[1168]: C.SRLI debug parcel mismatch
+FAIL[1169]: RV64 C.SRLI shamt[5] Decode mismatch
+FAIL[1177]: protected C.SRLI packet missing
+FAIL[1178]: protected C.SRLI lost RVC attribution
+FAIL[1180]: C.SRLI debug parcel mismatch
+FAIL[1181]: RV64 C.SRLI shamt[5] Decode mismatch
+FAIL[1189]: protected C.SRLI packet missing
+FAIL[1190]: protected C.SRLI lost RVC attribution
+FAIL[1192]: C.SRLI debug parcel mismatch
+FAIL[1193]: RV64 C.SRLI shamt[5] Decode mismatch
+FAIL[1201]: protected C.SRLI packet missing
+FAIL[1202]: protected C.SRLI lost RVC attribution
+FAIL[1204]: C.SRLI debug parcel mismatch
+FAIL[1205]: RV64 C.SRLI shamt[5] Decode mismatch
+FAIL[1213]: protected C.SRLI packet missing
+FAIL[1214]: protected C.SRLI lost RVC attribution
+FAIL[1216]: C.SRLI debug parcel mismatch
+FAIL[1217]: RV64 C.SRLI shamt[5] Decode mismatch
+FAIL[1225]: protected C.SRLI packet missing
+FAIL[1226]: protected C.SRLI lost RVC attribution
+FAIL[1228]: C.SRLI debug parcel mismatch
+FAIL[1229]: RV64 C.SRLI shamt[5] Decode mismatch
+FAIL[1237]: protected C.SRLI packet missing
+FAIL[1238]: protected C.SRLI lost RVC attribution
+FAIL[1240]: C.SRLI debug parcel mismatch
+FAIL[1241]: RV64 C.SRLI shamt[5] Decode mismatch
+FAIL[1249]: protected C.SRLI packet missing
+FAIL[1250]: protected C.SRLI lost RVC attribution
+FAIL[1252]: C.SRLI debug parcel mismatch
+FAIL[1253]: RV64 C.SRLI shamt[5] Decode mismatch
+FAIL[1261]: protected C.SRLI packet missing
+FAIL[1262]: protected C.SRLI lost RVC attribution
+FAIL[1264]: C.SRLI debug parcel mismatch
+FAIL[1265]: RV64 C.SRLI shamt[5] Decode mismatch
+FAIL[1273]: protected C.SRLI packet missing
+FAIL[1274]: protected C.SRLI lost RVC attribution
+FAIL[1276]: C.SRLI debug parcel mismatch
+FAIL[1277]: RV64 C.SRLI shamt[5] Decode mismatch
+FAIL[1285]: protected C.SRLI packet missing
+FAIL[1286]: protected C.SRLI lost RVC attribution
+FAIL[1288]: C.SRLI debug parcel mismatch
+FAIL[1289]: RV64 C.SRLI shamt[5] Decode mismatch
+FAIL[1297]: protected C.SRLI packet missing
+FAIL[1298]: protected C.SRLI lost RVC attribution
+FAIL[1300]: C.SRLI debug parcel mismatch
+FAIL[1301]: RV64 C.SRLI shamt[5] Decode mismatch
+FAIL[1309]: protected C.SRLI packet missing
+FAIL[1310]: protected C.SRLI lost RVC attribution
+FAIL[1312]: C.SRLI debug parcel mismatch
+FAIL[1313]: RV64 C.SRLI shamt[5] Decode mismatch
+FAIL[1321]: protected C.SRLI packet missing
+FAIL[1322]: protected C.SRLI lost RVC attribution
+FAIL[1324]: C.SRLI debug parcel mismatch
+FAIL[1325]: RV64 C.SRLI shamt[5] Decode mismatch
+FAIL[1333]: protected C.SRLI packet missing
+FAIL[1334]: protected C.SRLI lost RVC attribution
+FAIL[1336]: C.SRLI debug parcel mismatch
+FAIL[1337]: RV64 C.SRLI shamt[5] Decode mismatch
+FAIL[1345]: protected C.SRLI packet missing
+FAIL[1346]: protected C.SRLI lost RVC attribution
+FAIL[1348]: C.SRLI debug parcel mismatch
+FAIL[1349]: RV64 C.SRLI shamt[5] Decode mismatch
+FAIL[1357]: protected C.SRLI packet missing
+FAIL[1358]: protected C.SRLI lost RVC attribution
+FAIL[1360]: C.SRLI debug parcel mismatch
+FAIL[1361]: RV64 C.SRLI shamt[5] Decode mismatch
+FAIL[1369]: protected C.SRLI packet missing
+FAIL[1370]: protected C.SRLI lost RVC attribution
+FAIL[1372]: C.SRLI debug parcel mismatch
+FAIL[1373]: RV64 C.SRLI shamt[5] Decode mismatch
+FAIL[1381]: protected C.SRLI packet missing
+FAIL[1382]: protected C.SRLI lost RVC attribution
+FAIL[1384]: C.SRLI debug parcel mismatch
+FAIL[1385]: RV64 C.SRLI shamt[5] Decode mismatch
+FAIL[1393]: protected C.SRLI packet missing
+FAIL[1394]: protected C.SRLI lost RVC attribution
+FAIL[1396]: C.SRLI debug parcel mismatch
+FAIL[1397]: RV64 C.SRLI shamt[5] Decode mismatch
+FAIL[1405]: protected C.SRLI packet missing
+FAIL[1406]: protected C.SRLI lost RVC attribution
+FAIL[1408]: C.SRLI debug parcel mismatch
+FAIL[1409]: RV64 C.SRLI shamt[5] Decode mismatch
+FAIL[1417]: protected C.SRLI packet missing
+FAIL[1418]: protected C.SRLI lost RVC attribution
+FAIL[1420]: C.SRLI debug parcel mismatch
+FAIL[1421]: RV64 C.SRLI shamt[5] Decode mismatch
+FAIL[1429]: protected C.SRLI packet missing
+FAIL[1430]: protected C.SRLI lost RVC attribution
+FAIL[1432]: C.SRLI debug parcel mismatch
+FAIL[1433]: RV64 C.SRLI shamt[5] Decode mismatch
+FAIL[1441]: protected C.SRLI packet missing
+FAIL[1442]: protected C.SRLI lost RVC attribution
+FAIL[1444]: C.SRLI debug parcel mismatch
+FAIL[1445]: RV64 C.SRLI shamt[5] Decode mismatch
+FAIL[1453]: protected C.SRLI packet missing
+FAIL[1454]: protected C.SRLI lost RVC attribution
+FAIL[1456]: C.SRLI debug parcel mismatch
+FAIL[1457]: RV64 C.SRLI shamt[5] Decode mismatch
+FAIL[1465]: protected C.SRLI packet missing
+FAIL[1466]: protected C.SRLI lost RVC attribution
+FAIL[1468]: C.SRLI debug parcel mismatch
+FAIL[1469]: RV64 C.SRLI shamt[5] Decode mismatch
+FAIL[1477]: protected C.SRLI packet missing
+FAIL[1478]: protected C.SRLI lost RVC attribution
+FAIL[1480]: C.SRLI debug parcel mismatch
+FAIL[1481]: RV64 C.SRLI shamt[5] Decode mismatch
+FAIL[1489]: protected C.SRLI packet missing
+FAIL[1490]: protected C.SRLI lost RVC attribution
+FAIL[1492]: C.SRLI debug parcel mismatch
+FAIL[1493]: RV64 C.SRLI shamt[5] Decode mismatch
+FAIL[1501]: protected C.SRLI packet missing
+FAIL[1502]: protected C.SRLI lost RVC attribution
+FAIL[1504]: C.SRLI debug parcel mismatch
+FAIL[1505]: RV64 C.SRLI shamt[5] Decode mismatch
+FAIL[1513]: protected C.SRLI packet missing
+FAIL[1514]: protected C.SRLI lost RVC attribution
+FAIL[1516]: C.SRLI debug parcel mismatch
+FAIL[1517]: RV64 C.SRLI shamt[5] Decode mismatch
+FAIL[1525]: protected C.SRLI packet missing
+FAIL[1526]: protected C.SRLI lost RVC attribution
+FAIL[1528]: C.SRLI debug parcel mismatch
+FAIL[1529]: RV64 C.SRLI shamt[5] Decode mismatch
+FAIL[1537]: protected C.SRLI packet missing
+FAIL[1538]: protected C.SRLI lost RVC attribution
+FAIL[1540]: C.SRLI debug parcel mismatch
+FAIL[1541]: RV64 C.SRLI shamt[5] Decode mismatch
+FAIL[1549]: protected C.SRLI packet missing
+FAIL[1550]: protected C.SRLI lost RVC attribution
+FAIL[1552]: C.SRLI debug parcel mismatch
+FAIL[1553]: RV64 C.SRLI shamt[5] Decode mismatch
+FAIL[1561]: protected C.SRLI packet missing
+FAIL[1562]: protected C.SRLI lost RVC attribution
+FAIL[1564]: C.SRLI debug parcel mismatch
+FAIL[1565]: RV64 C.SRLI shamt[5] Decode mismatch
+FAIL[1573]: protected C.SRLI packet missing
+FAIL[1574]: protected C.SRLI lost RVC attribution
+FAIL[1576]: C.SRLI debug parcel mismatch
+FAIL[1577]: RV64 C.SRLI shamt[5] Decode mismatch
+FAIL[1585]: protected C.SRLI packet missing
+FAIL[1586]: protected C.SRLI lost RVC attribution
+FAIL[1588]: C.SRLI debug parcel mismatch
+FAIL[1589]: RV64 C.SRLI shamt[5] Decode mismatch
+FAIL[1597]: protected C.SRLI packet missing
+FAIL[1598]: protected C.SRLI lost RVC attribution
+FAIL[1600]: C.SRLI debug parcel mismatch
+FAIL[1601]: RV64 C.SRLI shamt[5] Decode mismatch
+FAIL[1609]: protected C.SRLI packet missing
+FAIL[1610]: protected C.SRLI lost RVC attribution
+FAIL[1612]: C.SRLI debug parcel mismatch
+FAIL[1613]: RV64 C.SRLI shamt[5] Decode mismatch
+FAIL[1621]: protected C.SRLI packet missing
+FAIL[1622]: protected C.SRLI lost RVC attribution
+FAIL[1624]: C.SRLI debug parcel mismatch
+FAIL[1625]: RV64 C.SRLI shamt[5] Decode mismatch
+FAIL[1633]: protected C.SRLI packet missing
+FAIL[1634]: protected C.SRLI lost RVC attribution
+FAIL[1636]: C.SRLI debug parcel mismatch
+FAIL[1637]: RV64 C.SRLI shamt[5] Decode mismatch
+FAIL[1645]: protected C.SRLI packet missing
+FAIL[1646]: protected C.SRLI lost RVC attribution
+FAIL[1648]: C.SRLI debug parcel mismatch
+FAIL[1649]: RV64 C.SRLI shamt[5] Decode mismatch
+FAIL[1657]: protected C.SRLI packet missing
+FAIL[1658]: protected C.SRLI lost RVC attribution
+FAIL[1660]: C.SRLI debug parcel mismatch
+FAIL[1661]: RV64 C.SRLI shamt[5] Decode mismatch
+FAIL[1669]: protected C.SRLI packet missing
+FAIL[1670]: protected C.SRLI lost RVC attribution
+FAIL[1672]: C.SRLI debug parcel mismatch
+FAIL[1673]: RV64 C.SRLI shamt[5] Decode mismatch
+FAIL[1681]: protected C.SRLI packet missing
+FAIL[1682]: protected C.SRLI lost RVC attribution
+FAIL[1684]: C.SRLI debug parcel mismatch
+FAIL[1685]: RV64 C.SRLI shamt[5] Decode mismatch
+FAIL[1693]: protected C.SRLI packet missing
+FAIL[1694]: protected C.SRLI lost RVC attribution
+FAIL[1696]: C.SRLI debug parcel mismatch
+FAIL[1697]: RV64 C.SRLI shamt[5] Decode mismatch
+FAIL[1705]: protected C.SRLI packet missing
+FAIL[1706]: protected C.SRLI lost RVC attribution
+FAIL[1708]: C.SRLI debug parcel mismatch
+FAIL[1709]: RV64 C.SRLI shamt[5] Decode mismatch
+FAIL[1717]: protected C.SRLI packet missing
+FAIL[1718]: protected C.SRLI lost RVC attribution
+FAIL[1720]: C.SRLI debug parcel mismatch
+FAIL[1721]: RV64 C.SRLI shamt[5] Decode mismatch
+FAIL[1729]: protected C.SRLI packet missing
+FAIL[1730]: protected C.SRLI lost RVC attribution
+FAIL[1732]: C.SRLI debug parcel mismatch
+FAIL[1733]: RV64 C.SRLI shamt[5] Decode mismatch
+FAIL[1741]: protected C.SRLI packet missing
+FAIL[1742]: protected C.SRLI lost RVC attribution
+FAIL[1744]: C.SRLI debug parcel mismatch
+FAIL[1745]: RV64 C.SRLI shamt[5] Decode mismatch
+FAIL[1753]: protected C.SRLI packet missing
+FAIL[1754]: protected C.SRLI lost RVC attribution
+FAIL[1756]: C.SRLI debug parcel mismatch
+FAIL[1757]: RV64 C.SRLI shamt[5] Decode mismatch
+FAIL[1765]: protected C.SRLI packet missing
+FAIL[1766]: protected C.SRLI lost RVC attribution
+FAIL[1768]: C.SRLI debug parcel mismatch
+FAIL[1769]: RV64 C.SRLI shamt[5] Decode mismatch
+FAIL[1777]: protected C.SRLI packet missing
+FAIL[1778]: protected C.SRLI lost RVC attribution
+FAIL[1780]: C.SRLI debug parcel mismatch
+FAIL[1781]: RV64 C.SRLI shamt[5] Decode mismatch
+FAIL[1789]: protected C.SRLI packet missing
+FAIL[1790]: protected C.SRLI lost RVC attribution
+FAIL[1792]: C.SRLI debug parcel mismatch
+FAIL[1793]: RV64 C.SRLI shamt[5] Decode mismatch
+FAIL[1801]: protected C.SRLI packet missing
+FAIL[1802]: protected C.SRLI lost RVC attribution
+FAIL[1804]: C.SRLI debug parcel mismatch
+FAIL[1805]: RV64 C.SRLI shamt[5] Decode mismatch
+FAIL[1813]: protected C.SRLI packet missing
+FAIL[1814]: protected C.SRLI lost RVC attribution
+FAIL[1816]: C.SRLI debug parcel mismatch
+FAIL[1817]: RV64 C.SRLI shamt[5] Decode mismatch
+FAIL[1825]: protected C.SRLI packet missing
+FAIL[1826]: protected C.SRLI lost RVC attribution
+FAIL[1828]: C.SRLI debug parcel mismatch
+FAIL[1829]: RV64 C.SRLI shamt[5] Decode mismatch
+FAIL[1837]: protected C.SRLI packet missing
+FAIL[1838]: protected C.SRLI lost RVC attribution
+FAIL[1840]: C.SRLI debug parcel mismatch
+FAIL[1841]: RV64 C.SRLI shamt[5] Decode mismatch
+FAIL[1849]: protected C.SRLI packet missing
+FAIL[1850]: protected C.SRLI lost RVC attribution
+FAIL[1852]: C.SRLI debug parcel mismatch
+FAIL[1853]: RV64 C.SRLI shamt[5] Decode mismatch
+FAIL[1861]: protected C.SRLI packet missing
+FAIL[1862]: protected C.SRLI lost RVC attribution
+FAIL[1864]: C.SRLI debug parcel mismatch
+FAIL[1865]: RV64 C.SRLI shamt[5] Decode mismatch
+FAIL[1873]: protected C.SRLI packet missing
+FAIL[1874]: protected C.SRLI lost RVC attribution
+FAIL[1876]: C.SRLI debug parcel mismatch
+FAIL[1877]: RV64 C.SRLI shamt[5] Decode mismatch
+FAIL[1885]: protected C.SRLI packet missing
+FAIL[1886]: protected C.SRLI lost RVC attribution
+FAIL[1888]: C.SRLI debug parcel mismatch
+FAIL[1889]: RV64 C.SRLI shamt[5] Decode mismatch
+FAIL[1897]: protected C.SRLI packet missing
+FAIL[1898]: protected C.SRLI lost RVC attribution
+FAIL[1900]: C.SRLI debug parcel mismatch
+FAIL[1901]: RV64 C.SRLI shamt[5] Decode mismatch
+FAIL[1909]: protected C.SRLI packet missing
+FAIL[1910]: protected C.SRLI lost RVC attribution
+FAIL[1912]: C.SRLI debug parcel mismatch
+FAIL[1913]: RV64 C.SRLI shamt[5] Decode mismatch
+FAIL[1921]: protected C.SRLI packet missing
+FAIL[1922]: protected C.SRLI lost RVC attribution
+FAIL[1924]: C.SRLI debug parcel mismatch
+FAIL[1925]: RV64 C.SRLI shamt[5] Decode mismatch
+FAIL[1933]: protected C.SRLI packet missing
+FAIL[1934]: protected C.SRLI lost RVC attribution
+FAIL[1936]: C.SRLI debug parcel mismatch
+FAIL[1937]: RV64 C.SRLI shamt[5] Decode mismatch
+FAIL[1945]: protected C.SRLI packet missing
+FAIL[1946]: protected C.SRLI lost RVC attribution
+FAIL[1948]: C.SRLI debug parcel mismatch
+FAIL[1949]: RV64 C.SRLI shamt[5] Decode mismatch
+FAIL[1957]: protected C.SRLI packet missing
+FAIL[1958]: protected C.SRLI lost RVC attribution
+FAIL[1960]: C.SRLI debug parcel mismatch
+FAIL[1961]: RV64 C.SRLI shamt[5] Decode mismatch
+FAIL[1969]: protected C.SRLI packet missing
+FAIL[1970]: protected C.SRLI lost RVC attribution
+FAIL[1972]: C.SRLI debug parcel mismatch
+FAIL[1973]: RV64 C.SRLI shamt[5] Decode mismatch
+FAIL[1981]: protected C.SRLI packet missing
+FAIL[1982]: protected C.SRLI lost RVC attribution
+FAIL[1984]: C.SRLI debug parcel mismatch
+FAIL[1985]: RV64 C.SRLI shamt[5] Decode mismatch
+FAIL[1993]: protected C.SRLI packet missing
+FAIL[1994]: protected C.SRLI lost RVC attribution
+FAIL[1996]: C.SRLI debug parcel mismatch
+FAIL[1997]: RV64 C.SRLI shamt[5] Decode mismatch
+FAIL[2005]: protected C.SRLI packet missing
+FAIL[2006]: protected C.SRLI lost RVC attribution
+FAIL[2008]: C.SRLI debug parcel mismatch
+FAIL[2009]: RV64 C.SRLI shamt[5] Decode mismatch
+FAIL[2017]: protected C.SRLI packet missing
+FAIL[2018]: protected C.SRLI lost RVC attribution
+FAIL[2020]: C.SRLI debug parcel mismatch
+FAIL[2021]: RV64 C.SRLI shamt[5] Decode mismatch
+FAIL[2029]: protected C.SRLI packet missing
+FAIL[2030]: protected C.SRLI lost RVC attribution
+FAIL[2032]: C.SRLI debug parcel mismatch
+FAIL[2033]: RV64 C.SRLI shamt[5] Decode mismatch
+FAIL[2041]: protected C.SRLI packet missing
+FAIL[2042]: protected C.SRLI lost RVC attribution
+FAIL[2044]: C.SRLI debug parcel mismatch
+FAIL[2045]: RV64 C.SRLI shamt[5] Decode mismatch
+FAIL[2053]: protected C.SRLI packet missing
+FAIL[2054]: protected C.SRLI lost RVC attribution
+FAIL[2056]: C.SRLI debug parcel mismatch
+FAIL[2057]: RV64 C.SRLI shamt[5] Decode mismatch
+FAIL[2065]: protected C.SRLI packet missing
+FAIL[2066]: protected C.SRLI lost RVC attribution
+FAIL[2068]: C.SRLI debug parcel mismatch
+FAIL[2069]: RV64 C.SRLI shamt[5] Decode mismatch
+FAIL[2077]: protected C.SRLI packet missing
+FAIL[2078]: protected C.SRLI lost RVC attribution
+FAIL[2080]: C.SRLI debug parcel mismatch
+FAIL[2081]: RV64 C.SRLI shamt[5] Decode mismatch
+FAIL[2089]: protected C.SRLI packet missing
+FAIL[2090]: protected C.SRLI lost RVC attribution
+FAIL[2092]: C.SRLI debug parcel mismatch
+FAIL[2093]: RV64 C.SRLI shamt[5] Decode mismatch
+FAIL[2101]: protected C.SRLI packet missing
+FAIL[2102]: protected C.SRLI lost RVC attribution
+FAIL[2104]: C.SRLI debug parcel mismatch
+FAIL[2105]: RV64 C.SRLI shamt[5] Decode mismatch
+FAIL[2113]: protected C.SRLI packet missing
+FAIL[2114]: protected C.SRLI lost RVC attribution
+FAIL[2116]: C.SRLI debug parcel mismatch
+FAIL[2117]: RV64 C.SRLI shamt[5] Decode mismatch
+FAIL[2125]: protected C.SRLI packet missing
+FAIL[2126]: protected C.SRLI lost RVC attribution
+FAIL[2128]: C.SRLI debug parcel mismatch
+FAIL[2129]: RV64 C.SRLI shamt[5] Decode mismatch
+FAIL[2137]: protected C.SRLI packet missing
+FAIL[2138]: protected C.SRLI lost RVC attribution
+FAIL[2140]: C.SRLI debug parcel mismatch
+FAIL[2141]: RV64 C.SRLI shamt[5] Decode mismatch
+FAIL[2149]: protected C.SRLI packet missing
+FAIL[2150]: protected C.SRLI lost RVC attribution
+FAIL[2152]: C.SRLI debug parcel mismatch
+FAIL[2153]: RV64 C.SRLI shamt[5] Decode mismatch
+FAIL[2161]: protected C.SRLI packet missing
+FAIL[2162]: protected C.SRLI lost RVC attribution
+FAIL[2164]: C.SRLI debug parcel mismatch
+FAIL[2165]: RV64 C.SRLI shamt[5] Decode mismatch
+FAIL[2173]: protected C.SRLI packet missing
+FAIL[2174]: protected C.SRLI lost RVC attribution
+FAIL[2176]: C.SRLI debug parcel mismatch
+FAIL[2177]: RV64 C.SRLI shamt[5] Decode mismatch
+FAIL[2185]: protected C.SRLI packet missing
+FAIL[2186]: protected C.SRLI lost RVC attribution
+FAIL[2188]: C.SRLI debug parcel mismatch
+FAIL[2189]: RV64 C.SRLI shamt[5] Decode mismatch
+FAIL[2197]: protected C.SRLI packet missing
+FAIL[2198]: protected C.SRLI lost RVC attribution
+FAIL[2200]: C.SRLI debug parcel mismatch
+FAIL[2201]: RV64 C.SRLI shamt[5] Decode mismatch
+FAIL[2209]: protected C.SRLI packet missing
+FAIL[2210]: protected C.SRLI lost RVC attribution
+FAIL[2212]: C.SRLI debug parcel mismatch
+FAIL[2213]: RV64 C.SRLI shamt[5] Decode mismatch
+FAIL[2221]: protected C.SRLI packet missing
+FAIL[2222]: protected C.SRLI lost RVC attribution
+FAIL[2224]: C.SRLI debug parcel mismatch
+FAIL[2225]: RV64 C.SRLI shamt[5] Decode mismatch
+FAIL[2233]: protected C.SRLI packet missing
+FAIL[2234]: protected C.SRLI lost RVC attribution
+FAIL[2236]: C.SRLI debug parcel mismatch
+FAIL[2237]: RV64 C.SRLI shamt[5] Decode mismatch
+FAIL[2245]: protected C.SRLI packet missing
+FAIL[2246]: protected C.SRLI lost RVC attribution
+FAIL[2248]: C.SRLI debug parcel mismatch
+FAIL[2249]: RV64 C.SRLI shamt[5] Decode mismatch
+FAIL[2257]: protected C.SRLI packet missing
+FAIL[2258]: protected C.SRLI lost RVC attribution
+FAIL[2260]: C.SRLI debug parcel mismatch
+FAIL[2261]: RV64 C.SRLI shamt[5] Decode mismatch
+FAIL[2269]: protected C.SRLI packet missing
+FAIL[2270]: protected C.SRLI lost RVC attribution
+FAIL[2272]: C.SRLI debug parcel mismatch
+FAIL[2273]: RV64 C.SRLI shamt[5] Decode mismatch
+FAIL[2281]: protected C.SRLI packet missing
+FAIL[2282]: protected C.SRLI lost RVC attribution
+FAIL[2284]: C.SRLI debug parcel mismatch
+FAIL[2285]: RV64 C.SRLI shamt[5] Decode mismatch
+FAIL[2293]: protected C.SRLI packet missing
+FAIL[2294]: protected C.SRLI lost RVC attribution
+FAIL[2296]: C.SRLI debug parcel mismatch
+FAIL[2297]: RV64 C.SRLI shamt[5] Decode mismatch
+FAIL[2305]: protected C.SRLI packet missing
+FAIL[2306]: protected C.SRLI lost RVC attribution
+FAIL[2308]: C.SRLI debug parcel mismatch
+FAIL[2309]: RV64 C.SRLI shamt[5] Decode mismatch
+FAIL[2317]: protected C.SRLI packet missing
+FAIL[2318]: protected C.SRLI lost RVC attribution
+FAIL[2320]: C.SRLI debug parcel mismatch
+FAIL[2321]: RV64 C.SRLI shamt[5] Decode mismatch
+FAIL[2329]: protected C.SRLI packet missing
+FAIL[2330]: protected C.SRLI lost RVC attribution
+FAIL[2332]: C.SRLI debug parcel mismatch
+FAIL[2333]: RV64 C.SRLI shamt[5] Decode mismatch
+FAIL[2341]: protected C.SRLI packet missing
+FAIL[2342]: protected C.SRLI lost RVC attribution
+FAIL[2344]: C.SRLI debug parcel mismatch
+FAIL[2345]: RV64 C.SRLI shamt[5] Decode mismatch
+FAIL[2353]: protected C.SRLI packet missing
+FAIL[2354]: protected C.SRLI lost RVC attribution
+FAIL[2356]: C.SRLI debug parcel mismatch
+FAIL[2357]: RV64 C.SRLI shamt[5] Decode mismatch
+FAIL[2365]: protected C.SRLI packet missing
+FAIL[2366]: protected C.SRLI lost RVC attribution
+FAIL[2368]: C.SRLI debug parcel mismatch
+FAIL[2369]: RV64 C.SRLI shamt[5] Decode mismatch
+FAIL[2377]: protected C.SRLI packet missing
+FAIL[2378]: protected C.SRLI lost RVC attribution
+FAIL[2380]: C.SRLI debug parcel mismatch
+FAIL[2381]: RV64 C.SRLI shamt[5] Decode mismatch
+FAIL[2389]: protected C.SRLI packet missing
+FAIL[2390]: protected C.SRLI lost RVC attribution
+FAIL[2392]: C.SRLI debug parcel mismatch
+FAIL[2393]: RV64 C.SRLI shamt[5] Decode mismatch
+FAIL[2401]: protected C.SRLI packet missing
+FAIL[2402]: protected C.SRLI lost RVC attribution
+FAIL[2404]: C.SRLI debug parcel mismatch
+FAIL[2405]: RV64 C.SRLI shamt[5] Decode mismatch
+FAIL[2413]: protected C.SRLI packet missing
+FAIL[2414]: protected C.SRLI lost RVC attribution
+FAIL[2416]: C.SRLI debug parcel mismatch
+FAIL[2417]: RV64 C.SRLI shamt[5] Decode mismatch
+FAIL[2425]: protected C.SRLI packet missing
+FAIL[2426]: protected C.SRLI lost RVC attribution
+FAIL[2428]: C.SRLI debug parcel mismatch
+FAIL[2429]: RV64 C.SRLI shamt[5] Decode mismatch
+FAIL[2437]: protected C.SRLI packet missing
+FAIL[2438]: protected C.SRLI lost RVC attribution
+FAIL[2440]: C.SRLI debug parcel mismatch
+FAIL[2441]: RV64 C.SRLI shamt[5] Decode mismatch
+FAIL[2449]: protected C.SRLI packet missing
+FAIL[2450]: protected C.SRLI lost RVC attribution
+FAIL[2452]: C.SRLI debug parcel mismatch
+FAIL[2453]: RV64 C.SRLI shamt[5] Decode mismatch
+FAIL[2461]: protected C.SRLI packet missing
+FAIL[2462]: protected C.SRLI lost RVC attribution
+FAIL[2464]: C.SRLI debug parcel mismatch
+FAIL[2465]: RV64 C.SRLI shamt[5] Decode mismatch
+FAIL[2473]: protected C.SRLI packet missing
+FAIL[2474]: protected C.SRLI lost RVC attribution
+FAIL[2476]: C.SRLI debug parcel mismatch
+FAIL[2477]: RV64 C.SRLI shamt[5] Decode mismatch
+FAIL[2485]: protected C.SRLI packet missing
+FAIL[2486]: protected C.SRLI lost RVC attribution
+FAIL[2488]: C.SRLI debug parcel mismatch
+FAIL[2489]: RV64 C.SRLI shamt[5] Decode mismatch
+FAIL[2497]: protected C.SRLI packet missing
+FAIL[2498]: protected C.SRLI lost RVC attribution
+FAIL[2500]: C.SRLI debug parcel mismatch
+FAIL[2501]: RV64 C.SRLI shamt[5] Decode mismatch
+FAIL[2509]: protected C.SRLI packet missing
+FAIL[2510]: protected C.SRLI lost RVC attribution
+FAIL[2512]: C.SRLI debug parcel mismatch
+FAIL[2513]: RV64 C.SRLI shamt[5] Decode mismatch
+FAIL[2521]: protected C.SRLI packet missing
+FAIL[2522]: protected C.SRLI lost RVC attribution
+FAIL[2524]: C.SRLI debug parcel mismatch
+FAIL[2525]: RV64 C.SRLI shamt[5] Decode mismatch
+FAIL[2533]: protected C.SRLI packet missing
+FAIL[2534]: protected C.SRLI lost RVC attribution
+FAIL[2536]: C.SRLI debug parcel mismatch
+FAIL[2537]: RV64 C.SRLI shamt[5] Decode mismatch
+FAIL[2545]: protected C.SRLI packet missing
+FAIL[2546]: protected C.SRLI lost RVC attribution
+FAIL[2548]: C.SRLI debug parcel mismatch
+FAIL[2549]: RV64 C.SRLI shamt[5] Decode mismatch
+FAIL[2557]: protected C.SRLI packet missing
+FAIL[2558]: protected C.SRLI lost RVC attribution
+FAIL[2560]: C.SRLI debug parcel mismatch
+FAIL[2561]: RV64 C.SRLI shamt[5] Decode mismatch
+FAIL[2569]: protected C.SRLI packet missing
+FAIL[2570]: protected C.SRLI lost RVC attribution
+FAIL[2572]: C.SRLI debug parcel mismatch
+FAIL[2573]: RV64 C.SRLI shamt[5] Decode mismatch
+FAIL[2581]: protected C.SRLI packet missing
+FAIL[2582]: protected C.SRLI lost RVC attribution
+FAIL[2584]: C.SRLI debug parcel mismatch
+FAIL[2585]: RV64 C.SRLI shamt[5] Decode mismatch
+FAIL[2593]: protected C.SRLI packet missing
+FAIL[2594]: protected C.SRLI lost RVC attribution
+FAIL[2596]: C.SRLI debug parcel mismatch
+FAIL[2597]: RV64 C.SRLI shamt[5] Decode mismatch
+FAIL[2605]: protected C.SRLI packet missing
+FAIL[2606]: protected C.SRLI lost RVC attribution
+FAIL[2608]: C.SRLI debug parcel mismatch
+FAIL[2609]: RV64 C.SRLI shamt[5] Decode mismatch
+FAIL[2617]: protected C.SRLI packet missing
+FAIL[2618]: protected C.SRLI lost RVC attribution
+FAIL[2620]: C.SRLI debug parcel mismatch
+FAIL[2621]: RV64 C.SRLI shamt[5] Decode mismatch
+FAIL[2629]: protected C.SRLI packet missing
+FAIL[2630]: protected C.SRLI lost RVC attribution
+FAIL[2632]: C.SRLI debug parcel mismatch
+FAIL[2633]: RV64 C.SRLI shamt[5] Decode mismatch
+FAIL[2641]: protected C.SRLI packet missing
+FAIL[2642]: protected C.SRLI lost RVC attribution
+FAIL[2644]: C.SRLI debug parcel mismatch
+FAIL[2645]: RV64 C.SRLI shamt[5] Decode mismatch
+FAIL[2653]: protected C.SRLI packet missing
+FAIL[2654]: protected C.SRLI lost RVC attribution
+FAIL[2656]: C.SRLI debug parcel mismatch
+FAIL[2657]: RV64 C.SRLI shamt[5] Decode mismatch
+FAIL[2665]: protected C.SRLI packet missing
+FAIL[2666]: protected C.SRLI lost RVC attribution
+FAIL[2668]: C.SRLI debug parcel mismatch
+FAIL[2669]: RV64 C.SRLI shamt[5] Decode mismatch
+FAIL[2677]: protected C.SRLI packet missing
+FAIL[2678]: protected C.SRLI lost RVC attribution
+FAIL[2680]: C.SRLI debug parcel mismatch
+FAIL[2681]: RV64 C.SRLI shamt[5] Decode mismatch
+FAIL[2689]: protected C.SRLI packet missing
+FAIL[2690]: protected C.SRLI lost RVC attribution
+FAIL[2692]: C.SRLI debug parcel mismatch
+FAIL[2693]: RV64 C.SRLI shamt[5] Decode mismatch
+FAIL[2701]: protected C.SRLI packet missing
+FAIL[2702]: protected C.SRLI lost RVC attribution
+FAIL[2704]: C.SRLI debug parcel mismatch
+FAIL[2705]: RV64 C.SRLI shamt[5] Decode mismatch
+FAIL[2713]: protected C.SRLI packet missing
+FAIL[2714]: protected C.SRLI lost RVC attribution
+FAIL[2716]: C.SRLI debug parcel mismatch
+FAIL[2717]: RV64 C.SRLI shamt[5] Decode mismatch
+FAIL[2725]: protected C.SRLI packet missing
+FAIL[2726]: protected C.SRLI lost RVC attribution
+FAIL[2728]: C.SRLI debug parcel mismatch
+FAIL[2729]: RV64 C.SRLI shamt[5] Decode mismatch
+FAIL[2737]: protected C.SRLI packet missing
+FAIL[2738]: protected C.SRLI lost RVC attribution
+FAIL[2740]: C.SRLI debug parcel mismatch
+FAIL[2741]: RV64 C.SRLI shamt[5] Decode mismatch
+FAIL[2749]: protected C.SRLI packet missing
+FAIL[2750]: protected C.SRLI lost RVC attribution
+FAIL[2752]: C.SRLI debug parcel mismatch
+FAIL[2753]: RV64 C.SRLI shamt[5] Decode mismatch
+FAIL[2761]: protected C.SRLI packet missing
+FAIL[2762]: protected C.SRLI lost RVC attribution
+FAIL[2764]: C.SRLI debug parcel mismatch
+FAIL[2765]: RV64 C.SRLI shamt[5] Decode mismatch
+FAIL[2773]: protected C.SRLI packet missing
+FAIL[2774]: protected C.SRLI lost RVC attribution
+FAIL[2776]: C.SRLI debug parcel mismatch
+FAIL[2777]: RV64 C.SRLI shamt[5] Decode mismatch
+FAIL[2785]: protected C.SRLI packet missing
+FAIL[2786]: protected C.SRLI lost RVC attribution
+FAIL[2788]: C.SRLI debug parcel mismatch
+FAIL[2789]: RV64 C.SRLI shamt[5] Decode mismatch
+FAIL[2797]: protected C.SRLI packet missing
+FAIL[2798]: protected C.SRLI lost RVC attribution
+FAIL[2800]: C.SRLI debug parcel mismatch
+FAIL[2801]: RV64 C.SRLI shamt[5] Decode mismatch
+FAIL[2809]: protected C.SRLI packet missing
+FAIL[2810]: protected C.SRLI lost RVC attribution
+FAIL[2812]: C.SRLI debug parcel mismatch
+FAIL[2813]: RV64 C.SRLI shamt[5] Decode mismatch
+FAIL[2821]: protected C.SRLI packet missing
+FAIL[2822]: protected C.SRLI lost RVC attribution
+FAIL[2824]: C.SRLI debug parcel mismatch
+FAIL[2825]: RV64 C.SRLI shamt[5] Decode mismatch
+FAIL[2833]: protected C.SRLI packet missing
+FAIL[2834]: protected C.SRLI lost RVC attribution
+FAIL[2836]: C.SRLI debug parcel mismatch
+FAIL[2837]: RV64 C.SRLI shamt[5] Decode mismatch
+FAIL[2845]: protected C.SRLI packet missing
+FAIL[2846]: protected C.SRLI lost RVC attribution
+FAIL[2848]: C.SRLI debug parcel mismatch
+FAIL[2849]: RV64 C.SRLI shamt[5] Decode mismatch
+FAIL[2857]: protected C.SRLI packet missing
+FAIL[2858]: protected C.SRLI lost RVC attribution
+FAIL[2860]: C.SRLI debug parcel mismatch
+FAIL[2861]: RV64 C.SRLI shamt[5] Decode mismatch
+FAIL[2869]: protected C.SRLI packet missing
+FAIL[2870]: protected C.SRLI lost RVC attribution
+FAIL[2872]: C.SRLI debug parcel mismatch
+FAIL[2873]: RV64 C.SRLI shamt[5] Decode mismatch
+FAIL[2881]: protected C.SRLI packet missing
+FAIL[2882]: protected C.SRLI lost RVC attribution
+FAIL[2884]: C.SRLI debug parcel mismatch
+FAIL[2885]: RV64 C.SRLI shamt[5] Decode mismatch
+FAIL[2893]: protected C.SRLI packet missing
+FAIL[2894]: protected C.SRLI lost RVC attribution
+FAIL[2896]: C.SRLI debug parcel mismatch
+FAIL[2897]: RV64 C.SRLI shamt[5] Decode mismatch
+FAIL[2905]: protected C.SRLI packet missing
+FAIL[2906]: protected C.SRLI lost RVC attribution
+FAIL[2908]: C.SRLI debug parcel mismatch
+FAIL[2909]: RV64 C.SRLI shamt[5] Decode mismatch
+FAIL[2917]: protected C.SRLI packet missing
+FAIL[2918]: protected C.SRLI lost RVC attribution
+FAIL[2920]: C.SRLI debug parcel mismatch
+FAIL[2921]: RV64 C.SRLI shamt[5] Decode mismatch
+FAIL[2929]: protected C.SRLI packet missing
+FAIL[2930]: protected C.SRLI lost RVC attribution
+FAIL[2932]: C.SRLI debug parcel mismatch
+FAIL[2933]: RV64 C.SRLI shamt[5] Decode mismatch
+FAIL[2941]: protected C.SRLI packet missing
+FAIL[2942]: protected C.SRLI lost RVC attribution
+FAIL[2944]: C.SRLI debug parcel mismatch
+FAIL[2945]: RV64 C.SRLI shamt[5] Decode mismatch
+FAIL[2953]: protected C.SRLI packet missing
+FAIL[2954]: protected C.SRLI lost RVC attribution
+FAIL[2956]: C.SRLI debug parcel mismatch
+FAIL[2957]: RV64 C.SRLI shamt[5] Decode mismatch
+FAIL[2965]: protected C.SRLI packet missing
+FAIL[2966]: protected C.SRLI lost RVC attribution
+FAIL[2968]: C.SRLI debug parcel mismatch
+FAIL[2969]: RV64 C.SRLI shamt[5] Decode mismatch
+FAIL[2977]: protected C.SRLI packet missing
+FAIL[2978]: protected C.SRLI lost RVC attribution
+FAIL[2980]: C.SRLI debug parcel mismatch
+FAIL[2981]: RV64 C.SRLI shamt[5] Decode mismatch
+FAIL[2989]: protected C.SRLI packet missing
+FAIL[2990]: protected C.SRLI lost RVC attribution
+FAIL[2992]: C.SRLI debug parcel mismatch
+FAIL[2993]: RV64 C.SRLI shamt[5] Decode mismatch
+FAIL[3001]: protected C.SRLI packet missing
+FAIL[3002]: protected C.SRLI lost RVC attribution
+FAIL[3004]: C.SRLI debug parcel mismatch
+FAIL[3005]: RV64 C.SRLI shamt[5] Decode mismatch
+FAIL[3013]: protected C.SRLI packet missing
+FAIL[3014]: protected C.SRLI lost RVC attribution
+FAIL[3016]: C.SRLI debug parcel mismatch
+FAIL[3017]: RV64 C.SRLI shamt[5] Decode mismatch
+FAIL[3025]: protected C.SRLI packet missing
+FAIL[3026]: protected C.SRLI lost RVC attribution
+FAIL[3028]: C.SRLI debug parcel mismatch
+FAIL[3029]: RV64 C.SRLI shamt[5] Decode mismatch
+FAIL[3037]: protected C.SRLI packet missing
+FAIL[3038]: protected C.SRLI lost RVC attribution
+FAIL[3040]: C.SRLI debug parcel mismatch
+FAIL[3041]: RV64 C.SRLI shamt[5] Decode mismatch
+FAIL[3049]: protected C.SRLI packet missing
+FAIL[3050]: protected C.SRLI lost RVC attribution
+FAIL[3052]: C.SRLI debug parcel mismatch
+FAIL[3053]: RV64 C.SRLI shamt[5] Decode mismatch
+FAIL[3061]: protected C.SRLI packet missing
+FAIL[3062]: protected C.SRLI lost RVC attribution
+FAIL[3064]: C.SRLI debug parcel mismatch
+FAIL[3065]: RV64 C.SRLI shamt[5] Decode mismatch
+FAIL[3073]: protected C.SRLI packet missing
+FAIL[3074]: protected C.SRLI lost RVC attribution
+FAIL[3076]: C.SRLI debug parcel mismatch
+FAIL[3077]: RV64 C.SRLI shamt[5] Decode mismatch
+FAIL[3085]: protected C.SRLI packet missing
+FAIL[3086]: protected C.SRLI lost RVC attribution
+FAIL[3088]: C.SRLI debug parcel mismatch
+FAIL[3089]: RV64 C.SRLI shamt[5] Decode mismatch
+FAIL[3097]: protected C.SRLI packet missing
+FAIL[3098]: protected C.SRLI lost RVC attribution
+FAIL[3100]: C.SRLI debug parcel mismatch
+FAIL[3101]: RV64 C.SRLI shamt[5] Decode mismatch
+FAIL[3109]: protected C.SRLI packet missing
+FAIL[3110]: protected C.SRLI lost RVC attribution
+FAIL[3112]: C.SRLI debug parcel mismatch
+FAIL[3113]: RV64 C.SRLI shamt[5] Decode mismatch
+FAIL[3121]: protected C.SRLI packet missing
+FAIL[3122]: protected C.SRLI lost RVC attribution
+FAIL[3124]: C.SRLI debug parcel mismatch
+FAIL[3125]: RV64 C.SRLI shamt[5] Decode mismatch
+FAIL[3133]: protected C.SRLI packet missing
+FAIL[3134]: protected C.SRLI lost RVC attribution
+FAIL[3136]: C.SRLI debug parcel mismatch
+FAIL[3137]: RV64 C.SRLI shamt[5] Decode mismatch
+FAIL[3145]: protected C.SRLI packet missing
+FAIL[3146]: protected C.SRLI lost RVC attribution
+FAIL[3148]: C.SRLI debug parcel mismatch
+FAIL[3149]: RV64 C.SRLI shamt[5] Decode mismatch
+FAIL[3157]: protected C.SRLI packet missing
+FAIL[3158]: protected C.SRLI lost RVC attribution
+FAIL[3160]: C.SRLI debug parcel mismatch
+FAIL[3161]: RV64 C.SRLI shamt[5] Decode mismatch
+FAIL[3169]: protected C.SRLI packet missing
+FAIL[3170]: protected C.SRLI lost RVC attribution
+FAIL[3172]: C.SRLI debug parcel mismatch
+FAIL[3173]: RV64 C.SRLI shamt[5] Decode mismatch
+FAIL[3181]: protected C.SRLI packet missing
+FAIL[3182]: protected C.SRLI lost RVC attribution
+FAIL[3184]: C.SRLI debug parcel mismatch
+FAIL[3185]: RV64 C.SRLI shamt[5] Decode mismatch
+FAIL[3193]: protected C.SRLI packet missing
+FAIL[3194]: protected C.SRLI lost RVC attribution
+FAIL[3196]: C.SRLI debug parcel mismatch
+FAIL[3197]: RV64 C.SRLI shamt[5] Decode mismatch
+FAIL[3205]: protected C.SRLI packet missing
+FAIL[3206]: protected C.SRLI lost RVC attribution
+FAIL[3208]: C.SRLI debug parcel mismatch
+FAIL[3209]: RV64 C.SRLI shamt[5] Decode mismatch
+FAIL[3217]: protected C.SRLI packet missing
+FAIL[3218]: protected C.SRLI lost RVC attribution
+FAIL[3220]: C.SRLI debug parcel mismatch
+FAIL[3221]: RV64 C.SRLI shamt[5] Decode mismatch
+FAIL[3229]: protected C.SRLI packet missing
+FAIL[3230]: protected C.SRLI lost RVC attribution
+FAIL[3232]: C.SRLI debug parcel mismatch
+FAIL[3233]: RV64 C.SRLI shamt[5] Decode mismatch
+FAIL[3241]: protected C.SRLI packet missing
+FAIL[3242]: protected C.SRLI lost RVC attribution
+FAIL[3244]: C.SRLI debug parcel mismatch
+FAIL[3245]: RV64 C.SRLI shamt[5] Decode mismatch
+FAIL[3253]: protected C.SRLI packet missing
+FAIL[3254]: protected C.SRLI lost RVC attribution
+FAIL[3256]: C.SRLI debug parcel mismatch
+FAIL[3257]: RV64 C.SRLI shamt[5] Decode mismatch
+FAIL[3265]: protected C.SRLI packet missing
+FAIL[3266]: protected C.SRLI lost RVC attribution
+FAIL[3268]: C.SRLI debug parcel mismatch
+FAIL[3269]: RV64 C.SRLI shamt[5] Decode mismatch
+FAIL[3277]: protected C.SRLI packet missing
+FAIL[3278]: protected C.SRLI lost RVC attribution
+FAIL[3280]: C.SRLI debug parcel mismatch
+FAIL[3281]: RV64 C.SRLI shamt[5] Decode mismatch
+FAIL[3289]: protected C.SRLI packet missing
+FAIL[3290]: protected C.SRLI lost RVC attribution
+FAIL[3292]: C.SRLI debug parcel mismatch
+FAIL[3293]: RV64 C.SRLI shamt[5] Decode mismatch
+FAIL[3301]: protected C.SRLI packet missing
+FAIL[3302]: protected C.SRLI lost RVC attribution
+FAIL[3304]: C.SRLI debug parcel mismatch
+FAIL[3305]: RV64 C.SRLI shamt[5] Decode mismatch
+FAIL[3313]: protected C.SRLI packet missing
+FAIL[3314]: protected C.SRLI lost RVC attribution
+FAIL[3316]: C.SRLI debug parcel mismatch
+FAIL[3317]: RV64 C.SRLI shamt[5] Decode mismatch
+FAIL[3325]: protected C.SRLI packet missing
+FAIL[3326]: protected C.SRLI lost RVC attribution
+FAIL[3328]: C.SRLI debug parcel mismatch
+FAIL[3329]: RV64 C.SRLI shamt[5] Decode mismatch
+FAIL[3337]: protected C.SRLI packet missing
+FAIL[3338]: protected C.SRLI lost RVC attribution
+FAIL[3340]: C.SRLI debug parcel mismatch
+FAIL[3341]: RV64 C.SRLI shamt[5] Decode mismatch
+FAIL[3349]: protected C.SRLI packet missing
+FAIL[3350]: protected C.SRLI lost RVC attribution
+FAIL[3352]: C.SRLI debug parcel mismatch
+FAIL[3353]: RV64 C.SRLI shamt[5] Decode mismatch
+FAIL[3361]: protected C.SRLI packet missing
+FAIL[3362]: protected C.SRLI lost RVC attribution
+FAIL[3364]: C.SRLI debug parcel mismatch
+FAIL[3365]: RV64 C.SRLI shamt[5] Decode mismatch
+FAIL[3373]: protected C.SRLI packet missing
+FAIL[3374]: protected C.SRLI lost RVC attribution
+FAIL[3376]: C.SRLI debug parcel mismatch
+FAIL[3377]: RV64 C.SRLI shamt[5] Decode mismatch
+FAIL[3385]: protected C.SRLI packet missing
+FAIL[3386]: protected C.SRLI lost RVC attribution
+FAIL[3388]: C.SRLI debug parcel mismatch
+FAIL[3389]: RV64 C.SRLI shamt[5] Decode mismatch
+FAIL[3397]: protected C.SRLI packet missing
+FAIL[3398]: protected C.SRLI lost RVC attribution
+FAIL[3400]: C.SRLI debug parcel mismatch
+FAIL[3401]: RV64 C.SRLI shamt[5] Decode mismatch
+FAIL[3409]: protected C.SRLI packet missing
+FAIL[3410]: protected C.SRLI lost RVC attribution
+FAIL[3412]: C.SRLI debug parcel mismatch
+FAIL[3413]: RV64 C.SRLI shamt[5] Decode mismatch
+FAIL[3421]: protected C.SRLI packet missing
+FAIL[3422]: protected C.SRLI lost RVC attribution
+FAIL[3424]: C.SRLI debug parcel mismatch
+FAIL[3425]: RV64 C.SRLI shamt[5] Decode mismatch
+FAIL[3433]: protected C.SRLI packet missing
+FAIL[3434]: protected C.SRLI lost RVC attribution
+FAIL[3436]: C.SRLI debug parcel mismatch
+FAIL[3437]: RV64 C.SRLI shamt[5] Decode mismatch
+FAIL[3445]: protected C.SRLI packet missing
+FAIL[3446]: protected C.SRLI lost RVC attribution
+FAIL[3448]: C.SRLI debug parcel mismatch
+FAIL[3449]: RV64 C.SRLI shamt[5] Decode mismatch
+FAIL[3457]: protected C.SRLI packet missing
+FAIL[3458]: protected C.SRLI lost RVC attribution
+FAIL[3460]: C.SRLI debug parcel mismatch
+FAIL[3461]: RV64 C.SRLI shamt[5] Decode mismatch
+FAIL[3469]: protected C.SRLI packet missing
+FAIL[3470]: protected C.SRLI lost RVC attribution
+FAIL[3472]: C.SRLI debug parcel mismatch
+FAIL[3473]: RV64 C.SRLI shamt[5] Decode mismatch
+FAIL[3481]: protected C.SRLI packet missing
+FAIL[3482]: protected C.SRLI lost RVC attribution
+FAIL[3484]: C.SRLI debug parcel mismatch
+FAIL[3485]: RV64 C.SRLI shamt[5] Decode mismatch
+FAIL[3493]: protected C.SRLI packet missing
+FAIL[3494]: protected C.SRLI lost RVC attribution
+FAIL[3496]: C.SRLI debug parcel mismatch
+FAIL[3497]: RV64 C.SRLI shamt[5] Decode mismatch
+FAIL[3505]: protected C.SRLI packet missing
+FAIL[3506]: protected C.SRLI lost RVC attribution
+FAIL[3508]: C.SRLI debug parcel mismatch
+FAIL[3509]: RV64 C.SRLI shamt[5] Decode mismatch
+FAIL[3517]: protected C.SRLI packet missing
+FAIL[3518]: protected C.SRLI lost RVC attribution
+FAIL[3520]: C.SRLI debug parcel mismatch
+FAIL[3521]: RV64 C.SRLI shamt[5] Decode mismatch
+FAIL[3529]: protected C.SRLI packet missing
+FAIL[3530]: protected C.SRLI lost RVC attribution
+FAIL[3532]: C.SRLI debug parcel mismatch
+FAIL[3533]: RV64 C.SRLI shamt[5] Decode mismatch
+FAIL[3541]: protected C.SRLI packet missing
+FAIL[3542]: protected C.SRLI lost RVC attribution
+FAIL[3544]: C.SRLI debug parcel mismatch
+FAIL[3545]: RV64 C.SRLI shamt[5] Decode mismatch
+FAIL[3553]: protected C.SRLI packet missing
+FAIL[3554]: protected C.SRLI lost RVC attribution
+FAIL[3556]: C.SRLI debug parcel mismatch
+FAIL[3557]: RV64 C.SRLI shamt[5] Decode mismatch
+FAIL[3565]: protected C.SRLI packet missing
+FAIL[3566]: protected C.SRLI lost RVC attribution
+FAIL[3568]: C.SRLI debug parcel mismatch
+FAIL[3569]: RV64 C.SRLI shamt[5] Decode mismatch
+FAIL[3577]: protected C.SRLI packet missing
+FAIL[3578]: protected C.SRLI lost RVC attribution
+FAIL[3580]: C.SRLI debug parcel mismatch
+FAIL[3581]: RV64 C.SRLI shamt[5] Decode mismatch
+FAIL[3589]: protected C.SRLI packet missing
+FAIL[3590]: protected C.SRLI lost RVC attribution
+FAIL[3592]: C.SRLI debug parcel mismatch
+FAIL[3593]: RV64 C.SRLI shamt[5] Decode mismatch
+FAIL[3601]: protected C.SRLI packet missing
+FAIL[3602]: protected C.SRLI lost RVC attribution
+FAIL[3604]: C.SRLI debug parcel mismatch
+FAIL[3605]: RV64 C.SRLI shamt[5] Decode mismatch
+FAIL[3613]: protected C.SRLI packet missing
+FAIL[3614]: protected C.SRLI lost RVC attribution
+FAIL[3616]: C.SRLI debug parcel mismatch
+FAIL[3617]: RV64 C.SRLI shamt[5] Decode mismatch
+FAIL[3625]: protected C.SRLI packet missing
+FAIL[3626]: protected C.SRLI lost RVC attribution
+FAIL[3628]: C.SRLI debug parcel mismatch
+FAIL[3629]: RV64 C.SRLI shamt[5] Decode mismatch
+FAIL[3637]: protected C.SRLI packet missing
+FAIL[3638]: protected C.SRLI lost RVC attribution
+FAIL[3640]: C.SRLI debug parcel mismatch
+FAIL[3641]: RV64 C.SRLI shamt[5] Decode mismatch
+FAIL[3649]: protected C.SRLI packet missing
+FAIL[3650]: protected C.SRLI lost RVC attribution
+FAIL[3652]: C.SRLI debug parcel mismatch
+FAIL[3653]: RV64 C.SRLI shamt[5] Decode mismatch
+FAIL[3661]: protected C.SRLI packet missing
+FAIL[3662]: protected C.SRLI lost RVC attribution
+FAIL[3664]: C.SRLI debug parcel mismatch
+FAIL[3665]: RV64 C.SRLI shamt[5] Decode mismatch
+FAIL[3673]: protected C.SRLI packet missing
+FAIL[3674]: protected C.SRLI lost RVC attribution
+FAIL[3676]: C.SRLI debug parcel mismatch
+FAIL[3677]: RV64 C.SRLI shamt[5] Decode mismatch
+FAIL[3685]: protected C.SRLI packet missing
+FAIL[3686]: protected C.SRLI lost RVC attribution
+FAIL[3688]: C.SRLI debug parcel mismatch
+FAIL[3689]: RV64 C.SRLI shamt[5] Decode mismatch
+FAIL[3697]: protected C.SRLI packet missing
+FAIL[3698]: protected C.SRLI lost RVC attribution
+FAIL[3700]: C.SRLI debug parcel mismatch
+FAIL[3701]: RV64 C.SRLI shamt[5] Decode mismatch
+FAIL[3709]: protected C.SRLI packet missing
+FAIL[3710]: protected C.SRLI lost RVC attribution
+FAIL[3712]: C.SRLI debug parcel mismatch
+FAIL[3713]: RV64 C.SRLI shamt[5] Decode mismatch
+FAIL[3721]: protected C.SRLI packet missing
+FAIL[3722]: protected C.SRLI lost RVC attribution
+FAIL[3724]: C.SRLI debug parcel mismatch
+FAIL[3725]: RV64 C.SRLI shamt[5] Decode mismatch
+FAIL[3733]: protected C.SRLI packet missing
+FAIL[3734]: protected C.SRLI lost RVC attribution
+FAIL[3736]: C.SRLI debug parcel mismatch
+FAIL[3737]: RV64 C.SRLI shamt[5] Decode mismatch
+FAIL[3745]: protected C.SRLI packet missing
+FAIL[3746]: protected C.SRLI lost RVC attribution
+FAIL[3748]: C.SRLI debug parcel mismatch
+FAIL[3749]: RV64 C.SRLI shamt[5] Decode mismatch
+FAIL[3757]: protected C.SRLI packet missing
+FAIL[3758]: protected C.SRLI lost RVC attribution
+FAIL[3760]: C.SRLI debug parcel mismatch
+FAIL[3761]: RV64 C.SRLI shamt[5] Decode mismatch
+FAIL[3769]: protected C.SRLI packet missing
+FAIL[3770]: protected C.SRLI lost RVC attribution
+FAIL[3772]: C.SRLI debug parcel mismatch
+FAIL[3773]: RV64 C.SRLI shamt[5] Decode mismatch
+FAIL[3781]: protected C.SRLI packet missing
+FAIL[3782]: protected C.SRLI lost RVC attribution
+FAIL[3784]: C.SRLI debug parcel mismatch
+FAIL[3785]: RV64 C.SRLI shamt[5] Decode mismatch
+FAIL[3793]: protected C.SRLI packet missing
+FAIL[3794]: protected C.SRLI lost RVC attribution
+FAIL[3796]: C.SRLI debug parcel mismatch
+FAIL[3797]: RV64 C.SRLI shamt[5] Decode mismatch
+FAIL[3805]: protected C.SRLI packet missing
+FAIL[3806]: protected C.SRLI lost RVC attribution
+FAIL[3808]: C.SRLI debug parcel mismatch
+FAIL[3809]: RV64 C.SRLI shamt[5] Decode mismatch
+FAIL[3817]: protected C.SRLI packet missing
+FAIL[3818]: protected C.SRLI lost RVC attribution
+FAIL[3820]: C.SRLI debug parcel mismatch
+FAIL[3821]: RV64 C.SRLI shamt[5] Decode mismatch
+FAIL[3829]: protected C.SRLI packet missing
+FAIL[3830]: protected C.SRLI lost RVC attribution
+FAIL[3832]: C.SRLI debug parcel mismatch
+FAIL[3833]: RV64 C.SRLI shamt[5] Decode mismatch
+FAIL[3841]: protected C.SRLI packet missing
+FAIL[3842]: protected C.SRLI lost RVC attribution
+FAIL[3844]: C.SRLI debug parcel mismatch
+FAIL[3845]: RV64 C.SRLI shamt[5] Decode mismatch
+FAIL[3853]: protected C.SRLI packet missing
+FAIL[3854]: protected C.SRLI lost RVC attribution
+FAIL[3856]: C.SRLI debug parcel mismatch
+FAIL[3857]: RV64 C.SRLI shamt[5] Decode mismatch
+FAIL[3865]: protected C.SRLI packet missing
+FAIL[3866]: protected C.SRLI lost RVC attribution
+FAIL[3868]: C.SRLI debug parcel mismatch
+FAIL[3869]: RV64 C.SRLI shamt[5] Decode mismatch
+FAIL[3877]: protected C.SRLI packet missing
+FAIL[3878]: protected C.SRLI lost RVC attribution
+FAIL[3880]: C.SRLI debug parcel mismatch
+FAIL[3881]: RV64 C.SRLI shamt[5] Decode mismatch
+FAIL[3889]: protected C.SRLI packet missing
+FAIL[3890]: protected C.SRLI lost RVC attribution
+FAIL[3892]: C.SRLI debug parcel mismatch
+FAIL[3893]: RV64 C.SRLI shamt[5] Decode mismatch
+FAIL[3901]: protected C.SRLI packet missing
+FAIL[3902]: protected C.SRLI lost RVC attribution
+FAIL[3904]: C.SRLI debug parcel mismatch
+FAIL[3905]: RV64 C.SRLI shamt[5] Decode mismatch
+FAIL[3913]: protected C.SRLI packet missing
+FAIL[3914]: protected C.SRLI lost RVC attribution
+FAIL[3916]: C.SRLI debug parcel mismatch
+FAIL[3917]: RV64 C.SRLI shamt[5] Decode mismatch
+FAIL[3925]: protected C.SRLI packet missing
+FAIL[3926]: protected C.SRLI lost RVC attribution
+FAIL[3928]: C.SRLI debug parcel mismatch
+FAIL[3929]: RV64 C.SRLI shamt[5] Decode mismatch
+FAIL[3937]: protected C.SRLI packet missing
+FAIL[3938]: protected C.SRLI lost RVC attribution
+FAIL[3940]: C.SRLI debug parcel mismatch
+FAIL[3941]: RV64 C.SRLI shamt[5] Decode mismatch
+FAIL[3949]: protected C.SRLI packet missing
+FAIL[3950]: protected C.SRLI lost RVC attribution
+FAIL[3952]: C.SRLI debug parcel mismatch
+FAIL[3953]: RV64 C.SRLI shamt[5] Decode mismatch
+FAIL[3961]: protected C.SRLI packet missing
+FAIL[3962]: protected C.SRLI lost RVC attribution
+FAIL[3964]: C.SRLI debug parcel mismatch
+FAIL[3965]: RV64 C.SRLI shamt[5] Decode mismatch
+FAIL[3973]: protected C.SRLI packet missing
+FAIL[3974]: protected C.SRLI lost RVC attribution
+FAIL[3976]: C.SRLI debug parcel mismatch
+FAIL[3977]: RV64 C.SRLI shamt[5] Decode mismatch
+FAIL[3985]: protected C.SRLI packet missing
+FAIL[3986]: protected C.SRLI lost RVC attribution
+FAIL[3988]: C.SRLI debug parcel mismatch
+FAIL[3989]: RV64 C.SRLI shamt[5] Decode mismatch
+FAIL[3997]: protected C.SRLI packet missing
+FAIL[3998]: protected C.SRLI lost RVC attribution
+FAIL[4000]: C.SRLI debug parcel mismatch
+FAIL[4001]: RV64 C.SRLI shamt[5] Decode mismatch
+FAIL[4009]: protected C.SRLI packet missing
+FAIL[4010]: protected C.SRLI lost RVC attribution
+FAIL[4012]: C.SRLI debug parcel mismatch
+FAIL[4013]: RV64 C.SRLI shamt[5] Decode mismatch
+FAIL[4021]: protected C.SRLI packet missing
+FAIL[4022]: protected C.SRLI lost RVC attribution
+FAIL[4024]: C.SRLI debug parcel mismatch
+FAIL[4025]: RV64 C.SRLI shamt[5] Decode mismatch
+FAIL[4033]: protected C.SRLI packet missing
+FAIL[4034]: protected C.SRLI lost RVC attribution
+FAIL[4036]: C.SRLI debug parcel mismatch
+FAIL[4037]: RV64 C.SRLI shamt[5] Decode mismatch
+FAIL[4045]: protected C.SRLI packet missing
+FAIL[4046]: protected C.SRLI lost RVC attribution
+FAIL[4048]: C.SRLI debug parcel mismatch
+FAIL[4049]: RV64 C.SRLI shamt[5] Decode mismatch
+FAIL[4057]: protected C.SRLI packet missing
+FAIL[4058]: protected C.SRLI lost RVC attribution
+FAIL[4060]: C.SRLI debug parcel mismatch
+FAIL[4061]: RV64 C.SRLI shamt[5] Decode mismatch
+FAIL[4069]: protected C.SRLI packet missing
+FAIL[4070]: protected C.SRLI lost RVC attribution
+FAIL[4072]: C.SRLI debug parcel mismatch
+FAIL[4073]: RV64 C.SRLI shamt[5] Decode mismatch
+FAIL[4081]: protected C.SRLI packet missing
+FAIL[4082]: protected C.SRLI lost RVC attribution
+FAIL[4084]: C.SRLI debug parcel mismatch
+FAIL[4085]: RV64 C.SRLI shamt[5] Decode mismatch
+FAIL[4093]: protected C.SRLI packet missing
+FAIL[4094]: protected C.SRLI lost RVC attribution
+FAIL[4096]: C.SRLI debug parcel mismatch
+FAIL[4097]: RV64 C.SRLI shamt[5] Decode mismatch
+FAIL[4105]: protected C.SRLI packet missing
+FAIL[4106]: protected C.SRLI lost RVC attribution
+FAIL[4108]: C.SRLI debug parcel mismatch
+FAIL[4109]: RV64 C.SRLI shamt[5] Decode mismatch
+FAIL[4115]: protected C.JALR packet missing
+FAIL[4117]: C.JALR debug parcel mismatch
+FAIL[4118]: C.JALR Decode uopc mismatch
+FAIL[4119]: C.JALR Decode metadata mismatch
+FAIL[4124]: protected C.JALR packet missing
+FAIL[4126]: C.JALR debug parcel mismatch
+FAIL[4127]: C.JALR Decode uopc mismatch
+FAIL[4128]: C.JALR Decode metadata mismatch
+FAIL[4133]: protected C.JALR packet missing
+FAIL[4135]: C.JALR debug parcel mismatch
+FAIL[4136]: C.JALR Decode uopc mismatch
+FAIL[4137]: C.JALR Decode metadata mismatch
+FAIL[4142]: protected C.JALR packet missing
+FAIL[4144]: C.JALR debug parcel mismatch
+FAIL[4145]: C.JALR Decode uopc mismatch
+FAIL[4146]: C.JALR Decode metadata mismatch
+FAIL[4151]: protected C.JALR packet missing
+FAIL[4153]: C.JALR debug parcel mismatch
+FAIL[4154]: C.JALR Decode uopc mismatch
+FAIL[4155]: C.JALR Decode metadata mismatch
+FAIL[4160]: protected C.JALR packet missing
+FAIL[4162]: C.JALR debug parcel mismatch
+FAIL[4163]: C.JALR Decode uopc mismatch
+FAIL[4164]: C.JALR Decode metadata mismatch
+FAIL[4169]: protected C.JALR packet missing
+FAIL[4171]: C.JALR debug parcel mismatch
+FAIL[4172]: C.JALR Decode uopc mismatch
+FAIL[4173]: C.JALR Decode metadata mismatch
+FAIL[4178]: protected C.JALR packet missing
+FAIL[4180]: C.JALR debug parcel mismatch
+FAIL[4181]: C.JALR Decode uopc mismatch
+FAIL[4182]: C.JALR Decode metadata mismatch
+FAIL[4187]: protected C.JALR packet missing
+FAIL[4189]: C.JALR debug parcel mismatch
+FAIL[4190]: C.JALR Decode uopc mismatch
+FAIL[4191]: C.JALR Decode metadata mismatch
+FAIL[4196]: protected C.JALR packet missing
+FAIL[4198]: C.JALR debug parcel mismatch
+FAIL[4199]: C.JALR Decode uopc mismatch
+FAIL[4200]: C.JALR Decode metadata mismatch
+FAIL[4205]: protected C.JALR packet missing
+FAIL[4207]: C.JALR debug parcel mismatch
+FAIL[4208]: C.JALR Decode uopc mismatch
+FAIL[4209]: C.JALR Decode metadata mismatch
+FAIL[4214]: protected C.JALR packet missing
+FAIL[4216]: C.JALR debug parcel mismatch
+FAIL[4217]: C.JALR Decode uopc mismatch
+FAIL[4218]: C.JALR Decode metadata mismatch
+FAIL[4223]: protected C.JALR packet missing
+FAIL[4225]: C.JALR debug parcel mismatch
+FAIL[4226]: C.JALR Decode uopc mismatch
+FAIL[4227]: C.JALR Decode metadata mismatch
+FAIL[4232]: protected C.JALR packet missing
+FAIL[4234]: C.JALR debug parcel mismatch
+FAIL[4235]: C.JALR Decode uopc mismatch
+FAIL[4236]: C.JALR Decode metadata mismatch
+FAIL[4241]: protected C.JALR packet missing
+FAIL[4243]: C.JALR debug parcel mismatch
+FAIL[4244]: C.JALR Decode uopc mismatch
+FAIL[4245]: C.JALR Decode metadata mismatch
+FAIL[4250]: protected C.JALR packet missing
+FAIL[4252]: C.JALR debug parcel mismatch
+FAIL[4253]: C.JALR Decode uopc mismatch
+FAIL[4254]: C.JALR Decode metadata mismatch
+FAIL[4259]: protected C.JALR packet missing
+FAIL[4261]: C.JALR debug parcel mismatch
+FAIL[4262]: C.JALR Decode uopc mismatch
+FAIL[4263]: C.JALR Decode metadata mismatch
+FAIL[4268]: protected C.JALR packet missing
+FAIL[4270]: C.JALR debug parcel mismatch
+FAIL[4271]: C.JALR Decode uopc mismatch
+FAIL[4272]: C.JALR Decode metadata mismatch
+FAIL[4277]: protected C.JALR packet missing
+FAIL[4279]: C.JALR debug parcel mismatch
+FAIL[4280]: C.JALR Decode uopc mismatch
+FAIL[4281]: C.JALR Decode metadata mismatch
+FAIL[4286]: protected C.JALR packet missing
+FAIL[4288]: C.JALR debug parcel mismatch
+FAIL[4289]: C.JALR Decode uopc mismatch
+FAIL[4290]: C.JALR Decode metadata mismatch
+FAIL[4295]: protected C.JALR packet missing
+FAIL[4297]: C.JALR debug parcel mismatch
+FAIL[4298]: C.JALR Decode uopc mismatch
+FAIL[4299]: C.JALR Decode metadata mismatch
+FAIL[4304]: protected C.JALR packet missing
+FAIL[4306]: C.JALR debug parcel mismatch
+FAIL[4307]: C.JALR Decode uopc mismatch
+FAIL[4308]: C.JALR Decode metadata mismatch
+FAIL[4313]: protected C.JALR packet missing
+FAIL[4315]: C.JALR debug parcel mismatch
+FAIL[4316]: C.JALR Decode uopc mismatch
+FAIL[4317]: C.JALR Decode metadata mismatch
+FAIL[4322]: protected C.JALR packet missing
+FAIL[4324]: C.JALR debug parcel mismatch
+FAIL[4325]: C.JALR Decode uopc mismatch
+FAIL[4326]: C.JALR Decode metadata mismatch
+FAIL[4331]: protected C.JALR packet missing
+FAIL[4333]: C.JALR debug parcel mismatch
+FAIL[4334]: C.JALR Decode uopc mismatch
+FAIL[4335]: C.JALR Decode metadata mismatch
+FAIL[4340]: protected C.JALR packet missing
+FAIL[4342]: C.JALR debug parcel mismatch
+FAIL[4343]: C.JALR Decode uopc mismatch
+FAIL[4344]: C.JALR Decode metadata mismatch
+FAIL[4349]: protected C.JALR packet missing
+FAIL[4351]: C.JALR debug parcel mismatch
+FAIL[4352]: C.JALR Decode uopc mismatch
+FAIL[4353]: C.JALR Decode metadata mismatch
+FAIL[4358]: protected C.JALR packet missing
+FAIL[4360]: C.JALR debug parcel mismatch
+FAIL[4361]: C.JALR Decode uopc mismatch
+FAIL[4362]: C.JALR Decode metadata mismatch
+FAIL[4367]: protected C.JALR packet missing
+FAIL[4369]: C.JALR debug parcel mismatch
+FAIL[4370]: C.JALR Decode uopc mismatch
+FAIL[4371]: C.JALR Decode metadata mismatch
+FAIL[4376]: protected C.JALR packet missing
+FAIL[4378]: C.JALR debug parcel mismatch
+FAIL[4379]: C.JALR Decode uopc mismatch
+FAIL[4380]: C.JALR Decode metadata mismatch
+FAIL[4385]: protected C.JALR packet missing
+FAIL[4387]: C.JALR debug parcel mismatch
+FAIL[4388]: C.JALR Decode uopc mismatch
+FAIL[4389]: C.JALR Decode metadata mismatch

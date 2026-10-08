@@ -1,0 +1,21 @@
+group,failures,distinct_signatures,first_assertion,representative_signature,classification
+protected C.SRLI shamt[5] matrix,1024,4,1045,protected C.SRLI packet missing,repeated encoding matrix
+protected C.JALR matrix,124,4,4115,protected C.JALR packet missing,repeated encoding matrix
+reserved_and_unsupported_rvc,39,5,954,illegal RVC packet missing,repeated illegal parcel checks
+long-mixed,9,5,735,request outside constructed image at 0x24134,prefetch/final PC
+compressed fault,5,5,868,exception bit missing,fault metadata
+aligned-32 fault,5,5,876,exception bit missing,fault metadata
+cross-upper fault,5,5,891,exception bit missing,fault metadata
+production_branch_recovery_while_carry,5,5,942,production branch recovery retained carry,branch recovery while carry
+C/C,4,3,9,request outside constructed image at 0x20004,prefetch/final PC
+odd_redirect_fault,4,4,814,odd redirect did not produce a fault,redirect fault
+cross_word_identity_and_delayed_upper,4,4,842,matching delayed upper did not emit packet,cross-word assembly
+backpressure_and_stall_holds,4,4,858,decode stall did not retain response,stall hold
+protected C.EBREAK,4,4,1034,protected C.EBREAK packet missing,protected decode gap
+C/32,3,2,38,request outside constructed image at 0x21008,prefetch/final PC
+32/C,3,2,64,request outside constructed image at 0x22008,prefetch/final PC
+32/32,3,2,90,request outside constructed image at 0x23008,prefetch/final PC
+redirect_alignment_pc_mod_4_eq_2,3,3,807,PC%4=2 redirect parcel not delivered,redirect alignment
+reserved_long_encoding,3,3,1025,reserved long encoding packet missing,reserved long encoding
+fault_positions_compressed,1,1,867,compressed-position fault missing,fault packet valid
+fault_positions_cross_upper,1,1,890,delayed upper fault missing,cross-upper fault packet valid

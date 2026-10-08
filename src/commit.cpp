@@ -13,6 +13,8 @@ extern bool lsu_reclaim_store(BoomCoreState& state, SqIndex sq_index,
 extern bool lsu_store_owner_matches(const BoomCoreState& state, SqIndex sq_index,
                                     uint16_t generation, uint8_t rob_idx,
                                     uint32_t allocation_id);
+extern bool lsu_allocate_transaction_id(BoomCoreState& state,
+                                        uint32_t& transaction_id);
 
 static bool preg_is_committed(const RenameMapTableState& mt, uint8_t preg) {
     if (preg == 0) return true;
@@ -232,8 +234,10 @@ void rob_commit_module(BoomCoreState& state, PipeSignals& pipe) {
                                                  uop.queue.rob_idx,
                                                  uop.queue.rob_allocation_id)) return;
                     if (pipe.dmem_req.full()) return;
+                    uint32_t transaction_id = 0;
+                    if (!lsu_allocate_transaction_id(state, transaction_id)) return;
                     DmemRequest req;
-                    req.transaction_id = state.lsu.next_transaction_id++;
+                    req.transaction_id = transaction_id;
                     req.rob_idx = uop.queue.rob_idx;
                     req.command = DMEM_STORE;
                     req.is_store = true;

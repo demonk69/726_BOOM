@@ -1,0 +1,13 @@
+case_id,semantic_requirement,stimulus,oracle,expected_result,path
+L3_RTL_001,2 external loads simultaneously pending,issue A then B before responses,active count and two LQ owners,NOT_RUN_RTL,PATH_B
+L3_RTL_002,reverse response order,A and B outstanding then respond B A,only matching owners complete,NOT_RUN_RTL,PATH_B
+L3_RTL_003,3 outstanding loads,A B C outstanding then C A B,all complete once,NOT_RUN_RTL,PATH_B
+L3_RTL_004,branch kills middle owner,A B C active kill B late C B A,only A C complete,NOT_RUN_RTL,PATH_B
+L3_RTL_005,flush with multiple active,A B active flush then late responses,no architectural writes,NOT_RUN_RTL,PATH_B
+L3_RTL_006,reset with multiple active,A B active reset then late responses,no architectural writes,NOT_RUN_RTL,PATH_B
+L3_RTL_007,forwarded load while external pending,A external active B forwarded,B no txid,NOT_RUN_RTL,PATH_B
+L3_RTL_008,late stale response after LQ reuse,old slot reused generation plus one,old response rejected,NOT_RUN_RTL,PATH_B
+L3_RTL_009,txid mismatch,active owner response with wrong txid,no completion,NOT_RUN_RTL,PATH_B
+L3_RTL_010,completion backpressure,response held then second response arrives,second retained upstream,NOT_RUN_RTL,PATH_B
+L3_RTL_011,DMEM request backpressure,request ready low,no phantom active owner,NOT_RUN_RTL,PATH_B
+L3_RTL_012,max active then one completes then new request,LQ_DEPTH active complete one issue one,count restored,NOT_RUN_RTL,PATH_B

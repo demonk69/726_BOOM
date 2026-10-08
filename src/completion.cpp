@@ -88,27 +88,34 @@ void completion_from_load_response(const BoomCoreState& state,
     event.transaction_id = response.transaction_id;
     event.writes_prf = false;
     event.forwarded_load = false;
-    if (!state.lsu.load_response_pending ||
-        response.transaction_id != state.lsu.pending_load_transaction_id ||
-        state.lsu.pending_load_rob_idx >= ROB_DEPTH) return;
+    int lq_index = -1;
+    uint8_t matches = 0;
+LOAD_RESPONSE_OWNER_SCAN:
+    for (int i = 0; i < LQ_DEPTH; i++) {
+        const LoadQueueEntry& candidate = state.lsu.ldq[i];
+        if (candidate.valid && candidate.response_pending &&
+            candidate.transaction_id == response.transaction_id) {
+            lq_index = i;
+            matches++;
+        }
+    }
+    if (matches != 1 || lq_index < 0) return;
 
-    const RobEntry& entry = state.rob.entries[state.lsu.pending_load_rob_idx];
+    const LoadQueueEntry& owner = state.lsu.ldq[lq_index];
+    if (owner.rob_idx >= ROB_DEPTH) return;
+    const RobEntry& entry = state.rob.entries[owner.rob_idx];
     if (!entry.valid || !entry.busy || !entry.is_load ||
         !entry.memory_request_sent || entry.memory_completed ||
-        entry.uop.queue.rob_allocation_id != state.lsu.pending_load_allocation_id ||
+        entry.uop.queue.rob_allocation_id != owner.rob_allocation_id ||
+        entry.uop.queue.ldq_idx != lq_index ||
+        entry.uop.queue.ldq_generation != owner.generation ||
         entry.memory_transaction_id != response.transaction_id) return;
-    const LoadQueueEntry& owner =
-        state.lsu.ldq[(int)state.lsu.pending_load_lq_index];
-    if (!owner.valid || owner.generation != state.lsu.pending_load_lq_generation ||
-        owner.rob_idx != state.lsu.pending_load_rob_idx ||
-        owner.rob_allocation_id != state.lsu.pending_load_allocation_id ||
-        owner.transaction_id != response.transaction_id || !owner.response_pending) return;
 
     event.valid = true;
     event.uop = entry.uop;
 #ifdef __SYNTHESIS__
     event.uop.ftq_generation =
-        state.rob.ftq_generations[state.lsu.pending_load_rob_idx];
+        state.rob.ftq_generations[owner.rob_idx];
 #endif
     event.mispredict = false;
     event.redirect_pc = 0;
@@ -171,9 +178,18 @@ bool completion_is_valid(const BoomCoreState& state,
         return !entry.memory_completed;
     if (event.kind == COMPLETION_LOAD_RESPONSE) {
         if (!entry.is_load || entry.memory_completed) return false;
-        if (!event.forwarded_load)
-            return entry.memory_request_sent &&
-                entry.memory_transaction_id == event.transaction_id;
+        if (!event.forwarded_load) {
+            if (!entry.memory_request_sent ||
+                entry.memory_transaction_id != event.transaction_id ||
+                entry.uop.queue.ldq_idx >= LQ_DEPTH) return false;
+            const LoadQueueEntry& owner =
+                state.lsu.ldq[entry.uop.queue.ldq_idx];
+            return owner.valid && owner.response_pending &&
+                owner.generation == entry.uop.queue.ldq_generation &&
+                owner.rob_idx == event.uop.queue.rob_idx &&
+                owner.rob_allocation_id == event.uop.queue.rob_allocation_id &&
+                owner.transaction_id == event.transaction_id;
+        }
         if (entry.memory_request_sent || entry.uop.queue.ldq_idx >= LQ_DEPTH)
             return false;
         const LoadQueueEntry& owner =

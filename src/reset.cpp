@@ -246,6 +246,7 @@ RESET_ROB_INIT:
             state.lsu.ldq_head = 0;
             state.lsu.ldq_tail = 0;
             state.lsu.ldq_count = 0;
+            state.lsu.outstanding_load_count = 0;
             state.lsu.stq_head = 0;
             state.lsu.stq_tail = 0;
             state.lsu.stq_count = 0;

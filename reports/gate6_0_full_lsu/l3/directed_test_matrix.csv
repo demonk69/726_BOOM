@@ -1,0 +1,19 @@
+case_id,semantic_requirement,status,evidence
+L3_D001,single outstanding baseline,PASS,/home/lab_726/opencode_tmp/g6_l3/native/4_4.log
+L3_D002,two outstanding in-order response,PASS,/home/lab_726/opencode_tmp/g6_l3/native/4_4.log
+L3_D003,two outstanding reverse response,PASS,/home/lab_726/opencode_tmp/g6_l3/native/4_4.log
+L3_D004,three outstanding C-A-B response order,PASS,/home/lab_726/opencode_tmp/g6_l3/native/4_4.log
+L3_D005,max outstanding equals LQ_DEPTH,PASS,/home/lab_726/opencode_tmp/g6_l3/native/16_16.log
+L3_D006,one response frees capacity then new request,PASS,/home/lab_726/opencode_tmp/g6_l3/native/16_16.log
+L3_D007,forwarded load consumes no slot,PASS,/home/lab_726/opencode_tmp/g6_l3/native/4_4.log
+L3_D008,external load consumes one slot,PASS,/home/lab_726/opencode_tmp/g6_l3/native/4_4.log
+L3_D009,DMEM request backpressure no phantom owner,PASS_NATIVE,/home/lab_726/opencode_tmp/g6_l3/native/4_4.log
+L3_D010,response completion backpressure retained,PASS,/home/lab_726/opencode_tmp/g6_l3/native/4_4.log
+L3_D011,squashed one of multiple owners late response rejected,PASS,/home/lab_726/opencode_tmp/g6_l3/native/4_4.log
+L3_D012,LQ slot generation reuse stale response rejected,PASS,/home/lab_726/opencode_tmp/g6_l3/native/4_4.log
+L3_D013,ROB allocation ID reuse stale response rejected,PASS,/home/lab_726/opencode_tmp/g6_l3/native/4_4.log
+L3_D014,txid mismatch rejected,PASS,/home/lab_726/opencode_tmp/g6_l3/native/4_4.log
+L3_D015,txid wrap fffffffe ffffffff zero,PASS,/home/lab_726/opencode_tmp/g6_l3/native/4_4.log
+L3_D016,active txid collision skipped,PASS,/home/lab_726/opencode_tmp/g6_l3/native/4_4.log
+L3_D017,duplicate response rejected,PASS,/home/lab_726/opencode_tmp/g6_l3/native/4_4.log
+L3_D018,same LQ slot cannot double issue,PASS,/home/lab_726/opencode_tmp/g6_l3/native/4_4.log

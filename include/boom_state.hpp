@@ -269,6 +269,7 @@ typedef uint8_t SqCount;
 struct LsuState {
     LqIndex ldq_head, ldq_tail;
     LqCount ldq_count;
+    LqCount outstanding_load_count;
     SqIndex stq_head, stq_tail;
     SqCount stq_count;
     StoreQueueEntry stq[STQ_DEPTH];
@@ -282,7 +283,8 @@ struct LsuState {
     uint32_t pending_load_allocation_id;
     LqIndex pending_load_lq_index;
     uint16_t pending_load_lq_generation;
-    LsuState() : ldq_head(0), ldq_tail(0), ldq_count(0), stq_head(0), stq_tail(0), stq_count(0),
+    LsuState() : ldq_head(0), ldq_tail(0), ldq_count(0), outstanding_load_count(0),
+        stq_head(0), stq_tail(0), stq_count(0),
         next_transaction_id(1), load_response_pending(false), pending_load_transaction_id(0),
         pending_load_rob_idx(0), pending_load_allocation_id(0), pending_load_lq_index(0),
         pending_load_lq_generation(0) {

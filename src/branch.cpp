@@ -159,21 +159,21 @@ static void kill_lsu_state(BoomCoreState& state, uint8_t mispredict_mask) {
     for (int i=0; i<LQ_DEPTH; i++) {
         LoadQueueEntry& e = lsu.ldq[i];
         if (e.valid && (e.branch_mask & mispredict_mask) != 0) {
-            if (lsu.load_response_pending && (int)lsu.pending_load_lq_index == i &&
-                lsu.pending_load_lq_generation == e.generation &&
-                lsu.pending_load_rob_idx == e.rob_idx &&
-                lsu.pending_load_allocation_id == e.rob_allocation_id) {
-                lsu.load_response_pending = false;
-                lsu.pending_load_transaction_id = 0;
-                lsu.pending_load_rob_idx = 0;
-                lsu.pending_load_allocation_id = 0;
-                lsu.pending_load_lq_index = 0;
-                lsu.pending_load_lq_generation = 0;
-            }
+            if (e.response_pending && lsu.outstanding_load_count != 0)
+                lsu.outstanding_load_count--;
             e.valid = false;
             e.response_pending = false;
+            e.transaction_id = 0;
             if (lsu.ldq_count != 0) lsu.ldq_count--;
         }
+    }
+    lsu.load_response_pending = lsu.outstanding_load_count != 0;
+    if (!lsu.load_response_pending) {
+        lsu.pending_load_transaction_id = 0;
+        lsu.pending_load_rob_idx = 0;
+        lsu.pending_load_allocation_id = 0;
+        lsu.pending_load_lq_index = 0;
+        lsu.pending_load_lq_generation = 0;
     }
     for (int i=0; i<SQ_DEPTH; i++) {
         StoreQueueEntry& e = lsu.stq[i];

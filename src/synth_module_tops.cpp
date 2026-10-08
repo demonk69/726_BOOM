@@ -2147,10 +2147,13 @@ void synth_w3_diagnostic_top(uint8_t scenario, uint64_t& observable) {
         state.lsu.pending_load_transaction_id = 7;
         state.lsu.pending_load_rob_idx = 1;
         state.lsu.pending_load_allocation_id = 61;
+        state.lsu.outstanding_load_count = 1;
         state.lsu.ldq_count = 1;
         state.lsu.ldq[0].valid = true;
         state.lsu.ldq[0].rob_idx = 1;
         state.lsu.ldq[0].rob_allocation_id = 61;
+        state.lsu.ldq[0].transaction_id = 7;
+        state.lsu.ldq[0].response_pending = true;
         state.execute.alu_results[INT_ISSUE_LANE] = w3_result(2, 62);
         carry_int_id = true;
         held_int_id = 62;
@@ -2522,8 +2525,10 @@ void synth_w4d_oracle_top(uint8_t scenario, uint64_t* observable) {
         state.lsu.pending_load_transaction_id = 77;
         state.lsu.pending_load_rob_idx = 4;
         state.lsu.pending_load_allocation_id = 1104;
+        state.lsu.outstanding_load_count = 1;
         state.lsu.ldq_count = 1; state.lsu.ldq_tail = 1; state.lsu.ldq[0].valid = true;
         state.lsu.ldq[0].rob_idx = 4; state.lsu.ldq[0].rob_allocation_id = 1104;
+        state.lsu.ldq[0].transaction_id = 77; state.lsu.ldq[0].response_pending = true;
         DmemResponse response; response.transaction_id = 77;
         response.data = response.read_data = 0x1717;
         state.completion.total_completion_accepts = 40;
@@ -2680,6 +2685,7 @@ void synth_w4_core_step_retention_top(uint8_t seed, uint8_t phase,
     state.lsu.pending_load_allocation_id = allocation + 4;
     state.lsu.pending_load_lq_index = 0;
     state.lsu.pending_load_lq_generation = 1;
+    state.lsu.outstanding_load_count = 1;
     state.lsu.ldq_count = 1;
     state.lsu.ldq_tail = 1;
     state.lsu.ldq[0].valid = true;
