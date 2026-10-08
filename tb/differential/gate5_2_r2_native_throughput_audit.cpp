@@ -253,9 +253,10 @@ void write_analysis(const std::string& path, const std::vector<Result>& results)
            "Intervals are differences between event call numbers; cycles/instruction includes "
            "the initial request call.\n\n"
            "## Gates\n\n"
-           "- **Retained C parcels: PASS.** In `all-C`, every upper compressed parcel is "
-           "published one call after its lower partner without a response on that second call; "
-           "the response word is reused locally and there is no publication bubble.\n"
+            "- **Retained C parcels: PASS.** In `all-C`, every upper compressed parcel is "
+            "published one call after its lower partner without a same-word response on that "
+            "second call; the original response word is reused locally and there is no "
+            "publication bubble. A future lookahead response may overlap the publication call.\n"
            "- **Aligned all-32 contract: PASS.** Logical requests and publications each have "
            "mean/min/max interval 1/1/1 after startup. The implementation retains the current "
            "one-request-per-word cadence.\n"
@@ -267,8 +268,8 @@ void write_analysis(const std::string& path, const std::vector<Result>& results)
            "an HLS `ap_ctrl_hs` wrapper and makes no physical-clock throughput claim. HLS call "
            "latency/II must be reported from synthesis or RTL separately; the one-call IMEM "
            "latency here is explicit in `cycle_trace.csv` as request call N and response call "
-           "N+1. Parcel-local reuse is visible when publication occurs with "
-           "`response_valid=0`, and carry assembly is visible in `carry_before/after`.\n";
+            "N+1. Parcel-local reuse is visible when an upper-half publication has no "
+            "same-word response, and carry assembly is visible in `carry_before/after`.\n";
 }
 
 std::vector<Instruction> repeated(bool compressed, unsigned count) {
@@ -305,11 +306,12 @@ int main(int argc, char** argv) {
         const unsigned cycle = all_c.publication_cycles[i];
         check(cycle == all_c.publication_cycles[i - 1] + 1,
               "all-C retained upper parcel has a publication bubble");
-        bool response_valid = false;
+        bool same_word_response = false;
         for (std::size_t row = 0; row < trace.size(); ++row)
             if (trace[row].scenario == "all-C" && trace[row].cycle == cycle)
-                response_valid = trace[row].response_valid;
-        check(!response_valid, "all-C upper parcel was not local response reuse");
+                same_word_response = trace[row].response_valid &&
+                    trace[row].response_address == (trace[row].publication_pc & ~3ULL);
+        check(!same_word_response, "all-C upper parcel waited for same-word response");
     }
     const IntervalStats all32_req = intervals(results[1].request_cycles);
     const IntervalStats all32_pub = intervals(results[1].publication_cycles);

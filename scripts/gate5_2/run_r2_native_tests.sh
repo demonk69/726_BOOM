@@ -29,7 +29,7 @@ g++ "${CXXFLAGS[@]}" "$ROOT/tb/differential/rvc_fetch_random_tests.cpp" \
 g++ "${CXXFLAGS[@]}" "$ROOT/tb/differential/rvc_execute_gap_tests.cpp" \
   "$ROOT/src/execute.cpp" "$ROOT/src/issue.cpp" "$ROOT/src/completion.cpp" \
   "$ROOT/src/branch.cpp" "$ROOT/src/lsu.cpp" "$ROOT/src/mul.cpp" \
-  "$ROOT/src/divider.cpp" \
+  "$ROOT/src/divider.cpp" "$ROOT/src/predictor.cpp" \
   -o "$BUILD/rvc_execute_gap_tests" \
   2>"$REPORT/logs/rvc_execute_gap_tests_compile.log"
 "$BUILD/rvc_execute_gap_tests" | tee "$REPORT/logs/rvc_execute_gap_tests.log"
