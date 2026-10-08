@@ -50,7 +50,7 @@ L3 architectural contract:
 | `include/` | Canonical headers and persistent state/type definitions. |
 | `src/` | Canonical modular product C++ implementation plus generated merged source. |
 | `src/boom_core_merged.cpp` | Canonical generated merged HLS translation unit from `scripts/generate_merged.sh`. |
-| `src/boom_all.cpp` | Protected legacy monolithic snapshot; current SHA256 must remain `d6f885632ddd445729adda8148ea256e67683ccc8e7f2b10c9951e915d92c76c`; do not normalize or restore casually. |
+| `src/boom_all.cpp` | Protected legacy monolithic snapshot; committed handoff HEAD SHA256 is `d2a403c7fa1724e5782394e27ffefce90f12b19e5b08dea43ce2b150656b0a74`. The primary worktree has an uncommitted legacy delta at `d6f885632ddd445729adda8148ea256e67683ccc8e7f2b10c9951e915d92c76c`; do not normalize, restore, or commit it without a separate provenance decision. |
 | `tb/differential/` | Native and differential C++ test sources. |
 | `tb/programs/` | Assembly/linker program sources; generated binaries should stay out of the repo. |
 | `rtl_tb/` | Handwritten SystemVerilog RTL testbench sources. |
@@ -89,7 +89,7 @@ bash scripts/gate6_0/run_l3_multi_outstanding_csim.sh
 | `src/reset.cpp` | `790945f1099751e0bbb087163ddda7e92d71627e4f8ac2ca7088796ce85ba45d` |
 | `src/commit.cpp` | `f35cf98984224398a51ab4dc064060df818862e6e7ca2a2dfc6ea2176b34e1b7` |
 | `src/boom_core_merged.cpp` | `589f5b5c90bbbbaadc4e2d30c14205c5dc8e5c4c6a904e27de94a4255cd9a5f7` |
-| `src/boom_all.cpp` | `d6f885632ddd445729adda8148ea256e67683ccc8e7f2b10c9951e915d92c76c` |
+| `src/boom_all.cpp` | `d2a403c7fa1724e5782394e27ffefce90f12b19e5b08dea43ce2b150656b0a74` |
 | `tb/differential/g6_l3_multi_outstanding_tests.cpp` | `2bb957658b464a51ebb9cb41ab9443d156645235e52cff6b0d0ec15cebf98316` |
 | `scripts/gate6_0/run_l3_multi_outstanding_native.sh` | `69c5530a110caa806393494ce312b5c3a84400c6450eb4b7fd865390e8d4da6d` |
 | `scripts/gate6_0/run_l3_multi_outstanding_csim.sh` | `7d4387467fab223716cd33c54ed3bc929cc9ca959cbcb4ced2199bde924ce518` |
@@ -107,7 +107,7 @@ These are current Gate6 L3 work artifacts already present in this workspace. The
 
 | Test or matrix | Status | Evidence class | Evidence path |
 | --- | --- | --- | --- |
-| L3 native five-config `4_4`, `8_8`, `16_16`, `4_16`, `16_4` | PASS | Current Gate6 L3 run, reused in handoff | `/home/lab_726/opencode_tmp/g6_l3/native/*.log` and `reports/gate6_0_full_lsu/l3/l3_results.md` |
+| L3 native five-config `4_4`, `8_8`, `16_16`, `4_16`, `16_4` | PASS | S1 clean detached HEAD rerun | `/home/lab_726/opencode_tmp/g6_l3r1_s1_clean/l3_native.stdout.log` and `reports/gate6_0_full_lsu/l3/handoff_audit/canonical_source_snapshot_audit.md` |
 | L3 CSim five-config | PASS | Current Gate6 L3 run, reused in handoff | `/home/lab_726/opencode_tmp/g6_l3/csim/*.log` |
 | L3 directed | PASS | Current Gate6 L3 run, reused in handoff | `reports/gate6_0_full_lsu/l3/directed_test_matrix.csv` |
 | L3 bounded exhaustive | PASS, 64 states | Current Gate6 L3 run, reused in handoff | `reports/gate6_0_full_lsu/l3/exhaustive_summary.csv` |
@@ -256,13 +256,14 @@ BOOM_BUILD_ROOT=/home/lab_726/opencode_tmp/g6_l3/csim_rerun bash scripts/gate6_0
 | `reports/gate6_0_full_lsu/l3/handoff_audit/rvc_provenance_hashes_and_versions.txt` | Tool versions, binary/log hashes, and RVC source hashes. |
 | `reports/gate6_0_full_lsu/l3/handoff_audit/rvc_release_pass_provenance_excerpt.txt` | PASS artifact and source-hash mismatch excerpt. |
 | `reports/gate6_0_full_lsu/l3/handoff_audit/rvc_release_pass_log_git_history.txt` | Git history for historical PASS log. |
+| `reports/gate6_0_full_lsu/l3/handoff_audit/canonical_source_snapshot_audit.md` | S1 canonical source snapshot audit, clean HEAD L3 native rerun, clean HEAD RVC rerun, and `src/boom_all.cpp` handoff decision. |
 
 ## Handoff Constraints Honored
 
 | Constraint | Status |
 | --- | --- |
 | Product code modified during handoff | no |
-| `src/boom_all.cpp` hash preserved | yes, `d6f885632ddd445729adda8148ea256e67683ccc8e7f2b10c9951e915d92c76c` |
+| `src/boom_all.cpp` worktree delta committed | no; committed HEAD remains `d2a403c7fa1724e5782394e27ffefce90f12b19e5b08dea43ce2b150656b0a74` and the uncommitted `d6f885...` worktree delta is excluded pending provenance decision |
 | `git reset --hard` / `git clean -fd` / force push | not used |
 | RVC product repair attempted | no |
 | Historical PASS reclassified as newly rerun | no |

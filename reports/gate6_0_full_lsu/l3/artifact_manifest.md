@@ -2,6 +2,8 @@
 
 Durable repo artifacts:
 
+`durable_artifact_hashes.csv` intentionally excludes itself from its checksum inventory.
+
 | Path | Classification |
 | --- | --- |
 | `reports/gate6_0_full_lsu/l3/l3_architecture_audit.md` | durable report |
@@ -25,6 +27,7 @@ Durable repo artifacts:
 | `reports/gate6_0_full_lsu/l3/rvc_regression_triage/first_divergence.md` | durable RVC triage report |
 | `reports/gate6_0_full_lsu/l3/rvc_regression_triage/source_scope_audit.md` | durable RVC triage report |
 | `reports/gate6_0_full_lsu/l3/rvc_regression_triage/repair_outcome.md` | durable RVC triage report |
+| `reports/gate6_0_full_lsu/l3/handoff_audit/canonical_source_snapshot_audit.md` | durable handoff audit report |
 | `tb/differential/g6_l3_multi_outstanding_tests.cpp` | durable test source |
 | `scripts/gate6_0/run_l3_multi_outstanding_native.sh` | durable test runner |
 | `scripts/gate6_0/run_l3_multi_outstanding_csim.sh` | durable test runner |
