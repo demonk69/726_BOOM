@@ -1,0 +1,33 @@
+category,interface_or_port,direction,protocol,payload_bits,bonded_iob_count,evidence,notes
+CLOCK_RESET,ap_clk,input,clock,1,1,/home/lab_726/opencode_tmp/g6_l3r5_ppa2_io_query_20261009/synth_iob_cells.csv,IBUF counted as one package-level clock input
+CLOCK_RESET,ap_rst_n,input,reset,1,1,/home/lab_726/opencode_tmp/g6_l3r5_ppa2_io_query_20261009/synth_iob_cells.csv,IBUF counted as one package-level reset input
+CONTROL,ap_local_block,output,ap_none,1,1,/home/lab_726/opencode_tmp/g6_l3r5_ppa2_io_query_20261009/synth_iob_cells.csv,OBUF
+CONTROL,ap_local_deadlock,output,ap_none,1,1,/home/lab_726/opencode_tmp/g6_l3r5_ppa2_io_query_20261009/synth_iob_cells.csv,OBUF
+CONTROL,io_success,output,ap_none,1,1,/home/lab_726/opencode_tmp/g6_l3r5_ppa2_io_query_20261009/synth_iob_cells.csv,OBUF
+CONTROL,io_halted,output,ap_none,1,1,/home/lab_726/opencode_tmp/g6_l3r5_ppa2_io_query_20261009/synth_iob_cells.csv,OBUF
+CONTROL,io_trap,output,ap_none,1,1,/home/lab_726/opencode_tmp/g6_l3r5_ppa2_io_query_20261009/synth_iob_cells.csv,OBUF
+CONTROL,io_cycle_valid,output,ap_none,1,1,/home/lab_726/opencode_tmp/g6_l3r5_ppa2_io_query_20261009/synth_iob_cells.csv,OBUF
+IMEM,imem_req_out_TDATA,output,axis,192,192,/home/lab_726/opencode_tmp/g6_l3r5_ppa2_io_query_20261009/synth_iob_cells.csv,ImemRequest payload exported as discrete top pins by raw HLS top
+IMEM,imem_req_out_TVALID,output,axis,1,1,/home/lab_726/opencode_tmp/g6_l3r5_ppa2_io_query_20261009/synth_iob_cells.csv,AXIS handshake
+IMEM,imem_req_out_TREADY,input,axis,1,1,/home/lab_726/opencode_tmp/g6_l3r5_ppa2_io_query_20261009/synth_iob_cells.csv,AXIS handshake
+IMEM,imem_resp_in_TDATA,input,axis,225,225,/home/lab_726/opencode_tmp/g6_l3r5_ppa2_io_query_20261009/synth_iob_cells.csv,ImemResponse payload exported as discrete top pins by raw HLS top
+IMEM,imem_resp_in_TVALID,input,axis,1,1,/home/lab_726/opencode_tmp/g6_l3r5_ppa2_io_query_20261009/synth_iob_cells.csv,AXIS handshake
+IMEM,imem_resp_in_TREADY,output,axis,1,1,/home/lab_726/opencode_tmp/g6_l3r5_ppa2_io_query_20261009/synth_iob_cells.csv,AXIS handshake
+DMEM,dmem_req_out_TDATA,output,axis,320,320,/home/lab_726/opencode_tmp/g6_l3r5_ppa2_io_query_20261009/synth_iob_cells.csv,DmemRequest payload exported as discrete top pins by raw HLS top
+DMEM,dmem_req_out_TVALID,output,axis,1,1,/home/lab_726/opencode_tmp/g6_l3r5_ppa2_io_query_20261009/synth_iob_cells.csv,AXIS handshake
+DMEM,dmem_req_out_TREADY,input,axis,1,1,/home/lab_726/opencode_tmp/g6_l3r5_ppa2_io_query_20261009/synth_iob_cells.csv,AXIS handshake
+DMEM,dmem_resp_in_TDATA,input,axis,289,289,/home/lab_726/opencode_tmp/g6_l3r5_ppa2_io_query_20261009/synth_iob_cells.csv,DmemResponse payload exported as discrete top pins by raw HLS top
+DMEM,dmem_resp_in_TVALID,input,axis,1,1,/home/lab_726/opencode_tmp/g6_l3r5_ppa2_io_query_20261009/synth_iob_cells.csv,AXIS handshake
+DMEM,dmem_resp_in_TREADY,output,axis,1,1,/home/lab_726/opencode_tmp/g6_l3r5_ppa2_io_query_20261009/synth_iob_cells.csv,AXIS handshake
+COMMIT_TRACE,commit_trace_out_TDATA,output,axis,768,768,/home/lab_726/opencode_tmp/g6_l3r5_ppa2_io_query_20261009/synth_iob_cells.csv,CommitEntry payload exported as discrete top pins by raw HLS top
+COMMIT_TRACE,commit_trace_out_TVALID,output,axis,1,1,/home/lab_726/opencode_tmp/g6_l3r5_ppa2_io_query_20261009/synth_iob_cells.csv,AXIS handshake
+COMMIT_TRACE,commit_trace_out_TREADY,input,axis,1,1,/home/lab_726/opencode_tmp/g6_l3r5_ppa2_io_query_20261009/synth_iob_cells.csv,AXIS handshake
+DEBUG,io_cycle,output,ap_none,64,64,/home/lab_726/opencode_tmp/g6_l3r5_ppa2_io_query_20261009/synth_iob_cells.csv,cycle counter output
+DEBUG,io_instret,output,ap_none,64,64,/home/lab_726/opencode_tmp/g6_l3r5_ppa2_io_query_20261009/synth_iob_cells.csv,instret counter output
+TOTAL,CLOCK_RESET,mixed,mixed,2,2,/home/lab_726/opencode_tmp/g6_l3r5_ppa2_io_query_20261009/synth_iob_cells.csv,category total
+TOTAL,CONTROL,output,ap_none,6,6,/home/lab_726/opencode_tmp/g6_l3r5_ppa2_io_query_20261009/synth_iob_cells.csv,category total
+TOTAL,IMEM,mixed,axis,421,421,/home/lab_726/opencode_tmp/g6_l3r5_ppa2_io_query_20261009/synth_iob_cells.csv,category total
+TOTAL,DMEM,mixed,axis,613,613,/home/lab_726/opencode_tmp/g6_l3r5_ppa2_io_query_20261009/synth_iob_cells.csv,category total
+TOTAL,COMMIT_TRACE,mixed,axis,770,770,/home/lab_726/opencode_tmp/g6_l3r5_ppa2_io_query_20261009/synth_iob_cells.csv,category total
+TOTAL,DEBUG,output,ap_none,128,128,/home/lab_726/opencode_tmp/g6_l3r5_ppa2_io_query_20261009/synth_iob_cells.csv,category total
+TOTAL,ALL,mixed,mixed,1940,1940,/home/lab_726/opencode_tmp/g6_l3r5_ppa2_io_query_20261009/synth_iob_cells.csv,bonded IOB total equals INBUF plus OBUF classification
