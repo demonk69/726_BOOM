@@ -1,0 +1,25 @@
+#-----------------------------------------------------------
+# xsim v2021.2 (64-bit)
+# SW Build 3367213 on Tue Oct 19 02:47:39 MDT 2021
+# IP Build 3369179 on Thu Oct 21 08:25:16 MDT 2021
+# Start of session at: Thu Oct  8 22:16:10 2026
+# Process ID: 63709
+# Current directory: /home/lab_726/opencode_tmp/g6_l3r2/rtl_verification/xsim_4_4
+# Command line: xsim -log /home/lab_726/boom/hls_boom/reports/gate6_0_full_lsu/l3/rtl_verification/logs/config_4_4_simulation.log -mode tcl -source {xsim.dir/g6_l3_multi_outstanding_snapshot/xsim_script.tcl}
+# Log file: /home/lab_726/boom/hls_boom/reports/gate6_0_full_lsu/l3/rtl_verification/logs/config_4_4_simulation.log
+# Journal file: /home/lab_726/opencode_tmp/g6_l3r2/rtl_verification/xsim_4_4/xsim.jou
+# Running On: 726, OS: Linux, CPU Frequency: 3964.528 MHz, CPU Physical cores: 14, Host memory: 67148 MB
+#-----------------------------------------------------------
+source xsim.dir/g6_l3_multi_outstanding_snapshot/xsim_script.tcl
+# xsim {g6_l3_multi_outstanding_snapshot} -autoloadwcfg -runall -onerror quit
+Time resolution is 1 ps
+run -all
+G6_L3_RTL_CASE_PASS case=max_issue_four requests=4
+G6_L3_RTL_CASE_PASS case=out_of_order_first txid=00000012
+G6_L3_RTL_CASE_PASS case=reissue_after_free old_txid=00000012 new_txid=00000014
+G6_L3_RTL_CASE_PASS case=stale_old_txid_reject txid=00000012
+G6_L3_RTL_CASE_PASS case=remaining_out_of_order_complete
+G6_L3_RTL_CONFIG_4_4_PASS cases=5 requests=5 responses=6
+$finish called at time : 125790 ns : File "/home/lab_726/boom/hls_boom/rtl_tb/gate6_0/g6_l3_multi_outstanding_tb.sv" Line 399
+exit
+INFO: [Common 17-206] Exiting xsim at Thu Oct  8 22:16:17 2026...

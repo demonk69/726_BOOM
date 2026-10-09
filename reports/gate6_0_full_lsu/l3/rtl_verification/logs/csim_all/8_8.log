@@ -1,0 +1,103 @@
+
+****** Vitis HLS - High-Level Synthesis from C, C++ and OpenCL v2021.2 (64-bit)
+  **** SW Build 3367213 on Tue Oct 19 02:47:39 MDT 2021
+  **** IP Build 3369179 on Thu Oct 21 08:25:16 MDT 2021
+    ** Copyright 1986-2021 Xilinx, Inc. All Rights Reserved.
+
+source /home/lab_726/Xilinx/Vitis_HLS/2021.2/scripts/vitis_hls/hls.tcl -notrace
+INFO: [HLS 200-10] Running '/home/lab_726/Xilinx/Vitis_HLS/2021.2/bin/unwrapped/lnx64.o/vitis_hls'
+INFO: [HLS 200-10] For user 'lab_726' on host '726' (Linux_x86_64 version 6.8.0-138-generic) on Fri Oct 09 08:48:30 CST 2026
+INFO: [HLS 200-10] On os Ubuntu 22.04.5 LTS
+INFO: [HLS 200-10] In directory '/home/lab_726/opencode_tmp/g6_l3r2_79_clean'
+Sourcing Tcl script '/home/lab_726/opencode_tmp/g6_l3r2_79_clean/scripts/gate6_0/l3_multi_outstanding_csim.tcl'
+INFO: [HLS 200-1510] Running: open_project -reset g6_l3_csim_8_8
+INFO: [HLS 200-10] Creating and opening project '/home/lab_726/opencode_tmp/g6_l3r2/csim_all/8_8/g6_l3_csim_8_8'.
+INFO: [HLS 200-1510] Running: set_top boom_core_step
+INFO: [HLS 200-1510] Running: add_files -cflags -std=c++11 -I/home/lab_726/opencode_tmp/g6_l3r2_79_clean/include -DLQ_DEPTH=8 -DSQ_DEPTH=8 /home/lab_726/opencode_tmp/g6_l3r2_79_clean/src/fetch_buffer.cpp
+INFO: [HLS 200-10] Adding design file '/home/lab_726/opencode_tmp/g6_l3r2_79_clean/src/fetch_buffer.cpp' to the project
+INFO: [HLS 200-1510] Running: add_files -cflags -std=c++11 -I/home/lab_726/opencode_tmp/g6_l3r2_79_clean/include -DLQ_DEPTH=8 -DSQ_DEPTH=8 /home/lab_726/opencode_tmp/g6_l3r2_79_clean/src/fetch_packet.cpp
+INFO: [HLS 200-10] Adding design file '/home/lab_726/opencode_tmp/g6_l3r2_79_clean/src/fetch_packet.cpp' to the project
+INFO: [HLS 200-1510] Running: add_files -cflags -std=c++11 -I/home/lab_726/opencode_tmp/g6_l3r2_79_clean/include -DLQ_DEPTH=8 -DSQ_DEPTH=8 /home/lab_726/opencode_tmp/g6_l3r2_79_clean/src/rvc.cpp
+INFO: [HLS 200-10] Adding design file '/home/lab_726/opencode_tmp/g6_l3r2_79_clean/src/rvc.cpp' to the project
+INFO: [HLS 200-1510] Running: add_files -cflags -std=c++11 -I/home/lab_726/opencode_tmp/g6_l3r2_79_clean/include -DLQ_DEPTH=8 -DSQ_DEPTH=8 /home/lab_726/opencode_tmp/g6_l3r2_79_clean/src/predecode.cpp
+INFO: [HLS 200-10] Adding design file '/home/lab_726/opencode_tmp/g6_l3r2_79_clean/src/predecode.cpp' to the project
+INFO: [HLS 200-1510] Running: add_files -cflags -std=c++11 -I/home/lab_726/opencode_tmp/g6_l3r2_79_clean/include -DLQ_DEPTH=8 -DSQ_DEPTH=8 /home/lab_726/opencode_tmp/g6_l3r2_79_clean/src/predictor.cpp
+INFO: [HLS 200-10] Adding design file '/home/lab_726/opencode_tmp/g6_l3r2_79_clean/src/predictor.cpp' to the project
+INFO: [HLS 200-1510] Running: add_files -cflags -std=c++11 -I/home/lab_726/opencode_tmp/g6_l3r2_79_clean/include -DLQ_DEPTH=8 -DSQ_DEPTH=8 /home/lab_726/opencode_tmp/g6_l3r2_79_clean/src/ftq.cpp
+INFO: [HLS 200-10] Adding design file '/home/lab_726/opencode_tmp/g6_l3r2_79_clean/src/ftq.cpp' to the project
+INFO: [HLS 200-1510] Running: add_files -cflags -std=c++11 -I/home/lab_726/opencode_tmp/g6_l3r2_79_clean/include -DLQ_DEPTH=8 -DSQ_DEPTH=8 /home/lab_726/opencode_tmp/g6_l3r2_79_clean/src/frontend.cpp
+INFO: [HLS 200-10] Adding design file '/home/lab_726/opencode_tmp/g6_l3r2_79_clean/src/frontend.cpp' to the project
+INFO: [HLS 200-1510] Running: add_files -cflags -std=c++11 -I/home/lab_726/opencode_tmp/g6_l3r2_79_clean/include -DLQ_DEPTH=8 -DSQ_DEPTH=8 /home/lab_726/opencode_tmp/g6_l3r2_79_clean/src/decode.cpp
+INFO: [HLS 200-10] Adding design file '/home/lab_726/opencode_tmp/g6_l3r2_79_clean/src/decode.cpp' to the project
+INFO: [HLS 200-1510] Running: add_files -cflags -std=c++11 -I/home/lab_726/opencode_tmp/g6_l3r2_79_clean/include -DLQ_DEPTH=8 -DSQ_DEPTH=8 /home/lab_726/opencode_tmp/g6_l3r2_79_clean/src/rename.cpp
+INFO: [HLS 200-10] Adding design file '/home/lab_726/opencode_tmp/g6_l3r2_79_clean/src/rename.cpp' to the project
+INFO: [HLS 200-1510] Running: add_files -cflags -std=c++11 -I/home/lab_726/opencode_tmp/g6_l3r2_79_clean/include -DLQ_DEPTH=8 -DSQ_DEPTH=8 /home/lab_726/opencode_tmp/g6_l3r2_79_clean/src/issue.cpp
+INFO: [HLS 200-10] Adding design file '/home/lab_726/opencode_tmp/g6_l3r2_79_clean/src/issue.cpp' to the project
+INFO: [HLS 200-1510] Running: add_files -cflags -std=c++11 -I/home/lab_726/opencode_tmp/g6_l3r2_79_clean/include -DLQ_DEPTH=8 -DSQ_DEPTH=8 /home/lab_726/opencode_tmp/g6_l3r2_79_clean/src/mul.cpp
+INFO: [HLS 200-10] Adding design file '/home/lab_726/opencode_tmp/g6_l3r2_79_clean/src/mul.cpp' to the project
+INFO: [HLS 200-1510] Running: add_files -cflags -std=c++11 -I/home/lab_726/opencode_tmp/g6_l3r2_79_clean/include -DLQ_DEPTH=8 -DSQ_DEPTH=8 /home/lab_726/opencode_tmp/g6_l3r2_79_clean/src/divider.cpp
+INFO: [HLS 200-10] Adding design file '/home/lab_726/opencode_tmp/g6_l3r2_79_clean/src/divider.cpp' to the project
+INFO: [HLS 200-1510] Running: add_files -cflags -std=c++11 -I/home/lab_726/opencode_tmp/g6_l3r2_79_clean/include -DLQ_DEPTH=8 -DSQ_DEPTH=8 /home/lab_726/opencode_tmp/g6_l3r2_79_clean/src/execute.cpp
+INFO: [HLS 200-10] Adding design file '/home/lab_726/opencode_tmp/g6_l3r2_79_clean/src/execute.cpp' to the project
+INFO: [HLS 200-1510] Running: add_files -cflags -std=c++11 -I/home/lab_726/opencode_tmp/g6_l3r2_79_clean/include -DLQ_DEPTH=8 -DSQ_DEPTH=8 /home/lab_726/opencode_tmp/g6_l3r2_79_clean/src/completion.cpp
+INFO: [HLS 200-10] Adding design file '/home/lab_726/opencode_tmp/g6_l3r2_79_clean/src/completion.cpp' to the project
+INFO: [HLS 200-1510] Running: add_files -cflags -std=c++11 -I/home/lab_726/opencode_tmp/g6_l3r2_79_clean/include -DLQ_DEPTH=8 -DSQ_DEPTH=8 /home/lab_726/opencode_tmp/g6_l3r2_79_clean/src/rob.cpp
+INFO: [HLS 200-10] Adding design file '/home/lab_726/opencode_tmp/g6_l3r2_79_clean/src/rob.cpp' to the project
+INFO: [HLS 200-1510] Running: add_files -cflags -std=c++11 -I/home/lab_726/opencode_tmp/g6_l3r2_79_clean/include -DLQ_DEPTH=8 -DSQ_DEPTH=8 /home/lab_726/opencode_tmp/g6_l3r2_79_clean/src/branch.cpp
+INFO: [HLS 200-10] Adding design file '/home/lab_726/opencode_tmp/g6_l3r2_79_clean/src/branch.cpp' to the project
+INFO: [HLS 200-1510] Running: add_files -cflags -std=c++11 -I/home/lab_726/opencode_tmp/g6_l3r2_79_clean/include -DLQ_DEPTH=8 -DSQ_DEPTH=8 /home/lab_726/opencode_tmp/g6_l3r2_79_clean/src/lsu.cpp
+INFO: [HLS 200-10] Adding design file '/home/lab_726/opencode_tmp/g6_l3r2_79_clean/src/lsu.cpp' to the project
+INFO: [HLS 200-1510] Running: add_files -cflags -std=c++11 -I/home/lab_726/opencode_tmp/g6_l3r2_79_clean/include -DLQ_DEPTH=8 -DSQ_DEPTH=8 /home/lab_726/opencode_tmp/g6_l3r2_79_clean/src/commit.cpp
+INFO: [HLS 200-10] Adding design file '/home/lab_726/opencode_tmp/g6_l3r2_79_clean/src/commit.cpp' to the project
+INFO: [HLS 200-1510] Running: add_files -cflags -std=c++11 -I/home/lab_726/opencode_tmp/g6_l3r2_79_clean/include -DLQ_DEPTH=8 -DSQ_DEPTH=8 /home/lab_726/opencode_tmp/g6_l3r2_79_clean/src/csr.cpp
+INFO: [HLS 200-10] Adding design file '/home/lab_726/opencode_tmp/g6_l3r2_79_clean/src/csr.cpp' to the project
+INFO: [HLS 200-1510] Running: add_files -cflags -std=c++11 -I/home/lab_726/opencode_tmp/g6_l3r2_79_clean/include -DLQ_DEPTH=8 -DSQ_DEPTH=8 /home/lab_726/opencode_tmp/g6_l3r2_79_clean/src/reset.cpp
+INFO: [HLS 200-10] Adding design file '/home/lab_726/opencode_tmp/g6_l3r2_79_clean/src/reset.cpp' to the project
+INFO: [HLS 200-1510] Running: add_files -cflags -std=c++11 -I/home/lab_726/opencode_tmp/g6_l3r2_79_clean/include -DLQ_DEPTH=8 -DSQ_DEPTH=8 /home/lab_726/opencode_tmp/g6_l3r2_79_clean/src/boom_core_step.cpp
+INFO: [HLS 200-10] Adding design file '/home/lab_726/opencode_tmp/g6_l3r2_79_clean/src/boom_core_step.cpp' to the project
+INFO: [HLS 200-1510] Running: add_files -tb -cflags -std=c++11 -I/home/lab_726/opencode_tmp/g6_l3r2_79_clean/include -DLQ_DEPTH=8 -DSQ_DEPTH=8 /home/lab_726/opencode_tmp/g6_l3r2_79_clean/tb/differential/g6_l3_multi_outstanding_tests.cpp
+INFO: [HLS 200-10] Adding test bench file '/home/lab_726/opencode_tmp/g6_l3r2_79_clean/tb/differential/g6_l3_multi_outstanding_tests.cpp' to the project
+INFO: [HLS 200-1510] Running: open_solution -reset solution_8_8
+INFO: [HLS 200-10] Creating and opening solution '/home/lab_726/opencode_tmp/g6_l3r2/csim_all/8_8/g6_l3_csim_8_8/solution_8_8'.
+INFO: [HLS 200-10] Cleaning up the solution database.
+WARNING: [HLS 200-40] No /home/lab_726/opencode_tmp/g6_l3r2/csim_all/8_8/g6_l3_csim_8_8/solution_8_8/solution_8_8.aps file found.
+INFO: [HLS 200-1505] Using default flow_target 'vivado'
+Resolution: For help on HLS 200-1505 see www.xilinx.com/cgi-bin/docs/rdoc?v=2021.2;t=hls+guidance;d=200-1505.html
+INFO: [HLS 200-1510] Running: set_part xczu7ev-ffvc1156-2-e
+INFO: [HLS 200-1611] Setting target device to 'xczu7ev-ffvc1156-2-e'
+INFO: [HLS 200-1510] Running: create_clock -period 10 -name default
+INFO: [SYN 201-201] Setting up clock 'default' with a period of 10ns.
+INFO: [HLS 200-1510] Running: csim_design
+INFO: [SIM 211-2] *************** CSIM start ***************
+INFO: [SIM 211-4] CSIM will launch GCC as the compiler.
+   Compiling ../../../../../../../g6_l3r2_79_clean/tb/differential/g6_l3_multi_outstanding_tests.cpp in debug mode
+   Compiling ../../../../../../../g6_l3r2_79_clean/src/boom_core_step.cpp in debug mode
+   Compiling ../../../../../../../g6_l3r2_79_clean/src/reset.cpp in debug mode
+   Compiling ../../../../../../../g6_l3r2_79_clean/src/csr.cpp in debug mode
+   Compiling ../../../../../../../g6_l3r2_79_clean/src/commit.cpp in debug mode
+   Compiling ../../../../../../../g6_l3r2_79_clean/src/lsu.cpp in debug mode
+   Compiling ../../../../../../../g6_l3r2_79_clean/src/branch.cpp in debug mode
+   Compiling ../../../../../../../g6_l3r2_79_clean/src/rob.cpp in debug mode
+   Compiling ../../../../../../../g6_l3r2_79_clean/src/completion.cpp in debug mode
+   Compiling ../../../../../../../g6_l3r2_79_clean/src/execute.cpp in debug mode
+   Compiling ../../../../../../../g6_l3r2_79_clean/src/divider.cpp in debug mode
+   Compiling ../../../../../../../g6_l3r2_79_clean/src/mul.cpp in debug mode
+   Compiling ../../../../../../../g6_l3r2_79_clean/src/issue.cpp in debug mode
+   Compiling ../../../../../../../g6_l3r2_79_clean/src/rename.cpp in debug mode
+   Compiling ../../../../../../../g6_l3r2_79_clean/src/decode.cpp in debug mode
+   Compiling ../../../../../../../g6_l3r2_79_clean/src/frontend.cpp in debug mode
+   Compiling ../../../../../../../g6_l3r2_79_clean/src/ftq.cpp in debug mode
+   Compiling ../../../../../../../g6_l3r2_79_clean/src/predictor.cpp in debug mode
+   Compiling ../../../../../../../g6_l3r2_79_clean/src/predecode.cpp in debug mode
+   Compiling ../../../../../../../g6_l3r2_79_clean/src/rvc.cpp in debug mode
+   Compiling ../../../../../../../g6_l3r2_79_clean/src/fetch_packet.cpp in debug mode
+   Compiling ../../../../../../../g6_l3r2_79_clean/src/fetch_buffer.cpp in debug mode
+   Generating csim.exe
+G6_L3_CONFIG LQ=8 SQ=8
+G6_L3_COUNTS directed_checks=65824550 exhaustive_states=0 random_checks=2097152 failures=0
+G6_L3_MULTI_OUTSTANDING_PASS LQ=8 SQ=8 failures=0
+INFO: [SIM 211-1] CSim done with 0 errors.
+INFO: [SIM 211-3] *************** CSIM finish ***************
+INFO: [HLS 200-111] Finished Command csim_design CPU user time: 6.16 seconds. CPU system time: 0.5 seconds. Elapsed time: 6.13 seconds; current allocated memory: -937.109 MB.
+INFO: [HLS 200-112] Total CPU user time: 7.48 seconds. Total CPU system time: 0.84 seconds. Total elapsed time: 7.14 seconds; peak allocated memory: 416.188 MB.
+INFO: [Common 17-206] Exiting vitis_hls at Fri Oct  9 08:48:37 2026...
