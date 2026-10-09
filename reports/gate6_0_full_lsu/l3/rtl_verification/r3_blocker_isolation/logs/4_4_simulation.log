@@ -1,0 +1,37 @@
+#-----------------------------------------------------------
+# xsim v2021.2 (64-bit)
+# SW Build 3367213 on Tue Oct 19 02:47:39 MDT 2021
+# IP Build 3369179 on Thu Oct 21 08:25:16 MDT 2021
+# Start of session at: Fri Oct  9 14:55:21 2026
+# Process ID: 74530
+# Current directory: /home/lab_726/opencode_tmp/g6_l3r2_r3/rtl_isolation/4_4
+# Command line: xsim -log /home/lab_726/boom/hls_boom/reports/gate6_0_full_lsu/l3/rtl_verification/r3_blocker_isolation/logs/4_4_simulation.log -mode tcl -source {xsim.dir/g6_l3_r3_blocker_isolation_snapshot/xsim_script.tcl}
+# Log file: /home/lab_726/boom/hls_boom/reports/gate6_0_full_lsu/l3/rtl_verification/r3_blocker_isolation/logs/4_4_simulation.log
+# Journal file: /home/lab_726/opencode_tmp/g6_l3r2_r3/rtl_isolation/4_4/xsim.jou
+# Running On: 726, OS: Linux, CPU Frequency: 2688.563 MHz, CPU Physical cores: 14, Host memory: 67148 MB
+#-----------------------------------------------------------
+source xsim.dir/g6_l3_r3_blocker_isolation_snapshot/xsim_script.tcl
+# xsim {g6_l3_r3_blocker_isolation_snapshot} -autoloadwcfg -runall -onerror quit
+Time resolution is 1 ps
+run -all
+G6_L3_R3_RTL_CONFIG_START config=4_4
+G6_L3_R3_TRACE config=4_4 case=request_backpressure event=request index=0 txid=00005000 rob=0 cmd=0 outstanding=1 address=0000000090005000
+G6_L3_R3_TRACE config=4_4 case=request_backpressure event=response index=0 txid=00005000 outstanding=1
+G6_L3_R3_RESULT config=4_4 key=BACKPRESSURE_ROOT_CAUSE value=TESTBENCH_ASSERTION_TOO_EARLY_OWNER_RESERVED_BEFORE_EXTERNAL_HANDSHAKE
+G6_L3_R3_RESULT config=4_4 key=TVALID_HOLD_VERIFIED value=1
+G6_L3_R3_RESULT config=4_4 key=REQUEST_LOSS_COUNT value=0
+G6_L3_R3_RESULT config=4_4 key=REQUEST_DUPLICATION_COUNT value=0
+G6_L3_R3_TRACE config=4_4 case=forwarding_r2_seed_committable_store event=request index=1 txid=00005001 rob=0 cmd=1 outstanding=0 address=0000000090007000
+G6_L3_R3_RESULT config=4_4 key=FORWARDING_SEED_VALID value=1
+G6_L3_R3_RESULT config=4_4 key=FORWARDING_RTL_STATUS value=PASS
+G6_L3_R3_RESULT config=4_4 key=FORWARDING_EXTERNAL_REQUESTS value=isolated_loads:0;isolated_stores:0;r2_loads:0;r2_stores:1
+G6_L3_R3_TRACE config=4_4 case=flush_recovery_exception event=request index=2 txid=00008000 rob=0 cmd=0 outstanding=1 address=0000000090008000
+G6_L3_R3_TRACE config=4_4 case=flush_recovery_exception event=request index=3 txid=00008001 rob=1 cmd=0 outstanding=2 address=0000000090008008
+G6_L3_R3_TRACE config=4_4 case=flush_recovery_exception event=response index=1 txid=00008000 outstanding=0
+G6_L3_R3_RESULT config=4_4 key=FLUSH_RECOVERY_PATH_VALID value=1
+G6_L3_R3_RESULT config=4_4 key=FLUSH_RTL_STATUS value=PASS
+G6_L3_R3_RESULT config=4_4 key=STALE_RESPONSE_REJECTED value=1
+G6_L3_R3_RTL_CONFIG_4_4_PASS failures=0 requests=4 responses=2 max_outstanding=2
+$finish called at time : 173590 ns : File "/home/lab_726/boom/hls_boom/rtl_tb/gate6_0/g6_l3_r3_blocker_isolation_tb.sv" Line 921
+exit
+INFO: [Common 17-206] Exiting xsim at Fri Oct  9 14:55:29 2026...

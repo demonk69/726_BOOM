@@ -1,0 +1,4 @@
+blocker,r2_classification,r3_root_cause,rtl_status,evidence
+request_backpressure,INTERFACE_PROTOCOL_ERROR:no_tvalid_hold_after_owner_reserved,TESTBENCH_ASSERTION_TOO_EARLY_OWNER_RESERVED_BEFORE_EXTERNAL_HANDSHAKE,PASS,request_backpressure_trace.csv
+store_forwarding,TESTBENCH_ERROR:focused_seed_did_not_force_forwarding,R2 assertion counted all external requests; R3 separates load/store command traffic,PASS,store_forwarding_trace.csv
+flush_with_pending,TESTBENCH_ERROR:focused_global_flush_seed_not_observed,R3 uses exception commit recovery path instead of direct global_flush poke,PASS,flush_recovery_trace.csv
