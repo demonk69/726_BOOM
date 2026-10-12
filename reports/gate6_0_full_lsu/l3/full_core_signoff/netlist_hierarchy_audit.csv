@@ -1,0 +1,19 @@
+category,required_block,netlist_status,matched_nonprimitive_cells,matched_primitive_cells,matched_sequential_cells,hierarchical_evidence,notes
+CoreTop,boom_core_top,PRESENT,280,91309,31921,/home/lab_726/opencode_tmp/g6_l3r5_ppa5_ppa4_netlist_audit_20261010/ppa4_hier_utilization_from_dcp.rpt:27,core_u uses 48458 LUT and 29567 FF
+Frontend,frontend/fetch/predecode/decompress,PRESENT,16,17522,7166,/home/lab_726/opencode_tmp/g6_l3r5_ppa5_ppa4_netlist_audit_20261010/ppa4_major_module_presence.csv:2,Includes frontend state and fetch/predecode/decompress matches
+Predictor,predictor metadata/counters,PRESENT,4,2327,939,/home/lab_726/opencode_tmp/g6_l3r5_ppa5_ppa4_netlist_audit_20261010/ppa4_major_module_presence.csv:3,Name-pattern audit only; not sufficient alone for functionality
+FTQ,ftq state,PRESENT,40,5714,2299,/home/lab_726/opencode_tmp/g6_l3r5_ppa5_ppa4_netlist_audit_20261010/ppa4_major_module_presence.csv:4,FTQ state registers/RAM logic matched
+Decode,decode/predecode/RVC,PRESENT,0,952,334,/home/lab_726/opencode_tmp/g6_l3r5_ppa5_ppa4_netlist_audit_20261010/ppa4_major_module_presence.csv:5,Decode was flattened into primitive cells; RVC logic separately exercised by B3I workload
+Rename,rename/free-list/map-table,PRESENT,16,1855,559,/home/lab_726/opencode_tmp/g6_l3r5_ppa5_ppa4_netlist_audit_20261010/ppa4_major_module_presence.csv:6,Rename state retained
+Issue,issue/issue-queue,PRESENT,127,18358,5956,/home/lab_726/opencode_tmp/g6_l3r5_ppa5_ppa4_netlist_audit_20261010/ppa4_major_module_presence.csv:7,Issue state and compact issue queue retained
+Execute,execute/ALU/mul/divider,PRESENT,47,23194,5553,/home/lab_726/opencode_tmp/g6_l3r5_ppa5_ppa4_netlist_audit_20261010/ppa4_major_module_presence.csv:8,Execute module retains 16 DSP blocks under core_u
+LSU,lsu/load/store/response,PRESENT,9,16788,6158,/home/lab_726/opencode_tmp/g6_l3r5_ppa5_ppa4_netlist_audit_20261010/ppa4_major_module_presence.csv:9,LSU response and request paths connected to adapter streams
+Completion,completion/writeback/service_pending,PRESENT,88,29027,8827,/home/lab_726/opencode_tmp/g6_l3r5_ppa5_ppa4_netlist_audit_20261010/ppa4_major_module_presence.csv:10,Completion service hierarchy retained
+ROB,rob/commit bookkeeping,PRESENT,49,7409,2330,/home/lab_726/opencode_tmp/g6_l3r5_ppa5_ppa4_netlist_audit_20261010/ppa4_major_module_presence.csv:11,ROB state retained
+Commit,commit/rob_commit,PRESENT,18,3684,773,/home/lab_726/opencode_tmp/g6_l3r5_ppa5_ppa4_netlist_audit_20261010/ppa4_major_module_presence.csv:12,Commit trace output connected
+CSR,csr state/control,PRESENT,19,1883,723,/home/lab_726/opencode_tmp/g6_l3r5_ppa5_ppa4_netlist_audit_20261010/ppa4_major_module_presence.csv:13,CSR matches retained
+SystemAdapter,boom_l3_ppa4_memory_system,PRESENT,1,3606,2265,/home/lab_726/opencode_tmp/g6_l3r5_ppa5_ppa4_netlist_audit_20261010/ppa4_hier_utilization_from_dcp.rpt:330,memory_u uses 931 LUT and 2265 FF
+BlackBoxes,all,ABSENT,0,0,0,/home/lab_726/opencode_tmp/g6_l3r5_ppa5_ppa4_netlist_audit_20261010/ppa4_black_boxes.csv,blackbox_count=0
+IMEM_Stream,imem_req/imem_resp,CONNECTED,,,,/home/lab_726/opencode_tmp/g6_l3r5_ppa5_ppa4_netlist_audit_20261010/ppa4_stream_connectivity_matches.csv:2-3,Connected but PPA4 adapter returns NOP instruction data
+DMEM_Stream,dmem_req/dmem_resp,CONNECTED,,,,/home/lab_726/opencode_tmp/g6_l3r5_ppa5_ppa4_netlist_audit_20261010/ppa4_stream_connectivity_matches.csv:4-5,Connected to compact store-forwarding target
+CommitTrace_Stream,commit_trace,CONNECTED,,,,/home/lab_726/opencode_tmp/g6_l3r5_ppa5_ppa4_netlist_audit_20261010/ppa4_stream_connectivity_matches.csv:6,Connected to trace-count/checksum receiver
