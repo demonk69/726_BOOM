@@ -1,0 +1,5 @@
+case,expected_validator_status,observed_validator_status,detected_failures
+baseline,PASS,PASS,
+swap_load_return_data,FAIL,FAIL,txid_owner_data_match
+omit_required_response,FAIL,FAIL,all_responses_present;txid_owner_data_match
+tamper_expected_register_x10,FAIL,FAIL,final_registers_match
