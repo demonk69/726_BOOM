@@ -1,0 +1,17 @@
+check,status,detail
+reset_to_entry,PASS,First fetch reset vector and later entry fetch observed
+normal_fetch_decode_execute,PASS,commits=28
+multiple_outstanding,PASS,max_external=3 max_internal=3
+out_of_order_response,PASS,reorder_count=2
+txid_owner_match,PASS,unique=True no_lost=True
+in_order_commit,PASS,Commit PCs match reset trampoline plus program PC order
+store_forwarding,PASS,external_loads_to_store_addr=0 store_forward_commits=1 store_backpressure_cycles=947
+rvc,PASS,Program contains c.li/c.j/c.addi; commit trace PC sequence crosses 2-byte instructions
+branch_redirect,PASS,Skipped compressed instruction after c.j must not commit
+exception_recovery,NOT_RUN,PPA6 main program is non-exceptional; PPA5 B3I packet_fault remains separate evidence
+final_registers_match,PASS,Compared final committed architectural register values
+final_memory_match,PASS,Compared final data memory image
+commit_trace_match,PASS,Commit PC order and architectural values checked
+memory_backpressure,PASS,dmem_backpressure_cycles=950
+tohost,PASS,tohost_store_seen=1 tohost_commit_seen=1
+protocol,PASS,protocol_error=0 first_fetch_error=0
