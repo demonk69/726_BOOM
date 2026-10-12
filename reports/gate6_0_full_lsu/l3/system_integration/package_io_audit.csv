@@ -1,0 +1,6 @@
+design_context,total_user_io,bonded_iob_used,bonded_iob_available,bonded_iob_util_percent,status,evidence,notes
+raw_hls_top,1940,1940,360,538.89,FAIL,reports/gate6_0_full_lsu/l3/physical_implementation/io_overutilization_root_cause.md,Raw HLS stream payloads exposed as package pins
+ppa4_rtl_elaboration,265,not_applicable,not_applicable,not_applicable,PASS,/home/lab_726/opencode_tmp/g6_l3r5_ppa4_system_elab_final_20261010/ppa4_elab_io.rpt,RTL elaboration report_io total user IO 265
+ppa4_post_synth,265,265,360,73.61,PASS,/home/lab_726/opencode_tmp/g6_l3r5_ppa4_system_synth_compact_20261010/ppa4_synth_utilization.rpt,Synthesized system top under bonded IOB capacity
+ppa4_post_route,265,265,360,73.61,ROUTE_PASS_BOARD_XDC_PENDING,/home/lab_726/opencode_tmp/g6_l3r5_ppa4_system_impl_compact_20261010/ppa4_post_route_utilization.rpt,Placed and routed with package IOBs but no board pin LOC or IOSTANDARD constraints
+ppa4_post_route_drc,265,265,360,73.61,PASS_WITH_WARNINGS,/home/lab_726/opencode_tmp/g6_l3r5_ppa4_system_impl_compact_20261010/ppa4_post_route_drc.rpt,NSTD-1 and UCIO-1 block bitstream until board XDC is supplied

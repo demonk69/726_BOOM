@@ -1,0 +1,16 @@
+check,status,evidence_path,detail
+adapter_scoreboard_sim,PASS,/home/lab_726/opencode_tmp/g6_l3r5_ppa4_adapter_scoreboard_compact_20261010/vivado_project/ppa4_adapter_scoreboard.sim/sim_1/behav/xsim/simulate.log,PPA4_SCOREBOARD PASS all_checks
+imem_request_response_mapping,PASS,/home/lab_726/opencode_tmp/g6_l3r5_ppa4_adapter_scoreboard_compact_20261010/vivado_project/ppa4_adapter_scoreboard.sim/sim_1/behav/xsim/simulate.log,NOP response preserves addr fetch_id epoch
+store_forwarding,PASS,/home/lab_726/opencode_tmp/g6_l3r5_ppa4_adapter_scoreboard_compact_20261010/vivado_project/ppa4_adapter_scoreboard.sim/sim_1/behav/xsim/simulate.log,Load after store returns feedfacecafebeef
+out_of_order_response_ownership,PASS,/home/lab_726/opencode_tmp/g6_l3r5_ppa4_adapter_scoreboard_compact_20261010/vivado_project/ppa4_adapter_scoreboard.sim/sim_1/behav/xsim/simulate.log,Response TXID ordering 0x22 then 0x11 verified
+pending_table_backpressure,PASS,/home/lab_726/opencode_tmp/g6_l3r5_ppa4_adapter_scoreboard_compact_20261010/vivado_project/ppa4_adapter_scoreboard.sim/sim_1/behav/xsim/simulate.log,dmem_req_tready deasserts when pending table is full
+reset_stale_response_suppression,PASS,/home/lab_726/opencode_tmp/g6_l3r5_ppa4_adapter_scoreboard_compact_20261010/vivado_project/ppa4_adapter_scoreboard.sim/sim_1/behav/xsim/simulate.log,Pending response cleared across reset
+commit_trace_backpressure,PASS,/home/lab_726/opencode_tmp/g6_l3r5_ppa4_adapter_scoreboard_compact_20261010/vivado_project/ppa4_adapter_scoreboard.sim/sim_1/behav/xsim/simulate.log,Trace ready deasserts when FIFO full
+commit_trace_drain,PASS,/home/lab_726/opencode_tmp/g6_l3r5_ppa4_adapter_scoreboard_compact_20261010/vivado_project/ppa4_adapter_scoreboard.sim/sim_1/behav/xsim/simulate.log,Trace FIFO drains without overflow
+system_rtl_elaboration,PASS,/home/lab_726/opencode_tmp/g6_l3r5_ppa4_system_elab_final_20261010/ppa4_elab_status.csv,setup PASS and elaboration PASS
+system_synthesis,PASS,/home/lab_726/opencode_tmp/g6_l3r5_ppa4_system_synth_compact_20261010/ppa4_synth_status.csv,setup PASS and synthesis PASS
+system_place_route,PASS,/home/lab_726/opencode_tmp/g6_l3r5_ppa4_system_impl_compact_20261010/ppa4_impl_status.csv,opt place phys_opt route PASS
+route_status,PASS,/home/lab_726/opencode_tmp/g6_l3r5_ppa4_system_impl_compact_20261010/ppa4_post_route_status.rpt,72881 of 72881 routable nets fully routed and 0 routing errors
+post_route_timing,PASS_WITH_BOARD_IO_CONSTRAINTS_PENDING,/home/lab_726/opencode_tmp/g6_l3r5_ppa4_system_impl_compact_20261010/ppa4_post_route_timing_summary.rpt,WNS 0.434ns TNS 0.000 setup endpoints 0 hold endpoints 0 at 6.450ns clock
+post_route_drc,PASS_WITH_WARNINGS,/home/lab_726/opencode_tmp/g6_l3r5_ppa4_system_impl_compact_20261010/ppa4_post_route_drc.rpt,No DRC errors; NSTD-1 and UCIO-1 critical warnings remain until board XDC exists
+full_core_workload_system_sim,NOT_RUN,,Adapter protocol proof only; integrated full-core workload proof pending

@@ -1,0 +1,19 @@
+interface,raw_hls_width_bits,raw_top_package_risk,ppa4_binding,package_pins_after_wrapper,status,notes
+imem_req_out_TDATA,192,raw payload would bind to package pins,on-chip IMEM responder request input,0,PASS_INTERNALIZED,Address/fetch_id/epoch consumed internally
+imem_req_out_TVALID,1,raw handshake would bind to package pins,on-chip IMEM responder handshake,0,PASS_INTERNALIZED,Backpressure supported by response availability
+imem_req_out_TREADY,1,raw handshake would bind to package pins,on-chip IMEM responder handshake,0,PASS_INTERNALIZED,Driven internally
+imem_resp_in_TDATA,256,raw payload would bind to package pins,on-chip IMEM response output,0,PASS_INTERNALIZED,Returns deterministic NOP instruction data
+imem_resp_in_TVALID,1,raw handshake would bind to package pins,on-chip IMEM response handshake,0,PASS_INTERNALIZED,Driven internally
+imem_resp_in_TREADY,1,raw handshake would bind to package pins,on-chip IMEM response handshake,0,PASS_INTERNALIZED,Consumed internally
+dmem_req_out_TDATA,320,raw payload would bind to package pins,on-chip DMEM target request input,0,PASS_INTERNALIZED,Transaction ID/address/data/mask decoded internally
+dmem_req_out_TVALID,1,raw handshake would bind to package pins,on-chip DMEM target handshake,0,PASS_INTERNALIZED,Backpressure when pending table is full
+dmem_req_out_TREADY,1,raw handshake would bind to package pins,on-chip DMEM target handshake,0,PASS_INTERNALIZED,Driven internally
+dmem_resp_in_TDATA,384,raw payload would bind to package pins,on-chip DMEM response output,0,PASS_INTERNALIZED,Response TXID matches accepted request TXID
+dmem_resp_in_TVALID,1,raw handshake would bind to package pins,on-chip DMEM response handshake,0,PASS_INTERNALIZED,Driven by pending response scheduler
+dmem_resp_in_TREADY,1,raw handshake would bind to package pins,on-chip DMEM response handshake,0,PASS_INTERNALIZED,Consumed internally
+commit_trace_out_TDATA,768,largest raw package I/O contributor,on-chip trace receiver,0,PASS_INTERNALIZED,Trace payload summarized internally
+commit_trace_out_TVALID,1,raw handshake would bind to package pins,on-chip trace receiver handshake,0,PASS_INTERNALIZED,Backpressure when trace FIFO full
+commit_trace_out_TREADY,1,raw handshake would bind to package pins,on-chip trace receiver handshake,0,PASS_INTERNALIZED,Driven internally
+core_status_and_adapter_counters,263,narrow package debug/status interface,top-level outputs,263,ROUTED,Subject to board-level pin planning
+clock_and_reset,2,board-dependent package pins,top-level inputs,2,ROUTED,Subject to board-level pin planning and I/O standard constraints
+total_package_io,265,under 360 bonded IOB capacity,system top package interface,265,ROUTE_PASS_BOARD_XDC_PENDING,Post-route bonded IOB utilization 73.61 percent
