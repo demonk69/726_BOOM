@@ -1,0 +1,6 @@
+control,checker_rejected_mutation,check
+wrong_rd_value,PASS,arch commit checker compares rd_value
+wrong_commit_pc,PASS,arch commit checker compares PC
+omitted_commit,PASS,arch commit checker requires ordered sequence length
+wrong_memory_data,PASS,final-memory checker compares address/data map
+wrong_exception_cause,PASS,exception checker compares cause when exception is asserted
